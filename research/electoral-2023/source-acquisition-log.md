@@ -1,10 +1,10 @@
 # C1-ELEC-2023-002 Source Acquisition Log
 
-Program: `C1-ELEC-2023-002`  
-Active workstreams: EV-0112 independent second review; official ballot accounting  
-Session date: 2026-07-14  
-Agent station: Electoral Research  
-Status: `EV-0112_SOURCE_RESOLVED; BALLOT_ACCOUNTING_BLOCKED`
+Program: `C1-ELEC-2023-002`
+Active workstreams: EV-0112 independent second review; official ballot accounting; official electoral geography
+Session date: 2026-07-14
+Agent station: Electoral Research
+Status: `EV-0112_SOURCE_RESOLVED; BALLOT_ACCOUNTING_BLOCKED; ELECTORAL_GEOGRAPHY_PARTIAL`
 
 ## EV-0112 Source
 
@@ -121,3 +121,64 @@ The EV-0112 visual second review is complete. Remaining acquisition work should 
 
 1. official ballot accounting;
 2. official electoral geography and explicit crosswalks.
+
+---
+
+## Official Electoral-Geography Workstream
+
+### Required Record
+
+An authoritative TSE or competent electoral-authority record for the 2023 Antigua Guatemala municipal election containing one or more of:
+
+- official municipality code;
+- registered electorate for the election geography summary;
+- JRV count and range;
+- voting-center count;
+- center names;
+- center addresses or institutional locations;
+- JRV-to-center assignments;
+- community, locality, or electoral-area relationships.
+
+### Discovery Attempts
+
+| Attempt | Channel | Query or check | Result | Decision |
+|---:|---|---|---|---|
+| GEO-01 | Local dashboards | Reviewed `Padron_Electoral` and `Eduardo_Sacahui_Campaign/public/territorio_electoral` | Found derived `centros=19`, `jrv=100`, and references to TSE cartography | Discovery aid only; not promoted |
+| GEO-02 | Official TSE PDF | Downloaded `Juntas Receptoras de Votos por Municipio.pdf` from `tse.org.gt` | Antigua Guatemala row confirms `39,099` registered electorate, `100` JRV, range `5,337-5,436`, and `18` voting centers | Promoted as municipality-level official summary |
+| GEO-03 | Official TSE cartography page | Opened `mapa-descentralizacion-del-voto-sacatepequez` and embedded gallery | Found official Antigua Guatemala cartography image URL | Registered as official partial source; no row-level center extraction yet |
+| GEO-04 | Official TSE community-list page | Opened `direccion-electoral/listado-de-comunidades` | HTML did not expose a downloadable Antigua Guatemala community/crosswalk dataset in this run | Keep community crosswalk unresolved |
+
+### Current Geography Result
+
+The official municipality-level geography baseline is now:
+
+```text
+registered_electorate = 39,099
+jrv_count = 100
+jrv_range = 5,337-5,436
+voting_center_count = 18
+status = PARTIAL_OFFICIAL_MUNICIPAL_SUMMARY_INGESTED
+```
+
+The derived dashboard value `centros=19` conflicts with the official PDF and remains `DERIVED_DISCOVERY_AID_ONLY`.
+
+### Current Geography Blocker
+
+No authenticated official record has been ingested that provides all required center-level dimensions:
+
+```text
+year = 2023
+election = municipal corporation / general election geography
+municipality = Antigua Guatemala
+department = Sacatepéquez
+center names = unresolved
+center addresses = unresolved
+JRV-to-center assignments = unresolved
+community crosswalk = unresolved
+```
+
+Until such a record is available:
+
+- `electoral-geography-inventory.csv` contains only a municipality-level summary row;
+- no center, community, or CEM assignment is authorized;
+- no territorial prioritization or mobilization action is authorized.
