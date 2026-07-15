@@ -1,67 +1,55 @@
 # Electoral Geography Data Quality — 2023
 
-Program: `C1-ELEC-2023-001`  
-Review date: 2026-07-14  
-Status: `PARTIAL_OFFICIAL_MUNICIPAL_SUMMARY_INGESTED`
+Program: `C1-ELEC-2023-003`  
+Review date: 2026-07-15  
+Status: `RECONCILED_18_CONFIRMED_CENTERS / RECONCILED_100_JRV_ASSIGNED`
 
-## Current state
-
-The repository now contains an authenticated official 2023 municipality-level JRV summary for Antigua Guatemala. It confirms the municipality code, registered electorate, JRV count, JRV range, and voting-center count.
-
-The repository still does not contain an authenticated official polling-center, voting-table, district, zone, locality, or community crosswalk for Antigua Guatemala.
-
-The accompanying inventory CSV therefore contains one municipality-level summary row and no inferred center, JRV-to-center, or community-crosswalk rows.
-
-## Ingested official summary
+## Accepted official baseline
 
 | Field | Value |
 |---|---:|
 | Registered electorate | 39,099 |
-| JRV count | 100 |
-| JRV range initial | 5,337 |
-| JRV range final | 5,436 |
-| Voting-center count | 18 |
+| Unique voting centers | 18 |
+| Explicit center-assignment records | 19 |
+| JRV | 100 |
+| JRV range | 5,337–5,436 |
 
-The official summary source is recorded as `ELEC23-GEO-SRC-001`.
+## Why 18 centers produce 19 assignment rows
 
-## Crosswalk policy
+Center code `7`, **Escuela Oficial Urbana de Niñas Pedro de Betancourt**, appears in two explicit official records:
 
-A geography row may be classified as `CONFIRMED` only when an official source supplies the unit identifier and relationship.
+- grouping `002`: JRV `5,380–5,381`;
+- grouping `999`: JRV `5,431–5,433`.
 
-Name similarity is insufficient. For example, a polling-center label resembling a community name does not establish that the center represents the entire community or that its voting tables can be assigned to that community.
+The inventory deduplicates the center identity. The assignment dataset preserves both official ranges. This is not a duplicate-data error.
 
-Allowed crosswalk statuses:
+## Coverage checks
 
-- `CONFIRMED`: explicit official relationship.
-- `PARTIAL`: official unit exists, but parent or locality relationship is incomplete.
-- `UNRESOLVED`: name or location appears relevant, but no explicit source-backed relationship exists.
-- `CONFLICT`: official sources disagree or use incompatible identifiers.
+- 18 unique center codes: PASS.
+- 19 official assignment records: PASS.
+- Inclusive JRV arithmetic per record: PASS.
+- Total JRV count = 100: PASS.
+- Range coverage 5,337–5,436: PASS, no gaps or overlaps.
+- Registered electorate total = 39,099: PASS.
+- Official center count conflict with dashboard `19`: resolved in favor of official TSE count `18`.
 
-## Required quality checks
+## Cartography limitation
 
-Before analytical use, verify:
+The official cartography source remains authenticated, but its binary could not be reacquired in this runtime for a new OCR pass. No cartography OCR output was promoted. Four CEM labels were visually confirmed through a separate official TSE CEM PDF, and center identities were resolved through the official first-round center-by-grouping PDF.
 
-1. election year and election type;
-2. department and municipality;
-3. stable unit identifiers;
-4. polling-center name and official location;
-5. voting-table identifiers and scope;
-6. parent-child relationships;
-7. duplicates and renamed units;
-8. privacy-safe treatment of addresses;
-9. compatibility with territorial units used in EV-0105 or official municipal records.
+## Crosswalk quality
 
-## Prohibited use
+Confirmed relationships are limited to those printed by TSE:
 
-The geography inventory must not be used to:
+- voting center → electoral grouping;
+- electoral grouping → Cabecera Municipal or named CEM.
 
-- infer community support;
-- estimate persuasion opportunity;
-- rank localities;
-- assign individual voters;
-- plan mobilization;
-- create paid-media geofences.
+No relationship to EV-0105 campaign communities, neighborhoods, zones, voter support, field responsibility, or mobilization is created.
 
-## Next action
+## Privacy
 
-Authenticate and ingest the official 2023 center-level electoral-geography record from the Tribunal Supremo Electoral. Until then, every community or polling-center crosswalk remains unresolved.
+Institutional polling-place locations are public official electoral geography. No individual voter address, DPI, CUI, phone, email, or voter-level assignment is stored.
+
+## Political safety
+
+The datasets must not be used to infer support, rank communities, target voters, create geofences, or plan mobilization. All political activation gates remain closed.
