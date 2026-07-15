@@ -2,13 +2,27 @@
 
 Program: `C1-ELEC-2023-001`  
 Review date: 2026-07-14  
-Status: `BLOCKED_PENDING_OFFICIAL_GEOGRAPHY_SOURCE`
+Status: `PARTIAL_OFFICIAL_MUNICIPAL_SUMMARY_INGESTED`
 
 ## Current state
 
-The repository does not yet contain an authenticated official 2023 polling-center, voting-table, district, zone, locality, or community crosswalk for Antigua Guatemala.
+The repository now contains an authenticated official 2023 municipality-level JRV summary for Antigua Guatemala. It confirms the municipality code, registered electorate, JRV count, JRV range, and voting-center count.
 
-The accompanying inventory CSV therefore contains only the required schema and no inferred rows.
+The repository still does not contain an authenticated official polling-center, voting-table, district, zone, locality, or community crosswalk for Antigua Guatemala.
+
+The accompanying inventory CSV therefore contains one municipality-level summary row and no inferred center, JRV-to-center, or community-crosswalk rows.
+
+## Ingested official summary
+
+| Field | Value |
+|---|---:|
+| Registered electorate | 39,099 |
+| JRV count | 100 |
+| JRV range initial | 5,337 |
+| JRV range final | 5,436 |
+| Voting-center count | 18 |
+
+The official summary source is recorded as `ELEC23-GEO-SRC-001`.
 
 ## Crosswalk policy
 
@@ -50,4 +64,4 @@ The geography inventory must not be used to:
 
 ## Next action
 
-Authenticate and ingest the official 2023 electoral-geography record from the Tribunal Supremo Electoral. Until then, every community or polling-center crosswalk remains unresolved.
+Authenticate and ingest the official 2023 center-level electoral-geography record from the Tribunal Supremo Electoral. Until then, every community or polling-center crosswalk remains unresolved.
