@@ -11,6 +11,7 @@ CURATED = ROOT / "research" / "curated" / "electoral-2023"
 ACCOUNTING = CURATED / "antigua-guatemala-ballot-accounting-2023.csv"
 RECONCILIATION = CURATED / "antigua-guatemala-ballot-reconciliation-2023.md"
 RESULTS = CURATED / "antigua-guatemala-municipal-results-2023.csv"
+TREP_AUDIT = ROOT / "research" / "electoral-2023" / "trep-preliminary-ballot-accounting-audit.csv"
 
 
 def fail(message: str) -> None:
@@ -55,11 +56,38 @@ for prohibited in [
     "abstention_rate =",
     "ballots_cast = 26,091",
     "printed_valid_vote_total = 26,091",
+    "ballots_cast = 26,828",
+    "printed_valid_vote_total = 25,827",
 ]:
     if prohibited in text:
         fail(f"unsupported accounting assertion found: {prohibited}")
+
+with TREP_AUDIT.open(encoding="utf-8", newline="") as handle:
+    trep_rows = list(csv.DictReader(handle))
+
+if len(trep_rows) != 1:
+    fail(f"expected exactly one TREP preliminary audit row, found {len(trep_rows)}")
+
+trep = trep_rows[0]
+expected_trep = {
+    "actas_total": "100",
+    "actas_captured": "100",
+    "actas_counted": "99",
+    "registered_electorate": "39099",
+    "ballots_cast_preliminary": "26828",
+    "valid_votes_preliminary": "25827",
+    "null_votes_preliminary": "912",
+    "blank_votes_preliminary": "89",
+    "party_vote_sum_preliminary": "25827",
+    "ev0112_confirmed_visible_sum": "26091",
+    "status": "PRELIMINARY_CONFLICT_NOT_PROMOTED",
+}
+for key, value in expected_trep.items():
+    if trep.get(key) != value:
+        fail(f"TREP audit {key} expected {value}, found {trep.get(key)}")
 
 print("[OK] registered electorate=39099 authenticated")
 print("[OK] visible rows=14; derived sum=26091")
 print("[OK] reconciliation=PARTIAL_RECONCILIATION")
 print("[OK] participation and abstention remain uncalculated")
+print("[OK] TREP preliminary conflict documented but not promoted")

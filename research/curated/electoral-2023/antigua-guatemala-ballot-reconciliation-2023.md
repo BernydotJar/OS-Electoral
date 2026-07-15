@@ -35,7 +35,22 @@ The value `39,099` is accepted as the official 2023 municipality-level registere
 
 The TSE municipality-level JRV summary resolved the registered-electorate denominator. Directed searches of official TSE pages, the preliminary first-election portal, acta/result terms, and repository references did not produce an authenticated Antigua Guatemala municipal ballot-accounting record with ballots cast, printed valid votes, null votes, blank votes, or complete accounting categories.
 
-The preliminary TREP portal remains a discovery lead only. No preliminary figure is promoted unless its record identity and scope can be authenticated and reconciled against the definitive EV-0112 agreement.
+The preliminary TREP portal was inspected as a discovery lead. Its first-election `tc4` JSON identifies the Antigua Guatemala municipal-corporation scope and contains preliminary accounting-like fields, but it is not promoted into the official accounting CSV.
+
+Recorded TREP preliminary values:
+
+| Field | Value | Status |
+|---|---:|---|
+| Actas total | 100 | Preliminary TREP |
+| Actas captured | 100 | Preliminary TREP |
+| Actas counted | 99 | Preliminary TREP |
+| Registered electorate | 39,099 | Matches EV-0139 denominator |
+| Ballots cast-like field | 26,828 | `PRELIMINARY_CONFLICT_NOT_PROMOTED` |
+| Valid votes-like field | 25,827 | `PRELIMINARY_CONFLICT_NOT_PROMOTED` |
+| Null votes-like field | 912 | `PRELIMINARY_CONFLICT_NOT_PROMOTED` |
+| Blank votes-like field | 89 | `PRELIMINARY_CONFLICT_NOT_PROMOTED` |
+
+The TREP preliminary valid/party-vote total is `25,827`, while the final EV-0112 confirmed visible organization rows sum to `26,091`. Because the TREP record is preliminary and differs from the final legal agreement, its accounting-like fields remain documented in `research/electoral-2023/trep-preliminary-ballot-accounting-audit.csv` only.
 
 Secondary national summaries, records for other municipalities, news reports, and campaign dashboards remain excluded from the official accounting dataset.
 
@@ -85,6 +100,7 @@ Still blocked:
 - challenged or other categories;
 - participation;
 - abstention.
+- final reconciliation between preliminary TREP accounting-like fields and the definitive EV-0112 agreement.
 
 ## Resume Condition
 

@@ -32,6 +32,7 @@ Resolved:
 - official 2023 registered electorate: `39,099`, sourced from EV-0139;
 - 14 confirmed visible organization-vote rows;
 - derived visible-row sum: `26,091`.
+- preliminary TREP `tc4` Antigua Guatemala accounting-like fields audited as a conflict source, not promoted.
 
 Blocked:
 
@@ -40,6 +41,7 @@ Blocked:
 - null votes;
 - blank votes;
 - challenged or other ballot categories;
+- final reconciliation between preliminary TREP `25,827` valid-like total and EV-0112 final `26,091` visible organization-vote sum;
 - participation rate;
 - abstention rate.
 
@@ -79,7 +81,7 @@ EV-0106 remains a package-distinct alternate copy with equivalent extracted work
 | Official provenance for visible vote rows | PASS | EV-0112 second review |
 | No inferred result rows | PASS | 14 visible rows only |
 | Registered electorate denominator | PASS | EV-0139 = 39,099 |
-| Ballot accounting reconciliation | PARTIAL | Denominator resolved; numerator and categories blocked |
+| Ballot accounting reconciliation | PARTIAL | Denominator resolved; preliminary TREP conflict documented; final numerator and categories blocked |
 | Participation formula discipline | PASS | No rate calculated without ballots cast |
 | Center inventory | PASS | 18 unique official centers |
 | JRV assignment | PASS | 100 JRV, continuous range 5,337–5,436 |

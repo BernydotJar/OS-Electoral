@@ -40,6 +40,7 @@ status = DERIVED_FROM_14_CONFIRMED_VISIBLE_ROWS
 | Reconcile 26,091 | PARTIAL | Visible-row sum preserved; printed role unresolved |
 | Resolve ballots cast | BLOCKED | No authenticated municipality-specific official record found |
 | Resolve null/blank/other categories | BLOCKED | No authenticated municipality-specific official record found |
+| Audit preliminary TREP | PARTIAL | Official preliminary tc4 JSON found; values conflict with final EV-0112 visible rows and are not promoted |
 | Calculate participation/abstention | BLOCKED | Official ballots-cast numerator unavailable |
 | Correct global program status | PASS | Geography marked reconciled; accounting marked partial |
 | Add fail-closed validation | PASS | Validator prohibits unsupported rates and identities |
@@ -66,6 +67,20 @@ The validator requires:
 - blank votes;
 - challenged or other categories;
 - complete accounting identity.
+- definitive reconciliation source explaining the difference between preliminary TREP `25,827` valid votes and final EV-0112 `26,091` visible organization-vote sum.
+
+## Preliminary TREP finding
+
+The TREP first-election `tc4` JSON for Antigua Guatemala was authenticated as an official preliminary source and recorded in:
+
+`research/electoral-2023/trep-preliminary-ballot-accounting-audit.csv`
+
+It is not used to populate final ballot-accounting fields because:
+
+- it is preliminary;
+- it reports `99` counted actas out of `100`;
+- its preliminary valid/party-vote total is `25,827`;
+- EV-0112 final confirmed visible organization rows sum to `26,091`.
 
 ## Resume condition
 

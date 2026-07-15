@@ -4,7 +4,7 @@ Program: `C1-ELEC-2023-002`
 Active workstreams: EV-0112 independent second review; official ballot accounting; official electoral geography
 Session date: 2026-07-14
 Agent station: Electoral Research
-Status: `EV-0112_SOURCE_RESOLVED; BALLOT_ACCOUNTING_BLOCKED; ELECTORAL_GEOGRAPHY_PARTIAL`
+Status: `EV-0112_SOURCE_RESOLVED; BALLOT_ACCOUNTING_PARTIAL; ELECTORAL_GEOGRAPHY_PARTIAL`
 
 ## EV-0112 Source
 
@@ -73,6 +73,7 @@ An authoritative TSE or competent electoral-authority record for the 2023 Antigu
 | BA-03 | General web discovery | TSE Guatemala 2023 municipal result and downloadable dataset queries | Secondary national summaries and unrelated municipal examples found | Discovery aid only; wrong scope |
 | BA-04 | Existing EV-0112 | Reviewed the three-page validity agreement | Provides 14 organization vote rows, but no printed registered electorate, ballots cast, null, blank, participation, or abstention fields | Preserve `26,091` as derived visible-row sum only |
 | BA-05 | Local dashboards | Reviewed source audit for derived campaign dashboards | Derived values and pointers exist, but no underlying official record was authenticated | `DERIVED_DISCOVERY_AID_ONLY` |
+| BA-06 | Official TREP preliminary portal | Inspected `primeraeleccion.trep.gt` Angular app, `ultimoCorte.json`, and `gtm2023_datos.json` for `tc4` Sacatepéquez / Antigua Guatemala | Found official preliminary accounting-like fields: 100 actas, 99 counted, 39,099 registered, 26,828 emitted, 25,827 valid-like party sum, 912 null, 89 blank | Register as `PRELIMINARY_CONFLICT_NOT_PROMOTED`; do not populate final accounting fields because values conflict with final EV-0112 sum `26,091` |
 
 ### Excluded Sources
 
@@ -84,6 +85,7 @@ The following may help locate official records but cannot populate the official 
 - ballot accounting for Ciudad de Guatemala or any other municipality;
 - campaign dashboards and derived territorial models;
 - values inferred as arithmetic residuals.
+- preliminary TREP values that conflict with final EV-0112 unless a definitive reconciliation source explains the difference.
 
 ### Current Blocker
 
@@ -98,10 +100,11 @@ department = Sacatepéquez
 
 Until such a record is available:
 
-- `antigua-guatemala-ballot-accounting-2023.csv` remains header-only;
-- reconciliation outcome remains `NOT_RECONCILED`;
+- `antigua-guatemala-ballot-accounting-2023.csv` contains only the authenticated registered-electorate denominator;
+- reconciliation outcome remains `PARTIAL_RECONCILIATION`;
 - participation and abstention remain uncalculated;
 - `26,091` remains a derived sum of confirmed visible organization rows.
+- TREP preliminary accounting-like fields remain in a separate audit file and are not promoted.
 
 ### Resume Condition
 
