@@ -3,7 +3,7 @@
 Last updated: 2026-07-14  
 Cycle: 1 - Electoral Evidence Baseline  
 Owner: Electoral Research  
-Status: Source inventory started; no priority segment approved
+Status: Curated pilot baseline available; no priority segment approved
 
 This register tracks available evidence for the Antigua Guatemala exploratory pre-candidacy. A source listed here is not automatically an approved fact, message, segment, or public claim.
 
@@ -18,6 +18,8 @@ Evidence classes:
 Review statuses:
 
 - Accepted: source exists and can support internal decisions.
+- Curated, pending decision approval: reviewed subset is traceable, but no named campaign decision is approved.
+- Partial, curated subset available: some reviewed evidence is available, but substantive limitations remain.
 - Needs extraction: source exists but must be converted, parsed, summarized, or checked before use.
 - Needs verification: source exists but authority, date, scope, or reliability must be checked.
 - Blocked: cannot be used until privacy, legality, or source quality is resolved.
@@ -32,16 +34,16 @@ Review statuses:
 | EV-0102 | Stable PDF version of municipal diagnosis | Campaign research | `/Users/eduardosacahui/Documents/Politics/02_Politicas_Publicas/2026-01-09__Políticas_Públicas__Diagnóstico_y_Políticas_Públicas_Municipales_2026__v01.pdf` | Antigua Guatemala | General electorate | Medium | Citable municipal diagnosis | Needs extraction |
 | EV-0103 | Village needs diagnosis for Antigua Guatemala | Campaign research | `/Users/eduardosacahui/Documents/Politics/01_Diagnosticos/Diagnóstico de Necesidades en las Aldeas de La Antigua Guatemala.docx` | Antigua Guatemala aldeas | Rural and community residents | Medium | Territorial needs baseline | Needs extraction |
 | EV-0104 | Community profiles in narrative format | Campaign research | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/2025-10-10__Territorio__Fichas_Comunitarias__v01.docx` | Antigua Guatemala communities | Community residents | Medium | Community-level questions and territorial mapping | Needs extraction |
-| EV-0105 | Community profiles in structured spreadsheet format | Campaign research | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/2025-10-10__Territorio__Fichas_Comunitarias_Antigua__v01.xlsx` | Antigua Guatemala communities | Community residents | Medium | Territory metadata and prioritization inputs | Extracted, pending validation |
+| EV-0105 | Community profiles in structured spreadsheet format | Campaign research | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/2025-10-10__Territorio__Fichas_Comunitarias_Antigua__v01.xlsx` | Antigua Guatemala communities | Community residents | Medium | Community inventory and source-field analysis | Curated, pending decision approval — [inventory](curated/territorio/EV-0105-community-inventory.csv), [quality review](curated/territorio/EV-0105-data-quality.md) |
 | EV-0106 | Strategic territorial/community workbook duplicate candidate | Campaign research | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/Fichas Comunitarias/Fichas_Comunitarias_Antigua.xlsx` | Antigua Guatemala communities | Community residents | Low | Possible backup or alternate version | Needs verification |
 | EV-0107 | Plan de Gobierno Municipal draft | Campaign research | `/Users/eduardosacahui/Documents/Politics/03_Planeacion_Estrategica/Planeación Estratégica/2025-10-20__Plan__PLAN_DE_GOBIERNO_MUNICIPAL__v01.docx` | Antigua Guatemala | General electorate | Medium | Programmatic platform baseline | Needs extraction |
 | EV-0108 | Consolidated strategy document in Markdown | Campaign research | `/Users/eduardosacahui/Documents/Politics/03_Planeacion_Estrategica/estrategia_integral_sacahui_antigua_2028.md` | Antigua Guatemala | General electorate | Medium | Strategy synthesis and RAG-ready text | Needs verification |
 | EV-0109 | Pilares de campana and citizen pain points | Campaign research | `/Users/eduardosacahui/Documents/Politics/03_Planeacion_Estrategica/2026-01-01__Estrategia__Pilares_Campaña_Municipal_Puntos_de_Dolor__v01.docx` | Antigua Guatemala | General electorate | Low | Hypotheses for later segment research | Needs verification |
 | EV-0110 | Exploratory survey input | Campaign research | `/Users/eduardosacahui/Documents/Politics/06_Encuestas/2025-09-26__Encuesta__Equestas_Politica__v01.docx` | Antigua Guatemala | Unknown | Low | Potential opinion baseline | Needs verification |
-| EV-0111 | Electoral roll statistics as of April 30, 2026 | Official source | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ESTADISTICAS DEL PADRON ELECTORAL POR DEPARTAMENTO Y MUNICIPIO AL 30 DE ABRIL DEL 2026.pdf` | Sacatepequez / Antigua Guatemala | Registered electorate | High | Electorate size and demographic baseline | Extracted, pending validation |
-| EV-0112 | Official 2023 municipal election validity agreement | Official source | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ACUERDO 1-2023 Declarar la validez de la elección de la Corporación Municipal de ANTIGUA GUATEMALA, del Departamento de Sacatepéquez..pdf` | Antigua Guatemala | Registered electorate | High | Historical result and legal baseline | Partial extraction; OCR likely required |
+| EV-0111 | Electoral roll statistics as of April 30, 2026 | Official source | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ESTADISTICAS DEL PADRON ELECTORAL POR DEPARTAMENTO Y MUNICIPIO AL 30 DE ABRIL DEL 2026.pdf` | Sacatepequez / Antigua Guatemala | Registered electorate | High | Aggregate electorate baseline | Curated, pending decision approval — [baseline](curated/territorio/EV-0111-baseline.md) |
+| EV-0112 | Official 2023 municipal election validity agreement | Official source | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ACUERDO 1-2023 Declarar la validez de la elección de la Corporación Municipal de ANTIGUA GUATEMALA, del Departamento de Sacatepéquez..pdf` | Antigua Guatemala | Registered electorate | High | Legal-election baseline | Partial, curated subset available — [supplement](curated/territorio/EV-0112-partial-supplement.md); pages 1-3 require controlled capture |
 | EV-0113 | Municipal code reference | Official source | `/Users/eduardosacahui/Documents/Politics/04_Propuestas/Propuestas estratégicas/Asssets/ Código Municipal_1_2025_GoQ9T.pdf` | Guatemala municipalities | N/A | High | Legal authority and municipal powers | Needs extraction |
-| EV-0114 | PDM-OT for Antigua Guatemala | Official source | `/Users/eduardosacahui/Documents/Politics/04_Propuestas/Propuestas estratégicas/Asssets/Plan de Desarrollo Municipal y Ordenamiento Territorial - Antigua Guatemala.pdf` | Antigua Guatemala | General population | High | Planning and territorial baseline | Text extracted; table detections partial |
+| EV-0114 | PDM-OT for Antigua Guatemala | Official source | `/Users/eduardosacahui/Documents/Politics/04_Propuestas/Propuestas estratégicas/Asssets/Plan de Desarrollo Municipal y Ordenamiento Territorial - Antigua Guatemala.pdf` | Antigua Guatemala | General population | High | Planning and territorial baseline | Partial, curated subset available — [table catalog](curated/municipal-core/EV-0114-curated-tables.csv), [curation log](curated/municipal-core/EV-0114-curation-log.md) |
 | EV-0115 | Historical PDM / SEGEPLAN-style development plan | Official source | `/Users/eduardosacahui/Documents/Politics/04_Propuestas/Propuestas estratégicas/Asssets/pla de desarollo municipal, antigua guatemalaPDM_301.pdf` | Antigua Guatemala | General population | Medium | Historical planning context | Needs extraction |
 | EV-0116 | Guatemala national development plan 2032 | Official source | `/Users/eduardosacahui/Documents/Politics/99_Archivo/_reorg_2026-07-08/legacy_roots/Propuestas estratégicas/Asssets/GuatemalaPlanNacionaldeDesarrollo2032.pdf` | Guatemala | N/A | High | National planning frame | Needs extraction |
 | EV-0117 | Municipal multiannual operational plan 2025-2029 | Official source | `/Users/eduardosacahui/Documents/Politics/99_Archivo/_reorg_2026-07-08/legacy_roots/Propuestas estratégicas/Asssets/El Plan Operativo Multianual (PОM) 2025-2029.pdf` | Antigua Guatemala | General population | Medium | Products, indicators, and budget linkage | Needs extraction |
@@ -71,10 +73,10 @@ Review statuses:
 
 | Category requested by agent | Current availability | Candidate sources | Gate impact |
 |---|---|---|---|
-| 1. Historical electoral results | Available | EV-0112; additional TSE result files still needed if available | Supports baseline; does not select segment alone |
-| 2. Demographic or census data | Partial | EV-0111; demographic/census sources still needed | Required before segment decision |
+| 1. Historical electoral results | Partial | EV-0112 curated subset; official detailed TSE result files still needed | Supports baseline; does not select segment alone |
+| 2. Demographic or census data | Partial | EV-0111 curated municipality-level aggregate; community demographics still needed | Required before segment decision |
 | 3. Legal or municipal documents | Available | EV-0113 to EV-0123 | Supports legal feasibility and municipal scope |
-| 4. Villages, neighborhoods, or communities | Available | EV-0103 to EV-0106; EV-0114 | Supports territorial unit definition |
+| 4. Villages, neighborhoods, or communities | Partial | EV-0105 curated inventory; EV-0103, EV-0104, EV-0106, and official crosswalk still needed | Supports territorial unit definition only |
 | 5. Surveys, interviews, or field notes | Partial | EV-0110; field notes not yet inventoried | Needs verification before use |
 | 6. Existing policy proposals | Available | EV-0107 to EV-0109; EV-0129 to EV-0130 | Supports program inventory; no public promise approved |
 | 7. Volunteers, allies, or structure | Not yet inventoried | EV-0134 may contain operating design, not confirmed structure | Blocks mobilization |
@@ -100,14 +102,27 @@ Use these collections as retrieval boundaries. Do not mix legal/municipal answer
 4. Field notes or interview records with date, method, location, and respondent category.
 5. Volunteer/allied structure inventory with privacy-safe aggregation.
 6. Campaign budget ceiling and operational capacity.
-7. Source extraction status for spreadsheets and PDFs.
-8. Version decision for duplicate or alternate workbooks.
+7. Controlled capture of EV-0112 pages 1-3.
+8. Version decision for EV-0105 and EV-0106.
+9. Row-level normalization of selected EV-0114 validated table detections.
 
 ## Extraction Pilot Run
 
 | Run | Sources | Validator | Result | Notes |
 |---|---|---|---|---|
 | `research/extracted/logs/extraction-run-20260714T175706Z.md` | EV-0111, EV-0112, EV-0105, EV-0114 | `scripts/evidence/validate_pilot.py --input research/extracted --pii-self-test` | Partial gate | EV-0111 PASS; EV-0105 PASS; EV-0112 remains PARTIAL because all 3 pages had no extractable text and contain substantive visible content; EV-0114 table extraction remains PARTIAL because 399 records are detections, not validated reliable tables. |
+
+## Curated Territorial Baseline
+
+| Artifact | Evidence IDs | Layer | Status |
+|---|---|---|---|
+| `research/curated/territorio/EV-0111-baseline.md` | EV-0111 | Curated | Complete for reviewed aggregate values |
+| `research/curated/territorio/EV-0105-community-inventory.csv` | EV-0105 | Curated | Seven-source-row inventory; methodology pending verification |
+| `research/curated/territorio/EV-0105-data-quality.md` | EV-0105 | Curated review | Complete |
+| `research/curated/territorio/EV-0112-partial-supplement.md` | EV-0112 | Curated partial | Pages 1-3 still require controlled capture |
+| `research/curated/municipal-core/EV-0114-curated-tables.csv` | EV-0114 | Curated partial | Eight validated table-level detections; no fully normalized tables |
+| `research/curated/municipal-core/EV-0114-curation-log.md` | EV-0114 | Curated review | Complete |
+| `territory/territorial-data-gap-brief.md` | EV-0105, EV-0111, EV-0112, EV-0114 | Research synthesis | Reviewable; political gates closed |
 
 ## Intake Checklist
 
