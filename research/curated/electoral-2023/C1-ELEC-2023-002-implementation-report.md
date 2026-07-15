@@ -5,7 +5,7 @@ Branch: `agent/implement-c1-elec-2023-002`
 Primary station: Electoral Research  
 Supporting station: Tracking, Risks, and Learning  
 Current loop focus: EV-0112 independent second review  
-Overall state: `PARTIAL — SECOND REVIEW BLOCKED ON SOURCE ACCESS`
+Overall state: `PASS — EV-0112 SECOND REVIEW COMPLETED; BALLOT ACCOUNTING AND GEOGRAPHY STILL BLOCKED`
 
 ## Iteration Summary
 
@@ -17,11 +17,13 @@ Completed:
 2. searched the workspace, GitHub repository, ChatGPT File Library, official TSE domain, and broader web for the original three-page PDF;
 3. documented source-acquisition attempts and the exact blocker;
 4. created a 27-row corrections ledger covering all 14 vote rows and major legal field groups;
-5. assigned every vote row a second-review state of `UNRESOLVED / BLOCKED_SOURCE_UNAVAILABLE`;
-6. created an independent-review report that preserves the evidence status;
-7. created deterministic rendering and Spanish OCR preparation tooling;
-8. created a validator that prevents confirmation or correction when source material is absent;
-9. reran the available workspace gate.
+5. found the PDF through local `POLITICS_ROOT` access and prepared rendered pages plus manifest;
+6. assigned every vote row a second-review state of `CONFIRMED / CONFIRMED_FROM_RENDERED_SOURCE`;
+7. created an independent-review report that preserves remaining ballot-accounting and geography blockers;
+8. created deterministic rendering and Spanish OCR preparation tooling;
+9. created a validator that prevents confirmation or correction when source material is absent;
+10. audited two local dashboard apps as derived discovery aids, not official sources;
+11. reran the available workspace gate.
 
 ## Task Ledger
 
@@ -29,12 +31,12 @@ Completed:
 |---|---|---|
 | Resume from current branch and spec | PASS | long-session prompt and spec reviewed |
 | Preserve first-review artifacts | PASS | first-review transcription and log unchanged |
-| Acquire original PDF | BLOCKED | `source-acquisition-log.md` |
-| Render all three pages independently | BLOCKED | preparer exits with source-not-found code `3` |
+| Acquire original PDF | PASS | `source-acquisition-log.md`; `EV-0112-second-review-manifest.json` |
+| Render all three pages independently | PASS | preparer created page hashes and OCR assists |
 | Cover all 14 vote rows | PASS | 14 ledger rows exist |
-| Confirm or correct vote rows visually | BLOCKED | all 14 are `UNRESOLVED` |
+| Confirm or correct vote rows visually | PASS | all 14 are `CONFIRMED`; 0 corrected |
 | Cover other captured field groups | PASS | 13 additional ledger rows |
-| Promote EV-0112 beyond partial | NOT AUTHORIZED | independent source unavailable |
+| Promote EV-0112 visible fields beyond first review | PASS | visible fields confirmed; ballot accounting and geography still unavailable |
 | Validate ledger schema and states | PASS | `validate_ev0112_second_review.py` |
 | Validate visible-row baseline | PASS | 14 rows; derived sum `26,091` |
 | Privacy and portability gate | PASS | no voter-level PII or personal absolute paths |
@@ -59,40 +61,34 @@ scripts/evidence/
 ## Validation Results
 
 ```text
-[BLOCKED] EV-0112 source PDF not found
-prepare_rc=3
+[OK] prepared EV-0112 independent review materials: .workspace/ev0112-second-review/manifest.json
 [OK] results rows=14; derived visible sum=26091
 [OK] EV-0112 corrections ledger rows=27 vote_rows=14
-[OK] source_material_available=False
+[OK] source_material_available=True
 [OK] extraction Python modules available
 [OK] portability and OCR checks passed
 ```
 
-The source-not-found result is an expected, explicit blocker rather than a failed evidence assertion.
+The earlier source-not-found result is preserved in the acquisition log as a resolved blocker. The current local run found the source under `POLITICS_ROOT`.
 
 ## Evidence Decision
 
 ```text
-EV-0112 status: PARTIAL_REVIEWED_CAPTURE
-Second-review fields confirmed: 0
+EV-0112 visible-field status: CONFIRMED_SECOND_REVIEW_FOR_VISIBLE_FIELDS
+Second-review fields confirmed: 26
 Second-review fields corrected: 0
-Second-review vote rows unresolved: 14
-Derived visible-row sum: 26,091 (unchanged; not promoted)
+Second-review fields not present on reviewed pages: 1
+Second-review vote rows unresolved: 0
+Derived visible-row sum: 26,091 (unchanged; now based on confirmed visible rows; not promoted to turnout or ballots cast)
 ```
 
 ## Exact Resume Action
 
-Make the original PDF or lossless images of all three pages available under `POLITICS_ROOT`, then execute:
-
-```bash
-python scripts/evidence/prepare_ev0112_second_review.py
-```
-
-After the manifest and rendered pages exist, review pages 1–3, update the correction ledger, rerun validation, and decide whether EV-0112 remains partial or reaches a human promotion gate.
+Acquire official ballot-accounting and electoral-geography sources. The EV-0112 visual second review no longer blocks the visible-result table.
 
 ## Remaining Independent Workstreams
 
-The source blocker applies only to the EV-0112 visual-review increment. It does not resolve or close authoritative ballot accounting, reconciliation of `26,091`, official electoral geography, or explicit electoral crosswalks.
+The resolved source blocker applies only to the EV-0112 visual-review increment. It does not resolve or close authoritative ballot accounting, official electoral geography, or explicit electoral crosswalks.
 
 ## Political Gate Status
 
@@ -100,4 +96,4 @@ Segment selection, territorial ranking, public narrative, paid media, targeting,
 
 ## Loop Decision
 
-`PARTIAL — CURRENT INCREMENT TERMINALLY BLOCKED ON ORIGINAL SOURCE; SAFE TO RESUME AUTOMATICALLY WHEN SOURCE APPEARS`
+`PASS — EV-0112 SECOND REVIEW COMPLETE; CONTINUE WITH OFFICIAL BALLOT ACCOUNTING AND ELECTORAL GEOGRAPHY DISCOVERY`

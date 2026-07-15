@@ -1,8 +1,8 @@
 # C1-ELEC-2023-001 and C1-TERR-DQ-001 — Gate Decision
 
-Decision date: 2026-07-15  
-Decision owner: Tracking, Risks, and Learning  
-Source implementation: merged PR #9  
+Decision date: 2026-07-15
+Decision owner: Tracking, Risks, and Learning
+Source implementation: merged PR #9
 Merge commit: `14e01ff7b039b06bf556f67819027af155cc02e4`
 
 ## Overall Decision
@@ -16,14 +16,14 @@ The merged implementation advances the official 2023 electoral baseline without 
 | Workstream | Decision | Basis |
 |---|---|---|
 | `C1-TERR-DQ-001` | `PASS — EV-0105_CANONICAL` | EV-0105 and EV-0106 have different package hashes but equivalent reviewed worksheet content across 40 extracted cells; EV-0106 adds no material field or row. |
-| `C1-ELEC-2023-001` | `PARTIAL_REVIEWED_CAPTURE` | EV-0112 has three visually reviewed pages and 14 organization vote rows, but still requires second review and lacks complete ballot-accounting and electoral-geography records. |
+| `C1-ELEC-2023-001` | `CONFIRMED_SECOND_REVIEW_FOR_VISIBLE_FIELDS` | EV-0112 has three rendered-source reviewed pages and 14 second-review-confirmed organization vote rows, but still lacks complete ballot-accounting and electoral-geography records. |
 
 ## Confirmed Electoral Facts
 
-- Election date recorded for the captured municipal result table: 2023-06-25.
+- Election date is not confirmed from the reviewed EV-0112 pages and remains pending a separate official source.
 - Municipality: Antigua Guatemala, Sacatepequez.
 - Fourteen organization vote rows are present in the reviewed page-1 table.
-- Derived sum of the fourteen visible rows: `26,091`.
+- Derived sum of the fourteen visible rows: `26,091`, now reconciled as a sum of second-review-confirmed visible rows.
 - The winning organization visible in EV-0112 is `COMITE CIVICO FUTURO` with `6,543` votes.
 - The agreement declares the validity of the municipal corporation election and identifies elected offices and names.
 
@@ -86,6 +86,6 @@ The following remain closed:
 
 ## Final State
 
-**C1-TERR-DQ-001:** COMPLETE  
-**C1-ELEC-2023-001:** PARTIAL — CONTINUE  
+**C1-TERR-DQ-001:** COMPLETE
+**C1-ELEC-2023-001:** VISIBLE EV-0112 FIELDS CONFIRMED — CONTINUE FOR BALLOT ACCOUNTING AND GEOGRAPHY
 **Next loop:** `C1-ELEC-2023-002 — Ballot Accounting, Second Review, and Electoral Geography`

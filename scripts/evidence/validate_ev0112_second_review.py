@@ -58,7 +58,10 @@ def main() -> int:
         print(f"[FAILED] expected 14 vote rows, found {len(vote_rows)}", file=sys.stderr)
         return 1
 
-    source_available = Path(".workspace/ev0112-second-review/manifest.json").is_file()
+    source_available = (
+        Path(".workspace/ev0112-second-review/manifest.json").is_file()
+        or Path("research/curated/electoral-2023/EV-0112-second-review-manifest.json").is_file()
+    )
     if not source_available:
         falsely_resolved = [
             row["record_key"] for row in rows

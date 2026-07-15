@@ -41,7 +41,7 @@ Review statuses:
 | EV-0109 | Pilares de campana and citizen pain points | Campaign research | `/Users/eduardosacahui/Documents/Politics/03_Planeacion_Estrategica/2026-01-01__Estrategia__Pilares_Campaña_Municipal_Puntos_de_Dolor__v01.docx` | Antigua Guatemala | General electorate | Low | Hypotheses for later segment research | Needs verification |
 | EV-0110 | Exploratory survey input | Campaign research | `/Users/eduardosacahui/Documents/Politics/06_Encuestas/2025-09-26__Encuesta__Equestas_Politica__v01.docx` | Antigua Guatemala | Unknown | Low | Potential opinion baseline | Needs verification |
 | EV-0111 | Electoral roll statistics as of April 30, 2026 | Official source | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ESTADISTICAS DEL PADRON ELECTORAL POR DEPARTAMENTO Y MUNICIPIO AL 30 DE ABRIL DEL 2026.pdf` | Sacatepequez / Antigua Guatemala | Registered electorate | High | Aggregate electorate baseline | Curated, pending decision approval — [baseline](curated/territorio/EV-0111-baseline.md) |
-| EV-0112 | Official 2023 municipal election validity agreement | Official source | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ACUERDO 1-2023 Declarar la validez de la elección de la Corporación Municipal de ANTIGUA GUATEMALA, del Departamento de Sacatepéquez..pdf` | Antigua Guatemala | Registered electorate | High | Legal-election baseline and visible organization vote rows | Partial reviewed capture — [transcription](curated/electoral-2023/EV-0112-transcription.md), [review log](curated/electoral-2023/EV-0112-review-log.md); second review and ballot-accounting sources still required |
+| EV-0112 | Official 2023 municipal election validity agreement | Official source | `/Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ACUERDO 1-2023 Declarar la validez de la elección de la Corporación Municipal de ANTIGUA GUATEMALA, del Departamento de Sacatepéquez..pdf` | Antigua Guatemala | Registered electorate | High | Legal-election baseline and visible organization vote rows | Visible fields second-review confirmed — [transcription](curated/electoral-2023/EV-0112-transcription.md), [review log](curated/electoral-2023/EV-0112-review-log.md), [second review](curated/electoral-2023/EV-0112-second-review.md), [corrections ledger](curated/electoral-2023/EV-0112-corrections.csv); ballot-accounting and electoral-geography sources still required |
 | EV-0113 | Municipal code reference | Official source | `/Users/eduardosacahui/Documents/Politics/04_Propuestas/Propuestas estratégicas/Asssets/ Código Municipal_1_2025_GoQ9T.pdf` | Guatemala municipalities | N/A | High | Legal authority and municipal powers | Needs extraction |
 | EV-0114 | PDM-OT for Antigua Guatemala | Official source | `/Users/eduardosacahui/Documents/Politics/04_Propuestas/Propuestas estratégicas/Asssets/Plan de Desarrollo Municipal y Ordenamiento Territorial - Antigua Guatemala.pdf` | Antigua Guatemala | General population | High | Planning and territorial baseline | Partial, curated subset available — [table catalog](curated/municipal-core/EV-0114-curated-tables.csv), [curation log](curated/municipal-core/EV-0114-curation-log.md) |
 | EV-0115 | Historical PDM / SEGEPLAN-style development plan | Official source | `/Users/eduardosacahui/Documents/Politics/04_Propuestas/Propuestas estratégicas/Asssets/pla de desarollo municipal, antigua guatemalaPDM_301.pdf` | Antigua Guatemala | General population | Medium | Historical planning context | Needs extraction |
@@ -96,21 +96,20 @@ Use these collections as retrieval boundaries. Do not mix legal/municipal answer
 
 ## Immediate Evidence Gaps
 
-1. Official historical vote totals by party/candidate/table for Antigua Guatemala, not only validity agreement.
+1. Official historical ballot-accounting totals by party/candidate/table for Antigua Guatemala, beyond the EV-0112 validity agreement visible rows.
 2. Census or demographic breakdown for Antigua Guatemala by age, sex, occupation, locality, and urban/rural split.
 3. Official list of communities, zones, aldeas, polling centers, and electoral geography crosswalk.
 4. Field notes or interview records with date, method, location, and respondent category.
 5. Volunteer/allied structure inventory with privacy-safe aggregation.
 6. Campaign budget ceiling and operational capacity.
-7. Controlled capture of EV-0112 pages 1-3.
-8. Version decision for EV-0105 and EV-0106.
-9. Row-level normalization of selected EV-0114 validated table detections.
+7. Official source for the election date, because `2023-06-25` is not visible in reviewed EV-0112 pages.
+8. Row-level normalization of selected EV-0114 validated table detections.
 
 ## Extraction Pilot Run
 
 | Run | Sources | Validator | Result | Notes |
 |---|---|---|---|---|
-| `research/extracted/logs/extraction-run-20260714T175706Z.md` | EV-0111, EV-0112, EV-0105, EV-0114 | `scripts/evidence/validate_pilot.py --input research/extracted --pii-self-test` | Partial gate | EV-0111 PASS; EV-0105 PASS; EV-0112 remains PARTIAL because all 3 pages had no extractable text and contain substantive visible content; EV-0114 table extraction remains PARTIAL because 399 records are detections, not validated reliable tables. |
+| `research/extracted/logs/extraction-run-20260714T175706Z.md` | EV-0111, EV-0112, EV-0105, EV-0114 | `scripts/evidence/validate_pilot.py --input research/extracted --pii-self-test` | Partial gate | EV-0111 PASS; EV-0105 PASS; pilot extraction kept EV-0112 PARTIAL because all 3 pages had no extractable text and contain substantive visible content; later rendered-source second review confirmed EV-0112 visible fields only; EV-0114 table extraction remains PARTIAL because 399 records are detections, not validated reliable tables. |
 
 ## Curated Territorial Baseline
 
@@ -119,7 +118,7 @@ Use these collections as retrieval boundaries. Do not mix legal/municipal answer
 | `research/curated/territorio/EV-0111-baseline.md` | EV-0111 | Curated | Complete for reviewed aggregate values |
 | `research/curated/territorio/EV-0105-community-inventory.csv` | EV-0105 | Curated | Seven-source-row inventory; methodology pending verification |
 | `research/curated/territorio/EV-0105-data-quality.md` | EV-0105 | Curated review | Complete |
-| `research/curated/territorio/EV-0112-partial-supplement.md` | EV-0112 | Curated partial | Pages 1-3 still require controlled capture |
+| `research/curated/territorio/EV-0112-partial-supplement.md` | EV-0112 | Curated partial | Superseded for visible EV-0112 fields by rendered-source second review; still partial for participation, ballot accounting, and electoral geography |
 | `research/curated/municipal-core/EV-0114-curated-tables.csv` | EV-0114 | Curated partial | Eight validated table-level detections; no fully normalized tables |
 | `research/curated/municipal-core/EV-0114-curation-log.md` | EV-0114 | Curated review | Complete |
 | `territory/territorial-data-gap-brief.md` | EV-0105, EV-0111, EV-0112, EV-0114 | Research synthesis | Reviewable; political gates closed |
