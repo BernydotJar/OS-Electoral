@@ -1,0 +1,126 @@
+{
+  "evidence_id": "EV-0112",
+  "source_path": "${POLITICS_ROOT}/07_Fichas_Comunitarias/ACUERDO 1-2023 Declarar la validez de la elección de la Corporación Municipal de ANTIGUA GUATEMALA, del Departamento de Sacatepéquez..pdf",
+  "source_sha256": "8e64eeff89da9c461a443de3e728195f88dded3ac6dd06b31ebd96a5b3d5887b",
+  "page_count": 3,
+  "render_dpi": 300,
+  "ocr_languages": "spa+eng",
+  "ocr_role": "assistive_only_requires_visual_review",
+  "pages": [
+    {
+      "page": 1,
+      "image": ".workspace/ev0112-second-review/pages/page-01.png",
+      "image_sha256": "8ae54660affd8a0ed01f926e13368f7f5ffee0ce7e4051dde0ca5b24aa6a8664",
+      "embedded_text_length": 0,
+      "ocr": [
+        {
+          "command": [
+            "tesseract",
+            ".workspace/ev0112-second-review/pages/page-01.png",
+            ".workspace/ev0112-second-review/ocr/page-01-psm6",
+            "-l",
+            "spa+eng",
+            "--psm",
+            "6"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "Error opening data file /opt/homebrew/share/tessdata/spa.traineddata\nPlease make sure the TESSDATA_PREFIX environment variable is set to your \"tessdata\" directory.\nFailed loading language 'spa'",
+          "output": ".workspace/ev0112-second-review/ocr/page-01-psm6.txt"
+        },
+        {
+          "command": [
+            "tesseract",
+            ".workspace/ev0112-second-review/pages/page-01.png",
+            ".workspace/ev0112-second-review/ocr/page-01-psm11",
+            "-l",
+            "spa+eng",
+            "--psm",
+            "11"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "Error opening data file /opt/homebrew/share/tessdata/spa.traineddata\nPlease make sure the TESSDATA_PREFIX environment variable is set to your \"tessdata\" directory.\nFailed loading language 'spa'\nDetected 43 diacritics",
+          "output": ".workspace/ev0112-second-review/ocr/page-01-psm11.txt"
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "image": ".workspace/ev0112-second-review/pages/page-02.png",
+      "image_sha256": "7a1d21a3cbd0dd1bdb5749669274a4615619afe7be09d8f9ebf4f087389a339e",
+      "embedded_text_length": 0,
+      "ocr": [
+        {
+          "command": [
+            "tesseract",
+            ".workspace/ev0112-second-review/pages/page-02.png",
+            ".workspace/ev0112-second-review/ocr/page-02-psm6",
+            "-l",
+            "spa+eng",
+            "--psm",
+            "6"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "Error opening data file /opt/homebrew/share/tessdata/spa.traineddata\nPlease make sure the TESSDATA_PREFIX environment variable is set to your \"tessdata\" directory.\nFailed loading language 'spa'",
+          "output": ".workspace/ev0112-second-review/ocr/page-02-psm6.txt"
+        },
+        {
+          "command": [
+            "tesseract",
+            ".workspace/ev0112-second-review/pages/page-02.png",
+            ".workspace/ev0112-second-review/ocr/page-02-psm11",
+            "-l",
+            "spa+eng",
+            "--psm",
+            "11"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "Error opening data file /opt/homebrew/share/tessdata/spa.traineddata\nPlease make sure the TESSDATA_PREFIX environment variable is set to your \"tessdata\" directory.\nFailed loading language 'spa'",
+          "output": ".workspace/ev0112-second-review/ocr/page-02-psm11.txt"
+        }
+      ]
+    },
+    {
+      "page": 3,
+      "image": ".workspace/ev0112-second-review/pages/page-03.png",
+      "image_sha256": "855999fbef9d79f04aacc06ada59067ffb30228002db10fed12e81769b0f1500",
+      "embedded_text_length": 0,
+      "ocr": [
+        {
+          "command": [
+            "tesseract",
+            ".workspace/ev0112-second-review/pages/page-03.png",
+            ".workspace/ev0112-second-review/ocr/page-03-psm6",
+            "-l",
+            "spa+eng",
+            "--psm",
+            "6"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "Error opening data file /opt/homebrew/share/tessdata/spa.traineddata\nPlease make sure the TESSDATA_PREFIX environment variable is set to your \"tessdata\" directory.\nFailed loading language 'spa'",
+          "output": ".workspace/ev0112-second-review/ocr/page-03-psm6.txt"
+        },
+        {
+          "command": [
+            "tesseract",
+            ".workspace/ev0112-second-review/pages/page-03.png",
+            ".workspace/ev0112-second-review/ocr/page-03-psm11",
+            "-l",
+            "spa+eng",
+            "--psm",
+            "11"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": "Error opening data file /opt/homebrew/share/tessdata/spa.traineddata\nPlease make sure the TESSDATA_PREFIX environment variable is set to your \"tessdata\" directory.\nFailed loading language 'spa'\nError in boxClipToRectangle: box outside rectangle\nError in pixScanForForeground: invalid box\nError in boxClipToRectangle: box outside rectangle\nError in pixScanForForeground: invalid box",
+          "output": ".workspace/ev0112-second-review/ocr/page-03-psm11.txt"
+        }
+      ]
+    }
+  ],
+  "curated_manifest_role": "committed audit manifest for independent second review; page images remain local workspace materials"
+}

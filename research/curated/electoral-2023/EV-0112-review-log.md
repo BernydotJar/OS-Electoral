@@ -6,6 +6,8 @@ Review date: 2026-07-14
 Reviewer role: Electoral Research  
 Status: `PARTIAL_REVIEWED_CAPTURE`
 
+Note: this first-review log is retained for audit history. The independent second review has since confirmed the visible EV-0112 fields in `EV-0112-second-review.md`; participation, ballot accounting, and electoral geography remain unresolved.
+
 ## Method
 
 1. Confirmed the source PDF exists under `POLITICS_ROOT`.
@@ -45,7 +47,7 @@ Status: `PARTIAL_REVIEWED_CAPTURE`
 
 ## Remaining Gaps
 
-- The capture should receive a second human review before EV-0112 is promoted beyond partial.
+- The capture received a later independent second review for visible EV-0112 fields; this source still does not provide complete participation, ballot-accounting, or electoral-geography inputs.
 - The source does not by itself provide registered electorate, turnout, null votes, blank votes, abstention, polling-center records, or voting-table geography.
 - Accents and capitalization were normalized conservatively for readability; the underlying source remains the rendered PDF.
 

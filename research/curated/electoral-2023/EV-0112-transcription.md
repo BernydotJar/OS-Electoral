@@ -8,6 +8,8 @@ Capture date: 2026-07-14
 Capture method: page render plus OCR assist, followed by visual review against rendered pages  
 Status: `PARTIAL_REVIEWED_CAPTURE`
 
+Note: this is the first-review controlled capture artifact. The visible EV-0112 fields were later checked in the independent second review at `EV-0112-second-review.md`; ballot accounting and electoral geography remain outside this source.
+
 ## Source
 
 `${POLITICS_ROOT}/07_Fichas_Comunitarias/ACUERDO 1-2023 Declarar la validez de la elección de la Corporación Municipal de ANTIGUA GUATEMALA, del Departamento de Sacatepéquez..pdf`

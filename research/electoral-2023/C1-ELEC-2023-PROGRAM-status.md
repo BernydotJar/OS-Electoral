@@ -3,7 +3,7 @@
 Review date: 2026-07-14  
 Program: `C1-ELEC-2023-PROGRAM`  
 Workstreams: `C1-ELEC-2023-001`, `C1-TERR-DQ-001`  
-Overall state: `IN PROGRESS — EV-0106 COMPLETE; EV-0112 PARTIAL REVIEWED CAPTURE`
+Overall state: `IN PROGRESS — EV-0112 SECOND REVIEW COMPLETE; BALLOT ACCOUNTING AND GEOGRAPHY STILL BLOCKED`
 
 ## Completed in this iteration
 
@@ -21,17 +21,16 @@ Overall state: `IN PROGRESS — EV-0106 COMPLETE; EV-0112 PARTIAL REVIEWED CAPTU
 
 ### C1-ELEC-2023-001
 
-State: `PARTIAL_REVIEWED_CAPTURE / BLOCKED_FOR_BALLOT_ACCOUNTING_AND_GEOGRAPHY`
+State: `CONFIRMED_SECOND_REVIEW_FOR_VISIBLE_FIELDS / BLOCKED_FOR_BALLOT_ACCOUNTING_AND_GEOGRAPHY`
 
 Available:
 
-- EV-0112 legal agreement exists and now has a page-level partial reviewed capture.
-- EV-0112 visible organization vote rows populate the municipal-results CSV with `PARTIAL_REVIEWED_CAPTURE` status.
+- EV-0112 legal agreement exists and now has an independent rendered-source second review.
+- EV-0112 visible organization vote rows populate the municipal-results CSV with `CONFIRMED_SECOND_REVIEW` status.
 - EV-0111 provides a separate 2026 aggregate electoral-roll reference.
 
 Blocked:
 
-- EV-0112 needs second human review before promotion beyond partial;
 - a separate detailed official ballot-accounting source is not yet authenticated and ingested;
 - official 2023 participation denominator and null/blank vote inputs are not yet authenticated and ingested;
 - official electoral-geography records are not yet authenticated and ingested.
@@ -55,8 +54,8 @@ EV-0106 is a package-distinct alternate copy with equivalent extracted worksheet
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| AC-01 Official provenance for published vote totals | PASS | Vote rows come from EV-0112 page 1 visible official result table |
-| AC-02 EV-0112 status accurate | PASS | EV-0112 is `PARTIAL_REVIEWED_CAPTURE`; second review still required |
+| AC-01 Official provenance for published vote totals | PASS | Vote rows come from EV-0112 page 1 visible official result table and were second-review confirmed |
+| AC-02 EV-0112 status accurate | PASS | EV-0112 visible fields are `CONFIRMED_SECOND_REVIEW`; ballot accounting and geography remain unavailable |
 | AC-03 No inferred result rows | PASS | Results CSV contains only visible EV-0112 organization vote rows |
 | AC-04 Participation formula discipline | PASS | Required numerators and denominators documented; no unsupported calculation |
 | AC-05 Geography crosswalk discipline | PASS | Inventory contains no inferred rows |
@@ -68,9 +67,9 @@ EV-0106 is a package-distinct alternate copy with equivalent extracted worksheet
 
 ## Next executable actions
 
-1. Obtain second human review for EV-0112 capture before promoting the source beyond partial.
-2. Authenticate and ingest the official detailed 2023 municipal result record.
-3. Authenticate and ingest official 2023 polling-center and voting-table records.
+1. Authenticate and ingest the official detailed 2023 ballot-accounting record.
+2. Authenticate and ingest official 2023 polling-center and voting-table records.
+3. Use the local dashboard audit only as a discovery aid for underlying TSE/JED/cartography sources.
 4. Keep official 2023 ballot-accounting and electoral-geography discovery blocked until authoritative sources are authenticated.
 
 ## Political gate status
@@ -86,6 +85,6 @@ The following remain closed:
 
 ## Loop decision
 
-`CONTINUE WITH EV-0112 CONTROLLED CAPTURE; OFFICIAL NUMERICAL AND GEOGRAPHY SOURCES STILL BLOCKED`
+`CONTINUE WITH OFFICIAL BALLOT ACCOUNTING AND ELECTORAL GEOGRAPHY DISCOVERY`
 
-No missing value may be inferred while the blockers remain active.
+No missing value, including the election date field not printed in EV-0112, may be inferred while the blockers remain active.

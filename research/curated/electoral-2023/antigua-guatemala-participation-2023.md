@@ -8,7 +8,7 @@ Status: `PARTIAL_RESULTS_AVAILABLE_BALLOT_ACCOUNTING_BLOCKED`
 
 No participation percentage or ballot-accounting total is published in this artifact because the required official 2023 registered-electorate, ballots-cast, null-vote, blank-vote, and abstention inputs have not yet been authenticated and ingested.
 
-EV-0112 now provides visually reviewed organization vote rows from the legal agreement's result table. These rows support the municipal result table, but they do not by themselves provide a turnout denominator or full ballot accounting.
+EV-0112 now provides second-review-confirmed organization vote rows from the legal agreement's result table. These rows support the municipal result table, but they do not by themselves provide a turnout denominator or full ballot accounting.
 
 ## Required fields
 
@@ -19,7 +19,7 @@ EV-0112 now provides visually reviewed organization vote rows from the legal agr
 | Valid-vote share | Valid votes | Ballots cast or total votes, according to official definition | Not authenticated | Unknown |
 | Null-vote share | Null votes | Ballots cast or total votes, according to official definition | Not authenticated | Unknown |
 | Blank-vote share | Blank votes | Ballots cast or total votes, according to official definition | Not authenticated | Unknown |
-| Organization vote share | Verified organization votes | Verified valid votes | Partial: organization vote rows captured from EV-0112; no printed valid-vote total captured | Unknown |
+| Organization vote share | Verified organization votes | Verified valid votes | Partial: organization vote rows second-review confirmed from EV-0112; no printed valid-vote total captured | Unknown |
 
 ## Calculation policy
 
