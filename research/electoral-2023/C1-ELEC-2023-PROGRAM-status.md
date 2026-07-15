@@ -1,77 +1,99 @@
 # C1-ELEC-2023-PROGRAM — Execution Status
 
-Review date: 2026-07-14  
+Review date: 2026-07-15  
 Program: `C1-ELEC-2023-PROGRAM`  
-Workstreams: `C1-ELEC-2023-001`, `C1-TERR-DQ-001`  
-Overall state: `IN PROGRESS — EV-0112 SECOND REVIEW COMPLETE; BALLOT ACCOUNTING BLOCKED; GEOGRAPHY PARTIAL MUNICIPAL SUMMARY`
+Workstreams: `C1-ELEC-2023-001`, `C1-TERR-DQ-001`, `C1-ELEC-2023-003`
 
-## Completed in this iteration
-
-- Program spec created with functional requirements, artifacts, acceptance criteria, validation, long-loop sequence, and stop conditions.
-- Draft spec PR opened.
-- Separate execution issues opened for electoral evidence and workbook quality.
-- Implementation branch created.
-- Official-source register initialized.
-- Municipal-results CSV schema created with no inferred rows.
-- Participation artifact created with formulas and required inputs documented; no unsupported percentage published.
-- Electoral-geography inventory schema and quality policy created; municipality-level JRV summary ingested; no name-based crosswalk inferred.
-- Initial EV-0105 versus EV-0106 canonical memo created with decision `NO_DECISION`.
+Overall state: `IN PROGRESS — EV-0112 SECOND REVIEW COMPLETE; BALLOT ACCOUNTING PARTIAL; CENTER/JRV GEOGRAPHY RECONCILED`
 
 ## Current workstream states
 
-### C1-ELEC-2023-001
+### Electoral results and legal validation
 
-State: `CONFIRMED_SECOND_REVIEW_FOR_VISIBLE_FIELDS / BLOCKED_FOR_BALLOT_ACCOUNTING / PARTIAL_GEOGRAPHY_MUNICIPAL_SUMMARY`
+State: `CONFIRMED_SECOND_REVIEW_FOR_VISIBLE_FIELDS`
 
 Available:
 
-- EV-0112 legal agreement exists and now has an independent rendered-source second review.
-- EV-0112 visible organization vote rows populate the municipal-results CSV with `CONFIRMED_SECOND_REVIEW` status.
-- EV-0111 provides a separate 2026 aggregate electoral-roll reference.
-- EV-0139 provides an official 2023 municipality-level JRV summary for Antigua Guatemala: 39,099 registered electorate, 100 JRV, JRV range 5,337-5,436, and 18 voting centers.
+- EV-0112 legal agreement independently reviewed against rendered source pages;
+- 14 visible organization-vote rows confirmed;
+- derived visible-row sum: `26,091`;
+- no visible vote row was corrected.
+
+Limit:
+
+- `26,091` is not promoted to ballots cast, printed valid-vote total, turnout, participation, or abstention.
+
+### Official ballot accounting
+
+State: `PARTIAL_RECONCILIATION`
+
+Resolved:
+
+- official 2023 registered electorate: `39,099`, sourced from EV-0139;
+- 14 confirmed visible organization-vote rows;
+- derived visible-row sum: `26,091`.
 
 Blocked:
 
-- a separate detailed official ballot-accounting source is not yet authenticated and ingested;
-- official 2023 participation denominator and null/blank vote inputs are not yet authenticated and ingested;
-- official center-level electoral-geography records, JRV-to-center assignments, and community crosswalks are not yet authenticated and ingested.
+- ballots cast;
+- printed valid-vote total;
+- null votes;
+- blank votes;
+- challenged or other ballot categories;
+- participation rate;
+- abstention rate.
+
+Participation and abstention remain uncalculated because no authenticated official ballots-cast numerator has been ingested.
+
+### Official electoral geography
+
+State: `RECONCILED_CENTER_AND_JRV_LEVEL`
+
+Resolved:
+
+- registered electorate: `39,099`;
+- 18 unique official voting centers;
+- 19 explicit center-assignment records;
+- 100 JRV;
+- continuous JRV range `5,337–5,436` without overlap;
+- center `7` preserved as one identity with two explicit official assignment ranges;
+- 28 explicit official crosswalk rows.
+
+Remaining limitation:
+
+- repeatable OCR of `ELEC23-GEO-SRC-002` remains blocked until the official image bytes are available under `POLITICS_ROOT` or direct download is restored;
+- no crosswalk from official CEM/grouping units to campaign-defined territorial units is authorized without an explicit authoritative relationship.
 
 ### C1-TERR-DQ-001
 
 State: `PASS_WITH_EQUIVALENT_EXTRACTED_CONTENT`
 
-Available:
-
-- EV-0105 pilot extraction and curated seven-community inventory.
-- EV-0106 local source under `POLITICS_ROOT`.
-- EV-0106 manifest and cell-level extraction.
-- EV-0105 versus EV-0106 structure and difference comparison.
-
 Canonical decision: `EV-0105_CANONICAL`.
 
-EV-0106 is a package-distinct alternate copy with equivalent extracted worksheet content. It does not change the curated inventory.
+EV-0106 remains a package-distinct alternate copy with equivalent extracted worksheet content.
 
 ## Acceptance status
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| AC-01 Official provenance for published vote totals | PASS | Vote rows come from EV-0112 page 1 visible official result table and were second-review confirmed |
-| AC-02 EV-0112 status accurate | PASS | EV-0112 visible fields are `CONFIRMED_SECOND_REVIEW`; ballot accounting remains unavailable; geography is partial at municipality-summary level |
-| AC-03 No inferred result rows | PASS | Results CSV contains only visible EV-0112 organization vote rows |
-| AC-04 Participation formula discipline | PASS | Required numerators and denominators documented; no unsupported calculation |
-| AC-05 Geography crosswalk discipline | PASS | Inventory contains one official municipality-level summary row and no inferred center or community rows |
-| AC-06 EV-0106 extraction | PASS | Exact source available locally; manifest and cell-level extraction created |
-| AC-07 Canonical decision evidence-backed | PASS | Decision is `EV-0105_CANONICAL` based on hash, structure, and cell-level comparison |
-| AC-08 Campaign estimates not promoted | PASS | Explicitly excluded from official evidence |
-| AC-09 Privacy and portability | PASS FOR CREATED ARTIFACTS | No personal path or voter record introduced |
-| AC-10 Political gates closed | PASS | No segment, narrative, paid media, mobilization, or territorial priority produced |
+| Official provenance for visible vote rows | PASS | EV-0112 second review |
+| No inferred result rows | PASS | 14 visible rows only |
+| Registered electorate denominator | PASS | EV-0139 = 39,099 |
+| Ballot accounting reconciliation | PARTIAL | Denominator resolved; numerator and categories blocked |
+| Participation formula discipline | PASS | No rate calculated without ballots cast |
+| Center inventory | PASS | 18 unique official centers |
+| JRV assignment | PASS | 100 JRV, continuous range 5,337–5,436 |
+| Crosswalk discipline | PASS | Explicit official relationships only |
+| Campaign estimates not promoted | PASS | Dashboards remain discovery aids |
+| Privacy and portability | PASS FOR CREATED ARTIFACTS | No voter-level PII or personal paths introduced |
+| Political gates closed | PASS | No segment, ranking, narrative, targeting, paid media, or mobilization |
 
 ## Next executable actions
 
-1. Authenticate and ingest the official detailed 2023 ballot-accounting record.
-2. Authenticate and ingest official 2023 polling-center names, addresses, and voting-table assignment records.
-3. Use the local dashboard audit only as a discovery aid for underlying TSE/JED/cartography sources.
-4. Keep official 2023 ballot-accounting blocked and keep electoral-geography crosswalks unresolved until authoritative center-level sources are authenticated.
+1. Authenticate an official Antigua Guatemala 2023 municipal ballot-accounting record containing ballots cast, valid-vote total, null votes, blank votes, or complete accounting categories.
+2. Reconcile the official accounting identity without residual inference.
+3. Calculate participation and abstention only after an official ballots-cast numerator is available.
+4. Reproduce cartography OCR only when `ELEC23-GEO-SRC-002` image bytes become available; this no longer blocks center/JRV geography.
 
 ## Political gate status
 
@@ -81,11 +103,12 @@ The following remain closed:
 - territorial ranking;
 - public narrative;
 - paid-media audience;
+- targeting or microtargeting;
 - field mobilization;
 - public promises or attacks.
 
 ## Loop decision
 
-`CONTINUE WITH OFFICIAL BALLOT ACCOUNTING AND CENTER-LEVEL ELECTORAL GEOGRAPHY DISCOVERY`
+`CONTINUE WITH OFFICIAL BALLOT-ACCOUNTING ACQUISITION; GEOGRAPHY CENTER/JRV WORKSTREAM COMPLETE`
 
-No missing value, including the election date field not printed in EV-0112, may be inferred while the blockers remain active.
+No missing electoral field may be inferred. Registered electorate must not be confused with ballots cast, and `26,091` must remain a derived visible-row sum until an authoritative printed accounting record establishes its exact role.
