@@ -133,7 +133,7 @@ The current evidence does not provide:
 - community-level official electorate;
 - comparable boundary definitions across election years.
 
-EV-0112 cannot close these gaps until its three substantive pages are captured and reviewed, and it may still not contain all required detailed totals.
+EV-0112 now provides a partial reviewed capture of the visible organization vote table and legal-adjudication facts. It still does not close gaps for turnout, abstention, null votes, blank votes, registered electorate, polling centers, voting tables, or electoral-geography crosswalks.
 
 ## Missing Field-Research Evidence
 
@@ -170,14 +170,19 @@ These gaps block field mobilization planning.
 
 ### EV-0105 versus EV-0106
 
-The canonical community workbook decision remains open. EV-0106 must be compared against EV-0105 for:
+EV-0106 was extracted and compared against EV-0105. The files have different binary hashes, but the extracted `Resumen Comparativo` worksheet content is equivalent across:
 
-- row additions or removals;
-- value changes;
-- formula changes;
-- source-date changes;
-- methodology differences;
-- strategic-label changes.
+- sheet names;
+- dimensions;
+- headers;
+- formulas;
+- blank flags;
+- community names;
+- all 40 extracted cells.
+
+Current decision: `EV-0105_CANONICAL`.
+
+This resolves the version ambiguity for the current curated inventory only. It does not validate the methodology behind estimated registered electorate, access labels, or strategic-priority labels.
 
 ### Official versus campaign-research values
 
@@ -208,7 +213,7 @@ The following actions are ranked by decision value and evidence urgency, not by 
 |---:|---|---|---|---|
 | 1 | Obtain official detailed 2023 municipal-election results and electoral-geography documentation | High | High | Establish historical electoral baseline and determine available geographic granularity |
 | 2 | Complete controlled capture of EV-0112 pages 1-3 | Medium-High | High | Confirm legal effect, parties/slates, visible totals, and the document's actual limits |
-| 3 | Compare EV-0105 against EV-0106 | High | High | Select or reject a canonical community workbook without silent merging |
+| 3 | Preserve EV-0105 as canonical and keep EV-0106 as an equivalent alternate copy | Complete for current workbook content | Complete | Version ambiguity resolved for current curated inventory; campaign estimates and priority labels remain non-decision evidence |
 | 4 | Obtain official community/census/electoral geography crosswalk | High | High | Define stable territorial units for later analysis |
 | 5 | Extract and verify EV-0103 and EV-0104 | High | Medium-High | Build a traceable inventory of community needs and qualitative claims |
 | 6 | Normalize selected EV-0114 validated tables at row level | Medium | Medium | Produce usable official planning indicators with exact page and cell provenance |

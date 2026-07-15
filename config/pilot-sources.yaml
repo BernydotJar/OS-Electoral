@@ -51,6 +51,23 @@ sources:
       - "Campaign research source; community claims need human verification before prioritization."
       - "Workbook formulas may not expose cached calculated values."
 
+  - evidence_id: EV-0106
+    source_title: "Fichas comunitarias Antigua alternate workbook"
+    source_type: xlsx
+    collection: rag_territorio
+    output_collection: territorio
+    evidence_class: campaign_research
+    review_status_before: needs_verification
+    source_date: "unknown"
+    territory: "Antigua Guatemala communities"
+    language: es
+    version_relationship: duplicate_candidate
+    contains_personal_data: false
+    relative_path: "07_Fichas_Comunitarias/Fichas Comunitarias/Fichas_Comunitarias_Antigua.xlsx"
+    limitations:
+      - "Alternate or duplicate candidate workbook; canonical relationship to EV-0105 must be determined by structure and value comparison."
+      - "Campaign research source; estimated electoral values and priority labels are not official electoral evidence."
+
   - evidence_id: EV-0114
     source_title: "Plan de Desarrollo Municipal y Ordenamiento Territorial - Antigua Guatemala"
     source_type: pdf
