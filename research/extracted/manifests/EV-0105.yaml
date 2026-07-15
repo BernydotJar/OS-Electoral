@@ -1,0 +1,33 @@
+evidence_id: EV-0105
+source_path: /Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/2025-10-10__Territorio__Fichas_Comunitarias_Antigua__v01.xlsx
+source_title: Fichas comunitarias Antigua
+source_type: xlsx
+collection: rag_territorio
+source_class: campaign_research
+review_status_before: needs_extraction
+extracted_at: '2026-07-14T17:57:06Z'
+extractor: evidence-pilot-v1
+source_date: '2025-10-10'
+territory: Antigua Guatemala communities
+language: es
+page_count: null
+sheet_names:
+- Resumen Comparativo
+content_hash: sha256:e5bccbacfdae326d7924fb664848fc447e53f551067c8f7b9ef38a2858f6905b
+version_relationship: canonical
+contains_personal_data: false
+extraction_status: complete
+limitations:
+- Campaign research source; community claims need human verification before prioritization.
+- Workbook formulas may not expose cached calculated values.
+outputs:
+- research/extracted/territorio/EV-0105.sheet-Resumen-Comparativo.csv
+- research/extracted/territorio/EV-0105.md
+empty_pages: []
+possible_scanned_pages: []
+table_count: 0
+row_count: 8
+blank_cell_count: 0
+pii_redactions: 0
+warnings: []
+errors: []

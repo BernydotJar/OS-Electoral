@@ -1,0 +1,42 @@
+evidence_id: EV-0112
+source_path: /Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ACUERDO
+  1-2023 Declarar la validez de la elección de la Corporación Municipal de ANTIGUA
+  GUATEMALA, del Departamento de Sacatepéquez..pdf
+source_title: Acuerdo 1-2023 de validez de eleccion municipal Antigua Guatemala
+source_type: pdf
+collection: rag_territorio
+source_class: official_source
+review_status_before: needs_extraction
+extracted_at: '2026-07-14T17:57:06Z'
+extractor: evidence-pilot-v1
+source_date: '2023'
+territory: Antigua Guatemala
+language: es
+page_count: 3
+sheet_names: []
+content_hash: sha256:8e64eeff89da9c461a443de3e728195f88dded3ac6dd06b31ebd96a5b3d5887b
+version_relationship: canonical
+contains_personal_data: false
+extraction_status: partial
+limitations:
+- The document validates the election result but may not contain detailed vote totals
+  by table.
+- Some pages had no extractable text and may require OCR.
+outputs:
+- research/extracted/territorio/EV-0112.md
+- research/extracted/territorio/EV-0112.tables.csv
+empty_pages:
+- 1
+- 2
+- 3
+possible_scanned_pages:
+- 1
+- 2
+- 3
+table_count: 0
+row_count: 0
+blank_cell_count: 0
+pii_redactions: 0
+warnings:
+- 3 pages had no extractable text and may require OCR
+errors: []
