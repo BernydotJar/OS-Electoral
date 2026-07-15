@@ -1,0 +1,16 @@
+comparison_area,metric,value_0105,value_0106,match_status,review_note
+workbook,content_hash,sha256:e5bccbacfdae326d7924fb664848fc447e53f551067c8f7b9ef38a2858f6905b,sha256:2a4c5a5cccf185829fa0bc30b7e0cb73b800879384b0403592bf42b4c50bbf98,DIFFERENT,Different package hashes; cell-level comparison required and performed.
+workbook,sheet_names,Resumen Comparativo,Resumen Comparativo,MATCH,
+workbook,sheet_count,1,1,MATCH,
+workbook,row_count_manifest,8,8,MATCH,
+workbook,blank_cell_count_manifest,0,0,MATCH,
+workbook,pii_redactions,0,0,MATCH,
+sheet:Resumen Comparativo,max_row,8,8,MATCH,
+sheet:Resumen Comparativo,max_col,5,5,MATCH,
+sheet:Resumen Comparativo,headers,Aldea/Barrio|Población (INE 2018)|Empadronados Est. (2023)|Nivel de Acceso|Prioridad Estratégica,Aldea/Barrio|Población (INE 2018)|Empadronados Est. (2023)|Nivel de Acceso|Prioridad Estratégica,MATCH,
+sheet:Resumen Comparativo,formula_count,0,0,MATCH,
+sheet:Resumen Comparativo,blank_count,0,0,MATCH,
+sheet:Resumen Comparativo,cell_count,40,40,MATCH,
+sheet:Resumen Comparativo,blank_rate,0.0000,0.0000,MATCH,
+sheet:Resumen Comparativo,community_count,7,7,MATCH,
+sheet:Resumen Comparativo,communities,San Felipe de Jesús|San Juan del Obispo|San Bartolomé Becerra|Santa Ana|Santa Inés Monte Pulciano|Santa Catarina Bobadilla|San Pedro Las Huertas,San Felipe de Jesús|San Juan del Obispo|San Bartolomé Becerra|Santa Ana|Santa Inés Monte Pulciano|Santa Catarina Bobadilla|San Pedro Las Huertas,MATCH,

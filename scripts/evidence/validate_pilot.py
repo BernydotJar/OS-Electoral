@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import os
 import re
 from pathlib import Path
 from typing import Any
@@ -12,7 +13,7 @@ from typing import Any
 import yaml
 
 
-EXPECTED_IDS = {"EV-0111", "EV-0112", "EV-0105", "EV-0114"}
+EXPECTED_IDS = {"EV-0111", "EV-0112", "EV-0105", "EV-0106", "EV-0114"}
 HASH_RE = re.compile(r"^sha256:[a-f0-9]{64}$")
 PII_RE = re.compile(
     r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|(?<!\d)\+?502[\s.-]?\d{4}[\s.-]?\d{4}(?!\d)|(?i:\b(?:tel(?:efo(?:no)?)?|telefono|cel(?:ular)?|whatsapp)\s*[:#-]?\s*\d{4}[\s.-]?\d{4}\b)|(?i:\b(?:dpi|cui)\s*[:#-]?\s*(?:\d[\s-]?){13}\b)"
@@ -81,6 +82,11 @@ def read_yaml(path: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise ValueError(f"{path} is not a YAML mapping")
     return data
+
+
+def recorded_path_exists(value: Any) -> bool:
+    path_text = os.path.expandvars(str(value))
+    return Path(path_text).exists()
 
 
 def scan_for_pii(path: Path) -> list[str]:
@@ -154,8 +160,8 @@ def validate_manifest(path: Path, input_dir: Path) -> tuple[str | None, list[str
     if not HASH_RE.match(content_hash):
         errors.append(f"{path} has invalid content_hash")
 
-    source_path = Path(str(manifest.get("source_path", "")))
-    if not source_path.exists():
+    source_path = manifest.get("source_path", "")
+    if not recorded_path_exists(source_path):
         errors.append(f"{path} source_path does not exist: {source_path}")
 
     limitations = manifest.get("limitations")
@@ -215,8 +221,8 @@ def main() -> int:
 
     manifest_paths = sorted(manifests_dir.glob("EV-*.yaml"))
     found_ids: set[str] = set()
-    if len(manifest_paths) != 4:
-        errors.append(f"expected 4 manifests, found {len(manifest_paths)}")
+    if len(manifest_paths) != len(EXPECTED_IDS):
+        errors.append(f"expected {len(EXPECTED_IDS)} manifests, found {len(manifest_paths)}")
 
     for manifest_path in manifest_paths:
         evidence_id, manifest_errors = validate_manifest(manifest_path, input_dir)

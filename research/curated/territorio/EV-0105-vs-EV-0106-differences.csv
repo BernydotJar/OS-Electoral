@@ -1,0 +1,2 @@
+comparison_key,community_original_0105,community_original_0106,normalized_community,field,value_0105,value_0106,difference_type,source_row_0105,source_row_0106,review_status,reviewer_note
+ALL_COMPARED_CELLS,,,,"header,value,formula,is_blank",MATCH_FOR_ALL_40_EXTRACTED_CELLS,MATCH_FOR_ALL_40_EXTRACTED_CELLS,NO_CELL_VALUE_DIFFERENCE,1-8,1-8,PASS,"Cell-level extraction values, formulas, blank flags, headers, communities, and source rows match. Binary hashes differ, so the files are package-distinct copies with equivalent extracted worksheet content."
