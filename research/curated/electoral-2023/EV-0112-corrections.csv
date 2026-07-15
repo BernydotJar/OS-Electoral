@@ -1,3 +1,28 @@
 field_group,page,record_key,previous_value,reviewed_value,change_type,review_status,review_note
 vote_row,1,COD-108,COMITE CIVICO FUTURO | 6543,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
-vote_row,1,COD-23,TODOS | 5850,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page
+vote_row,1,COD-23,TODOS | 5850,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-35,"VOLUNTAD, OPORTUNIDAD Y SOLIDARIDAD | 5645",,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-38,MOVIMIENTO SEMILLA | 1712,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-33,CABAL | 1566,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-36,VAMOS POR UNA GUATEMALA DIFERENTE | 1210,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-12,MI FAMILIA | 989,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-27,MOVIMIENTO PARA LA LIBERACION DE LOS PUEBLOS | 837,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-32,PARTIDO AZUL | 484,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-15,UNIDAD NACIONAL DE LA ESPERANZA | 360,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-19,MOVIMIENTO POLITICO WINAQ | 353,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-18,VICTORIA | 236,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-17,VISION CON VALORES | 229,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+vote_row,1,COD-31,CAMBIO | 77,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,First-review value retained unchanged; original page image is unavailable for independent visual confirmation.
+document_identity,1,agreement_number,ACUERDO NUMERO 01-2023,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires visual confirmation against page 1.
+document_identity,1,issuing_authority,LA JUNTA ELECTORAL DEPARTAMENTAL DE SACATEPEQUEZ,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,"Requires visual confirmation, including accents and exact capitalization."
+document_identity,1,municipality,Antigua Guatemala,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires visual confirmation against legal context.
+election_context,1,election_date,2023-06-25,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Date appears in the structured results dataset but must be independently tied to the agreement.
+legal_effect,1,electoral_system_context,Majority system for mayor/syndics and proportional representation for council seats,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires page 1 visual review.
+operative_articles,2,article_1_validity,Declares validity of the Antigua Guatemala municipal corporation election,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires visual confirmation against Article 1.
+operative_articles,2,article_2_mayor,JUAN MANUEL ASTURIAS SUEIRAS | COMITE CIVICO FUTURO | 6543 valid votes,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires independent review of exact spelling and vote wording.
+elected_offices,2,corporation_members,14 elected-office rows recorded in first review,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Each office and name must be checked against page 2 before promotion.
+term_and_effect,3,term_length,Four years,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires visual confirmation against Article 4.
+term_and_effect,3,possession_date,QUINCE DE ENERO DE DOS MIL VEINTICUATRO,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires visual confirmation and normalized date review.
+term_and_effect,3,entry_into_force,Once firm and after notification to participating political organizations,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires visual confirmation against Article 5.
+document_date,3,agreement_date,veinte de julio de dos mil veintitres,,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Requires visual confirmation.
+signatories,3,signing_officials,"Presidente, Secretario, Vocal names recorded in first review",,UNRESOLVED,BLOCKED_SOURCE_UNAVAILABLE,Signature area was noisy in first OCR and requires direct visual review.
