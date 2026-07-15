@@ -3,7 +3,7 @@
 Program: `C1-ELEC-2023-001`  
 Review date: 2026-07-15  
 Territory: Antigua Guatemala, Sacatepequez  
-Status: EV-0112 visible fields confirmed; electoral geography reconciled at center/JRV level; ballot accounting partial with preliminary TREP conflict documented
+Status: EV-0112 visible fields confirmed; electoral geography reconciled at center/JRV level; ballot accounting partial with preliminary TREP missing acta identified
 
 ## Source authority rule
 
@@ -24,6 +24,8 @@ Secondary pages, news reports, campaign posts, encyclopedias, social media, and 
 | ELEC23-SRC-008 | EV-0141 | Tribunal Supremo Electoral | Listado de Circunscripciones Electorales Municipales | Official PDF | `electoral-geography-source-audit.csv` | Antigua Guatemala | Four CEM identities | `OFFICIAL_SOURCE_AUTHENTICATED_AND_VISUALLY_REVIEWED` | CEM labels are not voting-center identities |
 | ELEC23-SRC-009 | EV-0142 | Tribunal Supremo Electoral | Centros de Votación 2023 por Agrupación — primera vuelta | Official PDF | `electoral-geography-source-audit.csv` | Antigua Guatemala | 18 center identities; locations; 19 assignment records; 100 JRV; 39,099 registered; explicit grouping/CEM labels | `OFFICIAL_SOURCE_AUTHENTICATED_AND_INGESTED` | Center 7 has two explicit assignment records and is deduplicated only in the identity inventory |
 | ELEC23-SRC-010 | EV-0143 | Tribunal Supremo Electoral | TREP primera elección 2023 `tc4` Corporación Municipal | Official preliminary JSON | `trep-preliminary-ballot-accounting-audit.csv` | Antigua Guatemala municipal corporation | Preliminary emitted, valid-like, null, blank, registered-electorate, and acta-count fields | `PRELIMINARY_CONFLICT_NOT_PROMOTED` | Preliminary record has 99 counted actas and conflicts with final EV-0112 visible-row sum; not used for final accounting fields |
+| ELEC23-SRC-011 | EV-0144 | Tribunal Supremo Electoral | TREP primera elección 2023 aggregate snapshot | Official preliminary JSON | `final-ballot-source-audit.csv` | Antigua Guatemala municipal corporation | Authenticated cut metadata, aggregate hashes, and `tc4/e2/m1` identity | `PRELIMINARY_CONFLICT_NOT_PROMOTED` | Supports reproducibility of the preliminary conflict only; not final ballot accounting |
+| ELEC23-SRC-012 | EV-0145 | Tribunal Supremo Electoral | TREP primera elección 2023 Sacatepéquez department detail | Official preliminary JSON | `final-ballot-source-audit.csv`; `missing-trep-acta-investigation-2023.csv` | Antigua Guatemala mesa records | Identifies mesa `5401`, seccion `538`, as the only `status=1` non-counted preliminary TREP mesa | `PRELIMINARY_ACTA_STATUS_AUTHENTICATED` | Identifies the missing TREP mesa; does not establish final vote values or final accounting categories |
 
 ## Geography decision
 
@@ -44,5 +46,7 @@ Confirmed crosswalks are limited to relationships explicitly printed by TSE: cen
 `OFFICIAL_BALLOT_ACCOUNTING: PARTIAL_RECONCILIATION`
 
 `PRELIMINARY_TREP_ACCOUNTING: CONFLICT_DOCUMENTED_NOT_PROMOTED`
+
+`TREP_MISSING_ACTA: IDENTIFIED_OFFICIAL_PRELIMINARY_STATUS`
 
 Political gates remain closed.
