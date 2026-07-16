@@ -10,9 +10,13 @@
     if (!teamGrid) return;
     [...teamGrid.querySelectorAll(":scope > .department-card")].forEach((button) => {
       button.removeAttribute("role");
+      button.style.width = "100%";
+      button.style.height = "100%";
       const wrapper = document.createElement("div");
       wrapper.className = "department-item";
       wrapper.setAttribute("role", "listitem");
+      wrapper.style.minWidth = "0";
+      wrapper.style.height = "100%";
       button.before(wrapper);
       wrapper.append(button);
     });
