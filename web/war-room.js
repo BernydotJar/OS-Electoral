@@ -10,14 +10,29 @@
   let snapshot = null;
   let detailInvoker = null;
 
+  const ENTITIES = {
+    amp: String.fromCharCode(38, 97, 109, 112, 59),
+    lt: String.fromCharCode(38, 108, 116, 59),
+    gt: String.fromCharCode(38, 103, 116, 59),
+    quot: String.fromCharCode(38, 113, 117, 111, 116, 59),
+    apos: String.fromCharCode(38, 35, 48, 51, 57, 59)
+  };
+
   const escapeHtml = (value) => String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll(String.fromCharCode(38), ENTITIES.amp)
+    .replaceAll("<", ENTITIES.lt)
+    .replaceAll(">", ENTITIES.gt)
+    .replaceAll('"', ENTITIES.quot)
+    .replaceAll("'", ENTITIES.apos);
 
   const listHtml = (items) => items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+
+  function focusAfterPaint(element) {
+    if (!element) return;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => element.focus({ preventScroll: true }));
+    });
+  }
 
   function renderPipeline(items) {
     document.querySelector("#warPipeline").innerHTML = items.map((item, index) => `
@@ -109,7 +124,7 @@
     const dialog = document.querySelector("#warDetailDialog");
     dialog.hidden = false;
     document.body.classList.add("drawer-open");
-    document.querySelector("#warDetailClose").focus();
+    focusAfterPaint(document.querySelector("#warDetailClose"));
   }
 
   function closeSignal() {
@@ -117,8 +132,9 @@
     if (dialog.hidden) return;
     dialog.hidden = true;
     document.body.classList.remove("drawer-open");
-    detailInvoker?.focus();
+    const invoker = detailInvoker;
     detailInvoker = null;
+    focusAfterPaint(invoker);
   }
 
   function trapFocus(event) {
