@@ -1,120 +1,76 @@
 # C1-FRONT-002-V1 — Runtime Validation and Visual Review
 
-Status: `PARTIAL_WITH_DOCUMENTED_ENVIRONMENT_BLOCKER`
+Status: `LOCAL_RUNTIME_REVIEW_IN_PROGRESS`
 
-Base commit: `d13b67591ba3f07e71eff18094d0b0901ce71af9`  
-Working branch: `agent/c1-front-002-v1-runtime-validation`  
-Tracking issue: `#28`  
-Draft PR: `#29`
+Base commit: `bb27a1574423cfc99e527ff366929529ee65d3bd`
+Working branch: `agent/c1-front-002-v1-r1-resolve-runtime-findings`
+Tracking issue: `#30`
 
 ## Objective
 
-Execute the browser, accessibility, responsive and visual review that remained blocked when C1-FRONT-002 was merged.
+Complete the browser, accessibility, responsive and visual review after PR #29 merged.
 
-## Static review findings
+## Verified local evidence
 
-Three accessibility risks were identified before runtime execution:
+The human operator executed the merged validation branch locally and reported:
 
-1. native department buttons used `role="listitem"`, overriding their button semantics;
-2. the drawer backdrop could enter the keyboard focus cycle;
-3. module headings were focused programmatically without explicit programmatic focus targets.
+- `python3 scripts/frontend/validate_evidence_control_room.py`: PASS;
+- `python3 scripts/frontend/validate_campaign_team_command_center.py`: PASS;
+- `git diff --check origin/main...HEAD`: FAIL because this report contained trailing whitespace on three metadata lines;
+- `runtime_visual_review.py`: BLOCKED because Python Playwright was not installed in the active environment;
+- `python3 -m http.server 4173 --directory web`: port 4173 was already in use, which indicates an existing local process.
 
-## Fixes implemented
+No Chromium result or screenshot is marked PASS from those logs.
 
-- department buttons retain native button semantics;
-- semantic `role="listitem"` wrappers are added around rendered cards;
-- drawer backdrop is excluded from sequential keyboard focus;
-- Team and Evidence headings use `tabindex="-1"` for programmatic focus;
-- the fail-closed validator now requires these accessibility behaviors.
+## Findings resolved in R1
 
-## Automated runtime review
+1. Trailing whitespace was removed from this report.
+2. Runtime dependency is declared in `scripts/frontend/requirements-runtime.txt`.
+3. Missing Playwright now returns concise installation instructions instead of a raw traceback.
+4. The runner checks whether `CAMPAIGNOS_URL` is already healthy and reuses the existing server.
+5. When the URL is an unavailable localhost endpoint, the runner starts and later stops its own static server.
+6. Server startup failures point to the generated server log.
 
-Workflow:
+## Reproducible local execution
 
-`.github/workflows/c1-front-002-v1.yml`
+Activate the project environment, then run:
 
-Browser suite:
+```bash
+python3 -m pip install -r scripts/frontend/requirements-runtime.txt
+python3 -m playwright install chromium
 
-`scripts/frontend/runtime_visual_review.py`
+python3 scripts/frontend/validate_evidence_control_room.py
+python3 scripts/frontend/validate_campaign_team_command_center.py
+git diff --check origin/main...HEAD
 
-The suite verifies:
+CAMPAIGNOS_ARTIFACT_DIR=artifacts/c1-front-002-v1 \
+python3 scripts/frontend/runtime_visual_review.py
+```
 
-- desktop viewport `1440x1000`;
-- mobile viewport `390x844`;
-- candidate and AI Chief of Staff hierarchy;
-- ten department buttons inside ten semantic list items;
-- no role override on native buttons;
-- drawer opening, focus trap, Escape close and focus return;
-- backdrop removal from keyboard tab order;
-- Team/Evidence module switching and heading focus;
-- reduced-motion behavior;
-- page-level horizontal overflow;
-- Chromium page scale at 200%;
-- unexpected console and page errors.
+The runner will reuse a healthy server at `http://127.0.0.1:4173`. If none exists, it will start a temporary server automatically.
 
 ## Expected artifacts
 
-The workflow is configured to upload `c1-front-002-v1-visual-review` containing:
-
-- `desktop-team.png`;
-- `desktop-drawer.png`;
-- `desktop-evidence.png`;
-- `mobile-team.png`;
-- `mobile-drawer.png`;
-- `runtime-review.json`;
-- `server.log`.
-
-## Validation commands
-
-```bash
-python3 scripts/frontend/validate_evidence_control_room.py
-python3 scripts/frontend/validate_campaign_team_command_center.py
-python3 scripts/frontend/runtime_visual_review.py
-git diff --check origin/main...HEAD
+```text
+artifacts/c1-front-002-v1/
+├── desktop-team.png
+├── desktop-drawer.png
+├── desktop-evidence.png
+├── mobile-team.png
+├── mobile-drawer.png
+├── runtime-review.json
+└── server.log        # present when the runner starts the server
 ```
 
-## Execution attempts
+## Completion rule
 
-### Local container
+Change this report to `COMPLETED` only when:
 
-- Git, Python, Chromium and Python Playwright are installed.
-- No repository checkout existed.
-- A clean clone from GitHub was attempted.
-- The container cannot resolve or connect to `github.com` or `raw.githubusercontent.com`.
-- Therefore the exact branch could not be executed locally without manually reconstructing repository files, which would not constitute trustworthy validation of the committed tree.
-
-### GitHub Actions
-
-- draft PR #29 was opened with the workflow already present;
-- the PR `opened` event produced no workflow run or status check;
-- an additional synchronization commit was pushed;
-- the `synchronize` event also produced no workflow run or status check;
-- the temporary trigger artifact was removed afterward;
-- no CI result or screenshot is marked PASS.
-
-This behavior is consistent with GitHub Actions being disabled, restricted, awaiting workflow approval, or unavailable for this repository context. The repository settings must be checked by a human with access to the Actions UI.
-
-## Current verified state
-
-- PR #27 merge was authenticated;
-- branch is based exactly on merge commit `d13b6759...`;
-- branch is ahead of `main` and not behind;
-- accessibility fixes, validator, browser suite and workflow are committed;
-- no electoral evidence or campaign snapshots changed;
-- runtime execution and screenshots remain blocked.
-
-## Blocker
-
-`BLOCKED: no executable copy of the committed branch and no GitHub Actions run.`
-
-## Exact resume condition
-
-Resume when either condition is true:
-
-1. GitHub Actions is enabled/approved and workflow `C1-FRONT-002-V1 Runtime Visual Review` can run on PR #29; or
-2. a local checkout of `agent/c1-front-002-v1-runtime-validation` is available in an environment with Python Playwright and Chromium.
-
-Then execute the validation commands above, inspect the artifact screenshots, fix any failure, and rerun until PASS.
+1. both Python validators pass;
+2. `git diff --check origin/main...HEAD` passes;
+3. the Chromium runtime suite passes;
+4. screenshot artifacts are present and visually inspected;
+5. any discovered runtime defect is fixed and revalidated.
 
 ## Safety
 
@@ -122,14 +78,4 @@ Then execute the validation commands above, inspect the artifact screenshots, fi
 - no campaign data snapshot was changed;
 - no political gate was opened;
 - no targeting, scoring, messaging, publishing, spending or mobilization capability was added;
-- no merge or deployment is authorized by this increment.
-
-## Completion rule
-
-Change this report to `COMPLETED` only when:
-
-1. both Python validators pass;
-2. diff whitespace validation passes;
-3. the Chromium runtime suite passes;
-4. screenshot artifacts are present;
-5. any discovered defect is fixed and revalidated.
+- no deployment is authorized by this increment.

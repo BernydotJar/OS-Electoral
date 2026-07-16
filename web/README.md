@@ -48,33 +48,50 @@ This frontend does not:
 python3 -m http.server 4173 --directory web
 ```
 
-Open:
-
-```text
-http://localhost:4173
-```
+Open `http://localhost:4173`.
 
 A local HTTP server is required because the app loads local JSON snapshots with `fetch`.
 
-## Validate
+## Static validation
 
 ```bash
 python3 scripts/frontend/validate_evidence_control_room.py
 python3 scripts/frontend/validate_campaign_team_command_center.py
-git diff --check
+git diff --check origin/main...HEAD
 ```
 
-The command-center validator checks:
+## Runtime and visual review
 
-- exactly ten departments;
-- required fields and allowed states;
-- candidate human authority;
-- AI coordination-only authority;
-- closed political gates;
-- team/evidence module hooks;
-- accessible drawer behavior hooks;
-- reduced-motion and view-transition hooks;
-- absence of personal paths, voter scoring fields and runtime dependency on global skills.
+Inside the project virtual environment:
+
+```bash
+python3 -m pip install -r scripts/frontend/requirements-runtime.txt
+python3 -m playwright install chromium
+
+CAMPAIGNOS_ARTIFACT_DIR=artifacts/c1-front-002-v1 \
+python3 scripts/frontend/runtime_visual_review.py
+```
+
+The runner first checks `CAMPAIGNOS_URL`, which defaults to `http://127.0.0.1:4173`.
+
+- If a healthy CampaignOS server is already running, it is reused.
+- If no server is running and the URL is local, the runner starts and stops a temporary static server.
+- If Playwright is absent, the runner prints the exact installation commands rather than a Python traceback.
+
+Expected outputs:
+
+```text
+artifacts/c1-front-002-v1/
+├── desktop-team.png
+├── desktop-drawer.png
+├── desktop-evidence.png
+├── mobile-team.png
+├── mobile-drawer.png
+├── runtime-review.json
+└── server.log
+```
+
+`server.log` is generated when the runner starts the local server itself.
 
 ## Design capability
 
