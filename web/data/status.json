@@ -1,0 +1,177 @@
+{
+  "version": "c1-front-001.1",
+  "snapshotDate": "2026-07-16",
+  "progressPercent": 88,
+  "overallSummary": "La segunda revisión de resultados y la geografía electoral a nivel de centros/JRV están completas. La contabilidad final permanece parcial porque falta un Documento No. 4, consolidado definitivo o resolución oficial para la JRV 5401.",
+  "metrics": [
+    {
+      "label": "Empadronados 2023",
+      "value": "39,099",
+      "note": "Padrón oficial municipal usado únicamente como denominador potencial.",
+      "evidence": "OFFICIAL",
+      "source": "EV-0139"
+    },
+    {
+      "label": "Votos visibles confirmados",
+      "value": "26,091",
+      "note": "Suma derivada de 14 filas visibles de EV-0112; no equivale automáticamente a boletas emitidas.",
+      "evidence": "DERIVED",
+      "source": "EV-0112"
+    },
+    {
+      "label": "Centros oficiales",
+      "value": "18",
+      "note": "Identidades oficiales únicas de centros de votación.",
+      "evidence": "OFFICIAL",
+      "source": "EV-0142"
+    },
+    {
+      "label": "JRV reconciliadas",
+      "value": "100",
+      "note": "Rango continuo 5,337–5,436 sin solapes; 19 registros de asignación.",
+      "evidence": "OFFICIAL",
+      "source": "EV-0142"
+    },
+    {
+      "label": "TREP válido-like",
+      "value": "25,827",
+      "note": "Valor preliminar con 99 de 100 actas contabilizadas; no promovido.",
+      "evidence": "PRELIMINARY",
+      "source": "EV-0144"
+    },
+    {
+      "label": "Diferencia documentada",
+      "value": "264",
+      "note": "Diferencia entre EV-0112 visible y TREP preliminar; no atribuida automáticamente a la JRV 5401.",
+      "evidence": "DERIVED",
+      "source": "Reconciliation"
+    },
+    {
+      "label": "Mesa pendiente TREP",
+      "value": "5401",
+      "note": "Sección 538; status 1; observación oficial preliminar: Acta ilegible.",
+      "evidence": "PRELIMINARY",
+      "source": "EV-0145"
+    },
+    {
+      "label": "Crosswalks explícitos",
+      "value": "28",
+      "note": "Relaciones impresas oficialmente; no incluyen priorización ni apoyo político.",
+      "evidence": "OFFICIAL",
+      "source": "C1-ELEC-2023-003"
+    }
+  ],
+  "workstreams": [
+    {
+      "name": "EV-0112 second review",
+      "status": "PASS",
+      "detail": "14 filas visibles confirmadas; 26 campos confirmados y 1 campo no presente."
+    },
+    {
+      "name": "Geografía electoral",
+      "status": "PASS",
+      "detail": "18 centros, 100 JRV y relaciones oficiales explícitas reconciliadas."
+    },
+    {
+      "name": "Contabilidad final",
+      "status": "PARTIAL",
+      "detail": "JRV 5401 identificada; falta Documento No. 4 o consolidado definitivo."
+    },
+    {
+      "name": "Cartografía OCR",
+      "status": "RESEARCH",
+      "detail": "Pendiente de bytes oficiales bajo POLITICS_ROOT; no bloquea centros/JRV."
+    },
+    {
+      "name": "Frontend control room",
+      "status": "RESEARCH",
+      "detail": "Primera interfaz read-only en construcción."
+    }
+  ],
+  "gates": [
+    "Priority segment",
+    "Territorial ranking",
+    "Public narrative",
+    "Paid-media audience",
+    "Targeting / microtargeting",
+    "Field mobilization",
+    "Public promises or attacks"
+  ],
+  "blockers": [
+    {
+      "title": "Contabilidad municipal definitiva",
+      "detail": "Obtener Documento No. 4, consolidado final TSE/JED o resolución competente para la Corporación Municipal de Antigua Guatemala 2023."
+    },
+    {
+      "title": "Tratamiento final de la JRV 5401",
+      "detail": "Necesita una fuente definitiva que explique su inclusión, corrección, recuento o adjudicación; no se transcribe la imagen preliminar ilegible."
+    },
+    {
+      "title": "Participación y abstención",
+      "detail": "No pueden calcularse hasta contar con un numerador oficial definitivo de boletas emitidas."
+    }
+  ],
+  "sources": [
+    {
+      "id": "EV-0112",
+      "name": "Acuerdo Número 01-2023",
+      "status": "CONFIRMED_VISIBLE_FIELDS"
+    },
+    {
+      "id": "EV-0139",
+      "name": "Juntas Receptoras de Votos por Municipio",
+      "status": "OFFICIAL_AUTHENTICATED"
+    },
+    {
+      "id": "EV-0142",
+      "name": "Centros de Votación 2023 por Agrupación",
+      "status": "OFFICIAL_INGESTED"
+    },
+    {
+      "id": "EV-0144",
+      "name": "TREP aggregate snapshot",
+      "status": "PRELIMINARY_CONFLICT_NOT_PROMOTED"
+    },
+    {
+      "id": "EV-0145",
+      "name": "TREP Sacatepéquez department detail",
+      "status": "PRELIMINARY_ACTA_STATUS_AUTHENTICATED"
+    }
+  ],
+  "reconciliation": [
+    {
+      "record": "EV-0112 visible organization sum",
+      "value": "26,091",
+      "class": "Definitive visible fields",
+      "decision": "Retained as derived visible-row sum"
+    },
+    {
+      "record": "TREP preliminary valid-like",
+      "value": "25,827",
+      "class": "Preliminary / 99 counted",
+      "decision": "Not promoted"
+    },
+    {
+      "record": "Difference",
+      "value": "264",
+      "class": "Derived comparison",
+      "decision": "Bounded but unexplained"
+    },
+    {
+      "record": "JRV 5401",
+      "value": "Status 1",
+      "class": "Preliminary acta status",
+      "decision": "Identified; final treatment unresolved"
+    }
+  ],
+  "policies": [
+    "No selecciona segmentos electorales",
+    "No genera ranking territorial",
+    "No produce narrativa política",
+    "No define audiencias de pauta",
+    "No ejecuta targeting o microtargeting",
+    "No activa movilización de campo",
+    "No convierte datos preliminares en resultados definitivos",
+    "No expone datos personales de votantes, fiscales o integrantes de mesa"
+  ]
+}

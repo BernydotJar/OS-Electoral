@@ -1,0 +1,35 @@
+evidence_id: EV-0106
+source_path: ${POLITICS_ROOT}/07_Fichas_Comunitarias/Fichas Comunitarias/Fichas_Comunitarias_Antigua.xlsx
+source_title: Fichas comunitarias Antigua alternate workbook
+source_type: xlsx
+collection: rag_territorio
+source_class: campaign_research
+review_status_before: needs_verification
+extracted_at: '2026-07-15T04:55:19Z'
+extractor: evidence-pilot-v1
+source_date: unknown
+territory: Antigua Guatemala communities
+language: es
+page_count: null
+sheet_names:
+- Resumen Comparativo
+content_hash: sha256:2a4c5a5cccf185829fa0bc30b7e0cb73b800879384b0403592bf42b4c50bbf98
+version_relationship: duplicate_candidate
+contains_personal_data: false
+extraction_status: complete
+limitations:
+- Alternate or duplicate candidate workbook; canonical relationship to EV-0105 must
+  be determined by structure and value comparison.
+- Campaign research source; estimated electoral values and priority labels are not
+  official electoral evidence.
+outputs:
+- research/extracted/territorio/EV-0106.sheet-Resumen-Comparativo.csv
+- research/extracted/territorio/EV-0106.md
+empty_pages: []
+possible_scanned_pages: []
+table_count: 0
+row_count: 8
+blank_cell_count: 0
+pii_redactions: 0
+warnings: []
+errors: []

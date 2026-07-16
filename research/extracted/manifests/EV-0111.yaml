@@ -1,0 +1,33 @@
+evidence_id: EV-0111
+source_path: /Users/eduardosacahui/Documents/Politics/07_Fichas_Comunitarias/ESTADISTICAS
+  DEL PADRON ELECTORAL POR DEPARTAMENTO Y MUNICIPIO AL 30 DE ABRIL DEL 2026.pdf
+source_title: Estadisticas del padron electoral al 30 de abril de 2026
+source_type: pdf
+collection: rag_territorio
+source_class: official_source
+review_status_before: needs_extraction
+extracted_at: '2026-07-14T17:57:06Z'
+extractor: evidence-pilot-v1
+source_date: '2026-04-30'
+territory: Sacatepequez / Antigua Guatemala
+language: es
+page_count: 28
+sheet_names: []
+content_hash: sha256:75aefa648ce62b74c98cebbd54f0a1d028c141289df8b66dfd45c76c2a5a0696
+version_relationship: canonical
+contains_personal_data: false
+extraction_status: complete
+limitations:
+- The document describes registered electorate, not voting intention.
+- Detailed historical vote totals are not included.
+outputs:
+- research/extracted/territorio/EV-0111.md
+- research/extracted/territorio/EV-0111.tables.csv
+empty_pages: []
+possible_scanned_pages: []
+table_count: 0
+row_count: 0
+blank_cell_count: 0
+pii_redactions: 0
+warnings: []
+errors: []

@@ -1,0 +1,35 @@
+evidence_id: EV-0114
+source_path: /Users/eduardosacahui/Documents/Politics/04_Propuestas/Propuestas estratégicas/Asssets/Plan
+  de Desarrollo Municipal y Ordenamiento Territorial - Antigua Guatemala.pdf
+source_title: Plan de Desarrollo Municipal y Ordenamiento Territorial - Antigua Guatemala
+source_type: pdf
+collection: rag_municipal_core
+source_class: official_source
+review_status_before: needs_extraction
+extracted_at: '2026-07-14T17:57:06Z'
+extractor: evidence-pilot-v1
+source_date: unknown
+territory: Antigua Guatemala
+language: es
+page_count: 226
+sheet_names: []
+content_hash: sha256:876fd29be4ef0a9a7367a56e17862ae7b42adeb5516dec208f98348e745632dd
+version_relationship: canonical
+contains_personal_data: false
+extraction_status: complete
+limitations:
+- Planning document; extraction does not approve campaign promises or territorial
+  priorities.
+- Scanned or image-heavy pages may require later OCR, which is intentionally not run
+  in this pilot.
+outputs:
+- research/extracted/municipal-core/EV-0114.md
+- research/extracted/municipal-core/EV-0114.tables.csv
+empty_pages: []
+possible_scanned_pages: []
+table_count: 399
+row_count: 0
+blank_cell_count: 0
+pii_redactions: 0
+warnings: []
+errors: []

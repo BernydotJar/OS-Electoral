@@ -1,0 +1,86 @@
+politics_root_env: POLITICS_ROOT
+
+sources:
+  - evidence_id: EV-0111
+    source_title: "Estadisticas del padron electoral al 30 de abril de 2026"
+    source_type: pdf
+    collection: rag_territorio
+    output_collection: territorio
+    evidence_class: official_source
+    review_status_before: needs_extraction
+    source_date: "2026-04-30"
+    territory: "Sacatepequez / Antigua Guatemala"
+    language: es
+    version_relationship: canonical
+    contains_personal_data: false
+    relative_path: "07_Fichas_Comunitarias/ESTADISTICAS DEL PADRON ELECTORAL POR DEPARTAMENTO Y MUNICIPIO AL 30 DE ABRIL DEL 2026.pdf"
+    limitations:
+      - "The document describes registered electorate, not voting intention."
+      - "Detailed historical vote totals are not included."
+
+  - evidence_id: EV-0112
+    source_title: "Acuerdo 1-2023 de validez de eleccion municipal Antigua Guatemala"
+    source_type: pdf
+    collection: rag_territorio
+    output_collection: territorio
+    evidence_class: official_source
+    review_status_before: needs_extraction
+    source_date: "2023"
+    territory: "Antigua Guatemala"
+    language: es
+    version_relationship: canonical
+    contains_personal_data: false
+    relative_path: "07_Fichas_Comunitarias/ACUERDO 1-2023 Declarar la validez de la elección de la Corporación Municipal de ANTIGUA GUATEMALA, del Departamento de Sacatepéquez..pdf"
+    limitations:
+      - "The document validates the election result but may not contain detailed vote totals by table."
+
+  - evidence_id: EV-0105
+    source_title: "Fichas comunitarias Antigua"
+    source_type: xlsx
+    collection: rag_territorio
+    output_collection: territorio
+    evidence_class: campaign_research
+    review_status_before: needs_extraction
+    source_date: "2025-10-10"
+    territory: "Antigua Guatemala communities"
+    language: es
+    version_relationship: canonical
+    contains_personal_data: false
+    relative_path: "07_Fichas_Comunitarias/2025-10-10__Territorio__Fichas_Comunitarias_Antigua__v01.xlsx"
+    limitations:
+      - "Campaign research source; community claims need human verification before prioritization."
+      - "Workbook formulas may not expose cached calculated values."
+
+  - evidence_id: EV-0106
+    source_title: "Fichas comunitarias Antigua alternate workbook"
+    source_type: xlsx
+    collection: rag_territorio
+    output_collection: territorio
+    evidence_class: campaign_research
+    review_status_before: needs_verification
+    source_date: "unknown"
+    territory: "Antigua Guatemala communities"
+    language: es
+    version_relationship: duplicate_candidate
+    contains_personal_data: false
+    relative_path: "07_Fichas_Comunitarias/Fichas Comunitarias/Fichas_Comunitarias_Antigua.xlsx"
+    limitations:
+      - "Alternate or duplicate candidate workbook; canonical relationship to EV-0105 must be determined by structure and value comparison."
+      - "Campaign research source; estimated electoral values and priority labels are not official electoral evidence."
+
+  - evidence_id: EV-0114
+    source_title: "Plan de Desarrollo Municipal y Ordenamiento Territorial - Antigua Guatemala"
+    source_type: pdf
+    collection: rag_municipal_core
+    output_collection: municipal-core
+    evidence_class: official_source
+    review_status_before: needs_extraction
+    source_date: "unknown"
+    territory: "Antigua Guatemala"
+    language: es
+    version_relationship: canonical
+    contains_personal_data: false
+    relative_path: "04_Propuestas/Propuestas estratégicas/Asssets/Plan de Desarrollo Municipal y Ordenamiento Territorial - Antigua Guatemala.pdf"
+    limitations:
+      - "Planning document; extraction does not approve campaign promises or territorial priorities."
+      - "Scanned or image-heavy pages may require later OCR, which is intentionally not run in this pilot."
