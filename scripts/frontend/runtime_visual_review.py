@@ -173,11 +173,23 @@ def wait_for_application(page) -> None:
     require(page.locator("#teamGrid .department-card").count() == 10, "expected ten department buttons")
 
 
+def wait_for_focused_id(page, element_id: str) -> None:
+    page.wait_for_function(
+        "elementId => document.activeElement?.id === elementId",
+        element_id,
+    )
+
+
+def wait_for_module(page, module_name: str, title_id: str) -> None:
+    view = page.locator(f'[data-view="{module_name}"]')
+    view.wait_for(state="visible")
+    wait_for_focused_id(page, title_id)
+
+
 def review_daily_war_room(page, prefix: str) -> None:
     page.locator('[data-module="war-room"]').click()
-    require(page.locator("#warRoomModule").is_visible(), "Daily War Room did not become visible")
-    require(page.locator("#teamModule").is_hidden(), "Team module did not hide")
-    require(page.evaluate("document.activeElement?.id") == "war-room-title", "War Room title did not receive focus")
+    wait_for_module(page, "war-room", "war-room-title")
+    page.locator("#teamModule").wait_for(state="hidden")
     page.locator("#warSignalList .war-signal-card").first.wait_for(state="visible")
     require(page.locator("#warSignalList .war-signal-card").count() >= 1, "Daily War Room requires at least one signal")
     require(
@@ -192,16 +204,15 @@ def review_daily_war_room(page, prefix: str) -> None:
     first_signal.focus()
     first_signal.click()
     detail = page.locator("#warDetailDialog")
-    require(detail.is_visible(), "War Room signal detail did not open")
-    require(page.evaluate("document.activeElement?.id") == "warDetailClose", "War Room close button must receive focus")
+    detail.wait_for(state="visible")
+    wait_for_focused_id(page, "warDetailClose")
     page.screenshot(path=ARTIFACT_DIR / f"{prefix}-war-room-detail.png", full_page=True)
     page.keyboard.press("Tab")
-    require(page.evaluate("document.activeElement?.id") == "warDetailClose", "War Room detail focus must remain trapped")
+    wait_for_focused_id(page, "warDetailClose")
     page.keyboard.press("Escape")
-    require(detail.is_hidden(), "Escape did not close War Room detail")
-    require(
-        page.evaluate("document.activeElement?.classList.contains('war-signal-card')") is True,
-        "focus did not return to War Room signal",
+    detail.wait_for(state="hidden")
+    page.wait_for_function(
+        "() => document.activeElement?.classList.contains('war-signal-card') === true"
     )
 
 
@@ -224,17 +235,16 @@ def review_desktop(browser, results: dict) -> None:
     first_card.focus()
     first_card.click()
     drawer = page.locator("#agentDrawer")
-    require(drawer.is_visible(), "drawer did not open")
+    drawer.wait_for(state="visible")
     require(page.locator("#drawerBackdrop").get_attribute("tabindex") == "-1", "backdrop must be excluded from tab order")
-    require(page.evaluate("document.activeElement?.id") == "drawerClose", "drawer close button must receive focus")
+    wait_for_focused_id(page, "drawerClose")
     page.keyboard.press("Escape")
-    require(drawer.is_hidden(), "Escape did not close drawer")
+    drawer.wait_for(state="hidden")
 
     review_daily_war_room(page, "desktop")
 
     page.locator('[data-module="evidence"]').click()
-    require(page.locator("#evidenceModule").is_visible(), "evidence module did not become visible")
-    require(page.evaluate("document.activeElement?.id") == "overview-title", "evidence title did not receive focus")
+    wait_for_module(page, "evidence", "overview-title")
     assert_no_horizontal_overflow(page, "desktop-evidence")
     page.screenshot(path=ARTIFACT_DIR / "desktop-evidence.png", full_page=True)
 
@@ -269,7 +279,7 @@ def review_reduced_motion(browser, results: dict) -> None:
     wait_for_application(page)
     require(page.evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches"), "reduced-motion emulation failed")
     page.locator('[data-module="war-room"]').click()
-    require(page.locator("#warRoomModule").is_visible(), "War Room switching failed with reduced motion")
+    wait_for_module(page, "war-room", "war-room-title")
     results["reduced_motion"] = {"status": "PASS"}
     context.close()
 
