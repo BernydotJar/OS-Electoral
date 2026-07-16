@@ -1,0 +1,130 @@
+{
+  "version": "c1-front-003.0",
+  "snapshotDate": "2026-07-16",
+  "mode": "READ_ONLY",
+  "title": "Daily War Room",
+  "summary": "Research and governance remain active. Communication, paid media and mobilization remain gated until evidence and human approvals are sufficient.",
+  "pipeline": ["Signals", "Evidence", "Assessment", "Options", "Human Approval", "Assignment", "Follow-up", "Learning"],
+  "signals": [
+    {
+      "id": "WR-SIG-001",
+      "title": "Definitive municipal ballot accounting remains unresolved",
+      "summary": "The current evidence baseline identifies the preliminary JRV 5401 condition but does not authenticate a definitive municipal accounting source.",
+      "evidenceClass": "OFFICIAL",
+      "source": "Evidence Control Room: EV-0112, EV-0144 and EV-0145 reconciliation",
+      "confidence": "HIGH_WITH_EXPLICIT_GAP",
+      "status": "BLOCKED",
+      "assessment": "The known preliminary conflict is bounded but cannot support participation, abstention or final ballot-category claims.",
+      "decisionRequired": "Approve continued source discovery as the next evidence workstream; do not promote preliminary values.",
+      "owner": "Research and Evidence",
+      "dueDate": "UNSCHEDULED",
+      "gate": "EVIDENCE_ONLY",
+      "blockers": ["Documento No. 4, final TSE/JED consolidation or competent resolution is not authenticated"],
+      "options": ["Continue definitive-source discovery", "Maintain the current bounded partial reconciliation"],
+      "approvalStatus": "PENDING_HUMAN_APPROVAL"
+    },
+    {
+      "id": "WR-SIG-002",
+      "title": "Candidate identity baseline is not registered",
+      "summary": "The product memory requires identity, trajectory, values and proof points before positioning or public narrative work.",
+      "evidenceClass": "UNKNOWN",
+      "source": "Campaign Team Command Center operational snapshot",
+      "confidence": "HIGH_ON_MISSING_CONFIGURATION",
+      "status": "READY_FOR_HUMAN_REVIEW",
+      "assessment": "A structured candidate interview is a prerequisite for brand and reputation work; no identity attributes should be invented.",
+      "decisionRequired": "Authorize a candidate identity interview and identify the human reviewer for the resulting biography.",
+      "owner": "Candidate Brand and Reputation",
+      "dueDate": "UNSCHEDULED",
+      "gate": "BRAND_SETUP",
+      "blockers": ["Candidate interview and reviewed biography are not registered"],
+      "options": ["Schedule identity interview", "Keep brand work in SETUP_REQUIRED"],
+      "approvalStatus": "PENDING_HUMAN_APPROVAL"
+    },
+    {
+      "id": "WR-SIG-003",
+      "title": "Operating team roster and responsibility matrix are absent",
+      "summary": "The campaign cannot assign accountable operational work until human roles, availability and approval authority are documented.",
+      "evidenceClass": "UNKNOWN",
+      "source": "Campaign current state and Team Command Center",
+      "confidence": "HIGH_ON_MISSING_CONFIGURATION",
+      "status": "ASSESSING",
+      "assessment": "An internal RACI-like responsibility matrix is needed before the War Room can move assignments beyond placeholders.",
+      "decisionRequired": "Name the human Campaign Director or temporary operating owner and authorize team-intake collection.",
+      "owner": "Operations and Team",
+      "dueDate": "UNSCHEDULED",
+      "gate": "OPERATING_MODEL_SETUP",
+      "blockers": ["Human team roster is not approved", "Responsibility matrix is not approved"],
+      "options": ["Create minimum human roster", "Keep assignments internal and unowned"],
+      "approvalStatus": "PENDING_HUMAN_APPROVAL"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "WR-DEC-001",
+      "title": "Select the next evidence workstream",
+      "owner": "Human Campaign Owner",
+      "status": "PENDING_HUMAN_APPROVAL",
+      "blocks": ["Evidence closure", "Future strategic research"],
+      "evidenceRefs": ["WR-SIG-001"]
+    },
+    {
+      "id": "WR-DEC-002",
+      "title": "Authorize candidate identity intake",
+      "owner": "Candidate",
+      "status": "PENDING_HUMAN_APPROVAL",
+      "blocks": ["Brand baseline", "Positioning research"],
+      "evidenceRefs": ["WR-SIG-002"]
+    }
+  ],
+  "assignments": [
+    {
+      "id": "WR-ASG-001",
+      "title": "Prepare definitive-source search plan",
+      "owner": "Research and Evidence",
+      "status": "READY_FOR_INTERNAL_ASSIGNMENT",
+      "executionBoundary": "INTERNAL_RESEARCH_ONLY",
+      "sourceSignal": "WR-SIG-001"
+    },
+    {
+      "id": "WR-ASG-002",
+      "title": "Prepare candidate identity interview guide",
+      "owner": "Candidate Brand and Reputation",
+      "status": "BLOCKED_BY_APPROVAL",
+      "executionBoundary": "DRAFT_ONLY",
+      "sourceSignal": "WR-SIG-002"
+    }
+  ],
+  "risks": [
+    {
+      "id": "WR-RISK-001",
+      "title": "Premature strategy generation",
+      "level": "HIGH",
+      "mitigation": "Keep segment, narrative, paid media and mobilization gates closed until approved evidence and decisions exist."
+    },
+    {
+      "id": "WR-RISK-002",
+      "title": "Operational ownership ambiguity",
+      "level": "MEDIUM",
+      "mitigation": "Do not convert draft assignments into commitments until a human owner accepts responsibility."
+    }
+  ],
+  "learning": [
+    {
+      "id": "WR-LRN-001",
+      "statement": "Runtime and visual validation must be completed before progressing to the next product surface.",
+      "source": "C1-FRONT-002-V1-R1 completion evidence"
+    }
+  ],
+  "closedGates": [
+    "Priority segment selection",
+    "Territorial ranking",
+    "Public narrative",
+    "Paid-media activation",
+    "Targeting and persuasion scoring",
+    "Field mobilization",
+    "Automatic publishing",
+    "Public promises or attacks",
+    "Individual voter inference"
+  ],
+  "safetyStatement": "This War Room organizes evidence and pending internal decisions. It does not execute political, financial, communications or citizen-contact actions."
+}
