@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "active_feature": "C1-FRONT-002",
+  "features": [
+    {
+      "id": "C1-FRONT-002",
+      "title": "Campaign Team Command Center",
+      "mode": "MVP",
+      "status": "in_progress",
+      "owner": "Human product owner",
+      "issue": "https://github.com/BernydotJar/OS-Electoral/issues/26",
+      "base_branch": "main",
+      "working_branch": "agent/c1-front-002-campaign-team-command-center",
+      "spec_root": "specs/C1-FRONT-002/",
+      "execution_prompt": "prompts/long-session/C1-FRONT-002.md",
+      "files_may_read": [
+        "AGENTS.md",
+        "RTK.md",
+        "README.md",
+        "campaign/**",
+        "operations/**",
+        "research/evidence-register.md",
+        "research/curated/**",
+        "web/**",
+        "scripts/frontend/**",
+        "specs/C1-FRONT-002/**",
+        "prompts/long-session/C1-FRONT-002.md"
+      ],
+      "files_may_touch": [
+        "feature_list.json",
+        "specs/C1-FRONT-002/**",
+        "prompts/long-session/C1-FRONT-002.md",
+        "web/**",
+        "scripts/frontend/**",
+        "progress/C1-FRONT-002-implementation-report.md"
+      ],
+      "files_must_not_touch": [
+        "research/extracted/**",
+        "research/sources/**",
+        "research/curated/electoral-2023/**",
+        "external/**",
+        "territory/**",
+        "content/**",
+        "media/**",
+        "deployment/**",
+        "secrets/**"
+      ],
+      "verification": [
+        "python3 scripts/frontend/validate_evidence_control_room.py",
+        "python3 scripts/frontend/validate_campaign_team_command_center.py",
+        "python3 -m http.server 4173 --directory web",
+        "git diff --check"
+      ],
+      "political_gates": "closed"
+    }
+  ]
+}
