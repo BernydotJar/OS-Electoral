@@ -4,15 +4,15 @@
 |---|---|
 | Register feature, issue and file boundaries | PASS |
 | Define requirements and design | PASS |
-| Create governed War Room snapshot | IN_PROGRESS |
-| Add third frontend module | TODO |
-| Add accessible signal detail | TODO |
-| Add responsive visual system | TODO |
-| Add fail-closed validator | TODO |
-| Extend Playwright runtime review | TODO |
+| Create governed War Room snapshot | PASS |
+| Add third frontend module | PASS |
+| Add accessible signal detail | PASS |
+| Add responsive visual system | PASS |
+| Add fail-closed validator | PASS |
+| Extend Playwright runtime review | PASS |
 | Run static and runtime validation | TODO |
 | Review screenshots | TODO |
-| Document outcome and blockers | TODO |
+| Document outcome and blockers | PASS |
 
 ## Definition of Done
 
