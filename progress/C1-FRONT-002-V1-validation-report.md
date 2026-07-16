@@ -1,10 +1,11 @@
 # C1-FRONT-002-V1 — Runtime Validation and Visual Review
 
-Status: `CI_PENDING`
+Status: `PARTIAL_WITH_DOCUMENTED_ENVIRONMENT_BLOCKER`
 
 Base commit: `d13b67591ba3f07e71eff18094d0b0901ce71af9`  
 Working branch: `agent/c1-front-002-v1-runtime-validation`  
-Tracking issue: `#28`
+Tracking issue: `#28`  
+Draft PR: `#29`
 
 ## Objective
 
@@ -53,7 +54,7 @@ The suite verifies:
 
 ## Expected artifacts
 
-The workflow uploads `c1-front-002-v1-visual-review` containing:
+The workflow is configured to upload `c1-front-002-v1-visual-review` containing:
 
 - `desktop-team.png`;
 - `desktop-drawer.png`;
@@ -72,15 +73,48 @@ python3 scripts/frontend/runtime_visual_review.py
 git diff --check origin/main...HEAD
 ```
 
-## Current evidence
+## Execution attempts
 
-At the time this report was created:
+### Local container
 
-- static fixes are committed;
-- workflow and browser suite are committed;
-- GitHub Actions execution is pending;
-- no runtime result is marked PASS before the workflow completes;
-- no screenshot is claimed before the artifact is generated.
+- Git, Python, Chromium and Python Playwright are installed.
+- No repository checkout existed.
+- A clean clone from GitHub was attempted.
+- The container cannot resolve or connect to `github.com` or `raw.githubusercontent.com`.
+- Therefore the exact branch could not be executed locally without manually reconstructing repository files, which would not constitute trustworthy validation of the committed tree.
+
+### GitHub Actions
+
+- draft PR #29 was opened with the workflow already present;
+- the PR `opened` event produced no workflow run or status check;
+- an additional synchronization commit was pushed;
+- the `synchronize` event also produced no workflow run or status check;
+- the temporary trigger artifact was removed afterward;
+- no CI result or screenshot is marked PASS.
+
+This behavior is consistent with GitHub Actions being disabled, restricted, awaiting workflow approval, or unavailable for this repository context. The repository settings must be checked by a human with access to the Actions UI.
+
+## Current verified state
+
+- PR #27 merge was authenticated;
+- branch is based exactly on merge commit `d13b6759...`;
+- branch is ahead of `main` and not behind;
+- accessibility fixes, validator, browser suite and workflow are committed;
+- no electoral evidence or campaign snapshots changed;
+- runtime execution and screenshots remain blocked.
+
+## Blocker
+
+`BLOCKED: no executable copy of the committed branch and no GitHub Actions run.`
+
+## Exact resume condition
+
+Resume when either condition is true:
+
+1. GitHub Actions is enabled/approved and workflow `C1-FRONT-002-V1 Runtime Visual Review` can run on PR #29; or
+2. a local checkout of `agent/c1-front-002-v1-runtime-validation` is available in an environment with Python Playwright and Chromium.
+
+Then execute the validation commands above, inspect the artifact screenshots, fix any failure, and rerun until PASS.
 
 ## Safety
 
