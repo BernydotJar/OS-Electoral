@@ -1,16 +1,28 @@
 #!/usr/bin/env python3
-"""Runtime and visual review for C1-FRONT-002-V1."""
+"""Runtime and visual review for C1-FRONT-002-V1.
+
+The runner reuses a healthy CampaignOS server when one already exists. If the
+configured URL is unavailable and points to localhost, it starts a temporary
+static server and stops it after the review.
+"""
 
 from __future__ import annotations
 
 import json
 import os
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.request
 from pathlib import Path
-
-from playwright.sync_api import Page, sync_playwright
+from urllib.parse import urlparse
 
 BASE_URL = os.environ.get("CAMPAIGNOS_URL", "http://127.0.0.1:4173")
 ARTIFACT_DIR = Path(os.environ.get("CAMPAIGNOS_ARTIFACT_DIR", "artifacts/c1-front-002-v1"))
+ROOT = Path(__file__).resolve().parents[2]
+WEB = ROOT / "web"
+SERVER_LOG = ARTIFACT_DIR / "server.log"
 
 
 def require(condition: bool, message: str) -> None:
@@ -18,7 +30,90 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-def assert_no_horizontal_overflow(page: Page, label: str) -> None:
+def load_playwright():
+    try:
+        from playwright.sync_api import Page, sync_playwright
+    except ModuleNotFoundError as exc:
+        raise SystemExit(
+            "[BLOCKED] Python Playwright is not installed in the active environment.\n"
+            "Run:\n"
+            "  python3 -m pip install -r scripts/frontend/requirements-runtime.txt\n"
+            "  python3 -m playwright install chromium\n"
+            "Then rerun this script."
+        ) from exc
+    return Page, sync_playwright
+
+
+def url_is_healthy(url: str, timeout: float = 2.0) -> bool:
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as response:
+            return 200 <= response.status < 400
+    except (urllib.error.URLError, TimeoutError, ValueError):
+        return False
+
+
+def can_start_local_server(url: str) -> bool:
+    parsed = urlparse(url)
+    return parsed.scheme == "http" and parsed.hostname in {"127.0.0.1", "localhost"}
+
+
+def start_server_if_needed() -> subprocess.Popen[str] | None:
+    if url_is_healthy(BASE_URL):
+        print(f"[OK] reusing existing CampaignOS server at {BASE_URL}")
+        return None
+
+    if not can_start_local_server(BASE_URL):
+        raise SystemExit(
+            f"[BLOCKED] CampaignOS is not reachable at {BASE_URL}. "
+            "Start the application or set CAMPAIGNOS_URL to a healthy endpoint."
+        )
+
+    parsed = urlparse(BASE_URL)
+    port = parsed.port or 80
+    ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+    log_handle = SERVER_LOG.open("w", encoding="utf-8")
+    process = subprocess.Popen(
+        [sys.executable, "-m", "http.server", str(port), "--directory", str(WEB)],
+        cwd=ROOT,
+        stdout=log_handle,
+        stderr=subprocess.STDOUT,
+        text=True,
+    )
+
+    for _ in range(40):
+        if process.poll() is not None:
+            log_handle.close()
+            raise SystemExit(
+                f"[FAILED] local CampaignOS server exited early. Review {SERVER_LOG}."
+            )
+        if url_is_healthy(BASE_URL, timeout=0.5):
+            print(f"[OK] started temporary CampaignOS server at {BASE_URL}")
+            process._campaignos_log_handle = log_handle  # type: ignore[attr-defined]
+            return process
+        time.sleep(0.25)
+
+    process.terminate()
+    process.wait(timeout=5)
+    log_handle.close()
+    raise SystemExit(f"[FAILED] CampaignOS did not become healthy at {BASE_URL}.")
+
+
+def stop_managed_server(process: subprocess.Popen[str] | None) -> None:
+    if process is None:
+        return
+    process.terminate()
+    try:
+        process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait(timeout=5)
+    log_handle = getattr(process, "_campaignos_log_handle", None)
+    if log_handle is not None:
+        log_handle.close()
+    print("[OK] stopped temporary CampaignOS server")
+
+
+def assert_no_horizontal_overflow(page, label: str) -> None:
     dimensions = page.evaluate(
         """() => ({
           clientWidth: document.documentElement.clientWidth,
@@ -31,7 +126,7 @@ def assert_no_horizontal_overflow(page: Page, label: str) -> None:
     )
 
 
-def collect_runtime_errors(page: Page, bucket: list[str]) -> None:
+def collect_runtime_errors(page, bucket: list[str]) -> None:
     page.on(
         "console",
         lambda message: bucket.append(f"console:{message.type}:{message.text}")
@@ -41,7 +136,7 @@ def collect_runtime_errors(page: Page, bucket: list[str]) -> None:
     page.on("pageerror", lambda error: bucket.append(f"pageerror:{error}"))
 
 
-def wait_for_application(page: Page) -> None:
+def wait_for_application(page) -> None:
     page.goto(BASE_URL, wait_until="networkidle")
     page.locator("#teamGrid .department-card").first.wait_for(state="visible")
     require(page.locator("#teamGrid .department-card").count() == 10, "expected ten department buttons")
@@ -136,16 +231,21 @@ def review_reduced_motion(browser, results: dict) -> None:
 
 
 def main() -> None:
+    _, sync_playwright = load_playwright()
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+    managed_server = start_server_if_needed()
     results: dict[str, object] = {"base_url": BASE_URL}
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch()
-        try:
-            review_desktop(browser, results)
-            review_mobile(browser, results)
-            review_reduced_motion(browser, results)
-        finally:
-            browser.close()
+    try:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            try:
+                review_desktop(browser, results)
+                review_mobile(browser, results)
+                review_reduced_motion(browser, results)
+            finally:
+                browser.close()
+    finally:
+        stop_managed_server(managed_server)
 
     results["overall"] = "PASS"
     (ARTIFACT_DIR / "runtime-review.json").write_text(
