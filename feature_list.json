@@ -19,7 +19,7 @@
       "id": "C1-FRONT-002-V1",
       "title": "Runtime Validation and Visual Review",
       "mode": "MVP",
-      "status": "in_progress",
+      "status": "partial_blocked_runtime_unavailable",
       "owner": "Human product owner",
       "issue": "https://github.com/BernydotJar/OS-Electoral/issues/28",
       "base_branch": "main",
@@ -40,6 +40,7 @@
         "web/app.js",
         "web/styles.css",
         "web/README.md",
+        "web/accessibility.js",
         "scripts/frontend/runtime_visual_review.py",
         "scripts/frontend/validate_campaign_team_command_center.py",
         ".github/workflows/c1-front-002-v1.yml",
@@ -61,6 +62,8 @@
         "python3 scripts/frontend/runtime_visual_review.py",
         "git diff --check"
       ],
+      "blocker": "No executable branch checkout and no GitHub Actions workflow run",
+      "resume_condition": "Enable or approve GitHub Actions for PR #29, or provide a local checkout with Chromium and Python Playwright",
       "political_gates": "closed"
     }
   ]
