@@ -1,8 +1,8 @@
 # C1-ELEC-2023-005 Implementation Report
 
-Status: `PARTIAL_RECONCILIATION_WITH_IDENTIFIED_MISSING_ACTA`  
-Branch: `agent/implement-c1-elec-2023-005-final-ballot-reconciliation`  
-Base: `be70a070e6ff69de0354074c253f78ac1ddfcd5b`  
+Status: `PARTIAL_RECONCILIATION_WITH_IDENTIFIED_MISSING_ACTA`
+Branch: `agent/implement-c1-elec-2023-005-final-ballot-reconciliation`
+Base: `be70a070e6ff69de0354074c253f78ac1ddfcd5b`
 Station: Electoral Research
 
 ## Task Ledger

@@ -18,6 +18,7 @@ FIELDS = CURATED / "final-ballot-accounting-fields-2023.csv"
 MISSING_ACTA = CURATED / "missing-trep-acta-investigation-2023.csv"
 RECONCILIATION = CURATED / "final-ballot-accounting-reconciliation-2023.md"
 REPORT = CURATED / "C1-ELEC-2023-005-implementation-report.md"
+ACQUISITION_REQUEST = CURATED / "final-ballot-accounting-acquisition-request.md"
 
 
 def fail(message: str) -> None:
@@ -138,7 +139,7 @@ for row in field_rows:
 
 text = "\n".join(
     path.read_text(encoding="utf-8")
-    for path in [RECONCILIATION, REPORT]
+    for path in [RECONCILIATION, REPORT, ACQUISITION_REQUEST]
 )
 
 for required in [
@@ -146,6 +147,10 @@ for required in [
     "26,091 - 25,827 = 264",
     "PARTIAL_RECONCILIATION_WITH_IDENTIFIED_MISSING_ACTA",
     "Political gates remain closed",
+    "Acta Final de Cierre de Escrutinio - Documento No. 4",
+    "mesa/JRV = 5401 when the record is table-specific",
+    "A redacted official copy or certified aggregate transcription is sufficient.",
+    "no reliance on residual inference",
 ]:
     if required not in text:
         fail(f"required statement missing: {required}")
@@ -164,11 +169,12 @@ for prohibited in [
     if prohibited in text:
         fail(f"prohibited assertion found: {prohibited}")
 
-for path in [SOURCE_AUDIT, FIELDS, MISSING_ACTA, RECONCILIATION, REPORT]:
+for path in [SOURCE_AUDIT, FIELDS, MISSING_ACTA, RECONCILIATION, REPORT, ACQUISITION_REQUEST]:
     content = path.read_text(encoding="utf-8")
     if re.search(r"/Users/|/Volumes|/tmp/", content):
         fail(f"non-portable path found in {path.relative_to(ROOT)}")
-    if re.search(r"\bDPI\b|\b\d{13}\b", content):
+    content_without_privacy_rule = content.replace("DPI numbers", "")
+    if re.search(r"\bDPI\b|\b\d{13}\b", content_without_privacy_rule):
         fail(f"possible personal identifier found in {path.relative_to(ROOT)}")
 
 if 26091 - 25827 != 264:

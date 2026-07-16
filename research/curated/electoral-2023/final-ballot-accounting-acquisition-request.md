@@ -1,8 +1,8 @@
 # Definitive Ballot Accounting Acquisition Request
 
-Program: `C1-ELEC-2023-005`  
-Territory: Antigua Guatemala, Sacatepequez  
-Election: Corporacion Municipal, 2023  
+Program: `C1-ELEC-2023-005`
+Territory: Antigua Guatemala, Sacatepequez
+Election: Corporacion Municipal, 2023
 Status: `BLOCKED_PENDING_DEFINITIVE_AUTHORITY_RECORD`
 
 ## Purpose
