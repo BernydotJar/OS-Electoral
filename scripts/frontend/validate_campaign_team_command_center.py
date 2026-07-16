@@ -9,11 +9,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 WEB = ROOT / "web"
 TEAM = WEB / "data" / "team.json"
+ACCESSIBILITY = WEB / "accessibility.js"
 
 REQUIRED_FILES = [
     WEB / "index.html",
     WEB / "styles.css",
     WEB / "app.js",
+    ACCESSIBILITY,
     WEB / "README.md",
     WEB / "data" / "status.json",
     TEAM,
@@ -66,8 +68,11 @@ REQUIRED_UI_HOOKS = {
     'role="dialog"',
     'aria-modal="true"',
     'id="drawerClose"',
+    'id="drawerBackdrop"',
+    'tabindex="-1"',
     'data-module="team"',
     'data-module="evidence"',
+    'src="./accessibility.js"',
 }
 REQUIRED_JS_BEHAVIORS = {
     "openDepartment",
@@ -76,6 +81,12 @@ REQUIRED_JS_BEHAVIORS = {
     "prefers-reduced-motion",
     "document.startViewTransition",
     "escapeHtml",
+}
+REQUIRED_ACCESSIBILITY_BEHAVIORS = {
+    "MutationObserver",
+    'removeAttribute("role")',
+    'setAttribute("role", "listitem")',
+    'setAttribute("tabindex", "-1")',
 }
 
 
@@ -117,7 +128,6 @@ def main() -> None:
 
     if seen != EXPECTED_DEPARTMENTS:
         fail(f"department/state mapping drifted: {seen}")
-
     if set(data.get("closedGates", [])) != REQUIRED_GATES:
         fail("closed political gate set mismatch")
 
@@ -136,6 +146,13 @@ def main() -> None:
     if missing_behaviors:
         fail(f"required JS behaviors missing: {sorted(missing_behaviors)}")
 
+    accessibility = ACCESSIBILITY.read_text(encoding="utf-8")
+    missing_accessibility = REQUIRED_ACCESSIBILITY_BEHAVIORS - {
+        item for item in REQUIRED_ACCESSIBILITY_BEHAVIORS if item in accessibility
+    }
+    if missing_accessibility:
+        fail(f"required accessibility hardening missing: {sorted(missing_accessibility)}")
+
     css = (WEB / "styles.css").read_text(encoding="utf-8")
     for required in ("@media (prefers-reduced-motion: reduce)", ".team-grid", ".drawer", ":focus-visible"):
         if required not in css:
@@ -145,6 +162,7 @@ def main() -> None:
     print("[OK] candidate is final human authority; AI is coordination only")
     print("[OK] political gates remain closed")
     print("[OK] team/evidence modules and accessible drawer hooks present")
+    print("[OK] semantic card, backdrop and module-focus hardening present")
     print("[OK] reduced motion and progressive view transition hooks present")
     print("[OK] no personal paths, voter scoring fields or global-skill runtime dependency")
 
