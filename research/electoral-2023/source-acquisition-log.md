@@ -74,6 +74,7 @@ An authoritative TSE or competent electoral-authority record for the 2023 Antigu
 | BA-04 | Existing EV-0112 | Reviewed the three-page validity agreement | Provides 14 organization vote rows, but no printed registered electorate, ballots cast, null, blank, participation, or abstention fields | Preserve `26,091` as derived visible-row sum only |
 | BA-05 | Local dashboards | Reviewed source audit for derived campaign dashboards | Derived values and pointers exist, but no underlying official record was authenticated | `DERIVED_DISCOVERY_AID_ONLY` |
 | BA-06 | Official TREP preliminary portal | Inspected `primeraeleccion.trep.gt` Angular app, `ultimoCorte.json`, and `gtm2023_datos.json` for `tc4` Sacatepéquez / Antigua Guatemala | Found official preliminary accounting-like fields: 100 actas, 99 counted, 39,099 registered, 26,828 emitted, 25,827 valid-like party sum, 912 null, 89 blank | Register as `PRELIMINARY_CONFLICT_NOT_PROMOTED`; do not populate final accounting fields because values conflict with final EV-0112 sum `26,091` |
+| BA-07 | Official TREP department detail JSON | Authenticated `gtm2023_tc4_e2.json` for `tc4` Sacatepéquez and inspected Antigua Guatemala `m1` mesa records | Found 100 Antigua Guatemala mesa records; 99 with `status=2`; one with `status=1`, seccion `538`, mesa `5401`, observation `Acta ilegible`, `lNominal=380`, and TREP vote fields blank | Register as `PARTIAL_RECONCILIATION_WITH_IDENTIFIED_MISSING_ACTA`; do not promote final vote values or accounting categories |
 
 ### Excluded Sources
 
@@ -86,6 +87,7 @@ The following may help locate official records but cannot populate the official 
 - campaign dashboards and derived territorial models;
 - values inferred as arithmetic residuals.
 - preliminary TREP values that conflict with final EV-0112 unless a definitive reconciliation source explains the difference.
+- manual transcription of the missing acta image, because the official preliminary TREP status marks it illegible and the image includes visible personal signer/fiscal information.
 
 ### Current Blocker
 
@@ -105,6 +107,7 @@ Until such a record is available:
 - participation and abstention remain uncalculated;
 - `26,091` remains a derived sum of confirmed visible organization rows.
 - TREP preliminary accounting-like fields remain in a separate audit file and are not promoted.
+- the captured-but-not-counted TREP mesa is identified as mesa `5401`, seccion `538`, but final accounting remains blocked pending a definitive authority.
 
 ### Resume Condition
 

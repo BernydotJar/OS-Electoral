@@ -25,7 +25,7 @@ Limit:
 
 ### Official ballot accounting
 
-State: `PARTIAL_RECONCILIATION`
+State: `PARTIAL_RECONCILIATION_WITH_IDENTIFIED_MISSING_ACTA`
 
 Resolved:
 
@@ -33,6 +33,7 @@ Resolved:
 - 14 confirmed visible organization-vote rows;
 - derived visible-row sum: `26,091`.
 - preliminary TREP `tc4` Antigua Guatemala accounting-like fields audited as a conflict source, not promoted.
+- preliminary TREP captured-but-not-counted mesa identified as seccion `538`, mesa `5401`, `status=1`, observation `Acta ilegible`.
 
 Blocked:
 
@@ -81,7 +82,7 @@ EV-0106 remains a package-distinct alternate copy with equivalent extracted work
 | Official provenance for visible vote rows | PASS | EV-0112 second review |
 | No inferred result rows | PASS | 14 visible rows only |
 | Registered electorate denominator | PASS | EV-0139 = 39,099 |
-| Ballot accounting reconciliation | PARTIAL | Denominator resolved; preliminary TREP conflict documented; final numerator and categories blocked |
+| Ballot accounting reconciliation | PARTIAL | Denominator resolved; preliminary TREP conflict documented; missing TREP mesa identified; final numerator and categories blocked |
 | Participation formula discipline | PASS | No rate calculated without ballots cast |
 | Center inventory | PASS | 18 unique official centers |
 | JRV assignment | PASS | 100 JRV, continuous range 5,337–5,436 |
