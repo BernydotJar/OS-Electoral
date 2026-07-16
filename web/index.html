@@ -27,12 +27,10 @@
 
   <nav class="module-nav" aria-label="Módulos principales">
     <button class="module-tab is-active" type="button" data-module="team" aria-current="page">
-      <span>Team Command Center</span>
-      <small>Equipo y gobernanza</small>
+      <span>Team Command Center</span><small>Equipo y gobernanza</small>
     </button>
     <button class="module-tab" type="button" data-module="evidence">
-      <span>Evidence Control Room</span>
-      <small>Fuentes y reconciliación</small>
+      <span>Evidence Control Room</span><small>Fuentes y reconciliación</small>
     </button>
   </nav>
 
@@ -58,7 +56,7 @@
       <section class="command-summary" aria-labelledby="team-title">
         <div>
           <p class="section-kicker">YOUR CAMPAIGN TEAM</p>
-          <h2 id="team-title">Diez departamentos, una sola gobernanza</h2>
+          <h2 id="team-title" tabindex="-1">Diez departamentos, una sola gobernanza</h2>
           <p>Selecciona un departamento para revisar misión, skills, evidencia requerida, blockers, autonomía y propietario de aprobación.</p>
         </div>
         <div class="summary-stats" aria-label="Resumen del equipo">
@@ -70,10 +68,7 @@
 
       <section class="team-canvas-wrap" aria-labelledby="canvas-title">
         <div class="section-heading">
-          <div>
-            <p class="section-kicker">INTERACTIVE TEAM CANVAS</p>
-            <h2 id="canvas-title">Estructura operacional</h2>
-          </div>
+          <div><p class="section-kicker">INTERACTIVE TEAM CANVAS</p><h2 id="canvas-title">Estructura operacional</h2></div>
           <p>La jerarquía expresa responsabilidad y límites; no representa poder político de la IA.</p>
         </div>
         <div id="teamGrid" class="team-grid" role="list"></div>
@@ -81,25 +76,15 @@
 
       <section class="two-column team-governance" aria-label="Gates y contrato operacional">
         <article class="panel">
-          <div class="panel-header">
-            <div>
-              <p class="section-kicker">POLITICAL GATES</p>
-              <h2>Controles cerrados</h2>
-            </div>
-          </div>
+          <div class="panel-header"><div><p class="section-kicker">POLITICAL GATES</p><h2>Controles cerrados</h2></div></div>
           <div id="teamGateList" class="gate-list"></div>
         </article>
         <article class="panel policy-panel-compact">
-          <div>
-            <p class="section-kicker">AUTONOMY CONTRACT</p>
-            <h2>Qué puede hacer la IA</h2>
-          </div>
+          <div><p class="section-kicker">AUTONOMY CONTRACT</p><h2>Qué puede hacer la IA</h2></div>
           <p id="teamSafetyStatement" class="hero-copy"></p>
           <ul class="compact-policy-list">
-            <li>Leer y organizar evidencia autorizada</li>
-            <li>Preparar borradores y opciones</li>
-            <li>Exponer blockers y solicitar aprobación</li>
-            <li>No publicar, gastar, contactar ni decidir políticamente</li>
+            <li>Leer y organizar evidencia autorizada</li><li>Preparar borradores y opciones</li>
+            <li>Exponer blockers y solicitar aprobación</li><li>No publicar, gastar, contactar ni decidir políticamente</li>
           </ul>
         </article>
       </section>
@@ -107,99 +92,48 @@
 
     <section id="evidenceModule" class="module-view" data-view="evidence" aria-labelledby="overview-title" hidden>
       <section class="hero-panel">
-        <div>
-          <p class="section-kicker">CURRENT EVIDENCE STATE</p>
-          <h2 id="overview-title">Baseline electoral con límites explícitos</h2>
-          <p id="overallSummary" class="hero-copy"></p>
-        </div>
+        <div><p class="section-kicker">CURRENT EVIDENCE STATE</p><h2 id="overview-title" tabindex="-1">Baseline electoral con límites explícitos</h2><p id="overallSummary" class="hero-copy"></p></div>
         <div class="progress-wrap" aria-label="Progreso del baseline de evidencia">
-          <div class="progress-meta">
-            <span>Cobertura del frontend MVP</span>
-            <strong id="progressLabel">—</strong>
-          </div>
-          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
-            <span id="progressFill"></span>
-          </div>
+          <div class="progress-meta"><span>Cobertura del frontend MVP</span><strong id="progressLabel">—</strong></div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><span id="progressFill"></span></div>
           <p class="fine-print">Mide criterios del producto completados. No representa intención de voto ni probabilidad electoral.</p>
         </div>
       </section>
-
       <section aria-labelledby="metrics-title">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">VERIFIED METRICS</p>
-            <h2 id="metrics-title">Métricas con procedencia</h2>
-          </div>
-          <p>Las cifras preliminares y derivadas nunca se presentan como definitivas.</p>
-        </div>
+        <div class="section-heading"><div><p class="section-kicker">VERIFIED METRICS</p><h2 id="metrics-title">Métricas con procedencia</h2></div><p>Las cifras preliminares y derivadas nunca se presentan como definitivas.</p></div>
         <div id="metricsGrid" class="metrics-grid"></div>
       </section>
-
       <section class="two-column" aria-label="Workstreams y gates">
-        <article class="panel">
-          <div class="panel-header"><div><p class="section-kicker">WORKSTREAMS</p><h2>Estado de investigación</h2></div></div>
-          <div id="workstreamList" class="status-list"></div>
-        </article>
-        <article class="panel">
-          <div class="panel-header"><div><p class="section-kicker">POLITICAL GATES</p><h2>Controles cerrados</h2></div></div>
-          <div id="gateList" class="gate-list"></div>
-        </article>
+        <article class="panel"><div class="panel-header"><div><p class="section-kicker">WORKSTREAMS</p><h2>Estado de investigación</h2></div></div><div id="workstreamList" class="status-list"></div></article>
+        <article class="panel"><div class="panel-header"><div><p class="section-kicker">POLITICAL GATES</p><h2>Controles cerrados</h2></div></div><div id="gateList" class="gate-list"></div></article>
       </section>
-
       <section class="two-column" aria-label="Blockers y fuentes">
-        <article class="panel blocker-panel">
-          <div class="panel-header"><div><p class="section-kicker">BLOCKERS</p><h2>Qué impide el cierre definitivo</h2></div></div>
-          <div id="blockerList" class="blocker-list"></div>
-        </article>
-        <article class="panel">
-          <div class="panel-header"><div><p class="section-kicker">PROVENANCE</p><h2>Fuentes clave</h2></div></div>
-          <div id="sourceList" class="source-list"></div>
-        </article>
+        <article class="panel blocker-panel"><div class="panel-header"><div><p class="section-kicker">BLOCKERS</p><h2>Qué impide el cierre definitivo</h2></div></div><div id="blockerList" class="blocker-list"></div></article>
+        <article class="panel"><div class="panel-header"><div><p class="section-kicker">PROVENANCE</p><h2>Fuentes clave</h2></div></div><div id="sourceList" class="source-list"></div></article>
       </section>
-
       <section class="panel" aria-labelledby="reconciliation-title">
-        <div class="panel-header split-header">
-          <div><p class="section-kicker">RECONCILIATION</p><h2 id="reconciliation-title">TREP preliminar vs. resultado definitivo visible</h2></div>
-          <span class="status-chip status-partial">PARTIAL</span>
-        </div>
+        <div class="panel-header split-header"><div><p class="section-kicker">RECONCILIATION</p><h2 id="reconciliation-title">TREP preliminar vs. resultado definitivo visible</h2></div><span class="status-chip status-partial">PARTIAL</span></div>
         <div id="reconciliationTable" class="table-wrap"></div>
         <p class="warning-note">La diferencia documentada no autoriza inferir votos de una mesa, participación, abstención, nulos, blancos o comportamiento territorial.</p>
       </section>
-
-      <section class="panel policy-panel" aria-labelledby="policy-title">
-        <div><p class="section-kicker">SAFETY CONTRACT</p><h2 id="policy-title">Qué no hace este frontend</h2></div>
-        <ul id="policyList" class="policy-list"></ul>
-      </section>
+      <section class="panel policy-panel" aria-labelledby="policy-title"><div><p class="section-kicker">SAFETY CONTRACT</p><h2 id="policy-title">Qué no hace este frontend</h2></div><ul id="policyList" class="policy-list"></ul></section>
     </section>
   </main>
 
   <aside id="agentDrawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
-    <button id="drawerBackdrop" class="drawer-backdrop" type="button" aria-label="Cerrar detalle"></button>
+    <button id="drawerBackdrop" class="drawer-backdrop" type="button" tabindex="-1" aria-label="Cerrar detalle"></button>
     <div class="drawer-panel" tabindex="-1">
-      <div class="drawer-header">
-        <div>
-          <p id="drawerStatus" class="section-kicker">STATUS</p>
-          <h2 id="drawerTitle">Departamento</h2>
-        </div>
-        <button id="drawerClose" class="icon-button" type="button" aria-label="Cerrar detalle">×</button>
-      </div>
+      <div class="drawer-header"><div><p id="drawerStatus" class="section-kicker">STATUS</p><h2 id="drawerTitle">Departamento</h2></div><button id="drawerClose" class="icon-button" type="button" aria-label="Cerrar detalle">×</button></div>
       <p id="drawerMission" class="drawer-mission"></p>
-      <div class="drawer-meta">
-        <div><span>Autonomía</span><strong id="drawerAutonomy"></strong></div>
-        <div><span>Aprobación</span><strong id="drawerApproval"></strong></div>
-        <div><span>Última revisión</span><strong id="drawerReviewed"></strong></div>
-      </div>
+      <div class="drawer-meta"><div><span>Autonomía</span><strong id="drawerAutonomy"></strong></div><div><span>Aprobación</span><strong id="drawerApproval"></strong></div><div><span>Última revisión</span><strong id="drawerReviewed"></strong></div></div>
       <section><h3>Skills disponibles</h3><ul id="drawerSkills" class="tag-list"></ul></section>
       <section><h3>Evidence inputs</h3><ul id="drawerEvidence" class="detail-list"></ul></section>
       <section><h3>Blockers</h3><ul id="drawerBlockers" class="detail-list warning-list"></ul></section>
     </div>
   </aside>
 
-  <footer>
-    <span>CampaignOS · Evidence-first governance</span>
-    <span id="dataVersion">Data version —</span>
-  </footer>
-
+  <footer><span>CampaignOS · Evidence-first governance</span><span id="dataVersion">Data version —</span></footer>
   <script src="./app.js" defer></script>
+  <script src="./accessibility.js" defer></script>
 </body>
 </html>

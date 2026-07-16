@@ -1,0 +1,73 @@
+name: C1-FRONT-002-V1 Runtime Visual Review
+
+on:
+  pull_request:
+    paths:
+      - "web/**"
+      - "scripts/frontend/**"
+      - ".github/workflows/c1-front-002-v1.yml"
+      - "feature_list.json"
+      - "progress/C1-FRONT-002-V1-validation-report.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-visual-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.52.0
+          python -m playwright install --with-deps chromium
+
+      - name: Validate evidence snapshot
+        run: python3 scripts/frontend/validate_evidence_control_room.py
+
+      - name: Validate Campaign Team Command Center
+        run: python3 scripts/frontend/validate_campaign_team_command_center.py
+
+      - name: Validate diff whitespace
+        run: git diff --check origin/main...HEAD
+
+      - name: Start static server
+        run: |
+          mkdir -p artifacts/c1-front-002-v1
+          python3 -m http.server 4173 --directory web > artifacts/c1-front-002-v1/server.log 2>&1 &
+          echo $! > artifacts/c1-front-002-v1/server.pid
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/c1-front-002-v1/server.log
+          exit 1
+
+      - name: Run browser review
+        env:
+          CAMPAIGNOS_URL: http://127.0.0.1:4173
+          CAMPAIGNOS_ARTIFACT_DIR: artifacts/c1-front-002-v1
+        run: python3 scripts/frontend/runtime_visual_review.py
+
+      - name: Upload visual review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c1-front-002-v1-visual-review
+          path: artifacts/c1-front-002-v1/
+          if-no-files-found: error
+          retention-days: 30

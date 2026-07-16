@@ -1,56 +1,69 @@
 {
   "schema_version": "1.0",
-  "active_feature": "C1-FRONT-002",
+  "active_feature": "C1-FRONT-002-V1",
   "features": [
     {
       "id": "C1-FRONT-002",
       "title": "Campaign Team Command Center",
       "mode": "MVP",
-      "status": "in_progress",
+      "status": "merged_pending_runtime_validation",
       "owner": "Human product owner",
       "issue": "https://github.com/BernydotJar/OS-Electoral/issues/26",
       "base_branch": "main",
       "working_branch": "agent/c1-front-002-campaign-team-command-center",
       "spec_root": "specs/C1-FRONT-002/",
       "execution_prompt": "prompts/long-session/C1-FRONT-002.md",
+      "political_gates": "closed"
+    },
+    {
+      "id": "C1-FRONT-002-V1",
+      "title": "Runtime Validation and Visual Review",
+      "mode": "MVP",
+      "status": "partial_blocked_runtime_unavailable",
+      "owner": "Human product owner",
+      "issue": "https://github.com/BernydotJar/OS-Electoral/issues/28",
+      "base_branch": "main",
+      "base_commit": "d13b67591ba3f07e71eff18094d0b0901ce71af9",
+      "working_branch": "agent/c1-front-002-v1-runtime-validation",
       "files_may_read": [
         "AGENTS.md",
         "RTK.md",
-        "README.md",
-        "campaign/**",
-        "operations/**",
-        "research/evidence-register.md",
-        "research/curated/**",
+        "feature_list.json",
         "web/**",
         "scripts/frontend/**",
-        "specs/C1-FRONT-002/**",
-        "prompts/long-session/C1-FRONT-002.md"
+        "progress/**",
+        ".github/workflows/**"
       ],
       "files_may_touch": [
         "feature_list.json",
-        "specs/C1-FRONT-002/**",
-        "prompts/long-session/C1-FRONT-002.md",
-        "web/**",
-        "scripts/frontend/**",
-        "progress/C1-FRONT-002-implementation-report.md"
+        "web/index.html",
+        "web/app.js",
+        "web/styles.css",
+        "web/README.md",
+        "web/accessibility.js",
+        "scripts/frontend/runtime_visual_review.py",
+        "scripts/frontend/validate_campaign_team_command_center.py",
+        ".github/workflows/c1-front-002-v1.yml",
+        "progress/C1-FRONT-002-V1-validation-report.md"
       ],
       "files_must_not_touch": [
-        "research/extracted/**",
-        "research/sources/**",
-        "research/curated/electoral-2023/**",
-        "external/**",
+        "research/**",
         "territory/**",
         "content/**",
         "media/**",
         "deployment/**",
-        "secrets/**"
+        "secrets/**",
+        "web/data/status.json",
+        "web/data/team.json"
       ],
       "verification": [
         "python3 scripts/frontend/validate_evidence_control_room.py",
         "python3 scripts/frontend/validate_campaign_team_command_center.py",
-        "python3 -m http.server 4173 --directory web",
+        "python3 scripts/frontend/runtime_visual_review.py",
         "git diff --check"
       ],
+      "blocker": "No executable branch checkout and no GitHub Actions workflow run",
+      "resume_condition": "Enable or approve GitHub Actions for PR #29, or provide a local checkout with Chromium and Python Playwright",
       "political_gates": "closed"
     }
   ]
