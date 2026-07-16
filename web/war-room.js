@@ -27,11 +27,22 @@
 
   const listHtml = (items) => items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 
-  function focusAfterPaint(element) {
+  const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+
+  async function focusAfterPaint(element) {
     if (!element) return;
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => element.focus({ preventScroll: true }));
-    });
+
+    await nextFrame();
+    const activeAnimations = document.getAnimations({ subtree: true })
+      .filter((animation) => animation.playState !== "finished");
+
+    if (activeAnimations.length) {
+      await Promise.allSettled(activeAnimations.map((animation) => animation.finished));
+    }
+
+    await nextFrame();
+    await nextFrame();
+    element.focus({ preventScroll: true });
   }
 
   function renderPipeline(items) {
@@ -124,7 +135,7 @@
     const dialog = document.querySelector("#warDetailDialog");
     dialog.hidden = false;
     document.body.classList.add("drawer-open");
-    focusAfterPaint(document.querySelector("#warDetailClose"));
+    void focusAfterPaint(document.querySelector("#warDetailClose"));
   }
 
   function closeSignal() {
@@ -134,7 +145,7 @@
     document.body.classList.remove("drawer-open");
     const invoker = detailInvoker;
     detailInvoker = null;
-    focusAfterPaint(invoker);
+    void focusAfterPaint(invoker);
   }
 
   function trapFocus(event) {
