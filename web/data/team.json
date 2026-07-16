@@ -1,0 +1,174 @@
+{
+  "version": "c1-front-002.0",
+  "snapshotDate": "2026-07-16",
+  "productName": "CampaignOS",
+  "mode": "READ_ONLY",
+  "candidate": {
+    "title": "Candidato / Human Mandate Owner",
+    "subtitle": "Autoridad política y propietario final de las decisiones",
+    "authority": "FINAL_HUMAN_DECISION_OWNER",
+    "responsibilities": [
+      "Definir valores y propósito político",
+      "Escuchar a la ciudadanía",
+      "Aprobar posiciones y decisiones sensibles",
+      "Representar públicamente el proyecto"
+    ]
+  },
+  "chiefOfStaff": {
+    "title": "AI Campaign Chief of Staff",
+    "subtitle": "Coordinación, evidencia, blockers y preparación de decisiones",
+    "authority": "COORDINATION_ONLY",
+    "autonomy": "READ_ANALYZE_DRAFT_ROUTE_APPROVAL",
+    "cannot": [
+      "Tomar la decisión política final",
+      "Publicar contenido",
+      "Gastar presupuesto",
+      "Contactar ciudadanos",
+      "Abrir gates políticos"
+    ]
+  },
+  "departments": [
+    {
+      "id": "research-evidence",
+      "name": "Research and Evidence",
+      "shortName": "Research",
+      "mission": "Autenticar fuentes, preservar procedencia, reconciliar conflictos y exponer desconocidos.",
+      "status": "ACTIVE",
+      "skills": ["Official Source Finder", "Evidence Validator", "Source Reconciliation", "Research Gap Detector"],
+      "evidenceInputs": ["Evidence register", "Official TSE records", "Municipal documents", "Reviewed research artifacts"],
+      "blockers": ["Documento No. 4 o consolidado final para la JRV 5401"],
+      "approvalOwner": "Human Campaign Owner",
+      "autonomy": "READ_ANALYZE_DRAFT",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "strategy-war-room",
+      "name": "Strategy and War Room",
+      "shortName": "War Room",
+      "mission": "Convertir señales verificadas en escenarios, decisiones pendientes y coordinación de workstreams.",
+      "status": "RESEARCH_ONLY",
+      "skills": ["Daily War Room Brief", "Decision Gatekeeper", "Risk Radar", "Campaign Health Check"],
+      "evidenceInputs": ["Current state", "Decision log", "Risk register", "Department updates"],
+      "blockers": ["Priority segment and public positioning are not approved"],
+      "approvalOwner": "Candidate + Human Campaign Director",
+      "autonomy": "READ_SYNTHESIZE_DRAFT_OPTIONS",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "brand-reputation",
+      "name": "Candidate Brand and Reputation",
+      "shortName": "Brand",
+      "mission": "Documentar identidad, propósito, trayectoria, atributos y congruencia sin fabricar una persona falsa.",
+      "status": "SETUP_REQUIRED",
+      "skills": ["Candidate Identity Interview", "Biography Builder", "Values Map", "Reputation Baseline"],
+      "evidenceInputs": ["Candidate interview", "Verified biography", "Proof points", "Perception research"],
+      "blockers": ["Candidate identity interview and reviewed biography are not registered"],
+      "approvalOwner": "Candidate + Human Campaign Director",
+      "autonomy": "DRAFT_ONLY",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "policy-government",
+      "name": "Policy and Municipal Government",
+      "shortName": "Policy",
+      "mission": "Convertir problemas documentados en opciones municipales viables y trazables.",
+      "status": "RESEARCH_ONLY",
+      "skills": ["Problem Tree", "Municipal Competency Check", "Feasibility Review", "Promise Tracker"],
+      "evidenceInputs": ["Municipal diagnosis", "Legal framework", "Budget evidence", "LA_muni_RAG procedural evidence"],
+      "blockers": ["Public proposals require viability and political review"],
+      "approvalOwner": "Candidate + Human Policy Lead + Legal Counsel",
+      "autonomy": "RESEARCH_AND_DRAFT",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "communications-media",
+      "name": "Communications and Media",
+      "shortName": "Comms",
+      "mission": "Preparar borradores únicamente desde estrategia, marca, claims y evidencia aprobados.",
+      "status": "LOCKED",
+      "skills": ["Speech Builder", "Interview Prep", "Press Brief", "Message Consistency"],
+      "evidenceInputs": ["Approved positioning", "Approved audience context", "Verified claims", "Brand guidance"],
+      "blockers": ["Positioning, audience and message are not approved"],
+      "approvalOwner": "Candidate + Human Campaign Director",
+      "autonomy": "NO_EXECUTION",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "legal-compliance",
+      "name": "Legal and Electoral Compliance",
+      "shortName": "Legal",
+      "mission": "Mantener calendarios, checklists y análisis estructurado, escalando conclusiones a asesoría jurídica humana.",
+      "status": "ACTIVE",
+      "skills": ["Electoral Calendar", "Compliance Checklist", "Contract Review", "Legal Risk Assessment"],
+      "evidenceInputs": ["Applicable legislation", "TSE resolutions", "Contracts", "Qualified legal review"],
+      "blockers": ["Final legal conclusions require qualified human counsel"],
+      "approvalOwner": "Human Legal Counsel",
+      "autonomy": "RESEARCH_CHECKLIST_DRAFT",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "finance-administration",
+      "name": "Finance and Administration",
+      "shortName": "Finance",
+      "mission": "Controlar presupuesto, compromisos, proveedores y conciliaciones con historial de aprobación.",
+      "status": "SETUP_REQUIRED",
+      "skills": ["Cash Flow", "Budget Variance", "Expense Approval", "Vendor Review"],
+      "evidenceInputs": ["Budget ceiling", "Authorized accounts", "Expense policy", "Vendor register"],
+      "blockers": ["Budget ceiling and finance operating model are not registered"],
+      "approvalOwner": "Candidate + Human Finance Owner",
+      "autonomy": "NO_FINANCIAL_EXECUTION",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "operations-team",
+      "name": "Operations and Team",
+      "shortName": "Operations",
+      "mission": "Organizar responsabilidades, onboarding, reuniones, tareas, capacitación y seguimiento.",
+      "status": "SETUP_REQUIRED",
+      "skills": ["Responsibility Matrix", "Volunteer Onboarding", "Event Checklist", "Follow-up Tracker"],
+      "evidenceInputs": ["Approved organization chart", "Team roster", "Availability", "Operating cadence"],
+      "blockers": ["Human team roster and responsibility matrix are not approved"],
+      "approvalOwner": "Human Campaign Director",
+      "autonomy": "INTERNAL_DRAFT_ONLY",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "security-protection",
+      "name": "Security and Information Protection",
+      "shortName": "Security",
+      "mission": "Proteger accesos, credenciales, documentos sensibles y respuesta a incidentes sin capacidad ofensiva.",
+      "status": "SETUP_REQUIRED",
+      "skills": ["Security Onboarding", "Access Review", "Phishing Risk Check", "Incident Intake"],
+      "evidenceInputs": ["Access inventory", "Data classification", "Approved security policy", "Vendor list"],
+      "blockers": ["Access inventory and campaign security policy are not registered"],
+      "approvalOwner": "Human Security Owner",
+      "autonomy": "ADVISE_AND_CHECK_ONLY",
+      "lastReviewed": "2026-07-16"
+    },
+    {
+      "id": "performance-learning",
+      "name": "Performance and Learning",
+      "shortName": "Learning",
+      "mission": "Medir calidad de proceso, cobertura de evidencia, seguimiento de decisiones y lecciones aprendidas.",
+      "status": "ACTIVE",
+      "skills": ["Weekly Metrics", "Evidence Coverage", "Process Bottleneck", "Campaign Retrospective"],
+      "evidenceInputs": ["Task ledger", "Decision outcomes", "Validation reports", "Issue and PR history"],
+      "blockers": ["Must not create voter support or persuasion scores"],
+      "approvalOwner": "Human Campaign Owner",
+      "autonomy": "PROCESS_ANALYTICS_ONLY",
+      "lastReviewed": "2026-07-16"
+    }
+  ],
+  "closedGates": [
+    "Priority segment selection",
+    "Territorial ranking",
+    "Public narrative",
+    "Paid-media activation",
+    "Targeting and persuasion scoring",
+    "Field mobilization",
+    "Automatic publishing",
+    "Public promises or attacks",
+    "Individual voter inference"
+  ],
+  "safetyStatement": "Read-only operational model. Every sensitive action remains human-gated and no voter-level political profile is stored or inferred."
+}
