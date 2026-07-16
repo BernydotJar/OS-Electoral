@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "active_feature": "C1-FRONT-002-V1",
+  "active_feature": "C1-FRONT-002-V1-R1",
   "features": [
     {
       "id": "C1-FRONT-002",
@@ -19,51 +19,48 @@
       "id": "C1-FRONT-002-V1",
       "title": "Runtime Validation and Visual Review",
       "mode": "MVP",
-      "status": "partial_blocked_runtime_unavailable",
+      "status": "merged_with_local_findings",
       "owner": "Human product owner",
       "issue": "https://github.com/BernydotJar/OS-Electoral/issues/28",
       "base_branch": "main",
       "base_commit": "d13b67591ba3f07e71eff18094d0b0901ce71af9",
       "working_branch": "agent/c1-front-002-v1-runtime-validation",
-      "files_may_read": [
-        "AGENTS.md",
-        "RTK.md",
-        "feature_list.json",
-        "web/**",
-        "scripts/frontend/**",
-        "progress/**",
-        ".github/workflows/**"
+      "verified": [
+        "evidence validator passed locally",
+        "command center validator passed locally"
       ],
+      "findings": [
+        "runtime Playwright dependency was not installed",
+        "port 4173 already had a listening process",
+        "validation report contained trailing whitespace"
+      ],
+      "political_gates": "closed"
+    },
+    {
+      "id": "C1-FRONT-002-V1-R1",
+      "title": "Execute Runtime Review and Resolve Findings",
+      "mode": "MVP",
+      "status": "in_progress_pending_local_rerun",
+      "owner": "Human product owner",
+      "issue": "https://github.com/BernydotJar/OS-Electoral/issues/30",
+      "base_branch": "main",
+      "base_commit": "bb27a1574423cfc99e527ff366929529ee65d3bd",
+      "working_branch": "agent/c1-front-002-v1-r1-resolve-runtime-findings",
       "files_may_touch": [
         "feature_list.json",
-        "web/index.html",
-        "web/app.js",
-        "web/styles.css",
-        "web/README.md",
-        "web/accessibility.js",
         "scripts/frontend/runtime_visual_review.py",
-        "scripts/frontend/validate_campaign_team_command_center.py",
-        ".github/workflows/c1-front-002-v1.yml",
-        "progress/C1-FRONT-002-V1-validation-report.md"
-      ],
-      "files_must_not_touch": [
-        "research/**",
-        "territory/**",
-        "content/**",
-        "media/**",
-        "deployment/**",
-        "secrets/**",
-        "web/data/status.json",
-        "web/data/team.json"
+        "scripts/frontend/requirements-runtime.txt",
+        "progress/C1-FRONT-002-V1-validation-report.md",
+        "web/README.md"
       ],
       "verification": [
+        "python3 -m pip install -r scripts/frontend/requirements-runtime.txt",
+        "python3 -m playwright install chromium",
         "python3 scripts/frontend/validate_evidence_control_room.py",
         "python3 scripts/frontend/validate_campaign_team_command_center.py",
-        "python3 scripts/frontend/runtime_visual_review.py",
-        "git diff --check"
+        "git diff --check origin/main...HEAD",
+        "python3 scripts/frontend/runtime_visual_review.py"
       ],
-      "blocker": "No executable branch checkout and no GitHub Actions workflow run",
-      "resume_condition": "Enable or approve GitHub Actions for PR #29, or provide a local checkout with Chromium and Python Playwright",
       "political_gates": "closed"
     }
   ]
