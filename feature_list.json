@@ -1,38 +1,27 @@
 {
   "schema_version": "1.0",
-  "active_feature": "C1-FRONT-002-V1-R1",
+  "active_feature": "C1-FRONT-003",
   "features": [
     {
       "id": "C1-FRONT-002",
       "title": "Campaign Team Command Center",
       "mode": "MVP",
-      "status": "merged_pending_runtime_validation",
-      "owner": "Human product owner",
+      "status": "completed",
       "issue": "https://github.com/BernydotJar/OS-Electoral/issues/26",
-      "base_branch": "main",
-      "working_branch": "agent/c1-front-002-campaign-team-command-center",
-      "spec_root": "specs/C1-FRONT-002/",
-      "execution_prompt": "prompts/long-session/C1-FRONT-002.md",
       "political_gates": "closed"
     },
     {
       "id": "C1-FRONT-002-V1",
       "title": "Runtime Validation and Visual Review",
       "mode": "MVP",
-      "status": "merged_with_local_findings",
-      "owner": "Human product owner",
+      "status": "completed",
       "issue": "https://github.com/BernydotJar/OS-Electoral/issues/28",
-      "base_branch": "main",
-      "base_commit": "d13b67591ba3f07e71eff18094d0b0901ce71af9",
-      "working_branch": "agent/c1-front-002-v1-runtime-validation",
       "verified": [
-        "evidence validator passed locally",
-        "command center validator passed locally"
-      ],
-      "findings": [
-        "runtime Playwright dependency was not installed",
-        "port 4173 already had a listening process",
-        "validation report contained trailing whitespace"
+        "static validators passed",
+        "git diff check passed",
+        "Playwright runtime passed",
+        "screenshots generated",
+        "visual inspection passed"
       ],
       "political_gates": "closed"
     },
@@ -40,26 +29,59 @@
       "id": "C1-FRONT-002-V1-R1",
       "title": "Execute Runtime Review and Resolve Findings",
       "mode": "MVP",
-      "status": "in_progress_pending_local_rerun",
-      "owner": "Human product owner",
+      "status": "completed",
       "issue": "https://github.com/BernydotJar/OS-Electoral/issues/30",
+      "merge_commit": "4967f71bab7992512042e4460a0abd6c3d73c624",
+      "political_gates": "closed"
+    },
+    {
+      "id": "C1-FRONT-003",
+      "title": "Daily War Room",
+      "mode": "MVP",
+      "status": "in_progress_pending_validation",
+      "owner": "Human product owner",
+      "issue": "https://github.com/BernydotJar/OS-Electoral/issues/32",
       "base_branch": "main",
-      "base_commit": "bb27a1574423cfc99e527ff366929529ee65d3bd",
-      "working_branch": "agent/c1-front-002-v1-r1-resolve-runtime-findings",
+      "base_commit": "4967f71bab7992512042e4460a0abd6c3d73c624",
+      "working_branch": "agent/c1-front-003-daily-war-room",
+      "spec_root": "specs/C1-FRONT-003/",
+      "files_may_read": [
+        "AGENTS.md",
+        "RTK.md",
+        "campaign/**",
+        "research/evidence-register.md",
+        "web/**",
+        "scripts/frontend/**",
+        "specs/C1-FRONT-003/**"
+      ],
       "files_may_touch": [
         "feature_list.json",
+        "specs/C1-FRONT-003/**",
+        "web/index.html",
+        "web/war-room.css",
+        "web/war-room.js",
+        "web/data/war-room.json",
+        "scripts/frontend/validate_daily_war_room.py",
         "scripts/frontend/runtime_visual_review.py",
-        "scripts/frontend/requirements-runtime.txt",
-        "progress/C1-FRONT-002-V1-validation-report.md",
+        "progress/C1-FRONT-003-implementation-report.md",
         "web/README.md"
       ],
+      "files_must_not_touch": [
+        "web/data/status.json",
+        "web/data/team.json",
+        "research/**",
+        "territory/**",
+        "content/**",
+        "media/**",
+        "deployment/**",
+        "secrets/**"
+      ],
       "verification": [
-        "python3 -m pip install -r scripts/frontend/requirements-runtime.txt",
-        "python3 -m playwright install chromium",
         "python3 scripts/frontend/validate_evidence_control_room.py",
         "python3 scripts/frontend/validate_campaign_team_command_center.py",
-        "git diff --check origin/main...HEAD",
-        "python3 scripts/frontend/runtime_visual_review.py"
+        "python3 scripts/frontend/validate_daily_war_room.py",
+        "python3 scripts/frontend/runtime_visual_review.py",
+        "git diff --check origin/main...HEAD"
       ],
       "political_gates": "closed"
     }

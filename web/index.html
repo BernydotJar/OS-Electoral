@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="CampaignOS — equipo de campaña gobernado, War Room digital y Evidence Control Room de solo lectura.">
-  <title>CampaignOS · Team Command Center</title>
+  <meta name="description" content="CampaignOS — equipo de campaña gobernado, Daily War Room y Evidence Control Room de solo lectura.">
+  <title>CampaignOS · Command Center</title>
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./war-room.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -15,8 +16,8 @@
       <span class="brand-mark" aria-hidden="true">OS</span>
       <div>
         <p class="eyebrow">CAMPAIGNOS · ANTIGUA GUATEMALA</p>
-        <h1>Campaign Team Command Center</h1>
-        <p class="subtitle">Equipo digital gobernado, evidencia verificable y decisiones con autoridad humana.</p>
+        <h1>Campaign Command Center</h1>
+        <p class="subtitle">Equipo gobernado, decisiones trazables y evidencia verificable con autoridad humana.</p>
       </div>
     </div>
     <div class="topbar-actions">
@@ -28,6 +29,9 @@
   <nav class="module-nav" aria-label="Módulos principales">
     <button class="module-tab is-active" type="button" data-module="team" aria-current="page">
       <span>Team Command Center</span><small>Equipo y gobernanza</small>
+    </button>
+    <button class="module-tab" type="button" data-module="war-room">
+      <span>Daily War Room</span><small>Señales y decisiones</small>
     </button>
     <button class="module-tab" type="button" data-module="evidence">
       <span>Evidence Control Room</span><small>Fuentes y reconciliación</small>
@@ -90,6 +94,46 @@
       </section>
     </section>
 
+    <section id="warRoomModule" class="module-view" data-view="war-room" aria-labelledby="war-room-title" hidden>
+      <section class="war-hero">
+        <div>
+          <p class="section-kicker">DAILY DECISION SYSTEM</p>
+          <h2 id="war-room-title" tabindex="-1">Daily War Room</h2>
+          <p id="warSummary"></p>
+        </div>
+        <div class="war-stats" aria-label="Resumen del War Room">
+          <div><strong id="warSignalCount">—</strong><span>señales</span></div>
+          <div><strong id="warDecisionCount">—</strong><span>decisiones</span></div>
+          <div><strong id="warBlockedCount">—</strong><span>bloqueadas</span></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="war-pipeline-title">
+        <div class="section-heading"><div><p class="section-kicker">OPERATING LOOP</p><h2 id="war-pipeline-title">De señal a aprendizaje</h2></div><p>La IA prepara contexto y opciones; la autoridad humana aprueba decisiones sensibles.</p></div>
+        <ol id="warPipeline" class="war-pipeline"></ol>
+      </section>
+
+      <section aria-labelledby="war-signals-title">
+        <div class="section-heading"><div><p class="section-kicker">SIGNAL QUEUE</p><h2 id="war-signals-title">Señales que requieren atención</h2></div><p>Cada señal mantiene fuente, clase de evidencia, confidence, owner, gate y blockers.</p></div>
+        <div id="warSignalList" class="war-signal-list" role="list"></div>
+      </section>
+
+      <section class="war-columns" aria-label="Decisiones y asignaciones">
+        <article class="panel"><div class="panel-header"><div><p class="section-kicker">HUMAN APPROVAL</p><h2>Decisiones pendientes</h2></div></div><div id="warDecisionList" class="war-stack"></div></article>
+        <article class="panel"><div class="panel-header"><div><p class="section-kicker">INTERNAL EXECUTION</p><h2>Asignaciones controladas</h2></div></div><div id="warAssignmentList" class="war-stack"></div></article>
+      </section>
+
+      <section class="war-columns" aria-label="Riesgos y aprendizaje">
+        <article class="panel blocker-panel"><div class="panel-header"><div><p class="section-kicker">RISK RADAR</p><h2>Riesgos operativos</h2></div></div><div id="warRiskList" class="war-stack"></div></article>
+        <article class="panel"><div class="panel-header"><div><p class="section-kicker">LEARNING LOOP</p><h2>Aprendizaje acumulado</h2></div></div><div id="warLearningList" class="war-stack"></div></article>
+      </section>
+
+      <section class="war-columns" aria-label="Gates y seguridad del War Room">
+        <article class="panel"><div class="panel-header"><div><p class="section-kicker">POLITICAL GATES</p><h2>Controles cerrados</h2></div></div><div id="warGateList" class="gate-list"></div></article>
+        <article class="panel policy-panel-compact"><div><p class="section-kicker">SAFETY CONTRACT</p><h2>Coordinación sin ejecución externa</h2></div><p id="warSafetyStatement" class="hero-copy"></p></article>
+      </section>
+    </section>
+
     <section id="evidenceModule" class="module-view" data-view="evidence" aria-labelledby="overview-title" hidden>
       <section class="hero-panel">
         <div><p class="section-kicker">CURRENT EVIDENCE STATE</p><h2 id="overview-title" tabindex="-1">Baseline electoral con límites explícitos</h2><p id="overallSummary" class="hero-copy"></p></div>
@@ -132,8 +176,28 @@
     </div>
   </aside>
 
+  <aside id="warDetailDialog" class="drawer" role="dialog" aria-modal="true" aria-labelledby="warDetailTitle" hidden>
+    <button id="warDetailBackdrop" class="drawer-backdrop" type="button" tabindex="-1" aria-label="Cerrar detalle de señal"></button>
+    <div class="drawer-panel" tabindex="-1">
+      <div class="drawer-header"><div><p id="warDetailClass" class="section-kicker">EVIDENCE CLASS</p><h2 id="warDetailTitle">Señal</h2></div><button id="warDetailClose" class="icon-button" type="button" aria-label="Cerrar detalle de señal">×</button></div>
+      <p id="warDetailSummary" class="drawer-mission"></p>
+      <div class="war-detail-meta">
+        <div><span>Owner</span><strong id="warDetailOwner"></strong></div>
+        <div><span>Due</span><strong id="warDetailDue"></strong></div>
+        <div><span>Gate</span><strong id="warDetailGate"></strong></div>
+        <div><span>Approval</span><strong id="warDetailApproval"></strong></div>
+      </div>
+      <section class="war-detail-section"><h3>Source / provenance</h3><p id="warDetailSource" class="hero-copy"></p></section>
+      <section class="war-detail-section"><h3>Assessment</h3><p id="warDetailAssessment" class="hero-copy"></p></section>
+      <section class="war-detail-section"><h3>Decision required</h3><p id="warDetailDecision" class="hero-copy"></p></section>
+      <section class="war-detail-section"><h3>Options</h3><ul id="warDetailOptions" class="detail-list"></ul></section>
+      <section class="war-detail-section"><h3>Blockers</h3><ul id="warDetailBlockers" class="detail-list warning-list"></ul></section>
+    </div>
+  </aside>
+
   <footer><span>CampaignOS · Evidence-first governance</span><span id="dataVersion">Data version —</span></footer>
   <script src="./app.js" defer></script>
   <script src="./accessibility.js" defer></script>
+  <script src="./war-room.js" defer></script>
 </body>
 </html>
