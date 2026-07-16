@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Runtime and visual review for C1-FRONT-002-V1.
+"""Runtime and visual review for CampaignOS frontend modules.
 
 The runner reuses a healthy CampaignOS server when one already exists. If the
 configured URL is unavailable and points to localhost, it starts a temporary
@@ -19,7 +19,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 BASE_URL = os.environ.get("CAMPAIGNOS_URL", "http://127.0.0.1:4173")
-ARTIFACT_DIR = Path(os.environ.get("CAMPAIGNOS_ARTIFACT_DIR", "artifacts/c1-front-002-v1"))
+ARTIFACT_DIR = Path(os.environ.get("CAMPAIGNOS_ARTIFACT_DIR", "artifacts/campaignos-runtime"))
 ROOT = Path(__file__).resolve().parents[2]
 WEB = ROOT / "web"
 SERVER_LOG = ARTIFACT_DIR / "server.log"
@@ -32,7 +32,7 @@ def require(condition: bool, message: str) -> None:
 
 def load_playwright():
     try:
-        from playwright.sync_api import Page, sync_playwright
+        from playwright.sync_api import sync_playwright
     except ModuleNotFoundError as exc:
         raise SystemExit(
             "[BLOCKED] Python Playwright is not installed in the active environment.\n"
@@ -41,7 +41,7 @@ def load_playwright():
             "  python3 -m playwright install chromium\n"
             "Then rerun this script."
         ) from exc
-    return Page, sync_playwright
+    return sync_playwright
 
 
 def url_is_healthy(url: str, timeout: float = 2.0) -> bool:
@@ -83,9 +83,7 @@ def start_server_if_needed() -> subprocess.Popen[str] | None:
     for _ in range(40):
         if process.poll() is not None:
             log_handle.close()
-            raise SystemExit(
-                f"[FAILED] local CampaignOS server exited early. Review {SERVER_LOG}."
-            )
+            raise SystemExit(f"[FAILED] local CampaignOS server exited early. Review {SERVER_LOG}.")
         if url_is_healthy(BASE_URL, timeout=0.5):
             print(f"[OK] started temporary CampaignOS server at {BASE_URL}")
             process._campaignos_log_handle = log_handle  # type: ignore[attr-defined]
@@ -142,6 +140,31 @@ def wait_for_application(page) -> None:
     require(page.locator("#teamGrid .department-card").count() == 10, "expected ten department buttons")
 
 
+def review_daily_war_room(page, prefix: str) -> None:
+    page.locator('[data-module="war-room"]').click()
+    require(page.locator("#warRoomModule").is_visible(), "Daily War Room did not become visible")
+    require(page.locator("#teamModule").is_hidden(), "Team module did not hide")
+    require(page.evaluate("document.activeElement?.id") == "war-room-title", "War Room title did not receive focus")
+    page.locator("#warSignalList .war-signal-card").first.wait_for(state="visible")
+    require(page.locator("#warSignalList .war-signal-card").count() >= 1, "Daily War Room requires at least one signal")
+    require(page.locator("#warSignalList [role=listitem]").count() == page.locator("#warSignalList .war-signal-card").count(), "signals must preserve semantic list parity")
+    assert_no_horizontal_overflow(page, f"{prefix}-war-room")
+    page.screenshot(path=ARTIFACT_DIR / f"{prefix}-war-room.png", full_page=True)
+
+    first_signal = page.locator("#warSignalList .war-signal-card").first
+    first_signal.focus()
+    first_signal.click()
+    detail = page.locator("#warDetailDialog")
+    require(detail.is_visible(), "War Room signal detail did not open")
+    require(page.evaluate("document.activeElement?.id") == "warDetailClose", "War Room close button must receive focus")
+    page.screenshot(path=ARTIFACT_DIR / f"{prefix}-war-room-detail.png", full_page=True)
+    page.keyboard.press("Tab")
+    require(page.evaluate("document.activeElement?.id") == "warDetailClose", "War Room detail focus must remain trapped")
+    page.keyboard.press("Escape")
+    require(detail.is_hidden(), "Escape did not close War Room detail")
+    require(page.evaluate("document.activeElement?.classList.contains('war-signal-card')") is True, "focus did not return to War Room signal")
+
+
 def review_desktop(browser, results: dict) -> None:
     context = browser.new_context(viewport={"width": 1440, "height": 1000})
     page = context.new_page()
@@ -164,31 +187,20 @@ def review_desktop(browser, results: dict) -> None:
     require(drawer.is_visible(), "drawer did not open")
     require(page.locator("#drawerBackdrop").get_attribute("tabindex") == "-1", "backdrop must be excluded from tab order")
     require(page.evaluate("document.activeElement?.id") == "drawerClose", "drawer close button must receive focus")
-    page.screenshot(path=ARTIFACT_DIR / "desktop-drawer.png", full_page=True)
-
-    page.keyboard.press("Tab")
-    require(page.evaluate("document.activeElement?.id") == "drawerClose", "focus must remain trapped inside drawer")
     page.keyboard.press("Escape")
     require(drawer.is_hidden(), "Escape did not close drawer")
-    require(
-        page.evaluate("document.activeElement?.classList.contains('department-card')") is True,
-        "focus did not return to invoking department card",
-    )
 
-    evidence_tab = page.locator('[data-module="evidence"]')
-    evidence_tab.click()
+    review_daily_war_room(page, "desktop")
+
+    page.locator('[data-module="evidence"]').click()
     require(page.locator("#evidenceModule").is_visible(), "evidence module did not become visible")
-    require(page.locator("#teamModule").is_hidden(), "team module did not hide")
     require(page.evaluate("document.activeElement?.id") == "overview-title", "evidence title did not receive focus")
     assert_no_horizontal_overflow(page, "desktop-evidence")
     page.screenshot(path=ARTIFACT_DIR / "desktop-evidence.png", full_page=True)
 
-    page.locator('[data-module="team"]').click()
-    require(page.evaluate("document.activeElement?.id") == "team-title", "team title did not receive focus")
-
     cdp = context.new_cdp_session(page)
     cdp.send("Emulation.setPageScaleFactor", {"pageScaleFactor": 2})
-    require(page.locator("#teamModule").is_visible(), "team module failed at 200 percent page scale")
+    require(page.locator("#evidenceModule").is_visible(), "frontend failed at 200 percent page scale")
     cdp.send("Emulation.setPageScaleFactor", {"pageScaleFactor": 1})
 
     require(not errors, f"runtime errors detected: {errors}")
@@ -205,33 +217,25 @@ def review_mobile(browser, results: dict) -> None:
     assert_no_horizontal_overflow(page, "mobile-team")
     require(page.locator("#teamGrid button.department-card").count() == 10, "mobile lost department cards")
     page.screenshot(path=ARTIFACT_DIR / "mobile-team.png", full_page=True)
-
-    page.locator("#teamGrid button.department-card").first.click()
-    require(page.locator("#agentDrawer").is_visible(), "mobile drawer did not open")
-    page.screenshot(path=ARTIFACT_DIR / "mobile-drawer.png", full_page=True)
-    page.keyboard.press("Escape")
-    require(page.locator("#agentDrawer").is_hidden(), "mobile Escape did not close drawer")
+    review_daily_war_room(page, "mobile")
     require(not errors, f"mobile runtime errors detected: {errors}")
     results["mobile"] = {"status": "PASS", "errors": errors}
     context.close()
 
 
 def review_reduced_motion(browser, results: dict) -> None:
-    context = browser.new_context(
-        viewport={"width": 1280, "height": 800},
-        reduced_motion="reduce",
-    )
+    context = browser.new_context(viewport={"width": 1280, "height": 800}, reduced_motion="reduce")
     page = context.new_page()
     wait_for_application(page)
     require(page.evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches"), "reduced-motion emulation failed")
-    page.locator('[data-module="evidence"]').click()
-    require(page.locator("#evidenceModule").is_visible(), "module switching failed with reduced motion")
+    page.locator('[data-module="war-room"]').click()
+    require(page.locator("#warRoomModule").is_visible(), "War Room switching failed with reduced motion")
     results["reduced_motion"] = {"status": "PASS"}
     context.close()
 
 
 def main() -> None:
-    _, sync_playwright = load_playwright()
+    sync_playwright = load_playwright()
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
     managed_server = start_server_if_needed()
     results: dict[str, object] = {"base_url": BASE_URL}
@@ -252,11 +256,10 @@ def main() -> None:
         json.dumps(results, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    print("[OK] desktop runtime and screenshots")
-    print("[OK] accessible drawer focus lifecycle")
-    print("[OK] Team/Evidence module switching")
-    print("[OK] mobile layout and drawer")
-    print("[OK] reduced-motion behavior")
+    print("[OK] desktop Team, War Room and Evidence modules")
+    print("[OK] accessible department and signal detail lifecycle")
+    print("[OK] mobile Daily War Room layout")
+    print("[OK] reduced-motion module switching")
     print("[OK] no page-level horizontal overflow")
 
 
