@@ -2,13 +2,13 @@
 
 - [x] Define requirements and non-goals.
 - [x] Define additive architecture and accessibility boundaries.
-- [ ] Add premium slate stylesheet and shared tokens.
-- [ ] Add decorative ambient canvas and glow-card runtime.
-- [ ] Integrate assets and shell metadata in `web/index.html`.
-- [ ] Add static premium-slate validator.
-- [ ] Add validator to GitHub Actions runtime gate.
-- [ ] Run all existing static validators.
-- [ ] Run Playwright desktop, mobile and reduced-motion review.
-- [ ] Inspect every generated screenshot.
-- [ ] Record implementation and validation evidence.
-- [ ] Keep stacked pull request in draft pending human review.
+- [x] Add premium slate stylesheet and shared tokens.
+- [x] Add decorative ambient canvas and glow-card runtime.
+- [x] Integrate assets and shell metadata in `web/index.html`.
+- [x] Add static premium-slate validator.
+- [x] Add validator to GitHub Actions runtime gate.
+- [x] Run all existing static validators.
+- [x] Run Playwright desktop, mobile and reduced-motion review.
+- [x] Inspect every generated screenshot.
+- [x] Record implementation and validation evidence.
+- [x] Keep stacked pull request in draft pending human review.
