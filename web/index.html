@@ -7,8 +7,10 @@
   <title>CampaignOS · Command Center</title>
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./war-room.css">
+  <link rel="stylesheet" href="./premium-slate.css">
 </head>
-<body>
+<body data-active-module="team">
+  <canvas id="ambientCanvas" aria-hidden="true"></canvas>
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
   <header class="topbar">
@@ -25,6 +27,11 @@
       <span id="snapshotDate" class="snapshot-date">Snapshot —</span>
     </div>
   </header>
+
+  <div class="command-strip" aria-label="Contexto operacional">
+    <span id="activeModuleStatus">Coordinate 01 · Governed team</span>
+    <span>Human authority · Evidence first</span>
+  </div>
 
   <nav class="module-nav" aria-label="Módulos principales">
     <button class="module-tab is-active" type="button" data-module="team" aria-current="page">
@@ -199,5 +206,6 @@
   <script src="./app.js" defer></script>
   <script src="./accessibility.js" defer></script>
   <script src="./war-room.js" defer></script>
+  <script src="./premium-slate.js" defer></script>
 </body>
 </html>
