@@ -40,6 +40,9 @@ jobs:
       - name: Validate Campaign Team Command Center
         run: python3 scripts/frontend/validate_campaign_team_command_center.py
 
+      - name: Validate Daily War Room
+        run: python3 scripts/frontend/validate_daily_war_room.py
+
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD
 
