@@ -27,11 +27,27 @@
 
   const listHtml = (items) => items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 
-  function focusAfterPaint(element) {
+  const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+  const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+  async function focusAfterPaint(element) {
     if (!element) return;
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => element.focus({ preventScroll: true }));
-    });
+
+    element.focus({ preventScroll: true });
+    await nextFrame();
+
+    const animations = document.getAnimations({ subtree: true })
+      .filter((animation) => animation.playState !== "finished");
+
+    if (animations.length) {
+      await Promise.race([
+        Promise.allSettled(animations.map((animation) => animation.finished)),
+        delay(900)
+      ]);
+    }
+
+    await nextFrame();
+    element.focus({ preventScroll: true });
   }
 
   function renderPipeline(items) {
@@ -124,7 +140,7 @@
     const dialog = document.querySelector("#warDetailDialog");
     dialog.hidden = false;
     document.body.classList.add("drawer-open");
-    focusAfterPaint(document.querySelector("#warDetailClose"));
+    void focusAfterPaint(document.querySelector("#warDetailClose"));
   }
 
   function closeSignal() {
@@ -134,7 +150,7 @@
     document.body.classList.remove("drawer-open");
     const invoker = detailInvoker;
     detailInvoker = null;
-    focusAfterPaint(invoker);
+    void focusAfterPaint(invoker);
   }
 
   function trapFocus(event) {
