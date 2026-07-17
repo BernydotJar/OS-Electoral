@@ -40,6 +40,9 @@ jobs:
       - name: Validate Campaign Team Command Center
         run: python3 scripts/frontend/validate_campaign_team_command_center.py
 
+      - name: Validate Daily War Room
+        run: python3 scripts/frontend/validate_daily_war_room.py
+
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD
 
@@ -61,7 +64,9 @@ jobs:
         env:
           CAMPAIGNOS_URL: http://127.0.0.1:4173
           CAMPAIGNOS_ARTIFACT_DIR: artifacts/c1-front-002-v1
-        run: python3 scripts/frontend/runtime_visual_review.py
+        run: |
+          set -o pipefail
+          python3 scripts/frontend/runtime_visual_review.py 2>&1 | tee artifacts/c1-front-002-v1/runtime-run.log
 
       - name: Upload visual review evidence
         if: always()

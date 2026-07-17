@@ -167,16 +167,132 @@ def collect_runtime_errors(page, bucket: list[str]) -> None:
     page.on("pageerror", lambda error: bucket.append(f"pageerror:{error}"))
 
 
+def install_focus_probe(page) -> None:
+    page.evaluate(
+        """() => {
+          if (window.__campaignosFocusProbeInstalled) return;
+          window.__campaignosFocusProbeInstalled = true;
+          window.__campaignosFocusEvents = [];
+          const describe = (element) => {
+            if (!(element instanceof Element)) return null;
+            return {
+              tagName: element.tagName,
+              id: element.id || null,
+              className: typeof element.className === "string" ? element.className : null
+            };
+          };
+          const record = (type, event) => {
+            window.__campaignosFocusEvents.push({
+              at: Math.round(performance.now()),
+              type,
+              target: describe(event.target),
+              relatedTarget: describe(event.relatedTarget)
+            });
+            window.__campaignosFocusEvents = window.__campaignosFocusEvents.slice(-80);
+          };
+          document.addEventListener("focusin", (event) => record("focusin", event), true);
+          document.addEventListener("focusout", (event) => record("focusout", event), true);
+        }"""
+    )
+
+
+def collect_focus_snapshot(page, element_id: str) -> dict:
+    return page.evaluate(
+        """elementId => {
+          const truncate = (value, limit = 500) => {
+            const text = String(value ?? "");
+            return text.length > limit ? `${text.slice(0, limit)}…` : text;
+          };
+          const describe = (element) => {
+            if (!(element instanceof Element)) return null;
+            const style = getComputedStyle(element);
+            const rect = element.getBoundingClientRect();
+            const ancestors = [];
+            let current = element;
+            while (current && ancestors.length < 8) {
+              ancestors.push({
+                tagName: current.tagName,
+                id: current.id || null,
+                className: typeof current.className === "string" ? current.className : null,
+                hidden: Boolean(current.hidden),
+                inert: Boolean(current.inert),
+                ariaHidden: current.getAttribute("aria-hidden"),
+                display: getComputedStyle(current).display,
+                visibility: getComputedStyle(current).visibility
+              });
+              current = current.parentElement;
+            }
+            return {
+              tagName: element.tagName,
+              id: element.id || null,
+              className: typeof element.className === "string" ? element.className : null,
+              outerHTML: truncate(element.outerHTML),
+              hidden: Boolean(element.hidden),
+              disabled: "disabled" in element ? Boolean(element.disabled) : null,
+              tabIndex: element.tabIndex,
+              inert: Boolean(element.inert),
+              ariaHidden: element.getAttribute("aria-hidden"),
+              connected: element.isConnected,
+              display: style.display,
+              visibility: style.visibility,
+              opacity: style.opacity,
+              pointerEvents: style.pointerEvents,
+              rect: {
+                x: Math.round(rect.x),
+                y: Math.round(rect.y),
+                width: Math.round(rect.width),
+                height: Math.round(rect.height)
+              },
+              ancestors
+            };
+          };
+          const target = document.getElementById(elementId);
+          const dialog = document.getElementById("warDetailDialog");
+          return {
+            at: Math.round(performance.now()),
+            activeElement: describe(document.activeElement),
+            target: describe(target),
+            duplicateCount: document.querySelectorAll(`#${CSS.escape(elementId)}`).length,
+            dialog: describe(dialog),
+            activeAnimations: document.getAnimations({ subtree: true }).map((animation) => ({
+              playState: animation.playState,
+              currentTime: animation.currentTime,
+              id: animation.id || null,
+              pseudoElement: animation.effect?.pseudoElement || null,
+              target: describe(animation.effect?.target)
+            })),
+            focusEvents: [...(window.__campaignosFocusEvents || [])],
+            sharedViewTransitionState: window.__campaignosViewTransitionState || null
+          };
+        }""",
+        element_id,
+    )
+
+
 def wait_for_application(page) -> None:
     page.goto(BASE_URL, wait_until="networkidle")
+    install_focus_probe(page)
     page.locator("#teamGrid .department-card").first.wait_for(state="visible")
     require(page.locator("#teamGrid .department-card").count() == 10, "expected ten department buttons")
 
 
-def wait_for_focused_id(page, element_id: str) -> None:
-    page.wait_for_function(
-        "elementId => document.activeElement?.id === elementId",
-        arg=element_id,
+def wait_for_focused_id(page, element_id: str, timeout_ms: int = 5000) -> None:
+    deadline = time.monotonic() + timeout_ms / 1000
+    samples: list[dict] = []
+    while time.monotonic() < deadline:
+        snapshot = collect_focus_snapshot(page, element_id)
+        samples.append(snapshot)
+        if snapshot.get("activeElement", {}).get("id") == element_id:
+            return
+        page.wait_for_timeout(100)
+
+    diagnostic = {
+        "expectedFocusedId": element_id,
+        "timeoutMs": timeout_ms,
+        "samples": samples[-12:],
+    }
+    raise AssertionError(
+        "focus assertion failed:\n" + json.dumps(diagnostic, indent=2, ensure_ascii=False)
     )
 
 
@@ -212,7 +328,8 @@ def review_daily_war_room(page, prefix: str) -> None:
     page.keyboard.press("Escape")
     detail.wait_for(state="hidden")
     page.wait_for_function(
-        "() => document.activeElement?.classList.contains('war-signal-card') === true"
+        "() => document.activeElement?.classList.contains('war-signal-card') === true",
+        timeout=5000,
     )
 
 

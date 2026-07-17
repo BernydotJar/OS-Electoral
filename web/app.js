@@ -21,6 +21,8 @@ const EVIDENCE_CLASSES = {
 
 let teamSnapshot = null;
 let drawerInvoker = null;
+window.__campaignosViewTransitionFinished = Promise.resolve();
+window.__campaignosViewTransitionState = { status: "idle" };
 
 function escapeHtml(value) {
   return String(value)
@@ -205,8 +207,8 @@ function closeDrawer() {
 function trapDrawerFocus(event) {
   const drawer = document.querySelector("#agentDrawer");
   if (drawer.hidden || event.key !== "Tab") return;
-  const focusable = [...drawer.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])')]
-    .filter((element) => !element.disabled && !element.hidden);
+  const focusable = [...drawer.querySelectorAll('button, [href], [tabindex]')]
+    .filter((element) => !element.disabled && !element.hidden && element.tabIndex >= 0);
   if (!focusable.length) return;
   const first = focusable[0];
   const last = focusable[focusable.length - 1];
@@ -217,6 +219,10 @@ function trapDrawerFocus(event) {
     event.preventDefault();
     first.focus();
   }
+}
+
+function focusModuleTitle(moduleName) {
+  document.querySelector(`[data-view="${moduleName}"] h2`)?.focus?.({ preventScroll: true });
 }
 
 function switchModule(moduleName, trigger) {
@@ -235,16 +241,43 @@ function switchModule(moduleName, trigger) {
     document.documentElement.style.setProperty("--transition-x", `${trigger.clientX || window.innerWidth / 2}px`);
     document.documentElement.style.setProperty("--transition-y", `${trigger.clientY || 80}px`);
   }
-  document.querySelector(`[data-view="${moduleName}"] h2`)?.focus?.({ preventScroll: true });
+}
+
+function runModuleTransition(moduleName, event) {
+  const apply = () => switchModule(moduleName, event);
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!reducedMotion && document.startViewTransition) {
+    window.__campaignosViewTransitionState = { status: "running", moduleName };
+    const transition = document.startViewTransition(apply);
+    window.__campaignosViewTransitionFinished = transition.finished.then(
+      () => {
+        focusModuleTitle(moduleName);
+        window.__campaignosViewTransitionState = { status: "finished", moduleName };
+      },
+      (error) => {
+        focusModuleTitle(moduleName);
+        window.__campaignosViewTransitionState = {
+          status: "failed",
+          moduleName,
+          message: String(error)
+        };
+        console.error("CampaignOS view transition failed", error);
+      }
+    );
+    return;
+  }
+
+  apply();
+  focusModuleTitle(moduleName);
+  window.__campaignosViewTransitionState = { status: "skipped", moduleName };
+  window.__campaignosViewTransitionFinished = Promise.resolve();
 }
 
 function bindInteractions() {
   document.querySelectorAll("[data-module]").forEach((button) => {
     button.addEventListener("click", (event) => {
-      const apply = () => switchModule(button.dataset.module, event);
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reducedMotion && document.startViewTransition) document.startViewTransition(apply);
-      else apply();
+      runModuleTransition(button.dataset.module, event);
     });
   });
   document.querySelector("#drawerClose").addEventListener("click", closeDrawer);
