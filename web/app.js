@@ -221,6 +221,10 @@ function trapDrawerFocus(event) {
   }
 }
 
+function focusModuleTitle(moduleName) {
+  document.querySelector(`[data-view="${moduleName}"] h2`)?.focus?.({ preventScroll: true });
+}
+
 function switchModule(moduleName, trigger) {
   document.querySelectorAll("[data-view]").forEach((view) => {
     view.hidden = view.dataset.view !== moduleName;
@@ -237,7 +241,6 @@ function switchModule(moduleName, trigger) {
     document.documentElement.style.setProperty("--transition-x", `${trigger.clientX || window.innerWidth / 2}px`);
     document.documentElement.style.setProperty("--transition-y", `${trigger.clientY || 80}px`);
   }
-  document.querySelector(`[data-view="${moduleName}"] h2`)?.focus?.({ preventScroll: true });
 }
 
 function runModuleTransition(moduleName, event) {
@@ -249,9 +252,11 @@ function runModuleTransition(moduleName, event) {
     const transition = document.startViewTransition(apply);
     window.__campaignosViewTransitionFinished = transition.finished.then(
       () => {
+        focusModuleTitle(moduleName);
         window.__campaignosViewTransitionState = { status: "finished", moduleName };
       },
       (error) => {
+        focusModuleTitle(moduleName);
         window.__campaignosViewTransitionState = {
           status: "failed",
           moduleName,
@@ -264,6 +269,7 @@ function runModuleTransition(moduleName, event) {
   }
 
   apply();
+  focusModuleTitle(moduleName);
   window.__campaignosViewTransitionState = { status: "skipped", moduleName };
   window.__campaignosViewTransitionFinished = Promise.resolve();
 }
