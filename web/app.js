@@ -21,6 +21,8 @@ const EVIDENCE_CLASSES = {
 
 let teamSnapshot = null;
 let drawerInvoker = null;
+window.__campaignosViewTransitionFinished = Promise.resolve();
+window.__campaignosViewTransitionState = { status: "idle" };
 
 function escapeHtml(value) {
   return String(value)
@@ -238,13 +240,38 @@ function switchModule(moduleName, trigger) {
   document.querySelector(`[data-view="${moduleName}"] h2`)?.focus?.({ preventScroll: true });
 }
 
+function runModuleTransition(moduleName, event) {
+  const apply = () => switchModule(moduleName, event);
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!reducedMotion && document.startViewTransition) {
+    window.__campaignosViewTransitionState = { status: "running", moduleName };
+    const transition = document.startViewTransition(apply);
+    window.__campaignosViewTransitionFinished = transition.finished.then(
+      () => {
+        window.__campaignosViewTransitionState = { status: "finished", moduleName };
+      },
+      (error) => {
+        window.__campaignosViewTransitionState = {
+          status: "failed",
+          moduleName,
+          message: String(error)
+        };
+        console.error("CampaignOS view transition failed", error);
+      }
+    );
+    return;
+  }
+
+  apply();
+  window.__campaignosViewTransitionState = { status: "skipped", moduleName };
+  window.__campaignosViewTransitionFinished = Promise.resolve();
+}
+
 function bindInteractions() {
   document.querySelectorAll("[data-module]").forEach((button) => {
     button.addEventListener("click", (event) => {
-      const apply = () => switchModule(button.dataset.module, event);
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reducedMotion && document.startViewTransition) document.startViewTransition(apply);
-      else apply();
+      runModuleTransition(button.dataset.module, event);
     });
   });
   document.querySelector("#drawerClose").addEventListener("click", closeDrawer);
