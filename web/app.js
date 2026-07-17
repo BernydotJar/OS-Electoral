@@ -205,8 +205,8 @@ function closeDrawer() {
 function trapDrawerFocus(event) {
   const drawer = document.querySelector("#agentDrawer");
   if (drawer.hidden || event.key !== "Tab") return;
-  const focusable = [...drawer.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])')]
-    .filter((element) => !element.disabled && !element.hidden);
+  const focusable = [...drawer.querySelectorAll('button, [href], [tabindex]')]
+    .filter((element) => !element.disabled && !element.hidden && element.tabIndex >= 0);
   if (!focusable.length) return;
   const first = focusable[0];
   const last = focusable[focusable.length - 1];
