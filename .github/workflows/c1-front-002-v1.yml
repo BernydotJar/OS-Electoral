@@ -61,7 +61,9 @@ jobs:
         env:
           CAMPAIGNOS_URL: http://127.0.0.1:4173
           CAMPAIGNOS_ARTIFACT_DIR: artifacts/c1-front-002-v1
-        run: python3 scripts/frontend/runtime_visual_review.py
+        run: |
+          set -o pipefail
+          python3 scripts/frontend/runtime_visual_review.py 2>&1 | tee artifacts/c1-front-002-v1/runtime-run.log
 
       - name: Upload visual review evidence
         if: always()
