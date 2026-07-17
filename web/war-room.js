@@ -28,19 +28,24 @@
   const listHtml = (items) => items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 
   const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+  const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
   async function focusAfterPaint(element) {
     if (!element) return;
 
+    element.focus({ preventScroll: true });
     await nextFrame();
-    const activeAnimations = document.getAnimations({ subtree: true })
+
+    const animations = document.getAnimations({ subtree: true })
       .filter((animation) => animation.playState !== "finished");
 
-    if (activeAnimations.length) {
-      await Promise.allSettled(activeAnimations.map((animation) => animation.finished));
+    if (animations.length) {
+      await Promise.race([
+        Promise.allSettled(animations.map((animation) => animation.finished)),
+        delay(900)
+      ]);
     }
 
-    await nextFrame();
     await nextFrame();
     element.focus({ preventScroll: true });
   }
