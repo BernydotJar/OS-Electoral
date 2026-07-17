@@ -27,27 +27,14 @@
 
   const listHtml = (items) => items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 
-  const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
-  const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-
-  async function focusAfterPaint(element) {
+  function focusAfterPaint(element) {
     if (!element) return;
-
-    element.focus({ preventScroll: true });
-    await nextFrame();
-
-    const animations = document.getAnimations({ subtree: true })
-      .filter((animation) => animation.playState !== "finished");
-
-    if (animations.length) {
-      await Promise.race([
-        Promise.allSettled(animations.map((animation) => animation.finished)),
-        delay(900)
-      ]);
-    }
-
-    await nextFrame();
-    element.focus({ preventScroll: true });
+    queueMicrotask(() => {
+      requestAnimationFrame(() => {
+        if (!element.isConnected || element.closest("[hidden]")) return;
+        element.focus({ preventScroll: true });
+      });
+    });
   }
 
   function renderPipeline(items) {
@@ -140,7 +127,7 @@
     const dialog = document.querySelector("#warDetailDialog");
     dialog.hidden = false;
     document.body.classList.add("drawer-open");
-    void focusAfterPaint(document.querySelector("#warDetailClose"));
+    focusAfterPaint(document.querySelector("#warDetailClose"));
   }
 
   function closeSignal() {
@@ -150,14 +137,14 @@
     document.body.classList.remove("drawer-open");
     const invoker = detailInvoker;
     detailInvoker = null;
-    void focusAfterPaint(invoker);
+    focusAfterPaint(invoker);
   }
 
   function trapFocus(event) {
     const dialog = document.querySelector("#warDetailDialog");
     if (dialog.hidden || event.key !== "Tab") return;
-    const focusable = [...dialog.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])')]
-      .filter((element) => !element.disabled && !element.hidden);
+    const focusable = [...dialog.querySelectorAll('button, [href], [tabindex]')]
+      .filter((element) => !element.disabled && !element.hidden && element.tabIndex >= 0);
     if (!focusable.length) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
