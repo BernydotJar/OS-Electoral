@@ -22,7 +22,13 @@ def main() -> int:
         run = subprocess.run(command, cwd=ROOT, check=False)
         if run.returncode:
             return run.returncode
-    for relative in ("fixtures/candidate-brand/antigua-candidate-brand.json", "fixtures/candidate-brand/rio-claro-candidate-brand.json", "artifacts/candidate-brand/antigua-brand-assessment.json", "artifacts/candidate-brand/rio-claro-brand-assessment.json"):
+    for relative in (
+        "schemas/candidate-brand-workspace-v1.schema.json",
+        "fixtures/candidate-brand/antigua-candidate-brand.json",
+        "fixtures/candidate-brand/rio-claro-candidate-brand.json",
+        "artifacts/candidate-brand/antigua-brand-assessment.json",
+        "artifacts/candidate-brand/rio-claro-brand-assessment.json",
+    ):
         json.loads((ROOT / relative).read_text(encoding="utf-8"))
     print("[OK] C2-PROD-001 candidate brand, tenancy and authority contracts")
     return 0
