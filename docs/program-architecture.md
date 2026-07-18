@@ -15,7 +15,8 @@ main
                         └── #54 C2-ARCH-001 Executable Program State
                             └── #56 C2-SAAS-001B Persistence and Audit
                                 └── #58 C2-SAAS-001C Repository and Transaction Boundary
-                                    └── C2-OBS-001 Audit Observability and Integrity Read Model
+                                    └── #60 C2-OBS-001 Audit Observability and Integrity Read Model
+                                        └── C2-API-001A Read-Only Application Service Contracts
 ```
 
 Every layer is draft, independently validated and blocked from merge or deployment pending human approval.
@@ -31,6 +32,7 @@ Every layer is draft, independently validated and blocked from merge or deployme
 - Persistence Audit: pure persistence boundary, optimistic concurrency, cryptographic hash chaining and idempotency keys.
 - Repository Transaction: tenant-scoped repositories and unit of work context manager for transaction coordination.
 - Audit Observability: read-only query and integrity verifier for persistence audit events.
+- Application Service: unified, tenant-isolated query facade and application contracts.
 
 ## Program-state validation
 
@@ -42,6 +44,6 @@ The validator rejects unknown dependencies, dependency cycles, missing code or v
 
 ## Current executable next work
 
-The manifest identifies C2-OBS-001 as implemented. C2-AI-001A (Evidence-grounded extraction and citation contracts) may follow.
+The manifest identifies C2-API-001A as implemented. C2-TEST-001 (Cross-Tenant Adversarial Integration Harness) or C2-AI-001A (Evidence-grounded extraction and citation contracts) may follow.
 
 Real authentication, billing, deployment, tactical activation and public campaign actions remain deferred or human-blocked.
