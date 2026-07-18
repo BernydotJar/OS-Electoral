@@ -12,13 +12,13 @@
     {"id":"increment:c2-front-001","issue":49,"pr":50,"branch":"agent/c2-front-001-governance-workspace","base":"agent/c2-prod-003-daily-operating-workflow","status":"IMPLEMENTED_IN_STACK","validation_run":29658564346,"external_effects":"NONE"},
     {"id":"increment:c2-saas-001a","issue":51,"pr":52,"branch":"agent/c2-saas-001a-authorization-policy","base":"agent/c2-front-001-governance-workspace","status":"IMPLEMENTED_IN_STACK","validation_run":29658680211,"external_effects":"NONE"},
     {"id":"increment:c2-arch-001","issue":53,"pr":54,"branch":"agent/c2-arch-001-executable-program-state","base":"agent/c2-saas-001a-authorization-policy","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
-    {"id":"increment:c2-saas-001b","issue":55,"pr":56,"branch":"agent/c2-saas-001b-persistence-audit","base":"agent/c2-arch-001-executable-program-state","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
-    {"id":"increment:c2-saas-001c","issue":57,"pr":58,"branch":"agent/c2-saas-001c-repository-transaction","base":"agent/c2-saas-001b-persistence-audit","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
-    {"id":"increment:c2-obs-001","issue":59,"pr":60,"branch":"agent/c2-obs-001-audit-observability","base":"agent/c2-saas-001c-repository-transaction","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
-    {"id":"increment:c2-api-001a","issue":61,"pr":62,"branch":"agent/c2-api-001a-service-contracts","base":"agent/c2-obs-001-audit-observability","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
-    {"id":"increment:c2-test-001","issue":63,"pr":64,"branch":"agent/c2-test-001-adversarial-harness","base":"agent/c2-api-001a-service-contracts","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
-    {"id":"increment:c2-docs-001","issue":65,"pr":66,"branch":"agent/c2-docs-001-operator-runbook","base":"agent/c2-test-001-adversarial-harness","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
-    {"id":"increment:c2-ai-001a","issue":67,"pr":68,"branch":"agent/c2-ai-001a-extraction-citation","base":"agent/c2-docs-001-operator-runbook","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"}
+    {"id":"increment:c2-saas-001b","issue":55,"pr":56,"branch":"agent/c2-saas-001b-persistence-audit","base":"agent/c2-arch-001-executable-program-state","status":"IMPLEMENTED_IN_STACK","validation_run":29659355550,"external_effects":"NONE"},
+    {"id":"increment:c2-saas-001c","issue":57,"pr":58,"branch":"agent/c2-saas-001c-repository-transaction","base":"agent/c2-saas-001b-persistence-audit","status":"IMPLEMENTED_IN_STACK","validation_run":29659451027,"external_effects":"NONE"},
+    {"id":"increment:c2-obs-001","issue":59,"pr":60,"branch":"agent/c2-obs-001-audit-observability","base":"agent/c2-saas-001c-repository-transaction","status":"IMPLEMENTED_IN_STACK","validation_run":29659542083,"external_effects":"NONE"},
+    {"id":"increment:c2-api-001a","issue":61,"pr":62,"branch":"agent/c2-api-001a-service-contracts","base":"agent/c2-obs-001-audit-observability","status":"IMPLEMENTED_IN_STACK","validation_run":29659623156,"external_effects":"NONE"},
+    {"id":"increment:c2-test-001","issue":63,"pr":64,"branch":"agent/c2-test-001-adversarial-harness","base":"agent/c2-api-001a-service-contracts","status":"IMPLEMENTED_IN_STACK","validation_run":29659692005,"external_effects":"NONE"},
+    {"id":"increment:c2-docs-001","issue":65,"pr":66,"branch":"agent/c2-docs-001-operator-runbook","base":"agent/c2-test-001-adversarial-harness","status":"IMPLEMENTED_IN_STACK","validation_run":29659733648,"external_effects":"NONE"},
+    {"id":"increment:c2-ai-001a","issue":67,"pr":68,"branch":"agent/c2-ai-001a-extraction-citation","base":"agent/c2-docs-001-operator-runbook","status":"IMPLEMENTED_IN_STACK","validation_run":29660100307,"external_effects":"NONE"}
   ],
   "bounded_contexts":[
     {"id":"context:campaign-workspace","owner":"Campaign Platform","status":"IMPLEMENTED_IN_STACK","code":["core/campaign_workspace.py"],"validators":["scripts/campaign/validate_c2_plat_001.py"]},
@@ -56,9 +56,9 @@
     "CONTACT_CITIZENS"
   ],
   "roadmap":[
-    {"id":"increment:c2-saas-001-auth","status":"EXECUTABLE_NEXT","depends_on":["increment:c2-ai-001a"],"objective":"Integrate real identity provider and session validation."},
+    {"id":"increment:c2-saas-001-auth","status":"DEFERRED","depends_on":["increment:c2-ai-001a"],"objective":"Integrate real identity provider and session validation."},
     {"id":"increment:c2-comm-001","status":"DEFERRED","depends_on":["increment:c2-saas-001-auth"],"objective":"Commercial packaging, onboarding, plans and billing."},
-    {"id":"action:merge-stack","status":"HUMAN_BLOCKED","depends_on":["increment:c2-ai-001a"],"objective":"Merge stacked draft PRs after human review."},
+    {"id":"action:merge-stack","status":"EXECUTABLE_NEXT","depends_on":["increment:c2-ai-001a"],"objective":"Merge stacked draft PRs after human review."},
     {"id":"action:deployment","status":"HUMAN_BLOCKED","depends_on":["action:merge-stack"],"objective":"Deploy only after explicit human approval."}
   ],
   "prohibited_capabilities":["VOTER_LEVEL_PROFILING","PERSUADABILITY_SCORING","SENSITIVE_MICROTARGETING","DISINFORMATION","AUTOMATED_PUBLISHING","AUTOMATED_SPENDING","AUTOMATED_MOBILIZATION","CITIZEN_SURVEILLANCE","UNAUTHORIZED_CONTACT"],
