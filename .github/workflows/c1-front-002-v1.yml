@@ -15,10 +15,7 @@ on:
       - "agent/C2-PROD-001/**"
       - "agent/C2-PROD-002/**"
       - "agent/C2-PROD-003/**"
-      - "docs/campaign-workspaces.md"
-      - "docs/candidate-brand-workspace.md"
-      - "docs/approval-inbox-ledger.md"
-      - "docs/daily-operating-workflow.md"
+      - "docs/**"
       - ".github/workflows/c1-front-002-v1.yml"
       - "feature_list.json"
       - "progress/C1-FRONT-002-V1-validation-report.md"
@@ -62,6 +59,8 @@ jobs:
         run: python3 scripts/campaign/validate_c2_prod_002.py
       - name: Validate Daily Operating Workflow
         run: python3 scripts/campaign/validate_c2_prod_003.py
+      - name: Validate authorization policy boundary
+        run: python3 scripts/campaign/validate_c2_saas_001a.py
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD
       - name: Start static server
