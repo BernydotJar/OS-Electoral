@@ -1,0 +1,5 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","title":"Governed Cycle Request v1","type":"object","additionalProperties":false,
+  "required":["schema_version","cycle_id","tenant_id","campaign_id","workspace_id","diagnosis_category","question","requested_artifact","evidence_refs"],
+  "properties":{"schema_version":{"const":"1.0"},"cycle_id":{"type":"string","pattern":"^cycle:"},"tenant_id":{"type":"string","pattern":"^tenant:"},"campaign_id":{"type":"string","pattern":"^campaign:"},"workspace_id":{"type":"string","pattern":"^workspace:"},"diagnosis_category":{"type":"string"},"question":{"type":"string"},"requested_artifact":{"enum":["EVIDENCE_PRIORITY_DECISION_BRIEF","RESEARCH_GAP_BRIEF","RISK_REVIEW_BRIEF"]},"evidence_refs":{"type":"array","items":{"type":"string","pattern":"^evidence:"}}}
+}

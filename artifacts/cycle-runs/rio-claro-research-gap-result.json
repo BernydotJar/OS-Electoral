@@ -1,0 +1,152 @@
+{
+  "active_stations": [
+    "station:campaign-chief",
+    "station:electoral-research",
+    "station:territory-mobilization",
+    "station:tracking-risk-learning"
+  ],
+  "agent_assignments": [
+    {
+      "agent_id": "agent:rio-claro-research",
+      "artifact": {
+        "artifact_type": "RESEARCH_GAP_BRIEF",
+        "status": "DRAFT",
+        "title": "Research Gap Brief"
+      },
+      "critical_questions": [
+        "Which decision is blocked by the gap?",
+        "What is the minimum trustworthy source needed?"
+      ],
+      "diagnosis": "A documented research gap requires a bounded evidence plan.",
+      "next_step": "Prepare a research gap brief for human prioritization.",
+      "risk": "Synthetic or incomplete evidence could be mistaken for an approved fact.",
+      "station_id": "station:electoral-research"
+    }
+  ],
+  "approvals_required": [
+    "human_approval:campaign_chief",
+    "human_approval:paid_media_owner"
+  ],
+  "blocked_stations": [
+    "station:paid-media"
+  ],
+  "campaign_id": "campaign:rio-claro-municipal-demo",
+  "cycle_id": "cycle:rio-claro-demo-001",
+  "diagnosis": {
+    "category": "ELECTORAL_RESEARCH",
+    "evidence_refs": [
+      "evidence:rio-claro-demo-001"
+    ],
+    "reason": "Identify the next synthetic evidence gap without authorizing tactics."
+  },
+  "gates": [
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:political-content",
+      "missing_prerequisites": [],
+      "status": "ELIGIBLE_FOR_HUMAN_APPROVAL"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:public-content-publication",
+      "missing_prerequisites": [
+        "content_draft_exists",
+        "factual_review_approved",
+        "political_review_approved"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:paid-media",
+      "missing_prerequisites": [
+        "geographic_priority_approved",
+        "conversion_event_approved",
+        "budget_ceiling_approved",
+        "human_approval:campaign_chief",
+        "human_approval:paid_media_owner"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:field-mobilization",
+      "missing_prerequisites": [
+        "geographic_priority_approved",
+        "responsible_owner_assigned",
+        "field_objective_approved",
+        "human_approval:campaign_chief"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:public-proposal",
+      "missing_prerequisites": [
+        "supporting_evidence_accepted",
+        "viability_review_approved",
+        "political_review_approved"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:crisis-response",
+      "missing_prerequisites": [
+        "verified_facts_available",
+        "spokesperson_assigned",
+        "position_approved"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:narrative-change",
+      "missing_prerequisites": [
+        "one_of:performance_evidence_exists|documented_strategic_change_exists",
+        "human_approval:campaign_chief"
+      ],
+      "status": "CLOSED"
+    }
+  ],
+  "next_action": {
+    "action": "Document the next evidence gap and verification method.",
+    "human_input_required": "A human owner prioritizes or rejects the proposed research task.",
+    "next_station": "station:electoral-research"
+  },
+  "provenance": [
+    "evidence:rio-claro-demo-001"
+  ],
+  "required_artifact": {
+    "approval_status": "NOT_APPROVED",
+    "artifact_type": "RESEARCH_GAP_BRIEF",
+    "count": 1,
+    "title": "Research Gap Brief"
+  },
+  "risk_review": {
+    "evidence_gaps": [
+      "Synthetic viability data intentionally absent."
+    ],
+    "message": [],
+    "operational": [
+      "No external effects are authorized."
+    ],
+    "political": [
+      "Human authority remains required."
+    ]
+  },
+  "schema_version": "1.0",
+  "state_summary": [
+    "Stage: Synthetic research stage (APPROVED).",
+    "Mandate: Synthetic research readiness exercise (APPROVED).",
+    "Active/research stations: 4.",
+    "Blocked stations: 1.",
+    "Tactical action remains gated pending evidence and human decisions."
+  ],
+  "tenant_id": "tenant:demo-civic-lab",
+  "warnings": [
+    "Paid media remains blocked.",
+    "Mobilization remains blocked."
+  ],
+  "workspace_id": "workspace:rio-claro-2026-demo"
+}

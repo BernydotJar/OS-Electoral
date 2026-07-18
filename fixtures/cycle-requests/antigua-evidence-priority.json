@@ -1,0 +1,11 @@
+{
+  "schema_version":"1.0",
+  "cycle_id":"cycle:antigua-evidence-priority-001",
+  "tenant_id":"tenant:bernydotjar",
+  "campaign_id":"campaign:antigua-guatemala-exploratory",
+  "workspace_id":"workspace:antigua-2026",
+  "diagnosis_category":"ELECTORAL_RESEARCH",
+  "question":"Prioritize which sources require extraction, verification, or reconciliation before a human can select a priority segment.",
+  "requested_artifact":"EVIDENCE_PRIORITY_DECISION_BRIEF",
+  "evidence_refs":["evidence:EV-0001","evidence:EV-0111","evidence:EV-0114"]
+}

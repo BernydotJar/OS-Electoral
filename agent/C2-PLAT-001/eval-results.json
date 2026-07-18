@@ -1,0 +1,8 @@
+{
+  "schema_version":"1.0","evaluated_at":"2026-07-17","status":"PASS","critical_failures":0,"high_failures":0,
+  "evals":[
+    {"eval_id":"C2-EVAL-001","requirement_id":"REQ-C2-001","target":"campaign-workspace-schema","evaluator":"deterministic","status":"PASS","severity":"INFO","evidence":"22 unittest scenarios","expected":"strict structure and invariants","actual":"PASS","required_fix":null,"reproducibility":"python3 scripts/campaign/validate_c2_plat_001.py"},
+    {"eval_id":"C2-EVAL-002","requirement_id":"REQ-C2-009","target":"synthetic portability","evaluator":"deterministic","status":"PASS","severity":"INFO","evidence":"Rio Claro result sha256 6c29cf2d2fca9eab87beda62222581fe026046c9e1dcb064fdd4b266a430140a","expected":"same engine, distinct tenant","actual":"PASS","required_fix":null,"reproducibility":"python3 scripts/campaign/run_cycle.py --workspace fixtures/workspaces/rio-claro-demo.json --request fixtures/cycle-requests/rio-claro-research-gap.json --output artifacts/cycle-runs/rio-claro-research-gap-result.json"},
+    {"eval_id":"C2-EVAL-003","requirement_id":"REQ-C2-012","target":"frontend regression","evaluator":"runtime","status":"PASS","severity":"INFO","evidence":"four static validators plus Playwright desktop/mobile/reduced-motion","expected":"no regression","actual":"PASS","required_fix":null,"reproducibility":"python3 scripts/frontend/runtime_visual_review.py"}
+  ]
+}

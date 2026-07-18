@@ -1,0 +1,21 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://os-electoral.local/schemas/campaign-workspace-v1.schema.json",
+  "title":"Campaign Workspace v1",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["schema_version","workspace_id","tenant_id","campaign_id","name","jurisdiction","mandate","campaign_stage","political_objectives","territories","segments","evidence","decisions","approvals","gates","stations","agents","cycle_runs","artifacts","risks","blockers","learning_records","metadata"],
+  "properties":{
+    "schema_version":{"const":"1.0"},
+    "workspace_id":{"$ref":"#/$defs/id"},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},
+    "name":{"type":"string","minLength":1},"jurisdiction":{"type":"object"},
+    "mandate":{"$ref":"#/$defs/domainObject"},"campaign_stage":{"$ref":"#/$defs/domainObject"},
+    "political_objectives":{"$ref":"#/$defs/collection"},"territories":{"$ref":"#/$defs/collection"},"segments":{"$ref":"#/$defs/collection"},"evidence":{"$ref":"#/$defs/collection"},"decisions":{"$ref":"#/$defs/collection"},"approvals":{"$ref":"#/$defs/collection"},"gates":{"$ref":"#/$defs/collection"},"stations":{"$ref":"#/$defs/collection"},"agents":{"$ref":"#/$defs/collection"},"cycle_runs":{"$ref":"#/$defs/collection"},"artifacts":{"$ref":"#/$defs/collection"},"risks":{"$ref":"#/$defs/collection"},"blockers":{"$ref":"#/$defs/collection"},"learning_records":{"$ref":"#/$defs/collection"},
+    "metadata":{"type":"object"}
+  },
+  "$defs":{
+    "id":{"type":"string","pattern":"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "domainObject":{"type":"object","required":["id","status","created_at","updated_at","owner","source_or_provenance","tenant_id","campaign_id","workspace_id"],"properties":{"id":{"$ref":"#/$defs/id"},"status":{"type":"string"},"created_at":{"type":["string","null"]},"updated_at":{"type":["string","null"]},"owner":{"type":"string","minLength":1},"source_or_provenance":{"type":"string","minLength":1},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"}}},
+    "collection":{"type":"array","items":{"$ref":"#/$defs/domainObject"}}
+  }
+}

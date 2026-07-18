@@ -46,6 +46,9 @@ jobs:
       - name: Validate Premium Slate design system
         run: python3 scripts/frontend/validate_premium_slate.py
 
+      - name: Validate governed campaign workspace core
+        run: python3 scripts/campaign/validate_c2_plat_001.py
+
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD
 
