@@ -52,6 +52,8 @@ jobs:
         run: python3 scripts/frontend/validate_daily_war_room.py
       - name: Validate Premium Slate design system
         run: python3 scripts/frontend/validate_premium_slate.py
+      - name: Validate Governance Workspace
+        run: python3 scripts/frontend/validate_governance_workspace.py
       - name: Validate governed campaign workspace core
         run: python3 scripts/campaign/validate_c2_plat_001.py
       - name: Validate Candidate Brand workspace
@@ -80,6 +82,11 @@ jobs:
         run: |
           set -o pipefail
           python3 scripts/frontend/runtime_visual_review.py 2>&1 | tee artifacts/c1-front-002-v1/runtime-run.log
+      - name: Review Governance Workspace
+        env:
+          CAMPAIGNOS_URL: http://127.0.0.1:4173
+          CAMPAIGNOS_ARTIFACT_DIR: artifacts/c1-front-002-v1
+        run: python3 scripts/frontend/review_governance_workspace.py
       - name: Upload visual review evidence
         if: always()
         uses: actions/upload-artifact@v4
