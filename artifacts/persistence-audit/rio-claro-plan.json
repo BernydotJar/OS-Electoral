@@ -1,0 +1,31 @@
+{
+  "external_effects": "NONE",
+  "intent_id": "write-intent:rio-claro-brief",
+  "outcome": "ACCEPTABLE_FOR_ADAPTER",
+  "persistence_performed": false,
+  "planned_event": {
+    "aggregate_version": 1,
+    "authorization_request_id": "auth-request:rio-claro-create-artifact",
+    "campaign_id": "campaign:rio-claro-municipal-demo",
+    "event_hash": "22148a393753633e0ddf1c3d4ef3274b1dbac8ee5abc5af9b4932f8fef70b707",
+    "id": "audit-event:rio-claro-brief",
+    "idempotency_key": "idem:rio-claro-brief-v1",
+    "intent_id": "write-intent:rio-claro-brief",
+    "occurred_at": "2026-07-18",
+    "operation": "CREATE_ARTIFACT",
+    "payload_digest": "33acbbf743360e64c4d1b70ea8b64732d087baaa43f0832036eae2163358bba2",
+    "previous_hash": "GENESIS",
+    "principal_id": "human:rio-operator",
+    "resource_id": "artifact:rio-claro-brief",
+    "resource_type": "INTERNAL_ARTIFACT",
+    "tenant_id": "tenant:demo-civic-lab",
+    "workspace_id": "workspace:rio-claro-2026-demo"
+  },
+  "projected_store": {
+    "aggregate_version": 1,
+    "idempotency_key": "idem:rio-claro-brief-v1",
+    "last_event_hash": "22148a393753633e0ddf1c3d4ef3274b1dbac8ee5abc5af9b4932f8fef70b707"
+  },
+  "schema_version": "1.0",
+  "warning": "This plan does not write to a database, filesystem, network service or domain aggregate."
+}

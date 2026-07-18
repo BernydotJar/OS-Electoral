@@ -9,6 +9,7 @@ SAFE_ID=re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$")
 WRITE_OPERATIONS={"APPEND_EVENT","CREATE_ARTIFACT","UPDATE_PROJECTION"}
 READ_ONLY_RESOURCES={"GOVERNANCE_SNAPSHOT","EVIDENCE_SOURCE","AUDIT_EVENT"}
 PROHIBITED_OPERATIONS={"PUBLISH","SPEND","ACTIVATE_PAID_MEDIA","MOBILIZE","CONTACT_CITIZEN"}
+HUMAN_ONLY_PERMISSIONS={"APPROVE_POLITICAL","APPROVE_LEGAL","APPROVE_FINANCIAL","APPROVE_PUBLICATION","APPROVE_SPENDING","APPROVE_MOBILIZATION"}
 
 class PersistenceContractError(ValueError): pass
 
@@ -57,11 +58,18 @@ def validate_write_intent(intent:dict[str,Any],authorization:dict[str,Any],store
     _require(authorization.get("request_id")==intent["authorization_request_id"],"authorization request reference mismatch")
     _require(authorization.get("principal_id")==intent["principal_id"],"authorization principal mismatch")
     _require(authorization.get("permission")==intent["required_permission"],"authorization permission mismatch")
+    actor_type=authorization.get("actor_type")
+    _require(actor_type in {"HUMAN","AGENT","SYSTEM"},"invalid actor type in authorization")
+    principal_prefix=intent["principal_id"].split(":",1)[0]
+    _require((actor_type=="HUMAN" and principal_prefix=="human") or (actor_type=="AGENT" and principal_prefix=="agent") or (actor_type=="SYSTEM" and principal_prefix=="system"),"actor type and principal id prefix mismatch")
+    if actor_type!="HUMAN":
+        _require(intent["required_permission"] not in HUMAN_ONLY_PERMISSIONS,"non-human actor cannot acquire human authority")
     scope=authorization.get("scope",{})
     for field in ("tenant_id","campaign_id","workspace_id"):
         _require(intent[field]==store[field],f"write intent {field} mismatch with store")
         _require(intent[field]==scope.get(field),f"write intent {field} mismatch with authorization")
     resource=authorization.get("resource",{})
+    _require(resource.get("type")==intent["resource_type"],"authorization resource type mismatch")
     _require(resource.get("id")==intent["resource_id"],"authorization resource mismatch")
     _require(intent["expected_version"]==store["aggregate_version"],"stale aggregate version")
     _require(intent["expected_previous_hash"]==store["last_event_hash"],"stale previous event hash")

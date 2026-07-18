@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://os-electoral.local/schemas/persistence-authorization-link-v1.schema.json",
+  "title": "Persistence Authorization Link v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "principal_id",
+    "actor_type",
+    "decision",
+    "permission",
+    "scope",
+    "resource",
+    "matching_grants",
+    "rejected_grants",
+    "reasons",
+    "external_effects",
+    "warning"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "request_id": { "$ref": "#/$defs/id" },
+    "principal_id": { "$ref": "#/$defs/id" },
+    "actor_type": { "enum": ["HUMAN", "AGENT", "SYSTEM"] },
+    "decision": { "enum": ["ALLOW", "DENY"] },
+    "permission": { "type": "string" },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tenant_id", "campaign_id", "workspace_id"],
+      "properties": {
+        "tenant_id": { "$ref": "#/$defs/id" },
+        "campaign_id": { "$ref": "#/$defs/id" },
+        "workspace_id": { "$ref": "#/$defs/id" }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "type": "string" },
+        "id": { "$ref": "#/$defs/id" }
+      }
+    },
+    "matching_grants": { "type": "array", "items": { "type": "string" } },
+    "rejected_grants": { "type": "array", "items": { "type": "string" } },
+    "reasons": { "type": "array", "items": { "type": "string" } },
+    "external_effects": { "const": "NONE" },
+    "warning": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$" }
+  }
+}

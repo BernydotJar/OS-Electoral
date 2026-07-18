@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "intent_id": "write-intent:rio-claro-brief",
+  "idempotency_key": "idem:rio-claro-brief-v1",
+  "tenant_id": "tenant:demo-civic-lab",
+  "campaign_id": "campaign:rio-claro-municipal-demo",
+  "workspace_id": "workspace:rio-claro-2026-demo",
+  "principal_id": "human:rio-operator",
+  "authorization_request_id": "auth-request:rio-claro-create-artifact",
+  "required_permission": "CREATE_DRAFT",
+  "operation": "CREATE_ARTIFACT",
+  "resource_type": "INTERNAL_ARTIFACT",
+  "resource_id": "artifact:rio-claro-brief",
+  "expected_version": 0,
+  "expected_previous_hash": "GENESIS",
+  "payload": {
+    "artifact_type": "RIO_CLARO_BRIEF",
+    "status": "DRAFT",
+    "public_use_status": "BLOCKED"
+  },
+  "occurred_at": "2026-07-18"
+}

@@ -80,4 +80,121 @@ class PersistenceAuditTests(unittest.TestCase):
         event=plan_append(self.store,self.intent,self.authorization)["planned_event"]
         self.assertEqual(event["event_hash"],event_hash(event))
 
+    def test_missing_authorization_rejected(self):
+        with self.assertRaises(PersistenceContractError): plan_append(self.store,self.intent,{})
+
+    def test_authorization_permission_mismatch_rejected(self):
+        auth=copy.deepcopy(self.authorization)
+        auth["permission"]="READ_WORKSPACE"
+        with self.assertRaisesRegex(PersistenceContractError,"permission mismatch"): plan_append(self.store,self.intent,auth)
+
+    def test_actor_mismatch_rejected(self):
+        auth=copy.deepcopy(self.authorization)
+        auth["actor_type"]="AGENT"
+        with self.assertRaisesRegex(PersistenceContractError,"prefix mismatch"): plan_append(self.store,self.intent,auth)
+
+    def test_agent_cannot_acquire_human_authority(self):
+        intent=copy.deepcopy(self.intent)
+        intent["required_permission"]="APPROVE_POLITICAL"
+        intent["principal_id"]="agent:validator"
+        auth=copy.deepcopy(self.authorization)
+        auth["permission"]="APPROVE_POLITICAL"
+        auth["actor_type"]="AGENT"
+        auth["principal_id"]="agent:validator"
+        with self.assertRaisesRegex(PersistenceContractError,"cannot acquire human authority"): plan_append(self.store,intent,auth)
+
+    def test_cross_campaign_rejected(self):
+        intent=copy.deepcopy(self.intent)
+        intent["campaign_id"]="campaign:other"
+        with self.assertRaisesRegex(PersistenceContractError,"campaign_id mismatch"): plan_append(self.store,intent,self.authorization)
+
+    def test_cross_workspace_rejected(self):
+        intent=copy.deepcopy(self.intent)
+        intent["workspace_id"]="workspace:other"
+        with self.assertRaisesRegex(PersistenceContractError,"workspace_id mismatch"): plan_append(self.store,intent,self.authorization)
+
+    def test_resource_mismatch_id_rejected(self):
+        auth=copy.deepcopy(self.authorization)
+        auth["resource"]["id"]="artifact:other"
+        with self.assertRaisesRegex(PersistenceContractError,"resource mismatch"): plan_append(self.store,self.intent,auth)
+
+    def test_resource_mismatch_type_rejected(self):
+        auth=copy.deepcopy(self.authorization)
+        auth["resource"]["type"]="OTHER_TYPE"
+        with self.assertRaisesRegex(PersistenceContractError,"resource type mismatch"): plan_append(self.store,self.intent,auth)
+
+    def test_malformed_event_fields_rejected(self):
+        store=copy.deepcopy(self.store)
+        plan=plan_append(store,self.intent,self.authorization)
+        event=plan["planned_event"]
+        del event["idempotency_key"]
+        store["events"].append(event)
+        store["aggregate_version"]=1
+        with self.assertRaises(PersistenceContractError): validate_store(store)
+
+    def test_duplicate_event_id_rejected(self):
+        # We simulate broken versions or sequences
+        store=copy.deepcopy(self.store)
+        plan=plan_append(store,self.intent,self.authorization)
+        projected=apply_in_memory(store,plan)
+        event=copy.deepcopy(projected["events"][0])
+        projected["events"].append(event)
+        with self.assertRaises(PersistenceContractError): validate_store(projected)
+
+    def test_reordered_history_rejected(self):
+        store=copy.deepcopy(self.store)
+        plan1=plan_append(store,self.intent,self.authorization)
+        store=apply_in_memory(store,plan1)
+        intent2=copy.deepcopy(self.intent)
+        intent2["intent_id"]="write-intent:other"
+        intent2["idempotency_key"]="idem:other"
+        intent2["expected_version"]=1
+        intent2["expected_previous_hash"]=store["last_event_hash"]
+        plan2=plan_append(store,intent2,self.authorization)
+        store=apply_in_memory(store,plan2)
+        store["events"][0],store["events"][1]=store["events"][1],store["events"][0]
+        with self.assertRaises(PersistenceContractError): validate_store(store)
+
+    def test_deleted_middle_event_rejected(self):
+        store=copy.deepcopy(self.store)
+        plan1=plan_append(store,self.intent,self.authorization)
+        store=apply_in_memory(store,plan1)
+        intent2=copy.deepcopy(self.intent)
+        intent2["intent_id"]="write-intent:other"
+        intent2["idempotency_key"]="idem:other"
+        intent2["expected_version"]=1
+        intent2["expected_previous_hash"]=store["last_event_hash"]
+        plan2=plan_append(store,intent2,self.authorization)
+        store=apply_in_memory(store,plan2)
+        store["events"].pop(0)
+        store["aggregate_version"]=1
+        with self.assertRaises(PersistenceContractError): validate_store(store)
+
+    def test_changed_historical_payload_rejected(self):
+        store=copy.deepcopy(self.store)
+        plan=plan_append(store,self.intent,self.authorization)
+        store=apply_in_memory(store,plan)
+        store["events"][0]["payload_digest"]="differentdigest"
+        with self.assertRaises(PersistenceContractError): validate_store(store)
+
+    def test_mutation_detection(self):
+        store=copy.deepcopy(self.store)
+        intent=copy.deepcopy(self.intent)
+        auth=copy.deepcopy(self.authorization)
+        plan_append(store,intent,auth)
+        self.assertEqual(store,self.store)
+        self.assertEqual(intent,self.intent)
+        self.assertEqual(auth,self.authorization)
+
+    def test_deterministic_output(self):
+        plan1=plan_append(self.store,self.intent,self.authorization)
+        plan2=plan_append(self.store,self.intent,self.authorization)
+        self.assertEqual(plan1["planned_event"]["event_hash"],plan2["planned_event"]["event_hash"])
+
+    def test_isolation_between_antigua_and_rio_claro(self):
+        rio_store=load("fixtures/persistence/rio-claro-store.json")
+        with self.assertRaises(PersistenceContractError): plan_append(rio_store,self.intent,self.authorization)
+        rio_auth=load("fixtures/persistence/rio-claro-authorization.json")
+        with self.assertRaises(PersistenceContractError): plan_append(self.store,self.intent,rio_auth)
+
 if __name__=="__main__": unittest.main()
