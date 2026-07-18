@@ -2,7 +2,7 @@
   "schema_version":"1.0",
   "program_id":"program:campaignos-c2",
   "updated_at":"2026-07-18",
-  "source_branch":"agent/c2-docs-001-operator-runbook",
+  "source_branch":"agent/c2-ai-001a-extraction-citation",
   "operating_principle":"AI recommends; evidence supports; authorized humans decide.",
   "stack":[
     {"id":"increment:c2-plat-001-hardening","issue":40,"pr":42,"branch":"agent/c2-plat-001-approval-binding-hardening","base":"main","status":"IMPLEMENTED_IN_STACK","validation_run":29656158142,"external_effects":"NONE"},
@@ -17,7 +17,8 @@
     {"id":"increment:c2-obs-001","issue":59,"pr":60,"branch":"agent/c2-obs-001-audit-observability","base":"agent/c2-saas-001c-repository-transaction","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
     {"id":"increment:c2-api-001a","issue":61,"pr":62,"branch":"agent/c2-api-001a-service-contracts","base":"agent/c2-obs-001-audit-observability","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
     {"id":"increment:c2-test-001","issue":63,"pr":64,"branch":"agent/c2-test-001-adversarial-harness","base":"agent/c2-api-001a-service-contracts","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
-    {"id":"increment:c2-docs-001","issue":65,"pr":66,"branch":"agent/c2-docs-001-operator-runbook","base":"agent/c2-test-001-adversarial-harness","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"}
+    {"id":"increment:c2-docs-001","issue":65,"pr":66,"branch":"agent/c2-docs-001-operator-runbook","base":"agent/c2-test-001-adversarial-harness","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"},
+    {"id":"increment:c2-ai-001a","issue":67,"pr":68,"branch":"agent/c2-ai-001a-extraction-citation","base":"agent/c2-docs-001-operator-runbook","status":"IMPLEMENTED_IN_STACK","validation_run":29658769715,"external_effects":"NONE"}
   ],
   "bounded_contexts":[
     {"id":"context:campaign-workspace","owner":"Campaign Platform","status":"IMPLEMENTED_IN_STACK","code":["core/campaign_workspace.py"],"validators":["scripts/campaign/validate_c2_plat_001.py"]},
@@ -29,7 +30,8 @@
     {"id":"context:persistence-audit","owner":"Campaign Platform","status":"IMPLEMENTED_IN_STACK","code":["core/persistence_audit.py","fixtures/persistence/antigua-store.json","fixtures/persistence/antigua-authorization.json","fixtures/persistence/antigua-write-intent.json","fixtures/persistence/rio-claro-store.json","fixtures/persistence/rio-claro-authorization.json","fixtures/persistence/rio-claro-write-intent.json"],"validators":["scripts/campaign/validate_c2_saas_001b.py"]},
     {"id":"context:repository-transaction","owner":"Campaign Platform","status":"IMPLEMENTED_IN_STACK","code":["core/repository_transaction.py"],"validators":["scripts/campaign/validate_c2_saas_001c.py"]},
     {"id":"context:audit-observability","owner":"Campaign Platform","status":"IMPLEMENTED_IN_STACK","code":["core/audit_observability.py","scripts/campaign/generate_audit_report.py"],"validators":["scripts/campaign/validate_c2_obs_001.py"]},
-    {"id":"context:application-service","owner":"Campaign Platform","status":"IMPLEMENTED_IN_STACK","code":["core/application_service.py"],"validators":["scripts/campaign/validate_c2_api_001a.py"]}
+    {"id":"context:application-service","owner":"Campaign Platform","status":"IMPLEMENTED_IN_STACK","code":["core/application_service.py"],"validators":["scripts/campaign/validate_c2_api_001a.py"]},
+    {"id":"context:extraction-citation","owner":"Campaign AI","status":"IMPLEMENTED_IN_STACK","code":["core/extraction_citation.py"],"validators":["scripts/campaign/validate_c2_ai_001a.py"]}
   ],
   "campaign_state":{
     "stage":"EXPLORATORY_PRE_CANDIDACY",
@@ -54,10 +56,9 @@
     "CONTACT_CITIZENS"
   ],
   "roadmap":[
-    {"id":"increment:c2-ai-001a","status":"EXECUTABLE_NEXT","depends_on":["increment:c2-docs-001"],"objective":"Define evidence-grounded extraction and citation contracts without external model credentials."},
-    {"id":"increment:c2-saas-001-auth","status":"DEFERRED","depends_on":["increment:c2-ai-001a"],"objective":"Integrate real identity provider and session validation."},
+    {"id":"increment:c2-saas-001-auth","status":"EXECUTABLE_NEXT","depends_on":["increment:c2-ai-001a"],"objective":"Integrate real identity provider and session validation."},
     {"id":"increment:c2-comm-001","status":"DEFERRED","depends_on":["increment:c2-saas-001-auth"],"objective":"Commercial packaging, onboarding, plans and billing."},
-    {"id":"action:merge-stack","status":"HUMAN_BLOCKED","depends_on":["increment:c2-docs-001"],"objective":"Merge stacked draft PRs after human review."},
+    {"id":"action:merge-stack","status":"HUMAN_BLOCKED","depends_on":["increment:c2-ai-001a"],"objective":"Merge stacked draft PRs after human review."},
     {"id":"action:deployment","status":"HUMAN_BLOCKED","depends_on":["action:merge-stack"],"objective":"Deploy only after explicit human approval."}
   ],
   "prohibited_capabilities":["VOTER_LEVEL_PROFILING","PERSUADABILITY_SCORING","SENSITIVE_MICROTARGETING","DISINFORMATION","AUTOMATED_PUBLISHING","AUTOMATED_SPENDING","AUTOMATED_MOBILIZATION","CITIZEN_SURVEILLANCE","UNAUTHORIZED_CONTACT"],

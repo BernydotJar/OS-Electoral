@@ -18,7 +18,8 @@ main
                                     └── #60 C2-OBS-001 Audit Observability and Integrity Read Model
                                         └── #62 C2-API-001A Read-Only Application Service Contracts
                                             └── #64 C2-TEST-001 Cross-Tenant Adversarial Integration Harness
-                                                └── C2-DOCS-001 Operator Runbook and Release Gate Guide
+                                                └── #66 C2-DOCS-001 Operator Runbook and Release Gate Guide
+                                                    └── C2-AI-001A Evidence-Grounded Extraction and Citation Contracts
 ```
 
 Every layer is draft, independently validated and blocked from merge or deployment pending human approval.
@@ -35,6 +36,7 @@ Every layer is draft, independently validated and blocked from merge or deployme
 - Repository Transaction: tenant-scoped repositories and unit of work context manager for transaction coordination.
 - Audit Observability: read-only query and integrity verifier for persistence audit events.
 - Application Service: unified, tenant-isolated query facade and application contracts.
+- Extraction Citation: offline deterministic claim extraction and citation verification.
 
 ## Program-state validation
 
@@ -46,6 +48,6 @@ The validator rejects unknown dependencies, dependency cycles, missing code or v
 
 ## Current executable next work
 
-The manifest identifies C2-DOCS-001 as implemented. C2-AI-001A (Evidence-grounded extraction and citation contracts) may follow.
+The manifest identifies C2-AI-001A as implemented. C2-SAAS-001-auth (Real identity provider and session validation) may follow.
 
 Real authentication, billing, deployment, tactical activation and public campaign actions remain deferred or human-blocked.
