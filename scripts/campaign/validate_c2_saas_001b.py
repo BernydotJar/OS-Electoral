@@ -102,7 +102,7 @@ def main() -> int:
         print("Running CLI persistence planning for Antigua and Rio Claro...")
         antigua_out = "artifacts/persistence-audit/antigua-plan.json"
         rio_out = "artifacts/persistence-audit/rio-claro-plan.json"
-        
+
         execute_cli(
             "fixtures/persistence/antigua-store.json",
             "fixtures/persistence/antigua-authorization.json",
@@ -120,7 +120,7 @@ def main() -> int:
         print("Validating planned events from outputs...")
         antigua_plan = json.loads((ROOT / antigua_out).read_text(encoding="utf-8"))
         rio_plan = json.loads((ROOT / rio_out).read_text(encoding="utf-8"))
-        
+
         jsonschema.validate(instance=antigua_plan["planned_event"], schema=json.loads(event_schema.read_text(encoding="utf-8")))
         jsonschema.validate(instance=rio_plan["planned_event"], schema=json.loads(event_schema.read_text(encoding="utf-8")))
 
@@ -144,7 +144,7 @@ def main() -> int:
         # 9. Repository writes check
         # Verify that no modifications occurred outside artifacts/persistence-audit/
         # Since we use clean Python code and tests, this is enforced by design.
-        
+
         print("[OK] C2-SAAS-001B persistence & audit boundary validation passed successfully.")
         return 0
     except Exception as exc:

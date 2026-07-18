@@ -108,7 +108,7 @@ class ApplicationServiceTests(unittest.TestCase):
         missing_t = "tenant:notfound"
         missing_c = "campaign:notfound"
         missing_w = "workspace:notfound"
-        
+
         with self.assertRaises(ApplicationServiceError):
             self.service.get_workspace_summary(missing_t, missing_c, missing_w)
 

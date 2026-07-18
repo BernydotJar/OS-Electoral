@@ -22,7 +22,7 @@ class LocalExtractionEngine(EvidenceGroundedExtractionService):
             }
 
         claim_lower = claim_text.lower()
-        
+
         # Simple extraction rules for verification
         citations = []
         contradicted = False

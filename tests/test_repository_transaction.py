@@ -37,7 +37,7 @@ class RepositoryTransactionTests(unittest.TestCase):
         # Initialize repositories with Antigua data
         t, c, w = "tenant:bernydotjar", "campaign:antigua-guatemala-exploratory", "workspace:antigua-2026"
         key = f"{t}:{c}:{w}"
-        
+
         self.workspace_repo = InMemoryWorkspaceRepository({key: copy.deepcopy(self.workspace_raw)})
         self.brand_repo = InMemoryCandidateBrandRepository({key: copy.deepcopy(self.brand_raw)})
         self.ledger_repo = InMemoryApprovalLedgerRepository({key: copy.deepcopy(self.ledger_raw)})
@@ -60,7 +60,7 @@ class RepositoryTransactionTests(unittest.TestCase):
 
     def test_transaction_commit_success(self) -> None:
         t, c, w = "tenant:bernydotjar", "campaign:antigua-guatemala-exploratory", "workspace:antigua-2026"
-        
+
         uow = UnitOfWork(
             self.workspace_repo,
             self.brand_repo,
@@ -68,14 +68,14 @@ class RepositoryTransactionTests(unittest.TestCase):
             self.workflow_repo,
             self.store_repo
         )
-        
+
         with uow:
             # Load store and register intent
             store = uow.load_store(t, c, w)
             self.assertEqual(store["aggregate_version"], 0)
             uow.register_intent(self.intent_raw, self.auth_raw)
             # Commit will automatically plan and apply the write intent in memory
-            
+
         # Verify the changes are persisted in the repository's store
         persisted_store = self.store_repo.get(t, c, w)
         self.assertEqual(persisted_store["aggregate_version"], 1)
@@ -84,7 +84,7 @@ class RepositoryTransactionTests(unittest.TestCase):
 
     def test_transaction_rollback_on_exception(self) -> None:
         t, c, w = "tenant:bernydotjar", "campaign:antigua-guatemala-exploratory", "workspace:antigua-2026"
-        
+
         uow = UnitOfWork(
             self.workspace_repo,
             self.brand_repo,
@@ -92,7 +92,7 @@ class RepositoryTransactionTests(unittest.TestCase):
             self.workflow_repo,
             self.store_repo
         )
-        
+
         ws = self.workspace_repo.get(t, c, w)
         original_name = ws["name"]
 
@@ -111,7 +111,7 @@ class RepositoryTransactionTests(unittest.TestCase):
 
     def test_transaction_cross_aggregate_validation_failure(self) -> None:
         t, c, w = "tenant:bernydotjar", "campaign:antigua-guatemala-exploratory", "workspace:antigua-2026"
-        
+
         uow = UnitOfWork(
             self.workspace_repo,
             self.brand_repo,

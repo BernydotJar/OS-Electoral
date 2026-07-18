@@ -58,7 +58,7 @@ def main() -> int:
         report_file = output_dir / f"audit-report-{workspace_id}.md"
 
         status_emoji = "✅ VALID" if report["status"] == "VALID" else "❌ CORRUPTED"
-        
+
         md = []
         md.append(f"# Bounded Context Audit Integrity Report — Workspace {workspace_id}\n")
         md.append("## Store Metadata\n")
@@ -79,7 +79,7 @@ def main() -> int:
             md.append(f"**Error Reason**: {report['reason']}")
             md.append(f"**Mismatched Aggregate Version**: {report['mismatched_version']}")
         md.append("\n## Event Trail Audit Log\n")
-        
+
         events = store.get("events", [])
         if not events:
             md.append("*No events recorded in this audit store.*")

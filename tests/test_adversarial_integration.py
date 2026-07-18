@@ -69,7 +69,7 @@ class AdversarialIntegrationTests(unittest.TestCase):
             self.workflow_repo,
             self.store_repo
         )
-        
+
         with uow:
             uow.load_store(self.t, self.c, self.w)
             uow.register_intent(self.intent_raw, self.auth_raw)
@@ -82,7 +82,7 @@ class AdversarialIntegrationTests(unittest.TestCase):
     def test_cross_tenant_scope_access_fails_closed(self) -> None:
         # Adversarial agent attempts to load Antigua resources using a different tenant ID
         bad_tenant = "tenant:malicious-attacker"
-        
+
         with self.assertRaises(ApplicationServiceError):
             self.service.get_workspace_summary(bad_tenant, self.c, self.w)
 
