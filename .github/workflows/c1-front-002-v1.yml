@@ -9,8 +9,10 @@ on:
       - "schemas/**"
       - "campaigns/**"
       - "fixtures/**"
+      - "architecture/**"
       - "scripts/frontend/**"
       - "scripts/campaign/**"
+      - "scripts/architecture/**"
       - "agent/C2-PLAT-001/**"
       - "agent/C2-PROD-001/**"
       - "agent/C2-PROD-002/**"
@@ -61,6 +63,8 @@ jobs:
         run: python3 scripts/campaign/validate_c2_prod_003.py
       - name: Validate authorization policy boundary
         run: python3 scripts/campaign/validate_c2_saas_001a.py
+      - name: Validate executable program architecture
+        run: python3 scripts/architecture/validate_program_state.py
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD
       - name: Start static server
