@@ -4,6 +4,16 @@
   governanceScript.dataset.campaignosModule = "governance";
   document.head.appendChild(governanceScript);
 
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest?.('[data-module="governance"]')) return;
+    window.setTimeout(() => {
+      const status = document.querySelector("#activeModuleStatus");
+      if (status && document.querySelector('[data-module="governance"]')?.classList.contains("is-active")) {
+        status.textContent = "Coordinate 04 · Human governance";
+      }
+    }, 0);
+  });
+
   const teamGrid = document.querySelector("#teamGrid");
   const backdrop = document.querySelector("#drawerBackdrop");
 
