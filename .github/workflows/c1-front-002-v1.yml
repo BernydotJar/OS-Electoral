@@ -4,7 +4,15 @@ on:
   pull_request:
     paths:
       - "web/**"
+      - "core/**"
+      - "tests/**"
+      - "schemas/**"
+      - "campaigns/**"
+      - "fixtures/**"
       - "scripts/frontend/**"
+      - "scripts/campaign/**"
+      - "agent/C2-PLAT-001/**"
+      - "docs/campaign-workspaces.md"
       - ".github/workflows/c1-front-002-v1.yml"
       - "feature_list.json"
       - "progress/C1-FRONT-002-V1-validation-report.md"
