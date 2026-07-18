@@ -29,7 +29,7 @@
 - task_id: C2-PLAT-001-T05
   title: Release gate and publication
   owner: Release Reviewer
-  status: IN_PROGRESS
+  status: DONE
   dependencies: [C2-PLAT-001-T04]
   artifact: progress/C2-PLAT-001-implementation-report.md
-  validation: full integrated gate, draft PR
+  validation: GitHub Actions run 29626595992 SUCCESS; draft PR #41

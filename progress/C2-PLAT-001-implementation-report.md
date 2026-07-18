@@ -2,7 +2,7 @@
 
 ## Status
 
-`IMPLEMENTED_AND_VALIDATED_PENDING_DRAFT_PR`
+`IMPLEMENTED_AND_VALIDATED_IN_DRAFT_PR`
 
 The reusable Campaign Workspace v1, Antigua operator seed, synthetic Rio Claro tenant, deterministic gates, pure governed loop, safe CLI, adversarial evals and governance reconciliation are implemented. No political or execution gate was opened for Antigua.
 
@@ -29,6 +29,7 @@ The reusable Campaign Workspace v1, Antigua operator seed, synthetic Rio Claro t
 | Rio Claro cycle, repeated canonical output | PASS — `6c29cf2d2fca9eab87beda62222581fe026046c9e1dcb064fdd4b266a430140a` |
 | Four static frontend validators | PASS |
 | Playwright desktop/mobile/reduced-motion review | PASS |
+| GitHub Actions run `29626595992` | SUCCESS |
 | `git diff --check` | PASS |
 
 Runtime review dependencies were installed under `/tmp`; no environment artifacts are committed. CI installs its own pinned Playwright dependency.
@@ -39,4 +40,4 @@ Independent verification found and reproduced two HIGH issues: semantic substitu
 
 ## Safety boundary
 
-The implementation has no outbound adapters, publishing, citizen contact, voter-level data, profiling, persuasion scoring, spending, ad activation, mobilization, segment selection, production authentication, billing or deployment. It does not merge or mark any PR ready. Human review is still required for every sensitive decision and for merge.
+The implementation has no outbound adapters, publishing, citizen contact, voter-level data, profiling, persuasion scoring, spending, ad activation, mobilization, segment selection, production authentication, billing or deployment. Draft PR #41 remains unmerged and not ready for review. Human review is still required for every sensitive decision and for merge.

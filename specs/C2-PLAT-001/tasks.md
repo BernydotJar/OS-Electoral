@@ -10,6 +10,6 @@
 - [x] T8 Add safe CLI adapter (depends T7).
 - [x] T9 Add deterministic and adversarial tests (depends T4–T8).
 - [x] T10 Reconcile governance documents (depends T1).
-- [ ] T11 Run complete frontend/runtime regression and security scans (depends T9–T10).
-- [ ] T12 Critique, fix and independent verification (depends T11).
-- [ ] T13 Release evidence, focused commits, push, issue update and draft PR (depends T12).
+- [x] T11 Run complete frontend/runtime regression and security scans (depends T9–T10).
+- [x] T12 Critique, fix and independent verification (depends T11).
+- [x] T13 Release evidence, focused commits, publish, issue update and draft PR (depends T12).
