@@ -12,7 +12,9 @@ on:
       - "scripts/frontend/**"
       - "scripts/campaign/**"
       - "agent/C2-PLAT-001/**"
+      - "agent/C2-PROD-001/**"
       - "docs/campaign-workspaces.md"
+      - "docs/candidate-brand-workspace.md"
       - ".github/workflows/c1-front-002-v1.yml"
       - "feature_list.json"
       - "progress/C1-FRONT-002-V1-validation-report.md"
@@ -56,6 +58,9 @@ jobs:
 
       - name: Validate governed campaign workspace core
         run: python3 scripts/campaign/validate_c2_plat_001.py
+
+      - name: Validate Candidate Brand workspace
+        run: python3 scripts/campaign/validate_c2_prod_001.py
 
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD

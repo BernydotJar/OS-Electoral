@@ -1,0 +1,18 @@
+{
+  "schema_version":"1.0",
+  "brand_workspace_id":"brand-workspace:rio-claro-2026-demo",
+  "tenant_id":"tenant:demo-civic-lab",
+  "campaign_id":"campaign:rio-claro-municipal-demo",
+  "workspace_id":"workspace:rio-claro-2026-demo",
+  "candidate_id":"candidate:rio-claro-demo",
+  "status":"UNDER_REVIEW",
+  "identity":{"id":"brand-claim:rio-identity","status":"VERIFIED","classification":"CAMPAIGN_RESEARCH","claim":"Fictional candidate used only for portability testing.","evidence_refs":["evidence:rio-claro-demo-001"],"created_at":"2026-07-18","updated_at":"2026-07-18","owner":"Demo Brand Team","source_or_provenance":"synthetic fixture","tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo","candidate_id":"candidate:rio-claro-demo"},
+  "biography":{"id":"brand-claim:rio-biography","status":"EVIDENCE_PARTIAL","classification":"CAMPAIGN_RESEARCH","claim":"Synthetic biography remains intentionally incomplete.","evidence_refs":["evidence:rio-claro-demo-001"],"created_at":"2026-07-18","updated_at":"2026-07-18","owner":"Demo Brand Team","source_or_provenance":"synthetic fixture","tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo","candidate_id":"candidate:rio-claro-demo"},
+  "purpose":{"id":"brand-claim:rio-purpose","status":"VERIFIED","classification":"CAMPAIGN_RESEARCH","claim":"Demonstrate evidence-governed candidate-brand portability without real voter data.","evidence_refs":["evidence:rio-claro-demo-001"],"created_at":"2026-07-18","updated_at":"2026-07-18","owner":"Demo Brand Team","source_or_provenance":"synthetic fixture","tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo","candidate_id":"candidate:rio-claro-demo"},
+  "values":[],
+  "attributes":[{"id":"attribute:rio-team-building","status":"VERIFIED","name":"Capacity to form teams","candidate_self_assessment":"YES","team_assessment":"PARTIAL","citizen_evidence":"UNRESOLVED","evidence_refs":["evidence:rio-claro-demo-001"],"perception_refs":[],"contradiction_refs":[],"risk":"Synthetic evidence only; never transfer to a real candidate.","created_at":"2026-07-18","updated_at":"2026-07-18","owner":"Demo Brand Team","source_or_provenance":"synthetic fixture","tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo","candidate_id":"candidate:rio-claro-demo"}],
+  "proof_points":[],"perception_gaps":[],"behavioral_consistency_reviews":[],
+  "reputation_risks":[{"id":"reputation-risk:rio-overclaim","status":"OPEN","severity":"MEDIUM","description":"Synthetic evidence could be mistaken for a real candidate claim.","decision_required":false,"evidence_refs":["evidence:rio-claro-demo-001"],"created_at":"2026-07-18","updated_at":"2026-07-18","owner":"Demo Brand Team","source_or_provenance":"synthetic fixture","tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo","candidate_id":"candidate:rio-claro-demo"}],
+  "approvals":[],
+  "metadata":{"fixture_type":"SYNTHETIC","next_research_action":"Complete the synthetic biography before internal brand approval.","notes":"No real candidate or voter information."}
+}
