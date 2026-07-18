@@ -21,3 +21,6 @@ Gemfile.lock
 .venv/
 __pycache__/
 *.pyc
+
+# Local browser-review evidence (CI publishes its own retained artifact)
+artifacts/campaignos-runtime/

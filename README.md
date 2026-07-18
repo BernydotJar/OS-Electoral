@@ -2,18 +2,17 @@
 
 OS Electoral is a War Room operating system for building an evidence-led campaign workflow.
 
-The repository is currently in **Cycle 0: War Room Initialization**. The goal is to create a shared, verifiable campaign state before producing content, paid media, or field operations.
+The repository is currently in **Cycle 1: Electoral Evidence Baseline**. Cycle 0 established the governed War Room; Cycle 1 builds a shared, verifiable evidence state before producing content, paid media, or field operations.
 
 ## Current Gate
 
-The campaign cannot move into tactics until these five lines are completed and approved:
+The campaign has an approved 90-day research objective, exploratory stage and initial municipal territory. It cannot move into tactics until the remaining strategic lines are researched and approved:
 
 ```text
-90-day political objective:
-Current campaign stage:
-Electoral territory:
 Priority segment:
-Available evidence or documents:
+Public positioning/message:
+Budget ceiling:
+Geographic mobilization priority:
 ```
 
 ## Repository Map
@@ -38,3 +37,4 @@ archive/     Superseded decisions and old artifacts
 4. Approve or block gates in `operations/approvals.md`.
 5. Run the loop in `prompts/war-room-loop.md`.
 
+The reusable governed workspace core and CLI are documented in `docs/campaign-workspaces.md`. Eligibility produced by the core never constitutes human approval or execution authorization.

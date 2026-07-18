@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "workspace_id": "workspace:antigua-2026",
+  "tenant_id": "tenant:bernydotjar",
+  "campaign_id": "campaign:antigua-guatemala-exploratory",
+  "name": "Antigua Guatemala exploratory workspace",
+  "jurisdiction": {"country": "Guatemala", "department": "Sacatepequez", "municipality": "Antigua Guatemala"},
+  "mandate": {"id":"mandate:antigua-exploratory","status":"APPROVED","value":"Prepare a pre-candidacy for Mayor of Antigua Guatemala","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+  "campaign_stage": {"id":"stage:exploratory-pre-candidacy","status":"APPROVED","value":"Exploratory pre-candidacy","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+  "political_objectives": [
+    {"id":"objective:evidence-before-scale","status":"APPROVED","value":"Build evidence, organizational structure, and territorial prioritization before scaling communication","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "territories": [
+    {"id":"territory:antigua-guatemala","status":"APPROVED","name":"Municipality of Antigua Guatemala, Sacatepequez","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "segments": [
+    {"id":"segment:priority-unselected","status":"UNDER_RESEARCH","name":"Priority segment not selected","created_at":null,"updated_at":"2026-07-17","owner":"Electoral Research","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "evidence": [
+    {"id":"evidence:EV-0001","status":"ACCEPTED","classification":"OFFICIAL_SOURCE","title":"Campaign governance baseline","created_at":null,"updated_at":"2026-07-17","owner":"Electoral Research","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"evidence:EV-0111","status":"CURATED_PENDING_DECISION","classification":"OFFICIAL_SOURCE","title":"Aggregate electoral roll baseline","created_at":null,"updated_at":"2026-07-17","owner":"Electoral Research","source_or_provenance":"research/curated/territorio/EV-0111-baseline.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"evidence:EV-0114","status":"PARTIAL","classification":"OFFICIAL_SOURCE","title":"PDM-OT curated table inventory","created_at":null,"updated_at":"2026-07-17","owner":"Electoral Research","source_or_provenance":"research/curated/municipal-core/EV-0114-curation-log.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "decisions": [
+    {"id":"decision:stage-approved","status":"APPROVED","topic":"campaign_stage","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"decision:territory-approved","status":"APPROVED","topic":"electoral_territory","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"decision:objective-90d-approved","status":"APPROVED","topic":"objective_90_days","supports_signals":["objective_approved"],"created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"decision:priority-segment","status":"UNDER_RESEARCH","topic":"priority_segment","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"decision:public-positioning","status":"BLOCKED","topic":"public_positioning","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"decision:budget-ceiling","status":"BLOCKED","topic":"budget_ceiling","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "approvals": [],
+  "gates": [
+    {"id":"gate:political-content","status":"BLOCKED","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"operations/approvals.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"gate:public-content-publication","status":"BLOCKED","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"operations/approvals.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"gate:paid-media","status":"BLOCKED","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"operations/approvals.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"gate:field-mobilization","status":"BLOCKED","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"operations/approvals.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"gate:public-proposal","status":"BLOCKED","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"operations/approvals.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"gate:crisis-response","status":"BLOCKED","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"operations/approvals.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"gate:narrative-change","status":"BLOCKED","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"operations/approvals.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "stations": [
+    {"id":"station:campaign-chief","status":"ACTIVE","name":"Campaign Chief","mode":"GOVERNANCE","mission":"Protect mandate and human authority","required_inputs":[],"blocked_by":[],"approval_owner":"Campaign Chief","autonomy_level":"RECOMMEND_ONLY","review_date":null,"created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"station:electoral-research","status":"ACTIVE","name":"Electoral Research","mode":"RESEARCH","mission":"Build evidence baseline","required_inputs":["evidence register"],"blocked_by":[],"approval_owner":"Campaign Chief","autonomy_level":"DRAFT_ONLY","review_date":null,"created_at":null,"updated_at":"2026-07-17","owner":"Electoral Research","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"station:digital-strategy","status":"BLOCKED","name":"Digital Strategy","mode":"INACTIVE","mission":"Plan governed digital strategy","required_inputs":["approved segment","approved message"],"blocked_by":["gate:political-content"],"approval_owner":"Campaign Chief","autonomy_level":"NONE","review_date":null,"created_at":null,"updated_at":"2026-07-17","owner":"Digital Strategy","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"station:territory-mobilization","status":"RESEARCH_ONLY","name":"Territory and Mobilization","mode":"RESEARCH_ONLY","mission":"Define territorial units without mobilizing","required_inputs":["territorial evidence"],"blocked_by":["gate:field-mobilization"],"approval_owner":"Campaign Chief","autonomy_level":"RESEARCH_ONLY","review_date":null,"created_at":null,"updated_at":"2026-07-17","owner":"Territory","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"station:political-content","status":"BLOCKED","name":"Political Content","mode":"INACTIVE","mission":"Draft only after strategic prerequisites","required_inputs":["approved segment","approved positioning"],"blocked_by":["gate:political-content"],"approval_owner":"Campaign Chief","autonomy_level":"NONE","review_date":null,"created_at":null,"updated_at":"2026-07-17","owner":"Political Content","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"station:paid-media","status":"BLOCKED","name":"Paid Media and Distribution","mode":"INACTIVE","mission":"Plan distribution after approvals","required_inputs":["approved budget"],"blocked_by":["gate:paid-media"],"approval_owner":"Campaign Chief","autonomy_level":"NONE","review_date":null,"created_at":null,"updated_at":"2026-07-17","owner":"Paid Media","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"station:storytelling-media-training","status":"BLOCKED","name":"Storytelling, Speech, and Media Training","mode":"INACTIVE","mission":"Prepare approved narrative","required_inputs":["approved positioning"],"blocked_by":["gate:political-content"],"approval_owner":"Campaign Chief","autonomy_level":"NONE","review_date":null,"created_at":null,"updated_at":"2026-07-17","owner":"Storytelling","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"station:tracking-risk-learning","status":"ACTIVE","name":"Tracking, Risks, and Learning","mode":"GOVERNANCE","mission":"Track risks, blockers and learning","required_inputs":["cycle results"],"blocked_by":[],"approval_owner":"Campaign Chief","autonomy_level":"RECOMMEND_ONLY","review_date":null,"created_at":null,"updated_at":"2026-07-17","owner":"Tracking","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "agents": [
+    {"id":"agent:antigua-research","status":"ACTIVE","station_ref":"station:electoral-research","created_at":"2026-07-17","updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"C2-PLAT-001 configuration","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "cycle_runs": [], "artifacts": [],
+  "risks": [{"id":"risk:premature-tactics","status":"OPEN","severity":"HIGH","created_at":null,"updated_at":"2026-07-17","owner":"Campaign Chief","source_or_provenance":"campaign/risks.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}],
+  "blockers": [{"id":"blocker:segment-evidence","status":"OPEN","created_at":null,"updated_at":"2026-07-17","owner":"Electoral Research","source_or_provenance":"campaign/current-state.md","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}],
+  "learning_records": [],
+  "metadata": {
+    "fixture_type":"OPERATOR_WORKSPACE",
+    "timestamps_note":"Historical creation timestamps are unknown; null is intentional. Updated dates record C2 reconciliation, not original approval dates.",
+    "gate_signals":{
+      "objective_approved":{"value":true,"source_refs":["decision:objective-90d-approved"]},
+      "priority_segment_approved":{"value":false,"source_refs":["decision:priority-segment"]},
+      "positioning_approved":{"value":false,"source_refs":["decision:public-positioning"]}
+    },
+    "evidence_gaps":["Community demographics are incomplete.","Priority segment evidence is insufficient.","Campaign budget ceiling is unknown."],
+    "next_cycle":"Evidence Extraction Priority Decision Brief"
+  }
+}

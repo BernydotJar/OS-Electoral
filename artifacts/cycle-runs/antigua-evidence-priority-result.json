@@ -1,0 +1,170 @@
+{
+  "active_stations": [
+    "station:campaign-chief",
+    "station:electoral-research",
+    "station:territory-mobilization",
+    "station:tracking-risk-learning"
+  ],
+  "agent_assignments": [
+    {
+      "agent_id": "agent:antigua-research",
+      "artifact": {
+        "artifact_type": "EVIDENCE_PRIORITY_DECISION_BRIEF",
+        "status": "DRAFT",
+        "title": "Evidence Extraction Priority Decision Brief"
+      },
+      "critical_questions": [
+        "Which source has the highest decision impact and verification gap?",
+        "What is the risk if its claims are incorrect?"
+      ],
+      "diagnosis": "Evidence gaps must be reconciled before strategic selection.",
+      "next_step": "Prepare the internal brief for human review; do not select a segment.",
+      "risk": "Premature strategic selection from incomplete evidence.",
+      "station_id": "station:electoral-research"
+    }
+  ],
+  "approvals_required": [
+    "human_approval:campaign_chief",
+    "human_approval:paid_media_owner"
+  ],
+  "blocked_stations": [
+    "station:digital-strategy",
+    "station:political-content",
+    "station:paid-media",
+    "station:storytelling-media-training"
+  ],
+  "campaign_id": "campaign:antigua-guatemala-exploratory",
+  "cycle_id": "cycle:antigua-evidence-priority-001",
+  "diagnosis": {
+    "category": "ELECTORAL_RESEARCH",
+    "evidence_refs": [
+      "evidence:EV-0001",
+      "evidence:EV-0111",
+      "evidence:EV-0114"
+    ],
+    "reason": "Prioritize which sources require extraction, verification, or reconciliation before a human can select a priority segment."
+  },
+  "gates": [
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:political-content",
+      "missing_prerequisites": [
+        "priority_segment_approved",
+        "positioning_approved"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:public-content-publication",
+      "missing_prerequisites": [
+        "content_draft_exists",
+        "factual_review_approved",
+        "political_review_approved"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:paid-media",
+      "missing_prerequisites": [
+        "priority_segment_approved",
+        "geographic_priority_approved",
+        "conversion_event_approved",
+        "budget_ceiling_approved",
+        "human_approval:campaign_chief",
+        "human_approval:paid_media_owner"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:field-mobilization",
+      "missing_prerequisites": [
+        "geographic_priority_approved",
+        "responsible_owner_assigned",
+        "field_objective_approved",
+        "human_approval:campaign_chief"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:public-proposal",
+      "missing_prerequisites": [
+        "supporting_evidence_accepted",
+        "viability_review_approved",
+        "political_review_approved"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:crisis-response",
+      "missing_prerequisites": [
+        "verified_facts_available",
+        "spokesperson_assigned",
+        "position_approved"
+      ],
+      "status": "CLOSED"
+    },
+    {
+      "external_effect": "NONE",
+      "gate_id": "gate:narrative-change",
+      "missing_prerequisites": [
+        "one_of:performance_evidence_exists|documented_strategic_change_exists",
+        "human_approval:campaign_chief"
+      ],
+      "status": "CLOSED"
+    }
+  ],
+  "next_action": {
+    "action": "Prioritize extraction, verification, and reconciliation of evidence.",
+    "human_input_required": "Campaign Chief reviews the brief and chooses the next research priority.",
+    "next_station": "station:electoral-research"
+  },
+  "provenance": [
+    "evidence:EV-0001",
+    "evidence:EV-0111",
+    "evidence:EV-0114"
+  ],
+  "required_artifact": {
+    "approval_status": "NOT_APPROVED",
+    "artifact_type": "EVIDENCE_PRIORITY_DECISION_BRIEF",
+    "count": 1,
+    "title": "Evidence Extraction Priority Decision Brief"
+  },
+  "risk_review": {
+    "evidence_gaps": [
+      "Community demographics are incomplete.",
+      "Priority segment evidence is insufficient.",
+      "Campaign budget ceiling is unknown."
+    ],
+    "message": [
+      "Public positioning remains blocked."
+    ],
+    "operational": [
+      "No external effects are authorized."
+    ],
+    "political": [
+      "Human authority remains required."
+    ]
+  },
+  "schema_version": "1.0",
+  "state_summary": [
+    "Stage: Exploratory pre-candidacy (APPROVED).",
+    "Mandate: Prepare a pre-candidacy for Mayor of Antigua Guatemala (APPROVED).",
+    "Active/research stations: 4.",
+    "Blocked stations: 4.",
+    "Tactical action remains gated pending evidence and human decisions."
+  ],
+  "tenant_id": "tenant:bernydotjar",
+  "warnings": [
+    "Segment selection remains blocked.",
+    "Public positioning remains blocked.",
+    "Content remains blocked.",
+    "Paid media remains blocked.",
+    "Mobilization remains blocked."
+  ],
+  "workspace_id": "workspace:antigua-2026"
+}

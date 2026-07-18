@@ -1,0 +1,35 @@
+- task_id: C2-PLAT-001-T01
+  title: Map repository and governance
+  owner: Repository Mapper
+  status: DONE
+  dependencies: []
+  artifact: specs/C2-PLAT-001/design.md
+  validation: baseline validators
+- task_id: C2-PLAT-001-T02
+  title: Specify and trace requirements
+  owner: Specification Analyst
+  status: DONE
+  dependencies: [C2-PLAT-001-T01]
+  artifact: specs/C2-PLAT-001/requirements.md
+  validation: requirements review
+- task_id: C2-PLAT-001-T03
+  title: Implement core, fixtures, CLI and evals
+  owner: Implementation Agent
+  status: DONE
+  dependencies: [C2-PLAT-001-T02]
+  artifact: core/campaign_workspace.py
+  validation: python3 scripts/campaign/validate_c2_plat_001.py
+- task_id: C2-PLAT-001-T04
+  title: Red-team and repair
+  owner: Independent Verifier
+  status: DONE
+  dependencies: [C2-PLAT-001-T03]
+  artifact: agent/C2-PLAT-001/critique-findings.json
+  validation: semantic substitution and path traversal regression tests
+- task_id: C2-PLAT-001-T05
+  title: Release gate and publication
+  owner: Release Reviewer
+  status: IN_PROGRESS
+  dependencies: [C2-PLAT-001-T04]
+  artifact: progress/C2-PLAT-001-implementation-report.md
+  validation: full integrated gate, draft PR
