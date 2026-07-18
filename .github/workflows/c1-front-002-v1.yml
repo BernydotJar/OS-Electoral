@@ -71,6 +71,8 @@ jobs:
         run: python3 scripts/campaign/validate_c2_obs_001.py
       - name: Validate read-only application service contracts
         run: python3 scripts/campaign/validate_c2_api_001a.py
+      - name: Validate cross-tenant adversarial integration harness
+        run: python3 scripts/campaign/validate_c2_test_001.py
       - name: Validate executable program architecture
         run: python3 scripts/architecture/validate_program_state.py
       - name: Validate diff whitespace
