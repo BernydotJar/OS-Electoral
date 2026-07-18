@@ -65,6 +65,8 @@ jobs:
         run: python3 scripts/campaign/validate_c2_saas_001a.py
       - name: Validate append-only persistence and audit boundary
         run: python3 scripts/campaign/validate_c2_saas_001b.py
+      - name: Validate repository interfaces and transaction boundary
+        run: python3 scripts/campaign/validate_c2_saas_001c.py
       - name: Validate executable program architecture
         run: python3 scripts/architecture/validate_program_state.py
       - name: Validate diff whitespace
