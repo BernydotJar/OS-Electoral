@@ -1,0 +1,35 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://os-electoral.local/schemas/candidate-brand-workspace-v1.schema.json",
+  "title":"Candidate Brand Workspace v1",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["schema_version","brand_workspace_id","tenant_id","campaign_id","workspace_id","candidate_id","status","identity","biography","purpose","values","attributes","proof_points","perception_gaps","behavioral_consistency_reviews","reputation_risks","approvals","metadata"],
+  "properties":{
+    "schema_version":{"const":"1.0"},
+    "brand_workspace_id":{"$ref":"#/$defs/id"},
+    "tenant_id":{"$ref":"#/$defs/id"},
+    "campaign_id":{"$ref":"#/$defs/id"},
+    "workspace_id":{"$ref":"#/$defs/id"},
+    "candidate_id":{"$ref":"#/$defs/id"},
+    "status":{"enum":["SETUP_REQUIRED","UNDER_REVIEW","AWAITING_APPROVAL","APPROVED","LOCKED"]},
+    "identity":{"$ref":"#/$defs/claim"},
+    "biography":{"$ref":"#/$defs/claim"},
+    "purpose":{"$ref":"#/$defs/claim"},
+    "values":{"type":"array","items":{"$ref":"#/$defs/claim"}},
+    "attributes":{"type":"array","items":{"$ref":"#/$defs/attribute"}},
+    "proof_points":{"type":"array","items":{"$ref":"#/$defs/claim"}},
+    "perception_gaps":{"type":"array","items":{"$ref":"#/$defs/domainObject"}},
+    "behavioral_consistency_reviews":{"type":"array","items":{"$ref":"#/$defs/domainObject"}},
+    "reputation_risks":{"type":"array","items":{"$ref":"#/$defs/domainObject"}},
+    "approvals":{"type":"array","items":{"$ref":"#/$defs/approval"}},
+    "metadata":{"type":"object"}
+  },
+  "$defs":{
+    "id":{"type":"string","pattern":"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "domainObject":{"type":"object","required":["id","status","created_at","updated_at","owner","source_or_provenance","tenant_id","campaign_id","workspace_id","candidate_id"],"properties":{"id":{"$ref":"#/$defs/id"},"status":{"type":"string"},"created_at":{"type":["string","null"]},"updated_at":{"type":["string","null"]},"owner":{"type":"string","minLength":1},"source_or_provenance":{"type":"string","minLength":1},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"},"candidate_id":{"$ref":"#/$defs/id"}}},
+    "claim":{"allOf":[{"$ref":"#/$defs/domainObject"},{"type":"object","required":["classification","claim","evidence_refs"],"properties":{"classification":{"enum":["OFFICIAL_SOURCE","CAMPAIGN_RESEARCH","PERCEPTION","HYPOTHESIS","UNKNOWN"]},"claim":{"type":"string","minLength":1},"evidence_refs":{"type":"array","items":{"$ref":"#/$defs/id"}}}}]},
+    "attribute":{"allOf":[{"$ref":"#/$defs/domainObject"},{"type":"object","required":["name","candidate_self_assessment","team_assessment","citizen_evidence","evidence_refs","perception_refs","contradiction_refs","risk"],"properties":{"name":{"type":"string","minLength":1},"candidate_self_assessment":{"enum":["YES","NO","UNKNOWN"]},"team_assessment":{"enum":["YES","PARTIAL","NO","UNKNOWN"]},"citizen_evidence":{"enum":["SUPPORTED","PARTIAL","UNRESOLVED","CONTRADICTED"]},"evidence_refs":{"type":"array","items":{"$ref":"#/$defs/id"}},"perception_refs":{"type":"array","items":{"$ref":"#/$defs/id"}},"contradiction_refs":{"type":"array","items":{"$ref":"#/$defs/id"}},"risk":{"type":"string"}}}]},
+    "approval":{"allOf":[{"$ref":"#/$defs/domainObject"},{"type":"object","required":["actor_type","role","supports_sections"],"properties":{"actor_type":{"const":"HUMAN"},"role":{"type":"string","minLength":1},"supports_sections":{"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["identity","biography","purpose","values","attributes","reputation"]}}}}]}
+  }
+}
