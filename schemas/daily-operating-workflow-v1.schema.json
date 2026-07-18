@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://os-electoral.local/schemas/daily-operating-workflow-v1.schema.json",
+  "title":"Daily Operating Workflow v1",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","workflow_id","tenant_id","campaign_id","workspace_id","evaluation_date","people","assignments","blockers","meetings","commitments","events","learning_records","metadata"],
+  "properties":{
+    "schema_version":{"const":"1.0"},"workflow_id":{"$ref":"#/$defs/id"},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"},"evaluation_date":{"type":"string","format":"date"},
+    "people":{"type":"array","items":{"$ref":"#/$defs/person"}},"assignments":{"type":"array","items":{"$ref":"#/$defs/assignment"}},"blockers":{"type":"array","items":{"$ref":"#/$defs/scoped"}},"meetings":{"type":"array","items":{"$ref":"#/$defs/scoped"}},"commitments":{"type":"array","items":{"$ref":"#/$defs/scoped"}},"events":{"type":"array","items":{"$ref":"#/$defs/scoped"}},"learning_records":{"type":"array","items":{"$ref":"#/$defs/scoped"}},"metadata":{"type":"object"}
+  },
+  "$defs":{
+    "id":{"type":"string","pattern":"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "scoped":{"type":"object","required":["id","tenant_id","campaign_id","workspace_id"],"properties":{"id":{"$ref":"#/$defs/id"},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"}}},
+    "person":{"allOf":[{"$ref":"#/$defs/scoped"},{"type":"object","required":["actor_type","role"],"properties":{"actor_type":{"const":"HUMAN"},"role":{"type":"string","minLength":1}}}]},
+    "assignment":{"allOf":[{"$ref":"#/$defs/scoped"},{"type":"object","required":["title","work_type","status","owner_ref","due_date","dependency_refs","blocker_refs","evidence_refs"],"properties":{"title":{"type":"string","minLength":1},"work_type":{"enum":["RESEARCH","REVIEW","PREP","DOCUMENTATION","INTERNAL_COORDINATION"]},"status":{"enum":["TODO","IN_PROGRESS","BLOCKED","DONE","CANCELLED"]},"owner_ref":{"$ref":"#/$defs/id"},"due_date":{"type":"string","format":"date"},"dependency_refs":{"type":"array","uniqueItems":true,"items":{"$ref":"#/$defs/id"}},"blocker_refs":{"type":"array","uniqueItems":true,"items":{"$ref":"#/$defs/id"}},"evidence_refs":{"type":"array","uniqueItems":true,"items":{"$ref":"#/$defs/id"}}}}]}
+  }
+}

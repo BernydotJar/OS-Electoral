@@ -1,0 +1,8 @@
+{
+  "schema_version":"1.0","workflow_id":"daily-workflow:rio-claro-demo","tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo","evaluation_date":"2026-07-18",
+  "people":[{"id":"human:rio-operator","actor_type":"HUMAN","role":"demo_operator","tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo"}],
+  "assignments":[{"id":"assignment:rio-review-biography","title":"Review synthetic biography evidence","work_type":"REVIEW","status":"IN_PROGRESS","owner_ref":"human:rio-operator","due_date":"2026-07-18","dependency_refs":[],"blocker_refs":[],"evidence_refs":["evidence:rio-claro-demo-001"],"tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo"}],
+  "blockers":[],
+  "meetings":[{"id":"meeting-prep:rio-review","title":"Synthetic internal review","evidence_refs":["evidence:rio-claro-demo-001"],"decision_refs":["approval-request:rio-brand-section"],"questions":["Is the synthetic evidence sufficient for the demo?"],"tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo"}],
+  "commitments":[],"events":[],"learning_records":[],"metadata":{"fixture_type":"SYNTHETIC","external_execution":false}
+}
