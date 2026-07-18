@@ -14,7 +14,8 @@ main
                     └── #52 C2-SAAS-001A Authorization Policy Boundary
                         └── #54 C2-ARCH-001 Executable Program State
                             └── #56 C2-SAAS-001B Persistence and Audit
-                                └── C2-SAAS-001C Repository and Transaction Boundary
+                                └── #58 C2-SAAS-001C Repository and Transaction Boundary
+                                    └── C2-OBS-001 Audit Observability and Integrity Read Model
 ```
 
 Every layer is draft, independently validated and blocked from merge or deployment pending human approval.
@@ -29,6 +30,7 @@ Every layer is draft, independently validated and blocked from merge or deployme
 - Authorization Policy: exact-scope allow/deny decision without authentication or execution.
 - Persistence Audit: pure persistence boundary, optimistic concurrency, cryptographic hash chaining and idempotency keys.
 - Repository Transaction: tenant-scoped repositories and unit of work context manager for transaction coordination.
+- Audit Observability: read-only query and integrity verifier for persistence audit events.
 
 ## Program-state validation
 
@@ -40,6 +42,6 @@ The validator rejects unknown dependencies, dependency cycles, missing code or v
 
 ## Current executable next work
 
-The manifest identifies C2-SAAS-001C as implemented. C2-OBS-001 (Audit Observability and Integrity Read Model) or C2-AI-001A (Evidence-grounded extraction and citation contracts) may follow.
+The manifest identifies C2-OBS-001 as implemented. C2-AI-001A (Evidence-grounded extraction and citation contracts) may follow.
 
 Real authentication, billing, deployment, tactical activation and public campaign actions remain deferred or human-blocked.
