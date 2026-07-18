@@ -1,0 +1,12 @@
+{
+  "schema_version":"1.0",
+  "request_id":"auth-request:antigua-read-governance",
+  "principal_id":"human:campaign-chief",
+  "tenant_id":"tenant:bernydotjar",
+  "campaign_id":"campaign:antigua-guatemala-exploratory",
+  "workspace_id":"workspace:antigua-2026",
+  "permission":"READ_WORKSPACE",
+  "resource_type":"GOVERNANCE_WORKSPACE",
+  "resource_id":"resource:antigua-governance",
+  "evaluation_date":"2026-07-18"
+}

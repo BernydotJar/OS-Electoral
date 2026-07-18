@@ -1,0 +1,19 @@
+{
+  "schema_version":"1.0",
+  "principal_id":"agent:rio-research",
+  "actor_type":"AGENT",
+  "display_name":"Campaign Chief",
+  "grants":[{
+    "id":"grant:rio-agent-draft",
+    "status":"ACTIVE",
+    "tenant_id":"tenant:demo-civic-lab",
+    "campaign_id":"campaign:rio-claro-municipal-demo",
+    "workspace_id":"workspace:rio-claro-2026-demo",
+    "role_id":"role:research-agent",
+    "permissions":["READ_WORKSPACE","CREATE_DRAFT","REQUEST_APPROVAL"],
+    "valid_from":"2026-07-18",
+    "valid_until":"2026-12-31",
+    "source_or_provenance":"synthetic fixture"
+  }],
+  "metadata":{"fixture_type":"SYNTHETIC","authenticated":false}
+}

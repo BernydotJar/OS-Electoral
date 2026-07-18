@@ -1,0 +1,15 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://os-electoral.local/schemas/principal-context-v1.schema.json",
+  "title":"Principal Context v1",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","principal_id","actor_type","display_name","grants","metadata"],
+  "properties":{
+    "schema_version":{"const":"1.0"},"principal_id":{"$ref":"#/$defs/id"},"actor_type":{"enum":["HUMAN","AGENT","SYSTEM"]},"display_name":{"type":"string"},"grants":{"type":"array","items":{"$ref":"#/$defs/grant"}},"metadata":{"type":"object"}
+  },
+  "$defs":{
+    "id":{"type":"string","pattern":"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "permission":{"enum":["READ_WORKSPACE","CREATE_DRAFT","REQUEST_APPROVAL","PROPOSE_TRANSITION","MANAGE_INTERNAL_ASSIGNMENTS","APPROVE_POLITICAL","APPROVE_LEGAL","APPROVE_FINANCIAL","APPROVE_PUBLICATION","APPROVE_SPENDING","APPROVE_MOBILIZATION"]},
+    "grant":{"type":"object","additionalProperties":false,"required":["id","status","tenant_id","campaign_id","workspace_id","role_id","permissions","valid_from","valid_until","source_or_provenance"],"properties":{"id":{"$ref":"#/$defs/id"},"status":{"enum":["ACTIVE","REVOKED","EXPIRED"]},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"},"role_id":{"$ref":"#/$defs/id"},"permissions":{"type":"array","minItems":1,"uniqueItems":true,"items":{"$ref":"#/$defs/permission"}},"valid_from":{"type":["string","null"]},"valid_until":{"type":["string","null"]},"source_or_provenance":{"type":"string","minLength":1}}}
+  }
+}
