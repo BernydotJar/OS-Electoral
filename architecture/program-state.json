@@ -1,0 +1,56 @@
+{
+  "schema_version":"1.0",
+  "program_id":"program:campaignos-c2",
+  "updated_at":"2026-07-18",
+  "source_branch":"agent/c2-arch-001-executable-program-state",
+  "operating_principle":"AI recommends; evidence supports; authorized humans decide.",
+  "stack":[
+    {"id":"increment:c2-plat-001-hardening","issue":40,"pr":42,"branch":"agent/c2-plat-001-approval-binding-hardening","base":"main","status":"IMPLEMENTED_IN_STACK","validation_run":29656158142,"external_effects":"NONE"},
+    {"id":"increment:c2-prod-001","issue":43,"pr":44,"branch":"agent/c2-prod-001-candidate-brand-workspace","base":"agent/c2-plat-001-approval-binding-hardening","status":"IMPLEMENTED_IN_STACK","validation_run":29658109760,"external_effects":"NONE"},
+    {"id":"increment:c2-prod-002","issue":45,"pr":46,"branch":"agent/c2-prod-002-approval-inbox-ledger","base":"agent/c2-prod-001-candidate-brand-workspace","status":"IMPLEMENTED_IN_STACK","validation_run":29658298020,"external_effects":"NONE"},
+    {"id":"increment:c2-prod-003","issue":47,"pr":48,"branch":"agent/c2-prod-003-daily-operating-workflow","base":"agent/c2-prod-002-approval-inbox-ledger","status":"IMPLEMENTED_IN_STACK","validation_run":29658392557,"external_effects":"NONE"},
+    {"id":"increment:c2-front-001","issue":49,"pr":50,"branch":"agent/c2-front-001-governance-workspace","base":"agent/c2-prod-003-daily-operating-workflow","status":"IMPLEMENTED_IN_STACK","validation_run":29658564346,"external_effects":"NONE"},
+    {"id":"increment:c2-saas-001a","issue":51,"pr":52,"branch":"agent/c2-saas-001a-authorization-policy","base":"agent/c2-front-001-governance-workspace","status":"IMPLEMENTED_IN_STACK","validation_run":29658680211,"external_effects":"NONE"}
+  ],
+  "bounded_contexts":[
+    {"id":"context:campaign-workspace","owner":"Campaign Platform","status":"IMPLEMENTED_IN_STACK","code":["core/campaign_workspace.py"],"validators":["scripts/campaign/validate_c2_plat_001.py"]},
+    {"id":"context:candidate-brand","owner":"Candidate Brand and Reputation","status":"IMPLEMENTED_IN_STACK","code":["core/candidate_brand.py"],"validators":["scripts/campaign/validate_c2_prod_001.py"]},
+    {"id":"context:approval-ledger","owner":"Campaign Governance","status":"IMPLEMENTED_IN_STACK","code":["core/approval_ledger.py"],"validators":["scripts/campaign/validate_c2_prod_002.py"]},
+    {"id":"context:daily-operations","owner":"Operations and Team","status":"IMPLEMENTED_IN_STACK","code":["core/daily_workflow.py"],"validators":["scripts/campaign/validate_c2_prod_003.py"]},
+    {"id":"context:governance-frontend","owner":"Campaign Product","status":"IMPLEMENTED_IN_STACK","code":["web/governance.js","web/data/governance.json"],"validators":["scripts/frontend/validate_governance_workspace.py","scripts/frontend/review_governance_workspace.py"]},
+    {"id":"context:authorization-policy","owner":"Campaign Security","status":"IMPLEMENTED_IN_STACK","code":["core/authorization_policy.py"],"validators":["scripts/campaign/validate_c2_saas_001a.py"]}
+  ],
+  "campaign_state":{
+    "stage":"EXPLORATORY_PRE_CANDIDACY",
+    "territory":"Municipality of Antigua Guatemala, Sacatepequez",
+    "objective_90_days":"APPROVED",
+    "priority_segment":"UNDER_RESEARCH",
+    "public_positioning":"BLOCKED",
+    "budget_ceiling":"BLOCKED",
+    "political_content":"BLOCKED",
+    "paid_media":"BLOCKED",
+    "field_mobilization":"BLOCKED"
+  },
+  "human_gates":[
+    "MERGE_STACK",
+    "DEPLOYMENT",
+    "SELECT_PRIORITY_SEGMENT",
+    "APPROVE_POSITIONING",
+    "APPROVE_PUBLIC_CONTENT",
+    "APPROVE_SPENDING",
+    "ACTIVATE_PAID_MEDIA",
+    "ACTIVATE_FIELD_MOBILIZATION",
+    "CONTACT_CITIZENS"
+  ],
+  "roadmap":[
+    {"id":"increment:c2-arch-001","status":"ACTIVE","depends_on":["increment:c2-saas-001a"],"objective":"Persist executable architecture and roadmap state."},
+    {"id":"increment:c2-saas-001b","status":"EXECUTABLE_NEXT","depends_on":["increment:c2-arch-001"],"objective":"Define explicit append-only persistence and audit adapter contracts without database deployment."},
+    {"id":"increment:c2-ai-001a","status":"EXECUTABLE_NEXT","depends_on":["increment:c2-saas-001b"],"objective":"Define evidence-grounded extraction and citation contracts without external model credentials."},
+    {"id":"increment:c2-saas-001-auth","status":"DEFERRED","depends_on":["increment:c2-saas-001a"],"objective":"Integrate real identity provider and session validation."},
+    {"id":"increment:c2-comm-001","status":"DEFERRED","depends_on":["increment:c2-saas-001-auth"],"objective":"Commercial packaging, onboarding, plans and billing."},
+    {"id":"action:merge-stack","status":"HUMAN_BLOCKED","depends_on":["increment:c2-arch-001"],"objective":"Merge stacked draft PRs after human review."},
+    {"id":"action:deployment","status":"HUMAN_BLOCKED","depends_on":["action:merge-stack"],"objective":"Deploy only after explicit human approval."}
+  ],
+  "prohibited_capabilities":["VOTER_LEVEL_PROFILING","PERSUADABILITY_SCORING","SENSITIVE_MICROTARGETING","DISINFORMATION","AUTOMATED_PUBLISHING","AUTOMATED_SPENDING","AUTOMATED_MOBILIZATION","CITIZEN_SURVEILLANCE","UNAUTHORIZED_CONTACT"],
+  "known_critical_or_high_findings":0
+}
