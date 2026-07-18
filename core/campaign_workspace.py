@@ -54,6 +54,7 @@ GATE_RULES = (
     GateRule("gate:crisis-response", ("verified_facts_available", "spokesperson_assigned", "position_approved")),
     GateRule("gate:narrative-change", (), ("campaign_chief",), ("performance_evidence_exists", "documented_strategic_change_exists")),
 )
+CANONICAL_GATES = {rule.gate_id for rule in GATE_RULES}
 
 
 def _objects(workspace: dict[str, Any]) -> Iterable[dict[str, Any]]:
@@ -118,12 +119,16 @@ def validate_workspace(workspace: dict[str, Any]) -> dict[str, Any]:
     for approval in workspace["approvals"]:
         _require(approval.get("status") in APPROVAL_STATUSES, f"invalid approval status: {approval.get('id')}")
         _require(approval.get("actor_type") == "HUMAN", f"approval authority must be human: {approval.get('id')}")
+        _require(isinstance(approval.get("role"), str) and approval["role"].strip(), f"approval role is required: {approval.get('id')}")
+        _require(isinstance(approval.get("supports_gates"), list) and approval["supports_gates"], f"approval must bind to at least one gate: {approval.get('id')}")
+        for gate_id in approval["supports_gates"]:
+            _require(gate_id in CANONICAL_GATES, f"approval references unknown gate {gate_id}: {approval.get('id')}")
     for station in workspace["stations"]:
         _require(station.get("status") in STATION_STATUSES, f"invalid station status: {station.get('id')}")
         for field in ("mode", "mission", "required_inputs", "blocked_by", "approval_owner", "autonomy_level", "review_date"):
             _require(field in station, f"station {station.get('id')} missing {field}")
     _require({station["id"] for station in workspace["stations"]} == CANONICAL_STATIONS, "workspace must configure exactly the eight canonical stations")
-    _require({gate["id"] for gate in workspace["gates"]} == {rule.gate_id for rule in GATE_RULES}, "workspace must configure exactly the seven canonical gates")
+    _require({gate["id"] for gate in workspace["gates"]} == CANONICAL_GATES, "workspace must configure exactly the seven canonical gates")
     for gate in workspace["gates"]:
         _require(gate["status"] in {"BLOCKED", "AWAITING_APPROVAL", "INACTIVE"}, f"invalid configured gate status: {gate['id']}")
     _validate_references(workspace, ids)
@@ -158,15 +163,22 @@ def evaluate_gates(workspace: dict[str, Any]) -> list[dict[str, Any]]:
     """Evaluate every canonical strategic gate from explicit workspace signals."""
     validate_workspace(workspace)
     signals = _validated_gate_signals(workspace)
-    approval_roles = {
-        approval.get("role") for approval in workspace["approvals"] if approval.get("status") == "APPROVED"
-    }
+    approval_roles_by_gate: dict[str, set[str]] = {gate_id: set() for gate_id in CANONICAL_GATES}
+    for approval in workspace["approvals"]:
+        if approval.get("status") != "APPROVED":
+            continue
+        for gate_id in approval["supports_gates"]:
+            approval_roles_by_gate[gate_id].add(approval["role"])
     results = []
     for rule in GATE_RULES:
         missing = [name for name in rule.prerequisites if signals.get(name) is not True]
         if rule.any_of and not any(signals.get(name) is True for name in rule.any_of):
             missing.append("one_of:" + "|".join(rule.any_of))
-        missing.extend(f"human_approval:{role}" for role in rule.approvals if role not in approval_roles)
+        missing.extend(
+            f"human_approval:{role}"
+            for role in rule.approvals
+            if role not in approval_roles_by_gate[rule.gate_id]
+        )
         results.append({
             "gate_id": rule.gate_id,
             "status": "CLOSED" if missing else "ELIGIBLE_FOR_HUMAN_APPROVAL",
