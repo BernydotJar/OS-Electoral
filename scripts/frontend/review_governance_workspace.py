@@ -19,12 +19,13 @@ def review(browser,viewport:dict,reduced_motion:str,label:str)->None:
     page.goto(BASE_URL,wait_until="networkidle")
     tab=page.locator('[data-module="governance"]'); tab.wait_for(state="visible"); tab.click()
     page.locator('[data-view="governance"]').wait_for(state="visible")
-    page.locator("#governanceBrandStatus").wait_for(state="visible")
-    require(page.locator("#governanceBrandStatus").inner_text()=="SETUP REQUIRED","brand status must remain setup-required")
-    require(page.locator("#governanceApprovalCount").inner_text()=="1","pending approval count mismatch")
-    require(page.locator("#governanceAssignmentCount").inner_text()=="1","assignment count mismatch")
+    page.wait_for_function("""() =>
+      document.querySelector('#governanceBrandStatus')?.textContent.trim() === 'SETUP REQUIRED' &&
+      document.querySelector('#governanceApprovalCount')?.textContent.trim() === '1' &&
+      document.querySelector('#governanceAssignmentCount')?.textContent.trim() === '1'
+    """)
     require(page.locator("#governanceModule button").count()==0,"governance workspace must expose no action buttons")
-    require("Coordinate 04" in page.locator("#activeModuleStatus").inner_text(),"module status label mismatch")
+    page.wait_for_function("document.querySelector('#activeModuleStatus')?.textContent.includes('Coordinate 04')")
     require(page.evaluate("document.activeElement?.id")=="governance-title","module title must receive focus")
     dimensions=page.evaluate("() => ({clientWidth:document.documentElement.clientWidth,scrollWidth:document.documentElement.scrollWidth})")
     require(dimensions["scrollWidth"]<=dimensions["clientWidth"]+1,f"horizontal overflow: {dimensions}")
