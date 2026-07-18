@@ -17,7 +17,8 @@ main
                                 └── #58 C2-SAAS-001C Repository and Transaction Boundary
                                     └── #60 C2-OBS-001 Audit Observability and Integrity Read Model
                                         └── #62 C2-API-001A Read-Only Application Service Contracts
-                                            └── C2-TEST-001 Cross-Tenant Adversarial Integration Harness
+                                            └── #64 C2-TEST-001 Cross-Tenant Adversarial Integration Harness
+                                                └── C2-DOCS-001 Operator Runbook and Release Gate Guide
 ```
 
 Every layer is draft, independently validated and blocked from merge or deployment pending human approval.
@@ -45,6 +46,6 @@ The validator rejects unknown dependencies, dependency cycles, missing code or v
 
 ## Current executable next work
 
-The manifest identifies C2-TEST-001 as implemented. C2-DOCS-001 (Operator Runbook and Release Gate Guide) may follow.
+The manifest identifies C2-DOCS-001 as implemented. C2-AI-001A (Evidence-grounded extraction and citation contracts) may follow.
 
 Real authentication, billing, deployment, tactical activation and public campaign actions remain deferred or human-blocked.
