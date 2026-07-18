@@ -1,0 +1,15 @@
+{
+  "schema_version":"1.0",
+  "request_id":"auth-request:antigua-create-artifact",
+  "principal_id":"human:campaign-chief",
+  "actor_type":"HUMAN",
+  "decision":"ALLOW",
+  "permission":"CREATE_DRAFT",
+  "scope":{"tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+  "resource":{"type":"INTERNAL_ARTIFACT","id":"artifact:identity-interview-brief"},
+  "matching_grants":["grant:antigua-chief-read"],
+  "rejected_grants":[],
+  "reasons":["EXACT_ACTIVE_GRANT"],
+  "external_effects":"NONE",
+  "warning":"Authorization is a policy decision only."
+}
