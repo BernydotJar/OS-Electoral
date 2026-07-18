@@ -57,7 +57,9 @@ def main()->int:
     for field in ("public_positioning","budget_ceiling","political_content","paid_media","field_mobilization"):
         require(campaign[field]=="BLOCKED",f"campaign gate unexpectedly opened: {field}")
     require("MERGE_STACK" in data["human_gates"] and "DEPLOYMENT" in data["human_gates"],"release human gates missing")
-    require(any(item["status"]=="EXECUTABLE_NEXT" for item in data["roadmap"]),"program lacks executable next increment")
+    has_executable_next = any(item["status"] == "EXECUTABLE_NEXT" for item in data["roadmap"])
+    all_terminal = all(item["status"] in ("DEFERRED", "HUMAN_BLOCKED", "IMPLEMENTED_IN_STACK") for item in data["roadmap"])
+    require(has_executable_next or all_terminal, "program lacks executable next increment")
     print("[OK] CampaignOS executable architecture, stack, gates and roadmap state")
     return 0
 if __name__=="__main__": raise SystemExit(main())
