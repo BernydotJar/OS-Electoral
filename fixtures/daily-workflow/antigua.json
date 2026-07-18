@@ -1,0 +1,17 @@
+{
+  "schema_version":"1.0","workflow_id":"daily-workflow:antigua-2026-07-18","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026","evaluation_date":"2026-07-18",
+  "people":[
+    {"id":"human:campaign-chief","actor_type":"HUMAN","role":"campaign_chief","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"},
+    {"id":"human:research-owner","actor_type":"HUMAN","role":"research_owner","tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"}
+  ],
+  "assignments":[{
+    "id":"assignment:prepare-identity-interview","title":"Prepare governed Candidate Identity Interview","work_type":"PREP","status":"TODO","owner_ref":"human:research-owner","due_date":"2026-07-19","dependency_refs":[],"blocker_refs":[],"evidence_refs":["evidence:EV-0001"],
+    "tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"
+  }],
+  "blockers":[],
+  "meetings":[{
+    "id":"meeting-prep:candidate-identity","title":"Candidate Identity Interview preparation","evidence_refs":["evidence:EV-0001"],"decision_refs":["approval-request:brand-research-plan"],"questions":["Which identity claims can be evidenced?","Which attributes remain unknown?"],
+    "tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"
+  }],
+  "commitments":[],"events":[],"learning_records":[],"metadata":{"external_execution":false}
+}
