@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://os-electoral.local/schemas/persistence-audit-event-v1.schema.json",
+  "title": "Persistence Audit Event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "intent_id",
+    "idempotency_key",
+    "operation",
+    "resource_type",
+    "resource_id",
+    "principal_id",
+    "authorization_request_id",
+    "aggregate_version",
+    "occurred_at",
+    "payload_digest",
+    "previous_hash",
+    "event_hash",
+    "tenant_id",
+    "campaign_id",
+    "workspace_id"
+  ],
+  "properties": {
+    "id": { "$ref": "#/$defs/id" },
+    "intent_id": { "$ref": "#/$defs/id" },
+    "idempotency_key": { "type": "string" },
+    "operation": { "enum": ["APPEND_EVENT", "CREATE_ARTIFACT", "UPDATE_PROJECTION"] },
+    "resource_type": { "type": "string" },
+    "resource_id": { "$ref": "#/$defs/id" },
+    "principal_id": { "$ref": "#/$defs/id" },
+    "authorization_request_id": { "$ref": "#/$defs/id" },
+    "aggregate_version": { "type": "integer", "minimum": 1 },
+    "occurred_at": { "type": "string" },
+    "payload_digest": { "$ref": "#/$defs/hash" },
+    "previous_hash": { "$ref": "#/$defs/hashOrGenesis" },
+    "event_hash": { "$ref": "#/$defs/hash" },
+    "tenant_id": { "$ref": "#/$defs/id" },
+    "campaign_id": { "$ref": "#/$defs/id" },
+    "workspace_id": { "$ref": "#/$defs/id" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$" },
+    "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "hashOrGenesis": { "type": "string", "pattern": "^(GENESIS|[a-f0-9]{64})$" }
+  }
+}

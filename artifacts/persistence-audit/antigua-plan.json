@@ -1,0 +1,31 @@
+{
+  "external_effects": "NONE",
+  "intent_id": "write-intent:identity-interview-brief",
+  "outcome": "ACCEPTABLE_FOR_ADAPTER",
+  "persistence_performed": false,
+  "planned_event": {
+    "aggregate_version": 1,
+    "authorization_request_id": "auth-request:antigua-create-artifact",
+    "campaign_id": "campaign:antigua-guatemala-exploratory",
+    "event_hash": "0e61a3cacbdb54cffa03d9458a8af3a7480106045a635d0c72c2f1b2109148d2",
+    "id": "audit-event:identity-interview-brief",
+    "idempotency_key": "idem:identity-interview-brief-v1",
+    "intent_id": "write-intent:identity-interview-brief",
+    "occurred_at": "2026-07-18",
+    "operation": "CREATE_ARTIFACT",
+    "payload_digest": "571696f67c2873f12da6bab9701283b0d71db104b7f9ccc991029f75c049f98b",
+    "previous_hash": "GENESIS",
+    "principal_id": "human:campaign-chief",
+    "resource_id": "artifact:identity-interview-brief",
+    "resource_type": "INTERNAL_ARTIFACT",
+    "tenant_id": "tenant:bernydotjar",
+    "workspace_id": "workspace:antigua-2026"
+  },
+  "projected_store": {
+    "aggregate_version": 1,
+    "idempotency_key": "idem:identity-interview-brief-v1",
+    "last_event_hash": "0e61a3cacbdb54cffa03d9458a8af3a7480106045a635d0c72c2f1b2109148d2"
+  },
+  "schema_version": "1.0",
+  "warning": "This plan does not write to a database, filesystem, network service or domain aggregate."
+}
