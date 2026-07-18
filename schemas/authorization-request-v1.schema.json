@@ -1,0 +1,14 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://os-electoral.local/schemas/authorization-request-v1.schema.json",
+  "title":"Authorization Request v1",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","request_id","principal_id","tenant_id","campaign_id","workspace_id","permission","resource_type","resource_id","evaluation_date"],
+  "properties":{
+    "schema_version":{"const":"1.0"},
+    "request_id":{"$ref":"#/$defs/id"},"principal_id":{"$ref":"#/$defs/id"},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"},
+    "permission":{"enum":["READ_WORKSPACE","CREATE_DRAFT","REQUEST_APPROVAL","PROPOSE_TRANSITION","MANAGE_INTERNAL_ASSIGNMENTS","APPROVE_POLITICAL","APPROVE_LEGAL","APPROVE_FINANCIAL","APPROVE_PUBLICATION","APPROVE_SPENDING","APPROVE_MOBILIZATION"]},
+    "resource_type":{"type":"string","minLength":1},"resource_id":{"$ref":"#/$defs/id"},"evaluation_date":{"type":"string","format":"date"}
+  },
+  "$defs":{"id":{"type":"string","pattern":"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"}}
+}
