@@ -1,0 +1,12 @@
+{
+  "schema_version":"1.0",
+  "store_id":"audit-store:antigua-governance",
+  "tenant_id":"tenant:bernydotjar",
+  "campaign_id":"campaign:antigua-guatemala-exploratory",
+  "workspace_id":"workspace:antigua-2026",
+  "aggregate_version":0,
+  "last_event_hash":"GENESIS",
+  "events":[],
+  "idempotency_keys":[],
+  "metadata":{"adapter":"IN_MEMORY_TEST_ONLY","production_persistence":false}
+}
