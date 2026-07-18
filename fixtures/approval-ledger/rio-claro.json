@@ -1,0 +1,22 @@
+{
+  "schema_version":"1.0",
+  "inbox_id":"approval-inbox:rio-claro-demo",
+  "tenant_id":"tenant:demo-civic-lab",
+  "campaign_id":"campaign:rio-claro-municipal-demo",
+  "workspace_id":"workspace:rio-claro-2026-demo",
+  "requests":[{
+    "id":"approval-request:rio-brand-section","status":"PENDING","title":"Review synthetic identity section",
+    "scope_type":"BRAND_SECTION","scope_id":"brand-section:identity","required_roles":["campaign_chief"],
+    "evidence_refs":["evidence:rio-claro-demo-001"],"risk_refs":[],
+    "options":[{"id":"option:rio-accept-section","label":"Accept for internal demo"},{"id":"option:rio-return-research","label":"Return for research"}],
+    "recommendation":null,"created_at":"2026-07-18","owner":"Demo Brand Team","source_or_provenance":"synthetic fixture",
+    "tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo"
+  }],
+  "ledger":[{
+    "id":"ledger-event:rio-brand-requested","transition_id":"transition:rio-brand-requested","event_type":"REQUESTED","request_ref":"approval-request:rio-brand-section",
+    "actor_type":"AGENT","actor_id":"agent:rio-brand","role":"candidate_brand_reputation","scope_type":"BRAND_SECTION","scope_id":"brand-section:identity","selected_option_ref":null,
+    "occurred_at":"2026-07-18","reason":"Synthetic request for portability validation.","previous_hash":"GENESIS","entry_hash":"b88ed13df6fe73361957d4bde3cdfc5e96571d349ba811b83d6db4b0060f0094",
+    "tenant_id":"tenant:demo-civic-lab","campaign_id":"campaign:rio-claro-municipal-demo","workspace_id":"workspace:rio-claro-2026-demo"
+  }],
+  "metadata":{"fixture_type":"SYNTHETIC","opens_gate":false}
+}

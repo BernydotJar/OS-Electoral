@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://os-electoral.local/schemas/approval-ledger-v1.schema.json",
+  "title":"Approval Inbox and Decision Ledger v1",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","inbox_id","tenant_id","campaign_id","workspace_id","requests","ledger","metadata"],
+  "properties":{
+    "schema_version":{"const":"1.0"},"inbox_id":{"$ref":"#/$defs/id"},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"},
+    "requests":{"type":"array","items":{"$ref":"#/$defs/request"}},"ledger":{"type":"array","items":{"$ref":"#/$defs/event"}},"metadata":{"type":"object"}
+  },
+  "$defs":{
+    "id":{"type":"string","pattern":"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "scope":{"enum":["GATE","BRAND_SECTION","DECISION"]},
+    "request":{"type":"object","required":["id","status","title","scope_type","scope_id","required_roles","evidence_refs","risk_refs","options","recommendation","created_at","owner","source_or_provenance","tenant_id","campaign_id","workspace_id"],"properties":{"id":{"$ref":"#/$defs/id"},"status":{"enum":["PENDING","APPROVED","REJECTED","REVOKED","EXPIRED"]},"title":{"type":"string","minLength":1},"scope_type":{"$ref":"#/$defs/scope"},"scope_id":{"$ref":"#/$defs/id"},"required_roles":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},"evidence_refs":{"type":"array","items":{"$ref":"#/$defs/id"}},"risk_refs":{"type":"array","items":{"$ref":"#/$defs/id"}},"options":{"type":"array","minItems":2,"items":{"type":"object","required":["id","label"],"properties":{"id":{"$ref":"#/$defs/id"},"label":{"type":"string","minLength":1}}}},"recommendation":{"oneOf":[{"$ref":"#/$defs/id"},{"type":"null"}]},"created_at":{"type":["string","null"]},"owner":{"type":"string","minLength":1},"source_or_provenance":{"type":"string","minLength":1},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"}}},
+    "event":{"type":"object","required":["id","transition_id","event_type","request_ref","actor_type","actor_id","role","scope_type","scope_id","selected_option_ref","occurred_at","reason","previous_hash","entry_hash","tenant_id","campaign_id","workspace_id"],"properties":{"id":{"$ref":"#/$defs/id"},"transition_id":{"$ref":"#/$defs/id"},"event_type":{"enum":["REQUESTED","APPROVED","REJECTED","REVOKED","EXPIRED"]},"request_ref":{"$ref":"#/$defs/id"},"actor_type":{"enum":["HUMAN","AGENT","SYSTEM"]},"actor_id":{"$ref":"#/$defs/id"},"role":{"type":"string","minLength":1},"scope_type":{"$ref":"#/$defs/scope"},"scope_id":{"$ref":"#/$defs/id"},"selected_option_ref":{"oneOf":[{"$ref":"#/$defs/id"},{"type":"null"}]},"occurred_at":{"type":["string","null"]},"reason":{"type":"string"},"previous_hash":{"type":"string","minLength":7},"entry_hash":{"type":"string","pattern":"^[a-f0-9]{64}$"},"tenant_id":{"$ref":"#/$defs/id"},"campaign_id":{"$ref":"#/$defs/id"},"workspace_id":{"$ref":"#/$defs/id"}}}
+  }
+}

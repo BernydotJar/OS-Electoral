@@ -13,8 +13,10 @@ on:
       - "scripts/campaign/**"
       - "agent/C2-PLAT-001/**"
       - "agent/C2-PROD-001/**"
+      - "agent/C2-PROD-002/**"
       - "docs/campaign-workspaces.md"
       - "docs/candidate-brand-workspace.md"
+      - "docs/approval-inbox-ledger.md"
       - ".github/workflows/c1-front-002-v1.yml"
       - "feature_list.json"
       - "progress/C1-FRONT-002-V1-validation-report.md"
@@ -61,6 +63,9 @@ jobs:
 
       - name: Validate Candidate Brand workspace
         run: python3 scripts/campaign/validate_c2_prod_001.py
+
+      - name: Validate Approval Inbox and Decision Ledger
+        run: python3 scripts/campaign/validate_c2_prod_002.py
 
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD

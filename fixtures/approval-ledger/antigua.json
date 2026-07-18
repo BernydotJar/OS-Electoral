@@ -1,0 +1,22 @@
+{
+  "schema_version":"1.0",
+  "inbox_id":"approval-inbox:antigua-2026",
+  "tenant_id":"tenant:bernydotjar",
+  "campaign_id":"campaign:antigua-guatemala-exploratory",
+  "workspace_id":"workspace:antigua-2026",
+  "requests":[{
+    "id":"approval-request:brand-research-plan","status":"PENDING","title":"Approve next candidate-brand research plan",
+    "scope_type":"DECISION","scope_id":"decision:brand-research-plan","required_roles":["campaign_chief"],
+    "evidence_refs":[],"risk_refs":["reputation-risk:antigua-evidence-gap"],
+    "options":[{"id":"option:conduct-identity-interview","label":"Conduct governed identity interview"},{"id":"option:defer-brand-work","label":"Defer candidate-brand work"}],
+    "recommendation":"option:conduct-identity-interview","created_at":"2026-07-18","owner":"Candidate Brand and Reputation","source_or_provenance":"C2-PROD-001 assessment",
+    "tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"
+  }],
+  "ledger":[{
+    "id":"ledger-event:brand-research-requested","transition_id":"transition:brand-research-requested","event_type":"REQUESTED","request_ref":"approval-request:brand-research-plan",
+    "actor_type":"AGENT","actor_id":"agent:candidate-brand","role":"candidate_brand_reputation","scope_type":"DECISION","scope_id":"decision:brand-research-plan","selected_option_ref":null,
+    "occurred_at":"2026-07-18","reason":"Request human review of a research-only next step.","previous_hash":"GENESIS","entry_hash":"fcd937735babd4fb67c5a2030ce481d85bbbbe5b8c219d5bf198d98a35255baa",
+    "tenant_id":"tenant:bernydotjar","campaign_id":"campaign:antigua-guatemala-exploratory","workspace_id":"workspace:antigua-2026"
+  }],
+  "metadata":{"fixture_type":"OPERATOR_WORKSPACE","opens_gate":false}
+}
