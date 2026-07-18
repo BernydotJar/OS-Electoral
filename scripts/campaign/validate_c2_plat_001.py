@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def main() -> int:
-    command = [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_campaign_workspace.py", "-v"]
+    command = [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", "-v"]
     run = subprocess.run(command, cwd=ROOT, check=False)
     if run.returncode:
         return run.returncode
