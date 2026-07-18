@@ -11,7 +11,7 @@ from core.persistence_audit import validate_store, event_hash
 class AuditIntegrityReadModel:
     def __init__(self, store: dict[str, Any]) -> None:
         """Initialize the read model with a persistence store.
-        
+
         Raises ValueError if the store structure is malformed.
         """
         if not isinstance(store, dict):
@@ -22,7 +22,7 @@ class AuditIntegrityReadModel:
 
     def verify_integrity(self) -> dict[str, Any]:
         """Perform a cryptographic audit of the event chain to check for tampering, reordering, gaps, or corruption.
-        
+
         Returns a report dictionary:
           - {"status": "VALID", "events_processed": int}
           - {"status": "CORRUPTED", "reason": str, "mismatched_version": int}
@@ -148,7 +148,7 @@ class AuditIntegrityReadModel:
         operation: str | None = None
     ) -> list[dict[str, Any]]:
         """Query and filter events by security principal, resource, or operation.
-        
+
         Returns a list of copied event dictionaries matching the filters.
         """
         results = []

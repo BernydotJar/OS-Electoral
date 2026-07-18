@@ -283,7 +283,7 @@ class UnitOfWork:
             # Validate workspaces
             for ws in self._loaded_workspaces.values():
                 validate_workspace(ws)
-            
+
             # Validate daily workflows
             for wf in self._loaded_workflows.values():
                 validate_daily_workflow(wf)
@@ -338,7 +338,7 @@ class UnitOfWork:
     def rollback(self) -> None:
         if self._committed or self._rolled_back:
             return
-        
+
         # Restore all in-memory loaded dictionaries to their pre-transaction states
         for key, ws in self._loaded_workspaces.items():
             ws.clear()

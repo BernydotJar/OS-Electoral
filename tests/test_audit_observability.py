@@ -103,7 +103,7 @@ class AuditObservabilityTests(unittest.TestCase):
         tampered = copy.deepcopy(self.populated)
         # Modify a field inside event 1 to invalidate its hash
         tampered["events"][0]["payload_digest"] = "tampered-digest"
-        
+
         model = AuditIntegrityReadModel(tampered)
         report = model.verify_integrity()
         self.assertEqual(report["status"], "CORRUPTED")
@@ -113,7 +113,7 @@ class AuditObservabilityTests(unittest.TestCase):
         tampered = copy.deepcopy(self.populated)
         # Swap events
         tampered["events"][0], tampered["events"][1] = tampered["events"][1], tampered["events"][0]
-        
+
         model = AuditIntegrityReadModel(tampered)
         report = model.verify_integrity()
         self.assertEqual(report["status"], "CORRUPTED")
@@ -178,7 +178,7 @@ class AuditObservabilityTests(unittest.TestCase):
 
     def test_query_filter_exact_match(self) -> None:
         model = AuditIntegrityReadModel(self.populated)
-        
+
         # Filter by principal_id
         res = model.query(principal_id="human:owner")
         self.assertEqual(len(res), 2)

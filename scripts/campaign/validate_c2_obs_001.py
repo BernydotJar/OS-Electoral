@@ -35,7 +35,7 @@ def run_cli_tests() -> None:
         res = subprocess.run(command, cwd=ROOT, check=False)
         if res.returncode != 0:
             raise AssertionError(f"CLI generation failed for {label}")
-        
+
         expected_file = output_dir / output_name
         if not expected_file.is_file():
             raise AssertionError(f"Expected audit report file missing: {expected_file.relative_to(ROOT)}")
