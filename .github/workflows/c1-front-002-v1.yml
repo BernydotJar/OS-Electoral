@@ -9,10 +9,15 @@ on:
       - "schemas/**"
       - "campaigns/**"
       - "fixtures/**"
+      - "architecture/**"
       - "scripts/frontend/**"
       - "scripts/campaign/**"
+      - "scripts/architecture/**"
       - "agent/C2-PLAT-001/**"
-      - "docs/campaign-workspaces.md"
+      - "agent/C2-PROD-001/**"
+      - "agent/C2-PROD-002/**"
+      - "agent/C2-PROD-003/**"
+      - "docs/**"
       - ".github/workflows/c1-front-002-v1.yml"
       - "feature_list.json"
       - "progress/C1-FRONT-002-V1-validation-report.md"
@@ -25,55 +30,68 @@ jobs:
   runtime-visual-review:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Install Playwright
         run: |
           python -m pip install --disable-pip-version-check playwright==1.52.0
           python -m playwright install --with-deps chromium
-
       - name: Validate evidence snapshot
         run: python3 scripts/frontend/validate_evidence_control_room.py
-
       - name: Validate Campaign Team Command Center
         run: python3 scripts/frontend/validate_campaign_team_command_center.py
-
       - name: Validate Daily War Room
         run: python3 scripts/frontend/validate_daily_war_room.py
-
       - name: Validate Premium Slate design system
         run: python3 scripts/frontend/validate_premium_slate.py
-
+      - name: Validate Governance Workspace
+        run: python3 scripts/frontend/validate_governance_workspace.py
       - name: Validate governed campaign workspace core
         run: python3 scripts/campaign/validate_c2_plat_001.py
-
+      - name: Validate Candidate Brand workspace
+        run: python3 scripts/campaign/validate_c2_prod_001.py
+      - name: Validate Approval Inbox and Decision Ledger
+        run: python3 scripts/campaign/validate_c2_prod_002.py
+      - name: Validate Daily Operating Workflow
+        run: python3 scripts/campaign/validate_c2_prod_003.py
+      - name: Validate authorization policy boundary
+        run: python3 scripts/campaign/validate_c2_saas_001a.py
+      - name: Validate append-only persistence and audit boundary
+        run: python3 scripts/campaign/validate_c2_saas_001b.py
+      - name: Validate repository interfaces and transaction boundary
+        run: python3 scripts/campaign/validate_c2_saas_001c.py
+      - name: Validate audit observability read model
+        run: python3 scripts/campaign/validate_c2_obs_001.py
+      - name: Validate read-only application service contracts
+        run: python3 scripts/campaign/validate_c2_api_001a.py
+      - name: Validate cross-tenant adversarial integration harness
+        run: python3 scripts/campaign/validate_c2_test_001.py
+      - name: Validate operator runbook and release gate guide
+        run: python3 scripts/campaign/validate_c2_docs_001.py
+      - name: Validate evidence-grounded extraction and citation contracts
+        run: python3 scripts/campaign/validate_c2_ai_001a.py
+      - name: Validate executable program architecture
+        run: python3 scripts/architecture/validate_program_state.py
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD
-
       - name: Start static server
         run: |
           mkdir -p artifacts/c1-front-002-v1
           python3 -m http.server 4173 --directory web > artifacts/c1-front-002-v1/server.log 2>&1 &
           echo $! > artifacts/c1-front-002-v1/server.pid
           for attempt in $(seq 1 30); do
-            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
-              exit 0
-            fi
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then exit 0; fi
             sleep 1
           done
           cat artifacts/c1-front-002-v1/server.log
           exit 1
-
       - name: Run browser review
         env:
           CAMPAIGNOS_URL: http://127.0.0.1:4173
@@ -81,7 +99,11 @@ jobs:
         run: |
           set -o pipefail
           python3 scripts/frontend/runtime_visual_review.py 2>&1 | tee artifacts/c1-front-002-v1/runtime-run.log
-
+      - name: Review Governance Workspace
+        env:
+          CAMPAIGNOS_URL: http://127.0.0.1:4173
+          CAMPAIGNOS_ARTIFACT_DIR: artifacts/c1-front-002-v1
+        run: python3 scripts/frontend/review_governance_workspace.py
       - name: Upload visual review evidence
         if: always()
         uses: actions/upload-artifact@v4

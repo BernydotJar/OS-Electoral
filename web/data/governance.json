@@ -1,0 +1,50 @@
+{
+  "version":"c2-front-001.0",
+  "snapshotDate":"2026-07-18",
+  "mode":"READ_ONLY",
+  "publicUseStatus":"BLOCKED",
+  "brand":{
+    "status":"SETUP_REQUIRED",
+    "identityStatus":"UNKNOWN",
+    "biographyStatus":"UNKNOWN",
+    "purposeStatus":"UNDER_REVIEW",
+    "verifiedAttributes":0,
+    "openCriticalRisks":1,
+    "nextAction":"Conduct a governed Candidate Identity Interview and collect evidence before defining attributes or public positioning.",
+    "warnings":["Candidate self-assessment is not verified evidence.","No public positioning is approved.","Political content remains blocked."]
+  },
+  "approvalInbox":{
+    "pendingCount":1,
+    "requests":[{
+      "id":"approval-request:brand-research-plan",
+      "title":"Approve next candidate-brand research plan",
+      "scope":"DECISION · decision:brand-research-plan",
+      "requiredRoles":["campaign_chief"],
+      "recommendation":"Conduct governed identity interview",
+      "options":["Conduct governed identity interview","Defer candidate-brand work"],
+      "status":"PENDING"
+    }],
+    "warning":"This frontend cannot approve, reject, revoke or execute a decision."
+  },
+  "operations":{
+    "evaluationDate":"2026-07-18",
+    "kpis":{"total":1,"done":0,"blocked":0,"overdue":0},
+    "assignments":[{
+      "id":"assignment:prepare-identity-interview",
+      "title":"Prepare governed Candidate Identity Interview",
+      "owner":"Research owner",
+      "status":"TODO",
+      "dueDate":"2026-07-19",
+      "overdue":false,
+      "blocked":false,
+      "evidenceRefs":["evidence:EV-0001"]
+    }],
+    "meetingPreparation":[{
+      "title":"Candidate Identity Interview preparation",
+      "evidenceRefs":["evidence:EV-0001"],
+      "decisionRefs":["approval-request:brand-research-plan"],
+      "questions":["Which identity claims can be evidenced?","Which attributes remain unknown?"]
+    }]
+  },
+  "safetyStatement":"Read-only governance snapshot. No publication, spending, targeting, paid media, mobilization or citizen contact is authorized."
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version":"1.0",
+  "principal_id":"human:campaign-chief",
+  "actor_type":"HUMAN",
+  "display_name":"Campaign Chief",
+  "grants":[{
+    "id":"grant:antigua-chief-read",
+    "status":"ACTIVE",
+    "tenant_id":"tenant:bernydotjar",
+    "campaign_id":"campaign:antigua-guatemala-exploratory",
+    "workspace_id":"workspace:antigua-2026",
+    "role_id":"role:campaign-chief",
+    "permissions":["READ_WORKSPACE","CREATE_DRAFT","REQUEST_APPROVAL","PROPOSE_TRANSITION","MANAGE_INTERNAL_ASSIGNMENTS"],
+    "valid_from":"2026-07-18",
+    "valid_until":null,
+    "source_or_provenance":"synthetic authorization fixture; no authentication claim"
+  }],
+  "metadata":{"fixture_type":"OPERATOR_POLICY_TEST","authenticated":false}
+}

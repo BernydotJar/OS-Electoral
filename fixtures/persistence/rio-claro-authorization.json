@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "request_id": "auth-request:rio-claro-create-artifact",
+  "principal_id": "human:rio-operator",
+  "actor_type": "HUMAN",
+  "decision": "ALLOW",
+  "permission": "CREATE_DRAFT",
+  "scope": {
+    "tenant_id": "tenant:demo-civic-lab",
+    "campaign_id": "campaign:rio-claro-municipal-demo",
+    "workspace_id": "workspace:rio-claro-2026-demo"
+  },
+  "resource": {
+    "type": "INTERNAL_ARTIFACT",
+    "id": "artifact:rio-claro-brief"
+  },
+  "matching_grants": [
+    "grant:rio-operator-write"
+  ],
+  "rejected_grants": [],
+  "reasons": [
+    "EXACT_ACTIVE_GRANT"
+  ],
+  "external_effects": "NONE",
+  "warning": "Authorization is a policy decision only."
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version":"1.0",
+  "transition_id":"transition:brand-research-approved",
+  "request_ref":"approval-request:brand-research-plan",
+  "action":"APPROVE",
+  "actor_type":"HUMAN",
+  "actor_id":"human:campaign-chief",
+  "role":"campaign_chief",
+  "selected_option_ref":"option:conduct-identity-interview",
+  "occurred_at":"2026-07-18",
+  "reason":"Approve research only; no public claim or tactical action.",
+  "tenant_id":"tenant:bernydotjar",
+  "campaign_id":"campaign:antigua-guatemala-exploratory",
+  "workspace_id":"workspace:antigua-2026"
+}

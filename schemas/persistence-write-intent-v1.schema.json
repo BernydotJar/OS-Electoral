@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://os-electoral.local/schemas/persistence-write-intent-v1.schema.json",
+  "title": "Persistence Write Intent v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "intent_id",
+    "idempotency_key",
+    "tenant_id",
+    "campaign_id",
+    "workspace_id",
+    "principal_id",
+    "authorization_request_id",
+    "required_permission",
+    "operation",
+    "resource_type",
+    "resource_id",
+    "expected_version",
+    "expected_previous_hash",
+    "payload",
+    "occurred_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "intent_id": { "$ref": "#/$defs/id" },
+    "idempotency_key": { "type": "string" },
+    "tenant_id": { "$ref": "#/$defs/id" },
+    "campaign_id": { "$ref": "#/$defs/id" },
+    "workspace_id": { "$ref": "#/$defs/id" },
+    "principal_id": { "$ref": "#/$defs/id" },
+    "authorization_request_id": { "$ref": "#/$defs/id" },
+    "required_permission": { "type": "string" },
+    "operation": { "enum": ["APPEND_EVENT", "CREATE_ARTIFACT", "UPDATE_PROJECTION"] },
+    "resource_type": { "type": "string" },
+    "resource_id": { "$ref": "#/$defs/id" },
+    "expected_version": { "type": "integer", "minimum": 0 },
+    "expected_previous_hash": { "$ref": "#/$defs/hashOrGenesis" },
+    "payload": { "type": "object" },
+    "occurred_at": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$" },
+    "hashOrGenesis": { "type": "string", "pattern": "^(GENESIS|[a-f0-9]{64})$" }
+  }
+}

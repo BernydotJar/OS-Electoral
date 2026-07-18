@@ -1,0 +1,18 @@
+{
+  "schema_version":"1.0",
+  "intent_id":"write-intent:identity-interview-brief",
+  "idempotency_key":"idem:identity-interview-brief-v1",
+  "tenant_id":"tenant:bernydotjar",
+  "campaign_id":"campaign:antigua-guatemala-exploratory",
+  "workspace_id":"workspace:antigua-2026",
+  "principal_id":"human:campaign-chief",
+  "authorization_request_id":"auth-request:antigua-create-artifact",
+  "required_permission":"CREATE_DRAFT",
+  "operation":"CREATE_ARTIFACT",
+  "resource_type":"INTERNAL_ARTIFACT",
+  "resource_id":"artifact:identity-interview-brief",
+  "expected_version":0,
+  "expected_previous_hash":"GENESIS",
+  "payload":{"artifact_type":"CANDIDATE_IDENTITY_INTERVIEW_BRIEF","status":"DRAFT","public_use_status":"BLOCKED"},
+  "occurred_at":"2026-07-18"
+}
