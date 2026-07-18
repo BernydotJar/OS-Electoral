@@ -2,7 +2,7 @@
   "schema_version":"1.0",
   "program_id":"program:campaignos-c2",
   "updated_at":"2026-07-18",
-  "source_branch":"agent/c2-ai-001a-extraction-citation",
+  "source_branch":"main",
   "operating_principle":"AI recommends; evidence supports; authorized humans decide.",
   "stack":[
     {"id":"increment:c2-plat-001-hardening","issue":40,"pr":42,"branch":"agent/c2-plat-001-approval-binding-hardening","base":"main","status":"IMPLEMENTED_IN_STACK","validation_run":29656158142,"external_effects":"NONE"},
@@ -58,8 +58,8 @@
   "roadmap":[
     {"id":"increment:c2-saas-001-auth","status":"DEFERRED","depends_on":["increment:c2-ai-001a"],"objective":"Integrate real identity provider and session validation."},
     {"id":"increment:c2-comm-001","status":"DEFERRED","depends_on":["increment:c2-saas-001-auth"],"objective":"Commercial packaging, onboarding, plans and billing."},
-    {"id":"action:merge-stack","status":"EXECUTABLE_NEXT","depends_on":["increment:c2-ai-001a"],"objective":"Merge stacked draft PRs after human review."},
-    {"id":"action:deployment","status":"HUMAN_BLOCKED","depends_on":["action:merge-stack"],"objective":"Deploy only after explicit human approval."}
+    {"id":"action:merge-stack","status":"IMPLEMENTED_IN_STACK","depends_on":["increment:c2-ai-001a"],"objective":"Merge stacked draft PRs after human review."},
+    {"id":"action:deployment","status":"EXECUTABLE_NEXT","depends_on":["action:merge-stack"],"objective":"Deploy only after explicit human approval."}
   ],
   "prohibited_capabilities":["VOTER_LEVEL_PROFILING","PERSUADABILITY_SCORING","SENSITIVE_MICROTARGETING","DISINFORMATION","AUTOMATED_PUBLISHING","AUTOMATED_SPENDING","AUTOMATED_MOBILIZATION","CITIZEN_SURVEILLANCE","UNAUTHORIZED_CONTACT"],
   "known_critical_or_high_findings":0
