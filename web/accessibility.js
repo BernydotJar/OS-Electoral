@@ -1,4 +1,9 @@
 (() => {
+  const governanceScript = document.createElement("script");
+  governanceScript.src = "./governance.js";
+  governanceScript.dataset.campaignosModule = "governance";
+  document.head.appendChild(governanceScript);
+
   const teamGrid = document.querySelector("#teamGrid");
   const backdrop = document.querySelector("#drawerBackdrop");
 
