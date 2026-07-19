@@ -1,0 +1,73 @@
+"""FastAPI application factory."""
+
+from __future__ import annotations
+
+import logging
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+
+from campaignos.api.errors import install_exception_handlers
+from campaignos.api.middleware import request_controls
+from campaignos.api.routes import health, me
+from campaignos.config import Settings, get_settings
+from campaignos.data import Database, DatabaseRuntime, UnavailableDatabase
+from campaignos.identity.oidc import OidcTokenVerifier, TokenVerifier, UnavailableTokenVerifier
+
+
+def create_app(
+    settings: Settings | None = None,
+    *,
+    token_verifier: TokenVerifier | None = None,
+    database: DatabaseRuntime | None = None,
+) -> FastAPI:
+    runtime_settings = settings or get_settings()
+    verifier = token_verifier
+    if verifier is None and runtime_settings.oidc_configured:
+        verifier = OidcTokenVerifier(runtime_settings)
+    verifier = verifier or UnavailableTokenVerifier()
+    database_runtime = database
+    if database_runtime is None and runtime_settings.database_url:
+        database_runtime = Database.from_url(
+            runtime_settings.database_url,
+            pool_size=runtime_settings.database_pool_size,
+            max_overflow=runtime_settings.database_max_overflow,
+            pool_timeout_seconds=runtime_settings.database_pool_timeout_seconds,
+        )
+    database_runtime = database_runtime or UnavailableDatabase()
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        app.state.logger.info(
+            "campaignos_api_started",
+            extra={"environment": runtime_settings.environment.value},
+        )
+        yield
+        database_runtime.dispose()
+        app.state.logger.info("campaignos_api_stopped")
+
+    docs_url = "/docs" if runtime_settings.expose_api_docs else None
+    redoc_url = "/redoc" if runtime_settings.expose_api_docs else None
+    app = FastAPI(
+        title="CampaignOS API",
+        summary="Human-gated campaign operating system",
+        version=runtime_settings.service_version,
+        openapi_url="/api/v1/openapi.json",
+        docs_url=docs_url,
+        redoc_url=redoc_url,
+        lifespan=lifespan,
+    )
+    app.state.settings = runtime_settings
+    app.state.token_verifier = verifier
+    app.state.database = database_runtime
+    app.state.logger = logging.getLogger(runtime_settings.service_name)
+
+    app.middleware("http")(request_controls)
+    install_exception_handlers(app)
+    app.include_router(health.router, prefix="/api/v1")
+    app.include_router(me.router, prefix="/api/v1")
+    return app
+
+
+app = create_app()

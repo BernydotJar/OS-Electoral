@@ -7,7 +7,7 @@ from typing import Any
 SCHEMA_VERSION="1.0"
 SAFE_ID=re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$")
 ACTOR_TYPES={"HUMAN","AGENT","SYSTEM"}
-PERMISSIONS={"READ_WORKSPACE","CREATE_DRAFT","REQUEST_APPROVAL","PROPOSE_TRANSITION","MANAGE_INTERNAL_ASSIGNMENTS","APPROVE_POLITICAL","APPROVE_LEGAL","APPROVE_FINANCIAL","APPROVE_PUBLICATION","APPROVE_SPENDING","APPROVE_MOBILIZATION"}
+PERMISSIONS={"READ_WORKSPACE","CREATE_DRAFT","APPEND_INTERNAL_EVENT","UPDATE_INTERNAL_PROJECTION","REQUEST_APPROVAL","PROPOSE_TRANSITION","MANAGE_INTERNAL_ASSIGNMENTS","APPROVE_POLITICAL","APPROVE_LEGAL","APPROVE_FINANCIAL","APPROVE_PUBLICATION","APPROVE_SPENDING","APPROVE_MOBILIZATION"}
 HUMAN_ONLY={"APPROVE_POLITICAL","APPROVE_LEGAL","APPROVE_FINANCIAL","APPROVE_PUBLICATION","APPROVE_SPENDING","APPROVE_MOBILIZATION"}
 GRANT_STATUSES={"ACTIVE","REVOKED","EXPIRED"}
 
@@ -22,6 +22,8 @@ def validate_principal_context(context:dict[str,Any])->dict[str,Any]:
     _require(context["schema_version"]==SCHEMA_VERSION,"unsupported principal schema version")
     _require(SAFE_ID.fullmatch(context["principal_id"]) is not None,"invalid principal_id")
     _require(context["actor_type"] in ACTOR_TYPES,"invalid actor_type")
+    expected_prefix={"HUMAN":"human:","AGENT":"agent:","SYSTEM":"system:"}[context["actor_type"]]
+    _require(context["principal_id"].startswith(expected_prefix),"actor_type and principal_id namespace mismatch")
     _require(isinstance(context["display_name"],str),"display_name must be text")
     ids=set()
     for grant in context["grants"]:

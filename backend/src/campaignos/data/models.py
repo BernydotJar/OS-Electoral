@@ -1,0 +1,311 @@
+"""Initial identity, tenancy, campaign, audit, and outbox relational model."""
+
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Any
+from uuid import UUID, uuid4
+
+from sqlalchemy import (
+    JSON,
+    CheckConstraint,
+    DateTime,
+    ForeignKey,
+    ForeignKeyConstraint,
+    Index,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    Uuid,
+    func,
+)
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
+JSON_DOCUMENT = JSON().with_variant(JSONB(), "postgresql")
+
+
+class Base(DeclarativeBase):
+    """Declarative metadata root with UUID identifiers."""
+
+
+class TimestampMixin:
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()
+    )
+
+
+class Tenant(Base, TimestampMixin):
+    __tablename__ = "tenants"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('ACTIVE', 'SUSPENDED', 'OFFBOARDING', 'CLOSED')", name="ck_tenants_status"
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    slug: Mapped[str] = mapped_column(String(80), nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="ACTIVE")
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class Principal(Base, TimestampMixin):
+    __tablename__ = "principals"
+    __table_args__ = (UniqueConstraint("issuer", "subject", name="uq_principals_issuer_subject"),)
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    issuer: Mapped[str] = mapped_column(String(2048), nullable=False)
+    subject: Mapped[str] = mapped_column(String(255), nullable=False)
+    display_name: Mapped[str | None] = mapped_column(String(255))
+    email: Mapped[str | None] = mapped_column(String(320))
+    disabled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class Campaign(Base, TimestampMixin):
+    __tablename__ = "campaigns"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "id", name="uq_campaigns_tenant_id_id"),
+        UniqueConstraint("tenant_id", "slug", name="uq_campaigns_tenant_slug"),
+        CheckConstraint(
+            "status IN ('DRAFT', 'ACTIVE', 'ARCHIVED', 'CLOSED')", name="ck_campaigns_status"
+        ),
+        Index("ix_campaigns_tenant_status", "tenant_id", "status"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("tenants.id", ondelete="RESTRICT"), nullable=False
+    )
+    slug: Mapped[str] = mapped_column(String(100), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    jurisdiction: Mapped[str] = mapped_column(String(255), nullable=False)
+    stage: Mapped[str] = mapped_column(String(80), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="DRAFT")
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class Workspace(Base, TimestampMixin):
+    __tablename__ = "workspaces"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_workspaces_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint("tenant_id", "campaign_id", "id", name="uq_workspaces_scope_id"),
+        UniqueConstraint("tenant_id", "campaign_id", "slug", name="uq_workspaces_scope_slug"),
+        CheckConstraint("status IN ('ACTIVE', 'ARCHIVED')", name="ck_workspaces_status"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    slug: Mapped[str] = mapped_column(String(100), nullable=False)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="ACTIVE")
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class Membership(Base, TimestampMixin):
+    __tablename__ = "memberships"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_memberships_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint("tenant_id", "id", name="uq_memberships_tenant_id_id"),
+        Index(
+            "uq_memberships_principal_campaign",
+            "tenant_id",
+            "principal_id",
+            "campaign_id",
+            unique=True,
+            postgresql_nulls_not_distinct=True,
+        ),
+        CheckConstraint(
+            "status IN ('INVITED', 'ACTIVE', 'SUSPENDED', 'REVOKED')", name="ck_memberships_status"
+        ),
+        Index("ix_memberships_tenant_principal", "tenant_id", "principal_id"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False
+    )
+    principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="CASCADE"), nullable=False
+    )
+    campaign_id: Mapped[UUID | None] = mapped_column(Uuid)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="INVITED")
+    valid_from: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class RoleAssignment(Base, TimestampMixin):
+    __tablename__ = "role_assignments"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "membership_id"],
+            ["memberships.tenant_id", "memberships.id"],
+            name="fk_role_assignments_tenant_membership",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint("tenant_id", "membership_id", "role", name="uq_role_assignment"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    membership_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    role: Mapped[str] = mapped_column(String(80), nullable=False)
+    assigned_by_principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class PermissionGrant(Base, TimestampMixin):
+    __tablename__ = "permission_grants"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "membership_id"],
+            ["memberships.tenant_id", "memberships.id"],
+            name="fk_permission_grants_tenant_membership",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_permission_grants_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id", "workspace_id"],
+            ["workspaces.tenant_id", "workspaces.campaign_id", "workspaces.id"],
+            name="fk_permission_grants_workspace_scope",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "membership_id",
+            "action",
+            "resource_type",
+            "resource_id",
+            name="uq_permission_grant_target",
+        ),
+        CheckConstraint(
+            "status IN ('ACTIVE', 'REVOKED', 'EXPIRED')", name="ck_permission_grants_status"
+        ),
+        CheckConstraint(
+            "workspace_id IS NULL OR campaign_id IS NOT NULL",
+            name="ck_permission_grants_workspace_requires_campaign",
+        ),
+        Index("ix_permission_grants_lookup", "tenant_id", "membership_id", "action"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    membership_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID | None] = mapped_column(Uuid)
+    workspace_id: Mapped[UUID | None] = mapped_column(Uuid)
+    action: Mapped[str] = mapped_column(String(100), nullable=False)
+    resource_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    resource_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    purpose: Mapped[str] = mapped_column(String(255), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="ACTIVE")
+    valid_from: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    granted_by_principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    approval_receipt_id: Mapped[str] = mapped_column(String(255), nullable=False)
+
+
+class AuditEvent(Base):
+    __tablename__ = "audit_events"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_audit_events_tenant_campaign",
+            ondelete="RESTRICT",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id", "workspace_id"],
+            ["workspaces.tenant_id", "workspaces.campaign_id", "workspaces.id"],
+            name="fk_audit_events_workspace_scope",
+            ondelete="RESTRICT",
+        ),
+        CheckConstraint(
+            "workspace_id IS NULL OR campaign_id IS NOT NULL",
+            name="ck_audit_events_workspace_requires_campaign",
+        ),
+        Index("ix_audit_events_tenant_occurred", "tenant_id", "occurred_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("tenants.id", ondelete="RESTRICT"), nullable=False
+    )
+    campaign_id: Mapped[UUID | None] = mapped_column(Uuid)
+    workspace_id: Mapped[UUID | None] = mapped_column(Uuid)
+    principal_id: Mapped[UUID | None] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT")
+    )
+    event_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    resource_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    resource_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON_DOCUMENT, nullable=False)
+    occurred_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    previous_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    event_hash: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+
+
+class OutboxEvent(Base):
+    __tablename__ = "outbox_events"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_outbox_events_tenant_campaign",
+            ondelete="RESTRICT",
+        ),
+        CheckConstraint(
+            "status IN ('PENDING', 'PROCESSING', 'DELIVERED', 'DEAD_LETTER')",
+            name="ck_outbox_events_status",
+        ),
+        Index("ix_outbox_events_pending", "status", "available_at"),
+        Index("ix_outbox_events_tenant_created", "tenant_id", "created_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("tenants.id", ondelete="RESTRICT"), nullable=False
+    )
+    campaign_id: Mapped[UUID | None] = mapped_column(Uuid)
+    topic: Mapped[str] = mapped_column(String(160), nullable=False)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSON_DOCUMENT, nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="PENDING")
+    attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    available_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    last_error: Mapped[str | None] = mapped_column(Text)

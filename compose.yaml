@@ -1,0 +1,168 @@
+name: ${COMPOSE_PROJECT_NAME:-campaignos}
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    init: true
+    environment:
+      CAMPAIGNOS_ENVIRONMENT: ${CAMPAIGNOS_ENVIRONMENT:-development}
+      CAMPAIGNOS_LOG_LEVEL: ${CAMPAIGNOS_LOG_LEVEL:-INFO}
+      CAMPAIGNOS_EXPOSE_API_DOCS: ${CAMPAIGNOS_EXPOSE_API_DOCS:-true}
+      CAMPAIGNOS_DATABASE_URL: ${CAMPAIGNOS_DATABASE_URL:-postgresql+psycopg://campaignos_app:campaignos_app_dev_only@postgres:5432/campaignos}
+      CAMPAIGNOS_OBJECT_STORAGE_ENDPOINT: http://s3mock:9090
+      CAMPAIGNOS_OBJECT_STORAGE_ACCESS_KEY: ${S3MOCK_ACCESS_KEY:-campaignos_local_only}
+      CAMPAIGNOS_OBJECT_STORAGE_SECRET_KEY: ${S3MOCK_SECRET_KEY:-campaignos_local_secret}
+      CAMPAIGNOS_OBJECT_STORAGE_BUCKET: ${S3MOCK_BUCKET:-campaignos-local}
+      CAMPAIGNOS_OBJECT_STORAGE_FORCE_PATH_STYLE: "true"
+      CAMPAIGNOS_SMTP_HOST: mailpit
+      CAMPAIGNOS_SMTP_PORT: "1025"
+      CAMPAIGNOS_SMTP_FROM: ${CAMPAIGNOS_SMTP_FROM:-campaignos@localhost}
+    command:
+      - uvicorn
+      - campaignos.main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --reload
+      - --reload-dir
+      - /app/backend/src
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+      migrate:
+        condition: service_completed_successfully
+      s3mock:
+        condition: service_healthy
+        restart: true
+      mailpit:
+        condition: service_healthy
+        restart: true
+    ports:
+      - 127.0.0.1:${CAMPAIGNOS_API_PORT:-8000}:8000
+    volumes:
+      - type: bind
+        source: ./backend/src
+        target: /app/backend/src
+        read_only: true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 15s
+
+  migrate:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      CAMPAIGNOS_ENVIRONMENT: development
+      CAMPAIGNOS_EXPOSE_API_DOCS: "true"
+      CAMPAIGNOS_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-campaignos_admin}:${POSTGRES_PASSWORD:-campaignos_admin_dev_only}@postgres:5432/${POSTGRES_DB:-campaignos}
+    command:
+      - alembic
+      - upgrade
+      - head
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+  postgres:
+    image: postgres:18.3-alpine3.23@sha256:54451ecb8ab38c24c3ec123f2fd501303a3a1856a5c66e98cecf2460d5e1e9d7
+    restart: unless-stopped
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-campaignos}
+      POSTGRES_USER: ${POSTGRES_USER:-campaignos_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-campaignos_admin_dev_only}
+      CAMPAIGNOS_DATABASE_USER: ${CAMPAIGNOS_DATABASE_USER:-campaignos_app}
+      CAMPAIGNOS_DATABASE_PASSWORD: ${CAMPAIGNOS_DATABASE_PASSWORD:-campaignos_app_dev_only}
+      POSTGRES_INITDB_ARGS: --data-checksums
+    ports:
+      - 127.0.0.1:${POSTGRES_PORT:-5432}:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - type: bind
+        source: ./scripts/dev/postgres-init.sh
+        target: /docker-entrypoint-initdb.d/10-campaignos-app.sh
+        read_only: true
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    stop_grace_period: 30s
+
+  s3mock:
+    image: adobe/s3mock:5.1.0@sha256:65cf60155a2e235fe7d5bf6c633747d6fc7ed93f9f5a6727d86470026b83c2a2
+    restart: unless-stopped
+    user: 10001:10001
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: ${S3MOCK_BUCKET:-campaignos-local}
+    ports:
+      - 127.0.0.1:${S3MOCK_PORT:-9090}:9090
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=256m,uid=10001,gid=10001
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --spider
+        - --quiet
+        - http://127.0.0.1:9090/favicon.ico
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    stop_grace_period: 30s
+
+  mailpit:
+    image: axllent/mailpit:v1.30.0@sha256:0059ef81e492a7192af3816281eed6859eb078bd7bdc58b76757c13e10e53a7d
+    restart: unless-stopped
+    environment:
+      MP_DATABASE: /data/mailpit.db
+      MP_MAX_MESSAGES: ${MAILPIT_MAX_MESSAGES:-5000}
+    ports:
+      - 127.0.0.1:${MAILPIT_SMTP_PORT:-1025}:1025
+      - 127.0.0.1:${MAILPIT_UI_PORT:-8025}:8025
+    volumes:
+      - mailpit_data:/data
+    healthcheck:
+      test:
+        - CMD
+        - /mailpit
+        - readyz
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+    stop_grace_period: 15s
+
+volumes:
+  postgres_data:
+    driver: local
+  mailpit_data:
+    driver: local

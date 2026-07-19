@@ -1,41 +1,71 @@
-name: Deploy CampaignOS to GitHub Pages
+name: Publish CampaignOS static demo (non-production)
+
+run-name: "Static demo publish by @${{ github.actor }} — ${{ inputs.reason }}"
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "web/**"
-      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type DEMO_NON_PRODUCTION to confirm this is only a static public demo"
+        required: true
+        type: string
+      reason:
+        description: "Auditable reason for republishing the demo"
+        required: true
+        type: string
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: pages-demo-non-production
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  authorize-demo-publish:
+    name: Validate explicit non-production confirmation
     runs-on: ubuntu-latest
+    steps:
+      - name: Reject production claims and non-main refs
+        env:
+          DEMO_CONFIRMATION: ${{ inputs.confirmation }}
+          DISPATCH_REF: ${{ github.ref_name }}
+        run: |
+          if [ "$DEMO_CONFIRMATION" != "DEMO_NON_PRODUCTION" ]; then
+            echo "Refusing publish: confirmation must equal DEMO_NON_PRODUCTION." >&2
+            exit 1
+          fi
+          if [ "$DISPATCH_REF" != "main" ]; then
+            echo "Refusing publish: the static demo may only be published from main." >&2
+            exit 1
+          fi
+          echo "Authorized static demo publish. This is not dev, staging or production."
+
+  deploy-static-demo:
+    name: Deploy static demo (never production)
+    needs: authorize-demo-publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout exact dispatch commit
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
-      - name: Upload static site
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload static demo
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: ./web
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy static demo
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

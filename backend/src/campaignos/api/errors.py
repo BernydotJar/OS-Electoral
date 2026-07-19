@@ -1,0 +1,102 @@
+"""RFC 9457-compatible structured API errors."""
+
+from __future__ import annotations
+
+from typing import Any
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, ConfigDict
+
+
+class ProblemDetail(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    type: str
+    title: str
+    status: int
+    detail: str
+    instance: str
+    code: str
+    correlation_id: str
+    errors: list[dict[str, Any]] | None = None
+
+
+def _correlation_id(request: Request) -> str:
+    return getattr(request.state, "correlation_id", "unknown")
+
+
+def problem_response(
+    request: Request,
+    *,
+    status: int,
+    title: str,
+    detail: str,
+    code: str,
+    errors: list[dict[str, Any]] | None = None,
+) -> JSONResponse:
+    payload = ProblemDetail(
+        type=f"https://campaignos.example/problems/{code.lower()}",
+        title=title,
+        status=status,
+        detail=detail,
+        instance=request.url.path,
+        code=code,
+        correlation_id=_correlation_id(request),
+        errors=errors,
+    )
+    return JSONResponse(
+        status_code=status,
+        content=payload.model_dump(exclude_none=True),
+        media_type="application/problem+json",
+    )
+
+
+def install_exception_handlers(app: FastAPI) -> None:
+    @app.exception_handler(HTTPException)
+    async def handle_http_exception(request: Request, exc: HTTPException) -> JSONResponse:
+        detail = exc.detail if isinstance(exc.detail, str) else "Request rejected"
+        code = "AUTHENTICATION_REQUIRED" if exc.status_code == 401 else "HTTP_ERROR"
+        response = problem_response(
+            request,
+            status=exc.status_code,
+            title="Request rejected",
+            detail=detail,
+            code=code,
+        )
+        if exc.headers:
+            response.headers.update(exc.headers)
+        return response
+
+    @app.exception_handler(RequestValidationError)
+    async def handle_validation_error(
+        request: Request, exc: RequestValidationError
+    ) -> JSONResponse:
+        safe_errors = [
+            {"location": list(item["loc"]), "message": item["msg"], "type": item["type"]}
+            for item in exc.errors()
+        ]
+        return problem_response(
+            request,
+            status=422,
+            title="Validation failed",
+            detail="One or more request fields are invalid",
+            code="VALIDATION_ERROR",
+            errors=safe_errors,
+        )
+
+    @app.exception_handler(Exception)
+    async def handle_unexpected_error(request: Request, exc: Exception) -> JSONResponse:
+        request.app.state.logger.exception(
+            "unhandled_request_error",
+            extra={"correlation_id": _correlation_id(request)},
+            exc_info=exc,
+        )
+        return problem_response(
+            request,
+            status=500,
+            title="Internal server error",
+            detail="The request could not be completed",
+            code="INTERNAL_ERROR",
+        )

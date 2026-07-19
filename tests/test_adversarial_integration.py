@@ -29,6 +29,14 @@ def load(path: str) -> dict:
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
+class CorruptiblePersistenceStoreRepository(InMemoryPersistenceStoreRepository):
+    """Test-only bypass used to model corruption below the repository API."""
+
+    def inject_corruption_for_test(self, tenant_id: str, campaign_id: str, workspace_id: str) -> None:
+        key = f"{tenant_id}:{campaign_id}:{workspace_id}"
+        self._data[key]["events"][0]["payload_digest"] = "mutated-digest"
+
+
 class AdversarialIntegrationTests(unittest.TestCase):
     def setUp(self) -> None:
         # Load Antigua
@@ -47,7 +55,7 @@ class AdversarialIntegrationTests(unittest.TestCase):
         self.brand_repo = InMemoryCandidateBrandRepository({self.key: copy.deepcopy(self.brand_raw)})
         self.ledger_repo = InMemoryApprovalLedgerRepository({self.key: copy.deepcopy(self.ledger_raw)})
         self.workflow_repo = InMemoryDailyWorkflowRepository({self.key: copy.deepcopy(self.workflow_raw)})
-        self.store_repo = InMemoryPersistenceStoreRepository({self.key: copy.deepcopy(self.store_raw)})
+        self.store_repo = CorruptiblePersistenceStoreRepository({self.key: copy.deepcopy(self.store_raw)})
 
         self.service = ReadOnlyApplicationService(
             self.workspace_repo,
@@ -138,7 +146,7 @@ class AdversarialIntegrationTests(unittest.TestCase):
 
         self.assertEqual(self.store_repo.get(self.t, self.c, self.w)["aggregate_version"], 0)
 
-    def test_tampering_historical_event_marks_observability_as_corrupted(self) -> None:
+    def test_repository_read_copy_cannot_tamper_with_history(self) -> None:
         # 1. Perform valid write
         uow = UnitOfWork(
             self.workspace_repo,
@@ -151,11 +159,28 @@ class AdversarialIntegrationTests(unittest.TestCase):
             uow.load_store(self.t, self.c, self.w)
             uow.register_intent(self.intent_raw, self.auth_raw)
 
-        # 2. Maliciously bypass transaction manager to edit store events directly
+        # 2. Mutating a public repository read changes only the detached copy.
         store = self.store_repo.get(self.t, self.c, self.w)
         store["events"][0]["payload_digest"] = "mutated-digest"
 
-        # 3. Verify read model catches the corruption
+        report = self.service.get_audit_integrity_status(self.t, self.c, self.w)
+        self.assertEqual(report["status"], "VALID")
+
+    def test_storage_layer_corruption_marks_observability_as_corrupted(self) -> None:
+        uow = UnitOfWork(
+            self.workspace_repo,
+            self.brand_repo,
+            self.ledger_repo,
+            self.workflow_repo,
+            self.store_repo
+        )
+        with uow:
+            uow.load_store(self.t, self.c, self.w)
+            uow.register_intent(self.intent_raw, self.auth_raw)
+
+        # Explicit test-only bypass models compromise below the safe repository API.
+        self.store_repo.inject_corruption_for_test(self.t, self.c, self.w)
+
         report = self.service.get_audit_integrity_status(self.t, self.c, self.w)
         self.assertEqual(report["status"], "CORRUPTED")
         self.assertIn("hash mismatch", report["reason"].lower())
