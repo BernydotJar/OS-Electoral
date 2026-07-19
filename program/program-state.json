@@ -7,7 +7,7 @@
   "current_increment": "C3-CI-001",
   "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
-  "production_status_reason": "Local FastAPI, OIDC-verification, PostgreSQL/RLS, migration, Compose and CI foundations now exist, but they have no verified AWS environment or protected GitHub delivery evidence. Live identity, membership-backed authorization, domain adapters, jobs, production object storage, Terraform, backup/restore and production review gates remain incomplete.",
+  "production_status_reason": "Local FastAPI, OIDC-verification, PostgreSQL/RLS, migration and Compose foundations now exist, and draft PR 72 is green at its recorded head, but no verified AWS environment or protected-main delivery enforcement exists. Live identity, membership-backed authorization, domain adapters, jobs, production object storage, Terraform, backup/restore and production review gates remain incomplete.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -16,7 +16,7 @@
   },
   "workstreams": [
     {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_COMPLETE_LOCAL", "next_increment": "C3-IAM-001"},
-    {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "CI_EVIDENCE_PENDING", "next_increment": "C3-CI-001"},
+    {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "PR_CI_GREEN_ENFORCEMENT_PENDING", "next_increment": "C3-CI-001"},
     {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "PARTIAL_RUNTIME_FOUNDATION", "next_increment": "C3-IAM-001"},
     {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "LOCAL_POSTGRESQL_FOUNDATION", "next_increment": "C3-API-001"},
     {"id": "WS-05", "name": "API and Background Jobs", "status": "PARTIAL_HTTP_RUNTIME", "next_increment": "C3-API-001"},
@@ -45,6 +45,7 @@
     "No live OIDC provider, login/recovery flow or membership-backed authorization",
     "Local PostgreSQL/RLS proof is not deployed or operationally verified",
     "No domain persistence adapters or background worker runtime",
+    "No protected-main required-check enforcement",
     "No deployable AWS Terraform baseline",
     "No backup/restore evidence",
     "No explicit human production approval"

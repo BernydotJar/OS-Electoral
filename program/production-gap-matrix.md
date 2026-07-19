@@ -34,13 +34,13 @@ No row marked `PARTIAL` is counted as production-ready.
 | Training Academy | Static team guidance only | NOT_IMPLEMENTED | Learning paths, content governance, completions and assessments |
 | AI runtime guardrails | Deterministic extraction/guard prototypes | PARTIAL | Provider abstraction, schema enforcement, audit metadata and hard eval suite |
 | Spanish and English | UI primarily Spanish with hard-coded strings | NOT_IMPLEMENTED | Translation keys, parity tests and locale-aware formats |
-| Accessibility | Static Playwright review evidence | PARTIAL | WCAG 2.2 AA audit across production critical paths |
+| Accessibility | Static Playwright review and draft-PR browser run `29706162740` pass | PARTIAL | WCAG 2.2 AA audit across production critical paths |
 
 ## Security, privacy and operations gates
 
 | Gate | Current evidence | Status | Required proof |
 |---|---|---:|---|
-| Security review | Adversarial code review, regression fixes, CodeQL/secret/dependency job definitions; open findings remain | PARTIAL | Executed/triaged CI plus independent threat-based review with zero critical/high findings |
+| Security review | Adversarial code review and regression fixes; CodeQL/secret/dependency jobs passed in draft-PR run `29706162737`; open findings remain | PARTIAL | Independent threat-based review, alert triage policy and zero critical/high findings |
 | Privacy review | Prohibited capabilities encoded in prototype | PARTIAL | Data inventory, lawful-purpose controls, retention and deletion verification |
 | Threat model | Canonical draft covers 23 threats and current-control status; no independent acceptance | PARTIAL | Reviewed model, owners, residual risks and verification links |
 | Rate limiting and abuse protection | Network API exists but has no principal/tenant limiter | NOT_IMPLEMENTED | Per-principal/tenant controls and abuse tests |
@@ -52,9 +52,9 @@ No row marked `PARTIAL` is counted as production-ready.
 | Incident response | Narrow corruption runbook | PARTIAL | Full incident roles, escalation, communications and exercises |
 | Disaster recovery | None | NOT_IMPLEMENTED | Reviewed assumptions, dependencies, RPO/RTO and exercise |
 | Load test | None | NOT_IMPLEMENTED | Representative workload, thresholds and results |
-| SAST | Pinned CodeQL job is defined locally but has not run on GitHub | PARTIAL | Blocking execution evidence and triage policy |
-| Dependency scan | Hash lock, production-only `pip-audit` gate and uv Dependabot definition; local audit clean at check time | PARTIAL | Observed blocking CI and alert/update policy evidence |
-| Secret scan | GitHub scanning/push protection observed and pinned gitleaks job defined | PARTIAL | Executed CI/repository policy evidence and response runbook |
+| SAST | Pinned CodeQL job completed successfully in draft-PR run `29706162737` | PARTIAL | Required-check enforcement and alert triage policy |
+| Dependency scan | Hash lock, production-only `pip-audit` and uv Dependabot definition; draft-PR run `29706162737` passed | PARTIAL | Required-check enforcement and alert/update policy evidence |
+| Secret scan | GitHub scanning/push protection observed; full-range Gitleaks passed in draft-PR run `29706162737` | PARTIAL | Required-check enforcement and response runbook |
 | SBOM and image signing | Pinned non-root image builds locally; no SBOM/provenance/signature | NOT_IMPLEMENTED | Immutable published image, SBOM, provenance/signing policy |
 
 ## Platform and delivery gates
@@ -68,7 +68,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | AWS dev | AWS session expired; no IaC evidence | NOT_VERIFIED | Reviewed plan/apply and smoke evidence |
 | AWS staging | None | NOT_IMPLEMENTED | Migration, security, load, restore and agent-eval evidence |
 | AWS production | No approved deployment | BLOCKED | All gates plus explicit human approval |
-| PR CI | Pinned quality, PostgreSQL/RLS, actionlint, audit, gitleaks, CodeQL and disposable-stack E2E jobs defined | PARTIAL | Green reviewed GitHub run and required-check enforcement |
+| PR CI | Draft PR `#72` runs `29706162737` and `29706162740` are green at recorded head `e8adf4c` | PARTIAL | Human review plus required-check enforcement on protected main |
 | Main CI | Same workflow triggers on `main`; no observed run yet and no deployment job | PARTIAL | Immutable green build evidence, then controlled dev deploy/post-deploy verification |
 | Branch protection | API reported none | NOT_IMPLEMENTED | Ruleset with required review and checks |
 | Staging promotion | None | NOT_IMPLEMENTED | Controlled candidate promotion and manual acceptance |

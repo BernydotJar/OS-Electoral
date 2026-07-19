@@ -11,7 +11,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Open CRITICAL/HIGH findings, unsuperseded historical failed validation runs, no verified AWS environments and incomplete production gates remain. The only public deployed surface is a static non-production demo; the new API, PostgreSQL and CI foundations are local evidence only.",
+  "production_status_reason": "Open CRITICAL/HIGH findings, unsuperseded historical failed validation runs, no verified AWS environments and incomplete production gates remain. Draft PR CI is green at its recorded head, but main has no required-check protection; the only public deployed surface is a static non-production demo, and the API/PostgreSQL foundations remain local only.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -185,7 +185,9 @@
   "known_failed_validation_runs": [29659355550, 29659451027, 29659542083, 29659623156, 29659692005, 29659733648],
   "integration_validation": [
     {"run_id": 29660653755, "conclusion": "SUCCESS", "head_sha": "30e2473f6eac2a554bc7e51b18f7b25746e42475", "scope": "integrated C2 stack PR"},
-    {"run_id": 29662896729, "conclusion": "SUCCESS", "head_sha": "9245f715f8b877201f6e4e185546a012bf462dba", "scope": "deployment-gate governance PR"}
+    {"run_id": 29662896729, "conclusion": "SUCCESS", "head_sha": "9245f715f8b877201f6e4e185546a012bf462dba", "scope": "deployment-gate governance PR"},
+    {"run_id": 29706162737, "conclusion": "SUCCESS", "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922", "scope": "draft PR 72: locked quality, PostgreSQL/RLS, dependency audit, Gitleaks, CodeQL and constrained-stack E2E"},
+    {"run_id": 29706162740, "conclusion": "SUCCESS", "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922", "scope": "draft PR 72: runtime visual review including Governance Workspace regression"}
   ],
   "bounded_contexts": [
     {"id": "context:campaign-workspace", "owner": "Campaign Platform", "maturity": "DETERMINISTIC_PROTOTYPE", "code": ["core/campaign_workspace.py"], "validators": ["scripts/campaign/validate_c2_plat_001.py"]},
@@ -205,7 +207,7 @@
   ],
   "workstreams": [
     {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_COMPLETE_LOCAL", "next_increment": "C3-IAM-001"},
-    {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "CI_EVIDENCE_PENDING", "next_increment": "C3-CI-001"},
+    {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "PR_CI_GREEN_ENFORCEMENT_PENDING", "next_increment": "C3-CI-001"},
     {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "PARTIAL_RUNTIME_FOUNDATION", "next_increment": "C3-IAM-001"},
     {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "LOCAL_POSTGRESQL_FOUNDATION", "next_increment": "C3-API-001"},
     {"id": "WS-05", "name": "API and Background Jobs", "status": "PARTIAL_HTTP_RUNTIME", "next_increment": "C3-API-001"},
@@ -242,27 +244,36 @@
   ],
   "findings": [
     {"id": "FND-PLATFORM-001", "severity": "CRITICAL", "status": "REMEDIATION_IN_PROGRESS", "summary": "A local API/PostgreSQL runtime now exists, but Terraform, independently verified AWS environments, backup/restore and a production runtime do not.", "evidence": "program/production-gap-matrix.md"},
-    {"id": "FND-CI-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "A pinned CI workflow exists locally, but it has no GitHub run evidence yet and main still has no observed branch protection or ruleset.", "evidence": "program/current-state-assessment.md"},
+    {"id": "FND-CI-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Draft PR 72 has green pinned CI evidence at its recorded head, but main still has no observed branch protection, ruleset or required-check enforcement.", "evidence": "program/current-state-assessment.md"},
     {"id": "FND-CI-002", "severity": "HIGH", "status": "OPEN", "summary": "Six manifest-linked validation runs have FAILURE conclusions and are not superseded by scope-equivalent green evidence.", "evidence": "architecture/program-state.json#known_failed_validation_runs"},
     {"id": "FND-DEPLOY-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "The Pages demo previously auto-deployed on push and was not represented truthfully in the program state.", "evidence": ".github/workflows/deploy-pages.yml"},
     {"id": "FND-DOCS-001", "severity": "HIGH", "status": "RESOLVED", "summary": "Owned canonical documentation now distinguishes the static demo, local runtime foundation and missing production evidence.", "evidence": "README.md"},
     {"id": "FND-AUDIT-001", "severity": "HIGH", "status": "RESOLVED", "summary": "Canonical documentation now states that the unkeyed hash chains are neither signatures nor immutable external evidence.", "evidence": "program/current-state-assessment.md"},
     {"id": "FND-PROGRAM-001", "severity": "HIGH", "status": "RESOLVED", "summary": "AutoSkills, Context7, skill usage and dependency-safe fallback records now exist and are fail-closed validated.", "evidence": "program/"},
-    {"id": "FND-SUPPLY-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Locks, vulnerability audit, immutable Action/image pins and reviewed update automation exist locally; SBOM, provenance, signing and observed CI enforcement remain absent.", "evidence": "program/production-gap-matrix.md"}
+    {"id": "FND-SUPPLY-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Locks, vulnerability audit, immutable Action/image pins and update automation passed on draft PR 72; SBOM, provenance, signing and protected-main enforcement remain absent.", "evidence": "program/production-gap-matrix.md"}
   ],
   "open_findings_summary": {"critical": 1, "high": 4, "total_critical_or_high": 5},
   "github_state": {
     "verified_at": "2026-07-19",
     "open_stack_issue_numbers": [40, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63, 65, 67],
-    "open_pull_requests": [],
+    "open_pull_requests": [72],
     "main_branch_protection": "ABSENT_AT_AUDIT",
     "rulesets": "NONE_AT_AUDIT",
     "actions_allowed": "ALL_AT_AUDIT",
     "action_sha_pinning_required": false,
-    "local_ci_workflow": "IMPLEMENTED_UNOBSERVED",
+    "local_ci_workflow": "PR_72_SUCCESS_AT_RECORDED_SHA",
     "local_workflow_action_refs": "FULL_SHA_PINNED",
     "secret_scanning": "ENABLED_AT_AUDIT",
-    "secret_scanning_push_protection": "ENABLED_AT_AUDIT"
+    "secret_scanning_push_protection": "ENABLED_AT_AUDIT",
+    "pr_ci_evidence": {
+      "pr": 72,
+      "state": "OPEN_DRAFT",
+      "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922",
+      "campaignos_ci_run_id": 29706162737,
+      "visual_review_run_id": 29706162740,
+      "conclusion": "SUCCESS",
+      "required_check_enforcement": false
+    }
   },
   "deployment_state": {
     "github_pages": {

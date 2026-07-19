@@ -394,7 +394,15 @@ def validate_fallback_records(
     for entry in ledger_entries:
         task_id = entry["task_id"]
         require(entry["status"] == graph_by_id[task_id]["status"], f"ledger status drift: {task_id}")
-        require(entry["external_effects"] == "NONE", f"fallback task has external effects: {task_id}")
+        require(
+            entry["external_effects"] in {"NONE", "REVIEW_BRANCH_AND_DRAFT_PR"},
+            f"unsupported fallback task external effect: {task_id}",
+        )
+        if entry["external_effects"] != "NONE":
+            require(
+                task_id == "C3-CI-001",
+                f"only the delivery task may record review-branch publication: {task_id}",
+            )
         for evidence in entry["evidence"]:
             require((ROOT / evidence).is_file(), f"missing task evidence: {task_id}: {evidence}")
 
