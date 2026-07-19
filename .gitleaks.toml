@@ -1,0 +1,24 @@
+title = "CampaignOS Gitleaks configuration"
+
+[extend]
+useDefault = true
+
+# These two exact values appeared only as deterministic fixture/prose false
+# positives in the first commit of PR #72. Keep each exception constrained to
+# the generic-api-key rule, the extracted value, and its original file path.
+[[rules]]
+id = "generic-api-key"
+
+[[rules.allowlists]]
+description = "Synthetic authentication-evidence fixture identifier"
+condition = "AND"
+regexTarget = "secret"
+regexes = ['''^antigua-chief-c3-sec-001a$''']
+paths = ['''^fixtures/approval-ledger/antigua-authenticated-binding\.json$''']
+
+[[rules.allowlists]]
+description = "Production-gap prose parsed as an API key"
+condition = "AND"
+regexTarget = "secret"
+regexes = ['''^pagination/concurrency/rate$''']
+paths = ['''^program/production-gap-matrix\.md$''']
