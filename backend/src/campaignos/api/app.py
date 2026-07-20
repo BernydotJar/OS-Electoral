@@ -10,9 +10,14 @@ from fastapi import FastAPI
 
 from campaignos.api.errors import install_exception_handlers
 from campaignos.api.middleware import request_controls
-from campaignos.api.routes import health, me
+from campaignos.api.routes import health, me, tenant_me
 from campaignos.config import Settings, get_settings
 from campaignos.data import Database, DatabaseRuntime, UnavailableDatabase
+from campaignos.identity.authorization import (
+    MembershipDirectory,
+    SqlAlchemyMembershipDirectory,
+    UnavailableMembershipDirectory,
+)
 from campaignos.identity.oidc import OidcTokenVerifier, TokenVerifier, UnavailableTokenVerifier
 
 
@@ -21,6 +26,7 @@ def create_app(
     *,
     token_verifier: TokenVerifier | None = None,
     database: DatabaseRuntime | None = None,
+    membership_directory: MembershipDirectory | None = None,
 ) -> FastAPI:
     runtime_settings = settings or get_settings()
     verifier = token_verifier
@@ -36,6 +42,10 @@ def create_app(
             pool_timeout_seconds=runtime_settings.database_pool_timeout_seconds,
         )
     database_runtime = database_runtime or UnavailableDatabase()
+    authorization_directory = membership_directory
+    if authorization_directory is None and isinstance(database_runtime, Database):
+        authorization_directory = SqlAlchemyMembershipDirectory(database_runtime)
+    authorization_directory = authorization_directory or UnavailableMembershipDirectory()
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -61,12 +71,14 @@ def create_app(
     app.state.settings = runtime_settings
     app.state.token_verifier = verifier
     app.state.database = database_runtime
+    app.state.membership_directory = authorization_directory
     app.state.logger = logging.getLogger(runtime_settings.service_name)
 
     app.middleware("http")(request_controls)
     install_exception_handlers(app)
     app.include_router(health.router, prefix="/api/v1")
     app.include_router(me.router, prefix="/api/v1")
+    app.include_router(tenant_me.router, prefix="/api/v1")
     return app
 
 

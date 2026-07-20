@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-19",
-  "source_branch": "agent/c3-found-001-production-foundation",
+  "source_branch": "agent/c3-iam-001-membership-authorization",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "8f32bc158003a55a76cb471af45da2193ca71003",
@@ -11,7 +11,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Open CRITICAL/HIGH findings, unsuperseded historical failed validation runs, no verified AWS environments and incomplete production gates remain. Draft PR CI is green at its recorded head, but main has no required-check protection; the only public deployed surface is a static non-production demo, and the API/PostgreSQL foundations remain local only.",
+  "production_status_reason": "Open CRITICAL/HIGH findings, unsuperseded historical failed validation runs, no verified AWS environments and incomplete production gates remain. Draft PR CI is green at its recorded foundation head, but main has no required-check protection; the only public deployed surface is a static non-production demo, and the API/PostgreSQL/tenant-authorization foundations remain local only.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -203,12 +203,13 @@
     {"id": "context:extraction-citation", "owner": "Campaign AI", "maturity": "LOCAL_DETERMINISTIC_PROTOTYPE", "code": ["core/extraction_citation.py"], "validators": ["scripts/campaign/validate_c2_ai_001a.py"]},
     {"id": "context:http-api", "owner": "Campaign Platform", "maturity": "LOCAL_VERSIONED_RUNTIME", "code": ["backend/src/campaignos/main.py", "backend/src/campaignos/api/app.py", "backend/src/campaignos/api/errors.py", "backend/src/campaignos/api/middleware.py"], "validators": ["backend/tests/test_api.py"]},
     {"id": "context:oidc-identity", "owner": "Campaign Security", "maturity": "VERIFIED_TOKEN_BOUNDARY_NO_LIVE_PROVIDER", "code": ["backend/src/campaignos/config.py", "backend/src/campaignos/identity/oidc.py"], "validators": ["backend/tests/test_config.py", "backend/tests/test_oidc.py"]},
+    {"id": "context:tenant-authorization", "owner": "Campaign Security", "maturity": "LOCAL_SERVER_OWNED_MEMBERSHIP_AND_EXACT_GRANT_LOADING", "code": ["backend/src/campaignos/identity/authorization.py", "backend/src/campaignos/api/routes/tenant_me.py"], "validators": ["backend/tests/test_authorization.py", "backend/tests/test_api.py", "backend/tests/test_database.py"]},
     {"id": "context:postgresql-tenancy", "owner": "Campaign Platform", "maturity": "LOCAL_MIGRATION_AND_RLS_PROOF", "code": ["backend/src/campaignos/data/database.py", "backend/src/campaignos/data/models.py", "backend/migrations/versions/20260719_0001_identity_tenancy.py"], "validators": ["backend/tests/test_database.py"]}
   ],
   "workstreams": [
     {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_COMPLETE_LOCAL", "next_increment": "C3-IAM-001"},
     {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "PR_CI_GREEN_ENFORCEMENT_PENDING", "next_increment": "C3-CI-001"},
-    {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "PARTIAL_RUNTIME_FOUNDATION", "next_increment": "C3-IAM-001"},
+    {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "TENANT_AUTHORIZATION_LOCAL_LIFECYCLE_PENDING", "next_increment": "C3-IAM-001"},
     {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "LOCAL_POSTGRESQL_FOUNDATION", "next_increment": "C3-API-001"},
     {"id": "WS-05", "name": "API and Background Jobs", "status": "PARTIAL_HTTP_RUNTIME", "next_increment": "C3-API-001"},
     {"id": "WS-06", "name": "Frontend, Design System and i18n", "status": "STATIC_PROTOTYPE", "next_increment": "C3-FRONT-001"},

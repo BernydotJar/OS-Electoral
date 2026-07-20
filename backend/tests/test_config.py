@@ -3,7 +3,12 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
+from campaignos import __version__
 from campaignos.config import Environment, Settings
+
+
+def test_default_service_version_matches_package_version() -> None:
+    assert Settings().service_version == __version__
 
 
 def test_partial_oidc_configuration_is_rejected() -> None:

@@ -19,10 +19,10 @@ No row marked `PARTIAL` is counted as production-ready.
 | Real authentication | Fixed-algorithm OIDC ID-token verifier and protected identity endpoint; no live provider/login flow | PARTIAL | OIDC/Cognito login, invitation and recovery flows |
 | Real session validation | Cryptographic bearer ID-token validation is covered; no server session/rotation/revocation lifecycle | PARTIAL | Issuer/audience/signature/expiry validation plus session revocation tests |
 | Tenant isolation | Composite schema constraints, transaction-local scope and forced RLS passed an isolated non-superuser test | PARTIAL | Application repository integration plus staging adversarial evidence |
-| RBAC | Exact-grant prototype policy | PARTIAL | Application membership model and endpoint enforcement for required roles |
+| RBAC | PostgreSQL-backed active membership/role/exact-purpose grant loading and tenant identity endpoint; roles never imply permission | PARTIAL | Grant administration, reviewed role catalog and enforcement on every domain/worker action |
 | PostgreSQL persistence | Initial SQLAlchemy identity/tenancy/campaign/audit/outbox model and local PostgreSQL proof under a separate constrained runtime role | PARTIAL | Domain adapters, managed-role rotation and RDS/staging transaction evidence |
 | Database migrations | Alembic environment and initial migration pass downgrade/upgrade/check locally | PARTIAL | Reviewed release policy plus staging forward/compatibility rehearsal |
-| Versioned REST API | `/api/v1` FastAPI health/readiness/identity surface with safe errors and contract tests | PARTIAL | Authenticated campaign-domain endpoints with reviewed OpenAPI, pagination, concurrency and rate controls |
+| Versioned REST API | `/api/v1` FastAPI health/readiness plus global and tenant-scoped identity/authorization surfaces with safe errors and contract tests | PARTIAL | Authenticated campaign-domain endpoints with reviewed OpenAPI, pagination, concurrency and rate controls |
 | Background jobs | None | NOT_IMPLEMENTED | Worker runtime, retry/idempotency/dead-letter behavior |
 | Object storage | Typed configuration and initialized Adobe S3Mock local harness only | PARTIAL | Production adapter, signed operations, MIME/size validation, scan strategy and KMS/retention controls |
 | Guided onboarding | No persisted wizard | NOT_IMPLEMENTED | Save/resume intake and readiness eval |

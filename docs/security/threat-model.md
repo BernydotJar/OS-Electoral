@@ -40,8 +40,8 @@ See `docs/architecture/system-context.md`. The security-critical transitions are
 
 | ID | Threat / abuse case | Required controls and verification | Current status |
 |---|---|---|---|
-| TM-01 | Cross-tenant or cross-campaign object access | server-derived scope on every repository method; composite constraints; RLS defense; BOLA tests using valid foreign IDs | Local composite schema/forced-RLS proof passes under a non-superuser role; application/staging coverage incomplete |
-| TM-02 | Vertical privilege escalation through token role, command actor, or client field | OIDC authenticates subject only; database grants; exact action/resource/scope authorization; trusted-principal approval receipts | OIDC/token-role rejection and exact approval binding pass; persisted grant loading absent |
+| TM-01 | Cross-tenant or cross-campaign object access | server-derived scope on every repository method; composite constraints; RLS defense; BOLA tests using valid foreign IDs | Local forced-RLS proof and tenant membership loader pass under a non-superuser role; campaign-domain BOLA and staging coverage remain incomplete |
+| TM-02 | Vertical privilege escalation through token role, command actor, or client field | OIDC authenticates subject only; database grants; exact action/resource/scope authorization; trusted-principal approval receipts | OIDC/token-role rejection, exact purpose-bound grant loading and approval binding pass locally; grant administration and domain-action enforcement remain absent |
 | TM-03 | Invitation abuse or account takeover | single-use short-lived invitation, tenant-bound issuer, MFA capability, recovery controls, enumeration resistance, revoke/audit tests | Not implemented |
 | TM-04 | Session theft/replay | HTTPS, secure same-site cookies or bounded bearer handling, short lifetime, rotation/revocation, device/session view, no token logging | Token verification partial; session lifecycle absent |
 | TM-05 | Confused deputy in worker/integration | signed/versioned envelope, server-derived principal/scope, action allow-list, idempotency, fresh authorization, delivery receipt | Not implemented |

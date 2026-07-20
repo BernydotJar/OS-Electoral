@@ -1,5 +1,31 @@
 # Program iteration log
 
+## C3 IAM membership-authorization increment — 2026-07-19
+
+- `branch`: `agent/c3-iam-001-membership-authorization`
+- `base`: `agent/c3-found-001-production-foundation@bac781eea1d0de1b9a845f0f4243924ee4808c54`
+- `version`: `0.2.0`
+- `production_status`: `BLOCKED`
+- `external_effects`: local implementation checkpoint only; review-branch publication is pending. No merge, production/AWS deployment, campaign action, data deletion or Pages publish occurred.
+
+### Implementation evidence
+
+- Added a server-owned membership directory that maps a cryptographically verified issuer/subject to an enabled internal principal inside an explicitly tenant-scoped transaction.
+- Loads only active tenant/campaign membership, unexpired roles and active grants whose campaign/workspace remains usable; inactive, missing, expired, revoked and inconsistent scope fails closed.
+- Exact permission checks require action, resource type, resource identifier, campaign/workspace scope and purpose. Role labels never imply authority.
+- Added `/api/v1/tenants/{tenant_id}/me` while retaining `/api/v1/me` as identity-only. Authorization denial and dependency/data failures return sanitized RFC 9457-style `403`/`503` problems.
+- Added API, SQLite authorization and PostgreSQL/RLS integration coverage, including no-membership denial, cross-campaign corruption, wrong directory scope, inactive scope and unavailable persistence.
+
+### Local verification evidence
+
+- `make verify`: `214 passed`, `1 skipped`; Ruff lint/format, strict mypy, program truth and campaign-safety scan passed. The skip remains the explicitly isolated PostgreSQL marker.
+- coverage: `93.91%`, above the configured `90%` threshold.
+- focused authorization/API/database suite after exact-purpose hardening: `32 passed`, `1 skipped`.
+- isolated PostgreSQL 18.3 migration/RLS/authorization run: `1 passed`, `5 deselected`; the disposable container was removed after the test.
+- disposable Compose E2E rebuilt the API and passed migration check, constrained application-role proof, PostgreSQL/S3Mock/Mailpit reachability and fail-closed OIDC readiness; cleanup succeeded.
+- Gitleaks `8.30.0` worktree scan: no leaks found.
+- Production gates remain unchanged: membership administration, live identity/session lifecycle, domain and worker enforcement, staging evidence and all previously recorded blockers remain open.
+
 ## C3 production-foundation increment — 2026-07-19
 
 - `branch`: `agent/c3-found-001-production-foundation`

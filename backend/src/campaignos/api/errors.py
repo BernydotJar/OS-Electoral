@@ -57,11 +57,19 @@ def install_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(HTTPException)
     async def handle_http_exception(request: Request, exc: HTTPException) -> JSONResponse:
         detail = exc.detail if isinstance(exc.detail, str) else "Request rejected"
-        code = "AUTHENTICATION_REQUIRED" if exc.status_code == 401 else "HTTP_ERROR"
+        error_metadata = {
+            401: ("Authentication required", "AUTHENTICATION_REQUIRED"),
+            403: ("Authorization denied", "AUTHORIZATION_DENIED"),
+            503: ("Service unavailable", "AUTHORIZATION_UNAVAILABLE"),
+        }
+        title, code = error_metadata.get(
+            exc.status_code,
+            ("Request rejected", "HTTP_ERROR"),
+        )
         response = problem_response(
             request,
             status=exc.status_code,
-            title="Request rejected",
+            title=title,
             detail=detail,
             code=code,
         )

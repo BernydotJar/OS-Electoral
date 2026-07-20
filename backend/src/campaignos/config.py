@@ -13,6 +13,8 @@ from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine import make_url
 
+from campaignos import __version__
+
 DEFAULT_SECRETS_DIR = Path("/run/secrets")
 CONFIGURED_SECRETS_DIR = DEFAULT_SECRETS_DIR if DEFAULT_SECRETS_DIR.is_dir() else None
 
@@ -43,7 +45,7 @@ class Settings(BaseSettings):
 
     environment: Environment = Environment.DEVELOPMENT
     service_name: str = "campaignos-api"
-    service_version: str = "0.1.0"
+    service_version: str = __version__
     log_level: str = "INFO"
     expose_api_docs: bool = True
 

@@ -1,6 +1,6 @@
 # ADR 003: Separate OIDC authentication from tenant authorization
 
-Status: **PROPOSED; initial verifier implemented, application authorization pending**
+Status: **PROPOSED; verifier and tenant authorization loader implemented locally, lifecycle and domain enforcement pending**
 Date: `2026-07-19`
 
 ## Context
@@ -17,5 +17,7 @@ Authorization is deny-by-default over the tuple `(principal, tenant, campaign, w
 
 - Identity configuration fails closed in staging and production.
 - Invitation, recovery, MFA, revocation, membership expiry, support access, and session audit require explicit workflows.
-- `/me` may expose identity and application membership separately; before membership persistence exists it must return no grants.
+- `/api/v1/me` exposes verified identity only; `/api/v1/tenants/{tenant_id}/me` separately resolves current server-owned membership and grants.
+- Tenant selection is untrusted input. It scopes the database transaction and must match the returned authorization context; it never creates authority.
+- Current exact-grant matching includes action, resource type and identifier, campaign/workspace scope, purpose, validity and revocation state. Roles remain non-authoritative labels.
 - Tests must cover algorithm confusion, bad keys/issuer/audience/time/use, revoked or expired membership, object-level authorization, and cross-tenant identifiers.
