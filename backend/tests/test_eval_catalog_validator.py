@@ -55,8 +55,8 @@ def test_current_required_eval_catalog_passes(capsys: pytest.CaptureFixture[str]
     output = capsys.readouterr().out
     assert "required=33" in output
     assert "pass=5" in output
-    assert "partial=10" in output
-    assert "not_run=18" in output
+    assert "partial=12" in output
+    assert "not_run=16" in output
     assert "production=BLOCKED" in output
 
 
@@ -78,8 +78,8 @@ def test_not_implemented_eval_cannot_claim_evidence(
 ) -> None:
     validator = load_validator()
     payload = copy.deepcopy(catalog())
-    invitation = next(item for item in payload["evals"] if item["id"] == "EVAL-INVITATION-001")
-    invitation["evidence"] = ["backend/tests/test_authorization.py"]
+    not_implemented = next(item for item in payload["evals"] if item["status"] == "NOT_IMPLEMENTED")
+    not_implemented["evidence"] = ["backend/tests/test_authorization.py"]
 
     with pytest.raises(SystemExit, match="must remain evidence-free and NOT_RUN"):
         run_with_catalog(validator, tmp_path, monkeypatch, payload)

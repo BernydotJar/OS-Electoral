@@ -8,6 +8,7 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import (
     JSON,
+    Boolean,
     CheckConstraint,
     DateTime,
     ForeignKey,
@@ -19,6 +20,7 @@ from sqlalchemy import (
     UniqueConstraint,
     Uuid,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -150,6 +152,7 @@ class Membership(Base, TimestampMixin):
     )
     expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
 
 class RoleAssignment(Base, TimestampMixin):
@@ -231,6 +234,232 @@ class PermissionGrant(Base, TimestampMixin):
         Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
     )
     approval_receipt_id: Mapped[str] = mapped_column(String(255), nullable=False)
+
+
+class IdentityInvitation(Base, TimestampMixin):
+    __tablename__ = "identity_invitations"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_identity_invitations_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "membership_id"],
+            ["memberships.tenant_id", "memberships.id"],
+            name="fk_identity_invitations_tenant_membership",
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "provider",
+            "provider_reference",
+            name="uq_identity_invitations_provider_reference",
+        ),
+        CheckConstraint(
+            "status IN ('PENDING', 'ACCEPTED', 'REVOKED', 'EXPIRED')",
+            name="ck_identity_invitations_status",
+        ),
+        CheckConstraint(
+            "scope_key = CASE WHEN campaign_id IS NULL THEN 'TENANT' "
+            "ELSE replace(CAST(campaign_id AS TEXT), '-', '') END",
+            name="ck_identity_invitations_scope_key",
+        ),
+        Index(
+            "uq_identity_invitations_pending_target",
+            "tenant_id",
+            "email",
+            "scope_key",
+            unique=True,
+            postgresql_where=text("status = 'PENDING'"),
+            sqlite_where=text("status = 'PENDING'"),
+        ),
+        Index("ix_identity_invitations_tenant_expires", "tenant_id", "expires_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False
+    )
+    campaign_id: Mapped[UUID | None] = mapped_column(Uuid)
+    scope_key: Mapped[str] = mapped_column(String(36), nullable=False)
+    email: Mapped[str] = mapped_column(String(320), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="PENDING")
+    purpose: Mapped[str] = mapped_column(String(255), nullable=False)
+    invited_by_principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    provider: Mapped[str] = mapped_column(String(80), nullable=False)
+    provider_reference: Mapped[str] = mapped_column(String(255), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    accepted_by_principal_id: Mapped[UUID | None] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT")
+    )
+    membership_id: Mapped[UUID | None] = mapped_column(Uuid)
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    revoked_by_principal_id: Mapped[UUID | None] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT")
+    )
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class ApplicationSession(Base, TimestampMixin):
+    __tablename__ = "application_sessions"
+    __table_args__ = (
+        UniqueConstraint(
+            "tenant_id",
+            "provider_session_digest",
+            name="uq_application_sessions_tenant_provider_digest",
+        ),
+        CheckConstraint(
+            "status IN ('ACTIVE', 'REVOKED', 'EXPIRED')",
+            name="ck_application_sessions_status",
+        ),
+        CheckConstraint(
+            "expires_at > authenticated_at",
+            name="ck_application_sessions_expiry_after_authentication",
+        ),
+        Index(
+            "ix_application_sessions_tenant_principal_status",
+            "tenant_id",
+            "principal_id",
+            "status",
+        ),
+        Index("ix_application_sessions_tenant_expires", "tenant_id", "expires_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False
+    )
+    principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="CASCADE"), nullable=False
+    )
+    provider_session_digest: Mapped[str] = mapped_column(String(64), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="ACTIVE")
+    authenticated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    revoked_by_principal_id: Mapped[UUID | None] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT")
+    )
+    revocation_reason: Mapped[str | None] = mapped_column(String(255))
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class SupportAccessRequest(Base, TimestampMixin):
+    __tablename__ = "support_access_requests"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_support_access_requests_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id", "workspace_id"],
+            ["workspaces.tenant_id", "workspaces.campaign_id", "workspaces.id"],
+            name="fk_support_access_requests_workspace_scope",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "membership_id"],
+            ["memberships.tenant_id", "memberships.id"],
+            name="fk_support_access_requests_tenant_membership",
+            ondelete="RESTRICT",
+        ),
+        CheckConstraint(
+            "workspace_id IS NULL OR campaign_id IS NOT NULL",
+            name="ck_support_access_requests_workspace_requires_campaign",
+        ),
+        CheckConstraint(
+            "status IN ('PENDING', 'APPROVED', 'REJECTED', 'REVOKED', 'EXPIRED')",
+            name="ck_support_access_requests_status",
+        ),
+        CheckConstraint(
+            "expires_at > requested_at",
+            name="ck_support_access_requests_expiry_after_request",
+        ),
+        CheckConstraint(
+            "campaign_scope_key = CASE WHEN campaign_id IS NULL THEN 'TENANT' "
+            "ELSE replace(CAST(campaign_id AS TEXT), '-', '') END",
+            name="ck_support_access_requests_campaign_scope_key",
+        ),
+        CheckConstraint(
+            "workspace_scope_key = CASE WHEN workspace_id IS NULL THEN 'NONE' "
+            "ELSE replace(CAST(workspace_id AS TEXT), '-', '') END",
+            name="ck_support_access_requests_workspace_scope_key",
+        ),
+        Index(
+            "ix_support_access_requests_tenant_status",
+            "tenant_id",
+            "status",
+            "expires_at",
+        ),
+        Index(
+            "ix_support_access_requests_target",
+            "tenant_id",
+            "target_principal_id",
+            "status",
+        ),
+        Index(
+            "uq_support_access_requests_active_target",
+            "tenant_id",
+            "target_principal_id",
+            "campaign_scope_key",
+            "workspace_scope_key",
+            "action",
+            "resource_type",
+            "resource_id",
+            unique=True,
+            postgresql_where=text("status IN ('PENDING', 'APPROVED')"),
+            sqlite_where=text("status IN ('PENDING', 'APPROVED')"),
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("tenants.id", ondelete="CASCADE"), nullable=False
+    )
+    requested_by_principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    target_principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    campaign_id: Mapped[UUID | None] = mapped_column(Uuid)
+    workspace_id: Mapped[UUID | None] = mapped_column(Uuid)
+    campaign_scope_key: Mapped[str] = mapped_column(String(36), nullable=False)
+    workspace_scope_key: Mapped[str] = mapped_column(String(36), nullable=False)
+    action: Mapped[str] = mapped_column(String(100), nullable=False)
+    resource_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    resource_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    purpose: Mapped[str] = mapped_column(String(255), nullable=False)
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="PENDING")
+    requested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    decided_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    decided_by_principal_id: Mapped[UUID | None] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT")
+    )
+    approval_receipt_id: Mapped[str | None] = mapped_column(String(255))
+    membership_id: Mapped[UUID | None] = mapped_column(Uuid)
+    role_assignment_id: Mapped[UUID | None] = mapped_column(
+        Uuid, ForeignKey("role_assignments.id", ondelete="RESTRICT")
+    )
+    permission_grant_id: Mapped[UUID | None] = mapped_column(
+        Uuid, ForeignKey("permission_grants.id", ondelete="RESTRICT")
+    )
+    created_membership: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    revoked_by_principal_id: Mapped[UUID | None] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT")
+    )
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
 
 class AuditEvent(Base):

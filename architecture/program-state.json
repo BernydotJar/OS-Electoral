@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-front-001-dynamic-shell",
+  "source_branch": "agent/c3-iam-002-identity-lifecycle",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -12,7 +12,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, unverified required-check enforcement, no verified AWS environments and incomplete product, identity, operations and human gates remain. Foundation, IAM and the first campaign API slice are merged; idempotency, the internal outbox worker and workspace writes are draft and CI-green; campaign readiness and idempotent campaign creation are verified locally/PostgreSQL; the dynamic bilingual frontend shell is published but remains synthetic, unreviewed and without current-head CI.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the dynamic frontend is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally and against isolated PostgreSQL, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -359,6 +359,42 @@
       "conclusion": "SUCCESS",
       "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f",
       "scope": "draft PR 86 idempotent workspace write boundary"
+    },
+    {
+      "run_id": 29854461414,
+      "conclusion": "SUCCESS",
+      "head_sha": "3b4bc9b14834fa8c50a10904d942e03db45b8318",
+      "scope": "draft PR 87 audited campaign readiness"
+    },
+    {
+      "run_id": 29854461367,
+      "conclusion": "SUCCESS",
+      "head_sha": "3b4bc9b14834fa8c50a10904d942e03db45b8318",
+      "scope": "draft PR 87 runtime visual review"
+    },
+    {
+      "run_id": 29854464519,
+      "conclusion": "SUCCESS",
+      "head_sha": "a21e7353f0a91f8c50a10904d942e03db45b8318",
+      "scope": "draft PR 88 idempotent campaign creation"
+    },
+    {
+      "run_id": 29854464523,
+      "conclusion": "SUCCESS",
+      "head_sha": "a21e7353f0a91f8c50a10904d942e03db45b8318",
+      "scope": "draft PR 88 runtime visual review"
+    },
+    {
+      "run_id": 29856835515,
+      "conclusion": "SUCCESS",
+      "head_sha": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+      "scope": "draft PR 89 governed dynamic shell after relative artifact-path repair"
+    },
+    {
+      "run_id": 29856835522,
+      "conclusion": "SUCCESS",
+      "head_sha": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+      "scope": "draft PR 89 runtime visual review after relative artifact-path repair"
     }
   ],
   "bounded_contexts": [
@@ -422,7 +458,7 @@
     {
       "id": "context:dynamic-frontend-shell",
       "owner": "Campaign Product",
-      "maturity": "TESTED_LOCAL_SERVER_RENDERED_SHELL",
+      "maturity": "DRAFT_PR_CI_GREEN_SERVER_RENDERED_SHELL",
       "code": [
         "frontend/src/app/[locale]/page.tsx",
         "frontend/src/components/shell.tsx",
@@ -549,6 +585,24 @@
       ]
     },
     {
+      "id": "context:identity-lifecycle",
+      "owner": "Campaign Security",
+      "maturity": "VERIFIED_POSTGRESQL_PROVIDER_NEUTRAL_NO_EXTERNAL_EFFECTS",
+      "code": [
+        "backend/src/campaignos/identity/lifecycle.py",
+        "backend/src/campaignos/identity/lifecycle_contracts.py",
+        "backend/src/campaignos/api/routes/identity_lifecycle.py",
+        "backend/migrations/versions/20260721_0004_identity_lifecycle.py"
+      ],
+      "validators": [
+        "backend/tests/test_identity_lifecycle_contracts.py",
+        "backend/tests/test_identity_lifecycle_model.py",
+        "backend/tests/test_identity_lifecycle_failures.py",
+        "backend/tests/test_identity_lifecycle_api.py",
+        "backend/tests/test_identity_lifecycle_postgres.py"
+      ]
+    },
+    {
       "id": "context:postgresql-tenancy",
       "owner": "Campaign Platform",
       "maturity": "LOCAL_MIGRATION_AND_RLS_PROOF",
@@ -664,8 +718,8 @@
     {
       "id": "WS-03",
       "name": "Identity, Tenancy and RBAC",
-      "status": "TENANT_AUTHORIZATION_MERGED_LIFECYCLE_PENDING",
-      "next_increment": "C3-IAM-002"
+      "status": "IDENTITY_LIFECYCLE_VERIFIED_POSTGRESQL_LIVE_PROVIDER_PENDING",
+      "next_increment": "C3-ONBOARD-001"
     },
     {
       "id": "WS-04",
@@ -676,13 +730,13 @@
     {
       "id": "WS-05",
       "name": "API and Background Jobs",
-      "status": "CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_WORKER_DRAFT_GREEN",
-      "next_increment": "C3-IAM-002"
+      "status": "CAMPAIGN_STACK_AND_FRONTEND_CI_GREEN_IDENTITY_LOCAL_VERIFIED",
+      "next_increment": "C3-ONBOARD-001"
     },
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "DYNAMIC_SHELL_PUBLISHED_UNREVIEWED",
+      "status": "DYNAMIC_SHELL_DRAFT_PR_CI_GREEN",
       "next_increment": "C3-ONBOARD-001"
     },
     {
@@ -782,6 +836,14 @@
       "workstream": "WS-03"
     },
     {
+      "id": "C3-IAM-002",
+      "status": "VERIFIED_POSTGRESQL",
+      "depends_on": [
+        "C3-IAM-001"
+      ],
+      "workstream": "WS-03"
+    },
+    {
       "id": "C3-DATA-001",
       "status": "MERGED_TO_MAIN",
       "depends_on": [
@@ -801,7 +863,7 @@
     },
     {
       "id": "C3-API-005",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-001"
       ],
@@ -809,7 +871,7 @@
     },
     {
       "id": "C3-API-006",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-005"
       ],
@@ -817,7 +879,7 @@
     },
     {
       "id": "C3-FRONT-001",
-      "status": "TESTED_LOCAL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-DEVEX-001",
         "C3-API-001"
@@ -931,7 +993,7 @@
       "id": "FND-CI-001",
       "severity": "HIGH",
       "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "Foundation, IAM and the first campaign API slice are merged with green recorded checks, and the active draft stack is green; public rulesets are empty while branch-protection and required-check enforcement remain unverified without authenticated repository settings access.",
+      "summary": "Authenticated repository-settings inspection confirms main is unprotected, rulesets are empty, all Actions are allowed and repository SHA pinning is not required. The draft review stack through PR 89 is CI-green, but required-check enforcement remains absent.",
       "evidence": "program/current-state-assessment.md"
     },
     {
@@ -973,7 +1035,7 @@
       "id": "FND-SUPPLY-001",
       "severity": "HIGH",
       "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "Locks, vulnerability audit, immutable Action/image pins and secret scanning pass at recorded merged and draft heads; SBOM, provenance, signing and protected-main enforcement remain absent.",
+      "summary": "Locks, vulnerability audits, immutable workflow references in source and secret scans pass at recorded heads, but repository policy allows all Actions, does not require SHA pinning and vulnerability alerts are disabled; SBOM, provenance, signing and protected-main enforcement remain absent.",
       "evidence": "program/production-gap-matrix.md"
     }
   ],
@@ -1009,13 +1071,16 @@
     "open_pull_requests": [
       84,
       85,
-      86
+      86,
+      87,
+      88,
+      89
     ],
-    "main_branch_protection": "UNVERIFIED_AUTH_REQUIRED_PREVIOUSLY_ABSENT",
-    "rulesets": "NONE_PUBLICLY_VISIBLE_AT_2026_07_21",
-    "actions_allowed": "UNVERIFIED_AUTH_REQUIRED",
-    "action_sha_pinning_required": "UNVERIFIED_AUTH_REQUIRED",
-    "local_ci_workflow": "MAIN_AND_REVIEW_STACK_GREEN_AT_RECORDED_HEADS",
+    "main_branch_protection": "ABSENT_CONFIRMED_AUTHENTICATED_2026_07_21",
+    "rulesets": "NONE_CONFIRMED_AUTHENTICATED_2026_07_21",
+    "actions_allowed": "ALL_ACTIONS_AND_WORKFLOWS_ALLOWED",
+    "action_sha_pinning_required": false,
+    "local_ci_workflow": "REVIEW_STACK_THROUGH_PR_89_GREEN_AT_RECORDED_HEADS",
     "local_workflow_action_refs": "FULL_SHA_PINNED",
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
@@ -1025,20 +1090,7 @@
       "conclusion": "SUCCESS",
       "required_check_enforcement": false
     },
-    "published_unreviewed_increment": {
-      "id": "C3-FRONT-001",
-      "branch": "agent/c3-front-001-dynamic-shell",
-      "base": "agent/c3-api-006-campaign-create",
-      "base_commit": "a21e7353f0a91f8c50a10904d942e03db45b8318",
-      "policy_commit": "0763b7d0b8222043e0cf436c813ebfd61376d970",
-      "implementation_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
-      "github_branch_sha": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
-      "draft_pr": null,
-      "open_pr_count": 0,
-      "ci": "NOT_RUN_NO_PR_OR_BRANCH_PUSH_TRIGGER",
-      "workflow_run_count": 0,
-      "blocker": "NO_AUTHENTICATED_GITHUB_MUTATION_SESSION"
-    },
+    "published_unreviewed_increment": null,
     "review_stack": [
       {
         "pr": 84,
@@ -1066,6 +1118,33 @@
         "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f",
         "campaignos_ci_run_id": 29807878943,
         "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 87,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-api-004-workspace-write",
+        "head": "agent/c3-api-005-campaign-readiness",
+        "head_sha": "3b4bc9b14834fa8c50a10904d942e03db45b8318",
+        "campaignos_ci_run_id": 29854461414,
+        "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 88,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-api-005-campaign-readiness",
+        "head": "agent/c3-api-006-campaign-create",
+        "head_sha": "a21e7353f0a91f8c50a10904d942e03db45b8318",
+        "campaignos_ci_run_id": 29854464519,
+        "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 89,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-api-006-campaign-create",
+        "head": "agent/c3-front-001-dynamic-shell",
+        "head_sha": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+        "campaignos_ci_run_id": 29856835515,
+        "conclusion": "SUCCESS"
       }
     ],
     "git_push_incident": {
@@ -1079,6 +1158,17 @@
       "repair_method": "FAST_FORWARD_TREE_RESTORE_NO_FORCE_PUSH_NO_HISTORY_REWRITE",
       "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
       "frontend_target_verified": true
+    },
+    "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
+    "active_local_increment": {
+      "id": "C3-IAM-002",
+      "branch": "agent/c3-iam-002-identity-lifecycle",
+      "base": "agent/c3-front-001-dynamic-shell",
+      "base_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+      "status": "VERIFIED_POSTGRESQL_LOCAL_NOT_YET_PUBLISHED",
+      "draft_pr": null,
+      "ci": "NOT_RUN_UNPUBLISHED_WORKTREE",
+      "external_effects": "NONE"
     }
   },
   "deployment_state": {
@@ -1294,5 +1384,18 @@
     "VOTER_LOYALTY_MONITORING",
     "PUBLIC_RESOURCE_CAMPAIGN_MIXING",
     "COVERT_TEAM_SURVEILLANCE"
+  ],
+  "superseded_validation_runs": [
+    {
+      "run_id": 29854467576,
+      "conclusion": "FAILURE",
+      "head_sha": "22deb63204c0cd9db62f7707db916ae54798f279",
+      "scope": "draft PR 89 frontend job failed because a relative artifact path was resolved after cwd changed",
+      "superseded_by": 29856835515,
+      "verification_evidence": "scripts/frontend/e2e_dynamic_shell.sh and successful exact-head CampaignOS CI",
+      "reviewer": "independent release verification",
+      "date": "2026-07-21",
+      "reason": "The repaired head normalizes relative artifact paths against repository root and all equivalent CI jobs pass."
+    }
   ]
 }

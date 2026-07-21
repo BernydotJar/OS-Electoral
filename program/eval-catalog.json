@@ -24,7 +24,9 @@
         "backend/tests/test_database.py",
         "backend/tests/test_authorization.py",
         "backend/tests/test_campaign_create_model.py",
-        "backend/tests/test_campaign_create_postgres.py"
+        "backend/tests/test_campaign_create_postgres.py",
+        "backend/tests/test_identity_lifecycle_api.py",
+        "backend/tests/test_identity_lifecycle_postgres.py"
       ],
       "commands": [
         "make test-postgres",
@@ -44,7 +46,9 @@
         "backend/tests/test_database.py",
         "backend/tests/test_campaign_create_api.py",
         "backend/tests/test_campaign_create_model.py",
-        "backend/tests/test_campaign_create_postgres.py"
+        "backend/tests/test_campaign_create_postgres.py",
+        "backend/tests/test_identity_lifecycle_api.py",
+        "backend/tests/test_identity_lifecycle_postgres.py"
       ],
       "commands": [
         "make test",
@@ -75,22 +79,42 @@
     {
       "id": "EVAL-SESSION-001",
       "category": "runtime_security",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "No live session lifecycle, rotation, recovery or revocation implementation."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "backend/tests/test_identity_lifecycle_contracts.py",
+        "backend/tests/test_identity_lifecycle_model.py",
+        "backend/tests/test_identity_lifecycle_failures.py",
+        "backend/tests/test_identity_lifecycle_api.py",
+        "backend/tests/test_identity_lifecycle_postgres.py",
+        "docs/testing/c3-iam-002-evidence.md"
+      ],
+      "commands": [
+        "make verify",
+        "make test-postgres"
+      ],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Application-session digest, expiry and local revocation are tested locally/PostgreSQL; no live provider login, rotation, recovery, device view or provider-token revocation claim."
     },
     {
       "id": "EVAL-INVITATION-001",
       "category": "runtime_security",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "Invitation lifecycle is pending C3-IAM-002."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "backend/tests/test_identity_lifecycle_contracts.py",
+        "backend/tests/test_identity_lifecycle_model.py",
+        "backend/tests/test_identity_lifecycle_failures.py",
+        "backend/tests/test_identity_lifecycle_api.py",
+        "backend/tests/test_identity_lifecycle_postgres.py",
+        "docs/testing/c3-iam-002-evidence.md"
+      ],
+      "commands": [
+        "make verify",
+        "make test-postgres"
+      ],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Tenant-scoped create, verified-email one-time acceptance, expiry, revocation, replay and concurrency are tested locally/PostgreSQL; no live Cognito provisioning or email delivery claim."
     },
     {
       "id": "EVAL-AUDIT-001",

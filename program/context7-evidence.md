@@ -215,3 +215,11 @@ Context7 is mandatory implementation evidence, but its index can lag package reg
 - `documentation_basis`: official npm audit output and package registry integrity metadata.
 - `implementation_decision`: exact dependency pins are retained; the Next transitive PostCSS resolution is overridden to exact `8.5.20` after the generated graph reported a moderate advisory; final audit reports zero vulnerabilities.
 - `limitations`: vulnerability status is point-in-time and remains a required CI/Dependabot gate.
+
+## C3-IAM-002 documentation record
+
+- `task_id`: `C3-IAM-002`
+- `availability`: Context7 was not exposed as a live capability in this session.
+- `fallback`: implementation was constrained by current pinned library APIs, existing architecture, official protocol semantics already encoded in the repository and executable unit/API/PostgreSQL tests.
+- `evidence`: `backend/src/campaignos/identity/oidc.py`, `backend/src/campaignos/identity/lifecycle.py`, `backend/migrations/versions/20260721_0004_identity_lifecycle.py`, `docs/testing/c3-iam-002-evidence.md`.
+- `claim limit`: no live Cognito, email, recovery, MFA, RDS or production behavior is inferred from local contracts.

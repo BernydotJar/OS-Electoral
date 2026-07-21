@@ -2,7 +2,7 @@
 
 Status: **DRAFT — technical controls are partial; independent security/privacy review required**
 Version: `0.1`
-Last updated: `2026-07-19`
+Last updated: `2026-07-21`
 
 ## Scope and safety objective
 
@@ -42,8 +42,8 @@ See `docs/architecture/system-context.md`. The security-critical transitions are
 |---|---|---|---|
 | TM-01 | Cross-tenant or cross-campaign object access | server-derived scope on every repository method; composite constraints; RLS defense; BOLA tests using valid foreign IDs | Local forced-RLS proof and tenant membership loader pass under a non-superuser role; campaign-domain BOLA and staging coverage remain incomplete |
 | TM-02 | Vertical privilege escalation through token role, command actor, or client field | OIDC authenticates subject only; database grants; exact action/resource/scope authorization; trusted-principal approval receipts | OIDC/token-role rejection, exact purpose-bound grant loading and approval binding pass locally; grant administration and domain-action enforcement remain absent |
-| TM-03 | Invitation abuse or account takeover | single-use short-lived invitation, tenant-bound issuer, MFA capability, recovery controls, enumeration resistance, revoke/audit tests | Not implemented |
-| TM-04 | Session theft/replay | HTTPS, secure same-site cookies or bounded bearer handling, short lifetime, rotation/revocation, device/session view, no token logging | Token verification partial; session lifecycle absent |
+| TM-03 | Invitation abuse or account takeover | single-use short-lived invitation, tenant-bound issuer, MFA capability, recovery controls, enumeration resistance, revoke/audit tests | Local/PostgreSQL invitation lifecycle requires matching verified email, one-time use, expiry, revocation, audit and concurrency controls; live delivery, MFA and recovery remain absent |
+| TM-04 | Session theft/replay | HTTPS, secure same-site cookies or bounded bearer handling, short lifetime, rotation/revocation, device/session view, no token logging | Verified token expiry plus local digest-only application-session expiry/revocation pass; live rotation, recovery, device view and provider revocation remain absent |
 | TM-05 | Confused deputy in worker/integration | signed/versioned envelope, server-derived principal/scope, action allow-list, idempotency, fresh authorization, delivery receipt | Not implemented |
 | TM-06 | Prompt injection or malicious evidence causes disclosure/action | treat evidence as data, minimize scoped context, provider isolation, output schema plus policy checks, no tool authority, adversarial evals | Deterministic evidence guards partial; provider runtime absent |
 | TM-07 | Model/provider data leakage | data classification, approved processors/regions, minimization, no-training setting where contractually available, retention controls, redacted logs | Not implemented |
@@ -53,7 +53,7 @@ See `docs/architecture/system-context.md`. The security-critical transitions are
 | TM-11 | SQL injection or unsafe migration | parameterized SQL/ORM, no raw user fragments, least-privilege DB roles, migration review/rehearsal, SAST | SQLAlchemy/Alembic, isolated role rehearsal and draft-PR CodeQL pass; required enforcement and staging policy absent |
 | TM-12 | Audit tampering or false integrity claims | append-only durable records, restricted role, canonical hash/MAC or external anchor, correction events, restore verification | Prototype hash checks only; no signature/immutability proof |
 | TM-13 | Export or backup leaks data across scope | fresh authorization, scoped query, encryption, short-lived location, watermark/receipt, retention/deletion, restore isolation | Not implemented |
-| TM-14 | Over-privileged support access | explicit request, reason, approver, exact tenant/scope, short expiry, customer-visible audit, no hidden standing role | Not implemented |
+| TM-14 | Over-privileged support access | explicit request, reason, approver, exact tenant/scope, short expiry, customer-visible audit, no hidden standing role | Local/PostgreSQL request, separation of duty, exact expiring grant/role, expiry/revoke and unrelated-access preservation pass; customer UI, staging and independent review remain absent |
 | TM-15 | Secret exposure | no committed/static cloud keys, mounted secret store, redaction, rotation, push protection, CI scanning, least-privilege OIDC | GitHub scanning, SecretStr config and draft-PR Gitleaks pass exist; required enforcement and runtime/cloud rotation pipeline incomplete |
 | TM-16 | Supply-chain compromise | locked hashes, immutable Action SHAs, provenance/SBOM, dependency and image scan, reviewed updates, minimal images | Hash lock, full Action SHAs, image digests and draft-PR dependency audit pass; required enforcement, SBOM/provenance/signing and image scan remain absent |
 | TM-17 | Unauthorized production change | protected branch, required review/checks, short-lived AWS OIDC, separate environments, reviewed plan, explicit approval receipt, rollback | Production blocked; protections/IaC absent |

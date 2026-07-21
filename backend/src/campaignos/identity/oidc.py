@@ -100,15 +100,32 @@ class OidcTokenVerifier:
                     raise AuthenticationError("Token authorized party is not allowed")
             elif not isinstance(audience_claim, str):
                 raise AuthenticationError("Invalid bearer token")
+            email = claims.get("email")
+            email_verified = claims.get("email_verified")
+            display_name = claims.get("name")
+            session_id = claims.get("jti")
+            if email is not None and not isinstance(email, str):
+                raise AuthenticationError("Invalid bearer token")
+            if email_verified is not None and not isinstance(email_verified, bool):
+                raise AuthenticationError("Invalid bearer token")
+            if display_name is not None and not isinstance(display_name, str):
+                raise AuthenticationError("Invalid bearer token")
+            if session_id is not None and not isinstance(session_id, str):
+                raise AuthenticationError("Invalid bearer token")
+
             audience = self._settings.oidc_audience or ""
+            authenticated_at = datetime.fromtimestamp(float(claims["iat"]), UTC)
+            expires_at = datetime.fromtimestamp(float(claims["exp"]), UTC)
             return AuthenticatedPrincipal(
                 subject=claims["sub"],
                 issuer=claims["iss"],
                 audience=audience,
-                display_name=claims.get("name"),
-                email=claims.get("email"),
-                session_id=claims.get("jti"),
-                authenticated_at=datetime.now(UTC),
+                display_name=display_name,
+                email=email,
+                email_verified=email_verified,
+                session_id=session_id,
+                authenticated_at=authenticated_at,
+                expires_at=expires_at,
             )
         except AuthenticationError:
             raise
