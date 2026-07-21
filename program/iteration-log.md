@@ -217,3 +217,21 @@
 - Public inspection found zero open PRs and zero workflow runs for the head; `gh auth status` confirms no authenticated mutation session, so draft PR creation is classified as an external dependency.
 - The first MCP push omitted the supported `branch` argument and followed stale workspace metadata into IAM. GitHub was reached; `e7304e61242280482f402bdfe047665d2c62fe4d` restores the exact `5b203ec7d52c87950778b67b298de5d9b0a7a6fb` tree by fast-forward, without force-push or history rewrite.
 - C3-FRONT-001 is a `CHECKPOINT_COMPLETED` at `TESTED_LOCAL_PUBLISHED_UNREVIEWED`; production remains `BLOCKED` and execution continues.
+
+## Review-stack restoration and frontend CI repair - 2026-07-21
+
+- Created draft PR `#87` (`C3-API-005`), `#88` (`C3-API-006`) and `#89` (`C3-FRONT-001`) with exact stacked bases.
+- PRs `#87` and `#88` passed all recorded checks.
+- PR `#89` first failed CampaignOS CI run `29854467576` because the browser artifact path was relative to a later working directory.
+- Commit `437b46930c68d6ed3a8233c139b0eaa03724b068` resolves relative paths against repository root. Exact-head CampaignOS CI `29856835515` and visual review `29856835522` pass.
+- The isolated-workspace push wrapper emitted a nested-Docker error after GitHub accepted the push. Remote SHA verification, not the wrapper message, established the result. No force-push occurred.
+
+## C3-IAM-002 identity lifecycle local/PostgreSQL verification - 2026-07-21
+
+- Added revision `20260721_0004`, forced-RLS identity lifecycle tables and optimistic membership versions.
+- Added exact-authorized invitation, session, membership-revocation and time-bound support APIs with provider-neutral no-effect contracts.
+- Critic/fixer passes added verified-email acceptance, canonical scope-key constraints, explicit expiry evidence, unrelated-access preservation and adversarial rollback/error tests.
+- Full gate: `381 passed`, `3 skipped`, coverage `91.34%`, Ruff, format, strict mypy, frontend regression and program/safety validators PASS.
+- Disposable PostgreSQL gate passed twice: `3 passed`, `5 deselected` per run.
+- `EVAL-SESSION-001` and `EVAL-INVITATION-001` advance only to `PARTIAL_TESTED_LOCAL`; no live provider claim is made.
+- Production remains `BLOCKED`. The next delivery step is commit, rebase onto frontend `437b469`, push, draft PR and exact-head CI.

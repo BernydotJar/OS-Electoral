@@ -35,6 +35,8 @@ def token(private_key: object, **overrides: object) -> str:
         "token_use": "id",
         "jti": "session-123",
         "name": "Test User",
+        "email": "user@example.test",
+        "email_verified": True,
     }
     claims.update(overrides)
     return jwt.encode(claims, private_key, algorithm="RS256", headers={"kid": "key-1"})
@@ -54,6 +56,9 @@ def test_valid_oidc_token_produces_minimal_principal() -> None:
 
     assert principal.principal_id == "human:user-123"
     assert principal.session_id == "session-123"
+    assert principal.email == "user@example.test"
+    assert principal.email_verified is True
+    assert principal.authenticated_at < principal.expires_at  # type: ignore[operator]
     assert not hasattr(principal, "roles")
 
 
@@ -91,6 +96,19 @@ def test_readiness_checks_jwks_dependency_without_leaking_error() -> None:
     ],
 )
 def test_wrong_security_claim_is_rejected(claim: str, value: str) -> None:
+    key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    with pytest.raises(AuthenticationError):
+        verifier_with_key(key).verify(token(key, **{claim: value}))
+
+
+@pytest.mark.parametrize(
+    ("claim", "value"),
+    [
+        ("email", 123),
+        ("email_verified", "true"),
+    ],
+)
+def test_malformed_identity_claim_is_rejected(claim: str, value: object) -> None:
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     with pytest.raises(AuthenticationError):
         verifier_with_key(key).verify(token(key, **{claim: value}))

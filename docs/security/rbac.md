@@ -1,7 +1,7 @@
 # CampaignOS RBAC and authorization policy
 
-Status: **PARTIAL LOCAL IMPLEMENTATION; tenant grant loading exists, full enforcement and administration absent**
-Last updated: `2026-07-19`
+Status: **PARTIAL LOCAL/POSTGRESQL IMPLEMENTATION; lifecycle and exact grants exist, full catalog/live administration remain absent**
+Last updated: `2026-07-21`
 
 ## Model
 
@@ -57,4 +57,4 @@ For each endpoint/action: unauthenticated; valid identity without membership; ex
 
 An effective permission matches action, resource type, resource identifier, tenant-selected campaign/workspace scope and purpose exactly. Role labels are returned for display and administration but never imply permission. The PostgreSQL integration test exercises the loader through a non-superuser, non-`BYPASSRLS` application role and denies the same identity in a tenant without membership.
 
-The production RBAC gate remains `PARTIAL`: there is no membership/invitation administration workflow, reviewed role-to-grant catalog, support-elevation path, server session lifecycle, campaign-domain action endpoint, worker reauthorization, audit receipt emission or staging BOLA evidence.
+`C3-IAM-002` adds exact-authorized invitation create/revoke, verified-email one-time acceptance, membership revocation, local application-session registration/revocation and separated time-bound support access. Support roles remain labels; the expiring exact grant is the effective authority, and pre-existing access is preserved on support revocation. The production RBAC gate remains `PARTIAL`: there is no reviewed role-to-grant administration catalog, live provider/login/recovery/MFA, customer administration UI, complete worker/domain enforcement or staging BOLA evidence.

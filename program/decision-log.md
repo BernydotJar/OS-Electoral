@@ -148,3 +148,43 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: frontend `b21f3d55ca0e89d3e6575076b5affa90732e3438`, repair `e7304e61242280482f402bdfe047665d2c62fe4d`, original IAM `5b203ec7d52c87950778b67b298de5d9b0a7a6fb`
 - `rationale`: GitHub was reached and accepted the push; credentials and commit author email were not the cause. A force-push would erase evidence and violate the persistent policy.
 - `consequences`: The accidental commit remains visible in IAM branch ancestry, the branch content is restored, and future MCP pushes must always use the documented `branch` argument.
+
+## DEC-2026-07-21-017 — Invitation acceptance requires verified provider email
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-IAM-002`
+- `decision`: A matching email string is insufficient. Invitation acceptance requires the verified token to contain the same normalized email and `email_verified=true`.
+- `evidence`: `backend/src/campaignos/identity/oidc.py`, `backend/src/campaignos/identity/lifecycle.py`, `backend/tests/test_identity_lifecycle_model.py`
+- `consequences`: Missing, false or malformed verification state fails closed; no membership is created.
+
+## DEC-2026-07-21-018 — Persist only provider-session digests
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-IAM-002`
+- `decision`: Application sessions persist a digest of issuer, subject and provider session identifier; raw provider identifiers never enter the database, audit payload or API projection.
+- `evidence`: `backend/src/campaignos/identity/lifecycle.py`, `backend/tests/test_identity_lifecycle_model.py`, `backend/tests/test_identity_lifecycle_postgres.py`
+- `consequences`: Local expiry/revocation is auditable, but provider revocation remains explicitly `NOT_EXECUTED`.
+
+## DEC-2026-07-21-019 — Support authority is exact, temporary and lifecycle-owned
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-IAM-002`
+- `decision`: Support approval enforces requester/target/approver separation and creates or reactivates only an exact expiring grant proven to belong to a terminal support request. Role labels never authorize.
+- `evidence`: `backend/src/campaignos/identity/lifecycle.py`, `backend/tests/test_identity_lifecycle_model.py`, `backend/tests/test_identity_lifecycle_failures.py`
+- `consequences`: Pre-existing memberships and unrelated access survive support revoke/expiry; repeated cycles preserve append-only request, role and audit history.
+
+## DEC-2026-07-21-020 — Redundant lifecycle scope keys are database-checked
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-IAM-002`
+- `decision`: Partial-unique-index scope keys use canonical UUID hex or fixed sentinels and are constrained to match their campaign/workspace columns.
+- `evidence`: `backend/src/campaignos/data/models.py`, `backend/migrations/versions/20260721_0004_identity_lifecycle.py`, `backend/tests/test_identity_lifecycle_model.py`
+- `consequences`: Corrupt or drifting redundant scope fails at the database boundary; concurrent active duplicates remain impossible.
+
+## DEC-2026-07-21-021 — Repository policy deficiency is confirmed, not unverified
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-CI-001`
+- `decision`: Authenticated GitHub API evidence is authoritative: `main` is unprotected, rulesets are empty, all Actions are allowed, repository SHA pinning is not required and vulnerability alerts are disabled.
+- `evidence`: `architecture/program-state.json#github_state`, `program/current-state-assessment.md`
+- `consequences`: The finding remains HIGH and production-blocking. Configuration changes remain a human administrative gate; feature work continues independently.

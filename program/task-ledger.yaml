@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-api-005-campaign-readiness",
+  "branch": "agent/c3-iam-002-identity-lifecycle",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -87,6 +87,33 @@
       ]
     },
     {
+      "task_id": "C3-IAM-002",
+      "owner": "WS-03",
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/migrations/versions/20260721_0004_identity_lifecycle.py",
+        "backend/src/campaignos/identity/lifecycle.py",
+        "backend/src/campaignos/identity/lifecycle_contracts.py",
+        "backend/src/campaignos/api/routes/identity_lifecycle.py",
+        "backend/tests/test_identity_lifecycle_contracts.py",
+        "backend/tests/test_identity_lifecycle_model.py",
+        "backend/tests/test_identity_lifecycle_failures.py",
+        "backend/tests/test_identity_lifecycle_api.py",
+        "backend/tests/test_identity_lifecycle_postgres.py",
+        "docs/api/identity-lifecycle.md",
+        "docs/security/identity-lifecycle.md",
+        "docs/testing/c3-iam-002-evidence.md",
+        "program/iterations/c3-iam-002.md"
+      ],
+      "external_effects": "NONE",
+      "publication_state": "LOCAL_VERIFIED_NOT_YET_PUBLISHED",
+      "blockers": [
+        "No live provider login, recovery, MFA, email delivery or provider revocation",
+        "Current branch has no remote branch, draft PR or CI yet",
+        "No RDS, dev, staging or production verification"
+      ]
+    },
+    {
       "task_id": "C3-DATA-001",
       "owner": "WS-04",
       "status": "MERGED_TO_MAIN",
@@ -141,7 +168,7 @@
     {
       "task_id": "C3-API-005",
       "owner": "WS-05",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/src/campaignos/campaigns/readiness.py",
         "backend/src/campaignos/data/audit.py",
@@ -159,18 +186,19 @@
         "program/iterations/c3-api-005.md"
       ],
       "external_effects": "NONE",
-      "publication_state": "REVIEW_BRANCH_PUBLISHED_NO_PR_NO_CI",
+      "publication_state": "DRAFT_PR_CI_GREEN",
       "implementation_commit": "22bc9a3f324a9a3cb1312fad7322596c7b719249",
       "blockers": [
-        "CI and independent human review have not run for this branch",
-        "No draft PR can be created without an authenticated GitHub mutation session",
+        "Human review and merge pending",
         "No RDS, dev, staging or production verification"
-      ]
+      ],
+      "draft_pr": 87,
+      "ci_run_id": 29854461414
     },
     {
       "task_id": "C3-API-006",
       "owner": "WS-05",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/src/campaignos/campaigns/create_model.py",
         "backend/src/campaignos/data/idempotency.py",
@@ -184,18 +212,19 @@
         "program/iterations/c3-api-006.md"
       ],
       "external_effects": "NONE",
-      "publication_state": "REVIEW_BRANCH_PUBLISHED_NO_PR_NO_CI",
+      "publication_state": "DRAFT_PR_CI_GREEN",
       "implementation_commit": "c91d60217e2ee0c0ec0f38c139852e7d73c78a58",
       "blockers": [
-        "CI and independent human review have not run for this branch",
-        "No draft PR can be created without an authenticated GitHub mutation session",
+        "Human review and merge pending",
         "No RDS, dev, staging or production verification"
-      ]
+      ],
+      "draft_pr": 88,
+      "ci_run_id": 29854464519
     },
     {
       "task_id": "C3-FRONT-001",
       "owner": "WS-06",
-      "status": "TESTED_LOCAL",
+      "status": "CI_GREEN",
       "evidence": [
         "frontend/package.json",
         "frontend/package-lock.json",
@@ -221,14 +250,16 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "No live OIDC or session lifecycle",
-        "No authenticated GitHub mutation session is available to create the draft PR",
-        "Current published head has no workflow run because CI requires a pull request or main push",
-        "No dev, staging or production deployment evidence"
+        "No live OIDC login or trusted tenant-selection lifecycle",
+        "No complete API-backed mutation journey or human user acceptance",
+        "Human review, merge and dev/staging/production deployment remain pending"
       ],
-      "publication_state": "REVIEW_BRANCH_PUBLISHED_NO_PR_NO_CI",
+      "publication_state": "DRAFT_PR_CI_GREEN",
       "implementation_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
-      "policy_commit": "0763b7d0b8222043e0cf436c813ebfd61376d970"
+      "policy_commit": "0763b7d0b8222043e0cf436c813ebfd61376d970",
+      "head_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+      "draft_pr": 89,
+      "ci_run_id": 29856835515
     },
     {
       "task_id": "C3-ONBOARD-001",

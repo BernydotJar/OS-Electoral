@@ -3,11 +3,11 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-front-001-dynamic-shell",
-  "current_increment": "C3-FRONT-001",
-  "iteration_status": "CHECKPOINT_COMPLETED",
+  "branch": "agent/c3-iam-002-identity-lifecycle",
+  "current_increment": "C3-IAM-002",
+  "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
-  "production_status_reason": "Foundation, tenant authorization and the first protected campaign API slice are merged, while idempotency, an internal outbox worker and workspace writes are draft and CI-green. Campaign readiness and idempotent campaign creation are verified locally/PostgreSQL, and the published dynamic bilingual frontend shell is tested with synthetic read-only data but has no draft PR, current-head CI or human review. Five CRITICAL/HIGH findings, six retained failed runs, unverified required-check enforcement, no live identity lifecycle, incomplete product journeys, no verified AWS environments, no backup/restore and no human production approval keep production BLOCKED.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the dynamic frontend is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally and against isolated PostgreSQL, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -33,8 +33,8 @@
     {
       "id": "WS-03",
       "name": "Identity, Tenancy and RBAC",
-      "status": "TENANT_AUTHORIZATION_MERGED_LIFECYCLE_PENDING",
-      "next_increment": "C3-IAM-002"
+      "status": "IDENTITY_LIFECYCLE_VERIFIED_POSTGRESQL_LIVE_PROVIDER_PENDING",
+      "next_increment": "C3-ONBOARD-001"
     },
     {
       "id": "WS-04",
@@ -45,13 +45,13 @@
     {
       "id": "WS-05",
       "name": "API and Background Jobs",
-      "status": "CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_WORKER_DRAFT_GREEN",
-      "next_increment": "C3-IAM-002"
+      "status": "CAMPAIGN_STACK_AND_FRONTEND_CI_GREEN_IDENTITY_LOCAL_VERIFIED",
+      "next_increment": "C3-ONBOARD-001"
     },
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "DYNAMIC_SHELL_PUBLISHED_UNREVIEWED",
+      "status": "DYNAMIC_SHELL_DRAFT_PR_CI_GREEN",
       "next_increment": "C3-ONBOARD-001"
     },
     {
@@ -112,20 +112,7 @@
   "ready_tasks": [
     "C3-ONBOARD-001"
   ],
-  "published_unreviewed_increment": {
-    "id": "C3-FRONT-001",
-    "branch": "agent/c3-front-001-dynamic-shell",
-    "base": "agent/c3-api-006-campaign-create",
-    "base_commit": "a21e7353f0a91f8c50a10904d942e03db45b8318",
-    "policy_commit": "0763b7d0b8222043e0cf436c813ebfd61376d970",
-    "implementation_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
-    "github_branch_sha": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
-    "draft_pr": null,
-    "open_pr_count": 0,
-    "ci": "NOT_RUN_NO_PR_OR_BRANCH_PUSH_TRIGGER",
-    "workflow_run_count": 0,
-    "blocker": "NO_AUTHENTICATED_GITHUB_MUTATION_SESSION"
-  },
+  "published_unreviewed_increment": null,
   "review_stack": [
     {
       "pr": 84,
@@ -147,20 +134,43 @@
       "head": "agent/c3-api-004-workspace-write",
       "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f",
       "ci": "SUCCESS"
+    },
+    {
+      "pr": 87,
+      "base": "agent/c3-api-004-workspace-write",
+      "head": "agent/c3-api-005-campaign-readiness",
+      "head_sha": "3b4bc9b14834fa8c50a10904d942e03db45b8318",
+      "ci": "SUCCESS"
+    },
+    {
+      "pr": 88,
+      "base": "agent/c3-api-005-campaign-readiness",
+      "head": "agent/c3-api-006-campaign-create",
+      "head_sha": "a21e7353f0a91f8c50a10904d942e03db45b8318",
+      "ci": "SUCCESS"
+    },
+    {
+      "pr": 89,
+      "base": "agent/c3-api-006-campaign-create",
+      "head": "agent/c3-front-001-dynamic-shell",
+      "head_sha": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+      "ci": "SUCCESS"
     }
   ],
   "local_verification": {
-    "tests_passed": 327,
-    "tests_skipped": 2,
-    "coverage_percent": 90.92,
+    "tests_passed": 381,
+    "tests_skipped": 3,
+    "coverage_percent": 91.34,
     "coverage_gate": "PASS",
-    "postgresql_integration": "PASS_2_SELECTED_5_DESELECTED",
+    "postgresql_integration": "PASS_3_SELECTED_5_DESELECTED_TWICE",
+    "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
     "frontend_unit_tests": 12,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
-    "eval_catalog": "PASS_5_PARTIAL_10_NOT_RUN_18",
-    "gitleaks": "PASS_EFFECTIVE_WORKTREE_AND_ORIGIN_MAIN_TO_HEAD",
-    "compose": "LOCAL_BLOCKER_REMOTE_CI_GREEN",
+    "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
+    "eval_catalog": "PASS_5_PARTIAL_12_NOT_RUN_16",
+    "gitleaks": "PENDING_FINAL_EFFECTIVE_WORKTREE_AND_STACK_SCAN",
+    "compose": "LOCAL_NAMESPACE_LIMITATION_REMOTE_CI_GREEN",
     "frontend_image_buildah": "PASS_DOCKER_FORMAT_NONROOT_HEALTHCHECK_SMOKE"
   },
   "critical_path": [
@@ -181,15 +191,14 @@
     "production": "NOT_DEPLOYED_OR_PROVEN"
   },
   "blockers": [
-    "Open CRITICAL/HIGH production gaps",
-    "Historical validation runs with FAILURE conclusions",
-    "No live OIDC provider, login/recovery/session lifecycle, membership administration or support elevation",
-    "Local PostgreSQL/RLS and campaign adapter proof is not deployed or operationally verified",
-    "Campaign creation and readiness are local/PostgreSQL only; guided intake, candidate, team, roadmap and broader domain adapters remain absent or prototype-only",
-    "Protected-main required-check enforcement is unverified",
-    "No deployable AWS Terraform baseline",
-    "No backup/restore evidence",
-    "No explicit human production approval"
+    "Five open CRITICAL/HIGH production findings",
+    "Six historical validation runs retain FAILURE without scope-equivalent supersession records",
+    "Main has no branch protection or rulesets; repository Actions allow all actions and do not require SHA pinning",
+    "No live OIDC login, recovery, MFA, provider invitation delivery or provider session revocation",
+    "Identity lifecycle proof is local/PostgreSQL only; no RDS, dev, staging or production verification",
+    "Guided intake, candidate, team, roadmap and broader product journeys remain absent or prototype-only",
+    "No deployable AWS Terraform baseline, backup/restore evidence or production observability",
+    "No independent security, privacy, domain, legal or explicit human production approval"
   ],
   "git_push_incident": {
     "classification": "TECHNICAL_DEFECT_REPAIRED",
@@ -202,5 +211,25 @@
     "repair_method": "FAST_FORWARD_TREE_RESTORE_NO_FORCE_PUSH_NO_HISTORY_REWRITE",
     "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
     "frontend_target_verified": true
+  },
+  "active_local_increment": {
+    "id": "C3-IAM-002",
+    "branch": "agent/c3-iam-002-identity-lifecycle",
+    "base": "agent/c3-front-001-dynamic-shell",
+    "base_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+    "status": "VERIFIED_POSTGRESQL_LOCAL_NOT_YET_PUBLISHED",
+    "draft_pr": null,
+    "ci": "NOT_RUN_UNPUBLISHED_WORKTREE",
+    "external_effects": "NONE"
+  },
+  "frontend_ci_fix_push_incident": {
+    "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
+    "component": "Cloud_Sandbox_MCP.git_push isolated-workspace wrapper",
+    "wrapper_error": "nested Docker ownership/network initialization failed after the Git push operation",
+    "github_reached": true,
+    "published_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+    "remote_sha_verified": true,
+    "force_push": false,
+    "credential_exposure": false
   }
 }
