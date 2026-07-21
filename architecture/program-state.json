@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-onboard-001-guided-intake",
+  "source_branch": "agent/c3-candidate-001-evidence-workspace",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -754,8 +754,8 @@
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "GUIDED_INTAKE_VERIFIED_POSTGRESQL_READ_ONLY_UI",
-      "next_increment": "C3-CANDIDATE-001"
+      "status": "CANDIDATE_WORKSPACE_VERIFIED_POSTGRESQL_READ_ONLY_UI",
+      "next_increment": "C3-TEAM-001"
     },
     {
       "id": "WS-08",
@@ -909,7 +909,7 @@
     },
     {
       "id": "C3-CANDIDATE-001",
-      "status": "EXECUTABLE_NEXT",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-ONBOARD-001"
       ],
@@ -1275,9 +1275,15 @@
         "backend/tests/test_guided_intake_api.py",
         "backend/tests/test_guided_intake_postgres.py",
         "frontend/src/lib/contract-parsers.test.ts",
-        "docs/testing/c3-onboard-001-evidence.md"
+        "docs/testing/c3-onboard-001-evidence.md",
+        "backend/tests/test_candidate_workspace_contracts.py",
+        "backend/tests/test_candidate_workspace_model.py",
+        "backend/tests/test_candidate_workspace_api.py",
+        "backend/tests/test_candidate_workspace_postgres.py",
+        "frontend/src/lib/candidate-contract-parsers.test.ts",
+        "docs/testing/c3-candidate-001-evidence.md"
       ],
-      "reason": "Persisted resumable exact-authorized intake and read-only ES/EN roadmap are verified locally/PostgreSQL; authenticated non-technical edit journey, human acceptance and live environments remain absent."
+      "reason": "Guided intake and evidence-governed candidate workspace are verified locally/PostgreSQL with read-only ES/EN surfaces; authenticated editing, dedicated reviewer separation, human acceptance and live environments remain absent."
     },
     {
       "id": "candidate-workspace",

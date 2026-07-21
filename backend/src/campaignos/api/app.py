@@ -13,6 +13,7 @@ from campaignos.api.errors import install_exception_handlers
 from campaignos.api.middleware import request_controls
 from campaignos.api.routes import (
     campaigns,
+    candidate_workspace,
     guided_intake,
     health,
     me,
@@ -35,6 +36,11 @@ from campaignos.campaigns import (
     UnavailableCampaignDirectory,
     UnavailableCampaignReadinessReader,
     UnavailableCampaignWriter,
+)
+from campaignos.candidates import (
+    CandidateWorkspaceService,
+    SqlAlchemyCandidateWorkspaceService,
+    UnavailableCandidateWorkspaceService,
 )
 from campaignos.config import Settings, get_settings
 from campaignos.data import Database, DatabaseRuntime, UnavailableDatabase
@@ -69,6 +75,7 @@ def create_app(
     membership_directory: MembershipDirectory | None = None,
     identity_lifecycle: IdentityLifecycle | None = None,
     guided_intake_service: GuidedIntakeService | None = None,
+    candidate_workspace_service: CandidateWorkspaceService | None = None,
     campaign_creator: CampaignCreator | None = None,
     campaign_directory: CampaignDirectory | None = None,
     campaign_readiness_reader: CampaignReadinessReader | None = None,
@@ -102,6 +109,12 @@ def create_app(
     if guided_intake_boundary is None and isinstance(database_runtime, Database):
         guided_intake_boundary = SqlAlchemyGuidedIntakeService(database_runtime)
     guided_intake_boundary = guided_intake_boundary or UnavailableGuidedIntakeService()
+    candidate_workspace_boundary = candidate_workspace_service
+    if candidate_workspace_boundary is None and isinstance(database_runtime, Database):
+        candidate_workspace_boundary = SqlAlchemyCandidateWorkspaceService(database_runtime)
+    candidate_workspace_boundary = (
+        candidate_workspace_boundary or UnavailableCandidateWorkspaceService()
+    )
     campaign_create_boundary = campaign_creator
     if campaign_create_boundary is None and isinstance(database_runtime, Database):
         campaign_create_boundary = SqlAlchemyCampaignCreator(database_runtime)
@@ -152,6 +165,7 @@ def create_app(
     app.state.membership_directory = authorization_directory
     app.state.identity_lifecycle = identity_lifecycle_boundary
     app.state.guided_intake_service = guided_intake_boundary
+    app.state.candidate_workspace_service = candidate_workspace_boundary
     app.state.campaign_creator = campaign_create_boundary
     app.state.campaign_directory = campaign_read_directory
     app.state.campaign_readiness_reader = campaign_readiness_boundary
@@ -166,6 +180,7 @@ def create_app(
     app.include_router(tenant_me.router, prefix="/api/v1")
     app.include_router(identity_lifecycle_routes.router, prefix="/api/v1")
     app.include_router(guided_intake.router, prefix="/api/v1")
+    app.include_router(candidate_workspace.router, prefix="/api/v1")
     app.include_router(campaigns.router, prefix="/api/v1")
     app.include_router(workspaces.router, prefix="/api/v1")
     return app

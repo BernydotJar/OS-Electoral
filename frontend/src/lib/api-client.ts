@@ -4,6 +4,7 @@ import type { FrontendConfig } from "@/lib/config";
 import {
   ContractValidationError,
   parseCampaignPage,
+  parseCandidateWorkspaceReadEvidence,
   parseGuidedIntakeReadEvidence,
   parseMe,
   parseReadinessEvidence,
@@ -12,6 +13,7 @@ import {
 import type {
   CampaignPage,
   CampaignReadinessEvidence,
+  CandidateWorkspaceReadEvidence,
   GuidedIntakeReadEvidence,
   MeResponse,
   ProblemDetail,
@@ -135,6 +137,14 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/guided-intake`,
       "Guided intake",
       parseGuidedIntakeReadEvidence,
+    );
+  }
+
+  candidateWorkspace(tenantId: UUID, campaignId: UUID): Promise<CandidateWorkspaceReadEvidence> {
+    return this.get<CandidateWorkspaceReadEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/candidate-workspace`,
+      "Candidate workspace",
+      parseCandidateWorkspaceReadEvidence,
     );
   }
 }

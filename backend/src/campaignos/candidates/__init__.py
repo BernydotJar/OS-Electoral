@@ -1,0 +1,73 @@
+"""Evidence-governed candidate workspace contracts and persistence boundary."""
+
+from campaignos.candidates.contracts import (
+    CandidateAttribute,
+    CandidateClaim,
+    CandidateContradiction,
+    CandidateDevelopmentGoal,
+    CandidateEvidence,
+    CandidateReputationRisk,
+    CandidateSectionApproval,
+    CandidateSectionApprovalRequest,
+    CandidateWorkspaceApprovalEvidence,
+    CandidateWorkspaceAssessmentInput,
+    CandidateWorkspaceCheck,
+    CandidateWorkspaceContractError,
+    CandidateWorkspaceCreate,
+    CandidateWorkspaceCreateEvidence,
+    CandidateWorkspaceProjection,
+    CandidateWorkspaceReadEvidence,
+    CandidateWorkspaceUpdate,
+    CandidateWorkspaceUpdateEvidence,
+    assess_candidate_workspace,
+)
+
+__all__ = [
+    "CandidateAttribute",
+    "CandidateClaim",
+    "CandidateContradiction",
+    "CandidateDevelopmentGoal",
+    "CandidateEvidence",
+    "CandidateReputationRisk",
+    "CandidateSectionApproval",
+    "CandidateSectionApprovalRequest",
+    "CandidateWorkspaceApprovalEvidence",
+    "CandidateWorkspaceAssessmentInput",
+    "CandidateWorkspaceCheck",
+    "CandidateWorkspaceContractError",
+    "CandidateWorkspaceCreate",
+    "CandidateWorkspaceCreateEvidence",
+    "CandidateWorkspaceProjection",
+    "CandidateWorkspaceReadEvidence",
+    "CandidateWorkspaceUpdate",
+    "CandidateWorkspaceUpdateEvidence",
+    "assess_candidate_workspace",
+]
+
+from campaignos.candidates.service import (
+    CandidateWorkspaceApprovalConflict,
+    CandidateWorkspaceConflict,
+    CandidateWorkspaceEvidenceConflict,
+    CandidateWorkspaceIdempotencyConflict,
+    CandidateWorkspaceNotFound,
+    CandidateWorkspacePrerequisiteConflict,
+    CandidateWorkspaceService,
+    CandidateWorkspaceUnavailable,
+    CandidateWorkspaceVersionConflict,
+    SqlAlchemyCandidateWorkspaceService,
+    UnavailableCandidateWorkspaceService,
+)
+
+__all__ += [
+    "CandidateWorkspaceApprovalConflict",
+    "CandidateWorkspaceConflict",
+    "CandidateWorkspaceEvidenceConflict",
+    "CandidateWorkspaceIdempotencyConflict",
+    "CandidateWorkspaceNotFound",
+    "CandidateWorkspacePrerequisiteConflict",
+    "CandidateWorkspaceService",
+    "CandidateWorkspaceUnavailable",
+    "CandidateWorkspaceVersionConflict",
+    "SqlAlchemyCandidateWorkspaceService",
+    "UnavailableCandidateWorkspaceService",
+]

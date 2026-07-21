@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "task_id": "C3-CANDIDATE-001",
+  "branch": "agent/c3-candidate-001-evidence-workspace",
+  "base_branch": "agent/c3-onboard-001-guided-intake",
+  "base_commit": "05ed4b8825436d1c4cc9b3d35d2c57aeed71ec7c",
+  "implementation_commit": null,
+  "draft_pr": null,
+  "status": "VERIFIED_POSTGRESQL_LOCAL_ONLY",
+  "verified_at": "2026-07-21 America/Guatemala",
+  "results": {
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy": "PASS_44_SOURCE_FILES",
+    "pytest": {
+      "result": "PASS",
+      "passed": 466,
+      "skipped": 5
+    },
+    "coverage": {
+      "result": "PASS",
+      "percent": 91.56,
+      "floor": 90
+    },
+    "focused_candidate_tests": 42,
+    "postgresql": {
+      "result": "PASS",
+      "local_repetitions": 2,
+      "revision": "20260721_0006",
+      "engine": "PostgreSQL 15 UTF8 disposable cluster"
+    },
+    "frontend": {
+      "result": "PASS",
+      "vitest": 0,
+      "eslint": "PASS",
+      "strict_typescript": "PASS",
+      "production_build": "PASS",
+      "npm_vulnerabilities": 0
+    },
+    "browser_wcag": {
+      "result": "PASS",
+      "axe_violations": 0,
+      "unexpected_hosts": 0,
+      "console_errors": 0
+    },
+    "frontend_image": "PASS_BUILDAH_DAEMONLESS_NONROOT_HEALTH_SMOKE",
+    "actionlint": "PASS",
+    "pip_audit": "PASS_ZERO_KNOWN_VULNERABILITIES",
+    "gitleaks": {
+      "effective_worktree": "PASS",
+      "origin_main_to_head": "PASS"
+    },
+    "program_truth": "PASS_PRODUCTION_BLOCKED",
+    "campaign_safety": "PASS"
+  },
+  "evidence": [
+    "backend/migrations/versions/20260721_0006_candidate_workspace.py",
+    "backend/src/campaignos/candidates/contracts.py",
+    "backend/src/campaignos/candidates/service.py",
+    "backend/src/campaignos/api/routes/candidate_workspace.py",
+    "backend/tests/test_candidate_workspace_contracts.py",
+    "backend/tests/test_candidate_workspace_model.py",
+    "backend/tests/test_candidate_workspace_api.py",
+    "backend/tests/test_candidate_workspace_postgres.py",
+    "frontend/src/lib/candidate-contract-parser.ts",
+    "frontend/src/lib/candidate-contract-parsers.test.ts",
+    "docs/testing/c3-candidate-001-evidence.md"
+  ],
+  "external_effects": "NONE",
+  "production_status": "BLOCKED",
+  "limitations": [
+    "No authenticated non-technical create/update/approve UI yet",
+    "No dedicated reviewer assignment or author/reviewer separation yet",
+    "No live OIDC tenant selection or customer acceptance proof",
+    "No current-branch remote SHA, draft PR or CI evidence yet",
+    "No RDS, dev, staging, production or human production approval"
+  ]
+}

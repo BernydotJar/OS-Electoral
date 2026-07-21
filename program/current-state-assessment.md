@@ -4,7 +4,7 @@ Assessment date: `2026-07-21 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack `#84` through `#92`; identity checkpoint `fecb1d347389eebd08d04be6d38a3f518787e4e4`; guided-intake checkpoint `agent/c3-onboard-001-guided-intake@aa6fe239887173f3fb83366b640ad7b3121f361c` with draft PR `#92` based on that checkpoint.
+Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack `#84` through `#92`; identity checkpoint `fecb1d347389eebd08d04be6d38a3f518787e4e4`; guided-intake checkpoint `agent/c3-onboard-001-guided-intake@05ed4b8825436d1c4cc9b3d35d2c57aeed71ec7c` with draft PR `#92`; active candidate worktree `agent/c3-candidate-001-evidence-workspace` is based on that checkpoint.
 
 ## Executive determination
 
@@ -32,12 +32,12 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 
 - `make verify`: PASS.
 - Ruff lint and format: PASS.
-- strict mypy: PASS across 40 source files.
-- Full locked suite: `425 passed`, `4 skipped`.
-- Enforced coverage: `91.58%` with `fail_under=90`.
-- Isolated PostgreSQL gate: `4 passed`, `5 deselected`, reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
-- PostgreSQL evidence covers Alembic downgrade/upgrade/check through revision `20260721_0005`, forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, campaign/identity/intake concurrency and replay.
-- Frontend regression: ESLint, strict TypeScript, 16 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
+- strict mypy: PASS across 44 source files.
+- Full locked suite: `466 passed`, `5 skipped`.
+- Enforced coverage: `91.56%` with `fail_under=90`.
+- Isolated PostgreSQL gate reaches revision `20260721_0006` and is reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
+- PostgreSQL evidence covers forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, candidate create/update concurrency, exact replay and version-bound approvals.
+- Frontend regression: ESLint, strict TypeScript, 0 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
 - Frontend exact-head PR CI and automated browser/WCAG review: PASS.
 - Program truth: PASS with five open CRITICAL/HIGH findings and six retained historical failed runs.
 - Required eval inventory: `5 PASS`, `12 PARTIAL`, `16 NOT_RUN`; production remains blocked.
@@ -56,6 +56,8 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - Support access binds requester, target, approver, tenant/campaign/workspace, exact action/resource/purpose, reason, receipt and expiry. Separation of duty is enforced. Pre-existing membership and unrelated access are preserved.
 - Invitation, session and support expiry transitions are persisted and audited; active uniqueness slots are released only after terminal state.
 - Guided intake persists one tenant/campaign aggregate with exact-authorized start/resume/read/update, optimistic concurrency, authority-bound idempotency, audit and internal no-effect outbox evidence.
+- Candidate Workspace persists evidence, claims, contradictions, development, reputation risks and append-only current-version section approvals under exact authorization and forced RLS.
+- Candidate factual verification requires independent evidence; self-assessment, perception and contradiction references retain distinct semantics.
 - The dynamic shell now renders a read-only ES/EN campaign-starting roadmap and fails closed on malformed, contradictory or cross-campaign intake evidence.
 - Provider planning remains no-effect: a Cognito `AdminCreateUser` request can be described, but no SDK, email or external provider call is wired.
 - `RTK.md` and `web/` remain unchanged.
@@ -65,7 +67,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - No live OIDC/Cognito login, recovery, MFA, invitation email, provider token rotation or external provider revocation.
 - No trusted tenant portfolio selector or customer-facing identity-administration UI.
 - No RDS, dev, staging or production verification of identity lifecycle.
-- Guided intake backend persistence and a read-only roadmap are verified locally/PostgreSQL; the authenticated editing journey, Candidate Workspace, Team Builder, campaign roadmap, durable approvals and broader product journeys remain absent or prototype-only.
+- Guided intake and Candidate Workspace persistence/read-only surfaces are verified locally/PostgreSQL; authenticated editing/approval journeys, dedicated reviewer separation, Team Builder, campaign roadmap, durable cross-domain approvals and broader product journeys remain absent or prototype-only.
 - Production object storage, attachment safety, external transport, production observability, rate controls and operational administration remain incomplete.
 - No Terraform baseline, verified AWS environment, backup/restore, load, rollback or disaster-recovery evidence.
 - Main is unprotected; rulesets and required checks are absent; Actions policy is permissive and vulnerability alerts are disabled.
@@ -81,6 +83,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Dynamic frontend | `437b469`, CI `29856835515`, visual `29856835522` | `CI_GREEN`; synthetic and not deployed |
 | Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice, PR `#90` CI `29857981975` | `CI_GREEN`; human review/merge and live provider pending |
 | Guided intake | revision `20260721_0005`, exact API, 425-test suite, PostgreSQL twice, 16 frontend tests, PR `#92`, CI `29865306720` and visual `29865306576` | `CI_GREEN`; human review/merge and live edit journey pending |
+| Candidate workspace | revision `20260721_0006`, evidence contracts, exact API, 466-test suite, PostgreSQL twice, 0 frontend tests and WCAG browser gate | `VERIFIED_POSTGRESQL_LOCAL_ONLY`; branch/PR/CI publication pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 12 PARTIAL / 16 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
@@ -103,8 +106,9 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Start `C3-CANDIDATE-001` as a separate evidence-backed candidate workspace after the CI-green onboarding checkpoint.
-2. Advance the authenticated non-technical onboarding edit journey without merging or deploying.
+1. Publish `C3-CANDIDATE-001`, verify exact remote SHA, open its stacked draft PR and repair exact-head CI if needed.
+2. Start `C3-TEAM-001` as a separate evidence-governed team and accountability increment.
+3. Advance authenticated non-technical editing/review journeys without merging or deploying.
 3. Advance independent platform plan-only, operations evidence and confirmed CI/supply-chain findings without AWS apply or production claims.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.

@@ -872,3 +872,118 @@ dd {
     grid-column: auto;
   }
 }
+
+.candidate-workspace-panel {
+  margin: 1.25rem 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: linear-gradient(150deg, rgba(29, 31, 43, 0.94), rgba(13, 17, 25, 0.98));
+  box-shadow: var(--shadow);
+}
+
+.candidate-boundary {
+  margin: 1rem 0 1.25rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 0.35fr) minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  border: 1px solid rgba(255, 188, 102, 0.38);
+  border-radius: 14px;
+  background: rgba(48, 30, 10, 0.42);
+}
+
+.candidate-boundary strong {
+  color: var(--accent-strong);
+}
+
+.candidate-boundary p {
+  margin: 0;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.candidate-boundary code {
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  font-size: 0.75rem;
+}
+
+.candidate-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 1.25rem;
+}
+
+.candidate-layout h3,
+.candidate-detail-grid h4 {
+  margin: 0 0 0.8rem;
+}
+
+.candidate-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.candidate-summary-grid article,
+.candidate-detail-grid article {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.candidate-summary-grid article:nth-child(-n + 3) {
+  grid-column: span 1;
+}
+
+.candidate-summary-grid span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--text-3);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.candidate-summary-grid strong {
+  display: block;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
+.candidate-detail-grid {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.candidate-detail-grid article:last-child {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 900px) {
+  .candidate-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-boundary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .candidate-summary-grid,
+  .candidate-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-detail-grid article:last-child {
+    grid-column: auto;
+  }
+}
