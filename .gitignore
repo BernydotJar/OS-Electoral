@@ -29,4 +29,3 @@ __pycache__/
 
 # Local browser-review evidence (CI publishes its own retained artifact)
 artifacts/campaignos-runtime/
-artifacts/c3-front-001/

@@ -275,31 +275,6 @@ class AuditEvent(Base):
     event_hash: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
 
 
-class IdempotencyRecord(Base):
-    __tablename__ = "idempotency_records"
-    __table_args__ = (
-        UniqueConstraint(
-            "tenant_id", "operation", "idempotency_key", name="uq_idempotency_scope_key"
-        ),
-        Index("ix_idempotency_records_tenant_created", "tenant_id", "created_at"),
-    )
-
-    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
-    tenant_id: Mapped[UUID] = mapped_column(
-        Uuid, ForeignKey("tenants.id", ondelete="RESTRICT"), nullable=False
-    )
-    principal_id: Mapped[UUID] = mapped_column(
-        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
-    )
-    operation: Mapped[str] = mapped_column(String(160), nullable=False)
-    idempotency_key: Mapped[str] = mapped_column(String(255), nullable=False)
-    request_digest: Mapped[str] = mapped_column(String(64), nullable=False)
-    response_payload: Mapped[dict[str, Any]] = mapped_column(JSON_DOCUMENT, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), nullable=False, server_default=func.now()
-    )
-
-
 class OutboxEvent(Base):
     __tablename__ = "outbox_events"
     __table_args__ = (
@@ -314,12 +289,6 @@ class OutboxEvent(Base):
             name="ck_outbox_events_status",
         ),
         Index("ix_outbox_events_pending", "status", "available_at"),
-        Index(
-            "ix_outbox_events_recoverable",
-            "status",
-            "lease_expires_at",
-            "available_at",
-        ),
         Index("ix_outbox_events_tenant_created", "tenant_id", "created_at"),
     )
 
@@ -339,6 +308,4 @@ class OutboxEvent(Base):
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    lease_owner: Mapped[str | None] = mapped_column(String(255))
-    lease_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     last_error: Mapped[str | None] = mapped_column(Text)

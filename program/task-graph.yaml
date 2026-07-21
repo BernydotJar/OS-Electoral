@@ -2,13 +2,13 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-21",
+  "updated_at": "2026-07-19",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
       "workstream": "WS-15",
       "title": "Truthful program ledger and guarded demo delivery",
-      "status": "MERGED_TO_MAIN",
+      "status": "COMPLETE_LOCAL",
       "depends_on": [],
       "acceptance": [
         "Program truth records exist and agree",
@@ -20,192 +20,113 @@
       "id": "C3-ARCH-001",
       "workstream": "WS-01",
       "title": "Canonical product boundaries and modular-monolith ADR baseline",
-      "status": "MERGED_TO_MAIN",
-      "depends_on": [
-        "C3-FOUND-001A"
-      ]
+      "status": "COMPLETE_LOCAL",
+      "depends_on": ["C3-FOUND-001A"]
     },
     {
       "id": "C3-DEVEX-001",
       "workstream": "WS-02",
       "title": "Reproducible local bootstrap, locked dependencies and Compose services",
-      "status": "MERGED_TO_MAIN",
-      "depends_on": [
-        "C3-FOUND-001A"
-      ]
+      "status": "COMPLETE_LOCAL",
+      "depends_on": ["C3-FOUND-001A"]
     },
     {
       "id": "C3-CI-001",
       "workstream": "WS-02",
       "title": "Required CI, supply-chain checks and protected delivery flow",
       "status": "IN_PROGRESS",
-      "depends_on": [
-        "C3-FOUND-001A",
-        "C3-DEVEX-001"
-      ]
+      "depends_on": ["C3-FOUND-001A", "C3-DEVEX-001"]
     },
     {
       "id": "C3-IAM-001",
       "workstream": "WS-03",
-      "title": "OIDC verification and server-owned tenant authorization foundation",
-      "status": "MERGED_TO_MAIN",
-      "depends_on": [
-        "C3-ARCH-001",
-        "C3-DEVEX-001"
-      ]
+      "title": "Real OIDC identity, session validation and deny-by-default RBAC",
+      "status": "IN_PROGRESS",
+      "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"]
     },
     {
       "id": "C3-DATA-001",
       "workstream": "WS-04",
       "title": "PostgreSQL persistence, Alembic migrations and tenant isolation",
-      "status": "MERGED_TO_MAIN",
-      "depends_on": [
-        "C3-ARCH-001",
-        "C3-DEVEX-001"
-      ]
+      "status": "COMPLETE_LOCAL",
+      "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"]
     },
     {
       "id": "C3-API-001",
       "workstream": "WS-05",
       "title": "Versioned FastAPI baseline, health, readiness and background-job contracts",
       "status": "IN_PROGRESS",
-      "depends_on": [
-        "C3-IAM-001",
-        "C3-DATA-001"
-      ]
-    },
-    {
-      "id": "C3-API-005",
-      "workstream": "WS-05",
-      "title": "Audited operational campaign readiness projection",
-      "status": "VERIFIED_POSTGRESQL",
-      "depends_on": [
-        "C3-API-001"
-      ],
-      "acceptance": [
-        "Exact tenant/campaign/resource/purpose authorization precedes persistence",
-        "Successful readiness reads append a tenant hash-chain receipt and emit no outbox event",
-        "BOLA, wrong-purpose, adapter-scope and isolated PostgreSQL tests pass"
-      ]
-    },
-    {
-      "id": "C3-API-006",
-      "workstream": "WS-05",
-      "title": "Idempotent tenant campaign creation",
-      "status": "VERIFIED_POSTGRESQL",
-      "depends_on": [
-        "C3-API-005"
-      ],
-      "acceptance": [
-        "Exact tenant collection authorization precedes persistence",
-        "Campaign, audit, internal outbox and idempotency evidence commit atomically",
-        "Concurrent replay, duplicate slug, BOLA and forced-RLS PostgreSQL tests pass"
-      ]
+      "depends_on": ["C3-IAM-001", "C3-DATA-001"]
     },
     {
       "id": "C3-FRONT-001",
       "workstream": "WS-06",
       "title": "Next.js application shell, typed API client, i18n and accessible design system",
-      "status": "TESTED_LOCAL",
-      "depends_on": [
-        "C3-DEVEX-001",
-        "C3-API-001"
-      ]
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": ["C3-DEVEX-001", "C3-API-001"]
     },
     {
       "id": "C3-ONBOARD-001",
       "workstream": "WS-07",
       "title": "Guided intake, readiness assessment and Candidate Workspace",
-      "status": "READY",
-      "depends_on": [
-        "C3-FRONT-001",
-        "C3-API-001"
-      ]
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": ["C3-FRONT-001", "C3-API-001"]
     },
     {
       "id": "C3-TEAM-001",
       "workstream": "WS-08",
       "title": "Team Builder and governed Training Academy baseline",
       "status": "BLOCKED_BY_DEPENDENCY",
-      "depends_on": [
-        "C3-FRONT-001",
-        "C3-API-001"
-      ]
+      "depends_on": ["C3-FRONT-001", "C3-API-001"]
     },
     {
       "id": "C3-STRATEGY-001",
       "workstream": "WS-09",
       "title": "Research, evidence, strategy and decision-governance persistence",
       "status": "BLOCKED_BY_DEPENDENCY",
-      "depends_on": [
-        "C3-DATA-001",
-        "C3-API-001"
-      ]
+      "depends_on": ["C3-DATA-001", "C3-API-001"]
     },
     {
       "id": "C3-OPS-001",
       "workstream": "WS-10",
       "title": "Roadmap, War Room, approvals and campaign-health workflows",
       "status": "BLOCKED_BY_DEPENDENCY",
-      "depends_on": [
-        "C3-STRATEGY-001",
-        "C3-TEAM-001"
-      ]
+      "depends_on": ["C3-STRATEGY-001", "C3-TEAM-001"]
     },
     {
       "id": "C3-AGENT-001",
       "workstream": "WS-11",
       "title": "Provider-neutral agent runtime, deterministic guards and hard evals",
       "status": "BLOCKED_BY_DEPENDENCY",
-      "depends_on": [
-        "C3-API-001",
-        "C3-STRATEGY-001"
-      ]
+      "depends_on": ["C3-API-001", "C3-STRATEGY-001"]
     },
     {
       "id": "C3-INFRA-001",
       "workstream": "WS-12",
       "title": "Terraform AWS dev baseline with remote state and least privilege",
       "status": "BLOCKED_BY_DEPENDENCY",
-      "depends_on": [
-        "C3-CI-001",
-        "C3-API-001"
-      ]
+      "depends_on": ["C3-CI-001", "C3-API-001"]
     },
     {
       "id": "C3-SEC-001",
       "workstream": "WS-13",
       "title": "Threat model, privacy controls and security verification gates",
       "status": "BLOCKED_BY_DEPENDENCY",
-      "depends_on": [
-        "C3-IAM-001",
-        "C3-DATA-001",
-        "C3-INFRA-001"
-      ]
+      "depends_on": ["C3-IAM-001", "C3-DATA-001", "C3-INFRA-001"]
     },
     {
       "id": "C3-OBS-001",
       "workstream": "WS-14",
       "title": "Operational observability, backup/restore and failure-mode testing",
       "status": "BLOCKED_BY_DEPENDENCY",
-      "depends_on": [
-        "C3-API-001",
-        "C3-INFRA-001",
-        "C3-SEC-001"
-      ]
+      "depends_on": ["C3-API-001", "C3-INFRA-001", "C3-SEC-001"]
     },
     {
       "id": "C3-RELEASE-001",
       "workstream": "WS-15",
       "title": "Staging evidence, release record and explicit production approval gate",
       "status": "BLOCKED_BY_DEPENDENCY",
-      "depends_on": [
-        "C3-ONBOARD-001",
-        "C3-TEAM-001",
-        "C3-OPS-001",
-        "C3-AGENT-001",
-        "C3-OBS-001"
-      ]
+      "depends_on": ["C3-ONBOARD-001", "C3-TEAM-001", "C3-OPS-001", "C3-AGENT-001", "C3-OBS-001"]
     }
   ]
 }

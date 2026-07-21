@@ -17,13 +17,9 @@ The merged C2 stack and the current C3 foundation provide:
 - a locked Python toolchain, non-root API image and loopback-only Compose stack for PostgreSQL, S3Mock and Mailpit;
 - pinned CI definitions for quality, PostgreSQL/RLS, dependency, secret, CodeQL, workflow and disposable-stack E2E checks;
 - read-only campaign, candidate, approval and Daily War Room projections;
-- authenticated, exact-grant-protected PostgreSQL campaign detail and keyset-paginated list endpoints;
-- optimistic campaign writes with durable tenant-scoped idempotency, atomic audit evidence and a pending outbox record;
-- exact-grant-protected workspace creation with durable idempotency and atomic audit/outbox evidence;
-- a tenant-explicit outbox worker baseline with recoverable leases, bounded retry/backoff and dead-letter state;
 - a static CampaignOS frontend demonstration.
 
-These are local foundations, not a production system. CampaignOS still lacks a live identity/login/recovery and session lifecycle, membership administration, authorization enforcement across all campaign-domain writes and workers, broader candidate/approval/assignment/artifact persistence adapters and APIs, external event transport and worker administration, production object storage, a dynamic application frontend, Terraform/AWS environments, protected-branch evidence, backup/restore evidence, independent security/privacy/domain approvals and production deployment approval.
+These are local foundations, not a production system. CampaignOS still lacks a live identity/login/recovery and session lifecycle, membership administration, authorization enforcement on campaign-domain actions, campaign-domain persistence adapters and APIs, a worker runtime, production object storage, a dynamic application frontend, Terraform/AWS environments, protected-branch evidence, backup/restore evidence, independent security/privacy/domain approvals and production deployment approval.
 
 The public GitHub Pages site is classified as `DEMO_NON_PRODUCTION`. It serves static snapshots, is not a SaaS runtime, and is not evidence of production readiness. Its workflow is manual-only and requires the explicit confirmation value `DEMO_NON_PRODUCTION`.
 

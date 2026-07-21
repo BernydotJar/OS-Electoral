@@ -8,26 +8,19 @@ from uuid import UUID, uuid4
 import pytest
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import create_engine, func, inspect, select, text
+from sqlalchemy import create_engine, inspect, select, text
 from sqlalchemy.engine import make_url
 from sqlalchemy.exc import DBAPIError
 
-from campaignos.campaigns import (
-    CampaignReadinessNotFound,
-    SqlAlchemyCampaignReadinessReader,
-)
 from campaignos.data import Base, Database, MissingTenantScope
 from campaignos.data.database import TenantSession
 from campaignos.data.models import (
-    AuditEvent,
     Campaign,
     Membership,
-    OutboxEvent,
     PermissionGrant,
     Principal,
     RoleAssignment,
     Tenant,
-    Workspace,
 )
 from campaignos.identity.authorization import (
     SqlAlchemyMembershipDirectory,
@@ -43,7 +36,6 @@ TENANT_TABLES = {
     "permission_grants",
     "audit_events",
     "outbox_events",
-    "idempotency_records",
 }
 
 
@@ -120,7 +112,7 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
         tables = set(inspect(connection).get_table_names())
         assert set(Base.metadata.tables) <= tables
         revision = connection.scalar(text("SELECT version_num FROM alembic_version"))
-        assert revision == "20260721_0003"
+        assert revision == "20260719_0001"
         policies = connection.execute(
             text(
                 "SELECT tablename FROM pg_policies "
@@ -151,7 +143,6 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
     principal_id = uuid4()
     campaign_a = uuid4()
     campaign_b = uuid4()
-    workspace_a = uuid4()
     membership_a = uuid4()
     try:
         with database.tenant_transaction(tenant_a) as session:
@@ -172,17 +163,6 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
                     name="Campaign A",
                     jurisdiction="Test",
                     stage="TEST",
-                )
-            )
-            session.add(
-                Workspace(
-                    id=workspace_a,
-                    tenant_id=tenant_a,
-                    campaign_id=campaign_a,
-                    slug="governance",
-                    name="Governance",
-                    status="ACTIVE",
-                    version=1,
                 )
             )
         with database.tenant_transaction(tenant_a) as session:
@@ -214,17 +194,6 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
                         purpose="RLS integration verification",
                         granted_by_principal_id=principal_id,
                         approval_receipt_id="rls-test-approval",
-                    ),
-                    PermissionGrant(
-                        tenant_id=tenant_a,
-                        membership_id=membership_a,
-                        campaign_id=campaign_a,
-                        action="read",
-                        resource_type="campaign_readiness",
-                        resource_id=str(campaign_a),
-                        purpose="Assess assigned campaign readiness",
-                        granted_by_principal_id=principal_id,
-                        approval_receipt_id="readiness-test-approval",
                     ),
                 ]
             )
@@ -266,52 +235,6 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
             purpose="RLS integration verification",
             campaign_id=campaign_a,
         )
-        assert authorization.permits(
-            action="read",
-            resource_type="campaign_readiness",
-            resource_id=str(campaign_a),
-            purpose="Assess assigned campaign readiness",
-            campaign_id=campaign_a,
-        )
-        readiness_grant = next(
-            grant
-            for membership in authorization.memberships
-            for grant in membership.grants
-            if grant.resource_type == "campaign_readiness"
-        )
-        readiness_reader = SqlAlchemyCampaignReadinessReader(database)
-        readiness = readiness_reader.get(
-            tenant_a,
-            campaign_a,
-            principal_id=principal_id,
-            authorization_grant_id=readiness_grant.grant_id,
-            approval_receipt_id=readiness_grant.approval_receipt_id,
-            authorization_purpose=readiness_grant.purpose,
-            correlation_id="postgres-readiness-proof",
-        )
-        assert readiness.readiness.status == "READY_FOR_GUIDED_INTAKE"
-        assert readiness.readiness.active_workspace_count == 1
-        with database.tenant_transaction(tenant_a) as session:
-            audit = session.get(AuditEvent, readiness.audit_event_id)
-            assert audit is not None
-            assert audit.tenant_id == tenant_a
-            assert audit.campaign_id == campaign_a
-            assert audit.principal_id == principal_id
-            assert audit.payload["authorization_grant_id"] == str(readiness_grant.grant_id)
-            assert audit.payload["correlation_id"] == "postgres-readiness-proof"
-            assert session.scalar(select(func.count()).select_from(OutboxEvent)) == 0
-        with pytest.raises(CampaignReadinessNotFound):
-            readiness_reader.get(
-                tenant_a,
-                campaign_b,
-                principal_id=principal_id,
-                authorization_grant_id=readiness_grant.grant_id,
-                approval_receipt_id=readiness_grant.approval_receipt_id,
-                authorization_purpose=readiness_grant.purpose,
-                correlation_id="postgres-cross-tenant-denial",
-            )
-        with database.tenant_transaction(tenant_a) as session:
-            assert session.scalar(select(func.count()).select_from(AuditEvent)) == 1
         with pytest.raises(TenantAccessDenied):
             SqlAlchemyMembershipDirectory(database).load(
                 tenant_b,

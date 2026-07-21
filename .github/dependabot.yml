@@ -10,21 +10,12 @@ updates:
       timezone: America/Guatemala
     open-pull-requests-limit: 5
 
-  - package-ecosystem: npm
-    directory: /frontend
-    schedule:
-      interval: weekly
-      day: wednesday
-      time: "09:15"
-      timezone: America/Guatemala
-    open-pull-requests-limit: 5
-
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
       day: wednesday
-      time: "09:30"
+      time: "09:15"
       timezone: America/Guatemala
     open-pull-requests-limit: 5
 
@@ -33,16 +24,7 @@ updates:
     schedule:
       interval: weekly
       day: wednesday
-      time: "10:15"
-      timezone: America/Guatemala
-    open-pull-requests-limit: 5
-
-  - package-ecosystem: docker
-    directory: /frontend
-    schedule:
-      interval: weekly
-      day: wednesday
-      time: "10:00"
+      time: "09:30"
       timezone: America/Guatemala
     open-pull-requests-limit: 5
 
