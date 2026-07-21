@@ -191,5 +191,5 @@
 - Real PostgreSQL exposed and verified the required parent flush before the FK-bound audit append without weakening transaction atomicity.
 - Full locked suite: `327 passed`, `2 skipped`; coverage `90.92%`; Ruff, format, strict mypy across 33 source files, program truth, eval catalog and campaign safety PASS.
 - Isolated constrained-role PostgreSQL: `2 passed`, `5 deselected`, covering forced RLS, equal-key replay, same-slug race conflict and cross-tenant invisibility.
-- Effective-worktree Gitleaks `8.30.1`: PASS. Exact committed-history scan and remote publication are pending the implementation commit.
+- Implementation commit `c91d60217e2ee0c0ec0f38c139852e7d73c78a58` is published on `agent/c3-api-006-campaign-create`; exact local/remote/GitHub branch SHAs match. Effective-worktree and `origin/main..HEAD` Gitleaks `8.30.1` scans PASS. Public GitHub inspection found zero open PRs and zero workflow runs for this head.
 - Production remains `BLOCKED`; no external delivery, campaign publication, outreach, spending, mobilization or political approval occurred.
