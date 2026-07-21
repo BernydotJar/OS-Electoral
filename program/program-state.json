@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "TEAM_BUILDER_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-OPS-001"
+      "status": "TEAM_BUILDER_CI_GREEN",
+      "next_increment": "C3-TRAINING-001"
     },
     {
       "id": "WS-09",
@@ -75,8 +75,8 @@
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "STATIC_PROTOTYPE",
-      "next_increment": "C3-OPS-001"
+      "status": "ROADMAP_WAR_ROOM_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-OPS-002"
     },
     {
       "id": "WS-11",
@@ -111,15 +111,15 @@
   ],
   "ready_tasks": [],
   "published_unreviewed_increment": {
-    "id": "C3-CANDIDATE-001",
+    "id": "C3-TEAM-001",
     "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-candidate-001-evidence-workspace",
-    "base": "agent/c3-onboard-001-guided-intake",
-    "implementation_commit": "f7a822fd6566e570cf5e14547748af0719132519",
-    "head_commit": "a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5",
-    "draft_pr": 93,
-    "ci_run_id": 29868426699,
-    "visual_run_id": 29868426740
+    "branch": "agent/c3-team-001-accountability-review",
+    "base": "agent/c3-candidate-001-evidence-workspace",
+    "implementation_commit": "d18d89b",
+    "head_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
+    "draft_pr": 94,
+    "ci_run_id": 29870461743,
+    "visual_run_id": 29870461745
   },
   "review_stack": [
     {
@@ -182,18 +182,25 @@
       "pr": 93,
       "base": "agent/c3-onboard-001-guided-intake",
       "head": "agent/c3-candidate-001-evidence-workspace",
-      "head_sha": "a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5",
+      "head_sha": "f3c899497d6b6c894b63b44aa6b85c80b1d2a3ee",
+      "ci": "SUCCESS"
+    },
+    {
+      "pr": 94,
+      "base": "agent/c3-candidate-001-evidence-workspace",
+      "head": "agent/c3-team-001-accountability-review",
+      "head_sha": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
       "ci": "SUCCESS"
     }
   ],
   "local_verification": {
-    "tests_passed": 514,
-    "tests_skipped": 6,
-    "coverage_percent": 91.48,
+    "tests_passed": 548,
+    "tests_skipped": 7,
+    "coverage_percent": 90.85,
     "coverage_gate": "PASS",
-    "postgresql_integration": "PASS_TWICE_REVISION_20260721_0007_TEAM_RLS_CONCURRENCY_NO_AUTHORITY",
+    "postgresql_integration": "PASS_TWICE_REVISION_20260721_0008_OPERATIONS_RLS_DAG_CONCURRENCY_SNAPSHOTS",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
-    "frontend_unit_tests": 34,
+    "frontend_unit_tests": 39,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
@@ -210,7 +217,12 @@
     "candidate_runtime_visual": "PASS_RUN_29868426740",
     "team_workspace_focused_tests": "PASS_47",
     "team_frontend_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_OVERFLOW",
-    "team_frontend_image": "PASS_UID_10001_HEALTH_SMOKE"
+    "team_frontend_image": "PASS_UID_10001_HEALTH_SMOKE",
+    "operations_focused_tests": "PASS_34",
+    "operations_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_OVERFLOW",
+    "operations_image": "PASS_UID_10001_HEALTH_SMOKE",
+    "team_pr_ci": "PASS_PR_94_HEAD_AF3E430_RUN_29870461743",
+    "team_runtime_visual": "PASS_RUN_29870461745"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -251,7 +263,14 @@
     "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
     "frontend_target_verified": true
   },
-  "active_local_increment": null,
+  "active_local_increment": {
+    "id": "C3-OPS-001",
+    "state": "VERIFIED_POSTGRESQL",
+    "branch": "agent/c3-ops-001-roadmap-war-room",
+    "base": "agent/c3-team-001-accountability-review@af3e43074e3876fe26f8ba1497269f1d69183bf8",
+    "production_status": "BLOCKED",
+    "external_effects": "NONE"
+  },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
     "component": "Cloud_Sandbox_MCP.git_push isolated-workspace wrapper",
@@ -263,14 +282,12 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-TEAM-001",
-    "branch": "agent/c3-team-001-accountability-builder",
-    "base": "agent/c3-candidate-001-evidence-workspace",
-    "base_commit": "f3c899497d6b6c894b63b44aa6b85c80b1d2a3ee",
-    "implementation_commit": "d18d89b",
-    "checkpoint_commit": "90775f35824a8a2252580be28b274ce345bedc41",
+    "id": "C3-OPS-001",
+    "branch": "agent/c3-ops-001-roadmap-war-room",
+    "base": "agent/c3-team-001-accountability-review",
+    "base_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
     "status": "VERIFIED_POSTGRESQL",
     "external_effects": "NONE",
-    "next_increment": "C3-OPS-001"
+    "next_increment": "C3-OPS-002"
   }
 }

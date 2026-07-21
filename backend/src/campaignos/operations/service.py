@@ -40,6 +40,7 @@ from campaignos.operations.contracts import (
     WarRoomSnapshotCreate,
     WarRoomSnapshotEvidence,
     WarRoomSnapshotProjection,
+    WarRoomSnapshotReadEvidence,
     assess_campaign_roadmap,
     build_war_room_snapshot,
 )
@@ -76,6 +77,10 @@ class CampaignRoadmapEvidenceConflict(RuntimeError):
 
 class WarRoomSnapshotConflict(RuntimeError):
     """A daily snapshot already exists for the campaign and date."""
+
+
+class WarRoomSnapshotNotFound(LookupError):
+    """No Daily War Room snapshot exists for the selected campaign."""
 
 
 class CampaignRoadmapUnavailable(RuntimeError):
@@ -139,6 +144,18 @@ class CampaignOperationsService(Protocol):
         idempotency_key: str,
     ) -> WarRoomSnapshotEvidence: ...
 
+    def get_latest_snapshot(
+        self,
+        tenant_id: UUID,
+        campaign_id: UUID,
+        *,
+        principal_id: UUID,
+        authorization_grant_id: UUID,
+        approval_receipt_id: str,
+        authorization_purpose: str,
+        correlation_id: str,
+    ) -> WarRoomSnapshotReadEvidence: ...
+
 
 class UnavailableCampaignOperationsService:
     def create_roadmap(
@@ -162,6 +179,12 @@ class UnavailableCampaignOperationsService:
     def create_snapshot(
         self, tenant_id: UUID, campaign_id: UUID, **kwargs: object
     ) -> WarRoomSnapshotEvidence:
+        del tenant_id, campaign_id, kwargs
+        raise CampaignRoadmapUnavailable("Campaign operations are unavailable")
+
+    def get_latest_snapshot(
+        self, tenant_id: UUID, campaign_id: UUID, **kwargs: object
+    ) -> WarRoomSnapshotReadEvidence:
         del tenant_id, campaign_id, kwargs
         raise CampaignRoadmapUnavailable("Campaign operations are unavailable")
 
@@ -666,6 +689,78 @@ class SqlAlchemyCampaignOperationsService:
         except (
             AuditScopeUnavailable,
             IntegrityError,
+            SQLAlchemyError,
+            ValidationError,
+            ValueError,
+        ) as exc:
+            raise CampaignRoadmapUnavailable("Campaign operations are unavailable") from exc
+
+    def get_latest_snapshot(
+        self,
+        tenant_id: UUID,
+        campaign_id: UUID,
+        *,
+        principal_id: UUID,
+        authorization_grant_id: UUID,
+        approval_receipt_id: str,
+        authorization_purpose: str,
+        correlation_id: str,
+    ) -> WarRoomSnapshotReadEvidence:
+        try:
+            with self.database.tenant_transaction(tenant_id) as session:
+                audit_lock = lock_tenant_audit_stream(session, tenant_id)
+                _campaign(session, tenant_id, campaign_id)
+                _filled_team_role_ids(session, tenant_id, campaign_id)
+                row = session.scalar(
+                    select(WarRoomSnapshot)
+                    .where(
+                        WarRoomSnapshot.tenant_id == tenant_id,
+                        WarRoomSnapshot.campaign_id == campaign_id,
+                    )
+                    .order_by(
+                        WarRoomSnapshot.snapshot_date.desc(),
+                        WarRoomSnapshot.created_at.desc(),
+                    )
+                    .limit(1)
+                )
+                if row is None:
+                    raise WarRoomSnapshotNotFound("Daily War Room snapshot was not found")
+                projection = _snapshot_projection(row)
+                audit = append_audit_event(
+                    session,
+                    audit_lock=audit_lock,
+                    campaign_id=campaign_id,
+                    workspace_id=None,
+                    principal_id=principal_id,
+                    event_type="war_room_snapshot.read",
+                    resource_type="war_room_snapshot",
+                    resource_id=str(row.id),
+                    payload={
+                        "roadmap_id": str(row.roadmap_id),
+                        "roadmap_version": row.roadmap_version,
+                        "snapshot_date": row.snapshot_date.isoformat(),
+                        "authorization_grant_id": str(authorization_grant_id),
+                        "approval_receipt_id": approval_receipt_id,
+                        "authorization_purpose": authorization_purpose,
+                        "correlation_id": correlation_id,
+                        "authority_effect": "NONE",
+                        "external_effects": "NONE",
+                    },
+                )
+                evidence = WarRoomSnapshotReadEvidence(
+                    snapshot=projection,
+                    audit_event_id=audit.event_id,
+                )
+                session.flush()
+            return evidence
+        except (
+            CampaignRoadmapNotFound,
+            CampaignRoadmapPrerequisiteConflict,
+            WarRoomSnapshotNotFound,
+        ):
+            raise
+        except (
+            AuditScopeUnavailable,
             SQLAlchemyError,
             ValidationError,
             ValueError,

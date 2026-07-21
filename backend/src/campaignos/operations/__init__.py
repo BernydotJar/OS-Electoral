@@ -10,16 +10,17 @@ from campaignos.operations.contracts import (
     CampaignRoadmapAssessmentInput,
     CampaignRoadmapContractError,
     CampaignRoadmapCreate,
-    CampaignRoadmapUpdateEvidence,
-    CampaignRoadmapReadEvidence,
     CampaignRoadmapCreateEvidence,
     CampaignRoadmapProjection,
+    CampaignRoadmapReadEvidence,
     CampaignRoadmapUpdate,
+    CampaignRoadmapUpdateEvidence,
     CampaignTask,
     CampaignWorkstream,
     WarRoomSnapshotCreate,
     WarRoomSnapshotEvidence,
     WarRoomSnapshotProjection,
+    WarRoomSnapshotReadEvidence,
     assess_campaign_roadmap,
     build_war_room_snapshot,
 )
@@ -44,6 +45,7 @@ __all__ = [
     "WarRoomSnapshotCreate",
     "WarRoomSnapshotEvidence",
     "WarRoomSnapshotProjection",
+    "WarRoomSnapshotReadEvidence",
     "assess_campaign_roadmap",
     "build_war_room_snapshot",
 ]
@@ -60,6 +62,7 @@ from campaignos.operations.service import (
     SqlAlchemyCampaignOperationsService,
     UnavailableCampaignOperationsService,
     WarRoomSnapshotConflict,
+    WarRoomSnapshotNotFound,
 )
 
 __all__ += [
@@ -74,4 +77,5 @@ __all__ += [
     "SqlAlchemyCampaignOperationsService",
     "UnavailableCampaignOperationsService",
     "WarRoomSnapshotConflict",
+    "WarRoomSnapshotNotFound",
 ]

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from datetime import UTC, date, datetime
+from datetime import date
 from uuid import UUID, uuid4
 
 import pytest
@@ -28,7 +28,6 @@ from campaignos.operations import (
     WarRoomSnapshotCreate,
 )
 from campaignos.operations.service import (
-    CampaignRoadmapConflict,
     CampaignRoadmapEvidenceConflict,
     CampaignRoadmapIdempotencyConflict,
     CampaignRoadmapNotFound,
@@ -328,7 +327,7 @@ def test_update_is_versioned_replayable_and_rejects_invalid_graph(database: Data
             idempotency_key="roadmap-create",
         )
 
-    invalid = changes.model_dump(mode="json")
+    invalid = changes.model_dump(mode="json", exclude_unset=True)
     invalid["tasks"][0]["dependency_ids"] = [invalid["tasks"][1]["id"]]
     with pytest.raises(CampaignRoadmapEvidenceConflict):
         service.update_roadmap(

@@ -78,3 +78,15 @@ next_increment: C3-OPS-001
 ```
 
 The checkpoint proves a durable accountability map, not a staffing decision or authorization system. Roles are descriptive records; access recommendations remain non-authoritative until a separate exact human authorization is granted.
+
+
+## Publication checkpoint
+
+- clean review branch: `agent/c3-team-001-accountability-review`;
+- exact remote head: `af3e43074e3876fe26f8ba1497269f1d69183bf8`;
+- draft PR: `#94` against `agent/c3-candidate-001-evidence-workspace`;
+- CampaignOS CI `29870461743`: `SUCCESS`;
+- runtime visual review `29870461745`: `SUCCESS`;
+- merge state: `CLEAN`;
+- original builder branch is superseded for review after the Cloud push-wrapper incident;
+- production remains `BLOCKED`; external effects remain `NONE`.

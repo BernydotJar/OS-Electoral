@@ -30,14 +30,18 @@ export function deriveNavigation(
       enabled: hasGrant(
         memberships,
         (grant) =>
-          grant.resource_type === "campaign" || grant.resource_type === "campaign_collection",
+          grant.resource_type === "campaign" ||
+          grant.resource_type === "campaign_collection",
       ),
       reason: "EXACT_GRANT",
     },
     {
       key: "readiness",
       href: `${base}#readiness`,
-      enabled: hasGrant(memberships, (grant) => grant.resource_type === "campaign_readiness"),
+      enabled: hasGrant(
+        memberships,
+        (grant) => grant.resource_type === "campaign_readiness",
+      ),
       reason: "EXACT_GRANT",
     },
     {
@@ -88,14 +92,36 @@ export function deriveNavigation(
       ),
       reason: "EXACT_GRANT",
     },
-    { key: "warRoom", href: `${base}#war-room`, enabled: false, reason: "FUTURE_CAPABILITY" },
-    { key: "evidence", href: `${base}#evidence`, enabled: false, reason: "FUTURE_CAPABILITY" },
+    {
+      key: "warRoom",
+      href: `${base}#war-room`,
+      enabled: hasGrant(
+        memberships,
+        (grant) =>
+          currentCampaignId !== undefined &&
+          grant.action === "read" &&
+          grant.resource_type === "campaign_roadmap" &&
+          grant.resource_id === currentCampaignId &&
+          grant.campaign_id === currentCampaignId &&
+          grant.workspace_id === null &&
+          grant.purpose === "Review campaign operations roadmap",
+      ),
+      reason: "EXACT_GRANT",
+    },
+    {
+      key: "evidence",
+      href: `${base}#evidence`,
+      enabled: false,
+      reason: "FUTURE_CAPABILITY",
+    },
     {
       key: "administration",
       href: `${base}#administration`,
       enabled: hasGrant(
         memberships,
-        (grant) => grant.resource_type === "campaign_collection" && grant.action === "create",
+        (grant) =>
+          grant.resource_type === "campaign_collection" &&
+          grant.action === "create",
       ),
       reason: "EXACT_GRANT",
     },

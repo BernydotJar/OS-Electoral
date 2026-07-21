@@ -1,6 +1,11 @@
 import "server-only";
 
 import { CandidateContractValidationError } from "@/lib/candidate-contract-parser";
+import {
+  OperationsContractValidationError,
+  parseCampaignRoadmapReadEvidence,
+  parseWarRoomSnapshotReadEvidence,
+} from "@/lib/operations-contract-parser";
 import type { FrontendConfig } from "@/lib/config";
 import {
   parseTeamWorkspaceReadEvidence,
@@ -18,11 +23,13 @@ import {
 import type {
   CampaignPage,
   CampaignReadinessEvidence,
+  CampaignRoadmapReadEvidence,
   CandidateWorkspaceReadEvidence,
   GuidedIntakeReadEvidence,
   MeResponse,
   ProblemDetail,
   TeamWorkspaceReadEvidence,
+  WarRoomSnapshotReadEvidence,
   TenantMeResponse,
   UUID,
 } from "@/lib/contracts";
@@ -111,7 +118,8 @@ export class CampaignOsApiClient {
       if (
         error instanceof ContractValidationError ||
         error instanceof CandidateContractValidationError ||
-        error instanceof TeamContractValidationError
+        error instanceof TeamContractValidationError ||
+        error instanceof OperationsContractValidationError
       ) {
         throw new CampaignOsApiError(
           `${label} response is invalid`,
@@ -185,6 +193,28 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/team-workspace`,
       "Team workspace",
       parseTeamWorkspaceReadEvidence,
+    );
+  }
+
+  campaignRoadmap(
+    tenantId: UUID,
+    campaignId: UUID,
+  ): Promise<CampaignRoadmapReadEvidence> {
+    return this.get<CampaignRoadmapReadEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/operations/roadmap`,
+      "Campaign roadmap",
+      parseCampaignRoadmapReadEvidence,
+    );
+  }
+
+  latestWarRoomSnapshot(
+    tenantId: UUID,
+    campaignId: UUID,
+  ): Promise<WarRoomSnapshotReadEvidence> {
+    return this.get<WarRoomSnapshotReadEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/operations/roadmap/war-room-snapshots/latest`,
+      "Daily War Room snapshot",
+      parseWarRoomSnapshotReadEvidence,
     );
   }
 }

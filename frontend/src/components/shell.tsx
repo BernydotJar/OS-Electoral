@@ -1,9 +1,18 @@
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { OperationsWorkspace } from "@/components/operations-workspace";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import { deriveNavigation } from "@/lib/navigation";
 import type { ShellViewModel } from "@/lib/shell-view-model";
 
-function StatePanel({ title, body, code }: { title: string; body: string; code?: string }) {
+function StatePanel({
+  title,
+  body,
+  code,
+}: {
+  title: string;
+  body: string;
+  code?: string;
+}) {
   return (
     <main id="main" className="state-panel" tabIndex={-1}>
       <p className="eyebrow">FAIL CLOSED</p>
@@ -21,8 +30,10 @@ function IntakeItems({
   items: readonly string[] | null;
   dictionary: Dictionary;
 }) {
-  if (items === null) return <p className="intake-empty">{dictionary.intake.notAssessed}</p>;
-  if (items.length === 0) return <p className="intake-empty">{dictionary.intake.noItems}</p>;
+  if (items === null)
+    return <p className="intake-empty">{dictionary.intake.notAssessed}</p>;
+  if (items.length === 0)
+    return <p className="intake-empty">{dictionary.intake.noItems}</p>;
   return (
     <ul className="intake-items">
       {items.map((item) => (
@@ -56,7 +67,10 @@ export function CampaignShell({
     return (
       <div className="state-page">
         <LocaleSwitcher locale={locale} dictionary={dictionary} />
-        <StatePanel title={dictionary.states.contextTitle} body={dictionary.states.contextBody} />
+        <StatePanel
+          title={dictionary.states.contextTitle}
+          body={dictionary.states.contextBody}
+        />
       </div>
     );
   }
@@ -77,12 +91,19 @@ export function CampaignShell({
     return (
       <div className="state-page">
         <LocaleSwitcher locale={locale} dictionary={dictionary} />
-        <StatePanel title={dictionary.states.emptyTitle} body={dictionary.states.emptyBody} />
+        <StatePanel
+          title={dictionary.states.emptyTitle}
+          body={dictionary.states.emptyBody}
+        />
       </div>
     );
   }
 
-  const navigation = deriveNavigation(locale, model.memberships, model.campaign.id);
+  const navigation = deriveNavigation(
+    locale,
+    model.memberships,
+    model.campaign.id,
+  );
   const readiness = model.readiness?.readiness ?? null;
   const guidedIntake = model.guidedIntake?.intake ?? null;
   const guidedIntakeStateMessage = {
@@ -105,7 +126,9 @@ export function CampaignShell({
     NOT_AUTHORIZED: dictionary.teamWorkspace.notAuthorized,
     DEPENDENCY_UNAVAILABLE: dictionary.teamWorkspace.unavailable,
   }[model.teamWorkspaceAvailability];
-  const roles = [...new Set(model.memberships.flatMap((membership) => membership.roles))];
+  const roles = [
+    ...new Set(model.memberships.flatMap((membership) => membership.roles)),
+  ];
   const grantCount = model.memberships.reduce(
     (count, membership) => count + membership.grants.length,
     0,
@@ -120,6 +143,7 @@ export function CampaignShell({
       ...(guidedIntake?.limitation_codes ?? []),
       ...(candidateWorkspace?.limitation_codes ?? []),
       ...(teamWorkspace?.limitation_codes ?? []),
+      ...(model.campaignRoadmap?.roadmap.limitation_codes ?? []),
     ]),
   ];
 
@@ -135,7 +159,9 @@ export function CampaignShell({
           </span>
           <div>
             <strong>{dictionary.common.product}</strong>
-            <small>{model.demo ? dictionary.common.demo : dictionary.common.live}</small>
+            <small>
+              {model.demo ? dictionary.common.demo : dictionary.common.live}
+            </small>
           </div>
         </div>
         <nav className="module-navigation">
@@ -161,14 +187,19 @@ export function CampaignShell({
             <p className="topbar-title">{dictionary.shell.title}</p>
           </div>
           <div className="topbar-actions">
-            <span className={`mode-badge ${model.demo ? "mode-demo" : "mode-live"}`}>
+            <span
+              className={`mode-badge ${model.demo ? "mode-demo" : "mode-live"}`}
+            >
               {model.demo ? dictionary.common.demo : dictionary.common.live}
             </span>
             <LocaleSwitcher locale={locale} dictionary={dictionary} />
           </div>
         </header>
 
-        <section className="context-strip" aria-label={dictionary.shell.currentContext}>
+        <section
+          className="context-strip"
+          aria-label={dictionary.shell.currentContext}
+        >
           <div>
             <span>{dictionary.shell.tenant}</span>
             <strong>{model.identity.tenant_id}</strong>
@@ -179,7 +210,9 @@ export function CampaignShell({
           </div>
           <div>
             <span>{dictionary.shell.principal}</span>
-            <strong>{model.identity.display_name ?? model.identity.subject}</strong>
+            <strong>
+              {model.identity.display_name ?? model.identity.subject}
+            </strong>
           </div>
         </section>
 
@@ -187,7 +220,9 @@ export function CampaignShell({
           <section className="hero-panel">
             <div>
               <p className="eyebrow">
-                {model.demo ? "SYNTHETIC DATA · NO REAL CAMPAIGN" : "SERVER-VERIFIED CONTEXT"}
+                {model.demo
+                  ? "SYNTHETIC DATA · NO REAL CAMPAIGN"
+                  : "SERVER-VERIFIED CONTEXT"}
               </p>
               <h1>{dictionary.shell.title}</h1>
               <p>{dictionary.shell.subtitle}</p>
@@ -236,7 +271,10 @@ export function CampaignShell({
                 <p>{dictionary.intake.body}</p>
               </div>
               {guidedIntake ? (
-                <div className="intake-progress" aria-label={dictionary.intake.progress}>
+                <div
+                  className="intake-progress"
+                  aria-label={dictionary.intake.progress}
+                >
                   <strong>
                     {guidedIntake.completed_checks}/{guidedIntake.total_checks}
                   </strong>
@@ -256,11 +294,19 @@ export function CampaignShell({
                 <div className="intake-status-row">
                   <div>
                     <span>{dictionary.intake.status}</span>
-                    <strong>{dictionary.intake.statusLabels[guidedIntake.status]}</strong>
+                    <strong>
+                      {dictionary.intake.statusLabels[guidedIntake.status]}
+                    </strong>
                   </div>
                   <div>
                     <span>{dictionary.intake.nextAction}</span>
-                    <strong>{dictionary.intake.nextActionLabels[guidedIntake.next_action]}</strong>
+                    <strong>
+                      {
+                        dictionary.intake.nextActionLabels[
+                          guidedIntake.next_action
+                        ]
+                      }
+                    </strong>
                   </div>
                 </div>
 
@@ -274,10 +320,15 @@ export function CampaignShell({
                             {String(index + 1).padStart(2, "0")}
                           </span>
                           <div>
-                            <strong>{dictionary.intake.checkLabels[check.key]}</strong>
+                            <strong>
+                              {dictionary.intake.checkLabels[check.key]}
+                            </strong>
                             <code>{check.reason_code}</code>
                           </div>
-                          <span className="intake-check-mark" aria-hidden="true">
+                          <span
+                            className="intake-check-mark"
+                            aria-hidden="true"
+                          >
                             {check.complete ? "✓" : "·"}
                           </span>
                         </li>
@@ -286,36 +337,58 @@ export function CampaignShell({
                   </section>
 
                   <section aria-labelledby="intake-context-title">
-                    <h3 id="intake-context-title">{dictionary.shell.currentContext}</h3>
+                    <h3 id="intake-context-title">
+                      {dictionary.shell.currentContext}
+                    </h3>
                     <dl className="intake-data">
                       <div>
                         <dt>{dictionary.intake.office}</dt>
-                        <dd>{guidedIntake.office ?? dictionary.intake.notAssessed}</dd>
+                        <dd>
+                          {guidedIntake.office ?? dictionary.intake.notAssessed}
+                        </dd>
                       </div>
                       <div>
                         <dt>{dictionary.intake.candidateProject}</dt>
-                        <dd>{guidedIntake.candidate_project ?? dictionary.intake.notAssessed}</dd>
+                        <dd>
+                          {guidedIntake.candidate_project ??
+                            dictionary.intake.notAssessed}
+                        </dd>
                       </div>
                       <div>
                         <dt>{dictionary.intake.currentTeam}</dt>
                         <dd>
-                          <IntakeItems items={guidedIntake.current_team} dictionary={dictionary} />
+                          <IntakeItems
+                            items={guidedIntake.current_team}
+                            dictionary={dictionary}
+                          />
                         </dd>
                       </div>
                       <div>
                         <dt>{dictionary.intake.currentAssets}</dt>
                         <dd>
-                          <IntakeItems items={guidedIntake.current_assets} dictionary={dictionary} />
+                          <IntakeItems
+                            items={guidedIntake.current_assets}
+                            dictionary={dictionary}
+                          />
                         </dd>
                       </div>
                       <div>
                         <dt>{dictionary.intake.budgetStatus}</dt>
-                        <dd>{dictionary.intake.budgetStatusLabels[guidedIntake.budget_status]}</dd>
+                        <dd>
+                          {
+                            dictionary.intake.budgetStatusLabels[
+                              guidedIntake.budget_status
+                            ]
+                          }
+                        </dd>
                       </div>
                       <div>
                         <dt>{dictionary.intake.knownUnknowns}</dt>
                         <dd>
-                          <IntakeItems items={guidedIntake.known_unknowns} dictionary={dictionary} />
+                          <IntakeItems
+                            items={guidedIntake.known_unknowns}
+                            dictionary={dictionary}
+                          />
                         </dd>
                       </div>
                       <div>
@@ -331,20 +404,31 @@ export function CampaignShell({
                   </section>
                 </div>
 
-                <section className="research-actions" aria-labelledby="research-actions-title">
+                <section
+                  className="research-actions"
+                  aria-labelledby="research-actions-title"
+                >
                   <div>
-                    <h3 id="research-actions-title">{dictionary.intake.researchActions}</h3>
+                    <h3 id="research-actions-title">
+                      {dictionary.intake.researchActions}
+                    </h3>
                     <p>{dictionary.common.notApproval}</p>
                   </div>
                   {guidedIntake.research_first_actions.length > 0 ? (
                     <ol>
                       {guidedIntake.research_first_actions.map((action) => (
-                        <li key={action}>{dictionary.intake.researchActionLabels[action]}</li>
+                        <li key={action}>
+                          {dictionary.intake.researchActionLabels[action]}
+                        </li>
                       ))}
                     </ol>
                   ) : (
                     <p className="intake-empty">
-                      {dictionary.intake.nextActionLabels[guidedIntake.next_action]}
+                      {
+                        dictionary.intake.nextActionLabels[
+                          guidedIntake.next_action
+                        ]
+                      }
                     </p>
                   )}
                 </section>
@@ -375,20 +459,27 @@ export function CampaignShell({
             <div className="intake-heading">
               <div>
                 <p className="eyebrow">{dictionary.candidate.eyebrow}</p>
-                <h2 id="candidate-workspace-title">{dictionary.candidate.title}</h2>
+                <h2 id="candidate-workspace-title">
+                  {dictionary.candidate.title}
+                </h2>
                 <p>{dictionary.candidate.body}</p>
               </div>
               {candidateWorkspace ? (
-                <div className="intake-progress" aria-label={dictionary.candidate.progress}>
+                <div
+                  className="intake-progress"
+                  aria-label={dictionary.candidate.progress}
+                >
                   <strong>
-                    {candidateWorkspace.completed_checks}/{candidateWorkspace.total_checks}
+                    {candidateWorkspace.completed_checks}/
+                    {candidateWorkspace.total_checks}
                   </strong>
                   <span>{dictionary.candidate.progress}</span>
                   <progress
                     max={candidateWorkspace.total_checks}
                     value={candidateWorkspace.completed_checks}
                   >
-                    {candidateWorkspace.completed_checks}/{candidateWorkspace.total_checks}
+                    {candidateWorkspace.completed_checks}/
+                    {candidateWorkspace.total_checks}
                   </progress>
                 </div>
               ) : null}
@@ -399,12 +490,22 @@ export function CampaignShell({
                 <div className="intake-status-row">
                   <div>
                     <span>{dictionary.candidate.status}</span>
-                    <strong>{dictionary.candidate.statusLabels[candidateWorkspace.status]}</strong>
+                    <strong>
+                      {
+                        dictionary.candidate.statusLabels[
+                          candidateWorkspace.status
+                        ]
+                      }
+                    </strong>
                   </div>
                   <div>
                     <span>{dictionary.candidate.nextAction}</span>
                     <strong>
-                      {dictionary.candidate.nextActionLabels[candidateWorkspace.next_action]}
+                      {
+                        dictionary.candidate.nextActionLabels[
+                          candidateWorkspace.next_action
+                        ]
+                      }
                     </strong>
                   </div>
                 </div>
@@ -417,7 +518,9 @@ export function CampaignShell({
 
                 <div className="candidate-layout">
                   <section aria-labelledby="candidate-checks-title">
-                    <h3 id="candidate-checks-title">{dictionary.candidate.sections}</h3>
+                    <h3 id="candidate-checks-title">
+                      {dictionary.candidate.sections}
+                    </h3>
                     <ol className="intake-checks">
                       {candidateWorkspace.checks.map((check, index) => (
                         <li key={check.key} data-complete={check.complete}>
@@ -425,10 +528,15 @@ export function CampaignShell({
                             {String(index + 1).padStart(2, "0")}
                           </span>
                           <div>
-                            <strong>{dictionary.candidate.checkLabels[check.key]}</strong>
+                            <strong>
+                              {dictionary.candidate.checkLabels[check.key]}
+                            </strong>
                             <code>{check.reason_code}</code>
                           </div>
-                          <span className="intake-check-mark" aria-hidden="true">
+                          <span
+                            className="intake-check-mark"
+                            aria-hidden="true"
+                          >
                             {check.complete ? "✓" : "·"}
                           </span>
                         </li>
@@ -437,24 +545,29 @@ export function CampaignShell({
                   </section>
 
                   <section aria-labelledby="candidate-summary-title">
-                    <h3 id="candidate-summary-title">{candidateWorkspace.display_name}</h3>
+                    <h3 id="candidate-summary-title">
+                      {candidateWorkspace.display_name}
+                    </h3>
                     <div className="candidate-summary-grid">
                       <article>
                         <span>{dictionary.candidate.identity}</span>
                         <strong>
-                          {candidateWorkspace.identity?.claim ?? dictionary.candidate.notAssessed}
+                          {candidateWorkspace.identity?.claim ??
+                            dictionary.candidate.notAssessed}
                         </strong>
                       </article>
                       <article>
                         <span>{dictionary.candidate.biography}</span>
                         <strong>
-                          {candidateWorkspace.biography?.claim ?? dictionary.candidate.notAssessed}
+                          {candidateWorkspace.biography?.claim ??
+                            dictionary.candidate.notAssessed}
                         </strong>
                       </article>
                       <article>
                         <span>{dictionary.candidate.purpose}</span>
                         <strong>
-                          {candidateWorkspace.purpose?.claim ?? dictionary.candidate.notAssessed}
+                          {candidateWorkspace.purpose?.claim ??
+                            dictionary.candidate.notAssessed}
                         </strong>
                       </article>
                       <article>
@@ -463,15 +576,21 @@ export function CampaignShell({
                       </article>
                       <article>
                         <span>{dictionary.candidate.approvedSections}</span>
-                        <strong>{candidateWorkspace.current_approved_sections.length}</strong>
+                        <strong>
+                          {candidateWorkspace.current_approved_sections.length}
+                        </strong>
                       </article>
                       <article>
                         <span>{dictionary.candidate.pendingApprovals}</span>
-                        <strong>{candidateWorkspace.approvals_required.length}</strong>
+                        <strong>
+                          {candidateWorkspace.approvals_required.length}
+                        </strong>
                       </article>
                       <article>
                         <span>{dictionary.candidate.criticalHighRisks}</span>
-                        <strong>{candidateWorkspace.open_critical_high_risks}</strong>
+                        <strong>
+                          {candidateWorkspace.open_critical_high_risks}
+                        </strong>
                       </article>
                     </div>
 
@@ -479,9 +598,13 @@ export function CampaignShell({
                       <article>
                         <h4>{dictionary.candidate.values}</h4>
                         {candidateWorkspace.values === null ? (
-                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.notAssessed}
+                          </p>
                         ) : candidateWorkspace.values.length === 0 ? (
-                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.noItems}
+                          </p>
                         ) : (
                           <ul className="intake-items">
                             {candidateWorkspace.values.map((item) => (
@@ -493,9 +616,13 @@ export function CampaignShell({
                       <article>
                         <h4>{dictionary.candidate.attributes}</h4>
                         {candidateWorkspace.attributes === null ? (
-                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.notAssessed}
+                          </p>
                         ) : candidateWorkspace.attributes.length === 0 ? (
-                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.noItems}
+                          </p>
                         ) : (
                           <ul className="intake-items">
                             {candidateWorkspace.attributes.map((item) => (
@@ -507,9 +634,13 @@ export function CampaignShell({
                       <article>
                         <h4>{dictionary.candidate.contradictions}</h4>
                         {candidateWorkspace.contradictions === null ? (
-                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.notAssessed}
+                          </p>
                         ) : candidateWorkspace.contradictions.length === 0 ? (
-                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.noItems}
+                          </p>
                         ) : (
                           <ul className="intake-items">
                             {candidateWorkspace.contradictions.map((item) => (
@@ -521,23 +652,34 @@ export function CampaignShell({
                       <article>
                         <h4>{dictionary.candidate.developmentGoals}</h4>
                         {candidateWorkspace.development_goals === null ? (
-                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
-                        ) : candidateWorkspace.development_goals.length === 0 ? (
-                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.notAssessed}
+                          </p>
+                        ) : candidateWorkspace.development_goals.length ===
+                          0 ? (
+                          <p className="intake-empty">
+                            {dictionary.candidate.noItems}
+                          </p>
                         ) : (
                           <ul className="intake-items">
-                            {candidateWorkspace.development_goals.map((item) => (
-                              <li key={item.id}>{item.objective}</li>
-                            ))}
+                            {candidateWorkspace.development_goals.map(
+                              (item) => (
+                                <li key={item.id}>{item.objective}</li>
+                              ),
+                            )}
                           </ul>
                         )}
                       </article>
                       <article>
                         <h4>{dictionary.candidate.reputationRisks}</h4>
                         {candidateWorkspace.reputation_risks === null ? (
-                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.notAssessed}
+                          </p>
                         ) : candidateWorkspace.reputation_risks.length === 0 ? (
-                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                          <p className="intake-empty">
+                            {dictionary.candidate.noItems}
+                          </p>
                         ) : (
                           <ul className="intake-items">
                             {candidateWorkspace.reputation_risks.map((item) => (
@@ -578,17 +720,27 @@ export function CampaignShell({
             <div className="intake-heading">
               <div>
                 <p className="eyebrow">{dictionary.teamWorkspace.eyebrow}</p>
-                <h2 id="team-workspace-title">{dictionary.teamWorkspace.title}</h2>
+                <h2 id="team-workspace-title">
+                  {dictionary.teamWorkspace.title}
+                </h2>
                 <p>{dictionary.teamWorkspace.body}</p>
               </div>
               {teamWorkspace ? (
-                <div className="intake-progress" aria-label={dictionary.teamWorkspace.progress}>
+                <div
+                  className="intake-progress"
+                  aria-label={dictionary.teamWorkspace.progress}
+                >
                   <strong>
-                    {teamWorkspace.completed_checks}/{teamWorkspace.total_checks}
+                    {teamWorkspace.completed_checks}/
+                    {teamWorkspace.total_checks}
                   </strong>
                   <span>{dictionary.teamWorkspace.progress}</span>
-                  <progress max={teamWorkspace.total_checks} value={teamWorkspace.completed_checks}>
-                    {teamWorkspace.completed_checks}/{teamWorkspace.total_checks}
+                  <progress
+                    max={teamWorkspace.total_checks}
+                    value={teamWorkspace.completed_checks}
+                  >
+                    {teamWorkspace.completed_checks}/
+                    {teamWorkspace.total_checks}
                   </progress>
                 </div>
               ) : null}
@@ -599,12 +751,22 @@ export function CampaignShell({
                 <div className="intake-status-row">
                   <div>
                     <span>{dictionary.teamWorkspace.status}</span>
-                    <strong>{dictionary.teamWorkspace.statusLabels[teamWorkspace.status]}</strong>
+                    <strong>
+                      {
+                        dictionary.teamWorkspace.statusLabels[
+                          teamWorkspace.status
+                        ]
+                      }
+                    </strong>
                   </div>
                   <div>
                     <span>{dictionary.teamWorkspace.nextAction}</span>
                     <strong>
-                      {dictionary.teamWorkspace.nextActionLabels[teamWorkspace.next_action]}
+                      {
+                        dictionary.teamWorkspace.nextActionLabels[
+                          teamWorkspace.next_action
+                        ]
+                      }
                     </strong>
                   </div>
                 </div>
@@ -627,14 +789,17 @@ export function CampaignShell({
                   <article>
                     <span>{dictionary.teamWorkspace.capacity}</span>
                     <strong>
-                      {teamWorkspace.total_weekly_capacity_hours} {dictionary.teamWorkspace.hours}
+                      {teamWorkspace.total_weekly_capacity_hours}{" "}
+                      {dictionary.teamWorkspace.hours}
                     </strong>
                   </article>
                 </div>
 
                 <div className="team-layout">
                   <section aria-labelledby="team-checks-title">
-                    <h3 id="team-checks-title">{dictionary.teamWorkspace.progress}</h3>
+                    <h3 id="team-checks-title">
+                      {dictionary.teamWorkspace.progress}
+                    </h3>
                     <ol className="intake-checks">
                       {teamWorkspace.checks.map((check, index) => (
                         <li key={check.key} data-complete={check.complete}>
@@ -642,10 +807,15 @@ export function CampaignShell({
                             {String(index + 1).padStart(2, "0")}
                           </span>
                           <div>
-                            <strong>{dictionary.teamWorkspace.checkLabels[check.key]}</strong>
+                            <strong>
+                              {dictionary.teamWorkspace.checkLabels[check.key]}
+                            </strong>
                             <code>{check.reason_code}</code>
                           </div>
-                          <span className="intake-check-mark" aria-hidden="true">
+                          <span
+                            className="intake-check-mark"
+                            aria-hidden="true"
+                          >
                             {check.complete ? "✓" : "·"}
                           </span>
                         </li>
@@ -654,11 +824,17 @@ export function CampaignShell({
                   </section>
 
                   <section aria-labelledby="team-roles-title">
-                    <h3 id="team-roles-title">{dictionary.teamWorkspace.roles}</h3>
+                    <h3 id="team-roles-title">
+                      {dictionary.teamWorkspace.roles}
+                    </h3>
                     {teamWorkspace.roles === null ? (
-                      <p className="intake-empty">{dictionary.teamWorkspace.notAssessed}</p>
+                      <p className="intake-empty">
+                        {dictionary.teamWorkspace.notAssessed}
+                      </p>
                     ) : teamWorkspace.roles.length === 0 ? (
-                      <p className="intake-empty">{dictionary.teamWorkspace.noItems}</p>
+                      <p className="intake-empty">
+                        {dictionary.teamWorkspace.noItems}
+                      </p>
                     ) : (
                       <div className="team-role-grid">
                         {teamWorkspace.roles.map((role) => (
@@ -682,7 +858,11 @@ export function CampaignShell({
                                 <dd>{role.status}</dd>
                               </div>
                             </dl>
-                            {role.vacancy_plan ? <p className="team-vacancy-plan">{role.vacancy_plan}</p> : null}
+                            {role.vacancy_plan ? (
+                              <p className="team-vacancy-plan">
+                                {role.vacancy_plan}
+                              </p>
+                            ) : null}
                           </article>
                         ))}
                       </div>
@@ -694,9 +874,13 @@ export function CampaignShell({
                   <article>
                     <h3>{dictionary.teamWorkspace.workItems}</h3>
                     {teamWorkspace.work_items === null ? (
-                      <p className="intake-empty">{dictionary.teamWorkspace.notAssessed}</p>
+                      <p className="intake-empty">
+                        {dictionary.teamWorkspace.notAssessed}
+                      </p>
                     ) : teamWorkspace.work_items.length === 0 ? (
-                      <p className="intake-empty">{dictionary.teamWorkspace.noItems}</p>
+                      <p className="intake-empty">
+                        {dictionary.teamWorkspace.noItems}
+                      </p>
                     ) : (
                       <ul className="team-work-items">
                         {teamWorkspace.work_items.map((item) => (
@@ -706,11 +890,21 @@ export function CampaignShell({
                             <ul>
                               {item.assignments.map((assignment) => {
                                 const role = teamWorkspace.roles?.find(
-                                  (candidate) => candidate.id === assignment.role_id,
+                                  (candidate) =>
+                                    candidate.id === assignment.role_id,
                                 );
                                 return (
-                                  <li key={`${item.id}-${assignment.role_id}-${assignment.responsibility}`}>
-                                    <span>{dictionary.teamWorkspace.responsibilityLabels[assignment.responsibility]}</span>
+                                  <li
+                                    key={`${item.id}-${assignment.role_id}-${assignment.responsibility}`}
+                                  >
+                                    <span>
+                                      {
+                                        dictionary.teamWorkspace
+                                          .responsibilityLabels[
+                                          assignment.responsibility
+                                        ]
+                                      }
+                                    </span>
                                     {role?.title ?? assignment.role_id}
                                   </li>
                                 );
@@ -724,9 +918,13 @@ export function CampaignShell({
                   <article>
                     <h3>{dictionary.teamWorkspace.training}</h3>
                     {teamWorkspace.training_requirements === null ? (
-                      <p className="intake-empty">{dictionary.teamWorkspace.notAssessed}</p>
+                      <p className="intake-empty">
+                        {dictionary.teamWorkspace.notAssessed}
+                      </p>
                     ) : teamWorkspace.training_requirements.length === 0 ? (
-                      <p className="intake-empty">{dictionary.teamWorkspace.noItems}</p>
+                      <p className="intake-empty">
+                        {dictionary.teamWorkspace.noItems}
+                      </p>
                     ) : (
                       <ul className="intake-items">
                         {teamWorkspace.training_requirements.map((item) => (
@@ -740,14 +938,19 @@ export function CampaignShell({
                   <article>
                     <h3>{dictionary.teamWorkspace.accessRecommendations}</h3>
                     {teamWorkspace.access_recommendations === null ? (
-                      <p className="intake-empty">{dictionary.teamWorkspace.notAssessed}</p>
+                      <p className="intake-empty">
+                        {dictionary.teamWorkspace.notAssessed}
+                      </p>
                     ) : teamWorkspace.access_recommendations.length === 0 ? (
-                      <p className="intake-empty">{dictionary.teamWorkspace.noItems}</p>
+                      <p className="intake-empty">
+                        {dictionary.teamWorkspace.noItems}
+                      </p>
                     ) : (
                       <ul className="intake-items">
                         {teamWorkspace.access_recommendations.map((item) => (
                           <li key={item.id}>
-                            {item.status} · {item.action} · {item.resource_type} · {item.purpose}
+                            {item.status} · {item.action} · {item.resource_type}{" "}
+                            · {item.purpose}
                           </li>
                         ))}
                       </ul>
@@ -773,6 +976,14 @@ export function CampaignShell({
             )}
           </section>
 
+          <OperationsWorkspace
+            dictionary={dictionary}
+            roadmapEvidence={model.campaignRoadmap}
+            roadmapAvailability={model.campaignRoadmapAvailability}
+            snapshotEvidence={model.warRoomSnapshot}
+            snapshotAvailability={model.warRoomSnapshotAvailability}
+          />
+
           <section className="dashboard-grid">
             <article id="readiness" className="panel readiness-panel">
               <p className="eyebrow">OPERATIONAL SETUP ONLY</p>
@@ -789,7 +1000,9 @@ export function CampaignShell({
                   <ul className="check-list">
                     {readiness.checks.map((check) => (
                       <li key={check.key} data-complete={check.complete}>
-                        <span aria-hidden="true">{check.complete ? "✓" : "·"}</span>
+                        <span aria-hidden="true">
+                          {check.complete ? "✓" : "·"}
+                        </span>
                         {check.reason_code}
                       </li>
                     ))}
@@ -807,7 +1020,9 @@ export function CampaignShell({
                 </>
               ) : (
                 <p className="muted">
-                  {model.readinessUnavailable ? "DEPENDENCY_UNAVAILABLE" : "NOT_AUTHORIZED"}
+                  {model.readinessUnavailable
+                    ? "DEPENDENCY_UNAVAILABLE"
+                    : "NOT_AUTHORIZED"}
                 </p>
               )}
             </article>
@@ -859,7 +1074,10 @@ export function CampaignShell({
             </article>
           </section>
 
-          <section className="limitation-panel" aria-labelledby="limitations-title">
+          <section
+            className="limitation-panel"
+            aria-labelledby="limitations-title"
+          >
             <div>
               <p className="eyebrow">MANDATORY LIMITS</p>
               <h2 id="limitations-title">{dictionary.dashboard.limitations}</h2>
