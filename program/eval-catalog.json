@@ -354,22 +354,58 @@
     {
       "id": "EVAL-OBJECTIVE-001",
       "category": "democratic_safety",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "No dedicated executable objective-governance eval."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "backend/tests/test_strategy_workspace_contracts.py",
+        "backend/tests/test_strategy_workspace_model.py",
+        "backend/tests/test_strategy_workspace_sql.py",
+        "backend/tests/test_strategy_workspace_api.py",
+        "backend/tests/test_strategy_workspace_postgres.py",
+        "frontend/src/lib/strategy-contract-parser.test.ts",
+        "frontend/src/lib/api-client.test.ts",
+        "frontend/src/components/strategy-workspace.tsx",
+        "docs/product/strategy-decision-room.md",
+        "docs/api/strategy-workspace.md",
+        "docs/testing/c3-strategy-001-evidence.md",
+        "program/validations/c3-strategy-001.json"
+      ],
+      "commands": [
+        "make verify",
+        "CAMPAIGNOS_TEST_DATABASE_URL=<isolated *_test URL> make test-postgres",
+        "make frontend-e2e",
+        "make frontend-image-verify"
+      ],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Evidence-first objective and methodology governance is locally/PostgreSQL verified; independent human acceptance, authenticated editing and live environments remain absent."
     },
     {
       "id": "EVAL-METHOD-001",
       "category": "democratic_safety",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "No dedicated executable methodology-review eval."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "backend/tests/test_strategy_workspace_contracts.py",
+        "backend/tests/test_strategy_workspace_model.py",
+        "backend/tests/test_strategy_workspace_sql.py",
+        "backend/tests/test_strategy_workspace_api.py",
+        "backend/tests/test_strategy_workspace_postgres.py",
+        "frontend/src/lib/strategy-contract-parser.test.ts",
+        "frontend/src/lib/api-client.test.ts",
+        "frontend/src/components/strategy-workspace.tsx",
+        "docs/product/strategy-decision-room.md",
+        "docs/api/strategy-workspace.md",
+        "docs/testing/c3-strategy-001-evidence.md",
+        "program/validations/c3-strategy-001.json"
+      ],
+      "commands": [
+        "make verify",
+        "CAMPAIGNOS_TEST_DATABASE_URL=<isolated *_test URL> make test-postgres",
+        "make frontend-e2e",
+        "make frontend-image-verify"
+      ],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Evidence-first objective and methodology governance is locally/PostgreSQL verified; independent human acceptance, authenticated editing and live environments remain absent."
     },
     {
       "id": "EVAL-BIOPOLITICS-001",

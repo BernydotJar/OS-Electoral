@@ -1,0 +1,39 @@
+{
+  "increment": "C3-STRATEGY-001",
+  "verified_at": "2026-07-21",
+  "branch": "agent/c3-strategy-001-evidence-decision-room",
+  "base": "agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e",
+  "status": "VERIFIED_POSTGRESQL",
+  "production_status": "BLOCKED",
+  "external_effects": "NONE",
+  "results": {
+    "focused_strategy": {"passed": 37},
+    "pytest": {"passed": 585, "skipped": 8},
+    "coverage": {"percent": 90.70, "floor": 90, "result": "PASS"},
+    "frontend": {
+      "vitest": 48,
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "vulnerabilities": 0,
+      "sharp": "0.35.3"
+    },
+    "postgresql": {
+      "result": "PASS",
+      "consecutive_runs": 2,
+      "selected": 8,
+      "migration_head": "20260721_0009"
+    },
+    "browser": {"result": "PASS", "axe_violations": 0, "horizontal_overflow": 0},
+    "image": {"result": "PASS", "runtime_user": "10001:10001"},
+    "program_truth": "PASS_PRODUCTION_BLOCKED"
+  },
+  "limitations": [
+    "Corrected branch publication and CI are pending",
+    "Frontend is read-only and has no authenticated mutation flow",
+    "Internal decision receipt grants no downstream political or external authority",
+    "No live identity, telemetry, cloud environment, customer acceptance, merge or deployment is claimed"
+  ],
+  "draft_pr": 96,
+  "remote_state": "CORRECTED_HEAD_PENDING"
+}

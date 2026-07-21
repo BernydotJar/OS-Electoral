@@ -36,7 +36,7 @@ Applies a partial evidence/options/objectives update.
 
 Any update advances the workspace version and invalidates decision completeness for the new version. Historical receipts remain append-only.
 
-### `POST /tenants/{tenant_id}/campaigns/{campaign_id}/strategy-workspace/decisions`
+### `POST /tenants/{tenant_id}/campaigns/{campaign_id}/strategy-workspace/decision`
 
 Records the authorized human selection of one internal option for the exact current strategy version.
 
@@ -61,8 +61,8 @@ This receipt is internal evidence. It does not authorize contact, publication, s
 
 - `401`: identity missing or invalid;
 - `403`: exact application grant absent, including wrong action, purpose, resource, or scope;
-- `404`: scoped workspace or prerequisite absent;
-- `409`: existing workspace, invalid evidence graph, unsupported decision, or idempotency conflict;
+- `404`: scoped campaign or strategy workspace absent;
+- `409`: prerequisite workspace absent, existing workspace, invalid evidence graph, unsupported decision, or idempotency conflict;
 - `412`: stale workspace version;
 - `428`: missing write precondition;
 - `503`: dependency unavailable or adapter scope/authority drift.

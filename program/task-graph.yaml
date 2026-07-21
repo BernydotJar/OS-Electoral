@@ -160,7 +160,7 @@
       "id": "C3-STRATEGY-001",
       "workstream": "WS-09",
       "title": "Research, evidence, strategy and decision-governance persistence",
-      "status": "READY",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-DATA-001",
         "C3-API-001"

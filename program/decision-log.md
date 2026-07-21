@@ -251,3 +251,16 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** The bounded `C3-OPS-001` slice owns generic phases, dependencies, tasks, blockers, human decisions and immutable daily snapshots; it does not persist or approve political strategy.
 - **Evidence:** implementation/API contracts, PR `#95`, and the absence of strategy-generation or strategy-approval fields.
 - **Consequence:** `C3-OPS-001` depends on Team Builder only. `C3-STRATEGY-001` remains a separate evidence-first increment and may later contribute approved decisions or work items through versioned contracts.
+
+
+## 2026-07-21 — Strategy decisions are internal exact-version receipts, never execution authority
+
+- **Decision:** A Strategy Decision Room may compare sourced evidence, falsifiable hypotheses, options, objectives and red-team findings; an `approve` action records only one append-only human choice for the exact current version.
+- **Evidence:** Strategy contracts, SQL adapter, API, SQLite/PostgreSQL race/RLS tests, frontend parser and browser review.
+- **Consequence:** Any content, targeting, contact, publication, spending or mobilization remains a separate prohibited/unimplemented downstream action; every projection retains `authority_effect=NONE` and `external_effects=NONE`.
+
+## 2026-07-21 — Pin corrected sharp while retaining the reviewed Next patch line
+
+- **Decision:** Keep Next `16.2.10` and override its optional `sharp` dependency to `0.35.3` rather than accepting npm audit's unrelated breaking downgrade recommendation.
+- **Evidence:** locked package graph, zero-vulnerability npm audit, complete frontend verify, browser review and Buildah image rebuild.
+- **Consequence:** the production dependency gate is green without a framework major downgrade; future lock updates must preserve audit and runtime evidence.

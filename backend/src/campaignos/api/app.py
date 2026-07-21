@@ -18,6 +18,7 @@ from campaignos.api.routes import (
     guided_intake,
     health,
     me,
+    strategy_workspace,
     team_workspace,
     tenant_me,
     workspaces,
@@ -67,6 +68,11 @@ from campaignos.operations import (
     SqlAlchemyCampaignOperationsService,
     UnavailableCampaignOperationsService,
 )
+from campaignos.strategy import (
+    SqlAlchemyStrategyWorkspaceService,
+    StrategyWorkspaceService,
+    UnavailableStrategyWorkspaceService,
+)
 from campaignos.teams import (
     SqlAlchemyTeamWorkspaceService,
     TeamWorkspaceService,
@@ -89,6 +95,7 @@ def create_app(
     guided_intake_service: GuidedIntakeService | None = None,
     candidate_workspace_service: CandidateWorkspaceService | None = None,
     team_workspace_service: TeamWorkspaceService | None = None,
+    strategy_workspace_service: StrategyWorkspaceService | None = None,
     campaign_operations_service: CampaignOperationsService | None = None,
     campaign_creator: CampaignCreator | None = None,
     campaign_directory: CampaignDirectory | None = None,
@@ -133,6 +140,12 @@ def create_app(
     if team_workspace_boundary is None and isinstance(database_runtime, Database):
         team_workspace_boundary = SqlAlchemyTeamWorkspaceService(database_runtime)
     team_workspace_boundary = team_workspace_boundary or UnavailableTeamWorkspaceService()
+    strategy_workspace_boundary = strategy_workspace_service
+    if strategy_workspace_boundary is None and isinstance(database_runtime, Database):
+        strategy_workspace_boundary = SqlAlchemyStrategyWorkspaceService(database_runtime)
+    strategy_workspace_boundary = (
+        strategy_workspace_boundary or UnavailableStrategyWorkspaceService()
+    )
     campaign_operations_boundary = campaign_operations_service
     if campaign_operations_boundary is None and isinstance(database_runtime, Database):
         campaign_operations_boundary = SqlAlchemyCampaignOperationsService(database_runtime)
@@ -191,6 +204,7 @@ def create_app(
     app.state.guided_intake_service = guided_intake_boundary
     app.state.candidate_workspace_service = candidate_workspace_boundary
     app.state.team_workspace_service = team_workspace_boundary
+    app.state.strategy_workspace_service = strategy_workspace_boundary
     app.state.campaign_operations_service = campaign_operations_boundary
     app.state.campaign_creator = campaign_create_boundary
     app.state.campaign_directory = campaign_read_directory
@@ -208,6 +222,7 @@ def create_app(
     app.include_router(guided_intake.router, prefix="/api/v1")
     app.include_router(candidate_workspace.router, prefix="/api/v1")
     app.include_router(team_workspace.router, prefix="/api/v1")
+    app.include_router(strategy_workspace.router, prefix="/api/v1")
     app.include_router(campaign_operations.router, prefix="/api/v1")
     app.include_router(campaigns.router, prefix="/api/v1")
     app.include_router(workspaces.router, prefix="/api/v1")

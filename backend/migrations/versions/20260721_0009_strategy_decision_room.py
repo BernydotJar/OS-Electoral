@@ -24,8 +24,9 @@ def _enable_forced_rls(table: str) -> None:
     op.execute(
         sa.text(
             f'CREATE POLICY "{table}_tenant_isolation" ON "{table}" '
-            "USING (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), '')::uuid) "
-            "WITH CHECK (tenant_id = NULLIF(current_setting('app.current_tenant_id', true), '')::uuid)"
+            "USING (tenant_id = NULLIF(current_setting('campaignos.tenant_id', true), '')::uuid) "
+            "WITH CHECK (tenant_id = NULLIF("
+            "current_setting('campaignos.tenant_id', true), '')::uuid)"
         )
     )
 

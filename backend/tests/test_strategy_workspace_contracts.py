@@ -212,22 +212,20 @@ def test_hypotheses_and_options_require_known_non_rejected_evidence() -> None:
     with pytest.raises(ValueError, match="unknown evidence reference"):
         assess_strategy_workspace(assessment(hypotheses=[bad_hypothesis]))
 
-    rejected = verified().model_copy(update={"status": "REJECTED", "classification": "INFERRED"})
+    rejected = verified().model_copy(update={"status": "REJECTED"})
     bad_option = option(OPTION_A, HYPOTHESIS_A, "Rejected evidence option")
-    with pytest.raises(ValueError, match="cannot use rejected evidence"):
-        assess_strategy_workspace(
-            assessment(
-                evidence=[rejected],
-                assumptions=[],
-                hypotheses=[
-                    hypothesis(HYPOTHESIS_A, "Evidence consolidation").model_copy(
-                        update={"status": "DRAFT", "assumption_refs": ()}
-                    )
-                ],
-                options=[bad_option],
-                objectives=[],
+    invalid = assessment(
+        assumptions=[],
+        hypotheses=[
+            hypothesis(HYPOTHESIS_A, "Evidence consolidation").model_copy(
+                update={"status": "DRAFT", "assumption_refs": ()}
             )
-        )
+        ],
+        options=[bad_option],
+        objectives=[],
+    ).model_copy(update={"evidence": (rejected,)})
+    with pytest.raises(ValueError, match="cannot use rejected evidence"):
+        assess_strategy_workspace(invalid)
 
 
 def test_objective_owner_must_be_a_known_team_role() -> None:

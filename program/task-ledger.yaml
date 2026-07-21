@@ -341,10 +341,26 @@
     {
       "task_id": "C3-STRATEGY-001",
       "owner": "WS-09",
-      "status": "READY",
-      "evidence": [],
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/tests/test_strategy_workspace_contracts.py",
+        "backend/tests/test_strategy_workspace_model.py",
+        "backend/tests/test_strategy_workspace_sql.py",
+        "backend/tests/test_strategy_workspace_api.py",
+        "backend/tests/test_strategy_workspace_postgres.py",
+        "frontend/src/lib/strategy-contract-parser.test.ts",
+        "frontend/src/lib/api-client.test.ts",
+        "frontend/src/components/strategy-workspace.tsx",
+        "docs/product/strategy-decision-room.md",
+        "docs/api/strategy-workspace.md",
+        "docs/testing/c3-strategy-001-evidence.md",
+        "program/validations/c3-strategy-001.json"
+      ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [
+        "Corrected draft PR #96 head and CI are pending",
+        "Authenticated browser mutation, human acceptance, merge and live environments remain pending"
+      ]
     },
     {
       "task_id": "C3-OPS-001",

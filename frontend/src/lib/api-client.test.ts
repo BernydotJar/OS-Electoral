@@ -37,6 +37,20 @@ describe("CampaignOsApiClient contract failures", () => {
       "team",
       (client: CampaignOsApiClient) => client.teamWorkspace(TENANT, CAMPAIGN),
     ],
+    [
+      "strategy",
+      (client: CampaignOsApiClient) =>
+        client.strategyWorkspace(TENANT, CAMPAIGN),
+    ],
+    [
+      "roadmap",
+      (client: CampaignOsApiClient) => client.campaignRoadmap(TENANT, CAMPAIGN),
+    ],
+    [
+      "War Room snapshot",
+      (client: CampaignOsApiClient) =>
+        client.latestWarRoomSnapshot(TENANT, CAMPAIGN),
+    ],
   ])(
     "maps invalid %s responses to one fail-closed upstream error",
     async (_label, request) => {

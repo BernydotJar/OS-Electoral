@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import type { StrategyWorkspaceReadEvidence } from "@/lib/contracts";
 import {
   StrategyContractValidationError,
   parseStrategyWorkspaceReadEvidence,
@@ -16,6 +17,14 @@ const HYPOTHESIS_B = "77777777-7777-4777-8777-777777777772";
 const OPTION_A = "88888888-8888-4888-8888-888888888881";
 const OPTION_B = "88888888-8888-4888-8888-888888888882";
 const OBJECTIVE = "99999999-9999-4999-8999-999999999999";
+
+type DeepMutable<T> = {
+  -readonly [Key in keyof T]: T[Key] extends readonly (infer Item)[]
+    ? DeepMutable<Item>[]
+    : T[Key] extends object
+      ? DeepMutable<T[Key]>
+      : T[Key];
+};
 
 function evidence() {
   return {
@@ -173,7 +182,9 @@ describe("strategy contract parser", () => {
   });
 
   it("rejects a stale or unknown human decision", () => {
-    const stale = structuredClone(evidence());
+    const stale = structuredClone(
+      evidence(),
+    ) as DeepMutable<StrategyWorkspaceReadEvidence>;
     stale.workspace.decision = {
       id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
       workspace_version: 1,

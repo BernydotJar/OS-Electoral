@@ -449,10 +449,13 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       "NOT_AUTHORIZED";
     if (hasStrategyGrant) {
       try {
-        strategyWorkspace = await api.strategyWorkspace(tenantId, campaign.id);
+        const loadedStrategyWorkspace = await api.strategyWorkspace(
+          tenantId,
+          campaign.id,
+        );
         if (
-          strategyWorkspace.workspace.tenant_id !== tenantId ||
-          strategyWorkspace.workspace.campaign_id !== campaign.id
+          loadedStrategyWorkspace.workspace.tenant_id !== tenantId ||
+          loadedStrategyWorkspace.workspace.campaign_id !== campaign.id
         ) {
           return {
             kind: "unavailable",
@@ -461,6 +464,7 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
             configuration: false,
           };
         }
+        strategyWorkspace = loadedStrategyWorkspace;
         strategyWorkspaceAvailability = "AVAILABLE";
       } catch (error) {
         if (error instanceof CampaignOsApiError && error.status === 404) {
