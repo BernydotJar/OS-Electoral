@@ -824,3 +824,93 @@ class OutboxEvent(Base):
     lease_owner: Mapped[str | None] = mapped_column(String(255))
     lease_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     last_error: Mapped[str | None] = mapped_column(Text)
+
+
+class StrategyWorkspace(Base, TimestampMixin):
+    __tablename__ = "strategy_workspaces"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_strategy_workspaces_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["candidate_workspaces.tenant_id", "candidate_workspaces.campaign_id"],
+            name="fk_strategy_workspaces_candidate_workspace",
+            ondelete="RESTRICT",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["team_workspaces.tenant_id", "team_workspaces.campaign_id"],
+            name="fk_strategy_workspaces_team_workspace",
+            ondelete="RESTRICT",
+        ),
+        UniqueConstraint("tenant_id", "campaign_id", name="uq_strategy_workspaces_tenant_campaign"),
+        UniqueConstraint("tenant_id", "id", name="uq_strategy_workspaces_tenant_id_id"),
+        CheckConstraint("campaign_version >= 1", name="ck_strategy_campaign_version"),
+        CheckConstraint("candidate_workspace_version >= 1", name="ck_strategy_candidate_version"),
+        CheckConstraint("team_workspace_version >= 1", name="ck_strategy_team_version"),
+        CheckConstraint("version >= 1", name="ck_strategy_workspace_version"),
+        Index("ix_strategy_workspaces_tenant_status", "tenant_id", "campaign_id"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    campaign_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    candidate_workspace_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    team_workspace_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    known_role_ids: Mapped[list[str]] = mapped_column(JSON, nullable=False)
+    title: Mapped[str] = mapped_column(String(180), nullable=False)
+    evidence: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
+    assumptions: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
+    hypotheses: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
+    options: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
+    objectives: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
+    contradictions: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
+    red_team_findings: Mapped[list[dict[str, object]] | None] = mapped_column(JSON, nullable=True)
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class StrategyDecisionReceipt(Base, TimestampMixin):
+    __tablename__ = "strategy_decision_receipts"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_strategy_decisions_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "strategy_workspace_id"],
+            ["strategy_workspaces.tenant_id", "strategy_workspaces.id"],
+            name="fk_strategy_decisions_workspace",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "strategy_workspace_id",
+            "workspace_version",
+            name="uq_strategy_decisions_workspace_version",
+        ),
+        CheckConstraint("workspace_version >= 1", name="ck_strategy_decision_version"),
+        Index(
+            "ix_strategy_decisions_tenant_campaign_created",
+            "tenant_id",
+            "campaign_id",
+            "created_at",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    strategy_workspace_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    workspace_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    selected_option_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    human_role_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    approval_receipt_id: Mapped[str] = mapped_column(String(180), nullable=False)
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    decided_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)

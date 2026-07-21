@@ -138,6 +138,37 @@ describe("deriveNavigation", () => {
     );
   });
 
+  it("requires the exact current-campaign strategy read grant", () => {
+    const strategyMembership = membership("strategy_workspace");
+    const exactMembership = {
+      ...strategyMembership,
+      grants: strategyMembership.grants.map((grant) => ({
+        ...grant,
+        campaign_id: CAMPAIGN_ID,
+        resource_id: CAMPAIGN_ID,
+        purpose: "Review campaign strategy workspace",
+      })),
+    };
+    const exact = deriveNavigation("es", [exactMembership], CAMPAIGN_ID);
+    expect(exact.find((item) => item.key === "strategy")?.enabled).toBe(true);
+    const crossCampaign = deriveNavigation(
+      "es",
+      [exactMembership],
+      OTHER_CAMPAIGN_ID,
+    );
+    expect(crossCampaign.find((item) => item.key === "strategy")?.enabled).toBe(
+      false,
+    );
+    const wrongPurpose = deriveNavigation(
+      "es",
+      [strategyMembership],
+      CAMPAIGN_ID,
+    );
+    expect(wrongPurpose.find((item) => item.key === "strategy")?.enabled).toBe(
+      false,
+    );
+  });
+
   it("requires the exact current-campaign roadmap read grant for War Room", () => {
     const roadmapMembership = membership("campaign_roadmap");
     const exactMembership = {

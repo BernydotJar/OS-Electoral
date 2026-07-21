@@ -113,3 +113,13 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 3. Advance authenticated non-technical editing/review journeys without merging, deploying or executing external effects.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
+
+## C3-STRATEGY-001 evidence update — 2026-07-21
+
+- Durable evidence classifications preserve `VERIFIED`, `INFERRED` and `UNKNOWN` semantics.
+- Hypotheses require provenance and invalidation signals; options expose benefits, risks and tradeoffs.
+- Open contradictions and CRITICAL/HIGH red-team findings block human-decision readiness.
+- Internal decisions are exact-authorized and bound to the current strategy version, option, human role and approval receipt.
+- Historical decisions retain exact Campaign/Candidate/Team versions and the role snapshot that supported them.
+- The ES/EN shell is read-only and exposes no targeting, contact, publication, spending or mobilization action.
+- Status is `VERIFIED_POSTGRESQL`; production remains `BLOCKED`.

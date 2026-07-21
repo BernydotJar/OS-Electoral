@@ -6,6 +6,10 @@ import {
   parseCampaignRoadmapReadEvidence,
   parseWarRoomSnapshotReadEvidence,
 } from "@/lib/operations-contract-parser";
+import {
+  StrategyContractValidationError,
+  parseStrategyWorkspaceReadEvidence,
+} from "@/lib/strategy-contract-parser";
 import type { FrontendConfig } from "@/lib/config";
 import {
   parseTeamWorkspaceReadEvidence,
@@ -119,7 +123,8 @@ export class CampaignOsApiClient {
         error instanceof ContractValidationError ||
         error instanceof CandidateContractValidationError ||
         error instanceof TeamContractValidationError ||
-        error instanceof OperationsContractValidationError
+        error instanceof OperationsContractValidationError ||
+        error instanceof StrategyContractValidationError
       ) {
         throw new CampaignOsApiError(
           `${label} response is invalid`,
@@ -215,6 +220,17 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/operations/roadmap/war-room-snapshots/latest`,
       "Daily War Room snapshot",
       parseWarRoomSnapshotReadEvidence,
+    );
+  }
+
+  strategyWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+  ): Promise<StrategyWorkspaceReadEvidence> {
+    return this.get<StrategyWorkspaceReadEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/strategy-workspace`,
+      "Strategy workspace",
+      parseStrategyWorkspaceReadEvidence,
     );
   }
 }
