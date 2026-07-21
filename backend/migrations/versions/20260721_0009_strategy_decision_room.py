@@ -23,7 +23,7 @@ def _enable_forced_rls(table: str) -> None:
     op.execute(sa.text(f'ALTER TABLE "{table}" FORCE ROW LEVEL SECURITY'))
     op.execute(
         sa.text(
-            f'CREATE POLICY "{table}_tenant_isolation" ON "{table}" '
+            f'CREATE POLICY tenant_isolation ON "{table}" '
             "USING (tenant_id = NULLIF(current_setting('campaignos.tenant_id', true), '')::uuid) "
             "WITH CHECK (tenant_id = NULLIF("
             "current_setting('campaignos.tenant_id', true), '')::uuid)"
@@ -32,7 +32,7 @@ def _enable_forced_rls(table: str) -> None:
 
 
 def _disable_rls(table: str) -> None:
-    op.execute(sa.text(f'DROP POLICY IF EXISTS "{table}_tenant_isolation" ON "{table}"'))
+    op.execute(sa.text(f'DROP POLICY IF EXISTS tenant_isolation ON "{table}"'))
     op.execute(sa.text(f'ALTER TABLE "{table}" NO FORCE ROW LEVEL SECURITY'))
     op.execute(sa.text(f'ALTER TABLE "{table}" DISABLE ROW LEVEL SECURITY'))
 
