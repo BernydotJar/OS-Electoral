@@ -250,12 +250,20 @@
     {
       "id": "EVAL-I18N-001",
       "category": "product",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "Complete Spanish/English application coverage is absent."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "frontend/src/lib/i18n.ts",
+        "frontend/src/lib/i18n.test.ts",
+        "scripts/frontend/review_dynamic_shell.py",
+        "docs/i18n/frontend-localization.md"
+      ],
+      "commands": [
+        "make frontend-verify",
+        "make frontend-e2e"
+      ],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Spanish/English parity is verified for the dynamic shell only; all future product journeys and human language review remain incomplete."
     },
     {
       "id": "EVAL-NONTECH-001",
@@ -264,13 +272,17 @@
       "gate_result": "PARTIAL",
       "evidence": [
         "scripts/frontend/runtime_visual_review.py",
-        "web/index.html"
+        "web/index.html",
+        "frontend/src/components/shell.tsx",
+        "scripts/frontend/review_dynamic_shell.py",
+        "docs/testing/c3-front-001-evidence.md"
       ],
       "commands": [
-        "uv run --locked python scripts/frontend/runtime_visual_review.py"
+        "uv run --locked python scripts/frontend/runtime_visual_review.py",
+        "make frontend-e2e"
       ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Static demo review only; no authenticated end-to-end non-technical journey."
+      "limitations": "The dynamic read-only shell is tested with synthetic context, but no live-authenticated end-to-end non-technical campaign journey or user acceptance evidence exists."
     },
     {
       "id": "EVAL-OBJECTIVE-001",
@@ -399,12 +411,18 @@
     {
       "id": "EVAL-ACCESSIBILITY-001",
       "category": "operations",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "Visual review exists, but no complete automated/manual accessibility eval."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "frontend/src/app/globals.css",
+        "scripts/frontend/review_dynamic_shell.py",
+        "docs/testing/c3-front-001-evidence.md"
+      ],
+      "commands": [
+        "make frontend-e2e"
+      ],
+      "last_verified_at": "2026-07-21",
+      "limitations": "The shell passes automated keyboard, mobile, reduced-motion and axe-core WCAG 2.2 A/AA checks; manual assistive-technology and full-product review remain."
     },
     {
       "id": "EVAL-LOAD-001",

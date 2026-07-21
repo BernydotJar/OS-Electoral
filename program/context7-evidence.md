@@ -173,3 +173,45 @@ Context7 is mandatory implementation evidence, but its index can lag package reg
 - `documentation_summary`: before-field validators can normalize raw input before standard type, length and pattern validation; extra fields can be forbidden; frozen models prevent post-validation mutation.
 - `implementation_decision`: campaign creation normalizes slug case/whitespace and collapses metadata whitespace before bounded validation. `extra="forbid"` rejects caller attempts to set server-owned identifiers, status or version.
 - `limitations`: normalization and schema validation do not confer authority; authorization, RLS, database constraints, audit and human gates remain separate controls.
+
+## C3-FRONT-001 official documentation record
+
+- `date`: `2026-07-21 America/Guatemala`
+- `task_id`: `C3-FRONT-001`
+- `Context7_runtime`: unavailable in the Cloud Sandbox toolset; no Context7 retrieval is claimed.
+- `installed_versions`: Next.js `16.2.10`; React/React DOM `19.2.7`; TypeScript `5.9.3`; Vitest `4.1.10`; axe-core `4.12.1`; Node `22.23.1`.
+- `version_authority`: exact `frontend/package.json` plus integrity-bearing `frontend/package-lock.json` and final `npm audit`.
+
+### Next.js App Router, authentication and cookies
+
+- `official_sources`: bundled installed documentation under `frontend/node_modules/next/dist/docs/01-app/`, including authentication, cookies, Proxy, testing, self-hosting and Link navigation guidance.
+- `documentation_summary`: authentication and authorization require server-side checks close to data access; cookies are asynchronous server APIs; Proxy is appropriate for request routing but not as the sole authorization boundary; standalone output requires static/public assets to be copied into the runtime layout; root layouts persist during client transitions.
+- `implementation_decision`: bearer material stays in an HttpOnly server cookie and server-only API client; Proxy resolves locale only; scope is revalidated against backend responses; the E2E harness assembles standalone/static/public exactly like the container; locale changes force a new document so `html[lang]` and metadata remain correct.
+- `limitations`: no live OIDC login/session lifecycle or deployed environment is claimed.
+
+### React and server/client boundaries
+
+- `official_sources`: installed React `19.2.7` package metadata and Next App Router server/client component guidance.
+- `documentation_summary`: client components are required only for browser interactivity; server components keep data-fetching and secrets out of browser bundles.
+- `implementation_decision`: the shell and data loading are server rendered; only the locale control and error retry boundary are client components.
+- `limitations`: server components reduce exposure but do not replace backend authorization or tenant RLS.
+
+### Next.js production and self-hosting
+
+- `official_sources`: installed Next self-hosting and deployment documentation plus generated standalone output.
+- `documentation_summary`: `output: "standalone"` creates a minimal server, while `.next/static` and `public` must be copied separately; proxy/load-balancer controls remain deployment responsibilities.
+- `implementation_decision`: the non-root Dockerfile copies only standalone, static and public artifacts. The local browser harness mirrors that exact layout and selects a free loopback port.
+- `limitations`: the nested sandbox daemon cannot prepare layers; CI is the actual image-build gate.
+
+### Testing and accessibility
+
+- `official_sources`: installed Next Vitest and Playwright guidance; Playwright `1.61.0`; axe-core `4.12.1` package metadata and rules runtime.
+- `documentation_summary`: unit tests cover synchronous application contracts, while a production build should be exercised in a real browser for navigation, responsive and accessibility behavior.
+- `implementation_decision`: Vitest covers configuration, i18n, navigation and runtime parsers; Playwright reviews the standalone production shell in ES/EN desktop, mobile, keyboard and reduced-motion contexts; axe runs WCAG 2.2 A/AA tags.
+- `limitations`: zero automated violations is not manual assistive-technology acceptance or full-product WCAG certification.
+
+### npm advisory remediation
+
+- `documentation_basis`: official npm audit output and package registry integrity metadata.
+- `implementation_decision`: exact dependency pins are retained; the Next transitive PostCSS resolution is overridden to exact `8.5.20` after the generated graph reported a moderate advisory; final audit reports zero vulnerabilities.
+- `limitations`: vulnerability status is point-in-time and remains a required CI/Dependabot gate.
