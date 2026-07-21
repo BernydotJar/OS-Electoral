@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0",
+  "task_id": "C3-IAM-002",
+  "branch": "agent/c3-iam-002-identity-lifecycle",
+  "base_branch": "agent/c3-front-001-dynamic-shell",
+  "base_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
+  "implementation_commit": "5eb45e92f6f292ea673c572811031805cc89cabe",
+  "draft_pr": 90,
+  "status": "CI_GREEN",
+  "verified_at": "2026-07-21 America/Guatemala",
+  "results": {
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy": "PASS_36_SOURCE_FILES",
+    "pytest": {
+      "result": "PASS",
+      "passed": 381,
+      "skipped": 3
+    },
+    "coverage": {
+      "result": "PASS",
+      "percent": 91.34,
+      "floor": 90
+    },
+    "postgresql": {
+      "result": "PASS",
+      "selected": 3,
+      "deselected": 5,
+      "local_repetitions": 2,
+      "revision": "20260721_0004"
+    },
+    "frontend_regression": {
+      "result": "PASS",
+      "vitest": 12,
+      "npm_vulnerabilities": 0
+    },
+    "browser_wcag": {
+      "result": "PASS",
+      "axe_violations": 0,
+      "unexpected_hosts": 0,
+      "console_errors": 0
+    },
+    "actionlint": "PASS",
+    "pip_audit": "PASS_ZERO_KNOWN_VULNERABILITIES",
+    "gitleaks": {
+      "result": "PASS",
+      "effective_worktree": "PASS",
+      "stack_history": "PASS"
+    },
+    "program_truth": "PASS_PRODUCTION_BLOCKED",
+    "eval_catalog": "PASS_5_PARTIAL_12_NOT_RUN_16",
+    "campaignos_ci": {
+      "result": "PASS",
+      "run_id": 29857981975,
+      "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe"
+    },
+    "runtime_visual": {
+      "result": "PASS",
+      "run_id": 29857981487,
+      "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe"
+    }
+  },
+  "evidence": [
+    "backend/migrations/versions/20260721_0004_identity_lifecycle.py",
+    "backend/src/campaignos/identity/lifecycle.py",
+    "backend/src/campaignos/api/routes/identity_lifecycle.py",
+    "backend/tests/test_identity_lifecycle_contracts.py",
+    "backend/tests/test_identity_lifecycle_model.py",
+    "backend/tests/test_identity_lifecycle_failures.py",
+    "backend/tests/test_identity_lifecycle_api.py",
+    "backend/tests/test_identity_lifecycle_postgres.py",
+    "docs/testing/c3-iam-002-evidence.md"
+  ],
+  "external_effects": "NONE",
+  "production_status": "BLOCKED",
+  "limitations": [
+    "No live OIDC/Cognito login, recovery, MFA or email delivery",
+    "No provider token/session revocation",
+    "No RDS, dev, staging or production verification",
+    "No independent security/privacy or human production approval"
+  ]
+}

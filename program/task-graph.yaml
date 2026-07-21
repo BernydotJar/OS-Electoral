@@ -58,7 +58,7 @@
       "id": "C3-IAM-002",
       "workstream": "WS-03",
       "title": "Tenant invitation, application session, membership revocation and time-bound support lifecycle",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-IAM-001"
       ],
