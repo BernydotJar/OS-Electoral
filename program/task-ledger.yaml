@@ -315,7 +315,7 @@
     {
       "task_id": "C3-TEAM-001",
       "owner": "WS-08",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/tests/test_team_workspace_contracts.py",
         "backend/tests/test_team_workspace_model.py",
@@ -328,10 +328,15 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Authenticated editing, human acceptance, review and live environments remain pending"
+        "Human review/merge, authenticated editing, customer acceptance and live environments remain pending"
       ],
       "implementation_commit": "d18d89b",
-      "checkpoint_commit": "90775f35824a8a2252580be28b274ce345bedc41"
+      "checkpoint_commit": "90775f35824a8a2252580be28b274ce345bedc41",
+      "review_branch": "agent/c3-team-001-accountability-review",
+      "head_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
+      "draft_pr": 94,
+      "ci_run_id": 29870461743,
+      "visual_run_id": 29870461745
     },
     {
       "task_id": "C3-STRATEGY-001",
@@ -347,12 +352,22 @@
     {
       "task_id": "C3-OPS-001",
       "owner": "WS-10",
-      "status": "IN_PROGRESS",
-      "evidence": [],
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/tests/test_campaign_operations_contracts.py",
+        "backend/tests/test_campaign_operations_model.py",
+        "backend/tests/test_campaign_operations_api.py",
+        "backend/tests/test_campaign_operations_postgres.py",
+        "frontend/src/lib/operations-contract-parser.test.ts",
+        "frontend/src/components/operations-workspace.tsx",
+        "docs/product/campaign-operations.md",
+        "docs/api/campaign-operations.md",
+        "docs/testing/c3-ops-001-evidence.md",
+        "program/validations/c3-ops-001.json"
+      ],
       "external_effects": "NONE",
       "blockers": [
-        "C3-STRATEGY-001",
-        "C3-TEAM-001"
+        "Strategy approval, authenticated editing, human acceptance and live environments remain pending"
       ]
     },
     {

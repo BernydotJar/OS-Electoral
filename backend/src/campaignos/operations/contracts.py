@@ -488,13 +488,18 @@ def _topological_order(tasks: tuple[CampaignTask, ...]) -> tuple[UUID, ...]:
             indegree[task.id] += 1
             dependents[dependency_id].append(task.id)
     ready = deque(
-        sorted((task_id for task_id, degree in indegree.items() if degree == 0), key=index.get)
+        sorted(
+            (task_id for task_id, degree in indegree.items() if degree == 0),
+            key=lambda task_id: index[task_id],
+        )
     )
     order: list[UUID] = []
     while ready:
         task_id = ready.popleft()
         order.append(task_id)
-        for dependent_id in sorted(dependents[task_id], key=index.get):
+        for dependent_id in sorted(
+            dependents[task_id], key=lambda candidate_id: index[candidate_id]
+        ):
             indegree[dependent_id] -= 1
             if indegree[dependent_id] == 0:
                 ready.append(dependent_id)
@@ -712,3 +717,10 @@ class WarRoomSnapshotEvidence(BaseModel):
     snapshot: WarRoomSnapshotProjection
     audit_event_id: UUID
     outbox_event_id: UUID
+
+
+class WarRoomSnapshotReadEvidence(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    snapshot: WarRoomSnapshotProjection
+    audit_event_id: UUID

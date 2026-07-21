@@ -292,3 +292,20 @@
 - Verified the ES/EN read-only shell on desktop/mobile, keyboard, reduced motion, zero axe violations, zero horizontal overflow and a non-root daemonless image.
 - Proved that Team Builder creates no `RoleAssignment` or `PermissionGrant`; production remains `BLOCKED` and external effects remain `NONE`.
 - Started `C3-OPS-001` as the next independent increment while Team review publication is completed.
+
+
+## C3-TEAM-001 publication checkpoint — 2026-07-21
+
+- Published clean review branch `agent/c3-team-001-accountability-review@af3e43074e3876fe26f8ba1497269f1d69183bf8`.
+- Draft PR `#94` is based on Candidate Workspace, merge state `CLEAN`; CampaignOS CI `29870461743` and visual review `29870461745` succeeded.
+- The original builder branch is superseded for review after the push wrapper used current HEAD instead of the requested source branch; no force-push or history rewrite was used.
+- Team Builder is `CI_GREEN`; production remains `BLOCKED` and external effects remain `NONE`.
+
+
+## C3-OPS-001 local/PostgreSQL checkpoint — 2026-07-21
+
+- Added revision `20260721_0008`, exact-authorized roadmap and append-only Daily War Room snapshot APIs.
+- Verified DAG/reference integrity, ready/blocked/critical-path derivation, human decisions, replay, optimistic concurrency and snapshot date/version uniqueness.
+- Passed 34 focused tests, 548 full-suite tests, 90.85% coverage and the seven-slice PostgreSQL gate twice.
+- Passed the ES/EN desktop/mobile, keyboard, reduced-motion, zero-overflow, zero-axe and non-root image gates with 39 frontend tests.
+- Recorded `VERIFIED_POSTGRESQL`; production remains `BLOCKED`, branch publication/CI is pending and external effects remain `NONE`.

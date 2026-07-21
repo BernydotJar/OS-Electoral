@@ -8,7 +8,8 @@ export function isLocale(value: string): value is Locale {
 const es = {
   metadata: {
     title: "CampaignOS · Command Center",
-    description: "Shell operativo gobernado para campañas con autoridad humana y evidencia trazable.",
+    description:
+      "Shell operativo gobernado para campañas con autoridad humana y evidencia trazable.",
   },
   common: {
     skip: "Saltar al contenido",
@@ -16,7 +17,8 @@ const es = {
     readOnly: "SOLO LECTURA",
     demo: "DEMO SINTÉTICO",
     live: "SESIÓN VERIFICADA",
-    notApproval: "No constituye aprobación política, legal, financiera, de publicación ni de producción.",
+    notApproval:
+      "No constituye aprobación política, legal, financiera, de publicación ni de producción.",
     localeLabel: "Idioma",
     spanish: "ES",
     english: "EN",
@@ -24,8 +26,10 @@ const es = {
   shell: {
     eyebrow: "CAMPAIGN OPERATING SYSTEM",
     title: "Centro de mando gobernado",
-    subtitle: "Contexto, evidencia y próximos pasos internos sin sustituir a la autoridad humana.",
-    authority: "La IA recomienda; la evidencia sustenta; la persona autorizada decide.",
+    subtitle:
+      "Contexto, evidencia y próximos pasos internos sin sustituir a la autoridad humana.",
+    authority:
+      "La IA recomienda; la evidencia sustenta; la persona autorizada decide.",
     currentContext: "Contexto actual",
     tenant: "Tenant",
     campaign: "Campaña",
@@ -33,7 +37,8 @@ const es = {
     roles: "Roles informativos",
     authorizationFresh: "Autorización evaluada",
     modules: "Módulos",
-    reference: "Referencia visual estática preservada hasta revisión de paridad.",
+    reference:
+      "Referencia visual estática preservada hasta revisión de paridad.",
   },
   states: {
     unauthenticatedTitle: "Se requiere una sesión verificada",
@@ -46,7 +51,8 @@ const es = {
     unavailableBody:
       "No se muestran datos parciales ni cachés cruzados. Conserva el correlation ID para soporte.",
     emptyTitle: "No hay campañas autorizadas",
-    emptyBody: "La sesión es válida, pero no existe una campaña visible bajo grants exactos vigentes.",
+    emptyBody:
+      "La sesión es válida, pero no existe una campaña visible bajo grants exactos vigentes.",
   },
   dashboard: {
     readinessTitle: "Readiness operativo",
@@ -57,11 +63,13 @@ const es = {
     authorityBody:
       "Roles ayudan a orientar la navegación; nunca conceden permisos. Cada operación debe coincidir exactamente con grant, recurso, propósito y scope.",
     evidenceTitle: "Evidencia y auditoría",
-    evidenceBody: "Las lecturas sensibles y escrituras exitosas producen receipts trazables en el backend.",
+    evidenceBody:
+      "Las lecturas sensibles y escrituras exitosas producen receipts trazables en el backend.",
     auditReceipt: "Receipt de lectura",
     noExternal: "Sin efectos externos",
     operationsTitle: "Ruta operativa",
-    operationsBody: "Completa metadatos, configura workspace y comienza intake antes de estrategia o comunicación.",
+    operationsBody:
+      "Completa metadatos, configura workspace y comienza intake antes de estrategia o comunicación.",
     campaignStatus: "Estado de campaña",
     version: "Versión",
     workspaceCount: "Workspaces activos",
@@ -70,8 +78,7 @@ const es = {
   intake: {
     eyebrow: "INTAKE GUIADO · INVESTIGACIÓN PRIMERO",
     title: "Hoja de ruta para comenzar la campaña",
-    body:
-      "Ordena la información mínima antes de investigar, decidir estrategia o activar trabajo externo.",
+    body: "Ordena la información mínima antes de investigar, decidir estrategia o activar trabajo externo.",
     status: "Estado del intake",
     statusLabels: {
       BLOCKED_BY_CAMPAIGN_SETUP: "Bloqueado por configuración de campaña",
@@ -82,9 +89,12 @@ const es = {
     nextAction: "Siguiente paso",
     checks: "Ruta de preparación",
     researchActions: "Investigación habilitada",
-    notStarted: "El intake todavía no ha sido iniciado por una persona autorizada.",
-    notAuthorized: "La sesión no tiene autorización exacta para revisar este intake.",
-    unavailable: "El intake no está disponible temporalmente. No se muestran datos parciales.",
+    notStarted:
+      "El intake todavía no ha sido iniciado por una persona autorizada.",
+    notAuthorized:
+      "La sesión no tiene autorización exacta para revisar este intake.",
+    unavailable:
+      "El intake no está disponible temporalmente. No se muestran datos parciales.",
     noItems: "Evaluado: no se registraron elementos.",
     notAssessed: "Pendiente de evaluación",
     office: "Cargo objetivo",
@@ -113,7 +123,8 @@ const es = {
       evidence_requirements: "Definir evidencia necesaria",
     },
     nextActionLabels: {
-      COMPLETE_CAMPAIGN_SETUP: "Completar la configuración operativa de la campaña",
+      COMPLETE_CAMPAIGN_SETUP:
+        "Completar la configuración operativa de la campaña",
       DEFINE_TARGET_OFFICE: "Definir el cargo y la jurisdicción objetivo",
       DESCRIBE_CANDIDATE_PROJECT: "Describir el proyecto de candidatura",
       ASSESS_CURRENT_TEAM: "Evaluar capacidades y vacíos del equipo",
@@ -124,7 +135,8 @@ const es = {
       BEGIN_RESEARCH: "Comenzar investigación verificable",
     },
     researchActionLabels: {
-      VERIFY_OFFICE_AND_JURISDICTION_EVIDENCE: "Verificar cargo y jurisdicción con evidencia",
+      VERIFY_OFFICE_AND_JURISDICTION_EVIDENCE:
+        "Verificar cargo y jurisdicción con evidencia",
       VALIDATE_CANDIDATE_PROJECT_EVIDENCE: "Validar el proyecto de candidatura",
       ASSESS_TEAM_CAPACITY_GAPS: "Investigar vacíos de capacidad del equipo",
       INVENTORY_ASSET_PROVENANCE: "Verificar procedencia de los activos",
@@ -136,8 +148,7 @@ const es = {
   candidate: {
     eyebrow: "CANDIDATURA · EVIDENCIA Y REVISIÓN HUMANA",
     title: "Workspace ejecutivo de candidatura",
-    body:
-      "Separa declaraciones, evidencia independiente, contradicciones, desarrollo y riesgos antes de cualquier decisión pública.",
+    body: "Separa declaraciones, evidencia independiente, contradicciones, desarrollo y riesgos antes de cualquier decisión pública.",
     status: "Estado interno",
     progress: "checks completos",
     nextAction: "Siguiente acción humana",
@@ -157,9 +168,12 @@ const es = {
     publicBoundary: "Uso público bloqueado",
     publicBoundaryBody:
       "La aprobación interna no autoriza posicionamiento público, estrategia, contenido, contacto, gasto ni movilización.",
-    notStarted: "El workspace de candidatura todavía no ha sido creado por una persona autorizada.",
-    notAuthorized: "La sesión no tiene autorización exacta para revisar esta candidatura.",
-    unavailable: "El workspace de candidatura no está disponible temporalmente. No se muestran datos parciales.",
+    notStarted:
+      "El workspace de candidatura todavía no ha sido creado por una persona autorizada.",
+    notAuthorized:
+      "La sesión no tiene autorización exacta para revisar esta candidatura.",
+    unavailable:
+      "El workspace de candidatura no está disponible temporalmente. No se muestran datos parciales.",
     notAssessed: "Pendiente de evidencia y revisión",
     noItems: "Revisado: no se registraron elementos.",
     readReceipt: "Receipt de lectura",
@@ -207,8 +221,7 @@ const es = {
   teamWorkspace: {
     eyebrow: "EQUIPO · RESPONSABILIDAD Y CAPACIDAD",
     title: "Mapa de equipo y accountability",
-    body:
-      "Hace visibles roles, vacantes, capacidad, RACI, onboarding, formación y recomendaciones de acceso sin convertir etiquetas en permisos.",
+    body: "Hace visibles roles, vacantes, capacidad, RACI, onboarding, formación y recomendaciones de acceso sin convertir etiquetas en permisos.",
     status: "Estado organizacional",
     progress: "checks completos",
     nextAction: "Siguiente acción humana",
@@ -222,9 +235,12 @@ const es = {
     workItems: "Responsabilidades RACI",
     training: "Formación",
     accessRecommendations: "Recomendaciones de acceso",
-    notStarted: "El workspace de equipo todavía no ha sido creado por una persona autorizada.",
-    notAuthorized: "La sesión no tiene autorización exacta para revisar este equipo.",
-    unavailable: "El workspace de equipo no está disponible temporalmente. No se muestran datos parciales.",
+    notStarted:
+      "El workspace de equipo todavía no ha sido creado por una persona autorizada.",
+    notAuthorized:
+      "La sesión no tiene autorización exacta para revisar este equipo.",
+    unavailable:
+      "El workspace de equipo no está disponible temporalmente. No se muestran datos parciales.",
     noItems: "Evaluado: no se registraron elementos.",
     notAssessed: "Pendiente de evaluación",
     readReceipt: "Receipt de lectura",
@@ -263,6 +279,52 @@ const es = {
       INFORMED: "Informado",
     },
   },
+  operations: {
+    eyebrow: "ROADMAP · WAR ROOM DIARIO",
+    title: "Ruta operativa y decisiones de hoy",
+    body: "Ordena fases, dependencias, tareas, blockers y decisiones humanas. No ejecuta trabajo, no contacta personas y no sustituye a la dirección de campaña.",
+    status: "Estado del roadmap",
+    nextAction: "Siguiente acción humana",
+    readyTasks: "Tareas listas",
+    blockedTasks: "Tareas bloqueadas",
+    criticalPath: "Ruta crítica",
+    decisions: "Decisiones requeridas",
+    blockers: "Blockers abiertos",
+    priorities: "Prioridades de hoy",
+    followUp: "Seguimiento",
+    snapshot: "Último War Room",
+    roadmapVersion: "Versión del roadmap",
+    snapshotDate: "Fecha del snapshot",
+    readReceipt: "Receipt de lectura",
+    authorityBoundary: "El roadmap coordina; no autoriza ni ejecuta",
+    authorityBody:
+      "Cada tarea sigue bajo responsabilidad humana. El snapshot es evidencia interna inmutable y no produce efectos externos.",
+    notStarted:
+      "El roadmap operativo todavía no ha sido creado por una persona autorizada.",
+    notAuthorized:
+      "La sesión no tiene autorización exacta para revisar este roadmap.",
+    unavailable:
+      "El roadmap no está disponible temporalmente. No se muestran datos parciales.",
+    snapshotNotStarted:
+      "Todavía no existe un snapshot diario para este roadmap.",
+    snapshotNotAuthorized: "La sesión no puede revisar snapshots del War Room.",
+    snapshotUnavailable: "El último snapshot no está disponible temporalmente.",
+    noItems: "No hay elementos en este estado.",
+    statusLabels: {
+      SETUP_REQUIRED: "Roadmap inicial requerido",
+      IN_PROGRESS: "Roadmap en progreso",
+      READY_FOR_DAILY_OPERATION: "Listo para operación diaria humana",
+      COMPLETE: "Roadmap completado; requiere revisión humana",
+    },
+    nextActionLabels: {
+      DEFINE_ROADMAP: "Definir fases, workstreams y tareas",
+      RESOLVE_BLOCKERS: "Resolver blockers abiertos",
+      MAKE_HUMAN_DECISIONS: "Tomar decisiones humanas pendientes",
+      START_READY_TASKS: "Asignar inicio a las tareas listas",
+      CONTINUE_ACTIVE_WORK: "Continuar trabajo activo",
+      REVIEW_COMPLETION: "Revisar evidencia de cierre",
+    },
+  },
   nav: {
     overview: "Resumen",
     campaigns: "Campañas",
@@ -287,7 +349,8 @@ export type Dictionary = WidenStrings<typeof es>;
 const en: Dictionary = {
   metadata: {
     title: "CampaignOS · Command Center",
-    description: "Governed campaign operations shell with human authority and traceable evidence.",
+    description:
+      "Governed campaign operations shell with human authority and traceable evidence.",
   },
   common: {
     skip: "Skip to content",
@@ -295,7 +358,8 @@ const en: Dictionary = {
     readOnly: "READ ONLY",
     demo: "SYNTHETIC DEMO",
     live: "VERIFIED SESSION",
-    notApproval: "This is not political, legal, financial, publication, or production approval.",
+    notApproval:
+      "This is not political, legal, financial, publication, or production approval.",
     localeLabel: "Language",
     spanish: "ES",
     english: "EN",
@@ -303,8 +367,10 @@ const en: Dictionary = {
   shell: {
     eyebrow: "CAMPAIGN OPERATING SYSTEM",
     title: "Governed command center",
-    subtitle: "Context, evidence, and internal next steps without replacing human authority.",
-    authority: "AI recommends; evidence supports; the authorized person decides.",
+    subtitle:
+      "Context, evidence, and internal next steps without replacing human authority.",
+    authority:
+      "AI recommends; evidence supports; the authorized person decides.",
     currentContext: "Current context",
     tenant: "Tenant",
     campaign: "Campaign",
@@ -325,22 +391,26 @@ const en: Dictionary = {
     unavailableBody:
       "No partial data or cross-tenant cache is shown. Keep the correlation ID for support.",
     emptyTitle: "No authorized campaigns",
-    emptyBody: "The session is valid, but no campaign is visible under current exact grants.",
+    emptyBody:
+      "The session is valid, but no campaign is visible under current exact grants.",
   },
   dashboard: {
     readinessTitle: "Operational readiness",
-    readinessBody: "Measures only the minimum setup required to begin guided intake.",
+    readinessBody:
+      "Measures only the minimum setup required to begin guided intake.",
     checks: "checks complete",
     nextAction: "Next internal action",
     authorityTitle: "Authority boundary",
     authorityBody:
       "Roles orient navigation but never grant permission. Every operation must match the exact grant, resource, purpose, and scope.",
     evidenceTitle: "Evidence and audit",
-    evidenceBody: "Sensitive reads and successful writes produce traceable backend receipts.",
+    evidenceBody:
+      "Sensitive reads and successful writes produce traceable backend receipts.",
     auditReceipt: "Read receipt",
     noExternal: "No external effects",
     operationsTitle: "Operating path",
-    operationsBody: "Complete metadata, configure a workspace, and begin intake before strategy or communications.",
+    operationsBody:
+      "Complete metadata, configure a workspace, and begin intake before strategy or communications.",
     campaignStatus: "Campaign status",
     version: "Version",
     workspaceCount: "Active workspaces",
@@ -349,8 +419,7 @@ const en: Dictionary = {
   intake: {
     eyebrow: "GUIDED INTAKE · RESEARCH FIRST",
     title: "Campaign starting roadmap",
-    body:
-      "Structures the minimum information before research, strategy decisions, or external work begins.",
+    body: "Structures the minimum information before research, strategy decisions, or external work begins.",
     status: "Intake status",
     statusLabels: {
       BLOCKED_BY_CAMPAIGN_SETUP: "Blocked by campaign setup",
@@ -362,8 +431,10 @@ const en: Dictionary = {
     checks: "Preparation path",
     researchActions: "Enabled research",
     notStarted: "The intake has not yet been started by an authorized person.",
-    notAuthorized: "This session lacks the exact authorization required to review this intake.",
-    unavailable: "The intake is temporarily unavailable. Partial data is not displayed.",
+    notAuthorized:
+      "This session lacks the exact authorization required to review this intake.",
+    unavailable:
+      "The intake is temporarily unavailable. Partial data is not displayed.",
     noItems: "Assessed: no items were recorded.",
     notAssessed: "Pending assessment",
     office: "Target office",
@@ -399,11 +470,13 @@ const en: Dictionary = {
       ASSESS_CURRENT_ASSETS: "Inventory assets and provenance",
       ASSESS_BUDGET_EVIDENCE: "Document the actual budget evidence",
       RECORD_KNOWN_UNKNOWNS: "Record what still needs to be resolved",
-      DEFINE_EVIDENCE_REQUIREMENTS: "Define the evidence that must be collected",
+      DEFINE_EVIDENCE_REQUIREMENTS:
+        "Define the evidence that must be collected",
       BEGIN_RESEARCH: "Begin verifiable research",
     },
     researchActionLabels: {
-      VERIFY_OFFICE_AND_JURISDICTION_EVIDENCE: "Verify office and jurisdiction evidence",
+      VERIFY_OFFICE_AND_JURISDICTION_EVIDENCE:
+        "Verify office and jurisdiction evidence",
       VALIDATE_CANDIDATE_PROJECT_EVIDENCE: "Validate the candidate project",
       ASSESS_TEAM_CAPACITY_GAPS: "Research team capacity gaps",
       INVENTORY_ASSET_PROVENANCE: "Verify asset provenance",
@@ -415,8 +488,7 @@ const en: Dictionary = {
   candidate: {
     eyebrow: "CANDIDATE · EVIDENCE AND HUMAN REVIEW",
     title: "Candidate executive workspace",
-    body:
-      "Separates claims, independent evidence, contradictions, development, and risk before any public decision.",
+    body: "Separates claims, independent evidence, contradictions, development, and risk before any public decision.",
     status: "Internal status",
     progress: "checks complete",
     nextAction: "Next human action",
@@ -436,9 +508,12 @@ const en: Dictionary = {
     publicBoundary: "Public use blocked",
     publicBoundaryBody:
       "Internal approval does not authorize public positioning, strategy, content, contact, spending, or mobilization.",
-    notStarted: "The candidate workspace has not yet been created by an authorized person.",
-    notAuthorized: "This session lacks the exact authorization required to review this candidate.",
-    unavailable: "The candidate workspace is temporarily unavailable. Partial data is not displayed.",
+    notStarted:
+      "The candidate workspace has not yet been created by an authorized person.",
+    notAuthorized:
+      "This session lacks the exact authorization required to review this candidate.",
+    unavailable:
+      "The candidate workspace is temporarily unavailable. Partial data is not displayed.",
     notAssessed: "Pending evidence and review",
     noItems: "Reviewed: no items were recorded.",
     readReceipt: "Read receipt",
@@ -486,8 +561,7 @@ const en: Dictionary = {
   teamWorkspace: {
     eyebrow: "TEAM · ACCOUNTABILITY AND CAPACITY",
     title: "Team and accountability map",
-    body:
-      "Makes roles, vacancies, capacity, RACI, onboarding, training, and access recommendations visible without turning labels into permissions.",
+    body: "Makes roles, vacancies, capacity, RACI, onboarding, training, and access recommendations visible without turning labels into permissions.",
     status: "Organizational status",
     progress: "checks complete",
     nextAction: "Next human action",
@@ -501,9 +575,12 @@ const en: Dictionary = {
     workItems: "RACI responsibilities",
     training: "Training",
     accessRecommendations: "Access recommendations",
-    notStarted: "The team workspace has not yet been created by an authorized person.",
-    notAuthorized: "This session lacks the exact authorization required to review this team.",
-    unavailable: "The team workspace is temporarily unavailable. Partial data is not displayed.",
+    notStarted:
+      "The team workspace has not yet been created by an authorized person.",
+    notAuthorized:
+      "This session lacks the exact authorization required to review this team.",
+    unavailable:
+      "The team workspace is temporarily unavailable. Partial data is not displayed.",
     noItems: "Assessed: no items were recorded.",
     notAssessed: "Pending assessment",
     readReceipt: "Read receipt",
@@ -540,6 +617,52 @@ const en: Dictionary = {
       ACCOUNTABLE: "Accountable",
       CONSULTED: "Consulted",
       INFORMED: "Informed",
+    },
+  },
+  operations: {
+    eyebrow: "ROADMAP · DAILY WAR ROOM",
+    title: "Operating path and today's decisions",
+    body: "Orders phases, dependencies, tasks, blockers, and human decisions. It does not execute work, contact people, or replace campaign leadership.",
+    status: "Roadmap status",
+    nextAction: "Next human action",
+    readyTasks: "Ready tasks",
+    blockedTasks: "Blocked tasks",
+    criticalPath: "Critical path",
+    decisions: "Required decisions",
+    blockers: "Open blockers",
+    priorities: "Today's priorities",
+    followUp: "Follow-up",
+    snapshot: "Latest War Room",
+    roadmapVersion: "Roadmap version",
+    snapshotDate: "Snapshot date",
+    readReceipt: "Read receipt",
+    authorityBoundary:
+      "The roadmap coordinates; it does not authorize or execute",
+    authorityBody:
+      "Every task remains under human responsibility. The snapshot is immutable internal evidence and produces no external effects.",
+    notStarted:
+      "The operations roadmap has not yet been created by an authorized person.",
+    notAuthorized:
+      "This session lacks the exact authorization required to review this roadmap.",
+    unavailable:
+      "The roadmap is temporarily unavailable. Partial data is not displayed.",
+    snapshotNotStarted: "No daily snapshot exists for this roadmap yet.",
+    snapshotNotAuthorized: "This session cannot review War Room snapshots.",
+    snapshotUnavailable: "The latest snapshot is temporarily unavailable.",
+    noItems: "There are no items in this state.",
+    statusLabels: {
+      SETUP_REQUIRED: "Initial roadmap required",
+      IN_PROGRESS: "Roadmap in progress",
+      READY_FOR_DAILY_OPERATION: "Ready for human daily operation",
+      COMPLETE: "Roadmap complete; human review required",
+    },
+    nextActionLabels: {
+      DEFINE_ROADMAP: "Define phases, workstreams, and tasks",
+      RESOLVE_BLOCKERS: "Resolve open blockers",
+      MAKE_HUMAN_DECISIONS: "Make pending human decisions",
+      START_READY_TASKS: "Assign the start of ready tasks",
+      CONTINUE_ACTIVE_WORK: "Continue active work",
+      REVIEW_COMPLETION: "Review completion evidence",
     },
   },
   nav: {

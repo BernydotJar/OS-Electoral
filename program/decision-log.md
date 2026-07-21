@@ -230,3 +230,17 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** Team Builder records role purpose, RACI, capacity and exact access recommendations, but never creates memberships, role assignments or permission grants.
 - **Evidence:** backend/frontend contracts, PostgreSQL zero-authority assertions and `docs/testing/c3-team-001-evidence.md`.
 - **Consequence:** every real access change remains a separate exact-authorized human workflow; a descriptive team map cannot escalate privilege.
+
+
+## 2026-07-21 — Roadmap coordination never implies task execution
+
+- **Decision:** Campaign roadmap projections and Daily War Room snapshots may order dependencies, show ready work and identify required human decisions, but cannot change task state, approve strategy, contact citizens or cause an external effect.
+- **Evidence:** operations contracts/service/API, PostgreSQL race/RLS tests, frontend semantic parser and `docs/testing/c3-ops-001-evidence.md`.
+- **Consequence:** all real execution remains a separately authorized human action; roadmap status and next action are advisory internal coordination evidence.
+
+
+## 2026-07-21 — Clean review branches supersede polluted delivery branches
+
+- **Decision:** When the Cloud push wrapper pushed current Ops HEAD to the requested Team branch, preserve the remote history without force-push, restore its tree by fast-forward, and publish a separate clean Team review branch for PR `#94`.
+- **Evidence:** `agent/c3-team-001-accountability-review@af3e430`, PR `#94`, CI `29870461743`, visual `29870461745`.
+- **Consequence:** reviewers receive a clean Team-only history; the original builder branch remains auditable but is not the review source of truth.

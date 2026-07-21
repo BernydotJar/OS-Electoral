@@ -150,7 +150,7 @@
       "id": "C3-TEAM-001",
       "workstream": "WS-08",
       "title": "Team Builder and governed Training Academy baseline",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -170,7 +170,7 @@
       "id": "C3-OPS-001",
       "workstream": "WS-10",
       "title": "Roadmap, War Room, approvals and campaign-health workflows",
-      "status": "IN_PROGRESS",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-STRATEGY-001",
         "C3-TEAM-001"

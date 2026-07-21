@@ -10,17 +10,22 @@ import {
 import type {
   CampaignProjection,
   CampaignReadinessEvidence,
+  CampaignRoadmapReadEvidence,
   CandidateWorkspaceReadEvidence,
   EffectiveMembership,
   GuidedIntakeReadEvidence,
   TeamWorkspaceReadEvidence,
   TenantMeResponse,
+  WarRoomSnapshotReadEvidence,
 } from "@/lib/contracts";
+import { reconcileWarRoomSnapshot } from "@/lib/operations-contract-parser";
 import {
   demoCampaign,
   demoCandidateWorkspace,
+  demoCampaignRoadmap,
   demoGuidedIntake,
   demoTeamWorkspace,
+  demoWarRoomSnapshot,
   demoReadiness,
   demoTenantIdentity,
 } from "@/lib/demo-data";
@@ -35,6 +40,12 @@ export type CandidateWorkspaceAvailability =
   "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
 
 export type TeamWorkspaceAvailability =
+  "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
+
+export type CampaignRoadmapAvailability =
+  "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
+
+export type WarRoomSnapshotAvailability =
   "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
 
 export type ShellViewModel =
@@ -56,6 +67,10 @@ export type ShellViewModel =
       candidateWorkspaceAvailability: CandidateWorkspaceAvailability;
       teamWorkspace: TeamWorkspaceReadEvidence | null;
       teamWorkspaceAvailability: TeamWorkspaceAvailability;
+      campaignRoadmap: CampaignRoadmapReadEvidence | null;
+      campaignRoadmapAvailability: CampaignRoadmapAvailability;
+      warRoomSnapshot: WarRoomSnapshotReadEvidence | null;
+      warRoomSnapshotAvailability: WarRoomSnapshotAvailability;
     }>
   | Readonly<{
       kind: "unavailable";
@@ -100,6 +115,10 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       candidateWorkspaceAvailability: "AVAILABLE",
       teamWorkspace: demoTeamWorkspace,
       teamWorkspaceAvailability: "AVAILABLE",
+      campaignRoadmap: demoCampaignRoadmap,
+      campaignRoadmapAvailability: "AVAILABLE",
+      warRoomSnapshot: demoWarRoomSnapshot,
+      warRoomSnapshotAvailability: "AVAILABLE",
     };
   }
 
@@ -316,6 +335,94 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       }
     }
 
+    const hasRoadmapGrant = tenantIdentity.application_memberships.some(
+      (membership) =>
+        membership.grants.some(
+          (grant) =>
+            grant.action === "read" &&
+            grant.resource_type === "campaign_roadmap" &&
+            grant.resource_id === campaign.id &&
+            grant.campaign_id === campaign.id &&
+            grant.workspace_id === null &&
+            grant.purpose === "Review campaign operations roadmap",
+        ),
+    );
+    let campaignRoadmap: CampaignRoadmapReadEvidence | null = null;
+    let campaignRoadmapAvailability: CampaignRoadmapAvailability =
+      "NOT_AUTHORIZED";
+    if (hasRoadmapGrant) {
+      try {
+        campaignRoadmap = await api.campaignRoadmap(tenantId, campaign.id);
+        if (
+          campaignRoadmap.roadmap.tenant_id !== tenantId ||
+          campaignRoadmap.roadmap.campaign_id !== campaign.id
+        ) {
+          return {
+            kind: "unavailable",
+            code: "CAMPAIGN_ROADMAP_SCOPE_MISMATCH",
+            correlationId: null,
+            configuration: false,
+          };
+        }
+        campaignRoadmapAvailability = "AVAILABLE";
+      } catch (error) {
+        if (error instanceof CampaignOsApiError && error.status === 404) {
+          campaignRoadmapAvailability = "NOT_STARTED";
+        } else if (
+          error instanceof CampaignOsApiError &&
+          error.status === 503
+        ) {
+          campaignRoadmapAvailability = "DEPENDENCY_UNAVAILABLE";
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    const hasSnapshotGrant = tenantIdentity.application_memberships.some(
+      (membership) =>
+        membership.grants.some(
+          (grant) =>
+            grant.action === "read" &&
+            grant.resource_type === "war_room_snapshot" &&
+            grant.resource_id === campaign.id &&
+            grant.campaign_id === campaign.id &&
+            grant.workspace_id === null &&
+            grant.purpose === "Review daily campaign war room snapshot",
+        ),
+    );
+    let warRoomSnapshot: WarRoomSnapshotReadEvidence | null = null;
+    let warRoomSnapshotAvailability: WarRoomSnapshotAvailability =
+      "NOT_AUTHORIZED";
+    if (hasSnapshotGrant) {
+      if (campaignRoadmap === null) {
+        warRoomSnapshotAvailability = "NOT_STARTED";
+      } else {
+        try {
+          warRoomSnapshot = await api.latestWarRoomSnapshot(
+            tenantId,
+            campaign.id,
+          );
+          reconcileWarRoomSnapshot(
+            campaignRoadmap.roadmap,
+            warRoomSnapshot.snapshot,
+          );
+          warRoomSnapshotAvailability = "AVAILABLE";
+        } catch (error) {
+          if (error instanceof CampaignOsApiError && error.status === 404) {
+            warRoomSnapshotAvailability = "NOT_STARTED";
+          } else if (
+            error instanceof CampaignOsApiError &&
+            error.status === 503
+          ) {
+            warRoomSnapshotAvailability = "DEPENDENCY_UNAVAILABLE";
+          } else {
+            throw error;
+          }
+        }
+      }
+    }
+
     return {
       kind: "authorized",
       demo: false,
@@ -331,6 +438,10 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       candidateWorkspaceAvailability,
       teamWorkspace,
       teamWorkspaceAvailability,
+      campaignRoadmap,
+      campaignRoadmapAvailability,
+      warRoomSnapshot,
+      warRoomSnapshotAvailability,
     };
   } catch (error) {
     if (error instanceof CampaignOsApiError) {

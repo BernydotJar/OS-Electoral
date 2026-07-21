@@ -1,0 +1,54 @@
+{
+  "increment": "C3-OPS-001",
+  "verified_at": "2026-07-21",
+  "branch": "agent/c3-ops-001-roadmap-war-room",
+  "base": "agent/c3-team-001-accountability-review@af3e43074e3876fe26f8ba1497269f1d69183bf8",
+  "implementation_commit": "PENDING",
+  "status": "VERIFIED_POSTGRESQL",
+  "production_status": "BLOCKED",
+  "external_effects": "NONE",
+  "results": {
+    "focused": {
+      "passed": 34
+    },
+    "pytest": {
+      "passed": 548,
+      "skipped": 7
+    },
+    "coverage": {
+      "percent": 90.85,
+      "floor": 90,
+      "result": "PASS"
+    },
+    "frontend": {
+      "vitest": 39,
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "vulnerabilities": 0
+    },
+    "postgresql": {
+      "result": "PASS",
+      "consecutive_runs": 2,
+      "selected": 7,
+      "migration_head": "20260721_0008"
+    },
+    "browser": {
+      "result": "PASS",
+      "axe_violations": 0,
+      "horizontal_overflow": 0
+    },
+    "image": {
+      "result": "PASS",
+      "runtime_user": "10001:10001"
+    },
+    "program_truth": "PASS_PRODUCTION_BLOCKED"
+  },
+  "limitations": [
+    "Roadmap coordination is not strategy generation or approval",
+    "Authenticated non-technical editing is not implemented",
+    "Snapshot creation remains API-only and exact-authorized",
+    "No live OIDC, telemetry, RDS, dev, staging or production environment is claimed",
+    "Human review, merge and production approval remain pending"
+  ]
+}

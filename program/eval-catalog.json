@@ -258,14 +258,25 @@
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
       "evidence": [
-        "tests/test_daily_workflow.py",
-        "tests/test_campaign_workspace.py"
+        "backend/tests/test_campaign_operations_contracts.py",
+        "backend/tests/test_campaign_operations_model.py",
+        "backend/tests/test_campaign_operations_api.py",
+        "backend/tests/test_campaign_operations_postgres.py",
+        "frontend/src/lib/operations-contract-parser.test.ts",
+        "frontend/src/components/operations-workspace.tsx",
+        "docs/product/campaign-operations.md",
+        "docs/api/campaign-operations.md",
+        "docs/testing/c3-ops-001-evidence.md",
+        "program/validations/c3-ops-001.json"
       ],
       "commands": [
-        "make test"
+        "make verify",
+        "CAMPAIGNOS_TEST_DATABASE_URL=<isolated *_test URL> make test-postgres",
+        "make frontend-e2e",
+        "make frontend-image-verify"
       ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Prototype workflow evidence only; no PostgreSQL roadmap API."
+      "limitations": "Durable exact-authorized roadmap, DAG, PostgreSQL and read-only ES/EN surface are verified; strategy approval, authenticated editing, human acceptance and live environments remain absent."
     },
     {
       "id": "EVAL-WARROOM-001",
@@ -273,14 +284,25 @@
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
       "evidence": [
-        "tests/test_daily_workflow.py",
-        "scripts/frontend/validate_daily_war_room.py"
+        "backend/tests/test_campaign_operations_contracts.py",
+        "backend/tests/test_campaign_operations_model.py",
+        "backend/tests/test_campaign_operations_api.py",
+        "backend/tests/test_campaign_operations_postgres.py",
+        "frontend/src/lib/operations-contract-parser.test.ts",
+        "frontend/src/components/operations-workspace.tsx",
+        "docs/product/campaign-operations.md",
+        "docs/api/campaign-operations.md",
+        "docs/testing/c3-ops-001-evidence.md",
+        "program/validations/c3-ops-001.json"
       ],
       "commands": [
-        "make test"
+        "make verify",
+        "CAMPAIGNOS_TEST_DATABASE_URL=<isolated *_test URL> make test-postgres",
+        "make frontend-e2e",
+        "make frontend-image-verify"
       ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Static/prototype Daily War Room, not a durable authenticated application journey."
+      "limitations": "Append-only exact-version Daily War Room snapshots and read-only ES/EN surface are verified; live facilitation, alerts, authenticated creation UI and human acceptance remain absent."
     },
     {
       "id": "EVAL-TRAINING-001",

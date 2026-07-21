@@ -760,8 +760,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "TEAM_BUILDER_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-OPS-001"
+      "status": "TEAM_BUILDER_CI_GREEN",
+      "next_increment": "C3-TRAINING-001"
     },
     {
       "id": "WS-09",
@@ -772,8 +772,8 @@
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "STATIC_PROTOTYPE",
-      "next_increment": "C3-OPS-001"
+      "status": "ROADMAP_WAR_ROOM_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-OPS-002"
     },
     {
       "id": "WS-11",
@@ -917,7 +917,7 @@
     },
     {
       "id": "C3-TEAM-001",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -935,7 +935,7 @@
     },
     {
       "id": "C3-OPS-001",
-      "status": "ACTIVE",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-STRATEGY-001",
         "C3-TEAM-001"

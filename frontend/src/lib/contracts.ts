@@ -469,3 +469,163 @@ export type TeamWorkspaceReadEvidence = Readonly<{
   workspace: TeamWorkspaceProjection;
   audit_event_id: UUID;
 }>;
+
+export type CampaignPhaseStatus = "PLANNED" | "ACTIVE" | "COMPLETE";
+export type CampaignWorkstreamStatus =
+  "PLANNED" | "ACTIVE" | "PAUSED" | "COMPLETE";
+export type CampaignMilestoneStatus = "PLANNED" | "IN_PROGRESS" | "COMPLETE";
+export type CampaignTaskExecutionStatus =
+  "PLANNED" | "IN_PROGRESS" | "COMPLETE";
+export type CampaignBlockerSeverity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+export type CampaignBlockerStatus = "OPEN" | "RESOLVED";
+export type CampaignDecisionStatus = "REQUIRED" | "DECIDED" | "DEFERRED";
+export type CampaignFollowUpStatus = "OPEN" | "COMPLETE";
+export type CampaignRoadmapStatus =
+  "SETUP_REQUIRED" | "IN_PROGRESS" | "READY_FOR_DAILY_OPERATION" | "COMPLETE";
+export type CampaignRoadmapNextAction =
+  | "DEFINE_ROADMAP"
+  | "RESOLVE_BLOCKERS"
+  | "MAKE_HUMAN_DECISIONS"
+  | "START_READY_TASKS"
+  | "CONTINUE_ACTIVE_WORK"
+  | "REVIEW_COMPLETION";
+export type CampaignOperationsLimitation =
+  | "HUMAN_DECISIONS_REQUIRED"
+  | "NO_AUTONOMOUS_TASK_EXECUTION"
+  | "NO_CITIZEN_CONTACT"
+  | "NO_EXTERNAL_EFFECTS";
+
+export type CampaignPhase = Readonly<{
+  id: UUID;
+  name: string;
+  sequence: number;
+  start_date: string;
+  end_date: string;
+  status: CampaignPhaseStatus;
+}>;
+
+export type CampaignOperationsWorkstream = Readonly<{
+  id: UUID;
+  name: string;
+  purpose: string;
+  accountable_role_id: UUID;
+  status: CampaignWorkstreamStatus;
+}>;
+
+export type CampaignMilestone = Readonly<{
+  id: UUID;
+  phase_id: UUID;
+  name: string;
+  completion_criteria: string;
+  owner_role_id: UUID;
+  due_date: string;
+  status: CampaignMilestoneStatus;
+}>;
+
+export type CampaignOperationsTask = Readonly<{
+  id: UUID;
+  phase_id: UUID;
+  workstream_id: UUID;
+  milestone_id: UUID | null;
+  title: string;
+  owner_role_id: UUID;
+  execution_status: CampaignTaskExecutionStatus;
+  dependency_ids: readonly UUID[];
+  due_date: string;
+  evidence_refs: readonly UUID[];
+}>;
+
+export type CampaignOperationsBlocker = Readonly<{
+  id: UUID;
+  task_id: UUID | null;
+  severity: CampaignBlockerSeverity;
+  status: CampaignBlockerStatus;
+  owner_role_id: UUID;
+  description: string;
+  resolution_condition: string;
+}>;
+
+export type CampaignOperationsDecision = Readonly<{
+  id: UUID;
+  title: string;
+  human_role_id: UUID;
+  options: readonly string[];
+  due_date: string;
+  status: CampaignDecisionStatus;
+  decision: string | null;
+}>;
+
+export type CampaignOperationsFollowUp = Readonly<{
+  id: UUID;
+  title: string;
+  owner_role_id: UUID;
+  due_date: string;
+  status: CampaignFollowUpStatus;
+}>;
+
+export type CampaignOperationsLearningNote = Readonly<{
+  id: UUID;
+  title: string;
+  note: string;
+  evidence_refs: readonly UUID[];
+}>;
+
+export type CampaignRoadmapProjection = Readonly<{
+  id: UUID;
+  tenant_id: UUID;
+  campaign_id: UUID;
+  campaign_version: number;
+  campaign_status: "DRAFT" | "ACTIVE";
+  campaign_name: string;
+  title: string;
+  phases: readonly CampaignPhase[] | null;
+  workstreams: readonly CampaignOperationsWorkstream[] | null;
+  milestones: readonly CampaignMilestone[] | null;
+  tasks: readonly CampaignOperationsTask[] | null;
+  blockers: readonly CampaignOperationsBlocker[] | null;
+  decisions: readonly CampaignOperationsDecision[] | null;
+  follow_up_items: readonly CampaignOperationsFollowUp[] | null;
+  learning_notes: readonly CampaignOperationsLearningNote[] | null;
+  status: CampaignRoadmapStatus;
+  execution_order: readonly UUID[];
+  ready_task_ids: readonly UUID[];
+  blocked_task_ids: readonly UUID[];
+  critical_path_task_ids: readonly UUID[];
+  open_blocker_count: number;
+  required_decision_count: number;
+  next_action: CampaignRoadmapNextAction;
+  authority_effect: "NONE";
+  external_effects: "NONE";
+  limitation_codes: readonly CampaignOperationsLimitation[];
+  version: number;
+  created_at: string;
+  updated_at: string;
+}>;
+
+export type CampaignRoadmapReadEvidence = Readonly<{
+  roadmap: CampaignRoadmapProjection;
+  audit_event_id: UUID;
+}>;
+
+export type WarRoomSnapshotProjection = Readonly<{
+  id: UUID;
+  tenant_id: UUID;
+  campaign_id: UUID;
+  roadmap_id: UUID;
+  roadmap_version: number;
+  snapshot_date: string;
+  priorities: readonly string[];
+  ready_task_ids: readonly UUID[];
+  blocked_task_ids: readonly UUID[];
+  required_decision_ids: readonly UUID[];
+  follow_up_notes: readonly string[];
+  learning_note_ids: readonly UUID[];
+  authority_effect: "NONE";
+  external_effects: "NONE";
+  created_at: string;
+}>;
+
+export type WarRoomSnapshotReadEvidence = Readonly<{
+  snapshot: WarRoomSnapshotProjection;
+  audit_event_id: UUID;
+}>;
