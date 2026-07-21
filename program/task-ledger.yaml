@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-19",
-  "branch": "agent/c3-api-001-campaign-read-boundary",
+  "branch": "agent/c3-api-002-idempotency",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -115,11 +115,13 @@
         "backend/tests/test_campaign_read_model.py",
         "backend/tests/test_campaign_list_api.py",
         "backend/tests/test_campaign_write_model.py",
-        "backend/tests/test_campaign_write_api.py"
+        "backend/tests/test_campaign_write_api.py",
+        "backend/src/campaignos/data/models.py",
+        "backend/migrations/versions/20260721_0002_idempotency_records.py"
       ],
       "external_effects": "NONE",
       "blockers": [
-        "No idempotency contract or broader domain writes",
+        "No broader domain writes",
         "No background worker runtime"
       ]
     },
