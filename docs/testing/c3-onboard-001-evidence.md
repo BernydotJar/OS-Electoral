@@ -88,4 +88,20 @@ No CRITICAL or HIGH finding remains open inside this bounded increment.
 - The dynamic shell is read-only; an authenticated non-technical mutation flow for starting and editing intake remains future work.
 - No live OIDC provider, customer tenant-selection workflow, RDS, dev, staging or production runtime is claimed.
 - Research actions are instructions for evidence collection only; no agent runtime, web research, strategy generation or external execution occurs.
-- Draft PR, exact remote SHA and CI evidence must be added after publication.
+- Human review, merge, live environment verification and production approval remain pending.
+
+## Remote and CI receipt
+
+```yaml
+implementation_commit: aa6fe239887173f3fb83366b640ad7b3121f361c
+remote_sha: aa6fe239887173f3fb83366b640ad7b3121f361c
+draft_pr: 92
+base: agent/c3-iam-002-identity-lifecycle
+merge_state: CLEAN
+campaignos_ci:
+  run_id: 29865306720
+  conclusion: SUCCESS
+runtime_visual:
+  run_id: 29865306576
+  conclusion: SUCCESS
+```

@@ -131,10 +131,19 @@
       "id": "C3-ONBOARD-001",
       "workstream": "WS-07",
       "title": "Persisted guided intake and research-first campaign roadmap",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
+      ]
+    },
+    {
+      "id": "C3-CANDIDATE-001",
+      "workstream": "WS-07",
+      "title": "Evidence-backed candidate workspace and human review boundary",
+      "status": "READY",
+      "depends_on": [
+        "C3-ONBOARD-001"
       ]
     },
     {

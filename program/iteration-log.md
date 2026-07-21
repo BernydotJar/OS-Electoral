@@ -255,3 +255,12 @@
 - Disposable PostgreSQL 15 UTF8 gate passed twice: `4 passed`, `5 deselected` per run, covering migration, forced RLS, constrained runtime roles, concurrency, replay and tenant isolation.
 - Actionlint, `pip-audit`, effective-worktree Gitleaks, 25-commit `origin/main..HEAD` Gitleaks and `git diff --check` PASS.
 - Scope remains `VERIFIED_POSTGRESQL_LOCAL_ONLY` until explicit branch push, exact remote SHA, stacked draft PR and exact-head CI are recorded. Production remains `BLOCKED`; external effects remain `NONE`.
+
+## C3-ONBOARD-001 publication checkpoint - 2026-07-21
+
+- Published `agent/c3-onboard-001-guided-intake` at `aa6fe239887173f3fb83366b640ad7b3121f361c` and verified exact local/origin SHA equality.
+- `Cloud_Sandbox_MCP.git_push` succeeded with an explicit branch against the existing checkout, without Docker-in-Docker initialization or a post-push wrapper error.
+- Opened draft PR `#92` against `agent/c3-iam-002-identity-lifecycle`; base, head and head SHA are exact and merge state is `CLEAN`.
+- CampaignOS CI `29865306720` and runtime visual review `29865306576` succeeded at the exact implementation head.
+- `C3-ONBOARD-001` is `CHECKPOINT_COMPLETED`; production remains `BLOCKED`, no merge/deployment occurred and external effects remain `NONE`.
+- Selected `C3-CANDIDATE-001` as the next executable, separately scoped increment.

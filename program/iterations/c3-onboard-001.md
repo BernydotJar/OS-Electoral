@@ -1,6 +1,6 @@
 # C3-ONBOARD-001 - Persisted guided campaign intake
 
-- `status`: `VERIFIED_POSTGRESQL_LOCAL_ONLY`
+- `status`: `CI_GREEN`
 - `branch`: `agent/c3-onboard-001-guided-intake`
 - `base`: `agent/c3-iam-002-identity-lifecycle@fecb1d347389eebd08d04be6d38a3f518787e4e4`
 - `production_status`: `BLOCKED`
@@ -100,10 +100,14 @@ Statuses:
 
 ```yaml
 verified_at: 2026-07-21 America/Guatemala
-implementation_state: VERIFIED_POSTGRESQL_LOCAL_ONLY
-branch_publication: PENDING
-draft_pr: PENDING
-ci: PENDING
+implementation_state: CI_GREEN
+implementation_commit: aa6fe239887173f3fb83366b640ad7b3121f361c
+branch_publication: PUBLISHED_SHA_VERIFIED
+draft_pr: 92
+ci:
+  campaignos_run: 29865306720
+  runtime_visual_run: 29865306576
+  conclusion: SUCCESS
 full_suite:
   passed: 425
   skipped: 4
@@ -135,3 +139,16 @@ external_effects: NONE
 The Critic and Red Team closed two contract gaps before this checkpoint: source fields are now reconciled against every canonical check and reason code, and frontend navigation is bound to the exact selected campaign rather than any guided-intake grant. No CRITICAL or HIGH finding remains open inside this bounded slice.
 
 Remaining limitations are the read-only mutation UX, live identity/tenant selection, customer acceptance, remote CI and all production environment/human gates.
+
+## Publication checkpoint
+
+- implementation commit: `aa6fe239887173f3fb83366b640ad7b3121f361c`;
+- remote branch SHA: exact match;
+- draft PR: `#92` against `agent/c3-iam-002-identity-lifecycle`;
+- CampaignOS CI: `29865306720` `SUCCESS`;
+- runtime visual review: `29865306576` `SUCCESS`;
+- merge state at verification: `CLEAN`;
+- production: `BLOCKED`;
+- external effects: `NONE`.
+
+`C3-CANDIDATE-001` is selected as the next executable, separately scoped increment.

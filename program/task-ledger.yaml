@@ -267,7 +267,7 @@
     {
       "task_id": "C3-ONBOARD-001",
       "owner": "WS-07",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/migrations/versions/20260721_0005_guided_intake.py",
         "backend/tests/test_guided_intake_contracts.py",
@@ -280,9 +280,21 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Remote branch, draft PR and exact-head CI pending",
-        "Authenticated non-technical mutation journey and human acceptance remain future work"
-      ]
+        "Human review and merge remain pending",
+        "Authenticated non-technical mutation journey and live environments remain future work"
+      ],
+      "implementation_commit": "aa6fe239887173f3fb83366b640ad7b3121f361c",
+      "head_commit": "aa6fe239887173f3fb83366b640ad7b3121f361c",
+      "draft_pr": 92,
+      "ci_run_id": 29865306720
+    },
+    {
+      "task_id": "C3-CANDIDATE-001",
+      "owner": "WS-07",
+      "status": "READY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": []
     },
     {
       "task_id": "C3-TEAM-001",
