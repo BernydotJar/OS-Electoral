@@ -32,6 +32,7 @@ import type {
   GuidedIntakeReadEvidence,
   MeResponse,
   ProblemDetail,
+  StrategyWorkspaceReadEvidence,
   TeamWorkspaceReadEvidence,
   WarRoomSnapshotReadEvidence,
   TenantMeResponse,

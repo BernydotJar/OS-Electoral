@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from datetime import date, datetime
 from typing import Annotated, Literal, Self
 from uuid import UUID
@@ -75,9 +76,9 @@ def _normalized_text(value: str) -> str:
 def _normalize_text_list(value: object) -> object:
     if value is None:
         return ()
-    if isinstance(value, (str, bytes, bytearray)):
+    if isinstance(value, (str, bytes, bytearray)) or not isinstance(value, Iterable):
         raise ValueError("expected an array of strings")
-    normalized = tuple(_normalized_text(str(item)) for item in value)  # type: ignore[arg-type]
+    normalized = tuple(_normalized_text(str(item)) for item in value)
     if any(not item for item in normalized):
         raise ValueError("array values must be non-empty")
     if len(set(normalized)) != len(normalized):
@@ -88,9 +89,9 @@ def _normalize_text_list(value: object) -> object:
 def _normalize_uuid_list(value: object) -> object:
     if value is None:
         return ()
-    if isinstance(value, (str, bytes, bytearray)):
+    if isinstance(value, (str, bytes, bytearray)) or not isinstance(value, Iterable):
         raise ValueError("expected an array of UUIDs")
-    parsed = tuple(UUID(str(item)) for item in value)  # type: ignore[arg-type]
+    parsed = tuple(UUID(str(item)) for item in value)
     if len(set(parsed)) != len(parsed):
         raise ValueError("UUID references must be unique")
     return parsed

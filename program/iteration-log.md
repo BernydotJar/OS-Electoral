@@ -306,7 +306,7 @@
 
 - Added revision `20260721_0008`, exact-authorized roadmap and append-only Daily War Room snapshot APIs.
 - Verified DAG/reference integrity, ready/blocked/critical-path derivation, human decisions, replay, optimistic concurrency and snapshot date/version uniqueness.
-- Passed 34 focused tests, 548 full-suite tests, 90.85% coverage and the seven-slice PostgreSQL gate twice.
+- Passed 37 focused tests, 548 full-suite tests, 90.85% coverage and the seven-slice PostgreSQL gate twice.
 - Passed the ES/EN desktop/mobile, keyboard, reduced-motion, zero-overflow, zero-axe and non-root image gates with 39 frontend tests.
 - Recorded `VERIFIED_POSTGRESQL`; production remains `BLOCKED`, branch publication/CI is pending and external effects remain `NONE`.
 
@@ -318,3 +318,13 @@
 - Corrected program scope: this internal roadmap/War Room slice depends on Team Builder, not on strategy persistence or approval.
 - Recorded `C3-OPS-001` as `CI_GREEN`; production remains `BLOCKED` and external effects remain `NONE`.
 - Selected `C3-STRATEGY-001` as the next independent executable increment.
+
+
+## C3-STRATEGY-001 local/PostgreSQL checkpoint — 2026-07-21
+
+- Closed incomplete PR #96 implementation with a durable SQLAlchemy adapter, exact-authorized decision endpoint, corrected RLS setting and fail-closed app wiring.
+- Verified 37 focused tests, 585 full-suite tests, 8 skips, 90.70% coverage, 48 frontend tests and eight PostgreSQL slices twice.
+- Passed ES/EN/mobile/WCAG/browser and daemonless non-root image gates.
+- Remediated the `sharp <0.35.0` transitive advisory with a locked `sharp 0.35.3` override and zero audit vulnerabilities.
+- Recorded `VERIFIED_POSTGRESQL`; corrected branch publication and CI remain pending.
+- Production remains `BLOCKED`; external effects remain `NONE`.

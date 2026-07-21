@@ -1,7 +1,7 @@
 # C3-STRATEGY-001 — Evidence-first Strategy and Decision Room
 
 - `workstream`: `WS-09`
-- `status`: `IN_PROGRESS`
+- `status`: `VERIFIED_POSTGRESQL`
 - `branch`: `agent/c3-strategy-001-evidence-decision-room`
 - `base`: `agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e`
 
@@ -69,3 +69,15 @@ Roles remain informational. Every operation must match principal, tenant, campai
 - citizen contact, publication, spending or mobilization;
 - live provider calls;
 - merge, deployment, force-push or destructive persistent-data migration.
+
+
+## Local/PostgreSQL checkpoint — 2026-07-21
+
+- revision `20260721_0009` and ORM metadata are reversible and aligned;
+- create/read/update/decision are exact-authorized, audited and fail closed;
+- full locked suite: 585 passed, 8 skipped, 90.72% coverage;
+- frontend: 48 tests, strict TypeScript, lint, build and zero audit vulnerabilities;
+- PostgreSQL combined gate: 8 selected slices, two clean consecutive runs;
+- browser: ES/EN, mobile, keyboard, reduced motion, zero overflow and zero axe violations;
+- daemonless frontend image: UID/GID 10001:10001;
+- production remains `BLOCKED`; corrected PR #96 head/CI are pending.

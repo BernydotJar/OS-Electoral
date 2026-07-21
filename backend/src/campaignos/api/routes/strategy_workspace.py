@@ -14,6 +14,8 @@ from campaignos.identity.authorization import (
     TenantAuthorizationContext,
 )
 from campaignos.strategy import (
+    StrategyDecisionEvidence,
+    StrategyDecisionRequest,
     StrategyWorkspaceCreate,
     StrategyWorkspaceCreateEvidence,
     StrategyWorkspaceReadEvidence,
@@ -33,16 +35,27 @@ from campaignos.strategy.service import (
 
 router = APIRouter(tags=["strategy workspace"])
 
-CREATE_TEAM_WORKSPACE_PURPOSE = "Create campaign strategy workspace"
-READ_TEAM_WORKSPACE_PURPOSE = "Review campaign strategy workspace"
-UPDATE_TEAM_WORKSPACE_PURPOSE = "Maintain campaign strategy workspace"
+CREATE_STRATEGY_PURPOSE = "Create campaign strategy workspace"
+READ_STRATEGY_PURPOSE = "Review campaign strategy workspace"
+UPDATE_STRATEGY_PURPOSE = "Maintain campaign strategy workspace"
+DECIDE_STRATEGY_PURPOSE = "Approve internal campaign strategy option"
 
 
 def strategy_workspace_service(request: Request) -> StrategyWorkspaceService:
     return cast(StrategyWorkspaceService, request.app.state.strategy_workspace_service)
 
 
-StrategyWorkspaceServiceDependency = Annotated[StrategyWorkspaceService, Depends(strategy_workspace_service)]
+StrategyWorkspaceServiceDependency = Annotated[
+    StrategyWorkspaceService,
+    Depends(strategy_workspace_service),
+]
+
+StrategyEvidence = (
+    StrategyWorkspaceCreateEvidence
+    | StrategyWorkspaceReadEvidence
+    | StrategyWorkspaceUpdateEvidence
+    | StrategyDecisionEvidence
+)
 
 
 def _exact_grant(
@@ -88,7 +101,8 @@ def _expected_version(request: Request, value: str | None) -> int:
         raise HTTPException(
             status_code=status.HTTP_428_PRECONDITION_REQUIRED,
             detail=(
-                "Exactly one If-Match header with the current strategy workspace version is required"
+                "Exactly one If-Match header with the current strategy "
+                "workspace version is required"
             ),
         )
     normalized = value.strip()
@@ -102,32 +116,34 @@ def _expected_version(request: Request, value: str | None) -> int:
     return int(normalized)
 
 
-def _raise_team_error(exc: Exception) -> NoReturn:
+def _raise_strategy_error(exc: Exception) -> NoReturn:
     if isinstance(exc, StrategyWorkspaceIdempotencyConflict):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Idempotency key conflicts with a previous strategy workspace request",
+        raise ProblemException(
+            status=status.HTTP_409_CONFLICT,
+            title="Idempotency conflict",
+            detail="The idempotency key conflicts with an earlier strategy request",
+            code="IDEMPOTENCY_CONFLICT",
         ) from exc
     if isinstance(exc, StrategyWorkspacePrerequisiteConflict):
         raise ProblemException(
             status=status.HTTP_409_CONFLICT,
-            title="Candidate workspace required",
-            detail="Candidate evidence workspace must exist before team setup",
-            code="CANDIDATE_WORKSPACE_REQUIRED",
+            title="Strategy prerequisites required",
+            detail="Candidate and team workspaces are required before strategy work",
+            code="STRATEGY_PREREQUISITES_REQUIRED",
         ) from exc
     if isinstance(exc, StrategyWorkspaceConflict):
         raise ProblemException(
             status=status.HTTP_409_CONFLICT,
             title="Strategy workspace conflict",
-            detail="A strategy workspace already exists for this campaign",
+            detail="The strategy workspace conflicts with the requested operation",
             code="RESOURCE_CONFLICT",
         ) from exc
     if isinstance(exc, StrategyWorkspaceEvidenceConflict):
         raise ProblemException(
             status=status.HTTP_409_CONFLICT,
-            title="Team evidence conflict",
-            detail="Strategy workspace data conflicts with organizational invariants",
-            code="TEAM_EVIDENCE_CONFLICT",
+            title="Strategy evidence conflict",
+            detail="Strategy evidence conflicts with deterministic governance rules",
+            code="STRATEGY_EVIDENCE_CONFLICT",
         ) from exc
     if isinstance(exc, StrategyWorkspaceVersionConflict):
         raise HTTPException(
@@ -151,7 +167,7 @@ def _verify_scope(
     *,
     tenant_id: UUID,
     campaign_id: UUID,
-    evidence: StrategyWorkspaceCreateEvidence | StrategyWorkspaceReadEvidence | StrategyWorkspaceUpdateEvidence,
+    evidence: StrategyEvidence,
 ) -> None:
     workspace = evidence.workspace
     if workspace.tenant_id != tenant_id or workspace.campaign_id != campaign_id:
@@ -164,6 +180,31 @@ def _verify_scope(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Strategy workspace is temporarily unavailable",
         )
+    if isinstance(evidence, StrategyDecisionEvidence):
+        if evidence.decision.workspace_version != workspace.version:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Strategy workspace is temporarily unavailable",
+            )
+
+
+def _grant_or_forbid(
+    authorization: TenantAuthorizationContext,
+    *,
+    campaign_id: UUID,
+    action: str,
+    purpose: str,
+    detail: str,
+) -> EffectivePermissionGrant:
+    grant = _exact_grant(
+        authorization,
+        campaign_id=campaign_id,
+        action=action,
+        purpose=purpose,
+    )
+    if grant is None:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=detail)
+    return grant
 
 
 @router.post(
@@ -181,8 +222,8 @@ def _verify_scope(
     },
     summary="Create campaign strategy workspace",
     description=(
-        "Creates one tenant/campaign accountability workspace. Role labels and access "
-        "recommendations never create application authority or external effects."
+        "Creates an internal evidence-first Decision Room. It grants no political, "
+        "publication, spending, mobilization, targeting or contact authority."
     ),
 )
 def create_strategy_workspace(
@@ -195,23 +236,16 @@ def create_strategy_workspace(
     service: StrategyWorkspaceServiceDependency,
     idempotency_key: Annotated[
         str | None,
-        Header(
-            alias="Idempotency-Key",
-            description="Required stable key for one strategy-workspace creation intent",
-        ),
+        Header(alias="Idempotency-Key", description="Required stable creation key"),
     ] = None,
 ) -> StrategyWorkspaceCreateEvidence:
-    grant = _exact_grant(
+    grant = _grant_or_forbid(
         authorization,
         campaign_id=campaign_id,
         action="create",
-        purpose=CREATE_TEAM_WORKSPACE_PURPOSE,
+        purpose=CREATE_STRATEGY_PURPOSE,
+        detail="Strategy workspace creation is not authorized",
     )
-    if grant is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Strategy workspace creation is not authorized",
-        )
     try:
         evidence = service.create(
             tenant_id,
@@ -224,14 +258,8 @@ def create_strategy_workspace(
             correlation_id=getattr(request.state, "correlation_id", "unknown"),
             idempotency_key=_required_idempotency_key(request, idempotency_key),
         )
-    except (
-        StrategyWorkspaceConflict,
-        StrategyWorkspaceIdempotencyConflict,
-        StrategyWorkspaceNotFound,
-        StrategyWorkspacePrerequisiteConflict,
-        StrategyWorkspaceUnavailable,
-    ) as exc:
-        _raise_team_error(exc)
+    except Exception as exc:
+        _raise_strategy_error(exc)
     _verify_scope(tenant_id=tenant_id, campaign_id=campaign_id, evidence=evidence)
     response.headers["Location"] = request.url.path
     response.headers["ETag"] = f'"{evidence.workspace.version}"'
@@ -252,17 +280,13 @@ def get_strategy_workspace(
     authorization: CurrentTenantAuthorization,
     service: StrategyWorkspaceServiceDependency,
 ) -> StrategyWorkspaceReadEvidence:
-    grant = _exact_grant(
+    grant = _grant_or_forbid(
         authorization,
         campaign_id=campaign_id,
         action="read",
-        purpose=READ_TEAM_WORKSPACE_PURPOSE,
+        purpose=READ_STRATEGY_PURPOSE,
+        detail="Strategy workspace read is not authorized",
     )
-    if grant is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Strategy workspace read is not authorized",
-        )
     try:
         evidence = service.get(
             tenant_id,
@@ -273,8 +297,8 @@ def get_strategy_workspace(
             authorization_purpose=grant.purpose,
             correlation_id=getattr(request.state, "correlation_id", "unknown"),
         )
-    except (StrategyWorkspaceNotFound, StrategyWorkspaceUnavailable) as exc:
-        _raise_team_error(exc)
+    except Exception as exc:
+        _raise_strategy_error(exc)
     _verify_scope(tenant_id=tenant_id, campaign_id=campaign_id, evidence=evidence)
     response.headers["ETag"] = f'"{evidence.workspace.version}"'
     return evidence
@@ -296,30 +320,20 @@ def update_strategy_workspace(
     service: StrategyWorkspaceServiceDependency,
     if_match: Annotated[
         str | None,
-        Header(
-            alias="If-Match",
-            description="Required quoted optimistic-concurrency version",
-        ),
+        Header(alias="If-Match", description="Required current workspace version"),
     ] = None,
     idempotency_key: Annotated[
         str | None,
-        Header(
-            alias="Idempotency-Key",
-            description="Required stable key for one strategy-workspace update intent",
-        ),
+        Header(alias="Idempotency-Key", description="Required stable update key"),
     ] = None,
 ) -> StrategyWorkspaceUpdateEvidence:
-    grant = _exact_grant(
+    grant = _grant_or_forbid(
         authorization,
         campaign_id=campaign_id,
         action="update",
-        purpose=UPDATE_TEAM_WORKSPACE_PURPOSE,
+        purpose=UPDATE_STRATEGY_PURPOSE,
+        detail="Strategy workspace update is not authorized",
     )
-    if grant is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Strategy workspace update is not authorized",
-        )
     expected_version = _expected_version(request, if_match)
     try:
         evidence = service.update(
@@ -334,16 +348,70 @@ def update_strategy_workspace(
             correlation_id=getattr(request.state, "correlation_id", "unknown"),
             idempotency_key=_required_idempotency_key(request, idempotency_key),
         )
-    except (
-        StrategyWorkspaceEvidenceConflict,
-        StrategyWorkspaceIdempotencyConflict,
-        StrategyWorkspaceNotFound,
-        StrategyWorkspaceUnavailable,
-        StrategyWorkspaceVersionConflict,
-    ) as exc:
-        _raise_team_error(exc)
+    except Exception as exc:
+        _raise_strategy_error(exc)
     _verify_scope(tenant_id=tenant_id, campaign_id=campaign_id, evidence=evidence)
     if evidence.workspace.version != expected_version + 1:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Strategy workspace is temporarily unavailable",
+        )
+    response.headers["ETag"] = f'"{evidence.workspace.version}"'
+    return evidence
+
+
+@router.post(
+    "/tenants/{tenant_id}/campaigns/{campaign_id}/strategy-workspace/decision",
+    response_model=StrategyDecisionEvidence,
+    summary="Record an internal human strategy decision",
+    description=(
+        "Records an append-only human choice for the exact workspace version. "
+        "Acceptance remains internal and authorizes no publication, targeting, "
+        "contact, spending or mobilization."
+    ),
+)
+def decide_strategy_workspace(
+    request: Request,
+    response: Response,
+    tenant_id: UUID,
+    campaign_id: UUID,
+    payload: StrategyDecisionRequest,
+    authorization: CurrentTenantAuthorization,
+    service: StrategyWorkspaceServiceDependency,
+    if_match: Annotated[
+        str | None,
+        Header(alias="If-Match", description="Required current workspace version"),
+    ] = None,
+    idempotency_key: Annotated[
+        str | None,
+        Header(alias="Idempotency-Key", description="Required stable decision key"),
+    ] = None,
+) -> StrategyDecisionEvidence:
+    grant = _grant_or_forbid(
+        authorization,
+        campaign_id=campaign_id,
+        action="approve",
+        purpose=DECIDE_STRATEGY_PURPOSE,
+        detail="Internal strategy decision is not authorized",
+    )
+    expected_version = _expected_version(request, if_match)
+    try:
+        evidence = service.decide(
+            tenant_id,
+            campaign_id,
+            expected_version=expected_version,
+            request=payload,
+            principal_id=authorization.principal_id,
+            authorization_grant_id=grant.grant_id,
+            approval_receipt_id=grant.approval_receipt_id,
+            authorization_purpose=grant.purpose,
+            correlation_id=getattr(request.state, "correlation_id", "unknown"),
+            idempotency_key=_required_idempotency_key(request, idempotency_key),
+        )
+    except Exception as exc:
+        _raise_strategy_error(exc)
+    _verify_scope(tenant_id=tenant_id, campaign_id=campaign_id, evidence=evidence)
+    if evidence.workspace.version != expected_version:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Strategy workspace is temporarily unavailable",

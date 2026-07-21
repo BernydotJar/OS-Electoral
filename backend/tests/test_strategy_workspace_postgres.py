@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import re
 from concurrent.futures import ThreadPoolExecutor
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from threading import Barrier
 from uuid import UUID, uuid4
 
@@ -103,8 +103,7 @@ def _candidate(tenant_id: UUID, campaign_id: UUID) -> CandidateWorkspace:
         "tenant_id": tenant_id,
         "campaign_id": campaign_id,
         "candidate_id": uuid4(),
-        "title": "Synthetic candidate workspace",
-        "name": "Synthetic candidate",
+        "display_name": "Synthetic candidate",
         "version": 1,
         "created_at": now,
         "updated_at": now,

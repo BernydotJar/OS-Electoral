@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-ops-001-roadmap-war-room",
+  "source_branch": "agent/c3-strategy-001-evidence-decision-room",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -766,7 +766,7 @@
     {
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
-      "status": "PROTOTYPE_ONLY",
+      "status": "STRATEGY_VERIFIED_POSTGRESQL",
       "next_increment": "C3-STRATEGY-001"
     },
     {
@@ -926,7 +926,7 @@
     },
     {
       "id": "C3-STRATEGY-001",
-      "status": "EXECUTABLE_NEXT",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-DATA-001",
         "C3-API-001"
@@ -1189,19 +1189,29 @@
       "frontend_target_verified": true
     },
     "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
-    "active_local_increment": null,
+    "active_local_increment": {
+      "id": "C3-STRATEGY-001",
+      "state": "VERIFIED_POSTGRESQL",
+      "branch": "agent/c3-strategy-001-evidence-decision-room",
+      "base": "agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e",
+      "draft_pr": 96,
+      "production_status": "BLOCKED",
+      "external_effects": "NONE"
+    },
     "latest_checkpoint": {
-      "id": "C3-IAM-002",
-      "branch": "agent/c3-iam-002-identity-lifecycle",
-      "base": "agent/c3-front-001-dynamic-shell",
-      "base_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
-      "implementation_commit": "5eb45e92f6f292ea673c572811031805cc89cabe",
-      "draft_pr": 90,
-      "ci_run_id": 29857981975,
-      "visual_run_id": 29857981487,
+      "id": "C3-OPS-001",
+      "branch": "agent/c3-ops-001-roadmap-war-room",
+      "base": "agent/c3-team-001-accountability-review",
+      "base_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
+      "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
+      "head_commit": "c81e4282813c0add0c3207f97066f127280e410e",
+      "draft_pr": 95,
+      "ci_run_id": 29871930387,
+      "visual_run_id": 29871930366,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
-      "external_effects": "NONE"
+      "external_effects": "NONE",
+      "next_increment": "C3-STRATEGY-001"
     }
   },
   "deployment_state": {

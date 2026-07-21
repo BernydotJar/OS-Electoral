@@ -7,7 +7,7 @@ import json
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from threading import RLock
-from typing import Protocol
+from typing import Literal, Protocol
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -39,6 +39,10 @@ class StrategyWorkspaceNotFound(RuntimeError):
     """Raised when the exact tenant/campaign strategy workspace is absent."""
 
 
+class StrategyWorkspacePrerequisiteConflict(RuntimeError):
+    """Raised when candidate or team evidence required for strategy is absent."""
+
+
 class StrategyWorkspaceVersionConflict(RuntimeError):
     """Raised when a mutation uses a stale workspace version."""
 
@@ -57,7 +61,7 @@ class StrategyPrerequisites(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     campaign_version: int = Field(ge=1)
-    campaign_status: str
+    campaign_status: Literal["DRAFT", "ACTIVE"]
     campaign_name: str
     candidate_workspace_version: int = Field(ge=1)
     team_workspace_version: int = Field(ge=1)
@@ -249,7 +253,7 @@ class InMemoryStrategyWorkspaceService:
         try:
             prerequisite = self._prerequisites[(tenant_id, campaign_id)]
         except KeyError as exc:
-            raise StrategyWorkspaceNotFound(
+            raise StrategyWorkspacePrerequisiteConflict(
                 "Campaign strategy prerequisites are unavailable"
             ) from exc
         if prerequisite.campaign_status not in {"DRAFT", "ACTIVE"}:
@@ -657,3 +661,9 @@ class InMemoryStrategyWorkspaceService:
                 response=response,
             )
             return response
+
+
+# Imported after domain types to avoid a circular initialization dependency.
+from campaignos.strategy.sql_service import (  # noqa: E402
+    SqlAlchemyStrategyWorkspaceService as SqlAlchemyStrategyWorkspaceService,
+)
