@@ -1,0 +1,302 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> backend/src/campaignos/api/app.py:3:1
+   |
+ 1 |   """FastAPI application factory."""
+ 2 |
+ 3 | / from __future__ import annotations
+ 4 | |
+ 5 | | import logging
+ 6 | | from collections.abc import AsyncIterator
+ 7 | | from contextlib import asynccontextmanager
+ 8 | | from typing import cast
+ 9 | |
+10 | | from fastapi import FastAPI
+11 | |
+12 | | from campaignos.api.errors import install_exception_handlers
+13 | | from campaignos.api.middleware import request_controls
+14 | | from campaignos.api.routes import (
+15 | |     campaigns,
+16 | |     candidate_workspace,
+17 | |     guided_intake,
+18 | |     health,
+19 | |     me,
+20 | |     tenant_me,
+21 | |     team_workspace,
+22 | |     workspaces,
+23 | | )
+24 | | from campaignos.api.routes import (
+25 | |     identity_lifecycle as identity_lifecycle_routes,
+26 | | )
+27 | | from campaignos.campaigns import (
+28 | |     CampaignCreator,
+29 | |     CampaignDirectory,
+30 | |     CampaignReadinessReader,
+31 | |     CampaignWriter,
+32 | |     SqlAlchemyCampaignCreator,
+33 | |     SqlAlchemyCampaignDirectory,
+34 | |     SqlAlchemyCampaignReadinessReader,
+35 | |     SqlAlchemyCampaignWriter,
+36 | |     UnavailableCampaignCreator,
+37 | |     UnavailableCampaignDirectory,
+38 | |     UnavailableCampaignReadinessReader,
+39 | |     UnavailableCampaignWriter,
+40 | | )
+41 | | from campaignos.candidates import (
+42 | |     CandidateWorkspaceService,
+43 | |     SqlAlchemyCandidateWorkspaceService,
+44 | |     UnavailableCandidateWorkspaceService,
+45 | | )
+46 | | from campaignos.teams import (
+47 | |     SqlAlchemyTeamWorkspaceService,
+48 | |     TeamWorkspaceService,
+49 | |     UnavailableTeamWorkspaceService,
+50 | | )
+51 | | from campaignos.config import Settings, get_settings
+52 | | from campaignos.data import Database, DatabaseRuntime, UnavailableDatabase
+53 | | from campaignos.identity.authorization import (
+54 | |     MembershipDirectory,
+55 | |     SqlAlchemyMembershipDirectory,
+56 | |     UnavailableMembershipDirectory,
+57 | | )
+58 | | from campaignos.identity.lifecycle import (
+59 | |     IdentityLifecycle,
+60 | |     SqlAlchemyIdentityLifecycle,
+61 | |     UnavailableIdentityLifecycle,
+62 | | )
+63 | | from campaignos.identity.oidc import OidcTokenVerifier, TokenVerifier, UnavailableTokenVerifier
+64 | | from campaignos.onboarding import (
+65 | |     GuidedIntakeService,
+66 | |     SqlAlchemyGuidedIntakeService,
+67 | |     UnavailableGuidedIntakeService,
+68 | | )
+69 | | from campaignos.teams import (
+70 | |     SqlAlchemyTeamWorkspaceService,
+71 | |     TeamWorkspaceService,
+72 | |     UnavailableTeamWorkspaceService,
+73 | | )
+74 | | from campaignos.workspaces import (
+75 | |     SqlAlchemyWorkspaceWriter,
+76 | |     UnavailableWorkspaceWriter,
+77 | |     WorkspaceWriter,
+78 | | )
+   | |_^
+   |
+help: Organize imports
+
+F811 [*] Redefinition of unused `SqlAlchemyTeamWorkspaceService` from line 47
+  --> backend/src/campaignos/api/app.py:70:5
+   |
+68 | )
+69 | from campaignos.teams import (
+70 |     SqlAlchemyTeamWorkspaceService,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `SqlAlchemyTeamWorkspaceService` redefined here
+71 |     TeamWorkspaceService,
+72 |     UnavailableTeamWorkspaceService,
+   |
+  ::: backend/src/campaignos/api/app.py:47:5
+   |
+45 | )
+46 | from campaignos.teams import (
+47 |     SqlAlchemyTeamWorkspaceService,
+   |     ------------------------------ previous definition of `SqlAlchemyTeamWorkspaceService` here
+48 |     TeamWorkspaceService,
+49 |     UnavailableTeamWorkspaceService,
+   |
+help: Remove definition: `SqlAlchemyTeamWorkspaceService`
+
+F811 [*] Redefinition of unused `TeamWorkspaceService` from line 48
+  --> backend/src/campaignos/api/app.py:71:5
+   |
+69 | from campaignos.teams import (
+70 |     SqlAlchemyTeamWorkspaceService,
+71 |     TeamWorkspaceService,
+   |     ^^^^^^^^^^^^^^^^^^^^ `TeamWorkspaceService` redefined here
+72 |     UnavailableTeamWorkspaceService,
+73 | )
+   |
+  ::: backend/src/campaignos/api/app.py:48:5
+   |
+46 | from campaignos.teams import (
+47 |     SqlAlchemyTeamWorkspaceService,
+48 |     TeamWorkspaceService,
+   |     -------------------- previous definition of `TeamWorkspaceService` here
+49 |     UnavailableTeamWorkspaceService,
+50 | )
+   |
+help: Remove definition: `TeamWorkspaceService`
+
+F811 [*] Redefinition of unused `UnavailableTeamWorkspaceService` from line 49
+  --> backend/src/campaignos/api/app.py:72:5
+   |
+70 |     SqlAlchemyTeamWorkspaceService,
+71 |     TeamWorkspaceService,
+72 |     UnavailableTeamWorkspaceService,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `UnavailableTeamWorkspaceService` redefined here
+73 | )
+74 | from campaignos.workspaces import (
+   |
+  ::: backend/src/campaignos/api/app.py:49:5
+   |
+47 |     SqlAlchemyTeamWorkspaceService,
+48 |     TeamWorkspaceService,
+49 |     UnavailableTeamWorkspaceService,
+   |     ------------------------------- previous definition of `UnavailableTeamWorkspaceService` here
+50 | )
+51 | from campaignos.config import Settings, get_settings
+   |
+help: Remove definition: `UnavailableTeamWorkspaceService`
+
+E501 Line too long (101 > 100)
+  --> backend/src/campaignos/api/routes/team_workspace.py:90:101
+   |
+88 |         raise HTTPException(
+89 |             status_code=status.HTTP_428_PRECONDITION_REQUIRED,
+90 |             detail="Exactly one If-Match header with the current team workspace version is required",
+   |                                                                                                     ^
+91 |         )
+92 |     normalized = value.strip()
+   |
+
+E501 Line too long (103 > 100)
+   --> backend/tests/test_team_workspace_api.py:166:101
+    |
+164 |         self.calls: list[tuple[str, tuple[object, ...], dict[str, Any]]] = []
+165 |
+166 |     def create(self, tenant_id: UUID, campaign_id: UUID, **kwargs: Any) -> TeamWorkspaceCreateEvidence:
+    |                                                                                                     ^^^
+167 |         self.calls.append(("create", (tenant_id, campaign_id), kwargs))
+168 |         if self.failure is not None:
+    |
+
+E501 Line too long (103 > 100)
+   --> backend/tests/test_team_workspace_api.py:185:101
+    |
+183 |         )
+184 |
+185 |     def update(self, tenant_id: UUID, campaign_id: UUID, **kwargs: Any) -> TeamWorkspaceUpdateEvidence:
+    |                                                                                                     ^^^
+186 |         self.calls.append(("update", (tenant_id, campaign_id), kwargs))
+187 |         if self.failure is not None:
+    |
+
+E501 Line too long (118 > 100)
+   --> backend/tests/test_team_workspace_api.py:282:101
+    |
+280 |     service = Service()
+281 |     with client(Directory(), service) as api:
+282 |         assert api.post(path(), json={"organization_template": "LEAN_CAMPAIGN"}, headers=headers()).status_code == 428
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^
+283 |         assert api.post(path(), json={"organization_template": "LEAN_CAMPAIGN"}, headers=headers(key="x" * 256)).status_code == 400
+284 |     assert service.calls == []
+    |
+
+E501 Line too long (131 > 100)
+   --> backend/tests/test_team_workspace_api.py:283:101
+    |
+281 |     with client(Directory(), service) as api:
+282 |         assert api.post(path(), json={"organization_template": "LEAN_CAMPAIGN"}, headers=headers()).status_code == 428
+283 |         assert api.post(path(), json={"organization_template": "LEAN_CAMPAIGN"}, headers=headers(key="x" * 256)).status_code == 400
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+284 |     assert service.calls == []
+    |
+
+E501 Line too long (103 > 100)
+   --> backend/tests/test_team_workspace_api.py:290:101
+    |
+288 |     with client(directory, update_service) as api:
+289 |         assert api.patch(path(), json={"roles": []}, headers=headers(key="k")).status_code == 428
+290 |         assert api.patch(path(), json={"roles": []}, headers=headers(version='"1"')).status_code == 428
+    |                                                                                                     ^^^
+291 |         assert api.patch(path(), json={"roles": []}, headers=headers(key="k", version="bad")).status_code == 400
+292 |     assert update_service.calls == []
+    |
+
+E501 Line too long (112 > 100)
+   --> backend/tests/test_team_workspace_api.py:291:101
+    |
+289 |         assert api.patch(path(), json={"roles": []}, headers=headers(key="k")).status_code == 428
+290 |         assert api.patch(path(), json={"roles": []}, headers=headers(version='"1"')).status_code == 428
+291 |         assert api.patch(path(), json={"roles": []}, headers=headers(key="k", version="bad")).status_code == 400
+    |                                                                                                     ^^^^^^^^^^^^
+292 |     assert update_service.calls == []
+    |
+
+E501 Line too long (104 > 100)
+   --> backend/tests/test_team_workspace_api.py:321:101
+    |
+319 |     ("failure", "method", "directory", "status_code", "code"),
+320 |     [
+321 |         (TeamWorkspaceIdempotencyConflict("private"), "POST", Directory(), 409, "IDEMPOTENCY_CONFLICT"),
+    |                                                                                                     ^^^^
+322 |         (TeamWorkspacePrerequisiteConflict("private"), "POST", Directory(), 409, "CAMPAIGN_NOT_READY"),
+323 |         (TeamWorkspaceConflict("private"), "POST", Directory(), 409, "TEAM_WORKSPACE_CONFLICT"),
+    |
+
+E501 Line too long (103 > 100)
+   --> backend/tests/test_team_workspace_api.py:322:101
+    |
+320 |     [
+321 |         (TeamWorkspaceIdempotencyConflict("private"), "POST", Directory(), 409, "IDEMPOTENCY_CONFLICT"),
+322 |         (TeamWorkspacePrerequisiteConflict("private"), "POST", Directory(), 409, "CAMPAIGN_NOT_READY"),
+    |                                                                                                     ^^^
+323 |         (TeamWorkspaceConflict("private"), "POST", Directory(), 409, "TEAM_WORKSPACE_CONFLICT"),
+324 |         (
+    |
+
+E501 Line too long (101 > 100)
+   --> backend/tests/test_team_workspace_api.py:339:101
+    |
+337 |         ),
+338 |         (TeamWorkspaceNotFound("private"), "POST", Directory(), 404, "RESOURCE_NOT_FOUND"),
+339 |         (TeamWorkspaceUnavailable("private"), "POST", Directory(), 503, "AUTHORIZATION_UNAVAILABLE"),
+    |                                                                                                     ^
+340 |     ],
+341 | )
+    |
+
+invalid-syntax: missing closing quote in string literal
+   --> backend/tests/test_team_workspace_api.py:375:49
+    |
+373 |     else:
+374 |         directory, method, kwargs = Directory(action="update", purpose=UPDATE_PURPOSE), "patch", {
+375 |             "headers": headers(key="k", version='"1"),
+    |                                                 ^^^^^^
+376 |             "json": {"roles": []},
+377 |         }
+    |
+
+invalid-syntax: Expected `)`, found `:`
+   --> backend/tests/test_team_workspace_api.py:376:19
+    |
+374 |         directory, method, kwargs = Directory(action="update", purpose=UPDATE_PURPOSE), "patch", {
+375 |             "headers": headers(key="k", version='"1"),
+376 |             "json": {"roles": []},
+    |                   ^
+377 |         }
+378 |     with client(directory, service) as api:
+    |
+
+invalid-syntax: Expected a statement
+   --> backend/tests/test_team_workspace_api.py:377:9
+    |
+375 |             "headers": headers(key="k", version='"1"),
+376 |             "json": {"roles": []},
+377 |         }
+    |         ^
+378 |     with client(directory, service) as api:
+379 |         response = getattr(api, method)(path(), **kwargs)
+    |
+
+invalid-syntax: Expected a statement
+   --> backend/tests/test_team_workspace_api.py:377:10
+    |
+375 |             "headers": headers(key="k", version='"1"),
+376 |             "json": {"roles": []},
+377 |         }
+    |          ^
+378 |     with client(directory, service) as api:
+379 |         response = getattr(api, method)(path(), **kwargs)
+    |
+
+Found 18 errors.
+[*] 4 fixable with the `--fix` option.

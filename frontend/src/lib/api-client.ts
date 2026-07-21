@@ -1,6 +1,11 @@
 import "server-only";
 
+import { CandidateContractValidationError } from "@/lib/candidate-contract-parser";
 import type { FrontendConfig } from "@/lib/config";
+import {
+  parseTeamWorkspaceReadEvidence,
+  TeamContractValidationError,
+} from "@/lib/team-contract-parser";
 import {
   ContractValidationError,
   parseCampaignPage,
@@ -17,6 +22,7 @@ import type {
   GuidedIntakeReadEvidence,
   MeResponse,
   ProblemDetail,
+  TeamWorkspaceReadEvidence,
   TenantMeResponse,
   UUID,
 } from "@/lib/contracts";
@@ -55,7 +61,12 @@ export class CampaignOsApiClient {
     private readonly token: string,
   ) {
     if (config.apiBaseUrl === null) {
-      throw new CampaignOsApiError("CampaignOS API is not configured", 503, "API_UNAVAILABLE", null);
+      throw new CampaignOsApiError(
+        "CampaignOS API is not configured",
+        503,
+        "API_UNAVAILABLE",
+        null,
+      );
     }
   }
 
@@ -77,7 +88,12 @@ export class CampaignOsApiClient {
         signal: AbortSignal.timeout(this.config.requestTimeoutMs),
       });
     } catch {
-      throw new CampaignOsApiError("CampaignOS API is unavailable", 503, "API_UNAVAILABLE", null);
+      throw new CampaignOsApiError(
+        "CampaignOS API is unavailable",
+        503,
+        "API_UNAVAILABLE",
+        null,
+      );
     }
     const body: unknown = await response.json().catch(() => null);
     if (!response.ok) {
@@ -92,7 +108,11 @@ export class CampaignOsApiClient {
     try {
       return parse(body);
     } catch (error) {
-      if (error instanceof ContractValidationError) {
+      if (
+        error instanceof ContractValidationError ||
+        error instanceof CandidateContractValidationError ||
+        error instanceof TeamContractValidationError
+      ) {
         throw new CampaignOsApiError(
           `${label} response is invalid`,
           502,
@@ -124,7 +144,10 @@ export class CampaignOsApiClient {
     );
   }
 
-  readiness(tenantId: UUID, campaignId: UUID): Promise<CampaignReadinessEvidence> {
+  readiness(
+    tenantId: UUID,
+    campaignId: UUID,
+  ): Promise<CampaignReadinessEvidence> {
     return this.get<CampaignReadinessEvidence>(
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/readiness`,
       "Campaign readiness",
@@ -132,7 +155,10 @@ export class CampaignOsApiClient {
     );
   }
 
-  guidedIntake(tenantId: UUID, campaignId: UUID): Promise<GuidedIntakeReadEvidence> {
+  guidedIntake(
+    tenantId: UUID,
+    campaignId: UUID,
+  ): Promise<GuidedIntakeReadEvidence> {
     return this.get<GuidedIntakeReadEvidence>(
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/guided-intake`,
       "Guided intake",
@@ -140,11 +166,25 @@ export class CampaignOsApiClient {
     );
   }
 
-  candidateWorkspace(tenantId: UUID, campaignId: UUID): Promise<CandidateWorkspaceReadEvidence> {
+  candidateWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+  ): Promise<CandidateWorkspaceReadEvidence> {
     return this.get<CandidateWorkspaceReadEvidence>(
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/candidate-workspace`,
       "Candidate workspace",
       parseCandidateWorkspaceReadEvidence,
+    );
+  }
+
+  teamWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+  ): Promise<TeamWorkspaceReadEvidence> {
+    return this.get<TeamWorkspaceReadEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/team-workspace`,
+      "Team workspace",
+      parseTeamWorkspaceReadEvidence,
     );
   }
 }

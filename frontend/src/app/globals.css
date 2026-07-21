@@ -987,3 +987,158 @@ dd {
     grid-column: auto;
   }
 }
+
+.team-workspace-panel {
+  margin: 1.25rem 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, rgba(20, 35, 31, 0.95), rgba(12, 18, 25, 0.98));
+  box-shadow: var(--shadow);
+}
+
+.team-authority-boundary {
+  margin: 1rem 0 1.25rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 0.35fr) minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  border: 1px solid rgba(116, 214, 177, 0.36);
+  border-radius: 14px;
+  background: rgba(10, 52, 39, 0.42);
+}
+
+.team-authority-boundary p {
+  margin: 0;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.team-metrics,
+.team-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.team-metrics article,
+.team-detail-grid article,
+.team-role-grid article {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.team-metrics span,
+.team-role-grid article > div > span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--text-3);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.team-layout {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: 1.25rem;
+}
+
+.team-role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.team-role-grid article[data-status="VACANT"] {
+  border-style: dashed;
+}
+
+.team-role-grid h4,
+.team-detail-grid h3 {
+  margin: 0 0 0.55rem;
+}
+
+.team-role-grid p,
+.team-work-items p {
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.team-role-grid dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.team-role-grid dt {
+  color: var(--text-3);
+  font-size: 0.72rem;
+}
+
+.team-role-grid dd {
+  margin: 0.2rem 0 0;
+}
+
+.team-vacancy-plan {
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--surface-border);
+}
+
+.team-detail-grid {
+  margin-top: 1rem;
+}
+
+.team-work-items,
+.team-work-items ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.team-work-items > li + li {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--surface-border);
+}
+
+.team-work-items ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.team-work-items ul li {
+  padding: 0.35rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.78rem;
+}
+
+.team-work-items ul span {
+  margin-right: 0.35rem;
+  color: var(--accent-strong);
+}
+
+@media (max-width: 900px) {
+  .team-authority-boundary,
+  .team-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .team-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .team-metrics,
+  .team-role-grid {
+    grid-template-columns: 1fr;
+  }
+}

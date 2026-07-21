@@ -95,15 +95,10 @@ export type CampaignReadinessEvidence = Readonly<{
 }>;
 
 export type GuidedIntakeBudgetStatus =
-  | "NOT_ASSESSED"
-  | "NO_DOCUMENT"
-  | "ROUGH_RANGE"
-  | "DOCUMENTED";
+  "NOT_ASSESSED" | "NO_DOCUMENT" | "ROUGH_RANGE" | "DOCUMENTED";
 
 export type GuidedIntakeStatus =
-  | "BLOCKED_BY_CAMPAIGN_SETUP"
-  | "IN_PROGRESS"
-  | "READY_FOR_RESEARCH";
+  "BLOCKED_BY_CAMPAIGN_SETUP" | "IN_PROGRESS" | "READY_FOR_RESEARCH";
 
 export type GuidedIntakeCheckKey =
   | "campaign_operational_setup"
@@ -200,7 +195,8 @@ export type CandidateEvidenceClassification =
   | "HYPOTHESIS"
   | "UNKNOWN";
 
-export type CandidateEvidenceStatus = "ACCEPTED" | "VERIFIED" | "READY" | "REJECTED" | "EXPIRED";
+export type CandidateEvidenceStatus =
+  "ACCEPTED" | "VERIFIED" | "READY" | "REJECTED" | "EXPIRED";
 export type CandidateClaimStatus =
   | "UNKNOWN"
   | "SELF_REPORTED"
@@ -347,5 +343,129 @@ export type CandidateWorkspaceProjection = Readonly<{
 
 export type CandidateWorkspaceReadEvidence = Readonly<{
   workspace: CandidateWorkspaceProjection;
+  audit_event_id: UUID;
+}>;
+
+export type TeamOrganizationTemplate =
+  "LEAN_CAMPAIGN" | "FULL_CAMPAIGN" | "CUSTOM";
+export type TeamRoleStatus = "FILLED" | "VACANT";
+export type TeamAvailabilityStatus =
+  "UNASSESSED" | "AVAILABLE" | "LIMITED" | "UNAVAILABLE";
+export type TeamProgressStatus = "NOT_STARTED" | "IN_PROGRESS" | "COMPLETE";
+export type TeamWorkItemStatus = "PLANNED" | "ACTIVE" | "BLOCKED" | "COMPLETE";
+export type TeamRaciResponsibility =
+  "RESPONSIBLE" | "ACCOUNTABLE" | "CONSULTED" | "INFORMED";
+export type TeamAccessReviewStatus = "PROPOSED" | "REVIEWED" | "REJECTED";
+export type TeamWorkspaceStatus =
+  "SETUP_REQUIRED" | "STRUCTURE_IN_PROGRESS" | "READY_FOR_HUMAN_REVIEW";
+export type TeamCheckKey =
+  | "organization_template"
+  | "role_cards"
+  | "accountability"
+  | "availability"
+  | "vacancies"
+  | "onboarding"
+  | "training"
+  | "access_review";
+export type TeamNextAction =
+  | "SELECT_ORGANIZATION_TEMPLATE"
+  | "DEFINE_ROLE_CARDS"
+  | "ASSIGN_ACCOUNTABILITY"
+  | "ASSESS_AVAILABILITY"
+  | "PLAN_VACANCIES"
+  | "COMPLETE_ONBOARDING"
+  | "COMPLETE_TRAINING"
+  | "REVIEW_ACCESS_RECOMMENDATIONS"
+  | "CONTINUE_HUMAN_GOVERNANCE";
+export type TeamLimitation =
+  | "ROLE_LABELS_ARE_NOT_PERMISSIONS"
+  | "ACCESS_RECOMMENDATIONS_REQUIRE_HUMAN_AUTHORIZATION"
+  | "NO_VOTER_PROFILING"
+  | "NO_EXTERNAL_EFFECTS";
+
+export type TeamRoleCard = Readonly<{
+  id: UUID;
+  title: string;
+  area: string;
+  purpose: string;
+  responsibilities: readonly string[];
+  status: TeamRoleStatus;
+  principal_id: UUID | null;
+  availability_status: TeamAvailabilityStatus;
+  weekly_capacity_hours: number | null;
+  onboarding_status: TeamProgressStatus;
+  vacancy_plan: string | null;
+}>;
+
+export type TeamRaciAssignment = Readonly<{
+  role_id: UUID;
+  responsibility: TeamRaciResponsibility;
+}>;
+
+export type TeamWorkItem = Readonly<{
+  id: UUID;
+  name: string;
+  description: string;
+  status: TeamWorkItemStatus;
+  assignments: readonly TeamRaciAssignment[];
+}>;
+
+export type TeamTrainingRequirement = Readonly<{
+  id: UUID;
+  role_id: UUID;
+  title: string;
+  description: string;
+  status: TeamProgressStatus;
+}>;
+
+export type TeamAccessRecommendation = Readonly<{
+  id: UUID;
+  role_id: UUID;
+  campaign_id: UUID;
+  workspace_id: UUID | null;
+  action: string;
+  resource_type: string;
+  resource_id: string;
+  purpose: string;
+  status: TeamAccessReviewStatus;
+  authority_effect: "NONE";
+}>;
+
+export type TeamWorkspaceCheck = Readonly<{
+  key: TeamCheckKey;
+  complete: boolean;
+  reason_code: string;
+}>;
+
+export type TeamWorkspaceProjection = Readonly<{
+  id: UUID;
+  tenant_id: UUID;
+  campaign_id: UUID;
+  campaign_version: number;
+  campaign_status: "DRAFT" | "ACTIVE";
+  campaign_name: string;
+  organization_template: TeamOrganizationTemplate;
+  roles: readonly TeamRoleCard[] | null;
+  work_items: readonly TeamWorkItem[] | null;
+  training_requirements: readonly TeamTrainingRequirement[] | null;
+  access_recommendations: readonly TeamAccessRecommendation[] | null;
+  status: TeamWorkspaceStatus;
+  checks: readonly TeamWorkspaceCheck[];
+  completed_checks: number;
+  total_checks: number;
+  filled_role_count: number;
+  vacant_role_count: number;
+  total_weekly_capacity_hours: number;
+  next_action: TeamNextAction;
+  authority_effect: "NONE";
+  external_effects: "NONE";
+  limitation_codes: readonly TeamLimitation[];
+  version: number;
+  created_at: string;
+  updated_at: string;
+}>;
+
+export type TeamWorkspaceReadEvidence = Readonly<{
+  workspace: TeamWorkspaceProjection;
   audit_event_id: UUID;
 }>;

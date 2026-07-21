@@ -72,7 +72,22 @@ export function deriveNavigation(
       ),
       reason: "EXACT_GRANT",
     },
-    { key: "team", href: `${base}#team`, enabled: false, reason: "FUTURE_CAPABILITY" },
+    {
+      key: "team",
+      href: `${base}#team-workspace`,
+      enabled: hasGrant(
+        memberships,
+        (grant) =>
+          currentCampaignId !== undefined &&
+          grant.action === "read" &&
+          grant.resource_type === "team_workspace" &&
+          grant.resource_id === currentCampaignId &&
+          grant.campaign_id === currentCampaignId &&
+          grant.workspace_id === null &&
+          grant.purpose === "Review campaign team workspace",
+      ),
+      reason: "EXACT_GRANT",
+    },
     { key: "warRoom", href: `${base}#war-room`, enabled: false, reason: "FUTURE_CAPABILITY" },
     { key: "evidence", href: `${base}#evidence`, enabled: false, reason: "FUTURE_CAPABILITY" },
     {
