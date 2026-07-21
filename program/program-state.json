@@ -3,9 +3,9 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-onboard-001-guided-intake",
-  "current_increment": "C3-ONBOARD-001",
-  "iteration_status": "CHECKPOINT_COMPLETED",
+  "branch": "agent/c3-candidate-001-evidence-workspace",
+  "current_increment": "C3-CANDIDATE-001",
+  "iteration_status": "VERIFIED_POSTGRESQL_LOCAL_ONLY",
   "production_status": "BLOCKED",
   "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the governed identity lifecycle is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -57,8 +57,8 @@
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "GUIDED_INTAKE_VERIFIED_POSTGRESQL_READ_ONLY_UI",
-      "next_increment": "C3-CANDIDATE-001"
+      "status": "CANDIDATE_WORKSPACE_VERIFIED_POSTGRESQL_READ_ONLY_UI",
+      "next_increment": "C3-TEAM-001"
     },
     {
       "id": "WS-08",
@@ -109,18 +109,12 @@
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [
-    "C3-CANDIDATE-001"
-  ],
+  "ready_tasks": [],
   "published_unreviewed_increment": {
-    "id": "C3-ONBOARD-001",
-    "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-onboard-001-guided-intake",
-    "base": "agent/c3-iam-002-identity-lifecycle",
-    "implementation_commit": "aa6fe239887173f3fb83366b640ad7b3121f361c",
-    "draft_pr": 92,
-    "ci_run_id": 29865306720,
-    "visual_run_id": 29865306576
+    "id": "C3-CANDIDATE-001",
+    "state": "LOCAL_ONLY_REMOTE_PUBLICATION_PENDING",
+    "branch": "agent/c3-candidate-001-evidence-workspace",
+    "base": "agent/c3-onboard-001-guided-intake"
   },
   "review_stack": [
     {
@@ -181,24 +175,25 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 425,
-    "tests_skipped": 4,
-    "coverage_percent": 91.58,
+    "tests_passed": 466,
+    "tests_skipped": 5,
+    "coverage_percent": 91.56,
     "coverage_gate": "PASS",
-    "postgresql_integration": "PASS_4_SELECTED_5_DESELECTED_TWICE_REVISION_20260721_0005",
+    "postgresql_integration": "PASS_TWICE_REVISION_20260721_0006_CANDIDATE_RLS_CONCURRENCY_APPROVALS",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
-    "frontend_unit_tests": 16,
+    "frontend_unit_tests": 0,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
     "eval_catalog": "PASS_5_PARTIAL_12_NOT_RUN_16",
-    "gitleaks": "PASS_EFFECTIVE_WORKTREE_AND_ORIGIN_MAIN_TO_HEAD_25_COMMITS",
+    "gitleaks": "PASS_EFFECTIVE_WORKTREE_AND_ORIGIN_MAIN_TO_HEAD",
     "compose": "LOCAL_NAMESPACE_LIMITATION_REMOTE_CI_GREEN",
     "frontend_image_buildah": "PASS_DOCKER_FORMAT_NONROOT_HEALTHCHECK_SMOKE",
     "identity_pr_ci": "PASS_PR_90_HEAD_5EB45E9_RUN_29857981975",
     "guided_intake_focused_tests": "PASS_44",
     "onboarding_pr_ci": "PASS_PR_92_HEAD_AA6FE23_RUN_29865306720",
-    "onboarding_runtime_visual": "PASS_RUN_29865306576"
+    "onboarding_runtime_visual": "PASS_RUN_29865306576",
+    "candidate_workspace_focused_tests": "PASS_42"
   },
   "critical_path": [
     "C3-FOUND-001A",

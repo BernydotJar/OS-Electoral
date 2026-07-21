@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-onboard-001-guided-intake",
+  "branch": "agent/c3-candidate-001-evidence-workspace",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -291,10 +291,22 @@
     {
       "task_id": "C3-CANDIDATE-001",
       "owner": "WS-07",
-      "status": "READY",
-      "evidence": [],
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/migrations/versions/20260721_0006_candidate_workspace.py",
+        "backend/tests/test_candidate_workspace_contracts.py",
+        "backend/tests/test_candidate_workspace_model.py",
+        "backend/tests/test_candidate_workspace_api.py",
+        "backend/tests/test_candidate_workspace_postgres.py",
+        "frontend/src/lib/candidate-contract-parsers.test.ts",
+        "frontend/src/lib/navigation.test.ts",
+        "docs/testing/c3-candidate-001-evidence.md"
+      ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [
+        "Remote branch, draft PR and exact-head CI pending",
+        "Authenticated editing, dedicated reviewer separation and human acceptance remain future work"
+      ]
     },
     {
       "task_id": "C3-TEAM-001",

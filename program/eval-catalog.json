@@ -213,13 +213,20 @@
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
       "evidence": [
-        "tests/test_candidate_brand.py"
+        "backend/tests/test_candidate_workspace_contracts.py",
+        "backend/tests/test_candidate_workspace_model.py",
+        "backend/tests/test_candidate_workspace_api.py",
+        "backend/tests/test_candidate_workspace_postgres.py",
+        "frontend/src/lib/candidate-contract-parsers.test.ts",
+        "docs/testing/c3-candidate-001-evidence.md"
       ],
       "commands": [
-        "make test"
+        "make verify",
+        "make test-postgres",
+        "make frontend-e2e"
       ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Prototype domain tests only; no durable dynamic Candidate Workspace."
+      "limitations": "Evidence inventory, typed claims, contradictions, development, risk, version-bound approvals and a read-only executive view are verified locally/PostgreSQL. Authenticated editing, dedicated reviewer assignment, live identity and human acceptance remain incomplete."
     },
     {
       "id": "EVAL-TEAM-001",

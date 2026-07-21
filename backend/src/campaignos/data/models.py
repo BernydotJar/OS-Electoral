@@ -462,6 +462,107 @@ class SupportAccessRequest(Base, TimestampMixin):
     version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
 
+class CandidateWorkspace(Base, TimestampMixin):
+    __tablename__ = "candidate_workspaces"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_candidate_workspaces_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            name="uq_candidate_workspaces_tenant_campaign",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            "id",
+            name="uq_candidate_workspaces_scope_id",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "candidate_id",
+            name="uq_candidate_workspaces_tenant_candidate",
+        ),
+        Index("ix_candidate_workspaces_tenant_updated", "tenant_id", "updated_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    candidate_id: Mapped[UUID] = mapped_column(Uuid, nullable=False, default=uuid4)
+    display_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    evidence: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSON_DOCUMENT, nullable=False, default=list
+    )
+    identity: Mapped[dict[str, Any] | None] = mapped_column(JSON_DOCUMENT)
+    biography: Mapped[dict[str, Any] | None] = mapped_column(JSON_DOCUMENT)
+    purpose: Mapped[dict[str, Any] | None] = mapped_column(JSON_DOCUMENT)
+    values: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    attributes: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    contradictions: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    development_goals: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    reputation_risks: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class CandidateSectionApproval(Base):
+    __tablename__ = "candidate_section_approvals"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_candidate_section_approvals_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id", "candidate_workspace_id"],
+            [
+                "candidate_workspaces.tenant_id",
+                "candidate_workspaces.campaign_id",
+                "candidate_workspaces.id",
+            ],
+            name="fk_candidate_section_approvals_workspace_scope",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "candidate_workspace_id",
+            "section",
+            "approved_version",
+            name="uq_candidate_section_approvals_version_section",
+        ),
+        CheckConstraint(
+            "section IN ('identity', 'biography', 'purpose', 'values', "
+            "'attributes', 'contradictions', 'development_goals', 'reputation')",
+            name="ck_candidate_section_approvals_section",
+        ),
+        Index(
+            "ix_candidate_section_approvals_workspace_version",
+            "tenant_id",
+            "candidate_workspace_id",
+            "approved_version",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    candidate_workspace_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    section: Mapped[str] = mapped_column(String(64), nullable=False)
+    approved_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    authorization_grant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    approval_receipt_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    approved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
 class GuidedIntake(Base, TimestampMixin):
     __tablename__ = "guided_intakes"
     __table_args__ = (

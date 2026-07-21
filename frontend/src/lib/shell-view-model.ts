@@ -7,12 +7,14 @@ import { FrontendConfigurationError, resolveFrontendConfig } from "@/lib/config"
 import type {
   CampaignProjection,
   CampaignReadinessEvidence,
+  CandidateWorkspaceReadEvidence,
   EffectiveMembership,
   GuidedIntakeReadEvidence,
   TenantMeResponse,
 } from "@/lib/contracts";
 import {
   demoCampaign,
+  demoCandidateWorkspace,
   demoGuidedIntake,
   demoReadiness,
   demoTenantIdentity,
@@ -21,6 +23,12 @@ import {
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export type GuidedIntakeAvailability =
+  | "AVAILABLE"
+  | "NOT_STARTED"
+  | "NOT_AUTHORIZED"
+  | "DEPENDENCY_UNAVAILABLE";
+
+export type CandidateWorkspaceAvailability =
   | "AVAILABLE"
   | "NOT_STARTED"
   | "NOT_AUTHORIZED"
@@ -41,6 +49,8 @@ export type ShellViewModel =
       readinessUnavailable: boolean;
       guidedIntake: GuidedIntakeReadEvidence | null;
       guidedIntakeAvailability: GuidedIntakeAvailability;
+      candidateWorkspace: CandidateWorkspaceReadEvidence | null;
+      candidateWorkspaceAvailability: CandidateWorkspaceAvailability;
     }>
   | Readonly<{
       kind: "unavailable";
@@ -81,6 +91,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       readinessUnavailable: false,
       guidedIntake: demoGuidedIntake,
       guidedIntakeAvailability: "AVAILABLE",
+      candidateWorkspace: demoCandidateWorkspace,
+      candidateWorkspaceAvailability: "AVAILABLE",
     };
   }
 
@@ -202,6 +214,46 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       }
     }
 
+    const hasCandidateWorkspaceGrant = tenantIdentity.application_memberships.some(
+      (membership) =>
+        membership.grants.some(
+          (grant) =>
+            grant.action === "read" &&
+            grant.resource_type === "candidate_workspace" &&
+            grant.resource_id === campaign.id &&
+            grant.campaign_id === campaign.id &&
+            grant.workspace_id === null &&
+            grant.purpose === "Review candidate evidence workspace",
+        ),
+    );
+    let candidateWorkspace: CandidateWorkspaceReadEvidence | null = null;
+    let candidateWorkspaceAvailability: CandidateWorkspaceAvailability = "NOT_AUTHORIZED";
+    if (hasCandidateWorkspaceGrant) {
+      try {
+        candidateWorkspace = await api.candidateWorkspace(tenantId, campaign.id);
+        if (
+          candidateWorkspace.workspace.tenant_id !== tenantId ||
+          candidateWorkspace.workspace.campaign_id !== campaign.id
+        ) {
+          return {
+            kind: "unavailable",
+            code: "CANDIDATE_WORKSPACE_SCOPE_MISMATCH",
+            correlationId: null,
+            configuration: false,
+          };
+        }
+        candidateWorkspaceAvailability = "AVAILABLE";
+      } catch (error) {
+        if (error instanceof CampaignOsApiError && error.status === 404) {
+          candidateWorkspaceAvailability = "NOT_STARTED";
+        } else if (error instanceof CampaignOsApiError && error.status === 503) {
+          candidateWorkspaceAvailability = "DEPENDENCY_UNAVAILABLE";
+        } else {
+          throw error;
+        }
+      }
+    }
+
     return {
       kind: "authorized",
       demo: false,
@@ -213,6 +265,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       readinessUnavailable,
       guidedIntake,
       guidedIntakeAvailability,
+      candidateWorkspace,
+      candidateWorkspaceAvailability,
     };
   } catch (error) {
     if (error instanceof CampaignOsApiError) {

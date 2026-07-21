@@ -91,6 +91,13 @@ export function CampaignShell({
     NOT_AUTHORIZED: dictionary.intake.notAuthorized,
     DEPENDENCY_UNAVAILABLE: dictionary.intake.unavailable,
   }[model.guidedIntakeAvailability];
+  const candidateWorkspace = model.candidateWorkspace?.workspace ?? null;
+  const candidateWorkspaceStateMessage = {
+    AVAILABLE: "",
+    NOT_STARTED: dictionary.candidate.notStarted,
+    NOT_AUTHORIZED: dictionary.candidate.notAuthorized,
+    DEPENDENCY_UNAVAILABLE: dictionary.candidate.unavailable,
+  }[model.candidateWorkspaceAvailability];
   const roles = [...new Set(model.memberships.flatMap((membership) => membership.roles))];
   const grantCount = model.memberships.reduce(
     (count, membership) => count + membership.grants.length,
@@ -101,7 +108,11 @@ export function CampaignShell({
     "NO_STRATEGY_EVIDENCE_OR_CITIZEN_ASSESSMENT",
   ];
   const limitationCodes = [
-    ...new Set([...readinessLimitations, ...(guidedIntake?.limitation_codes ?? [])]),
+    ...new Set([
+      ...readinessLimitations,
+      ...(guidedIntake?.limitation_codes ?? []),
+      ...(candidateWorkspace?.limitation_codes ?? []),
+    ]),
   ];
 
   return (
@@ -344,6 +355,209 @@ export function CampaignShell({
             ) : (
               <p className="intake-state" role="status">
                 {guidedIntakeStateMessage}
+              </p>
+            )}
+          </section>
+
+          <section
+            id="candidate-workspace"
+            className="candidate-workspace-panel"
+            aria-labelledby="candidate-workspace-title"
+          >
+            <div className="intake-heading">
+              <div>
+                <p className="eyebrow">{dictionary.candidate.eyebrow}</p>
+                <h2 id="candidate-workspace-title">{dictionary.candidate.title}</h2>
+                <p>{dictionary.candidate.body}</p>
+              </div>
+              {candidateWorkspace ? (
+                <div className="intake-progress" aria-label={dictionary.candidate.progress}>
+                  <strong>
+                    {candidateWorkspace.completed_checks}/{candidateWorkspace.total_checks}
+                  </strong>
+                  <span>{dictionary.candidate.progress}</span>
+                  <progress
+                    max={candidateWorkspace.total_checks}
+                    value={candidateWorkspace.completed_checks}
+                  >
+                    {candidateWorkspace.completed_checks}/{candidateWorkspace.total_checks}
+                  </progress>
+                </div>
+              ) : null}
+            </div>
+
+            {candidateWorkspace ? (
+              <>
+                <div className="intake-status-row">
+                  <div>
+                    <span>{dictionary.candidate.status}</span>
+                    <strong>{dictionary.candidate.statusLabels[candidateWorkspace.status]}</strong>
+                  </div>
+                  <div>
+                    <span>{dictionary.candidate.nextAction}</span>
+                    <strong>
+                      {dictionary.candidate.nextActionLabels[candidateWorkspace.next_action]}
+                    </strong>
+                  </div>
+                </div>
+
+                <div className="candidate-boundary" role="note">
+                  <strong>{dictionary.candidate.publicBoundary}</strong>
+                  <p>{dictionary.candidate.publicBoundaryBody}</p>
+                  <code>{candidateWorkspace.public_use_status}</code>
+                </div>
+
+                <div className="candidate-layout">
+                  <section aria-labelledby="candidate-checks-title">
+                    <h3 id="candidate-checks-title">{dictionary.candidate.sections}</h3>
+                    <ol className="intake-checks">
+                      {candidateWorkspace.checks.map((check, index) => (
+                        <li key={check.key} data-complete={check.complete}>
+                          <span className="intake-step" aria-hidden="true">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <div>
+                            <strong>{dictionary.candidate.checkLabels[check.key]}</strong>
+                            <code>{check.reason_code}</code>
+                          </div>
+                          <span className="intake-check-mark" aria-hidden="true">
+                            {check.complete ? "✓" : "·"}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+
+                  <section aria-labelledby="candidate-summary-title">
+                    <h3 id="candidate-summary-title">{candidateWorkspace.display_name}</h3>
+                    <div className="candidate-summary-grid">
+                      <article>
+                        <span>{dictionary.candidate.identity}</span>
+                        <strong>
+                          {candidateWorkspace.identity?.claim ?? dictionary.candidate.notAssessed}
+                        </strong>
+                      </article>
+                      <article>
+                        <span>{dictionary.candidate.biography}</span>
+                        <strong>
+                          {candidateWorkspace.biography?.claim ?? dictionary.candidate.notAssessed}
+                        </strong>
+                      </article>
+                      <article>
+                        <span>{dictionary.candidate.purpose}</span>
+                        <strong>
+                          {candidateWorkspace.purpose?.claim ?? dictionary.candidate.notAssessed}
+                        </strong>
+                      </article>
+                      <article>
+                        <span>{dictionary.candidate.evidenceInventory}</span>
+                        <strong>{candidateWorkspace.evidence.length}</strong>
+                      </article>
+                      <article>
+                        <span>{dictionary.candidate.approvedSections}</span>
+                        <strong>{candidateWorkspace.current_approved_sections.length}</strong>
+                      </article>
+                      <article>
+                        <span>{dictionary.candidate.pendingApprovals}</span>
+                        <strong>{candidateWorkspace.approvals_required.length}</strong>
+                      </article>
+                      <article>
+                        <span>{dictionary.candidate.criticalHighRisks}</span>
+                        <strong>{candidateWorkspace.open_critical_high_risks}</strong>
+                      </article>
+                    </div>
+
+                    <div className="candidate-detail-grid">
+                      <article>
+                        <h4>{dictionary.candidate.values}</h4>
+                        {candidateWorkspace.values === null ? (
+                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                        ) : candidateWorkspace.values.length === 0 ? (
+                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                        ) : (
+                          <ul className="intake-items">
+                            {candidateWorkspace.values.map((item) => (
+                              <li key={item.id}>{item.claim}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </article>
+                      <article>
+                        <h4>{dictionary.candidate.attributes}</h4>
+                        {candidateWorkspace.attributes === null ? (
+                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                        ) : candidateWorkspace.attributes.length === 0 ? (
+                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                        ) : (
+                          <ul className="intake-items">
+                            {candidateWorkspace.attributes.map((item) => (
+                              <li key={item.id}>{item.claim}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </article>
+                      <article>
+                        <h4>{dictionary.candidate.contradictions}</h4>
+                        {candidateWorkspace.contradictions === null ? (
+                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                        ) : candidateWorkspace.contradictions.length === 0 ? (
+                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                        ) : (
+                          <ul className="intake-items">
+                            {candidateWorkspace.contradictions.map((item) => (
+                              <li key={item.id}>{item.description}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </article>
+                      <article>
+                        <h4>{dictionary.candidate.developmentGoals}</h4>
+                        {candidateWorkspace.development_goals === null ? (
+                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                        ) : candidateWorkspace.development_goals.length === 0 ? (
+                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                        ) : (
+                          <ul className="intake-items">
+                            {candidateWorkspace.development_goals.map((item) => (
+                              <li key={item.id}>{item.objective}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </article>
+                      <article>
+                        <h4>{dictionary.candidate.reputationRisks}</h4>
+                        {candidateWorkspace.reputation_risks === null ? (
+                          <p className="intake-empty">{dictionary.candidate.notAssessed}</p>
+                        ) : candidateWorkspace.reputation_risks.length === 0 ? (
+                          <p className="intake-empty">{dictionary.candidate.noItems}</p>
+                        ) : (
+                          <ul className="intake-items">
+                            {candidateWorkspace.reputation_risks.map((item) => (
+                              <li key={item.id}>
+                                {item.severity} · {item.title}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </article>
+                    </div>
+                  </section>
+                </div>
+
+                <dl className="intake-evidence">
+                  <div>
+                    <dt>{dictionary.candidate.readReceipt}</dt>
+                    <dd>{model.candidateWorkspace?.audit_event_id}</dd>
+                  </div>
+                  <div>
+                    <dt>{dictionary.candidate.updatedAt}</dt>
+                    <dd>{candidateWorkspace.updated_at}</dd>
+                  </div>
+                </dl>
+              </>
+            ) : (
+              <p className="intake-state" role="status">
+                {candidateWorkspaceStateMessage}
               </p>
             )}
           </section>

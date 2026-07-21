@@ -264,3 +264,14 @@
 - CampaignOS CI `29865306720` and runtime visual review `29865306576` succeeded at the exact implementation head.
 - `C3-ONBOARD-001` is `CHECKPOINT_COMPLETED`; production remains `BLOCKED`, no merge/deployment occurred and external effects remain `NONE`.
 - Selected `C3-CANDIDATE-001` as the next executable, separately scoped increment.
+
+## C3-CANDIDATE-001 evidence-governed candidate workspace - 2026-07-21
+
+- Added revision `20260721_0006` with one tenant/campaign candidate workspace and append-only current-version section approval receipts under forced RLS.
+- Added exact-authorized create/read/update/approve-section APIs with authority-bound idempotency, optimistic concurrency, sanitized errors, audit and internal no-effect outbox evidence.
+- Added independent-evidence rules for identity, biography, purpose, values and attributes; self-assessment alone cannot verify an attribute.
+- Added typed contradictions, development goals, reputation risks and a permanent `public_use_status=BLOCKED` boundary.
+- Added a fail-closed frontend parser, current-campaign navigation and a read-only ES/EN executive surface for non-technical users.
+- Critic RED/GREEN passes corrected contradiction references to point to contradiction records, enforced `PERCEPTION` classification on every perception reference, bound replay to exact authority/intent and proved approval rollback atomicity.
+- Full locked verification, PostgreSQL twice, browser/WCAG, daemonless non-root image, actionlint, dependency audit, Gitleaks, program truth and campaign safety passed on the exact worktree.
+- Scope remains `VERIFIED_POSTGRESQL_LOCAL_ONLY` until explicit branch push, exact remote SHA, stacked draft PR and exact-head CI are recorded. Production remains `BLOCKED`; external effects remain `NONE`.

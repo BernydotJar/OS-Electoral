@@ -141,7 +141,7 @@
       "id": "C3-CANDIDATE-001",
       "workstream": "WS-07",
       "title": "Evidence-backed candidate workspace and human review boundary",
-      "status": "READY",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-ONBOARD-001"
       ]

@@ -192,3 +192,160 @@ export type ProblemDetail = Readonly<{
   code: string;
   correlation_id: string;
 }>;
+
+export type CandidateEvidenceClassification =
+  | "OFFICIAL_SOURCE"
+  | "CAMPAIGN_RESEARCH"
+  | "PERCEPTION"
+  | "HYPOTHESIS"
+  | "UNKNOWN";
+
+export type CandidateEvidenceStatus = "ACCEPTED" | "VERIFIED" | "READY" | "REJECTED" | "EXPIRED";
+export type CandidateClaimStatus =
+  | "UNKNOWN"
+  | "SELF_REPORTED"
+  | "UNDER_REVIEW"
+  | "EVIDENCE_PARTIAL"
+  | "VERIFIED"
+  | "REJECTED"
+  | "CONTRADICTED";
+export type CandidateSection =
+  | "identity"
+  | "biography"
+  | "purpose"
+  | "values"
+  | "attributes"
+  | "contradictions"
+  | "development_goals"
+  | "reputation";
+export type CandidateCheckKey = CandidateSection | "approvals";
+export type CandidateWorkspaceStatus =
+  | "SETUP_REQUIRED"
+  | "UNDER_REVIEW"
+  | "AWAITING_APPROVAL"
+  | "INTERNALLY_APPROVED";
+export type CandidateNextAction =
+  | "DEFINE_IDENTITY"
+  | "DOCUMENT_BIOGRAPHY"
+  | "DEFINE_PURPOSE"
+  | "VERIFY_VALUES"
+  | "VERIFY_ATTRIBUTES"
+  | "REVIEW_CONTRADICTIONS"
+  | "DEFINE_DEVELOPMENT_GOALS"
+  | "REVIEW_REPUTATION_RISKS"
+  | "OBTAIN_SECTION_APPROVALS"
+  | "CONTINUE_HUMAN_GOVERNANCE";
+export type CandidateLimitation =
+  | "NOT_PUBLIC_POSITIONING_APPROVAL"
+  | "NOT_A_STRATEGY"
+  | "NO_VOTER_PROFILING"
+  | "NO_EXTERNAL_EFFECTS"
+  | "HUMAN_REVIEW_REQUIRED";
+
+export type CandidateEvidence = Readonly<{
+  id: UUID;
+  classification: CandidateEvidenceClassification;
+  status: CandidateEvidenceStatus;
+  title: string;
+  source_reference: string;
+  source_authority: string | null;
+  jurisdiction: string | null;
+  excerpt: string | null;
+  observed_at: string | null;
+}>;
+
+export type CandidateClaim = Readonly<{
+  id: UUID;
+  label: string;
+  claim: string;
+  status: CandidateClaimStatus;
+  classification: CandidateEvidenceClassification;
+  evidence_refs: readonly UUID[];
+}>;
+
+export type CandidateAttribute = Readonly<{
+  id: UUID;
+  name: string;
+  claim: string;
+  status: CandidateClaimStatus;
+  candidate_self_assessment: "YES" | "NO" | "UNKNOWN";
+  team_assessment: "YES" | "PARTIAL" | "NO" | "UNKNOWN";
+  citizen_evidence: "SUPPORTED" | "PARTIAL" | "UNRESOLVED" | "CONTRADICTED";
+  evidence_refs: readonly UUID[];
+  perception_refs: readonly UUID[];
+  contradiction_refs: readonly UUID[];
+  risk: string;
+}>;
+
+export type CandidateContradiction = Readonly<{
+  id: UUID;
+  subject_ref: UUID;
+  description: string;
+  status: "OPEN" | "UNDER_REVIEW" | "RESOLVED";
+  evidence_refs: readonly UUID[];
+}>;
+
+export type CandidateDevelopmentGoal = Readonly<{
+  id: UUID;
+  area: string;
+  objective: string;
+  status: "OPEN" | "IN_PROGRESS" | "COMPLETE";
+  evidence_refs: readonly UUID[];
+}>;
+
+export type CandidateReputationRisk = Readonly<{
+  id: UUID;
+  title: string;
+  description: string;
+  severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+  status: "OPEN" | "MITIGATING" | "RESOLVED" | "CLOSED";
+  decision_required: boolean;
+  evidence_refs: readonly UUID[];
+}>;
+
+export type CandidateWorkspaceCheck = Readonly<{
+  key: CandidateCheckKey;
+  complete: boolean;
+  reason_code: string;
+}>;
+
+export type CandidateWorkspaceProjection = Readonly<{
+  id: UUID;
+  tenant_id: UUID;
+  campaign_id: UUID;
+  campaign_version: number;
+  campaign_status: "DRAFT" | "ACTIVE";
+  campaign_name: string;
+  jurisdiction: string;
+  candidate_id: UUID;
+  display_name: string;
+  status: CandidateWorkspaceStatus;
+  public_use_status: "BLOCKED";
+  external_effects: "NONE";
+  evidence: readonly CandidateEvidence[];
+  identity: CandidateClaim | null;
+  biography: CandidateClaim | null;
+  purpose: CandidateClaim | null;
+  values: readonly CandidateClaim[] | null;
+  attributes: readonly CandidateAttribute[] | null;
+  contradictions: readonly CandidateContradiction[] | null;
+  development_goals: readonly CandidateDevelopmentGoal[] | null;
+  reputation_risks: readonly CandidateReputationRisk[] | null;
+  checks: readonly CandidateWorkspaceCheck[];
+  completed_checks: number;
+  total_checks: number;
+  approvable_sections: readonly CandidateSection[];
+  current_approved_sections: readonly CandidateSection[];
+  approvals_required: readonly CandidateSection[];
+  open_critical_high_risks: number;
+  next_action: CandidateNextAction;
+  limitation_codes: readonly CandidateLimitation[];
+  version: number;
+  created_at: string;
+  updated_at: string;
+}>;
+
+export type CandidateWorkspaceReadEvidence = Readonly<{
+  workspace: CandidateWorkspaceProjection;
+  audit_event_id: UUID;
+}>;

@@ -206,3 +206,21 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `program/task-graph.yaml`, `program/iterations/c3-onboard-001.md`, `docs/product/guided-intake.md`.
 - `rationale`: Combining intake and candidate evidence would broaden review scope and permit a partial implementation to overclaim completion.
 - `consequences`: Onboarding remains auditable as one bounded aggregate; candidate biography, purpose, values, contradictions, evidence and approvals remain explicitly pending.
+
+## DEC-2026-07-21-024 — Candidate evidence types retain distinct provenance semantics
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-CANDIDATE-001`
+- `decision`: Factual verification requires accepted independent evidence; perception references may point only to `PERCEPTION` evidence; attribute contradiction references point to contradiction records rather than evidence records.
+- `evidence`: backend and frontend candidate contract parsers plus RED/GREEN tests.
+- `rationale`: Collapsing self-report, perception, factual evidence and contradiction records would allow unsupported promotion or misleading summaries.
+- `consequences`: Unknown or semantically mis-typed references fail closed at backend and frontend boundaries.
+
+## DEC-2026-07-21-025 — Internal candidate approval never authorizes public use
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-CANDIDATE-001`
+- `decision`: Section receipts are append-only and bound to the exact workspace version, but `public_use_status` remains `BLOCKED` even when every section is internally approved.
+- `evidence`: candidate contracts, service, API, PostgreSQL tests and executive frontend boundary.
+- `rationale`: Evidence review is not strategy, public positioning, legal, publication, spending or production approval.
+- `consequences`: Any downstream public use requires a separate future human-governed workflow and cannot be inferred from candidate readiness.

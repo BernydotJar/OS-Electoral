@@ -67,6 +67,30 @@ describe("deriveNavigation", () => {
     expect(crossCampaign.find((item) => item.key === "intake")?.enabled).toBe(false);
   });
 
+  it("requires the exact current-campaign candidate workspace read grant", () => {
+    const candidateMembership = membership("candidate_workspace");
+    const scopedMembership = {
+      ...candidateMembership,
+      grants: candidateMembership.grants.map((grant) => ({
+        ...grant,
+        campaign_id: CAMPAIGN_ID,
+        purpose: "Review candidate evidence workspace",
+      })),
+    };
+    const exact = deriveNavigation("es", [scopedMembership], CAMPAIGN_ID);
+    expect(exact.find((item) => item.key === "candidate")?.enabled).toBe(true);
+
+    const crossCampaign = deriveNavigation("es", [scopedMembership], OTHER_CAMPAIGN_ID);
+    expect(crossCampaign.find((item) => item.key === "candidate")?.enabled).toBe(false);
+
+    const wrongPurpose = deriveNavigation(
+      "es",
+      [candidateMembership],
+      CAMPAIGN_ID,
+    );
+    expect(wrongPurpose.find((item) => item.key === "candidate")?.enabled).toBe(false);
+  });
+
   it("reveals only modules backed by relevant server-owned grants", () => {
     const navigation = deriveNavigation("en", [
       membership("campaign_readiness"),

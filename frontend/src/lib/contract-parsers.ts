@@ -707,3 +707,5 @@ export function parseGuidedIntakeReadEvidence(value: unknown): GuidedIntakeReadE
     audit_event_id: uuid(source.audit_event_id, "guided intake evidence.audit_event_id"),
   };
 }
+
+export { parseCandidateWorkspaceReadEvidence } from "@/lib/candidate-contract-parser";
