@@ -11,7 +11,7 @@ from sqlalchemy import or_, select
 from sqlalchemy.exc import SQLAlchemyError
 
 from campaignos.data.database import Database
-from campaignos.data.models import AuditEvent, Campaign, OutboxEvent
+from campaignos.data.models import AuditEvent, Campaign, OutboxEvent, Workspace
 
 
 class OutboxWorkerUnavailable(RuntimeError):
@@ -51,16 +51,28 @@ class OutboxHandler(Protocol):
         """Handle one event without bypassing the worker's state machine."""
 
 
+def _is_uuid(value: str) -> bool:
+    try:
+        UUID(value)
+    except ValueError:
+        return False
+    return True
+
+
 class InternalCampaignUpdatedHandler:
     """Validate the campaign update envelope without producing an external effect."""
 
     def handle(self, event: ClaimedOutboxEvent) -> None:
-        if event.topic != "campaign.updated":
+        if event.topic not in {"campaign.updated", "workspace.created"}:
             raise UnsupportedOutboxTopic(event.topic)
         tenant_id = event.payload.get("tenant_id")
         campaign_id = event.payload.get("campaign_id")
         audit_event_id = event.payload.get("audit_event_id")
         version = event.payload.get("version")
+        workspace_id = event.payload.get("workspace_id")
+        workspace_valid = event.topic == "campaign.updated" or (
+            isinstance(workspace_id, str) and _is_uuid(workspace_id)
+        )
         if (
             tenant_id != str(event.tenant_id)
             or event.campaign_id is None
@@ -68,8 +80,9 @@ class InternalCampaignUpdatedHandler:
             or not isinstance(audit_event_id, str)
             or not isinstance(version, int)
             or version < 1
+            or not workspace_valid
         ):
-            raise InvalidOutboxEvent("campaign.updated payload does not match event scope")
+            raise InvalidOutboxEvent(f"{event.topic} payload does not match event scope")
         try:
             UUID(audit_event_id)
         except ValueError as exc:
@@ -204,15 +217,38 @@ class OutboxWorker:
                 parsed_audit_event_id = UUID(str(audit_event_id))
             except ValueError as exc:
                 raise InvalidOutboxEvent("Outbox audit_event_id is invalid") from exc
-            audit_exists = session.scalar(
-                select(AuditEvent.id).where(
+            audit = session.scalar(
+                select(AuditEvent).where(
                     AuditEvent.id == parsed_audit_event_id,
                     AuditEvent.tenant_id == tenant_id,
                     AuditEvent.campaign_id == row.campaign_id,
+                    AuditEvent.event_type == row.topic,
                 )
             )
-            if audit_exists is None:
+            if audit is None:
                 raise InvalidOutboxEvent("Audit event is unavailable in tenant scope")
+            if row.topic == "campaign.updated":
+                if audit.resource_type != "campaign" or audit.resource_id != str(row.campaign_id):
+                    raise InvalidOutboxEvent("Campaign audit evidence does not match event scope")
+            elif row.topic == "workspace.created":
+                try:
+                    workspace_id = UUID(str(row.payload.get("workspace_id")))
+                except ValueError as exc:
+                    raise InvalidOutboxEvent("Workspace event identifier is invalid") from exc
+                workspace_exists = session.scalar(
+                    select(Workspace.id).where(
+                        Workspace.id == workspace_id,
+                        Workspace.tenant_id == tenant_id,
+                        Workspace.campaign_id == row.campaign_id,
+                    )
+                )
+                if (
+                    workspace_exists is None
+                    or audit.workspace_id != workspace_id
+                    or audit.resource_type != "workspace"
+                    or audit.resource_id != str(workspace_id)
+                ):
+                    raise InvalidOutboxEvent("Workspace audit evidence does not match event scope")
             row.status = "DELIVERED"
             row.processed_at = now
             row.lease_owner = None
