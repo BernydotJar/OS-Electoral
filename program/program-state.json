@@ -269,7 +269,8 @@
     "branch": "agent/c3-ops-001-roadmap-war-room",
     "base": "agent/c3-team-001-accountability-review@af3e43074e3876fe26f8ba1497269f1d69183bf8",
     "production_status": "BLOCKED",
-    "external_effects": "NONE"
+    "external_effects": "NONE",
+    "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -288,6 +289,7 @@
     "base_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
     "status": "VERIFIED_POSTGRESQL",
     "external_effects": "NONE",
-    "next_increment": "C3-OPS-002"
+    "next_increment": "C3-OPS-002",
+    "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f"
   }
 }
