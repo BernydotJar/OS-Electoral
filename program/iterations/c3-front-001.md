@@ -1,8 +1,11 @@
 # C3-FRONT-001 - Dynamic authenticated application shell
 
-- `status`: `TESTED_LOCAL`
+- `status`: `CHECKPOINT_COMPLETED_TESTED_LOCAL_PUBLISHED_UNREVIEWED`
 - `branch`: `agent/c3-front-001-dynamic-shell`
 - `base`: `agent/c3-api-006-campaign-create@a21e7353f0a91f8c50a10904d942e03db45b8318`
+- `policy_commit`: `0763b7d0b8222043e0cf436c813ebfd61376d970`
+- `implementation_commit`: `b21f3d55ca0e89d3e6575076b5affa90732e3438`
+- `publication`: `REVIEW_BRANCH_PUBLISHED_NO_PR_NO_CI`
 - `production_status`: `BLOCKED`
 - `external_effects`: none; the shell is read-only and cannot publish, spend, contact, mobilize or grant authority.
 
@@ -96,7 +99,16 @@ prohibited_actions:
 
 - No live OIDC login, invitation, recovery, rotation, revocation or trusted tenant-selection lifecycle.
 - No campaign mutation UI, persisted guided intake, candidate, team, roadmap, approval, evidence or training journey.
-- No current-branch PR, CI, human review, dev, staging or production evidence yet.
+- The review branch is published and its GitHub SHA matches the implementation commit; no draft PR, current-head CI, human review, dev, staging or production evidence exists.
+- Draft PR creation is blocked by the external absence of an authenticated GitHub mutation session; public inspection reports zero open PRs and zero workflow runs for the exact implementation head.
 - Nested Docker remains unavailable for the complete Compose stack, but daemonless Buildah now provides a validated local alternative for the frontend Dockerfile; CI still owns the independent Docker-engine build.
 - Automated accessibility evidence does not replace manual assistive-technology review.
 - Production remains `BLOCKED`; the shell is read-only and authorizes no external effect.
+
+## Publication checkpoint
+
+- Published `agent/c3-front-001-dynamic-shell` at `b21f3d55ca0e89d3e6575076b5affa90732e3438`; local, origin and public GitHub branch SHAs match.
+- Public GitHub inspection found zero open pull requests and zero workflow runs for that exact head. The workflow runs on pull requests and main pushes, so no branch-push CI result is inferred.
+- `gh auth status` confirms no authenticated GitHub mutation session; draft PR creation remains an external dependency, not a code or credential-attribution failure.
+- An initial wrapper call targeted the stale IAM branch. The accidental fast-forward is retained for auditability and `e7304e61242280482f402bdfe047665d2c62fe4d` restores the exact `5b203ec7d52c87950778b67b298de5d9b0a7a6fb` tree without force-push or history rewrite.
+- Production remains `BLOCKED`; no deployment or external campaign effect occurred.

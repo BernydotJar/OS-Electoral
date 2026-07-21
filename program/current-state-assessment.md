@@ -4,13 +4,13 @@ Assessment date: `2026-07-21 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main` at `d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; green review stack through `agent/c3-api-004-workspace-write@236a0d04c5b2c061948261a5c60852e0d4736b0f`; published readiness and campaign-create checkpoints through `agent/c3-api-006-campaign-create@a21e7353f0a91f8c50a10904d942e03db45b8318`; local dynamic-shell worktree on `agent/c3-front-001-dynamic-shell`.
+Repository evidence point: `main` at `d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; green review stack through `agent/c3-api-004-workspace-write@236a0d04c5b2c061948261a5c60852e0d4736b0f`; published readiness and campaign-create checkpoints through `agent/c3-api-006-campaign-create@a21e7353f0a91f8c50a10904d942e03db45b8318`; published dynamic shell `agent/c3-front-001-dynamic-shell@b21f3d55ca0e89d3e6575076b5affa90732e3438`.
 
 ## Executive determination
 
 Production readiness is **BLOCKED**.
 
-Foundation PR `#72`, IAM PR `#73`, and the first protected campaign API PR `#83` are merged to `main`. Draft PRs `#84`, `#85`, and `#86` form a correctly based review stack and have green checks at their recorded heads. Published stacked checkpoints add audited readiness and exact-authorized idempotent campaign creation. The current local branch adds a server-rendered bilingual Next.js shell, server-only typed API boundary, runtime contract validation, synthetic read-only demo classification, accessibility evidence, and a dedicated frontend CI job. It has no current-branch PR, CI, review, merge, or deployment evidence. None of these proofs constitutes production readiness or approval.
+Foundation PR `#72`, IAM PR `#73`, and the first protected campaign API PR `#83` are merged to `main`. Draft PRs `#84`, `#85`, and `#86` form a correctly based review stack and have green checks at their recorded heads. Published stacked checkpoints add audited readiness and exact-authorized idempotent campaign creation. The current published branch adds a server-rendered bilingual Next.js shell, server-only typed API boundary, runtime contract validation, synthetic read-only demo classification, accessibility evidence, and a dedicated frontend CI job. Public inspection reports zero open PRs and zero workflow runs for its exact implementation head, so no current-head CI, review, merge, or deployment evidence is claimed. None of these proofs constitutes production readiness or approval.
 
 The only public deployed surface remains the static, read-only GitHub Pages demonstration. It is classified `DEMO_NON_PRODUCTION`, publishes only through a manual confirmation workflow, and never counts as a production environment.
 
@@ -24,8 +24,10 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - PR `#86` (`236a0d0`) is draft against `agent/c3-api-003-outbox-worker`; CampaignOS CI run `29807878943` succeeded.
 - The public rulesets endpoint returned an empty list. Branch-protection and Actions-permission endpoints require authentication, so required-check enforcement is not currently verifiable and remains a production blocker.
 - Twenty-three non-PR issues remain open. The C2 issues associated with already merged PRs have not been rewritten or closed by this checkpoint.
+- `agent/c3-front-001-dynamic-shell` is published at `b21f3d5`; public inspection found zero PRs and zero workflow runs for that head, and `gh auth status` confirms no authenticated mutation session for draft-PR creation.
+- The first MCP push followed stale workspace metadata into the merged IAM branch. GitHub was reached; fast-forward repair `e7304e6` restores the exact `5b203ec` tree while preserving the accidental ancestry for auditability. No force-push or history rewrite occurred.
 
-## Verification reproduced at the current dynamic-frontend worktree
+## Verification reproduced at the published dynamic-frontend checkpoint
 
 - `make verify`: PASS.
 - Ruff lint and format: PASS.
@@ -69,7 +71,7 @@ The nested Docker daemon still cannot prepare the complete Compose stack because
 - Campaign creation and readiness are local/PostgreSQL proof only; candidate, approval, assignment, artifact, guided-intake, team, roadmap and broader evidence workflows remain unimplemented or prototype-only.
 - The outbox worker has no reviewed external transport, administration surface, production observability, staging concurrency proof, or external political effects.
 - S3Mock and Mailpit remain local test dependencies; production object storage, email, attachment validation, quarantine, malware handling, KMS, and retention are absent.
-- The dynamic shell is local and synthetic-only; live login/session integration, trusted tenant selection, campaign mutation UI, guided onboarding, full-product i18n, Training Academy, and complete API-backed non-technical journeys remain absent.
+- The dynamic shell is published but synthetic-only and unreviewed; live login/session integration, trusted tenant selection, campaign mutation UI, guided onboarding, full-product i18n, Training Academy, and complete API-backed non-technical journeys remain absent.
 - No Terraform, AWS dev/staging/production environment, backup, restore, load, rollback, disaster-recovery, or production observability evidence exists.
 - Branch-protection enforcement is unverified; no SBOM, provenance, image signing, or protected promotion flow exists.
 - Six historical CI failures and five CRITICAL/HIGH findings remain explicit blockers; none has been removed or inferred away.
@@ -84,7 +86,7 @@ The nested Docker daemon still cannot prepare the complete Compose stack because
 | Local quality | 327 passed, 2 skipped, 90.92% enforced coverage, lint, format, mypy, program/eval/safety validators | `TESTED_LOCAL` |
 | Readiness slice | Exact authorization, deterministic projection, audit and no-outbox tests | `VERIFIED_POSTGRESQL`; CI/review/merge pending |
 | Campaign-create slice | Exact collection authorization, atomic evidence, replay and concurrent slug-conflict tests | `VERIFIED_POSTGRESQL`; publication/CI/review pending |
-| Dynamic frontend shell | Exact lock, typed server-only API client, runtime parsers, ES/EN, production build, browser/WCAG review and daemonless non-root image smoke | `TESTED_LOCAL`; current-branch CI/review/deploy pending |
+| Dynamic frontend shell | Exact lock, typed server-only API client, runtime parsers, ES/EN, production build, browser/WCAG review, daemonless non-root image smoke and verified published SHA | `TESTED_LOCAL_PUBLISHED`; draft PR/CI/review/deploy pending |
 | PostgreSQL | Native temporary PostgreSQL integration PASS; prior-stack CI PostgreSQL jobs green | `VERIFIED_POSTGRESQL_LOCAL`; current branch CI pending |
 | Local Compose | Nested-daemon ownership limitation | `LOCAL_BLOCKER`; CI substitute retained |
 | Historical validation | Six manifest-linked runs retain `FAILURE` | Production-blocking until explicit supersession |
@@ -116,8 +118,8 @@ Later green runs do not rewrite those records automatically.
 
 ## Next executable increments
 
-1. `C3-ONBOARD-001`: add a persisted, resumable guided-intake aggregate and API-backed shell journey that begins from campaign creation/readiness without producing strategy or external effects.
-2. Continue `C3-IAM-002` contract-first invitation, membership, session, and support-elevation lifecycle work without claiming live Cognito integration.
+1. `C3-IAM-002`: implement contract-first invitation, membership administration, durable session, revocation and time-bound support-elevation lifecycles without claiming live Cognito integration.
+2. `C3-ONBOARD-001`: add a persisted, resumable guided-intake aggregate and API-backed shell journey that begins from campaign creation/readiness without producing strategy or external effects.
 3. Advance Terraform validation, operations evidence and additional required evals in independent workstreams without inferring deployment readiness.
 4. Expand the dynamic shell only through bounded, authorized product journeys; preserve `web/` until explicit parity review.
 

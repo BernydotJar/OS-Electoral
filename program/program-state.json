@@ -5,9 +5,9 @@
   "updated_at": "2026-07-21",
   "branch": "agent/c3-front-001-dynamic-shell",
   "current_increment": "C3-FRONT-001",
-  "iteration_status": "IN_PROGRESS",
+  "iteration_status": "CHECKPOINT_COMPLETED",
   "production_status": "BLOCKED",
-  "production_status_reason": "Foundation, tenant authorization and the first protected campaign API slice are merged, while idempotency, an internal outbox worker and workspace writes are draft and CI-green. Campaign readiness and idempotent campaign creation are verified locally/PostgreSQL, and the dynamic bilingual frontend shell is tested locally with synthetic read-only data. Five CRITICAL/HIGH findings, six retained failed runs, unverified required-check enforcement, no live identity lifecycle, incomplete product journeys, no verified AWS environments, no backup/restore and no human production approval keep production BLOCKED.",
+  "production_status_reason": "Foundation, tenant authorization and the first protected campaign API slice are merged, while idempotency, an internal outbox worker and workspace writes are draft and CI-green. Campaign readiness and idempotent campaign creation are verified locally/PostgreSQL, and the published dynamic bilingual frontend shell is tested with synthetic read-only data but has no draft PR, current-head CI or human review. Five CRITICAL/HIGH findings, six retained failed runs, unverified required-check enforcement, no live identity lifecycle, incomplete product journeys, no verified AWS environments, no backup/restore and no human production approval keep production BLOCKED.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -51,7 +51,7 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "DYNAMIC_SHELL_TESTED_LOCAL",
+      "status": "DYNAMIC_SHELL_PUBLISHED_UNREVIEWED",
       "next_increment": "C3-ONBOARD-001"
     },
     {
@@ -113,12 +113,17 @@
     "C3-ONBOARD-001"
   ],
   "published_unreviewed_increment": {
-    "id": "C3-API-006",
-    "branch": "agent/c3-api-006-campaign-create",
-    "base": "agent/c3-api-005-campaign-readiness",
-    "implementation_commit": "c91d60217e2ee0c0ec0f38c139852e7d73c78a58",
+    "id": "C3-FRONT-001",
+    "branch": "agent/c3-front-001-dynamic-shell",
+    "base": "agent/c3-api-006-campaign-create",
+    "base_commit": "a21e7353f0a91f8c50a10904d942e03db45b8318",
+    "policy_commit": "0763b7d0b8222043e0cf436c813ebfd61376d970",
+    "implementation_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
+    "github_branch_sha": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
     "draft_pr": null,
-    "ci": "NOT_RUN",
+    "open_pr_count": 0,
+    "ci": "NOT_RUN_NO_PR_OR_BRANCH_PUSH_TRIGGER",
+    "workflow_run_count": 0,
     "blocker": "NO_AUTHENTICATED_GITHUB_MUTATION_SESSION"
   },
   "review_stack": [
@@ -185,5 +190,17 @@
     "No deployable AWS Terraform baseline",
     "No backup/restore evidence",
     "No explicit human production approval"
-  ]
+  ],
+  "git_push_incident": {
+    "classification": "TECHNICAL_DEFECT_REPAIRED",
+    "component": "Cloud_Sandbox_MCP.git_push branch targeting",
+    "cause": "first call omitted the supported branch field and used stale workspace branch metadata",
+    "github_reached": true,
+    "accidental_target": "agent/c3-iam-001-membership-authorization",
+    "accidental_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
+    "repair_commit": "e7304e61242280482f402bdfe047665d2c62fe4d",
+    "repair_method": "FAST_FORWARD_TREE_RESTORE_NO_FORCE_PUSH_NO_HISTORY_REWRITE",
+    "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
+    "frontend_target_verified": true
+  }
 }

@@ -222,10 +222,13 @@
       "external_effects": "NONE",
       "blockers": [
         "No live OIDC or session lifecycle",
-        "Current branch CI and human review have not run",
+        "No authenticated GitHub mutation session is available to create the draft PR",
+        "Current published head has no workflow run because CI requires a pull request or main push",
         "No dev, staging or production deployment evidence"
       ],
-      "publication_state": "LOCAL_TESTED_NOT_YET_PUBLISHED"
+      "publication_state": "REVIEW_BRANCH_PUBLISHED_NO_PR_NO_CI",
+      "implementation_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
+      "policy_commit": "0763b7d0b8222043e0cf436c813ebfd61376d970"
     },
     {
       "task_id": "C3-ONBOARD-001",

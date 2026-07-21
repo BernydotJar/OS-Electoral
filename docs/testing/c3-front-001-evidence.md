@@ -123,4 +123,4 @@ These remain partial because full authenticated product journeys, manual accessi
 - No campaign create/update UI.
 - No guided intake, Candidate Workspace, Team Builder, War Room, evidence workflow, Training Academy, or administration journeys.
 - No dev, staging, or production deployment evidence.
-- No current-branch PR, CI, human review, or merge evidence at this local checkpoint.
+- The branch is published at `b21f3d55ca0e89d3e6575076b5affa90732e3438`; public inspection reports zero open PRs and zero workflow runs, so current-head CI, human review, and merge evidence remain absent.

@@ -138,3 +138,13 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `scripts/frontend/verify_frontend_image_buildah.sh`, `docs/testing/c3-front-001-evidence.md`
 - `rationale`: The environment limitation concerns the daemon wrapper, not the Dockerfile; a daemonless build exercises the same stages, ownership, health metadata and runtime filesystem.
 - `consequences`: Frontend image construction is locally evidenced and CI remains an independent Docker-engine check. The full Compose stack still requires CI or a compatible host.
+
+
+## DEC-2026-07-21-016 — Repair a misrouted feature push without rewriting history
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-FRONT-001`
+- `decision`: Treat the first push target mismatch as a Cloud Sandbox wrapper/invocation defect. Publish the frontend branch with the supported explicit `branch` field and restore the IAM branch through a fast-forward commit whose tree exactly matches the historical IAM head.
+- `evidence`: frontend `b21f3d55ca0e89d3e6575076b5affa90732e3438`, repair `e7304e61242280482f402bdfe047665d2c62fe4d`, original IAM `5b203ec7d52c87950778b67b298de5d9b0a7a6fb`
+- `rationale`: GitHub was reached and accepted the push; credentials and commit author email were not the cause. A force-push would erase evidence and violate the persistent policy.
+- `consequences`: The accidental commit remains visible in IAM branch ancestry, the branch content is restored, and future MCP pushes must always use the documented `branch` argument.

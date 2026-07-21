@@ -210,3 +210,10 @@
 - Independent BOLA review added a full-page tenant invariant: one valid selected campaign can no longer mask a foreign-tenant item returned in the same upstream list. The exact runtime parser and adversarial Vitest now fail closed.
 - Final staged-set review found that empty `frontend/public/` would disappear in a clean checkout even though Docker/E2E copy it. Added a tracked placeholder and reran frontend build, browser, image and secret gates successfully.
 - Production remains `BLOCKED`; no live identity, domain mutation UI, deployment or external effect occurred.
+
+## C3-FRONT-001 publication checkpoint - 2026-07-21
+
+- Published `agent/c3-front-001-dynamic-shell` at `b21f3d55ca0e89d3e6575076b5affa90732e3438` and verified exact local/origin/public GitHub SHA equality.
+- Public inspection found zero open PRs and zero workflow runs for the head; `gh auth status` confirms no authenticated mutation session, so draft PR creation is classified as an external dependency.
+- The first MCP push omitted the supported `branch` argument and followed stale workspace metadata into IAM. GitHub was reached; `e7304e61242280482f402bdfe047665d2c62fe4d` restores the exact `5b203ec7d52c87950778b67b298de5d9b0a7a6fb` tree by fast-forward, without force-push or history rewrite.
+- C3-FRONT-001 is a `CHECKPOINT_COMPLETED` at `TESTED_LOCAL_PUBLISHED_UNREVIEWED`; production remains `BLOCKED` and execution continues.
