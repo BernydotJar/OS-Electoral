@@ -19,11 +19,11 @@ No row marked `PARTIAL` is counted as production-ready.
 | Real authentication | Fixed-algorithm OIDC ID-token verifier and protected identity endpoint; no live provider/login flow | PARTIAL | OIDC/Cognito login, invitation and recovery flows |
 | Real session validation | Cryptographic bearer ID-token validation is covered; no server session/rotation/revocation lifecycle | PARTIAL | Issuer/audience/signature/expiry validation plus session revocation tests |
 | Tenant isolation | Composite schema constraints, transaction-local scope and forced RLS passed an isolated non-superuser test | PARTIAL | Application repository integration plus staging adversarial evidence |
-| RBAC | PostgreSQL-backed active membership/role/exact-purpose grant loading and tenant identity endpoint; roles never imply permission | PARTIAL | Grant administration, reviewed role catalog and enforcement on every domain/worker action |
-| PostgreSQL persistence | Initial SQLAlchemy identity/tenancy/campaign/audit/outbox model and local PostgreSQL proof under a separate constrained runtime role | PARTIAL | Domain adapters, managed-role rotation and RDS/staging transaction evidence |
+| RBAC | PostgreSQL-backed active membership and exact-purpose grants now protect campaign list/get/update and workspace creation; roles never imply permission | PARTIAL | Grant administration, reviewed role catalog, support elevation and enforcement on every remaining domain/worker action |
+| PostgreSQL persistence | Identity/tenancy plus campaign read/write, idempotency, workspace, audit and outbox adapters are merged or in the green draft stack; isolated constrained-role PostgreSQL proof passes | PARTIAL | Campaign creation/readiness and broader domain adapters, managed-role rotation and RDS/staging transaction evidence |
 | Database migrations | Alembic environment and initial migration pass downgrade/upgrade/check locally | PARTIAL | Reviewed release policy plus staging forward/compatibility rehearsal |
-| Versioned REST API | `/api/v1` FastAPI health/readiness plus global and tenant-scoped identity/authorization surfaces with safe errors and contract tests | PARTIAL | Authenticated campaign-domain endpoints with reviewed OpenAPI, pagination, concurrency and rate controls |
-| Background jobs | None | NOT_IMPLEMENTED | Worker runtime, retry/idempotency/dead-letter behavior |
+| Versioned REST API | `/api/v1` exposes health, dependency readiness, identity, tenant authorization, protected campaign list/get/update and draft workspace creation with safe errors, pagination, optimistic concurrency and idempotency | PARTIAL | Campaign creation/readiness, broader bounded contexts, reviewed OpenAPI policy and rate controls |
+| Background jobs | Draft PR `#85` adds a tenant-explicit internal outbox worker with leases, `SKIP LOCKED`, expired-claim recovery, bounded retries, dead-letter state and evidence revalidation; no external delivery exists | PARTIAL | Worker administration, metrics/traces/alerts, staging replay/concurrency proof and reviewed transport contracts |
 | Object storage | Typed configuration and initialized Adobe S3Mock local harness only | PARTIAL | Production adapter, signed operations, MIME/size validation, scan strategy and KMS/retention controls |
 | Guided onboarding | No persisted wizard | NOT_IMPLEMENTED | Save/resume intake and readiness eval |
 | Candidate Workspace | Deterministic candidate-brand aggregate | PARTIAL | Authenticated API-backed candidate experience |
@@ -40,7 +40,7 @@ No row marked `PARTIAL` is counted as production-ready.
 
 | Gate | Current evidence | Status | Required proof |
 |---|---|---:|---|
-| Security review | Adversarial code review and regression fixes; CodeQL/secret/dependency jobs passed in draft-PR run `29706162737`; open findings remain | PARTIAL | Independent threat-based review, alert triage policy and zero critical/high findings |
+| Security review | Adversarial review and regression fixes are retained; CodeQL, secret, dependency, PostgreSQL and E2E checks pass at merged and active draft heads through run `29807878943`; open findings remain | PARTIAL | Independent threat-based review, alert triage policy and zero critical/high findings |
 | Privacy review | Prohibited capabilities encoded in prototype | PARTIAL | Data inventory, lawful-purpose controls, retention and deletion verification |
 | Threat model | Canonical draft covers 23 threats and current-control status; no independent acceptance | PARTIAL | Reviewed model, owners, residual risks and verification links |
 | Rate limiting and abuse protection | Network API exists but has no principal/tenant limiter | NOT_IMPLEMENTED | Per-principal/tenant controls and abuse tests |
@@ -52,9 +52,9 @@ No row marked `PARTIAL` is counted as production-ready.
 | Incident response | Narrow corruption runbook | PARTIAL | Full incident roles, escalation, communications and exercises |
 | Disaster recovery | None | NOT_IMPLEMENTED | Reviewed assumptions, dependencies, RPO/RTO and exercise |
 | Load test | None | NOT_IMPLEMENTED | Representative workload, thresholds and results |
-| SAST | Pinned CodeQL job completed successfully in draft-PR run `29706162737` | PARTIAL | Required-check enforcement and alert triage policy |
-| Dependency scan | Hash lock, production-only `pip-audit` and uv Dependabot definition; draft-PR run `29706162737` passed | PARTIAL | Required-check enforcement and alert/update policy evidence |
-| Secret scan | GitHub scanning/push protection observed; full-range Gitleaks passed in draft-PR run `29706162737` | PARTIAL | Required-check enforcement and response runbook |
+| SAST | Pinned CodeQL succeeds at recorded Foundation, IAM and active API-stack heads | PARTIAL | Required-check enforcement and alert triage policy |
+| Dependency scan | Hash lock, production-only `pip-audit` and uv Dependabot are active; recorded merged and draft CI heads pass the locked audit | PARTIAL | Required-check enforcement and alert/update policy evidence |
+| Secret scan | GitHub scanning/push protection was observed previously; full-range CI scans and local Gitleaks `8.30.1` snapshot/stack scans pass | PARTIAL | Reverify repository settings with authenticated access, require the check and complete the response runbook |
 | SBOM and image signing | Pinned non-root image builds locally; no SBOM/provenance/signature | NOT_IMPLEMENTED | Immutable published image, SBOM, provenance/signing policy |
 
 ## Platform and delivery gates
@@ -68,9 +68,9 @@ No row marked `PARTIAL` is counted as production-ready.
 | AWS dev | AWS session expired; no IaC evidence | NOT_VERIFIED | Reviewed plan/apply and smoke evidence |
 | AWS staging | None | NOT_IMPLEMENTED | Migration, security, load, restore and agent-eval evidence |
 | AWS production | No approved deployment | BLOCKED | All gates plus explicit human approval |
-| PR CI | Draft PR `#72` runs `29706162737` and `29706162740` are green at recorded head `e8adf4c` | PARTIAL | Human review plus required-check enforcement on protected main |
-| Main CI | Same workflow triggers on `main`; no observed run yet and no deployment job | PARTIAL | Immutable green build evidence, then controlled dev deploy/post-deploy verification |
-| Branch protection | API reported none | NOT_IMPLEMENTED | Ruleset with required review and checks |
+| PR CI | PRs `#72`, `#73` and `#83` merged with green recorded checks; draft stack `#84` -> `#85` -> `#86` is green at recorded heads | PARTIAL | Human review of the open stack plus required-check enforcement on protected main |
+| Main CI | CampaignOS CI push run `29803405277` succeeded at `main@d0719c9`; no controlled environment deployment follows it | PARTIAL | Required-check enforcement, immutable artifact evidence, controlled dev deployment and post-deploy verification |
+| Branch protection | Public rulesets are empty; branch-protection and Actions-permission endpoints require authenticated repository-settings access, so current enforcement is unverified | NOT_VERIFIED | Authenticated ruleset evidence with required review and checks |
 | Staging promotion | None | NOT_IMPLEMENTED | Controlled candidate promotion and manual acceptance |
 | Production rollout/rollback | None | NOT_IMPLEMENTED | Backup, migration, progressive rollout, health and rollback criteria |
 | Deployment runbook | Narrow operator guide | PARTIAL | Environment-specific deploy procedure and evidence capture |
@@ -82,7 +82,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | Gate | Current evidence | Status | Required proof |
 |---|---|---:|---|
 | Program ledger | Manifest, graph and ledger reconcile fail closed under local/CI validator | PASS | Continue reconciliation with every GitHub/environment change |
-| AutoSkills review | Dry-run reviewed; no install | PASS | Re-review only if installation is proposed |
+| AutoSkills review | `autoskills@0.3.6` npm integrity/license/manifest reviewed; pinned dry-run proposed eleven skills, installed none and made no repository mutation | PASS | Per-skill payload, license, path and prompt-safety review plus explicit approval before any install |
 | Context7 evidence | Foundation guidance, official cross-checks and installed pins are recorded | PASS | Repeat for new implementation dependencies |
 | Required documentation tree | Most canonical goal paths absent | NOT_IMPLEMENTED | All required docs current and validated |
 | Obsolete-doc release gate | C2/main drift corrected in owned overview docs | PARTIAL | Repository-wide stale-doc scan and ownership policy |

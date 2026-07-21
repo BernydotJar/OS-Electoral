@@ -4,48 +4,59 @@
 
 `NO_INSTALL`
 
-AutoSkills was evaluated strictly as development tooling. The reviewed dry-run used `midudev/autoskills` version `0.3.6`, detected the agents `universal` and `kiro-cli`, proposed three frontend-oriented skills, and concluded that nothing was installed.
+AutoSkills was evaluated strictly as development tooling. The current review pinned `autoskills@0.3.6`, downloaded the npm tarball without running lifecycle scripts, verified npm integrity metadata, inspected its manifest and packaged registry, and then executed only `--dry-run`.
 
-## Dry-run result
+## Package evidence
 
 | Field | Observed value |
 |---|---|
-| Command mode | `--dry-run` |
-| AutoSkills version | `0.3.6` |
-| Detected agents | `universal`, `kiro-cli` |
-| Suggestions | 3 |
-| Install result | `nothing was installed` |
+| Package | `autoskills@0.3.6` |
+| License | `CC-BY-NC-4.0` |
+| npm integrity | `sha512-yNcj7Y/USPyJINxCWDaVVu17UaFokWgGtpX57PQUOA4i3s3vIDezaGZ/64KyMGb5CsLTvMb/L8WOX6R/ozhWIg==` |
+| npm shasum | `490cda87dc275465e12fc694377ef3631b6fd138` |
+| Runtime dependencies | none declared |
+| Lifecycle scripts | no `preinstall`, `install`, or `postinstall` script |
+| CLI entrypoint | `index.mjs` |
+| Dry-run repository mutation | none |
 
-Suggestions reported by the dry-run:
+The package includes a generated skill registry with source coordinates, file lists, hashes, and security-review summaries. That package-level evidence does not by itself prove the license, exact fetched revision, final installation path, or prompt safety of every third-party skill payload that the CLI could later retrieve.
 
-1. `anthropics › frontend-design` — Frontend
-2. `addyosmani › accessibility` — Frontend
-3. `addyosmani › seo` — Frontend
+## Dry-run result
+
+The pinned command detected Bash, Python, FastAPI, Pydantic, SQLAlchemy, and Pytest, selected the `universal` agent, proposed eleven skills, and reported `--dry-run: nothing was installed`.
+
+Suggestions reported:
+
+1. `wshobson › bash-defensive-patterns`
+2. `inferen-sh › python-executor` — registry security warning present
+3. `wshobson › python-testing-patterns`
+4. `wshobson › fastapi-templates`
+5. `mindrally › fastapi-python`
+6. `bobmatnyc › pydantic`
+7. `bobmatnyc › sqlalchemy`
+8. `wispbit-ai › sqlalchemy-alembic-expert-best-practices-code-review`
+9. `anthropics › frontend-design`
+10. `addyosmani › accessibility`
+11. `addyosmani › seo`
 
 ## Review findings
 
-The retained dry-run output did not expose, per suggested skill:
+- The AutoSkills package itself is distributed under a non-commercial Creative Commons license, requiring explicit legal review before incorporation into a commercial workflow or distribution.
+- Suggested skills originate from multiple third-party repositories and are not npm dependencies of AutoSkills; their final payloads were not fetched or installed in this review.
+- At least one suggestion is explicitly marked with a security warning, and the packaged registry contains examples of skills with broad execution or installation guidance.
+- The dry-run output does not provide a complete path/overwrite preview or per-suggestion license summary.
+- No suggested content is necessary to execute the current CampaignOS increment.
 
-- a complete manifest;
-- immutable content hashes;
-- installation paths;
-- transitive content or dependencies;
-- license metadata;
-- a prompt-injection assessment;
-- provenance sufficient to reproduce the exact proposed payload.
+## Gate
 
-AutoSkills itself is distributed under CC BY-NC 4.0. That license and the missing per-skill evidence require a separate commercial-use and redistribution review. No suggested content may enter CampaignOS runtime or commercial distributions based only on this dry-run.
+Installation remains denied until the proposed payload has all of the following:
 
-## Risk decision
-
-Installation is denied until all of the following are available and reviewed:
-
-1. manifest and exact source revision;
+1. exact source revision and complete manifest;
 2. cryptographic hashes for every installed file;
-3. path and overwrite preview;
-4. license for each proposed skill and embedded asset;
-5. prompt-injection and supply-chain review;
-6. compatibility with repository instructions;
-7. an updated `skills-lock.json` approved by a human reviewer.
+3. destination and overwrite preview;
+4. license review for each skill and embedded asset;
+5. prompt-injection, command-execution, and supply-chain review;
+6. compatibility review against repository and political-safety instructions;
+7. explicit human approval and an updated `skills-lock.json`.
 
-`skills-lock.json` therefore records zero installed skills and preserves the three uninstalled suggestions as review evidence only.
+`skills-lock.json` therefore records zero installed skills. The eleven suggestions are evidence only and are not trusted runtime instructions.

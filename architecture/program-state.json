@@ -2,16 +2,17 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-19",
-  "source_branch": "agent/c3-iam-001-membership-authorization",
+  "updated_at": "2026-07-21",
+  "source_branch": "agent/c3-resume-001-reconcile-review-stack",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
-    "main_sha_observed": "8f32bc158003a55a76cb471af45da2193ca71003",
-    "c2_integration_state": "MERGED_TO_MAIN"
+    "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
+    "c2_integration_state": "MERGED_TO_MAIN",
+    "c3_foundation_iam_api_state": "MERGED_TO_MAIN"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Open CRITICAL/HIGH findings, unsuperseded historical failed validation runs, no verified AWS environments and incomplete production gates remain. Draft PR CI is green at its recorded foundation head, but main has no required-check protection; the only public deployed surface is a static non-production demo, and the API/PostgreSQL/tenant-authorization foundations remain local only.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, unverified required-check enforcement, no verified AWS environments and incomplete product, identity, operations and human gates remain. Foundation, IAM and the first campaign API slice are merged; idempotency, the internal outbox worker and workspace writes are draft and CI-green, not deployed production evidence.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -186,8 +187,18 @@
   "integration_validation": [
     {"run_id": 29660653755, "conclusion": "SUCCESS", "head_sha": "30e2473f6eac2a554bc7e51b18f7b25746e42475", "scope": "integrated C2 stack PR"},
     {"run_id": 29662896729, "conclusion": "SUCCESS", "head_sha": "9245f715f8b877201f6e4e185546a012bf462dba", "scope": "deployment-gate governance PR"},
-    {"run_id": 29706162737, "conclusion": "SUCCESS", "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922", "scope": "draft PR 72: locked quality, PostgreSQL/RLS, dependency audit, Gitleaks, CodeQL and constrained-stack E2E"},
-    {"run_id": 29706162740, "conclusion": "SUCCESS", "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922", "scope": "draft PR 72: runtime visual review including Governance Workspace regression"}
+    {"run_id": 29706162737, "conclusion": "SUCCESS", "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922", "scope": "foundation pre-final review head: quality, PostgreSQL/RLS, audit, secret scan, CodeQL and E2E"},
+    {"run_id": 29706162740, "conclusion": "SUCCESS", "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922", "scope": "foundation pre-final review head: visual regression"},
+    {"run_id": 29706314953, "conclusion": "SUCCESS", "head_sha": "bac781eea1d0de1b9a845f0f4243924ee4808c54", "scope": "PR 72 final head: CampaignOS CI"},
+    {"run_id": 29706314936, "conclusion": "SUCCESS", "head_sha": "bac781eea1d0de1b9a845f0f4243924ee4808c54", "scope": "PR 72 final head: runtime visual review"},
+    {"run_id": 29770562360, "conclusion": "SUCCESS", "head_sha": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb", "scope": "PR 73 IAM final head: CampaignOS CI"},
+    {"run_id": 29770562352, "conclusion": "SUCCESS", "head_sha": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb", "scope": "PR 73 IAM final head: runtime visual review"},
+    {"run_id": 29802998261, "conclusion": "SUCCESS", "head_sha": "ed41ae064daa14393b793c5fde3536579e600950", "scope": "PR 83 protected campaign read/write boundary"},
+    {"run_id": 29803405277, "conclusion": "SUCCESS", "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f", "scope": "main push after PR 83 merge"},
+    {"run_id": 29804446308, "conclusion": "SUCCESS", "head_sha": "e938930eb1088f82603415c11182ab730994cb53", "scope": "draft PR 84 durable campaign idempotency"},
+    {"run_id": 29807485042, "conclusion": "SUCCESS", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "scope": "draft PR 85 internal outbox worker"},
+    {"run_id": 29807485041, "conclusion": "SUCCESS", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "scope": "draft PR 85 runtime visual review"},
+    {"run_id": 29807878943, "conclusion": "SUCCESS", "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f", "scope": "draft PR 86 idempotent workspace write boundary"}
   ],
   "bounded_contexts": [
     {"id": "context:campaign-workspace", "owner": "Campaign Platform", "maturity": "DETERMINISTIC_PROTOTYPE", "code": ["core/campaign_workspace.py"], "validators": ["scripts/campaign/validate_c2_plat_001.py"]},
@@ -204,14 +215,17 @@
     {"id": "context:http-api", "owner": "Campaign Platform", "maturity": "LOCAL_VERSIONED_RUNTIME", "code": ["backend/src/campaignos/main.py", "backend/src/campaignos/api/app.py", "backend/src/campaignos/api/errors.py", "backend/src/campaignos/api/middleware.py"], "validators": ["backend/tests/test_api.py"]},
     {"id": "context:oidc-identity", "owner": "Campaign Security", "maturity": "VERIFIED_TOKEN_BOUNDARY_NO_LIVE_PROVIDER", "code": ["backend/src/campaignos/config.py", "backend/src/campaignos/identity/oidc.py"], "validators": ["backend/tests/test_config.py", "backend/tests/test_oidc.py"]},
     {"id": "context:tenant-authorization", "owner": "Campaign Security", "maturity": "LOCAL_SERVER_OWNED_MEMBERSHIP_AND_EXACT_GRANT_LOADING", "code": ["backend/src/campaignos/identity/authorization.py", "backend/src/campaignos/api/routes/tenant_me.py"], "validators": ["backend/tests/test_authorization.py", "backend/tests/test_api.py", "backend/tests/test_database.py"]},
-    {"id": "context:postgresql-tenancy", "owner": "Campaign Platform", "maturity": "LOCAL_MIGRATION_AND_RLS_PROOF", "code": ["backend/src/campaignos/data/database.py", "backend/src/campaignos/data/models.py", "backend/migrations/versions/20260719_0001_identity_tenancy.py"], "validators": ["backend/tests/test_database.py"]}
+    {"id": "context:postgresql-tenancy", "owner": "Campaign Platform", "maturity": "LOCAL_MIGRATION_AND_RLS_PROOF", "code": ["backend/src/campaignos/data/database.py", "backend/src/campaignos/data/models.py", "backend/migrations/versions/20260719_0001_identity_tenancy.py"], "validators": ["backend/tests/test_database.py"]},
+    {"id": "context:campaign-domain-api", "owner": "Campaign Platform", "maturity": "MERGED_POSTGRESQL_READ_WRITE_SLICE", "code": ["backend/src/campaignos/api/routes/campaigns.py", "backend/src/campaignos/campaigns/read_model.py", "backend/src/campaignos/campaigns/write_model.py"], "validators": ["backend/tests/test_campaign_list_api.py", "backend/tests/test_campaign_read_model.py", "backend/tests/test_campaign_write_api.py", "backend/tests/test_campaign_write_model.py"]},
+    {"id": "context:internal-outbox-worker", "owner": "Campaign Platform", "maturity": "DRAFT_PR_CI_GREEN_INTERNAL_ONLY", "code": ["backend/src/campaignos/workers/outbox.py", "backend/src/campaignos/worker_main.py"], "validators": ["backend/tests/test_outbox_worker.py", "backend/tests/test_worker_main.py"]},
+    {"id": "context:workspace-write-api", "owner": "Campaign Platform", "maturity": "DRAFT_PR_CI_GREEN", "code": ["backend/src/campaignos/api/routes/workspaces.py", "backend/src/campaignos/workspaces/write_model.py"], "validators": ["backend/tests/test_workspace_write_api.py", "backend/tests/test_workspace_write_model.py"]}
   ],
   "workstreams": [
-    {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_COMPLETE_LOCAL", "next_increment": "C3-IAM-001"},
+    {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_MERGED", "next_increment": "C3-IAM-002"},
     {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "PR_CI_GREEN_ENFORCEMENT_PENDING", "next_increment": "C3-CI-001"},
-    {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "TENANT_AUTHORIZATION_LOCAL_LIFECYCLE_PENDING", "next_increment": "C3-IAM-001"},
-    {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "LOCAL_POSTGRESQL_FOUNDATION", "next_increment": "C3-API-001"},
-    {"id": "WS-05", "name": "API and Background Jobs", "status": "PARTIAL_HTTP_RUNTIME", "next_increment": "C3-API-001"},
+    {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "TENANT_AUTHORIZATION_MERGED_LIFECYCLE_PENDING", "next_increment": "C3-IAM-002"},
+    {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "CAMPAIGN_SLICE_MERGED_OPEN_STACK_ACTIVE", "next_increment": "C3-API-005"},
+    {"id": "WS-05", "name": "API and Background Jobs", "status": "CAMPAIGN_API_MERGED_WORKER_DRAFT_GREEN", "next_increment": "C3-API-005"},
     {"id": "WS-06", "name": "Frontend, Design System and i18n", "status": "STATIC_PROTOTYPE", "next_increment": "C3-FRONT-001"},
     {"id": "WS-07", "name": "Guided Onboarding and Candidate Workspace", "status": "NOT_STARTED", "next_increment": "C3-ONBOARD-001"},
     {"id": "WS-08", "name": "Team Builder and Training Academy", "status": "STATIC_PROTOTYPE", "next_increment": "C3-TEAM-001"},
@@ -224,12 +238,12 @@
     {"id": "WS-15", "name": "Documentation, Migration and Release", "status": "ACTIVE", "next_increment": "C3-RELEASE-001"}
   ],
   "roadmap": [
-    {"id": "C3-FOUND-001A", "status": "COMPLETE_LOCAL", "depends_on": [], "workstream": "WS-15"},
-    {"id": "C3-ARCH-001", "status": "COMPLETE_LOCAL", "depends_on": ["C3-FOUND-001A"], "workstream": "WS-01"},
-    {"id": "C3-DEVEX-001", "status": "COMPLETE_LOCAL", "depends_on": ["C3-FOUND-001A"], "workstream": "WS-02"},
+    {"id": "C3-FOUND-001A", "status": "MERGED_TO_MAIN", "depends_on": [], "workstream": "WS-15"},
+    {"id": "C3-ARCH-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-FOUND-001A"], "workstream": "WS-01"},
+    {"id": "C3-DEVEX-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-FOUND-001A"], "workstream": "WS-02"},
     {"id": "C3-CI-001", "status": "ACTIVE", "depends_on": ["C3-FOUND-001A", "C3-DEVEX-001"], "workstream": "WS-02"},
-    {"id": "C3-IAM-001", "status": "ACTIVE", "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"], "workstream": "WS-03"},
-    {"id": "C3-DATA-001", "status": "COMPLETE_LOCAL", "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"], "workstream": "WS-04"},
+    {"id": "C3-IAM-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"], "workstream": "WS-03"},
+    {"id": "C3-DATA-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"], "workstream": "WS-04"},
     {"id": "C3-API-001", "status": "ACTIVE", "depends_on": ["C3-IAM-001", "C3-DATA-001"], "workstream": "WS-05"},
     {"id": "C3-FRONT-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-DEVEX-001", "C3-API-001"], "workstream": "WS-06"},
     {"id": "C3-ONBOARD-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-FRONT-001", "C3-API-001"], "workstream": "WS-07"},
@@ -245,36 +259,35 @@
   ],
   "findings": [
     {"id": "FND-PLATFORM-001", "severity": "CRITICAL", "status": "REMEDIATION_IN_PROGRESS", "summary": "A local API/PostgreSQL runtime now exists, but Terraform, independently verified AWS environments, backup/restore and a production runtime do not.", "evidence": "program/production-gap-matrix.md"},
-    {"id": "FND-CI-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Draft PR 72 has green pinned CI evidence at its recorded head, but main still has no observed branch protection, ruleset or required-check enforcement.", "evidence": "program/current-state-assessment.md"},
+    {"id": "FND-CI-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Foundation, IAM and the first campaign API slice are merged with green recorded checks, and the active draft stack is green; public rulesets are empty while branch-protection and required-check enforcement remain unverified without authenticated repository settings access.", "evidence": "program/current-state-assessment.md"},
     {"id": "FND-CI-002", "severity": "HIGH", "status": "OPEN", "summary": "Six manifest-linked validation runs have FAILURE conclusions and are not superseded by scope-equivalent green evidence.", "evidence": "architecture/program-state.json#known_failed_validation_runs"},
     {"id": "FND-DEPLOY-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "The Pages demo previously auto-deployed on push and was not represented truthfully in the program state.", "evidence": ".github/workflows/deploy-pages.yml"},
     {"id": "FND-DOCS-001", "severity": "HIGH", "status": "RESOLVED", "summary": "Owned canonical documentation now distinguishes the static demo, local runtime foundation and missing production evidence.", "evidence": "README.md"},
     {"id": "FND-AUDIT-001", "severity": "HIGH", "status": "RESOLVED", "summary": "Canonical documentation now states that the unkeyed hash chains are neither signatures nor immutable external evidence.", "evidence": "program/current-state-assessment.md"},
     {"id": "FND-PROGRAM-001", "severity": "HIGH", "status": "RESOLVED", "summary": "AutoSkills, Context7, skill usage and dependency-safe fallback records now exist and are fail-closed validated.", "evidence": "program/"},
-    {"id": "FND-SUPPLY-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Locks, vulnerability audit, immutable Action/image pins and update automation passed on draft PR 72; SBOM, provenance, signing and protected-main enforcement remain absent.", "evidence": "program/production-gap-matrix.md"}
+    {"id": "FND-SUPPLY-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Locks, vulnerability audit, immutable Action/image pins and secret scanning pass at recorded merged and draft heads; SBOM, provenance, signing and protected-main enforcement remain absent.", "evidence": "program/production-gap-matrix.md"}
   ],
   "open_findings_summary": {"critical": 1, "high": 4, "total_critical_or_high": 5},
   "github_state": {
-    "verified_at": "2026-07-19",
+    "verified_at": "2026-07-21",
+    "open_issue_count": 23,
     "open_stack_issue_numbers": [40, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63, 65, 67],
-    "open_pull_requests": [72],
-    "main_branch_protection": "ABSENT_AT_AUDIT",
-    "rulesets": "NONE_AT_AUDIT",
-    "actions_allowed": "ALL_AT_AUDIT",
-    "action_sha_pinning_required": false,
-    "local_ci_workflow": "PR_72_SUCCESS_AT_RECORDED_SHA",
+    "merged_pull_requests": [72, 73, 83],
+    "open_pull_requests": [84, 85, 86],
+    "main_branch_protection": "UNVERIFIED_AUTH_REQUIRED_PREVIOUSLY_ABSENT",
+    "rulesets": "NONE_PUBLICLY_VISIBLE_AT_2026_07_21",
+    "actions_allowed": "UNVERIFIED_AUTH_REQUIRED",
+    "action_sha_pinning_required": "UNVERIFIED_AUTH_REQUIRED",
+    "local_ci_workflow": "MAIN_AND_REVIEW_STACK_GREEN_AT_RECORDED_HEADS",
     "local_workflow_action_refs": "FULL_SHA_PINNED",
-    "secret_scanning": "ENABLED_AT_AUDIT",
-    "secret_scanning_push_protection": "ENABLED_AT_AUDIT",
-    "pr_ci_evidence": {
-      "pr": 72,
-      "state": "OPEN_DRAFT",
-      "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922",
-      "campaignos_ci_run_id": 29706162737,
-      "visual_review_run_id": 29706162740,
-      "conclusion": "SUCCESS",
-      "required_check_enforcement": false
-    }
+    "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
+    "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
+    "main_ci_evidence": {"run_id": 29803405277, "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f", "conclusion": "SUCCESS", "required_check_enforcement": false},
+    "review_stack": [
+      {"pr": 84, "state": "OPEN_DRAFT", "base": "main", "head": "agent/c3-api-002-idempotency", "head_sha": "e938930eb1088f82603415c11182ab730994cb53", "campaignos_ci_run_id": 29804446308, "conclusion": "SUCCESS"},
+      {"pr": 85, "state": "OPEN_DRAFT", "base": "agent/c3-api-002-idempotency", "head": "agent/c3-api-003-outbox-worker", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "campaignos_ci_run_id": 29807485042, "conclusion": "SUCCESS"},
+      {"pr": 86, "state": "OPEN_DRAFT", "base": "agent/c3-api-003-outbox-worker", "head": "agent/c3-api-004-workspace-write", "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f", "campaignos_ci_run_id": 29807878943, "conclusion": "SUCCESS"}
+    ]
   },
   "deployment_state": {
     "github_pages": {
@@ -298,7 +311,7 @@
     {"id": "postgresql", "status": "PARTIAL"},
     {"id": "migrations", "status": "PARTIAL"},
     {"id": "versioned-api", "status": "PARTIAL"},
-    {"id": "background-jobs", "status": "NOT_IMPLEMENTED"},
+    {"id": "background-jobs", "status": "PARTIAL"},
     {"id": "object-storage", "status": "PARTIAL"},
     {"id": "guided-onboarding", "status": "NOT_IMPLEMENTED"},
     {"id": "candidate-workspace", "status": "PARTIAL"},

@@ -1,47 +1,37 @@
 {
-  "schema_version": "1.0",
-  "generated_at": "2026-07-18",
+  "schema_version": "1.1",
+  "generated_at": "2026-07-21",
   "generator": {
     "name": "midudev/autoskills",
     "version": "0.3.6",
-    "mode": "dry-run"
+    "mode": "dry-run",
+    "npm_integrity": "sha512-yNcj7Y/USPyJINxCWDaVVu17UaFokWgGtpX57PQUOA4i3s3vIDezaGZ/64KyMGb5CsLTvMb/L8WOX6R/ozhWIg==",
+    "npm_shasum": "490cda87dc275465e12fc694377ef3631b6fd138",
+    "license": "CC-BY-NC-4.0"
   },
-  "detected_agents": ["universal", "kiro-cli"],
+  "detected_agents": ["universal"],
+  "detected_technologies": ["Bash", "Python", "FastAPI", "Pydantic", "SQLAlchemy", "Pytest"],
   "decision": "NO_INSTALL",
   "decision_reasons": [
-    "AutoSkills is CC BY-NC 4.0 and requires a commercial-use review",
-    "The retained dry-run exposed no per-skill manifest or immutable content hashes",
-    "The retained dry-run exposed no proposed installation paths or per-skill license metadata",
-    "Prompt-injection and transitive supply-chain risk were not reviewable from the retained output"
+    "AutoSkills is CC BY-NC 4.0 and requires commercial-use review",
+    "Suggested third-party payloads were not fetched, installed, or individually licensed",
+    "The dry-run did not provide a complete destination and overwrite preview",
+    "At least one suggested skill carries an explicit registry security warning",
+    "No suggested skill is required for the active CampaignOS increment"
   ],
+  "repository_mutation": "NONE",
   "installed_skills": [],
   "suggestions": [
-    {
-      "source": "anthropics",
-      "name": "frontend-design",
-      "category": "Frontend",
-      "installed": false,
-      "manifest_verified": false,
-      "content_hash": null,
-      "license_verified": false
-    },
-    {
-      "source": "addyosmani",
-      "name": "accessibility",
-      "category": "Frontend",
-      "installed": false,
-      "manifest_verified": false,
-      "content_hash": null,
-      "license_verified": false
-    },
-    {
-      "source": "addyosmani",
-      "name": "seo",
-      "category": "Frontend",
-      "installed": false,
-      "manifest_verified": false,
-      "content_hash": null,
-      "license_verified": false
-    }
+    {"source": "wshobson", "name": "bash-defensive-patterns", "category": "Bash", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "inferen-sh", "name": "python-executor", "category": "Python", "installed": false, "payload_verified": false, "license_verified": false, "security_warning": true},
+    {"source": "wshobson", "name": "python-testing-patterns", "category": "Python/Pytest", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "wshobson", "name": "fastapi-templates", "category": "FastAPI", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "mindrally", "name": "fastapi-python", "category": "FastAPI", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "bobmatnyc", "name": "pydantic", "category": "Pydantic", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "bobmatnyc", "name": "sqlalchemy", "category": "SQLAlchemy", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "wispbit-ai", "name": "sqlalchemy-alembic-expert-best-practices-code-review", "category": "SQLAlchemy", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "anthropics", "name": "frontend-design", "category": "Frontend", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "addyosmani", "name": "accessibility", "category": "Frontend", "installed": false, "payload_verified": false, "license_verified": false},
+    {"source": "addyosmani", "name": "seo", "category": "Frontend", "installed": false, "payload_verified": false, "license_verified": false}
   ]
 }

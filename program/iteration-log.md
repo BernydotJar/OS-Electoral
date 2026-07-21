@@ -154,3 +154,16 @@
 - PostgreSQL Compose E2E: PASS with migration upgrade/check, forced RLS, constrained API role, S3Mock and Mailpit.
 - Strict mypy: PASS across 23 backend source files.
 - `C3-API-001` remains `IN_PROGRESS`: broader domain writes and a background worker runtime remain incomplete.
+
+## C3-RESUME-001 review-stack reconciliation - 2026-07-21
+
+- Confirmed `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f` and merged PRs `#72`, `#73` and `#83`.
+- Confirmed draft stack `#84` -> `#85` -> `#86` has correct bases and green recorded checks through CampaignOS CI run `29807878943`.
+- Reproduced `make verify`: Ruff, format, strict mypy, `256 passed`, `1 skipped`, program truth and campaign safety PASS.
+- Reproduced isolated PostgreSQL migration/RLS/authorization proof: `1 passed`, `5 deselected`.
+- Reproduced Gitleaks `8.30.1` tracked-snapshot and active-stack scans: PASS.
+- Independently reconciled the manifest against GitHub API branch, PR, workflow-run and job data: PASS.
+- Reviewed pinned AutoSkills `0.3.6` package integrity and dry-run; eleven suggestions, zero installs, zero repository mutation, decision `NO_INSTALL`.
+- Recorded a local-only Docker daemon blocker: image layers cannot be registered because the outer namespace denies `lchown /var/empty`; no local Compose PASS is claimed. Equivalent constrained-stack CI is green at the recorded review heads.
+- Preserved five open CRITICAL/HIGH findings and six unsuperseded historical failed runs. Production remains `BLOCKED`.
+- Selected `C3-API-005` campaign readiness as the next executable bounded slice.
