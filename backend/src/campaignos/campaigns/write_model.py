@@ -10,16 +10,21 @@ from typing import Protocol
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
 from campaignos.campaigns.read_model import CampaignProjection
 from campaignos.data.database import Database
-from campaignos.data.models import AuditEvent, Campaign, OutboxEvent
+from campaignos.data.models import AuditEvent, Campaign, IdempotencyRecord, OutboxEvent
 
 
 class CampaignWriteConflict(RuntimeError):
     """The supplied aggregate version is stale."""
+
+
+class CampaignIdempotencyConflict(RuntimeError):
+    """An idempotency key was reused for a different request."""
 
 
 class CampaignWriteUnavailable(RuntimeError):
@@ -71,6 +76,7 @@ class CampaignWriter(Protocol):
         authorization_grant_id: UUID,
         approval_receipt_id: str,
         correlation_id: str,
+        idempotency_key: str,
     ) -> CampaignWriteEvidence:
         """Update or fail closed without partial effects."""
 
@@ -89,6 +95,7 @@ class UnavailableCampaignWriter:
         authorization_grant_id: UUID,
         approval_receipt_id: str,
         correlation_id: str,
+        idempotency_key: str,
     ) -> CampaignWriteEvidence:
         del (
             tenant_id,
@@ -99,6 +106,7 @@ class UnavailableCampaignWriter:
             authorization_grant_id,
             approval_receipt_id,
             correlation_id,
+            idempotency_key,
         )
         raise CampaignWriteUnavailable("Campaign writer is unavailable")
 
@@ -112,6 +120,18 @@ def _canonical_hash(value: object) -> str:
         default=str,
     ).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
+
+
+def _serialize_idempotency_key(
+    session: Session, tenant_id: UUID, operation: str, idempotency_key: str
+) -> None:
+    """Serialize equal PostgreSQL keys inside the current transaction."""
+    bind = session.get_bind()
+    if bind.dialect.name != "postgresql":
+        return
+    digest = hashlib.sha256(f"{tenant_id}:{operation}:{idempotency_key}".encode()).digest()
+    lock_id = int.from_bytes(digest[:8], byteorder="big", signed=True)
+    session.execute(text("SELECT pg_advisory_xact_lock(:lock_id)"), {"lock_id": lock_id})
 
 
 @dataclass(slots=True)
@@ -131,6 +151,7 @@ class SqlAlchemyCampaignWriter:
         authorization_grant_id: UUID,
         approval_receipt_id: str,
         correlation_id: str,
+        idempotency_key: str,
     ) -> CampaignWriteEvidence:
         try:
             return self._update(
@@ -142,8 +163,9 @@ class SqlAlchemyCampaignWriter:
                 authorization_grant_id=authorization_grant_id,
                 approval_receipt_id=approval_receipt_id,
                 correlation_id=correlation_id,
+                idempotency_key=idempotency_key,
             )
-        except (CampaignMutationNotFound, CampaignWriteConflict):
+        except (CampaignIdempotencyConflict, CampaignMutationNotFound, CampaignWriteConflict):
             raise
         except SQLAlchemyError as exc:
             raise CampaignWriteUnavailable("Campaign write is unavailable") from exc
@@ -159,11 +181,41 @@ class SqlAlchemyCampaignWriter:
         authorization_grant_id: UUID,
         approval_receipt_id: str,
         correlation_id: str,
+        idempotency_key: str,
     ) -> CampaignWriteEvidence:
+        request_digest = _canonical_hash(
+            {
+                "tenant_id": str(tenant_id),
+                "campaign_id": str(campaign_id),
+                "expected_version": expected_version,
+                "changes": changes.model_dump(exclude_unset=True),
+                "principal_id": str(principal_id),
+                "authorization_grant_id": str(authorization_grant_id),
+                "approval_receipt_id": approval_receipt_id,
+            }
+        )
+        operation = "campaign.update"
         occurred_at = datetime.now(UTC)
         audit_event_id = uuid4()
         outbox_event_id = uuid4()
         with self.database.tenant_transaction(tenant_id) as session:
+            _serialize_idempotency_key(session, tenant_id, operation, idempotency_key)
+            existing = session.scalar(
+                select(IdempotencyRecord)
+                .where(
+                    IdempotencyRecord.tenant_id == tenant_id,
+                    IdempotencyRecord.operation == operation,
+                    IdempotencyRecord.idempotency_key == idempotency_key,
+                )
+                .with_for_update()
+            )
+            if existing is not None:
+                if existing.request_digest != request_digest:
+                    raise CampaignIdempotencyConflict(
+                        "Idempotency key was already used for a different request"
+                    )
+                return CampaignWriteEvidence.model_validate(existing.response_payload)
+
             campaign = session.scalar(
                 select(Campaign)
                 .where(
@@ -249,7 +301,6 @@ class SqlAlchemyCampaignWriter:
                     created_at=occurred_at,
                 )
             )
-            session.flush()
             projection = CampaignProjection(
                 id=campaign.id,
                 tenant_id=campaign.tenant_id,
@@ -260,9 +311,22 @@ class SqlAlchemyCampaignWriter:
                 status=campaign.status,
                 version=campaign.version,
             )
+            evidence = CampaignWriteEvidence(
+                campaign=projection,
+                audit_event_id=audit_event_id,
+                outbox_event_id=outbox_event_id,
+            )
+            session.add(
+                IdempotencyRecord(
+                    tenant_id=tenant_id,
+                    principal_id=principal_id,
+                    operation=operation,
+                    idempotency_key=idempotency_key,
+                    request_digest=request_digest,
+                    response_payload=evidence.model_dump(mode="json"),
+                    created_at=occurred_at,
+                )
+            )
+            session.flush()
 
-        return CampaignWriteEvidence(
-            campaign=projection,
-            audit_event_id=audit_event_id,
-            outbox_event_id=outbox_event_id,
-        )
+        return evidence
