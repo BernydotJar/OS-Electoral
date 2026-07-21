@@ -778,8 +778,8 @@
     {
       "id": "WS-11",
       "name": "Agent Runtime, Guardrails and Evals",
-      "status": "AGENT_VERIFIED_POSTGRESQL_NO_LIVE_PROVIDER",
-      "next_increment": "C3-AGENT-001"
+      "status": "AGENT_CI_GREEN_NO_LIVE_PROVIDER",
+      "next_increment": "C3-CI-001"
     },
     {
       "id": "WS-12",
@@ -943,7 +943,7 @@
     },
     {
       "id": "C3-AGENT-001",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-001",
         "C3-STRATEGY-001"
@@ -1192,6 +1192,15 @@
         "head_sha": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
         "campaignos_ci_run_id": 29877182395,
         "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 98,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-api-001-reconciliation",
+        "head": "agent/c3-agent-001-governed-runtime",
+        "head_sha": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+        "campaignos_ci_run_id": 29878699324,
+        "conclusion": "SUCCESS"
       }
     ],
     "git_push_incident": {
@@ -1209,27 +1218,32 @@
     "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-AGENT-001",
-      "state": "VERIFIED_POSTGRESQL",
+      "state": "CI_GREEN",
       "branch": "agent/c3-agent-001-governed-runtime",
       "base": "agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
+      "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+      "draft_pr": 98,
+      "ci_run_id": 29878699324,
+      "visual_run_id": 29878699317,
       "production_status": "BLOCKED",
+      "provider_mode": "UNAVAILABLE_NO_NETWORK",
       "external_effects": "NONE"
     },
     "latest_checkpoint": {
-      "id": "C3-API-001",
-      "branch": "agent/c3-api-001-reconciliation",
-      "base": "agent/c3-strategy-001-evidence-decision-room",
-      "base_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
-      "implementation_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
-      "receipt_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-      "head_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-      "draft_pr": 97,
-      "ci_run_id": 29877182395,
-      "visual_run_id": 29877182397,
+      "id": "C3-AGENT-001",
+      "branch": "agent/c3-agent-001-governed-runtime",
+      "base": "agent/c3-api-001-reconciliation",
+      "base_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
+      "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+      "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+      "draft_pr": 98,
+      "ci_run_id": 29878699324,
+      "visual_run_id": 29878699317,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
+      "provider_mode": "UNAVAILABLE_NO_NETWORK",
       "external_effects": "NONE",
-      "next_increment": "C3-AGENT-001"
+      "next_increment": "C3-CI-001"
     }
   },
   "deployment_state": {

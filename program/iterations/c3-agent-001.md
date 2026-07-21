@@ -2,7 +2,7 @@
 
 - `branch`: `agent/c3-agent-001-governed-runtime`
 - `base`: `agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c`
-- `status`: `VERIFIED_POSTGRESQL`
+- `status`: `CI_GREEN`
 - `production_status`: `BLOCKED`
 - `external_effects`: `NONE`
 
@@ -47,3 +47,13 @@ Implement a provider-neutral, evidence-bound runtime that can produce structured
 - forced RLS cross-tenant read/write denial under `NOSUPERUSER NOBYPASSRLS`;
 - prompt-injection eval elevated to PARTIAL; provider privacy and production enablement remain absent;
 - production remains `BLOCKED`; branch publication/CI are pending and external effects remain `NONE`.
+
+
+## Published checkpoint — 2026-07-21
+
+- implementation/head `04db6bcd0cd8e61a848c7416d7ef1109246f9cd5`;
+- draft PR `#98`, merge state `CLEAN`;
+- CampaignOS CI `29878699324`: `SUCCESS`;
+- runtime visual review `29878699317`: `SUCCESS`;
+- default provider remains unavailable/no-network;
+- production remains `BLOCKED`; external effects remain `NONE`.

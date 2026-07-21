@@ -179,7 +179,7 @@
       "id": "C3-AGENT-001",
       "workstream": "WS-11",
       "title": "Provider-neutral agent runtime, deterministic guards and hard evals",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-001",
         "C3-STRATEGY-001"

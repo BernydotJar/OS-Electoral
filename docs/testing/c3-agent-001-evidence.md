@@ -68,3 +68,19 @@ postgresql:
 - no human disposition workflow or authenticated frontend surface;
 - no independent security, privacy, legal, domain, or customer acceptance;
 - no production environment, merge, deployment, or external action.
+
+
+## Published checkpoint receipt
+
+```yaml
+implementation_commit: 04db6bcd0cd8e61a848c7416d7ef1109246f9cd5
+draft_pr: 98
+merge_state: CLEAN
+campaignos_ci_run: 29878699324
+runtime_visual_run: 29878699317
+conclusion: SUCCESS
+status: CI_GREEN
+provider_mode: UNAVAILABLE_NO_NETWORK
+production_status: BLOCKED
+external_effects: NONE
+```

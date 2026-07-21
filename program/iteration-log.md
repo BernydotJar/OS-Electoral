@@ -364,3 +364,12 @@
 - Passed nine PostgreSQL slices twice; concurrent equal keys invoke the provider once and forced RLS denies foreign access.
 - Elevated `EVAL-PROMPT-INJECTION-001` to PARTIAL while retaining live-provider privacy/leakage gates as unimplemented.
 - Recorded `VERIFIED_POSTGRESQL`; publication/CI remain pending, production remains `BLOCKED` and external effects remain `NONE`.
+
+
+## C3-AGENT-001 published checkpoint — 2026-07-21
+
+- Published `04db6bcd0cd8e61a848c7416d7ef1109246f9cd5` in draft PR #98 against `agent/c3-api-001-reconciliation`.
+- PR #98 is `CLEAN`; CampaignOS CI `29878699324` and runtime visual review `29878699317` concluded `SUCCESS`.
+- Recorded `C3-AGENT-001` as `CI_GREEN`; the configured provider remains unavailable and performs no network request.
+- Production remains `BLOCKED`; no merge, deployment, tool call or external campaign effect occurred.
+- Next safe program target is `C3-CI-001` reconciliation.
