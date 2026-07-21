@@ -11,6 +11,7 @@ from campaignos.api.dependencies import CurrentTenantAuthorization
 from campaignos.campaigns import (
     CampaignDirectory,
     CampaignDirectoryUnavailable,
+    CampaignIdempotencyConflict,
     CampaignMutationNotFound,
     CampaignNotFound,
     CampaignPage,
@@ -186,6 +187,7 @@ def update_campaign(
     authorization: CurrentTenantAuthorization,
     writer: CampaignWriterDependency,
     if_match: Annotated[str | None, Header(alias="If-Match")] = None,
+    idempotency_key: Annotated[str | None, Header(alias="Idempotency-Key")] = None,
 ) -> CampaignWriteEvidence:
     """Update bounded campaign fields with exact authorization and version matching."""
     grant = _update_grant(authorization, campaign_id)
@@ -193,6 +195,16 @@ def update_campaign(
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Campaign update is not authorized",
+        )
+    if idempotency_key is None or not idempotency_key.strip():
+        raise HTTPException(
+            status_code=status.HTTP_428_PRECONDITION_REQUIRED,
+            detail="Idempotency-Key is required for campaign writes",
+        )
+    if len(idempotency_key) > 255:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Idempotency-Key must not exceed 255 characters",
         )
     try:
         evidence = writer.update(
@@ -204,7 +216,13 @@ def update_campaign(
             authorization_grant_id=grant.grant_id,
             approval_receipt_id=grant.approval_receipt_id,
             correlation_id=getattr(request.state, "correlation_id", "unknown"),
+            idempotency_key=idempotency_key.strip(),
         )
+    except CampaignIdempotencyConflict as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Idempotency key conflicts with a previous request",
+        ) from exc
     except CampaignMutationNotFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
