@@ -264,3 +264,10 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** Keep Next `16.2.10` and override its optional `sharp` dependency to `0.35.3` rather than accepting npm audit's unrelated breaking downgrade recommendation.
 - **Evidence:** locked package graph, zero-vulnerability npm audit, complete frontend verify, browser review and Buildah image rebuild.
 - **Consequence:** the production dependency gate is green without a framework major downgrade; future lock updates must preserve audit and runtime evidence.
+
+
+## 2026-07-21 — Close C3-API-001 through cumulative evidence, not duplicate implementation
+
+- **Decision:** Treat `C3-API-001` as an umbrella milestone. Its merged PR #83 and subsequent PRs #84–#88 collectively satisfy the versioned API, readiness, idempotency, workspace write and recoverable internal worker baseline.
+- **Evidence:** 120 focused tests, eight PostgreSQL slices twice, merged/green PR #83, green stacked delivery records, current full-suite and exact-head Strategy CI.
+- **Consequence:** No duplicate API implementation is created. Worker administration, observability, replay tooling and external transport remain scoped to later operations/platform increments and do not grant campaign execution authority.

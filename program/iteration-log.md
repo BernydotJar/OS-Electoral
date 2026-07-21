@@ -337,3 +337,12 @@
 - Recorded earlier failed runs `29874179909` and `29875933528` as superseded evidence rather than deleting them.
 - Strategy is `CI_GREEN`; production remains `BLOCKED`, no merge/deployment occurred and external effects remain `NONE`.
 - Next safe dependency-reconciliation target is `C3-API-001`; governed agents remain blocked until that program truth is resolved.
+
+
+## C3-API-001 cumulative reconciliation — 2026-07-21
+
+- Reconciled the merged PR #83 baseline with follow-on PRs #84–#88 and the current CI-green stack.
+- Passed 120 focused API/worker tests and strict static checks over 27 source files.
+- Passed the eight-slice PostgreSQL migration/RLS/concurrency gate twice from clean isolated databases.
+- Classified worker administration, observability, dead-letter replay and external transport as separate control-plane work rather than false blockers to the internal API baseline.
+- Recorded `VERIFIED_POSTGRESQL`; reconciliation PR/CI remain pending, production remains `BLOCKED`, and external effects remain `NONE`.
