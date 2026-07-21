@@ -4,13 +4,13 @@ Assessment date: `2026-07-19 America/Guatemala`
 
 Authoritative target: `os_electoral_prod_ready_goal_v2.md`
 
-Repository evidence point: `main` at `8f32bc158003a55a76cb471af45da2193ca71003`; implementation branch `agent/c3-found-001-production-foundation`.
+Repository evidence point: `main` at `8f32bc158003a55a76cb471af45da2193ca71003`; stacked implementation branch `agent/c3-iam-001-membership-authorization` on foundation head `bac781eea1d0de1b9a845f0f4243924ee4808c54`.
 
 ## Executive determination
 
 Production readiness is **BLOCKED**.
 
-The repository now contains a real local application foundation: a versioned FastAPI runtime, fail-closed OIDC token verification, typed configuration, an initial SQLAlchemy/Alembic PostgreSQL schema, transaction-local tenant scope, forced row-level-security policies, a non-root container, a hermetic Compose stack and locked dependencies. Draft PR `#72` has green pinned CI evidence at its recorded head. These are meaningful implementation and review-branch proofs, but they are not deployed or operational production evidence.
+The repository now contains a real local application foundation: a versioned FastAPI runtime, fail-closed OIDC token verification, server-owned tenant membership/exact-grant loading, typed configuration, an initial SQLAlchemy/Alembic PostgreSQL schema, transaction-local tenant scope, forced row-level-security policies, a non-root container, a hermetic Compose stack and locked dependencies. Draft PR `#72` has green pinned foundation evidence at its recorded head. The stacked IAM increment passes local quality, authorization and disposable-stack checks. These are meaningful implementation and review-branch proofs, but they are not deployed or operational production evidence.
 
 The only public deployed surface remains the static, read-only GitHub Pages demonstration. It is classified `DEMO_NON_PRODUCTION`, publishes only through a manual confirmation workflow, and never counts as a production environment.
 
@@ -22,7 +22,8 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - Ruff, Ruff format, strict mypy, JSON/YAML parsing, Compose validation, shell syntax and actionlint passed locally.
 - Hash-locked production requirements were exported and `pip-audit 2.10.1` reported no known vulnerabilities at the check time. This is point-in-time evidence, not a guarantee.
 - OIDC verification requires the fixed `RS256` algorithm, a matching key ID, signature, issuer, audience, expiry, issued-at, not-before when present, ID-token use, and `azp` for multi-audience tokens. Readiness fetches JWKS and fails closed.
-- `/api/v1/me` returns the verified external identity only; it deliberately returns no memberships or grants until server-owned persistence loading exists. Token role claims are not treated as authorization.
+- `/api/v1/me` remains identity-only. `/api/v1/tenants/{tenant_id}/me` maps the verified issuer/subject to a server-owned principal and returns active memberships, unexpired roles and exact active grants from a tenant-scoped transaction. Token role claims are not treated as authorization.
+- Exact application permission matching now includes action, resource type/identifier, campaign/workspace scope and purpose. Inactive tenants, disabled principals, expired/revoked state, archived campaign/workspace scope, cross-campaign grant corruption, mismatched directory scope and unavailable persistence fail closed.
 - The initial migration creates tenant, principal, campaign, workspace, membership, role/grant, audit and outbox structures with composite scope constraints and forced RLS on tenant-owned tables.
 - Approval transitions now bind an immutable authenticated principal to the exact requested action, option, reason, date, scope and target digest. Repository writes reject scope/identity mutation and persistence authorization is operation-specific.
 - Evidence-review receipts bind exact scope, evidence, claim digest, disposition, reviewer authentication and grants; enabling evidence must be verifiable before it can create a contradiction.
@@ -31,7 +32,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 ## What remains unproven or absent
 
 - No live OIDC provider, login/invitation/recovery flow, MFA policy, server session lifecycle or revocation path has been integrated.
-- Membership, campaign/workspace access and exact grants are not loaded from PostgreSQL on application requests; authenticated domain endpoints do not exist.
+- There is no invitation or membership-administration workflow, reviewed production role catalog, support-elevation path or authorization/audit enforcement on campaign-domain actions and workers; authenticated domain endpoints do not exist.
 - The initial schema is not yet connected to the deterministic campaign-domain repositories. No durable approval/evidence workflow or background worker runtime exists.
 - S3Mock and Mailpit are local test dependencies. There is no production object-storage/email adapter, attachment validation, quarantine, malware strategy or signed-operation policy.
 - The dynamic application frontend, guided onboarding, i18n, Training Academy and API-backed campaign workspaces remain absent or static prototypes.
@@ -46,7 +47,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Area | Evidence | Determination |
 |---|---|---|
 | C2 integration | PR stack merged to `main` | Integrated deterministic prototype |
-| C3 runtime | Local FastAPI/PostgreSQL/OIDC/Compose implementation and tests | Partial foundation; not deployed |
+| C3 runtime | Local FastAPI/PostgreSQL/OIDC/tenant-authorization/Compose implementation and tests | Partial foundation; not deployed |
 | Local worktree | User-owned `RTK.md` and `artifacts/c1-front-003/` were present | Preserved and excluded from task scope |
 | Draft PR CI | Runs `29706162737` and `29706162740` passed at head `e8adf4c` | Green review-branch evidence; not protected-main enforcement |
 | Historical PR validation | Six manifest-linked runs retain `FAILURE` conclusions | Still blocking; no history rewriting |
@@ -79,7 +80,7 @@ Later integration runs `29660653755`, `29662896729`, `29706162737` and `29706162
 ## Next increments
 
 1. Obtain human review of draft PR `#72`, reconcile the six historical failures explicitly, and configure protected-main rules without weakening the now-green checks.
-2. Integrate a real OIDC provider and invitation/login/recovery lifecycle; load active membership and exact grants from PostgreSQL on every protected request.
+2. Integrate a real OIDC provider and invitation/login/recovery/session lifecycle; add membership/grant administration and enforce fresh authorization on every domain and worker action.
 3. Connect campaign-domain repositories and approval/audit/outbox flows to PostgreSQL; add versioned domain endpoints and an idempotent worker runtime.
 4. Implement reviewed Terraform for an isolated AWS development environment, then prove staging security, migration, load, backup/restore and rollback gates.
 

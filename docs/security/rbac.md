@@ -1,6 +1,6 @@
 # CampaignOS RBAC and authorization policy
 
-Status: **PARTIAL FOUNDATION; durable grant loading and endpoint enforcement absent**
+Status: **PARTIAL LOCAL IMPLEMENTATION; tenant grant loading exists, full enforcement and administration absent**
 Last updated: `2026-07-19`
 
 ## Model
@@ -51,4 +51,10 @@ Each role must have a versioned, human-readable grant matrix. High-risk grants a
 
 For each endpoint/action: unauthenticated; valid identity without membership; expired/revoked membership; wrong tenant; wrong campaign/workspace; correct role without exact grant; correct grant against wrong resource/version; client-forged role/actor; support expiry; integration-client misuse; and authorized success. Tests must use foreign IDs that exist to detect broken object-level authorization.
 
-The initial PostgreSQL schema now contains memberships, role assignments and permission grants, and the OIDC boundary refuses to treat token roles as application authority. The protected identity endpoint intentionally returns no memberships until a trusted loader exists. The production RBAC gate remains incomplete until those durable records are administered and loaded for endpoint/worker enforcement and the full matrix is implemented and reviewed.
+## Current runtime boundary
+
+`/api/v1/me` remains an identity-only projection. `/api/v1/tenants/{tenant_id}/me` treats the path tenant as a selector, opens a transaction with that tenant's RLS scope, maps the verified OIDC issuer and subject to a server-owned principal, and returns only active memberships, unexpired roles and active exact grants. Suspended tenants, disabled principals, absent or expired memberships, mismatched campaign scopes, archived campaigns/workspaces and unavailable persistence fail closed with sanitized errors.
+
+An effective permission matches action, resource type, resource identifier, tenant-selected campaign/workspace scope and purpose exactly. Role labels are returned for display and administration but never imply permission. The PostgreSQL integration test exercises the loader through a non-superuser, non-`BYPASSRLS` application role and denies the same identity in a tenant without membership.
+
+The production RBAC gate remains `PARTIAL`: there is no membership/invitation administration workflow, reviewed role-to-grant catalog, support-elevation path, server session lifecycle, campaign-domain action endpoint, worker reauthorization, audit receipt emission or staging BOLA evidence.

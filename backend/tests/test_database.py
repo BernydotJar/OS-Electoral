@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import re
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 import pytest
@@ -13,7 +14,19 @@ from sqlalchemy.exc import DBAPIError
 
 from campaignos.data import Base, Database, MissingTenantScope
 from campaignos.data.database import TenantSession
-from campaignos.data.models import Campaign, Principal, Tenant
+from campaignos.data.models import (
+    Campaign,
+    Membership,
+    PermissionGrant,
+    Principal,
+    RoleAssignment,
+    Tenant,
+)
+from campaignos.identity.authorization import (
+    SqlAlchemyMembershipDirectory,
+    TenantAccessDenied,
+)
+from campaignos.identity.models import AuthenticatedPrincipal
 
 TENANT_TABLES = {
     "campaigns",
@@ -130,6 +143,7 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
     principal_id = uuid4()
     campaign_a = uuid4()
     campaign_b = uuid4()
+    membership_a = uuid4()
     try:
         with database.tenant_transaction(tenant_a) as session:
             session.add(
@@ -151,6 +165,38 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
                     stage="TEST",
                 )
             )
+        with database.tenant_transaction(tenant_a) as session:
+            session.add(
+                Membership(
+                    id=membership_a,
+                    tenant_id=tenant_a,
+                    principal_id=principal_id,
+                    campaign_id=campaign_a,
+                    status="ACTIVE",
+                )
+            )
+            session.flush()
+            session.add_all(
+                [
+                    RoleAssignment(
+                        tenant_id=tenant_a,
+                        membership_id=membership_a,
+                        role="operator",
+                        assigned_by_principal_id=principal_id,
+                    ),
+                    PermissionGrant(
+                        tenant_id=tenant_a,
+                        membership_id=membership_a,
+                        campaign_id=campaign_a,
+                        action="read",
+                        resource_type="campaign",
+                        resource_id=str(campaign_a),
+                        purpose="RLS integration verification",
+                        granted_by_principal_id=principal_id,
+                        approval_receipt_id="rls-test-approval",
+                    ),
+                ]
+            )
         with database.tenant_transaction(tenant_b) as session:
             session.add(Tenant(id=tenant_b, slug=f"tenant-{tenant_b}", name="Tenant B"))
             session.flush()
@@ -169,6 +215,31 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
             visible = set(session.scalars(select(Campaign.id)))
             assert visible == {campaign_a}
             assert session.get(Campaign, campaign_b) is None
+
+        verified_identity = AuthenticatedPrincipal(
+            issuer="https://identity.example.test/",
+            subject="rls-test-user",
+            audience="campaignos-test",
+            authenticated_at=datetime.now(UTC),
+        )
+        authorization = SqlAlchemyMembershipDirectory(database).load(
+            tenant_a,
+            verified_identity,
+        )
+        assert authorization.principal_id == principal_id
+        assert authorization.memberships[0].roles == ("operator",)
+        assert authorization.permits(
+            action="read",
+            resource_type="campaign",
+            resource_id=str(campaign_a),
+            purpose="RLS integration verification",
+            campaign_id=campaign_a,
+        )
+        with pytest.raises(TenantAccessDenied):
+            SqlAlchemyMembershipDirectory(database).load(
+                tenant_b,
+                verified_identity,
+            )
 
         with pytest.raises(DBAPIError):
             with database.tenant_transaction(tenant_a) as session:

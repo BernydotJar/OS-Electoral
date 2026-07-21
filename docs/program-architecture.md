@@ -34,9 +34,9 @@ Important limits:
 |---|---|---|---|
 | WS-01 | Product Definition and Architecture | Active foundation reconciliation | C3-ARCH-001 |
 | WS-02 | Monorepo and Developer Experience | Ready | C3-DEVEX-001 |
-| WS-03 | Identity, Tenancy and RBAC | Prototype policy only | C3-IAM-001 |
+| WS-03 | Identity, Tenancy and RBAC | Local OIDC and membership authorization; lifecycle pending | C3-IAM-001 |
 | WS-04 | Campaign Domain and Persistence | In-memory prototype only | C3-DATA-001 |
-| WS-05 | API and Background Jobs | In-process read facade only | C3-API-001 |
+| WS-05 | API and Background Jobs | Local versioned health/identity runtime; domain actions and jobs pending | C3-API-001 |
 | WS-06 | Frontend, Design System and i18n | Static prototype | C3-FRONT-001 |
 | WS-07 | Guided Onboarding and Candidate Workspace | Not started at production scope | C3-ONBOARD-001 |
 | WS-08 | Team Builder and Training Academy | Static team prototype only | C3-TEAM-001 |

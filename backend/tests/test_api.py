@@ -1,12 +1,28 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from uuid import UUID
 
+import pytest
 from fastapi.testclient import TestClient
 
 from campaignos.api.app import create_app
 from campaignos.config import Environment, Settings
+from campaignos.identity.authorization import (
+    AuthorizationDataError,
+    AuthorizationDirectoryUnavailable,
+    EffectiveMembership,
+    EffectivePermissionGrant,
+    TenantAccessDenied,
+    TenantAuthorizationContext,
+)
 from campaignos.identity.models import AuthenticatedPrincipal
+
+TENANT_ID = UUID("11111111-1111-4111-8111-111111111111")
+APPLICATION_PRINCIPAL_ID = UUID("22222222-2222-4222-8222-222222222222")
+MEMBERSHIP_ID = UUID("33333333-3333-4333-8333-333333333333")
+CAMPAIGN_ID = UUID("44444444-4444-4444-8444-444444444444")
+GRANT_ID = UUID("55555555-5555-4555-8555-555555555555")
 
 
 class FakeVerifier:
@@ -33,6 +49,65 @@ class FakeDatabase:
 
     def dispose(self) -> None:
         return None
+
+
+class FakeMembershipDirectory:
+    def __init__(self, failure: Exception | None = None) -> None:
+        self.failure = failure
+
+    def load(
+        self,
+        tenant_id: UUID,
+        principal: AuthenticatedPrincipal,
+        *,
+        evaluated_at: datetime | None = None,
+    ) -> TenantAuthorizationContext:
+        del evaluated_at
+        if self.failure is not None:
+            raise self.failure
+        assert tenant_id == TENANT_ID
+        assert principal.subject == "user-123"
+        evaluated = datetime(2026, 7, 19, tzinfo=UTC)
+        return TenantAuthorizationContext(
+            principal_id=APPLICATION_PRINCIPAL_ID,
+            tenant_id=tenant_id,
+            evaluated_at=evaluated,
+            memberships=(
+                EffectiveMembership(
+                    membership_id=MEMBERSHIP_ID,
+                    campaign_id=CAMPAIGN_ID,
+                    roles=("operator",),
+                    grants=(
+                        EffectivePermissionGrant(
+                            grant_id=GRANT_ID,
+                            campaign_id=CAMPAIGN_ID,
+                            workspace_id=None,
+                            action="read",
+                            resource_type="campaign",
+                            resource_id=str(CAMPAIGN_ID),
+                            purpose="Operate assigned campaign",
+                            approval_receipt_id="approval-123",
+                        ),
+                    ),
+                ),
+            ),
+        )
+
+
+class MismatchedTenantDirectory(FakeMembershipDirectory):
+    def load(
+        self,
+        tenant_id: UUID,
+        principal: AuthenticatedPrincipal,
+        *,
+        evaluated_at: datetime | None = None,
+    ) -> TenantAuthorizationContext:
+        context = super().load(
+            tenant_id,
+            principal,
+            evaluated_at=evaluated_at,
+        )
+        return context.model_copy(update={"tenant_id": UUID(int=0)})
 
 
 def settings() -> Settings:
@@ -119,4 +194,146 @@ def test_openapi_declares_bearer_auth_for_me() -> None:
         document = client.get("/api/v1/openapi.json").json()
 
     security = document["paths"]["/api/v1/me"]["get"]["security"]
+    assert security == [{"OIDC bearer token": []}]
+
+
+def test_tenant_me_requires_authenticated_session() -> None:
+    with TestClient(
+        create_app(
+            settings(),
+            token_verifier=FakeVerifier(),
+            membership_directory=FakeMembershipDirectory(),
+        )
+    ) as client:
+        response = client.get(f"/api/v1/tenants/{TENANT_ID}/me")
+
+    assert response.status_code == 401
+    assert response.json()["code"] == "AUTHENTICATION_REQUIRED"
+
+
+def test_tenant_me_returns_server_owned_authorization() -> None:
+    with TestClient(
+        create_app(
+            settings(),
+            token_verifier=FakeVerifier(),
+            membership_directory=FakeMembershipDirectory(),
+        )
+    ) as client:
+        response = client.get(
+            f"/api/v1/tenants/{TENANT_ID}/me",
+            headers={"Authorization": "Bearer valid-token"},
+        )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["principal_id"] == str(APPLICATION_PRINCIPAL_ID)
+    assert body["tenant_id"] == str(TENANT_ID)
+    assert body["subject"] == "user-123"
+    assert body["authorization_status"] == "LOADED"
+    assert body["application_memberships"] == [
+        {
+            "membership_id": str(MEMBERSHIP_ID),
+            "campaign_id": str(CAMPAIGN_ID),
+            "roles": ["operator"],
+            "grants": [
+                {
+                    "grant_id": str(GRANT_ID),
+                    "campaign_id": str(CAMPAIGN_ID),
+                    "workspace_id": None,
+                    "action": "read",
+                    "resource_type": "campaign",
+                    "resource_id": str(CAMPAIGN_ID),
+                    "purpose": "Operate assigned campaign",
+                    "approval_receipt_id": "approval-123",
+                }
+            ],
+        }
+    ]
+
+
+def test_tenant_me_denial_is_structured_and_does_not_enumerate_state() -> None:
+    directory = FakeMembershipDirectory(TenantAccessDenied("internal reason"))
+    with TestClient(
+        create_app(
+            settings(),
+            token_verifier=FakeVerifier(),
+            membership_directory=directory,
+        )
+    ) as client:
+        response = client.get(
+            f"/api/v1/tenants/{TENANT_ID}/me",
+            headers={"Authorization": "Bearer valid-token"},
+        )
+
+    assert response.status_code == 403
+    assert response.json()["code"] == "AUTHORIZATION_DENIED"
+    assert response.json()["detail"] == "Tenant access is not authorized"
+    assert "internal reason" not in response.text
+
+
+@pytest.mark.parametrize(
+    "failure",
+    [
+        AuthorizationDirectoryUnavailable("database details"),
+        AuthorizationDataError("corrupt grant details"),
+    ],
+)
+def test_tenant_me_authorization_failures_are_safe_and_retryable(failure: Exception) -> None:
+    with TestClient(
+        create_app(
+            settings(),
+            token_verifier=FakeVerifier(),
+            membership_directory=FakeMembershipDirectory(failure),
+        )
+    ) as client:
+        response = client.get(
+            f"/api/v1/tenants/{TENANT_ID}/me",
+            headers={"Authorization": "Bearer valid-token"},
+        )
+
+    assert response.status_code == 503
+    assert response.json()["code"] == "AUTHORIZATION_UNAVAILABLE"
+    assert response.json()["detail"] == "Tenant authorization is temporarily unavailable"
+    assert str(failure) not in response.text
+
+
+def test_tenant_me_rejects_mismatched_directory_scope() -> None:
+    with TestClient(
+        create_app(
+            settings(),
+            token_verifier=FakeVerifier(),
+            membership_directory=MismatchedTenantDirectory(),
+        )
+    ) as client:
+        response = client.get(
+            f"/api/v1/tenants/{TENANT_ID}/me",
+            headers={"Authorization": "Bearer valid-token"},
+        )
+
+    assert response.status_code == 503
+    assert response.json()["code"] == "AUTHORIZATION_UNAVAILABLE"
+
+
+def test_tenant_me_rejects_invalid_tenant_uuid() -> None:
+    with TestClient(
+        create_app(
+            settings(),
+            token_verifier=FakeVerifier(),
+            membership_directory=FakeMembershipDirectory(),
+        )
+    ) as client:
+        response = client.get(
+            "/api/v1/tenants/not-a-uuid/me",
+            headers={"Authorization": "Bearer valid-token"},
+        )
+
+    assert response.status_code == 422
+    assert response.json()["code"] == "VALIDATION_ERROR"
+
+
+def test_openapi_declares_bearer_auth_for_tenant_me() -> None:
+    with TestClient(create_app(settings(), token_verifier=FakeVerifier())) as client:
+        document = client.get("/api/v1/openapi.json").json()
+
+    security = document["paths"]["/api/v1/tenants/{tenant_id}/me"]["get"]["security"]
     assert security == [{"OIDC bearer token": []}]
