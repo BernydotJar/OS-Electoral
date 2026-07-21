@@ -20,6 +20,9 @@ dependencies = [
   "uvicorn[standard]==0.51.0",
 ]
 
+[project.scripts]
+campaignos-worker = "campaignos.worker_main:main"
+
 [dependency-groups]
 dev = [
   "httpx2==2.7.0",

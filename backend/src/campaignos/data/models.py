@@ -314,6 +314,12 @@ class OutboxEvent(Base):
             name="ck_outbox_events_status",
         ),
         Index("ix_outbox_events_pending", "status", "available_at"),
+        Index(
+            "ix_outbox_events_recoverable",
+            "status",
+            "lease_expires_at",
+            "available_at",
+        ),
         Index("ix_outbox_events_tenant_created", "tenant_id", "created_at"),
     )
 
@@ -333,4 +339,6 @@ class OutboxEvent(Base):
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    lease_owner: Mapped[str | None] = mapped_column(String(255))
+    lease_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     last_error: Mapped[str | None] = mapped_column(Text)

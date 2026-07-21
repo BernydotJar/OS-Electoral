@@ -6,7 +6,7 @@ COMPOSE = docker compose --env-file $(ENV_FILE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps
+.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once
 
 help: ## Show the available developer commands.
 	@awk 'BEGIN {FS = ":.*## "; printf "CampaignOS developer commands:\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -63,3 +63,7 @@ logs: ## Follow local stack logs.
 
 ps: ## Show local stack service and health status.
 	$(COMPOSE) ps
+
+worker-once: ## Process one internal outbox pass for an explicit tenant UUID.
+	@test -n "$(TENANT_ID)" || { echo "TENANT_ID is required" >&2; exit 2; }
+	$(UV) run --locked campaignos-worker --once --tenant-id "$(TENANT_ID)"
