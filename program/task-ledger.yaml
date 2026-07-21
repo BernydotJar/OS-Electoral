@@ -117,12 +117,19 @@
         "backend/tests/test_campaign_write_model.py",
         "backend/tests/test_campaign_write_api.py",
         "backend/src/campaignos/data/models.py",
-        "backend/migrations/versions/20260721_0002_idempotency_records.py"
+        "backend/migrations/versions/20260721_0002_idempotency_records.py",
+        "backend/src/campaignos/workers/outbox.py",
+        "backend/src/campaignos/worker_main.py",
+        "backend/migrations/versions/20260721_0003_outbox_leases.py",
+        "backend/tests/test_outbox_worker.py",
+        "backend/tests/test_worker_main.py",
+        "docs/operations/background-workers.md",
+        "program/iterations/c3-api-003-outbox-worker.md"
       ],
       "external_effects": "NONE",
       "blockers": [
         "No broader domain writes",
-        "No background worker runtime"
+        "No worker administration, observability or reviewed external event transport"
       ]
     },
     {
