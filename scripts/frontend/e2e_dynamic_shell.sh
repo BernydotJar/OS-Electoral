@@ -3,7 +3,11 @@ set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 FRONTEND_DIR="$ROOT/frontend"
-ARTIFACT_DIR=${CAMPAIGNOS_FRONTEND_ARTIFACT_DIR:-"$ROOT/artifacts/c3-front-001"}
+ARTIFACT_INPUT=${CAMPAIGNOS_FRONTEND_ARTIFACT_DIR:-"$ROOT/artifacts/c3-front-001"}
+case "$ARTIFACT_INPUT" in
+  /*) ARTIFACT_DIR=$ARTIFACT_INPUT ;;
+  *) ARTIFACT_DIR="$ROOT/$ARTIFACT_INPUT" ;;
+esac
 if [ -n "${CAMPAIGNOS_FRONTEND_PORT:-}" ]; then
   PORT=$CAMPAIGNOS_FRONTEND_PORT
 else
