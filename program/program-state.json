@@ -35,6 +35,7 @@
     {"id": "WS-15", "name": "Documentation, Migration and Release", "status": "ACTIVE", "next_increment": "C3-RELEASE-001"}
   ],
   "ready_tasks": [],
+  "published_unreviewed_increment": {"id": "C3-API-005", "branch": "agent/c3-api-005-campaign-readiness", "base": "agent/c3-resume-001-reconcile-review-stack", "implementation_commit": "22bc9a3f324a9a3cb1312fad7322596c7b719249", "draft_pr": null, "ci": "NOT_RUN", "blocker": "NO_AUTHENTICATED_GITHUB_MUTATION_SESSION"},
   "review_stack": [
     {"pr": 84, "base": "main", "head": "agent/c3-api-002-idempotency", "head_sha": "e938930eb1088f82603415c11182ab730994cb53", "ci": "SUCCESS"},
     {"pr": 85, "base": "agent/c3-api-002-idempotency", "head": "agent/c3-api-003-outbox-worker", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "ci": "SUCCESS"},

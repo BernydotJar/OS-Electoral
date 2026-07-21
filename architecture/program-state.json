@@ -286,6 +286,7 @@
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {"run_id": 29803405277, "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f", "conclusion": "SUCCESS", "required_check_enforcement": false},
+    "published_unreviewed_increment": {"id": "C3-API-005", "branch": "agent/c3-api-005-campaign-readiness", "base": "agent/c3-resume-001-reconcile-review-stack", "implementation_commit": "22bc9a3f324a9a3cb1312fad7322596c7b719249", "draft_pr": null, "ci": "NOT_RUN", "blocker": "NO_AUTHENTICATED_GITHUB_MUTATION_SESSION"},
     "review_stack": [
       {"pr": 84, "state": "OPEN_DRAFT", "base": "main", "head": "agent/c3-api-002-idempotency", "head_sha": "e938930eb1088f82603415c11182ab730994cb53", "campaignos_ci_run_id": 29804446308, "conclusion": "SUCCESS"},
       {"pr": 85, "state": "OPEN_DRAFT", "base": "agent/c3-api-002-idempotency", "head": "agent/c3-api-003-outbox-worker", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "campaignos_ci_run_id": 29807485042, "conclusion": "SUCCESS"},

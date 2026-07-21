@@ -178,4 +178,4 @@
 - Added the exact 33-item required-eval catalog and validator: `5 PASS`, `8 PARTIAL`, `20 NOT_RUN`; production remains `BLOCKED`.
 - Full locked suite: `286 passed`, `1 skipped`; strict mypy across 31 source files, Ruff, program truth, eval catalog and campaign safety PASS.
 - Isolated PostgreSQL migration/RLS/readiness/audit proof: `1 passed`, `5 deselected`.
-- No CI, PR, review, merge, deployment or external effect is claimed for this branch yet.
+- Implementation commit `22bc9a3f324a9a3cb1312fad7322596c7b719249` is published on `agent/c3-api-005-campaign-readiness`. Public API verification found zero open PRs and zero workflow runs for that head; no review, merge, deployment or external campaign effect is claimed.
