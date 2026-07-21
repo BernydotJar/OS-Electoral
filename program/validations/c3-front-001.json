@@ -50,6 +50,20 @@
       "effective_worktree": "PASS_TRACKED_AND_NON_IGNORED",
       "stack_history": "PASS_ORIGIN_MAIN_TO_HEAD",
       "new_allowlists": 0
+    },
+    "publication": {
+      "result": "PASS_BRANCH_PUBLISHED",
+      "branch": "agent/c3-front-001-dynamic-shell",
+      "implementation_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
+      "github_branch_sha": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
+      "open_pr_count": 0,
+      "workflow_run_count": 0,
+      "draft_pr_blocker": "NO_AUTHENTICATED_GITHUB_MUTATION_SESSION"
+    },
+    "git_push_incident": {
+      "result": "REPAIRED_WITHOUT_HISTORY_REWRITE",
+      "repair_commit": "e7304e61242280482f402bdfe047665d2c62fe4d",
+      "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb"
     }
   },
   "evidence": [
@@ -68,7 +82,7 @@
   "limitations": [
     "Synthetic read-only context only",
     "No live OIDC or session lifecycle",
-    "No current-branch CI, review or deployment evidence",
+    "No current-branch PR, CI, human review or deployment evidence",
     "Automated accessibility review does not replace manual assistive-technology review"
   ]
 }

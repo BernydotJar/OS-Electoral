@@ -12,7 +12,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, unverified required-check enforcement, no verified AWS environments and incomplete product, identity, operations and human gates remain. Foundation, IAM and the first campaign API slice are merged; idempotency, the internal outbox worker and workspace writes are draft and CI-green; campaign readiness and idempotent campaign creation are verified locally/PostgreSQL, and the dynamic bilingual frontend shell is tested only locally with synthetic read-only data.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, unverified required-check enforcement, no verified AWS environments and incomplete product, identity, operations and human gates remain. Foundation, IAM and the first campaign API slice are merged; idempotency, the internal outbox worker and workspace writes are draft and CI-green; campaign readiness and idempotent campaign creation are verified locally/PostgreSQL; the dynamic bilingual frontend shell is published but remains synthetic, unreviewed and without current-head CI.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -23,7 +23,13 @@
       "branch": "agent/c2-plat-001-approval-binding-hardening",
       "base": "main",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29656158142, "conclusion": "SUCCESS", "head_sha": "1e52e0d170212a540057c3385017897f9aff2ef8", "claim": "SUCCESS_AT_RECORDED_SHA", "blocking_for_production": false},
+      "validation": {
+        "run_id": 29656158142,
+        "conclusion": "SUCCESS",
+        "head_sha": "1e52e0d170212a540057c3385017897f9aff2ef8",
+        "claim": "SUCCESS_AT_RECORDED_SHA",
+        "blocking_for_production": false
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -35,7 +41,13 @@
       "branch": "agent/c2-prod-001-candidate-brand-workspace",
       "base": "agent/c2-plat-001-approval-binding-hardening",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29658109760, "conclusion": "SUCCESS", "head_sha": "02c13d9e9971f19f961e225e9bdbaf2740f3f572", "claim": "SUCCESS_AT_RECORDED_SHA", "blocking_for_production": false},
+      "validation": {
+        "run_id": 29658109760,
+        "conclusion": "SUCCESS",
+        "head_sha": "02c13d9e9971f19f961e225e9bdbaf2740f3f572",
+        "claim": "SUCCESS_AT_RECORDED_SHA",
+        "blocking_for_production": false
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -47,7 +59,13 @@
       "branch": "agent/c2-prod-002-approval-inbox-ledger",
       "base": "agent/c2-prod-001-candidate-brand-workspace",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29658298020, "conclusion": "SUCCESS", "head_sha": "2926e8280a58acbe3c2c6b9702a2b2e614567eac", "claim": "SUCCESS_AT_RECORDED_SHA", "blocking_for_production": false},
+      "validation": {
+        "run_id": 29658298020,
+        "conclusion": "SUCCESS",
+        "head_sha": "2926e8280a58acbe3c2c6b9702a2b2e614567eac",
+        "claim": "SUCCESS_AT_RECORDED_SHA",
+        "blocking_for_production": false
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -59,7 +77,13 @@
       "branch": "agent/c2-prod-003-daily-operating-workflow",
       "base": "agent/c2-prod-002-approval-inbox-ledger",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29658392557, "conclusion": "SUCCESS", "head_sha": "2fdcf9352a786f72fc28c602a672dcecda3cb041", "claim": "SUCCESS_AT_RECORDED_SHA", "blocking_for_production": false},
+      "validation": {
+        "run_id": 29658392557,
+        "conclusion": "SUCCESS",
+        "head_sha": "2fdcf9352a786f72fc28c602a672dcecda3cb041",
+        "claim": "SUCCESS_AT_RECORDED_SHA",
+        "blocking_for_production": false
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -71,7 +95,13 @@
       "branch": "agent/c2-front-001-governance-workspace",
       "base": "agent/c2-prod-003-daily-operating-workflow",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29658564346, "conclusion": "SUCCESS", "head_sha": "332b90004391eb8a1ab033a8c4086304671010f3", "claim": "SUCCESS_AT_RECORDED_SHA", "blocking_for_production": false},
+      "validation": {
+        "run_id": 29658564346,
+        "conclusion": "SUCCESS",
+        "head_sha": "332b90004391eb8a1ab033a8c4086304671010f3",
+        "claim": "SUCCESS_AT_RECORDED_SHA",
+        "blocking_for_production": false
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -83,7 +113,13 @@
       "branch": "agent/c2-saas-001a-authorization-policy",
       "base": "agent/c2-front-001-governance-workspace",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29658680211, "conclusion": "SUCCESS", "head_sha": "85407edab14e1a28495aa2db45b25d3ef813e988", "claim": "SUCCESS_AT_RECORDED_SHA", "blocking_for_production": false},
+      "validation": {
+        "run_id": 29658680211,
+        "conclusion": "SUCCESS",
+        "head_sha": "85407edab14e1a28495aa2db45b25d3ef813e988",
+        "claim": "SUCCESS_AT_RECORDED_SHA",
+        "blocking_for_production": false
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -95,7 +131,13 @@
       "branch": "agent/c2-arch-001-executable-program-state",
       "base": "agent/c2-saas-001a-authorization-policy",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29658769715, "conclusion": "SUCCESS", "head_sha": "5f237434c5a4d270e3f31d4e16e27b02a206855a", "claim": "SUCCESS_AT_RECORDED_SHA", "blocking_for_production": false},
+      "validation": {
+        "run_id": 29658769715,
+        "conclusion": "SUCCESS",
+        "head_sha": "5f237434c5a4d270e3f31d4e16e27b02a206855a",
+        "claim": "SUCCESS_AT_RECORDED_SHA",
+        "blocking_for_production": false
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -107,7 +149,13 @@
       "branch": "agent/c2-saas-001b-persistence-audit",
       "base": "agent/c2-arch-001-executable-program-state",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29659355550, "conclusion": "FAILURE", "head_sha": "80b31f969c813a21c8a96ae76b7b0eb6ba392141", "claim": "HISTORICAL_FAILURE_RECORDED", "blocking_for_production": true},
+      "validation": {
+        "run_id": 29659355550,
+        "conclusion": "FAILURE",
+        "head_sha": "80b31f969c813a21c8a96ae76b7b0eb6ba392141",
+        "claim": "HISTORICAL_FAILURE_RECORDED",
+        "blocking_for_production": true
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -119,7 +167,13 @@
       "branch": "agent/c2-saas-001c-repository-transaction",
       "base": "agent/c2-saas-001b-persistence-audit",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29659451027, "conclusion": "FAILURE", "head_sha": "5c82cdbe081d86e33c6c20e03ca51452576253c1", "claim": "HISTORICAL_FAILURE_RECORDED", "blocking_for_production": true},
+      "validation": {
+        "run_id": 29659451027,
+        "conclusion": "FAILURE",
+        "head_sha": "5c82cdbe081d86e33c6c20e03ca51452576253c1",
+        "claim": "HISTORICAL_FAILURE_RECORDED",
+        "blocking_for_production": true
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -131,7 +185,13 @@
       "branch": "agent/c2-obs-001-audit-observability",
       "base": "agent/c2-saas-001c-repository-transaction",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29659542083, "conclusion": "FAILURE", "head_sha": "65ba694c666eee0e13bdea7c82fe6493b758b3d0", "claim": "HISTORICAL_FAILURE_RECORDED", "blocking_for_production": true},
+      "validation": {
+        "run_id": 29659542083,
+        "conclusion": "FAILURE",
+        "head_sha": "65ba694c666eee0e13bdea7c82fe6493b758b3d0",
+        "claim": "HISTORICAL_FAILURE_RECORDED",
+        "blocking_for_production": true
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -143,7 +203,13 @@
       "branch": "agent/c2-api-001a-service-contracts",
       "base": "agent/c2-obs-001-audit-observability",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29659623156, "conclusion": "FAILURE", "head_sha": "da0c79aa3c9e12fc6913012fc3bbe00ce8c6c624", "claim": "HISTORICAL_FAILURE_RECORDED", "blocking_for_production": true},
+      "validation": {
+        "run_id": 29659623156,
+        "conclusion": "FAILURE",
+        "head_sha": "da0c79aa3c9e12fc6913012fc3bbe00ce8c6c624",
+        "claim": "HISTORICAL_FAILURE_RECORDED",
+        "blocking_for_production": true
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -155,7 +221,13 @@
       "branch": "agent/c2-test-001-adversarial-harness",
       "base": "agent/c2-api-001a-service-contracts",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29659692005, "conclusion": "FAILURE", "head_sha": "c3681c5f458946448fca94c0373c0899165f90f1", "claim": "HISTORICAL_FAILURE_RECORDED", "blocking_for_production": true},
+      "validation": {
+        "run_id": 29659692005,
+        "conclusion": "FAILURE",
+        "head_sha": "c3681c5f458946448fca94c0373c0899165f90f1",
+        "claim": "HISTORICAL_FAILURE_RECORDED",
+        "blocking_for_production": true
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -167,7 +239,13 @@
       "branch": "agent/c2-docs-001-operator-runbook",
       "base": "agent/c2-test-001-adversarial-harness",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29659733648, "conclusion": "FAILURE", "head_sha": "295df06cd73067bdfec5fffc1ab712141c2355aa", "claim": "HISTORICAL_FAILURE_RECORDED", "blocking_for_production": true},
+      "validation": {
+        "run_id": 29659733648,
+        "conclusion": "FAILURE",
+        "head_sha": "295df06cd73067bdfec5fffc1ab712141c2355aa",
+        "claim": "HISTORICAL_FAILURE_RECORDED",
+        "blocking_for_production": true
+      },
       "external_effects": "NONE_IN_INCREMENT"
     },
     {
@@ -179,107 +257,760 @@
       "branch": "agent/c2-ai-001a-extraction-citation",
       "base": "agent/c2-docs-001-operator-runbook",
       "status": "MERGED_TO_MAIN",
-      "validation": {"run_id": 29660119522, "conclusion": "SUCCESS", "head_sha": "99630245f17582bcc1561d91510a398752c43cd4", "claim": "SUCCESS_AT_RECORDED_SHA", "blocking_for_production": false},
+      "validation": {
+        "run_id": 29660119522,
+        "conclusion": "SUCCESS",
+        "head_sha": "99630245f17582bcc1561d91510a398752c43cd4",
+        "claim": "SUCCESS_AT_RECORDED_SHA",
+        "blocking_for_production": false
+      },
       "external_effects": "NONE_IN_INCREMENT"
     }
   ],
-  "known_failed_validation_runs": [29659355550, 29659451027, 29659542083, 29659623156, 29659692005, 29659733648],
+  "known_failed_validation_runs": [
+    29659355550,
+    29659451027,
+    29659542083,
+    29659623156,
+    29659692005,
+    29659733648
+  ],
   "integration_validation": [
-    {"run_id": 29660653755, "conclusion": "SUCCESS", "head_sha": "30e2473f6eac2a554bc7e51b18f7b25746e42475", "scope": "integrated C2 stack PR"},
-    {"run_id": 29662896729, "conclusion": "SUCCESS", "head_sha": "9245f715f8b877201f6e4e185546a012bf462dba", "scope": "deployment-gate governance PR"},
-    {"run_id": 29706162737, "conclusion": "SUCCESS", "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922", "scope": "foundation pre-final review head: quality, PostgreSQL/RLS, audit, secret scan, CodeQL and E2E"},
-    {"run_id": 29706162740, "conclusion": "SUCCESS", "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922", "scope": "foundation pre-final review head: visual regression"},
-    {"run_id": 29706314953, "conclusion": "SUCCESS", "head_sha": "bac781eea1d0de1b9a845f0f4243924ee4808c54", "scope": "PR 72 final head: CampaignOS CI"},
-    {"run_id": 29706314936, "conclusion": "SUCCESS", "head_sha": "bac781eea1d0de1b9a845f0f4243924ee4808c54", "scope": "PR 72 final head: runtime visual review"},
-    {"run_id": 29770562360, "conclusion": "SUCCESS", "head_sha": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb", "scope": "PR 73 IAM final head: CampaignOS CI"},
-    {"run_id": 29770562352, "conclusion": "SUCCESS", "head_sha": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb", "scope": "PR 73 IAM final head: runtime visual review"},
-    {"run_id": 29802998261, "conclusion": "SUCCESS", "head_sha": "ed41ae064daa14393b793c5fde3536579e600950", "scope": "PR 83 protected campaign read/write boundary"},
-    {"run_id": 29803405277, "conclusion": "SUCCESS", "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f", "scope": "main push after PR 83 merge"},
-    {"run_id": 29804446308, "conclusion": "SUCCESS", "head_sha": "e938930eb1088f82603415c11182ab730994cb53", "scope": "draft PR 84 durable campaign idempotency"},
-    {"run_id": 29807485042, "conclusion": "SUCCESS", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "scope": "draft PR 85 internal outbox worker"},
-    {"run_id": 29807485041, "conclusion": "SUCCESS", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "scope": "draft PR 85 runtime visual review"},
-    {"run_id": 29807878943, "conclusion": "SUCCESS", "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f", "scope": "draft PR 86 idempotent workspace write boundary"}
+    {
+      "run_id": 29660653755,
+      "conclusion": "SUCCESS",
+      "head_sha": "30e2473f6eac2a554bc7e51b18f7b25746e42475",
+      "scope": "integrated C2 stack PR"
+    },
+    {
+      "run_id": 29662896729,
+      "conclusion": "SUCCESS",
+      "head_sha": "9245f715f8b877201f6e4e185546a012bf462dba",
+      "scope": "deployment-gate governance PR"
+    },
+    {
+      "run_id": 29706162737,
+      "conclusion": "SUCCESS",
+      "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922",
+      "scope": "foundation pre-final review head: quality, PostgreSQL/RLS, audit, secret scan, CodeQL and E2E"
+    },
+    {
+      "run_id": 29706162740,
+      "conclusion": "SUCCESS",
+      "head_sha": "e8adf4ce008bbf4b82fe9d7e6515ee4b37595922",
+      "scope": "foundation pre-final review head: visual regression"
+    },
+    {
+      "run_id": 29706314953,
+      "conclusion": "SUCCESS",
+      "head_sha": "bac781eea1d0de1b9a845f0f4243924ee4808c54",
+      "scope": "PR 72 final head: CampaignOS CI"
+    },
+    {
+      "run_id": 29706314936,
+      "conclusion": "SUCCESS",
+      "head_sha": "bac781eea1d0de1b9a845f0f4243924ee4808c54",
+      "scope": "PR 72 final head: runtime visual review"
+    },
+    {
+      "run_id": 29770562360,
+      "conclusion": "SUCCESS",
+      "head_sha": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
+      "scope": "PR 73 IAM final head: CampaignOS CI"
+    },
+    {
+      "run_id": 29770562352,
+      "conclusion": "SUCCESS",
+      "head_sha": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
+      "scope": "PR 73 IAM final head: runtime visual review"
+    },
+    {
+      "run_id": 29802998261,
+      "conclusion": "SUCCESS",
+      "head_sha": "ed41ae064daa14393b793c5fde3536579e600950",
+      "scope": "PR 83 protected campaign read/write boundary"
+    },
+    {
+      "run_id": 29803405277,
+      "conclusion": "SUCCESS",
+      "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
+      "scope": "main push after PR 83 merge"
+    },
+    {
+      "run_id": 29804446308,
+      "conclusion": "SUCCESS",
+      "head_sha": "e938930eb1088f82603415c11182ab730994cb53",
+      "scope": "draft PR 84 durable campaign idempotency"
+    },
+    {
+      "run_id": 29807485042,
+      "conclusion": "SUCCESS",
+      "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e",
+      "scope": "draft PR 85 internal outbox worker"
+    },
+    {
+      "run_id": 29807485041,
+      "conclusion": "SUCCESS",
+      "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e",
+      "scope": "draft PR 85 runtime visual review"
+    },
+    {
+      "run_id": 29807878943,
+      "conclusion": "SUCCESS",
+      "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f",
+      "scope": "draft PR 86 idempotent workspace write boundary"
+    }
   ],
   "bounded_contexts": [
-    {"id": "context:campaign-workspace", "owner": "Campaign Platform", "maturity": "DETERMINISTIC_PROTOTYPE", "code": ["core/campaign_workspace.py"], "validators": ["scripts/campaign/validate_c2_plat_001.py"]},
-    {"id": "context:candidate-brand", "owner": "Candidate Brand and Reputation", "maturity": "DETERMINISTIC_PROTOTYPE", "code": ["core/candidate_brand.py"], "validators": ["scripts/campaign/validate_c2_prod_001.py"]},
-    {"id": "context:approval-ledger", "owner": "Campaign Governance", "maturity": "IN_MEMORY_PROTOTYPE", "code": ["core/approval_ledger.py"], "validators": ["scripts/campaign/validate_c2_prod_002.py"]},
-    {"id": "context:daily-operations", "owner": "Operations and Team", "maturity": "DETERMINISTIC_PROTOTYPE", "code": ["core/daily_workflow.py"], "validators": ["scripts/campaign/validate_c2_prod_003.py"]},
-    {"id": "context:governance-frontend", "owner": "Campaign Product", "maturity": "STATIC_DEMO", "code": ["web/governance.js", "web/data/governance.json"], "validators": ["scripts/frontend/validate_governance_workspace.py", "scripts/frontend/review_governance_workspace.py"]},
-    {"id": "context:dynamic-frontend-shell", "owner": "Campaign Product", "maturity": "TESTED_LOCAL_SERVER_RENDERED_SHELL", "code": ["frontend/src/app/[locale]/page.tsx", "frontend/src/components/shell.tsx", "frontend/src/lib/shell-view-model.ts", "frontend/src/lib/api-client.ts", "frontend/src/lib/contract-parsers.ts"], "validators": ["frontend/src/lib/config.test.ts", "frontend/src/lib/i18n.test.ts", "frontend/src/lib/navigation.test.ts", "frontend/src/lib/contract-parsers.test.ts", "scripts/frontend/review_dynamic_shell.py"]},
-    {"id": "context:authorization-policy", "owner": "Campaign Security", "maturity": "POLICY_BOUNDARY_WITH_AUTHENTICATED_BINDING", "code": ["core/authorization_policy.py", "core/approval_ledger.py"], "validators": ["scripts/campaign/validate_c2_saas_001a.py", "tests/test_approval_ledger.py"]},
-    {"id": "context:persistence-audit", "owner": "Campaign Platform", "maturity": "IN_MEMORY_HASH_CHAIN_PROTOTYPE", "code": ["core/persistence_audit.py"], "validators": ["scripts/campaign/validate_c2_saas_001b.py"]},
-    {"id": "context:repository-transaction", "owner": "Campaign Platform", "maturity": "IN_MEMORY_TEST_DOUBLE", "code": ["core/repository_transaction.py"], "validators": ["scripts/campaign/validate_c2_saas_001c.py"]},
-    {"id": "context:audit-observability", "owner": "Campaign Platform", "maturity": "OFFLINE_READ_MODEL", "code": ["core/audit_observability.py", "scripts/campaign/generate_audit_report.py"], "validators": ["scripts/campaign/validate_c2_obs_001.py"]},
-    {"id": "context:application-service", "owner": "Campaign Platform", "maturity": "IN_PROCESS_READ_ONLY_FACADE", "code": ["core/application_service.py"], "validators": ["scripts/campaign/validate_c2_api_001a.py"]},
-    {"id": "context:extraction-citation", "owner": "Campaign AI", "maturity": "LOCAL_DETERMINISTIC_PROTOTYPE", "code": ["core/extraction_citation.py"], "validators": ["scripts/campaign/validate_c2_ai_001a.py"]},
-    {"id": "context:http-api", "owner": "Campaign Platform", "maturity": "LOCAL_VERSIONED_RUNTIME", "code": ["backend/src/campaignos/main.py", "backend/src/campaignos/api/app.py", "backend/src/campaignos/api/errors.py", "backend/src/campaignos/api/middleware.py"], "validators": ["backend/tests/test_api.py"]},
-    {"id": "context:oidc-identity", "owner": "Campaign Security", "maturity": "VERIFIED_TOKEN_BOUNDARY_NO_LIVE_PROVIDER", "code": ["backend/src/campaignos/config.py", "backend/src/campaignos/identity/oidc.py"], "validators": ["backend/tests/test_config.py", "backend/tests/test_oidc.py"]},
-    {"id": "context:tenant-authorization", "owner": "Campaign Security", "maturity": "LOCAL_SERVER_OWNED_MEMBERSHIP_AND_EXACT_GRANT_LOADING", "code": ["backend/src/campaignos/identity/authorization.py", "backend/src/campaignos/api/routes/tenant_me.py"], "validators": ["backend/tests/test_authorization.py", "backend/tests/test_api.py", "backend/tests/test_database.py"]},
-    {"id": "context:postgresql-tenancy", "owner": "Campaign Platform", "maturity": "LOCAL_MIGRATION_AND_RLS_PROOF", "code": ["backend/src/campaignos/data/database.py", "backend/src/campaignos/data/models.py", "backend/migrations/versions/20260719_0001_identity_tenancy.py"], "validators": ["backend/tests/test_database.py"]},
-    {"id": "context:campaign-domain-api", "owner": "Campaign Platform", "maturity": "MERGED_POSTGRESQL_READ_WRITE_SLICE", "code": ["backend/src/campaignos/api/routes/campaigns.py", "backend/src/campaignos/campaigns/read_model.py", "backend/src/campaignos/campaigns/write_model.py"], "validators": ["backend/tests/test_campaign_list_api.py", "backend/tests/test_campaign_read_model.py", "backend/tests/test_campaign_write_api.py", "backend/tests/test_campaign_write_model.py"]},
-    {"id": "context:internal-outbox-worker", "owner": "Campaign Platform", "maturity": "DRAFT_PR_CI_GREEN_INTERNAL_ONLY", "code": ["backend/src/campaignos/workers/outbox.py", "backend/src/campaignos/worker_main.py"], "validators": ["backend/tests/test_outbox_worker.py", "backend/tests/test_worker_main.py"]},
-    {"id": "context:workspace-write-api", "owner": "Campaign Platform", "maturity": "DRAFT_PR_CI_GREEN", "code": ["backend/src/campaignos/api/routes/workspaces.py", "backend/src/campaignos/workspaces/write_model.py"], "validators": ["backend/tests/test_workspace_write_api.py", "backend/tests/test_workspace_write_model.py"]},
-    {"id": "context:campaign-readiness", "owner": "Campaign Platform", "maturity": "VERIFIED_POSTGRESQL_LOCAL_ONLY", "code": ["backend/src/campaignos/campaigns/readiness.py", "backend/src/campaignos/data/audit.py", "backend/src/campaignos/api/routes/campaigns.py"], "validators": ["backend/tests/test_audit_append.py", "backend/tests/test_campaign_readiness.py", "backend/tests/test_campaign_readiness_api.py", "backend/tests/test_database.py"]},
-    {"id": "context:campaign-creation", "owner": "Campaign Platform", "maturity": "VERIFIED_POSTGRESQL_LOCAL_ONLY", "code": ["backend/src/campaignos/campaigns/create_model.py", "backend/src/campaignos/data/idempotency.py", "backend/src/campaignos/api/routes/campaigns.py"], "validators": ["backend/tests/test_campaign_create_model.py", "backend/tests/test_campaign_create_api.py", "backend/tests/test_campaign_create_postgres.py"]},
-    {"id": "context:required-eval-catalog", "owner": "Campaign Quality", "maturity": "FAIL_CLOSED_PARTIAL_CATALOG", "code": ["program/eval-catalog.json", "scripts/architecture/validate_eval_catalog.py"], "validators": ["scripts/architecture/validate_eval_catalog.py", "backend/tests/test_eval_catalog_validator.py"]}
+    {
+      "id": "context:campaign-workspace",
+      "owner": "Campaign Platform",
+      "maturity": "DETERMINISTIC_PROTOTYPE",
+      "code": [
+        "core/campaign_workspace.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_plat_001.py"
+      ]
+    },
+    {
+      "id": "context:candidate-brand",
+      "owner": "Candidate Brand and Reputation",
+      "maturity": "DETERMINISTIC_PROTOTYPE",
+      "code": [
+        "core/candidate_brand.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_prod_001.py"
+      ]
+    },
+    {
+      "id": "context:approval-ledger",
+      "owner": "Campaign Governance",
+      "maturity": "IN_MEMORY_PROTOTYPE",
+      "code": [
+        "core/approval_ledger.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_prod_002.py"
+      ]
+    },
+    {
+      "id": "context:daily-operations",
+      "owner": "Operations and Team",
+      "maturity": "DETERMINISTIC_PROTOTYPE",
+      "code": [
+        "core/daily_workflow.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_prod_003.py"
+      ]
+    },
+    {
+      "id": "context:governance-frontend",
+      "owner": "Campaign Product",
+      "maturity": "STATIC_DEMO",
+      "code": [
+        "web/governance.js",
+        "web/data/governance.json"
+      ],
+      "validators": [
+        "scripts/frontend/validate_governance_workspace.py",
+        "scripts/frontend/review_governance_workspace.py"
+      ]
+    },
+    {
+      "id": "context:dynamic-frontend-shell",
+      "owner": "Campaign Product",
+      "maturity": "TESTED_LOCAL_SERVER_RENDERED_SHELL",
+      "code": [
+        "frontend/src/app/[locale]/page.tsx",
+        "frontend/src/components/shell.tsx",
+        "frontend/src/lib/shell-view-model.ts",
+        "frontend/src/lib/api-client.ts",
+        "frontend/src/lib/contract-parsers.ts"
+      ],
+      "validators": [
+        "frontend/src/lib/config.test.ts",
+        "frontend/src/lib/i18n.test.ts",
+        "frontend/src/lib/navigation.test.ts",
+        "frontend/src/lib/contract-parsers.test.ts",
+        "scripts/frontend/review_dynamic_shell.py"
+      ]
+    },
+    {
+      "id": "context:authorization-policy",
+      "owner": "Campaign Security",
+      "maturity": "POLICY_BOUNDARY_WITH_AUTHENTICATED_BINDING",
+      "code": [
+        "core/authorization_policy.py",
+        "core/approval_ledger.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_saas_001a.py",
+        "tests/test_approval_ledger.py"
+      ]
+    },
+    {
+      "id": "context:persistence-audit",
+      "owner": "Campaign Platform",
+      "maturity": "IN_MEMORY_HASH_CHAIN_PROTOTYPE",
+      "code": [
+        "core/persistence_audit.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_saas_001b.py"
+      ]
+    },
+    {
+      "id": "context:repository-transaction",
+      "owner": "Campaign Platform",
+      "maturity": "IN_MEMORY_TEST_DOUBLE",
+      "code": [
+        "core/repository_transaction.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_saas_001c.py"
+      ]
+    },
+    {
+      "id": "context:audit-observability",
+      "owner": "Campaign Platform",
+      "maturity": "OFFLINE_READ_MODEL",
+      "code": [
+        "core/audit_observability.py",
+        "scripts/campaign/generate_audit_report.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_obs_001.py"
+      ]
+    },
+    {
+      "id": "context:application-service",
+      "owner": "Campaign Platform",
+      "maturity": "IN_PROCESS_READ_ONLY_FACADE",
+      "code": [
+        "core/application_service.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_api_001a.py"
+      ]
+    },
+    {
+      "id": "context:extraction-citation",
+      "owner": "Campaign AI",
+      "maturity": "LOCAL_DETERMINISTIC_PROTOTYPE",
+      "code": [
+        "core/extraction_citation.py"
+      ],
+      "validators": [
+        "scripts/campaign/validate_c2_ai_001a.py"
+      ]
+    },
+    {
+      "id": "context:http-api",
+      "owner": "Campaign Platform",
+      "maturity": "LOCAL_VERSIONED_RUNTIME",
+      "code": [
+        "backend/src/campaignos/main.py",
+        "backend/src/campaignos/api/app.py",
+        "backend/src/campaignos/api/errors.py",
+        "backend/src/campaignos/api/middleware.py"
+      ],
+      "validators": [
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "context:oidc-identity",
+      "owner": "Campaign Security",
+      "maturity": "VERIFIED_TOKEN_BOUNDARY_NO_LIVE_PROVIDER",
+      "code": [
+        "backend/src/campaignos/config.py",
+        "backend/src/campaignos/identity/oidc.py"
+      ],
+      "validators": [
+        "backend/tests/test_config.py",
+        "backend/tests/test_oidc.py"
+      ]
+    },
+    {
+      "id": "context:tenant-authorization",
+      "owner": "Campaign Security",
+      "maturity": "LOCAL_SERVER_OWNED_MEMBERSHIP_AND_EXACT_GRANT_LOADING",
+      "code": [
+        "backend/src/campaignos/identity/authorization.py",
+        "backend/src/campaignos/api/routes/tenant_me.py"
+      ],
+      "validators": [
+        "backend/tests/test_authorization.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_database.py"
+      ]
+    },
+    {
+      "id": "context:postgresql-tenancy",
+      "owner": "Campaign Platform",
+      "maturity": "LOCAL_MIGRATION_AND_RLS_PROOF",
+      "code": [
+        "backend/src/campaignos/data/database.py",
+        "backend/src/campaignos/data/models.py",
+        "backend/migrations/versions/20260719_0001_identity_tenancy.py"
+      ],
+      "validators": [
+        "backend/tests/test_database.py"
+      ]
+    },
+    {
+      "id": "context:campaign-domain-api",
+      "owner": "Campaign Platform",
+      "maturity": "MERGED_POSTGRESQL_READ_WRITE_SLICE",
+      "code": [
+        "backend/src/campaignos/api/routes/campaigns.py",
+        "backend/src/campaignos/campaigns/read_model.py",
+        "backend/src/campaignos/campaigns/write_model.py"
+      ],
+      "validators": [
+        "backend/tests/test_campaign_list_api.py",
+        "backend/tests/test_campaign_read_model.py",
+        "backend/tests/test_campaign_write_api.py",
+        "backend/tests/test_campaign_write_model.py"
+      ]
+    },
+    {
+      "id": "context:internal-outbox-worker",
+      "owner": "Campaign Platform",
+      "maturity": "DRAFT_PR_CI_GREEN_INTERNAL_ONLY",
+      "code": [
+        "backend/src/campaignos/workers/outbox.py",
+        "backend/src/campaignos/worker_main.py"
+      ],
+      "validators": [
+        "backend/tests/test_outbox_worker.py",
+        "backend/tests/test_worker_main.py"
+      ]
+    },
+    {
+      "id": "context:workspace-write-api",
+      "owner": "Campaign Platform",
+      "maturity": "DRAFT_PR_CI_GREEN",
+      "code": [
+        "backend/src/campaignos/api/routes/workspaces.py",
+        "backend/src/campaignos/workspaces/write_model.py"
+      ],
+      "validators": [
+        "backend/tests/test_workspace_write_api.py",
+        "backend/tests/test_workspace_write_model.py"
+      ]
+    },
+    {
+      "id": "context:campaign-readiness",
+      "owner": "Campaign Platform",
+      "maturity": "VERIFIED_POSTGRESQL_LOCAL_ONLY",
+      "code": [
+        "backend/src/campaignos/campaigns/readiness.py",
+        "backend/src/campaignos/data/audit.py",
+        "backend/src/campaignos/api/routes/campaigns.py"
+      ],
+      "validators": [
+        "backend/tests/test_audit_append.py",
+        "backend/tests/test_campaign_readiness.py",
+        "backend/tests/test_campaign_readiness_api.py",
+        "backend/tests/test_database.py"
+      ]
+    },
+    {
+      "id": "context:campaign-creation",
+      "owner": "Campaign Platform",
+      "maturity": "VERIFIED_POSTGRESQL_LOCAL_ONLY",
+      "code": [
+        "backend/src/campaignos/campaigns/create_model.py",
+        "backend/src/campaignos/data/idempotency.py",
+        "backend/src/campaignos/api/routes/campaigns.py"
+      ],
+      "validators": [
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_campaign_create_api.py",
+        "backend/tests/test_campaign_create_postgres.py"
+      ]
+    },
+    {
+      "id": "context:required-eval-catalog",
+      "owner": "Campaign Quality",
+      "maturity": "FAIL_CLOSED_PARTIAL_CATALOG",
+      "code": [
+        "program/eval-catalog.json",
+        "scripts/architecture/validate_eval_catalog.py"
+      ],
+      "validators": [
+        "scripts/architecture/validate_eval_catalog.py",
+        "backend/tests/test_eval_catalog_validator.py"
+      ]
+    }
   ],
   "workstreams": [
-    {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_MERGED", "next_increment": "C3-IAM-002"},
-    {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "PR_CI_GREEN_ENFORCEMENT_PENDING", "next_increment": "C3-CI-001"},
-    {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "TENANT_AUTHORIZATION_MERGED_LIFECYCLE_PENDING", "next_increment": "C3-IAM-002"},
-    {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_OPEN_STACK_ACTIVE", "next_increment": "C3-ONBOARD-001"},
-    {"id": "WS-05", "name": "API and Background Jobs", "status": "CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_WORKER_DRAFT_GREEN", "next_increment": "C3-IAM-002"},
-    {"id": "WS-06", "name": "Frontend, Design System and i18n", "status": "DYNAMIC_SHELL_TESTED_LOCAL", "next_increment": "C3-ONBOARD-001"},
-    {"id": "WS-07", "name": "Guided Onboarding and Candidate Workspace", "status": "EXECUTABLE_NEXT", "next_increment": "C3-ONBOARD-001"},
-    {"id": "WS-08", "name": "Team Builder and Training Academy", "status": "STATIC_PROTOTYPE", "next_increment": "C3-TEAM-001"},
-    {"id": "WS-09", "name": "Research, Strategy and Decision Governance", "status": "PROTOTYPE_ONLY", "next_increment": "C3-STRATEGY-001"},
-    {"id": "WS-10", "name": "Roadmap, War Room and Campaign Health", "status": "STATIC_PROTOTYPE", "next_increment": "C3-OPS-001"},
-    {"id": "WS-11", "name": "Agent Runtime, Guardrails and Evals", "status": "DETERMINISTIC_PROTOTYPE", "next_increment": "C3-AGENT-001"},
-    {"id": "WS-12", "name": "AWS Platform and Terraform", "status": "NOT_STARTED", "next_increment": "C3-INFRA-001"},
-    {"id": "WS-13", "name": "Security, Privacy and Compliance", "status": "SECURITY_REMEDIATION_ACTIVE", "next_increment": "C3-SEC-001"},
-    {"id": "WS-14", "name": "Testing, Observability and Operations", "status": "LOCAL_TEST_AND_CI_FOUNDATION", "next_increment": "C3-OBS-001"},
-    {"id": "WS-15", "name": "Documentation, Migration and Release", "status": "ACTIVE", "next_increment": "C3-RELEASE-001"}
+    {
+      "id": "WS-01",
+      "name": "Product Definition and Architecture",
+      "status": "BASELINE_MERGED",
+      "next_increment": "C3-IAM-002"
+    },
+    {
+      "id": "WS-02",
+      "name": "Monorepo and Developer Experience",
+      "status": "PR_CI_GREEN_ENFORCEMENT_PENDING",
+      "next_increment": "C3-CI-001"
+    },
+    {
+      "id": "WS-03",
+      "name": "Identity, Tenancy and RBAC",
+      "status": "TENANT_AUTHORIZATION_MERGED_LIFECYCLE_PENDING",
+      "next_increment": "C3-IAM-002"
+    },
+    {
+      "id": "WS-04",
+      "name": "Campaign Domain and Persistence",
+      "status": "CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_OPEN_STACK_ACTIVE",
+      "next_increment": "C3-ONBOARD-001"
+    },
+    {
+      "id": "WS-05",
+      "name": "API and Background Jobs",
+      "status": "CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_WORKER_DRAFT_GREEN",
+      "next_increment": "C3-IAM-002"
+    },
+    {
+      "id": "WS-06",
+      "name": "Frontend, Design System and i18n",
+      "status": "DYNAMIC_SHELL_PUBLISHED_UNREVIEWED",
+      "next_increment": "C3-ONBOARD-001"
+    },
+    {
+      "id": "WS-07",
+      "name": "Guided Onboarding and Candidate Workspace",
+      "status": "EXECUTABLE_NEXT",
+      "next_increment": "C3-ONBOARD-001"
+    },
+    {
+      "id": "WS-08",
+      "name": "Team Builder and Training Academy",
+      "status": "STATIC_PROTOTYPE",
+      "next_increment": "C3-TEAM-001"
+    },
+    {
+      "id": "WS-09",
+      "name": "Research, Strategy and Decision Governance",
+      "status": "PROTOTYPE_ONLY",
+      "next_increment": "C3-STRATEGY-001"
+    },
+    {
+      "id": "WS-10",
+      "name": "Roadmap, War Room and Campaign Health",
+      "status": "STATIC_PROTOTYPE",
+      "next_increment": "C3-OPS-001"
+    },
+    {
+      "id": "WS-11",
+      "name": "Agent Runtime, Guardrails and Evals",
+      "status": "DETERMINISTIC_PROTOTYPE",
+      "next_increment": "C3-AGENT-001"
+    },
+    {
+      "id": "WS-12",
+      "name": "AWS Platform and Terraform",
+      "status": "NOT_STARTED",
+      "next_increment": "C3-INFRA-001"
+    },
+    {
+      "id": "WS-13",
+      "name": "Security, Privacy and Compliance",
+      "status": "SECURITY_REMEDIATION_ACTIVE",
+      "next_increment": "C3-SEC-001"
+    },
+    {
+      "id": "WS-14",
+      "name": "Testing, Observability and Operations",
+      "status": "LOCAL_TEST_AND_CI_FOUNDATION",
+      "next_increment": "C3-OBS-001"
+    },
+    {
+      "id": "WS-15",
+      "name": "Documentation, Migration and Release",
+      "status": "ACTIVE",
+      "next_increment": "C3-RELEASE-001"
+    }
   ],
   "roadmap": [
-    {"id": "C3-FOUND-001A", "status": "MERGED_TO_MAIN", "depends_on": [], "workstream": "WS-15"},
-    {"id": "C3-ARCH-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-FOUND-001A"], "workstream": "WS-01"},
-    {"id": "C3-DEVEX-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-FOUND-001A"], "workstream": "WS-02"},
-    {"id": "C3-CI-001", "status": "ACTIVE", "depends_on": ["C3-FOUND-001A", "C3-DEVEX-001"], "workstream": "WS-02"},
-    {"id": "C3-IAM-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"], "workstream": "WS-03"},
-    {"id": "C3-DATA-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"], "workstream": "WS-04"},
-    {"id": "C3-API-001", "status": "ACTIVE", "depends_on": ["C3-IAM-001", "C3-DATA-001"], "workstream": "WS-05"},
-    {"id": "C3-API-005", "status": "VERIFIED_POSTGRESQL", "depends_on": ["C3-API-001"], "workstream": "WS-05"},
-    {"id": "C3-API-006", "status": "VERIFIED_POSTGRESQL", "depends_on": ["C3-API-005"], "workstream": "WS-05"},
-    {"id": "C3-FRONT-001", "status": "TESTED_LOCAL", "depends_on": ["C3-DEVEX-001", "C3-API-001"], "workstream": "WS-06"},
-    {"id": "C3-ONBOARD-001", "status": "EXECUTABLE_NEXT", "depends_on": ["C3-FRONT-001", "C3-API-001"], "workstream": "WS-07"},
-    {"id": "C3-TEAM-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-FRONT-001", "C3-API-001"], "workstream": "WS-08"},
-    {"id": "C3-STRATEGY-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-DATA-001", "C3-API-001"], "workstream": "WS-09"},
-    {"id": "C3-OPS-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-STRATEGY-001", "C3-TEAM-001"], "workstream": "WS-10"},
-    {"id": "C3-AGENT-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-API-001", "C3-STRATEGY-001"], "workstream": "WS-11"},
-    {"id": "C3-INFRA-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-CI-001", "C3-API-001"], "workstream": "WS-12"},
-    {"id": "C3-SEC-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-IAM-001", "C3-DATA-001", "C3-INFRA-001"], "workstream": "WS-13"},
-    {"id": "C3-OBS-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-API-001", "C3-INFRA-001", "C3-SEC-001"], "workstream": "WS-14"},
-    {"id": "C3-RELEASE-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-ONBOARD-001", "C3-TEAM-001", "C3-OPS-001", "C3-AGENT-001", "C3-OBS-001"], "workstream": "WS-15"},
-    {"id": "action:production-deployment", "status": "HUMAN_BLOCKED", "depends_on": ["C3-RELEASE-001"], "workstream": "WS-15"}
+    {
+      "id": "C3-FOUND-001A",
+      "status": "MERGED_TO_MAIN",
+      "depends_on": [],
+      "workstream": "WS-15"
+    },
+    {
+      "id": "C3-ARCH-001",
+      "status": "MERGED_TO_MAIN",
+      "depends_on": [
+        "C3-FOUND-001A"
+      ],
+      "workstream": "WS-01"
+    },
+    {
+      "id": "C3-DEVEX-001",
+      "status": "MERGED_TO_MAIN",
+      "depends_on": [
+        "C3-FOUND-001A"
+      ],
+      "workstream": "WS-02"
+    },
+    {
+      "id": "C3-CI-001",
+      "status": "ACTIVE",
+      "depends_on": [
+        "C3-FOUND-001A",
+        "C3-DEVEX-001"
+      ],
+      "workstream": "WS-02"
+    },
+    {
+      "id": "C3-IAM-001",
+      "status": "MERGED_TO_MAIN",
+      "depends_on": [
+        "C3-ARCH-001",
+        "C3-DEVEX-001"
+      ],
+      "workstream": "WS-03"
+    },
+    {
+      "id": "C3-DATA-001",
+      "status": "MERGED_TO_MAIN",
+      "depends_on": [
+        "C3-ARCH-001",
+        "C3-DEVEX-001"
+      ],
+      "workstream": "WS-04"
+    },
+    {
+      "id": "C3-API-001",
+      "status": "ACTIVE",
+      "depends_on": [
+        "C3-IAM-001",
+        "C3-DATA-001"
+      ],
+      "workstream": "WS-05"
+    },
+    {
+      "id": "C3-API-005",
+      "status": "VERIFIED_POSTGRESQL",
+      "depends_on": [
+        "C3-API-001"
+      ],
+      "workstream": "WS-05"
+    },
+    {
+      "id": "C3-API-006",
+      "status": "VERIFIED_POSTGRESQL",
+      "depends_on": [
+        "C3-API-005"
+      ],
+      "workstream": "WS-05"
+    },
+    {
+      "id": "C3-FRONT-001",
+      "status": "TESTED_LOCAL",
+      "depends_on": [
+        "C3-DEVEX-001",
+        "C3-API-001"
+      ],
+      "workstream": "WS-06"
+    },
+    {
+      "id": "C3-ONBOARD-001",
+      "status": "EXECUTABLE_NEXT",
+      "depends_on": [
+        "C3-FRONT-001",
+        "C3-API-001"
+      ],
+      "workstream": "WS-07"
+    },
+    {
+      "id": "C3-TEAM-001",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-FRONT-001",
+        "C3-API-001"
+      ],
+      "workstream": "WS-08"
+    },
+    {
+      "id": "C3-STRATEGY-001",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-DATA-001",
+        "C3-API-001"
+      ],
+      "workstream": "WS-09"
+    },
+    {
+      "id": "C3-OPS-001",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-STRATEGY-001",
+        "C3-TEAM-001"
+      ],
+      "workstream": "WS-10"
+    },
+    {
+      "id": "C3-AGENT-001",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-API-001",
+        "C3-STRATEGY-001"
+      ],
+      "workstream": "WS-11"
+    },
+    {
+      "id": "C3-INFRA-001",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-CI-001",
+        "C3-API-001"
+      ],
+      "workstream": "WS-12"
+    },
+    {
+      "id": "C3-SEC-001",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-IAM-001",
+        "C3-DATA-001",
+        "C3-INFRA-001"
+      ],
+      "workstream": "WS-13"
+    },
+    {
+      "id": "C3-OBS-001",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-API-001",
+        "C3-INFRA-001",
+        "C3-SEC-001"
+      ],
+      "workstream": "WS-14"
+    },
+    {
+      "id": "C3-RELEASE-001",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-ONBOARD-001",
+        "C3-TEAM-001",
+        "C3-OPS-001",
+        "C3-AGENT-001",
+        "C3-OBS-001"
+      ],
+      "workstream": "WS-15"
+    },
+    {
+      "id": "action:production-deployment",
+      "status": "HUMAN_BLOCKED",
+      "depends_on": [
+        "C3-RELEASE-001"
+      ],
+      "workstream": "WS-15"
+    }
   ],
   "findings": [
-    {"id": "FND-PLATFORM-001", "severity": "CRITICAL", "status": "REMEDIATION_IN_PROGRESS", "summary": "A local API/PostgreSQL runtime now exists, but Terraform, independently verified AWS environments, backup/restore and a production runtime do not.", "evidence": "program/production-gap-matrix.md"},
-    {"id": "FND-CI-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Foundation, IAM and the first campaign API slice are merged with green recorded checks, and the active draft stack is green; public rulesets are empty while branch-protection and required-check enforcement remain unverified without authenticated repository settings access.", "evidence": "program/current-state-assessment.md"},
-    {"id": "FND-CI-002", "severity": "HIGH", "status": "OPEN", "summary": "Six manifest-linked validation runs have FAILURE conclusions and are not superseded by scope-equivalent green evidence.", "evidence": "architecture/program-state.json#known_failed_validation_runs"},
-    {"id": "FND-DEPLOY-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "The Pages demo previously auto-deployed on push and was not represented truthfully in the program state.", "evidence": ".github/workflows/deploy-pages.yml"},
-    {"id": "FND-DOCS-001", "severity": "HIGH", "status": "RESOLVED", "summary": "Owned canonical documentation now distinguishes the static demo, local runtime foundation and missing production evidence.", "evidence": "README.md"},
-    {"id": "FND-AUDIT-001", "severity": "HIGH", "status": "RESOLVED", "summary": "Canonical documentation now states that the unkeyed hash chains are neither signatures nor immutable external evidence.", "evidence": "program/current-state-assessment.md"},
-    {"id": "FND-PROGRAM-001", "severity": "HIGH", "status": "RESOLVED", "summary": "AutoSkills, Context7, skill usage and dependency-safe fallback records now exist and are fail-closed validated.", "evidence": "program/"},
-    {"id": "FND-SUPPLY-001", "severity": "HIGH", "status": "REMEDIATION_IN_PROGRESS", "summary": "Locks, vulnerability audit, immutable Action/image pins and secret scanning pass at recorded merged and draft heads; SBOM, provenance, signing and protected-main enforcement remain absent.", "evidence": "program/production-gap-matrix.md"}
+    {
+      "id": "FND-PLATFORM-001",
+      "severity": "CRITICAL",
+      "status": "REMEDIATION_IN_PROGRESS",
+      "summary": "A local API/PostgreSQL runtime now exists, but Terraform, independently verified AWS environments, backup/restore and a production runtime do not.",
+      "evidence": "program/production-gap-matrix.md"
+    },
+    {
+      "id": "FND-CI-001",
+      "severity": "HIGH",
+      "status": "REMEDIATION_IN_PROGRESS",
+      "summary": "Foundation, IAM and the first campaign API slice are merged with green recorded checks, and the active draft stack is green; public rulesets are empty while branch-protection and required-check enforcement remain unverified without authenticated repository settings access.",
+      "evidence": "program/current-state-assessment.md"
+    },
+    {
+      "id": "FND-CI-002",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "Six manifest-linked validation runs have FAILURE conclusions and are not superseded by scope-equivalent green evidence.",
+      "evidence": "architecture/program-state.json#known_failed_validation_runs"
+    },
+    {
+      "id": "FND-DEPLOY-001",
+      "severity": "HIGH",
+      "status": "REMEDIATION_IN_PROGRESS",
+      "summary": "The Pages demo previously auto-deployed on push and was not represented truthfully in the program state.",
+      "evidence": ".github/workflows/deploy-pages.yml"
+    },
+    {
+      "id": "FND-DOCS-001",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "summary": "Owned canonical documentation now distinguishes the static demo, local runtime foundation and missing production evidence.",
+      "evidence": "README.md"
+    },
+    {
+      "id": "FND-AUDIT-001",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "summary": "Canonical documentation now states that the unkeyed hash chains are neither signatures nor immutable external evidence.",
+      "evidence": "program/current-state-assessment.md"
+    },
+    {
+      "id": "FND-PROGRAM-001",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "summary": "AutoSkills, Context7, skill usage and dependency-safe fallback records now exist and are fail-closed validated.",
+      "evidence": "program/"
+    },
+    {
+      "id": "FND-SUPPLY-001",
+      "severity": "HIGH",
+      "status": "REMEDIATION_IN_PROGRESS",
+      "summary": "Locks, vulnerability audit, immutable Action/image pins and secret scanning pass at recorded merged and draft heads; SBOM, provenance, signing and protected-main enforcement remain absent.",
+      "evidence": "program/production-gap-matrix.md"
+    }
   ],
-  "open_findings_summary": {"critical": 1, "high": 4, "total_critical_or_high": 5},
+  "open_findings_summary": {
+    "critical": 1,
+    "high": 4,
+    "total_critical_or_high": 5
+  },
   "github_state": {
     "verified_at": "2026-07-21",
     "open_issue_count": 23,
-    "open_stack_issue_numbers": [40, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63, 65, 67],
-    "merged_pull_requests": [72, 73, 83],
-    "open_pull_requests": [84, 85, 86],
+    "open_stack_issue_numbers": [
+      40,
+      43,
+      45,
+      47,
+      49,
+      51,
+      53,
+      55,
+      57,
+      59,
+      61,
+      63,
+      65,
+      67
+    ],
+    "merged_pull_requests": [
+      72,
+      73,
+      83
+    ],
+    "open_pull_requests": [
+      84,
+      85,
+      86
+    ],
     "main_branch_protection": "UNVERIFIED_AUTH_REQUIRED_PREVIOUSLY_ABSENT",
     "rulesets": "NONE_PUBLICLY_VISIBLE_AT_2026_07_21",
     "actions_allowed": "UNVERIFIED_AUTH_REQUIRED",
@@ -288,13 +1019,67 @@
     "local_workflow_action_refs": "FULL_SHA_PINNED",
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
-    "main_ci_evidence": {"run_id": 29803405277, "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f", "conclusion": "SUCCESS", "required_check_enforcement": false},
-    "published_unreviewed_increment": {"id": "C3-API-006", "branch": "agent/c3-api-006-campaign-create", "base": "agent/c3-api-005-campaign-readiness", "implementation_commit": "c91d60217e2ee0c0ec0f38c139852e7d73c78a58", "draft_pr": null, "ci": "NOT_RUN", "blocker": "NO_AUTHENTICATED_GITHUB_MUTATION_SESSION"},
+    "main_ci_evidence": {
+      "run_id": 29803405277,
+      "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
+      "conclusion": "SUCCESS",
+      "required_check_enforcement": false
+    },
+    "published_unreviewed_increment": {
+      "id": "C3-FRONT-001",
+      "branch": "agent/c3-front-001-dynamic-shell",
+      "base": "agent/c3-api-006-campaign-create",
+      "base_commit": "a21e7353f0a91f8c50a10904d942e03db45b8318",
+      "policy_commit": "0763b7d0b8222043e0cf436c813ebfd61376d970",
+      "implementation_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
+      "github_branch_sha": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
+      "draft_pr": null,
+      "open_pr_count": 0,
+      "ci": "NOT_RUN_NO_PR_OR_BRANCH_PUSH_TRIGGER",
+      "workflow_run_count": 0,
+      "blocker": "NO_AUTHENTICATED_GITHUB_MUTATION_SESSION"
+    },
     "review_stack": [
-      {"pr": 84, "state": "OPEN_DRAFT", "base": "main", "head": "agent/c3-api-002-idempotency", "head_sha": "e938930eb1088f82603415c11182ab730994cb53", "campaignos_ci_run_id": 29804446308, "conclusion": "SUCCESS"},
-      {"pr": 85, "state": "OPEN_DRAFT", "base": "agent/c3-api-002-idempotency", "head": "agent/c3-api-003-outbox-worker", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "campaignos_ci_run_id": 29807485042, "conclusion": "SUCCESS"},
-      {"pr": 86, "state": "OPEN_DRAFT", "base": "agent/c3-api-003-outbox-worker", "head": "agent/c3-api-004-workspace-write", "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f", "campaignos_ci_run_id": 29807878943, "conclusion": "SUCCESS"}
-    ]
+      {
+        "pr": 84,
+        "state": "OPEN_DRAFT",
+        "base": "main",
+        "head": "agent/c3-api-002-idempotency",
+        "head_sha": "e938930eb1088f82603415c11182ab730994cb53",
+        "campaignos_ci_run_id": 29804446308,
+        "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 85,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-api-002-idempotency",
+        "head": "agent/c3-api-003-outbox-worker",
+        "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e",
+        "campaignos_ci_run_id": 29807485042,
+        "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 86,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-api-003-outbox-worker",
+        "head": "agent/c3-api-004-workspace-write",
+        "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f",
+        "campaignos_ci_run_id": 29807878943,
+        "conclusion": "SUCCESS"
+      }
+    ],
+    "git_push_incident": {
+      "classification": "TECHNICAL_DEFECT_REPAIRED",
+      "component": "Cloud_Sandbox_MCP.git_push branch targeting",
+      "cause": "first call omitted the supported branch field and used stale workspace branch metadata",
+      "github_reached": true,
+      "accidental_target": "agent/c3-iam-001-membership-authorization",
+      "accidental_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
+      "repair_commit": "e7304e61242280482f402bdfe047665d2c62fe4d",
+      "repair_method": "FAST_FORWARD_TREE_RESTORE_NO_FORCE_PUSH_NO_HISTORY_REWRITE",
+      "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
+      "frontend_target_verified": true
+    }
   },
   "deployment_state": {
     "github_pages": {
@@ -306,46 +1091,161 @@
       "required_confirmation": "DEMO_NON_PRODUCTION",
       "counts_as_production_evidence": false
     },
-    "aws": {"state": "NOT_VERIFIED", "reason": "AWS CLI session expired and no Terraform evidence existed at the audit point."},
-    "production": {"state": "BLOCKED", "human_approval_recorded": false, "approval_receipt": null}
+    "aws": {
+      "state": "NOT_VERIFIED",
+      "reason": "AWS CLI session expired and no Terraform evidence existed at the audit point."
+    },
+    "production": {
+      "state": "BLOCKED",
+      "human_approval_recorded": false,
+      "approval_receipt": null
+    }
   },
   "production_gates": [
-    {"id": "product-boundaries", "status": "PARTIAL"},
-    {"id": "real-authentication", "status": "PARTIAL"},
-    {"id": "real-session-validation", "status": "PARTIAL"},
-    {"id": "tenant-isolation", "status": "PARTIAL"},
-    {"id": "rbac", "status": "PARTIAL"},
-    {"id": "postgresql", "status": "PARTIAL"},
-    {"id": "migrations", "status": "PARTIAL"},
-    {"id": "versioned-api", "status": "PARTIAL"},
-    {"id": "background-jobs", "status": "PARTIAL"},
-    {"id": "object-storage", "status": "PARTIAL"},
-    {"id": "guided-onboarding", "status": "NOT_IMPLEMENTED"},
-    {"id": "candidate-workspace", "status": "PARTIAL"},
-    {"id": "team-builder", "status": "PARTIAL"},
-    {"id": "roadmap", "status": "PARTIAL"},
-    {"id": "war-room", "status": "PARTIAL"},
-    {"id": "approval-ledger", "status": "PARTIAL"},
-    {"id": "training-academy", "status": "NOT_IMPLEMENTED"},
-    {"id": "agent-guardrails", "status": "PARTIAL"},
-    {"id": "i18n-es-en", "status": "PARTIAL"},
-    {"id": "accessibility-review", "status": "PARTIAL"},
-    {"id": "security-review", "status": "PARTIAL"},
-    {"id": "privacy-review", "status": "PARTIAL"},
-    {"id": "threat-model", "status": "PARTIAL"},
-    {"id": "observability", "status": "PARTIAL"},
-    {"id": "backups", "status": "NOT_IMPLEMENTED"},
-    {"id": "restore-test", "status": "NOT_IMPLEMENTED"},
-    {"id": "terraform", "status": "NOT_IMPLEMENTED"},
-    {"id": "dev-staging-prod", "status": "NOT_IMPLEMENTED"},
-    {"id": "deployment-runbook", "status": "PARTIAL"},
-    {"id": "rollback-runbook", "status": "NOT_IMPLEMENTED"},
-    {"id": "incident-response", "status": "PARTIAL"},
-    {"id": "load-test", "status": "NOT_IMPLEMENTED"},
-    {"id": "required-tests-and-evals", "status": "PARTIAL"},
-    {"id": "documentation-current", "status": "PARTIAL"},
-    {"id": "zero-critical-high-findings", "status": "BLOCKED"},
-    {"id": "explicit-human-production-approval", "status": "BLOCKED"}
+    {
+      "id": "product-boundaries",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "real-authentication",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "real-session-validation",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "tenant-isolation",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "rbac",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "postgresql",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "migrations",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "versioned-api",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "background-jobs",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "object-storage",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "guided-onboarding",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "candidate-workspace",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "team-builder",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "roadmap",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "war-room",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "approval-ledger",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "training-academy",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "agent-guardrails",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "i18n-es-en",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "accessibility-review",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "security-review",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "privacy-review",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "threat-model",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "observability",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "backups",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "restore-test",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "terraform",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "dev-staging-prod",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "deployment-runbook",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "rollback-runbook",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "incident-response",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "load-test",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "id": "required-tests-and-evals",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "documentation-current",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "zero-critical-high-findings",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "explicit-human-production-approval",
+      "status": "BLOCKED"
+    }
   ],
   "campaign_state": {
     "stage": "EXPLORATORY_PRE_CANDIDACY",
@@ -358,7 +1258,17 @@
     "paid_media": "BLOCKED",
     "field_mobilization": "BLOCKED"
   },
-  "human_gates": ["MERGE_STACK", "DEPLOYMENT", "SELECT_PRIORITY_SEGMENT", "APPROVE_POSITIONING", "APPROVE_PUBLIC_CONTENT", "APPROVE_SPENDING", "ACTIVATE_PAID_MEDIA", "ACTIVATE_FIELD_MOBILIZATION", "CONTACT_CITIZENS"],
+  "human_gates": [
+    "MERGE_STACK",
+    "DEPLOYMENT",
+    "SELECT_PRIORITY_SEGMENT",
+    "APPROVE_POSITIONING",
+    "APPROVE_PUBLIC_CONTENT",
+    "APPROVE_SPENDING",
+    "ACTIVATE_PAID_MEDIA",
+    "ACTIVATE_FIELD_MOBILIZATION",
+    "CONTACT_CITIZENS"
+  ],
   "prohibited_capabilities": [
     "VOTER_LEVEL_PROFILING",
     "PERSUADABILITY_SCORING",
