@@ -3,8 +3,8 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-team-001-accountability-builder",
-  "current_increment": "C3-TEAM-001",
+  "branch": "agent/c3-ops-001-roadmap-war-room",
+  "current_increment": "C3-OPS-001",
   "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
   "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the evidence-governed candidate workspace is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "STATIC_PROTOTYPE",
-      "next_increment": "C3-TEAM-001"
+      "status": "TEAM_BUILDER_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-OPS-001"
     },
     {
       "id": "WS-09",
@@ -187,13 +187,13 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 467,
-    "tests_skipped": 5,
-    "coverage_percent": 91.67,
+    "tests_passed": 514,
+    "tests_skipped": 6,
+    "coverage_percent": 91.48,
     "coverage_gate": "PASS",
-    "postgresql_integration": "PASS_TWICE_REVISION_20260721_0006_CANDIDATE_RLS_CONCURRENCY_APPROVALS",
+    "postgresql_integration": "PASS_TWICE_REVISION_20260721_0007_TEAM_RLS_CONCURRENCY_NO_AUTHORITY",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
-    "frontend_unit_tests": 22,
+    "frontend_unit_tests": 34,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
@@ -207,7 +207,10 @@
     "onboarding_runtime_visual": "PASS_RUN_29865306576",
     "candidate_workspace_focused_tests": "PASS_42",
     "candidate_pr_ci": "PASS_PR_93_HEAD_A94AA0D_RUN_29868426699",
-    "candidate_runtime_visual": "PASS_RUN_29868426740"
+    "candidate_runtime_visual": "PASS_RUN_29868426740",
+    "team_workspace_focused_tests": "PASS_47",
+    "team_frontend_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_OVERFLOW",
+    "team_frontend_image": "PASS_UID_10001_HEALTH_SMOKE"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -260,17 +263,14 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-CANDIDATE-001",
-    "branch": "agent/c3-candidate-001-evidence-workspace",
-    "base": "agent/c3-onboard-001-guided-intake",
-    "base_commit": "05ed4b8825436d1c4cc9b3d35d2c57aeed71ec7c",
-    "implementation_commit": "f7a822fd6566e570cf5e14547748af0719132519",
-    "head_commit": "a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5",
-    "draft_pr": 93,
-    "ci_run_id": 29868426699,
-    "visual_run_id": 29868426740,
-    "ci": "SUCCESS",
-    "status": "CI_GREEN",
-    "external_effects": "NONE"
+    "id": "C3-TEAM-001",
+    "branch": "agent/c3-team-001-accountability-builder",
+    "base": "agent/c3-candidate-001-evidence-workspace",
+    "base_commit": "f3c899497d6b6c894b63b44aa6b85c80b1d2a3ee",
+    "implementation_commit": "d18d89b",
+    "checkpoint_commit": "90775f35824a8a2252580be28b274ce345bedc41",
+    "status": "VERIFIED_POSTGRESQL",
+    "external_effects": "NONE",
+    "next_increment": "C3-OPS-001"
   }
 }

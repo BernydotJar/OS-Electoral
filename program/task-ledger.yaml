@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-team-001-accountability-builder",
+  "branch": "agent/c3-ops-001-roadmap-war-room",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -315,13 +315,23 @@
     {
       "task_id": "C3-TEAM-001",
       "owner": "WS-08",
-      "status": "IN_PROGRESS",
-      "evidence": [],
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/tests/test_team_workspace_contracts.py",
+        "backend/tests/test_team_workspace_model.py",
+        "backend/tests/test_team_workspace_api.py",
+        "backend/tests/test_team_workspace_postgres.py",
+        "frontend/src/lib/team-contract-parser.test.ts",
+        "frontend/src/lib/team-contract-parsers.test.ts",
+        "docs/testing/c3-team-001-evidence.md",
+        "program/validations/c3-team-001.json"
+      ],
       "external_effects": "NONE",
       "blockers": [
-        "C3-FRONT-001",
-        "C3-API-001"
-      ]
+        "Authenticated editing, human acceptance, review and live environments remain pending"
+      ],
+      "implementation_commit": "d18d89b",
+      "checkpoint_commit": "90775f35824a8a2252580be28b274ce345bedc41"
     },
     {
       "task_id": "C3-STRATEGY-001",
@@ -337,7 +347,7 @@
     {
       "task_id": "C3-OPS-001",
       "owner": "WS-10",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "IN_PROGRESS",
       "evidence": [],
       "external_effects": "NONE",
       "blockers": [

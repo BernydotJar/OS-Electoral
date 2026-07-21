@@ -1,0 +1,28 @@
+{
+  "increment": "C3-TEAM-001",
+  "verified_at": "2026-07-21",
+  "branch": "agent/c3-team-001-accountability-builder",
+  "base": "agent/c3-candidate-001-evidence-workspace@f3c899497d6b6c894b63b44aa6b85c80b1d2a3ee",
+  "implementation_commit": "d18d89b",
+  "checkpoint_commit": "90775f35824a8a2252580be28b274ce345bedc41",
+  "status": "VERIFIED_POSTGRESQL",
+  "production_status": "BLOCKED",
+  "external_effects": "NONE",
+  "results": {
+    "focused": {"passed": 47},
+    "pytest": {"passed": 514, "skipped": 6},
+    "coverage": {"percent": 91.48, "floor": 90, "result": "PASS"},
+    "frontend": {"vitest": 34, "lint": "PASS", "typecheck": "PASS", "build": "PASS", "vulnerabilities": 0},
+    "postgresql": {"result": "PASS", "consecutive_runs": 2, "selected": 6, "migration_head": "20260721_0007"},
+    "browser": {"result": "PASS", "axe_violations": 0, "horizontal_overflow": 0},
+    "image": {"result": "PASS", "runtime_user": "10001:10001"},
+    "program_truth": "PASS_PRODUCTION_BLOCKED"
+  },
+  "limitations": [
+    "Authenticated non-technical editing is not implemented",
+    "Access recommendations create no application authority",
+    "Full Training Academy content delivery is not implemented",
+    "No live OIDC, RDS, dev, staging or production environment is claimed",
+    "Human review and merge remain pending"
+  ]
+}

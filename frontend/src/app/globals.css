@@ -1142,3 +1142,22 @@ dd {
     grid-template-columns: 1fr;
   }
 }
+
+/* Long governance codes must remain fully visible without forcing horizontal scroll. */
+.limitation-panel > *,
+.limitation-panel ul,
+.limitation-panel li {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.limitation-panel li {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 680px) {
+  .limitation-panel {
+    flex-direction: column;
+  }
+}

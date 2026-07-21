@@ -57,3 +57,24 @@ Maintain campaign team workspace
 - citizen contact, publication, spending or mobilization;
 - live provider calls;
 - merge, deployment, force-push or destructive persistent-data migration.
+
+## Verification checkpoint
+
+```yaml
+implementation_state: VERIFIED_POSTGRESQL
+implementation_commit: d18d89b
+checkpoint_commit: 90775f35824a8a2252580be28b274ce345bedc41
+branch_publication: PUBLISHED_SHA_VERIFIED
+focused_tests: 47
+full_suite: 514_passed_6_skipped
+coverage_percent: 91.48
+frontend_tests: 34
+postgresql: PASS_TWICE_6_SELECTED
+browser_wcag: PASS_ZERO_VIOLATIONS_ZERO_OVERFLOW
+frontend_image: PASS_UID_10001
+production_status: BLOCKED
+external_effects: NONE
+next_increment: C3-OPS-001
+```
+
+The checkpoint proves a durable accountability map, not a staffing decision or authorization system. Roles are descriptive records; access recommendations remain non-authoritative until a separate exact human authorization is granted.
