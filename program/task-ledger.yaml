@@ -159,6 +159,8 @@
         "program/iterations/c3-api-005.md"
       ],
       "external_effects": "NONE",
+      "publication_state": "REVIEW_BRANCH_PUBLISHED_NO_PR_NO_CI",
+      "implementation_commit": "22bc9a3f324a9a3cb1312fad7322596c7b719249",
       "blockers": [
         "CI and independent human review have not run for this branch",
         "No draft PR can be created without an authenticated GitHub mutation session",
