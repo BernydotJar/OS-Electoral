@@ -21,8 +21,8 @@ from campaignos.data.models import (
     Principal,
     RoleAssignment,
     TeamWorkspace,
-    Workspace,
     Tenant,
+    Workspace,
 )
 from campaignos.teams import TeamWorkspaceCreate, TeamWorkspaceUpdate
 from campaignos.teams.service import (
@@ -351,7 +351,7 @@ def test_workspace_scoped_access_recommendation_must_belong_to_campaign(
             select(Workspace).where(Workspace.campaign_id == OTHER_CAMPAIGN_ID)
         )
         assert foreign_workspace is not None
-    changes = _complete_update().model_dump(mode="json")
+    changes = _complete_update().model_dump(mode="json", exclude_unset=True)
     recommendation = changes["access_recommendations"][0]
     recommendation["workspace_id"] = str(foreign_workspace.id)
     recommendation["resource_id"] = str(foreign_workspace.id)

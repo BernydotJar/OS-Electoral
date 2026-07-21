@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Protocol
@@ -176,17 +177,18 @@ def _validate_access_workspace_ownership(
 ) -> None:
     if recommendations is None:
         return
+    if not isinstance(recommendations, Sequence) or isinstance(
+        recommendations, (str, bytes, bytearray)
+    ):
+        if persisted:
+            raise TeamWorkspaceUnavailable("Team workspace is unavailable")
+        raise TeamWorkspaceEvidenceConflict("Team access recommendations are invalid")
     try:
-        parsed = tuple(
-            TeamAccessRecommendation.model_validate(item)
-            for item in recommendations  # type: ignore[union-attr]
-        )
-    except (TypeError, ValidationError) as exc:
+        parsed = tuple(TeamAccessRecommendation.model_validate(item) for item in recommendations)
+    except ValidationError as exc:
         if persisted:
             raise TeamWorkspaceUnavailable("Team workspace is unavailable") from exc
-        raise TeamWorkspaceEvidenceConflict(
-            "Team access recommendations are invalid"
-        ) from exc
+        raise TeamWorkspaceEvidenceConflict("Team access recommendations are invalid") from exc
     for recommendation in parsed:
         if recommendation.workspace_id is None:
             continue
