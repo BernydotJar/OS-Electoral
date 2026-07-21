@@ -71,10 +71,15 @@ Roles remain informational. Every operation must match principal, tenant, campai
 
 ```yaml
 verified_at: 2026-07-21 America/Guatemala
-implementation_state: VERIFIED_POSTGRESQL_LOCAL_ONLY
-branch_publication: PENDING
-draft_pr: PENDING
-ci: PENDING
+implementation_state: CI_GREEN
+implementation_commit: f7a822fd6566e570cf5e14547748af0719132519
+published_head: a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5
+branch_publication: PUBLISHED_SHA_VERIFIED
+draft_pr: 93
+ci:
+  campaignos_run: 29868426699
+  runtime_visual_run: 29868426740
+  conclusion: SUCCESS
 full_suite:
   passed: 467
   skipped: 5
@@ -104,4 +109,16 @@ external_effects: NONE
 
 Critic and Red Team closed semantic reference typing, replay-authority binding and approval rollback gaps before this checkpoint. No CRITICAL or HIGH finding remains open inside this bounded slice.
 
-Remaining limitations are authenticated editing/approval UX, dedicated reviewer assignment and author/reviewer separation, live identity/tenant selection, customer acceptance, remote CI and all production environment/human gates.
+Remaining limitations are authenticated editing/approval UX, dedicated reviewer assignment and author/reviewer separation, live identity/tenant selection, customer acceptance and all production environment/human gates.
+
+
+## Publication checkpoint
+
+- implementation commit: `f7a822fd6566e570cf5e14547748af0719132519`;
+- exact published and CI-green head: `a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5`;
+- draft PR: `#93` against `agent/c3-onboard-001-guided-intake`;
+- CampaignOS CI: `29868426699` `SUCCESS`;
+- runtime visual review: `29868426740` `SUCCESS`;
+- merge state: `CLEAN`;
+- production remains `BLOCKED`; external effects remain `NONE`;
+- `C3-TEAM-001` is the next active increment.

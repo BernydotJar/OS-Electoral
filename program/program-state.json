@@ -3,11 +3,11 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-candidate-001-evidence-workspace",
-  "current_increment": "C3-CANDIDATE-001",
-  "iteration_status": "VERIFIED_POSTGRESQL_LOCAL_ONLY",
+  "branch": "agent/c3-team-001-accountability-builder",
+  "current_increment": "C3-TEAM-001",
+  "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the governed identity lifecycle is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the evidence-governed candidate workspace is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -57,7 +57,7 @@
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CANDIDATE_WORKSPACE_VERIFIED_POSTGRESQL_READ_ONLY_UI",
+      "status": "TEAM_BUILDER_ACTIVE",
       "next_increment": "C3-TEAM-001"
     },
     {
@@ -112,9 +112,14 @@
   "ready_tasks": [],
   "published_unreviewed_increment": {
     "id": "C3-CANDIDATE-001",
-    "state": "LOCAL_ONLY_REMOTE_PUBLICATION_PENDING",
+    "state": "DRAFT_PR_CI_GREEN",
     "branch": "agent/c3-candidate-001-evidence-workspace",
-    "base": "agent/c3-onboard-001-guided-intake"
+    "base": "agent/c3-onboard-001-guided-intake",
+    "implementation_commit": "f7a822fd6566e570cf5e14547748af0719132519",
+    "head_commit": "a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5",
+    "draft_pr": 93,
+    "ci_run_id": 29868426699,
+    "visual_run_id": 29868426740
   },
   "review_stack": [
     {
@@ -172,6 +177,13 @@
       "head": "agent/c3-onboard-001-guided-intake",
       "head_sha": "aa6fe239887173f3fb83366b640ad7b3121f361c",
       "ci": "SUCCESS"
+    },
+    {
+      "pr": 93,
+      "base": "agent/c3-onboard-001-guided-intake",
+      "head": "agent/c3-candidate-001-evidence-workspace",
+      "head_sha": "a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5",
+      "ci": "SUCCESS"
     }
   ],
   "local_verification": {
@@ -181,7 +193,7 @@
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_REVISION_20260721_0006_CANDIDATE_RLS_CONCURRENCY_APPROVALS",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
-    "frontend_unit_tests": 0,
+    "frontend_unit_tests": 22,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
@@ -193,7 +205,9 @@
     "guided_intake_focused_tests": "PASS_44",
     "onboarding_pr_ci": "PASS_PR_92_HEAD_AA6FE23_RUN_29865306720",
     "onboarding_runtime_visual": "PASS_RUN_29865306576",
-    "candidate_workspace_focused_tests": "PASS_42"
+    "candidate_workspace_focused_tests": "PASS_42",
+    "candidate_pr_ci": "PASS_PR_93_HEAD_A94AA0D_RUN_29868426699",
+    "candidate_runtime_visual": "PASS_RUN_29868426740"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -218,7 +232,7 @@
     "Main has no branch protection or rulesets; repository Actions allow all actions and do not require SHA pinning",
     "No live OIDC login, recovery, MFA, provider invitation delivery or provider session revocation",
     "Identity lifecycle proof is local/PostgreSQL only; no RDS, dev, staging or production verification",
-    "Guided intake, candidate, team, roadmap and broader product journeys remain absent or prototype-only",
+    "Authenticated guided-intake/candidate mutation journeys, team, roadmap and broader product journeys remain absent or prototype-only",
     "No deployable AWS Terraform baseline, backup/restore evidence or production observability",
     "No independent security, privacy, domain, legal or explicit human production approval"
   ],
@@ -246,14 +260,15 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-IAM-002",
-    "branch": "agent/c3-iam-002-identity-lifecycle",
-    "base": "agent/c3-front-001-dynamic-shell",
-    "base_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
-    "implementation_commit": "5eb45e92f6f292ea673c572811031805cc89cabe",
-    "draft_pr": 90,
-    "ci_run_id": 29857981975,
-    "visual_run_id": 29857981487,
+    "id": "C3-CANDIDATE-001",
+    "branch": "agent/c3-candidate-001-evidence-workspace",
+    "base": "agent/c3-onboard-001-guided-intake",
+    "base_commit": "05ed4b8825436d1c4cc9b3d35d2c57aeed71ec7c",
+    "implementation_commit": "f7a822fd6566e570cf5e14547748af0719132519",
+    "head_commit": "a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5",
+    "draft_pr": 93,
+    "ci_run_id": 29868426699,
+    "visual_run_id": 29868426740,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
     "external_effects": "NONE"

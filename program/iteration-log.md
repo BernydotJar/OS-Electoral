@@ -254,7 +254,7 @@
 - Browser gate: ES/EN desktop, ES mobile, keyboard, reduced motion, no overflow, no external hosts, no console errors and zero axe WCAG 2.2 A/AA violations PASS.
 - Disposable PostgreSQL 15 UTF8 gate passed twice: `4 passed`, `5 deselected` per run, covering migration, forced RLS, constrained runtime roles, concurrency, replay and tenant isolation.
 - Actionlint, `pip-audit`, effective-worktree Gitleaks, 25-commit `origin/main..HEAD` Gitleaks and `git diff --check` PASS.
-- Scope remains `VERIFIED_POSTGRESQL_LOCAL_ONLY` until explicit branch push, exact remote SHA, stacked draft PR and exact-head CI are recorded. Production remains `BLOCKED`; external effects remain `NONE`.
+- Scope reached exact-head `CI_GREEN` in draft PR `#93`; production remains `BLOCKED`, human review/merge is pending and external effects remain `NONE`.
 
 ## C3-ONBOARD-001 publication checkpoint - 2026-07-21
 
@@ -274,4 +274,13 @@
 - Added a fail-closed frontend parser, current-campaign navigation and a read-only ES/EN executive surface for non-technical users.
 - Critic RED/GREEN passes corrected contradiction references to point to contradiction records, enforced `PERCEPTION` classification on every perception reference, bound replay to exact authority/intent and proved approval rollback atomicity.
 - Full locked verification, PostgreSQL twice, browser/WCAG, daemonless non-root image, actionlint, dependency audit, Gitleaks, program truth and campaign safety passed on the exact worktree.
-- Scope remains `VERIFIED_POSTGRESQL_LOCAL_ONLY` until explicit branch push, exact remote SHA, stacked draft PR and exact-head CI are recorded. Production remains `BLOCKED`; external effects remain `NONE`.
+- Scope reached exact-head `CI_GREEN` in draft PR `#93`; production remains `BLOCKED`, human review/merge is pending and external effects remain `NONE`.
+
+
+## C3-CANDIDATE-001 publication checkpoint - 2026-07-21
+
+- Published implementation `f7a822fd6566e570cf5e14547748af0719132519` and checkpoint head `a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5`; exact remote SHA verified.
+- Opened draft PR `#93` against `agent/c3-onboard-001-guided-intake` with merge state `CLEAN`.
+- CampaignOS CI `29868426699` and runtime visual review `29868426740` succeeded at the exact published head.
+- Recorded `C3-CANDIDATE-001` as `CI_GREEN`; production remains `BLOCKED` and external effects remain `NONE`.
+- Continued the program with `C3-TEAM-001` selected as the next active increment.
