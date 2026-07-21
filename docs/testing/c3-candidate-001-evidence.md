@@ -91,4 +91,14 @@ No CRITICAL or HIGH finding remains open inside this bounded increment.
 - Dedicated reviewer assignment and author/reviewer separation are not yet modeled; exact approval permission and immutable receipts are enforced, but this remains a governance enhancement before real campaign use.
 - No live OIDC provider, customer tenant-selection workflow, RDS, dev, staging or production runtime is claimed.
 - Internal approval never authorizes public positioning, strategy, content, contact, spending or mobilization.
-- Draft PR, exact remote SHA and CI evidence must be added after publication.
+
+## Publication checkpoint
+
+- implementation commit: `f7a822fd6566e570cf5e14547748af0719132519`;
+- published/CI head: `a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5` with exact local/origin equality;
+- draft PR: `#93` against `agent/c3-onboard-001-guided-intake`;
+- CampaignOS CI: `29868426699` `SUCCESS`;
+- runtime visual review: `29868426740` `SUCCESS`;
+- merge state at verification: `CLEAN`;
+- production: `BLOCKED`;
+- external effects: `NONE`.

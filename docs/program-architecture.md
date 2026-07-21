@@ -38,7 +38,7 @@ Important limits:
 | WS-04 | Campaign Domain and Persistence | In-memory prototype only | C3-DATA-001 |
 | WS-05 | API and Background Jobs | Local versioned health/identity runtime; domain actions and jobs pending | C3-API-001 |
 | WS-06 | Frontend, Design System and i18n | Static prototype | C3-FRONT-001 |
-| WS-07 | Guided Onboarding and Candidate Workspace | Guided intake and Candidate Workspace verified locally/PostgreSQL with read-only ES/EN surfaces; authenticated editing and dedicated review separation pending | C3-TEAM-001 |
+| WS-07 | Guided Onboarding and Candidate Workspace | Guided intake and Candidate Workspace draft-PR CI-green with read-only ES/EN surfaces; authenticated editing and dedicated review separation pending | C3-TEAM-001 |
 | WS-08 | Team Builder and Training Academy | Static team prototype only | C3-TEAM-001 |
 | WS-09 | Research, Strategy and Decision Governance | Partial deterministic prototype | C3-STRATEGY-001 |
 | WS-10 | Roadmap, War Room and Campaign Health | Static/deterministic prototype | C3-OPS-001 |

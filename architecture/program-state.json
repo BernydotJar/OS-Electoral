@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-candidate-001-evidence-workspace",
+  "source_branch": "agent/c3-team-001-accountability-builder",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -754,7 +754,7 @@
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CANDIDATE_WORKSPACE_VERIFIED_POSTGRESQL_READ_ONLY_UI",
+      "status": "TEAM_BUILDER_ACTIVE",
       "next_increment": "C3-TEAM-001"
     },
     {
@@ -909,7 +909,7 @@
     },
     {
       "id": "C3-CANDIDATE-001",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-ONBOARD-001"
       ],
@@ -917,7 +917,7 @@
     },
     {
       "id": "C3-TEAM-001",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "ACTIVE",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -1283,7 +1283,7 @@
         "frontend/src/lib/candidate-contract-parsers.test.ts",
         "docs/testing/c3-candidate-001-evidence.md"
       ],
-      "reason": "Guided intake and evidence-governed candidate workspace are verified locally/PostgreSQL with read-only ES/EN surfaces; authenticated editing, dedicated reviewer separation, human acceptance and live environments remain absent."
+      "reason": "Guided intake and evidence-governed candidate workspace are draft-PR CI-green with read-only ES/EN surfaces; authenticated editing, dedicated reviewer separation, human acceptance and live environments remain absent."
     },
     {
       "id": "candidate-workspace",

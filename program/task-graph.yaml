@@ -141,7 +141,7 @@
       "id": "C3-CANDIDATE-001",
       "workstream": "WS-07",
       "title": "Evidence-backed candidate workspace and human review boundary",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-ONBOARD-001"
       ]
@@ -150,7 +150,7 @@
       "id": "C3-TEAM-001",
       "workstream": "WS-08",
       "title": "Team Builder and governed Training Academy baseline",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "IN_PROGRESS",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
