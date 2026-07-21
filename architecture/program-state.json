@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-team-001-accountability-builder",
+  "source_branch": "agent/c3-ops-001-roadmap-war-room",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -760,8 +760,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "STATIC_PROTOTYPE",
-      "next_increment": "C3-TEAM-001"
+      "status": "TEAM_BUILDER_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-OPS-001"
     },
     {
       "id": "WS-09",
@@ -917,7 +917,7 @@
     },
     {
       "id": "C3-TEAM-001",
-      "status": "ACTIVE",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -935,7 +935,7 @@
     },
     {
       "id": "C3-OPS-001",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "ACTIVE",
       "depends_on": [
         "C3-STRATEGY-001",
         "C3-TEAM-001"

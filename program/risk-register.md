@@ -15,3 +15,9 @@ Production remains `BLOCKED`. Risks are not closed by local tests, green draft c
 | RISK-FRONT-001 | MEDIUM | OPEN | The dynamic shell is draft-PR CI-green and now includes read-only guided-intake and candidate executive surfaces, but browser context cookies are not a trusted tenant portfolio workflow and complete mutation journeys are absent. | Demo mode is forbidden in shared/production, token access is server-only, runtime contracts fail closed, exact campaign-bound navigation and automated WCAG review pass. | Integrate live session/tenant selection, authenticated onboarding/candidate editing and independent accessibility/user acceptance before any deployment claim. | WS-03 / WS-06 / WS-07 |
 | RISK-HISTORICAL-CI-001 | HIGH | OPEN | Six historical failed runs remain unsuperseded and production-blocking. | Manifest preserves IDs and conclusions. | Add explicit scope-equivalent `superseded_by`, evidence, reviewer, date and reason or remediate remaining failures. | WS-02 / WS-15 |
 | RISK-HUMAN-GATES-001 | HIGH | OPEN | No independent security/privacy/domain/legal review or authorized production approval exists. | Human gates remain fail-closed in program state. | Obtain scoped independent reviews and explicit production approval only after all technical gates pass. | WS-13 / WS-15 |
+
+## C3-TEAM-001 residual risk — human staffing and access acceptance
+
+- **Status:** OPEN / non-blocking for continued pre-production development.
+- **Evidence:** Team Builder is locally/PostgreSQL verified and read-only in the shell, but authenticated editing, customer acceptance and full Training Academy content are not implemented.
+- **Mitigation:** preserve `authority_effect=NONE`, require separate exact authorization, and keep production `BLOCKED` until live identity, human review and environment gates pass.

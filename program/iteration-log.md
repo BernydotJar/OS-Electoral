@@ -284,3 +284,11 @@
 - CampaignOS CI `29868426699` and runtime visual review `29868426740` succeeded at the exact published head.
 - Recorded `C3-CANDIDATE-001` as `CI_GREEN`; production remains `BLOCKED` and external effects remain `NONE`.
 - Continued the program with `C3-TEAM-001` selected as the next active increment.
+
+## C3-TEAM-001 local/PostgreSQL checkpoint — 2026-07-21
+
+- Implemented one tenant/campaign Team Builder with exact RACI, role lifecycle, availability, capacity, vacancies, onboarding, training and non-authoritative access recommendations.
+- Verified 47 focused tests, 514 full-suite tests with 91.48% coverage and PostgreSQL migration/RLS/concurrency gates twice.
+- Verified the ES/EN read-only shell on desktop/mobile, keyboard, reduced motion, zero axe violations, zero horizontal overflow and a non-root daemonless image.
+- Proved that Team Builder creates no `RoleAssignment` or `PermissionGrant`; production remains `BLOCKED` and external effects remain `NONE`.
+- Started `C3-OPS-001` as the next independent increment while Team review publication is completed.

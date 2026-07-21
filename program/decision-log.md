@@ -224,3 +224,9 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: candidate contracts, service, API, PostgreSQL tests and executive frontend boundary.
 - `rationale`: Evidence review is not strategy, public positioning, legal, publication, spending or production approval.
 - `consequences`: Any downstream public use requires a separate future human-governed workflow and cannot be inferred from candidate readiness.
+
+## 2026-07-21 — Team role labels and access recommendations remain non-authoritative
+
+- **Decision:** Team Builder records role purpose, RACI, capacity and exact access recommendations, but never creates memberships, role assignments or permission grants.
+- **Evidence:** backend/frontend contracts, PostgreSQL zero-authority assertions and `docs/testing/c3-team-001-evidence.md`.
+- **Consequence:** every real access change remains a separate exact-authorized human workflow; a descriptive team map cannot escalate privilege.
