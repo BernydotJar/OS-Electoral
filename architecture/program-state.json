@@ -900,10 +900,18 @@
     },
     {
       "id": "C3-ONBOARD-001",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
+      ],
+      "workstream": "WS-07"
+    },
+    {
+      "id": "C3-CANDIDATE-001",
+      "status": "EXECUTABLE_NEXT",
+      "depends_on": [
+        "C3-ONBOARD-001"
       ],
       "workstream": "WS-07"
     },

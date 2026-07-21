@@ -4,9 +4,9 @@
   "branch": "agent/c3-onboard-001-guided-intake",
   "base_branch": "agent/c3-iam-002-identity-lifecycle",
   "base_commit": "fecb1d347389eebd08d04be6d38a3f518787e4e4",
-  "implementation_commit": null,
-  "draft_pr": null,
-  "status": "VERIFIED_POSTGRESQL_LOCAL_ONLY",
+  "implementation_commit": "aa6fe239887173f3fb83366b640ad7b3121f361c",
+  "draft_pr": 92,
+  "status": "CI_GREEN",
   "verified_at": "2026-07-21 America/Guatemala",
   "results": {
     "ruff": "PASS",
@@ -73,7 +73,21 @@
   "limitations": [
     "No authenticated non-technical create/update UI yet",
     "No live OIDC tenant-selection or customer acceptance proof",
-    "No current-branch remote SHA, draft PR or CI evidence yet",
+    "Human review and merge remain pending",
     "No RDS, dev, staging, production or human production approval"
-  ]
+  ],
+  "remote_branch": "PUBLISHED_SHA_VERIFIED",
+  "remote_sha": "aa6fe239887173f3fb83366b640ad7b3121f361c",
+  "ci": {
+    "campaignos_ci": {
+      "result": "PASS",
+      "run_id": 29865306720,
+      "head_sha": "aa6fe239887173f3fb83366b640ad7b3121f361c"
+    },
+    "runtime_visual": {
+      "result": "PASS",
+      "run_id": 29865306576,
+      "head_sha": "aa6fe239887173f3fb83366b640ad7b3121f361c"
+    }
+  }
 }

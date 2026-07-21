@@ -5,7 +5,7 @@
   "updated_at": "2026-07-21",
   "branch": "agent/c3-onboard-001-guided-intake",
   "current_increment": "C3-ONBOARD-001",
-  "iteration_status": "VERIFIED_POSTGRESQL_LOCAL_ONLY",
+  "iteration_status": "CHECKPOINT_COMPLETED",
   "production_status": "BLOCKED",
   "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the governed identity lifecycle is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -109,12 +109,18 @@
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [],
+  "ready_tasks": [
+    "C3-CANDIDATE-001"
+  ],
   "published_unreviewed_increment": {
     "id": "C3-ONBOARD-001",
-    "state": "LOCAL_ONLY_REMOTE_PUBLICATION_PENDING",
+    "state": "DRAFT_PR_CI_GREEN",
     "branch": "agent/c3-onboard-001-guided-intake",
-    "base": "agent/c3-iam-002-identity-lifecycle"
+    "base": "agent/c3-iam-002-identity-lifecycle",
+    "implementation_commit": "aa6fe239887173f3fb83366b640ad7b3121f361c",
+    "draft_pr": 92,
+    "ci_run_id": 29865306720,
+    "visual_run_id": 29865306576
   },
   "review_stack": [
     {
@@ -165,6 +171,13 @@
       "head": "agent/c3-iam-002-identity-lifecycle",
       "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe",
       "ci": "SUCCESS"
+    },
+    {
+      "pr": 92,
+      "base": "agent/c3-iam-002-identity-lifecycle",
+      "head": "agent/c3-onboard-001-guided-intake",
+      "head_sha": "aa6fe239887173f3fb83366b640ad7b3121f361c",
+      "ci": "SUCCESS"
     }
   ],
   "local_verification": {
@@ -183,7 +196,9 @@
     "compose": "LOCAL_NAMESPACE_LIMITATION_REMOTE_CI_GREEN",
     "frontend_image_buildah": "PASS_DOCKER_FORMAT_NONROOT_HEALTHCHECK_SMOKE",
     "identity_pr_ci": "PASS_PR_90_HEAD_5EB45E9_RUN_29857981975",
-    "guided_intake_focused_tests": "PASS_44"
+    "guided_intake_focused_tests": "PASS_44",
+    "onboarding_pr_ci": "PASS_PR_92_HEAD_AA6FE23_RUN_29865306720",
+    "onboarding_runtime_visual": "PASS_RUN_29865306576"
   },
   "critical_path": [
     "C3-FOUND-001A",

@@ -4,7 +4,7 @@ Assessment date: `2026-07-21 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack `#84` through `#90`; identity checkpoint `fecb1d347389eebd08d04be6d38a3f518787e4e4`; active local worktree `agent/c3-onboard-001-guided-intake` based on that checkpoint.
+Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack `#84` through `#92`; identity checkpoint `fecb1d347389eebd08d04be6d38a3f518787e4e4`; guided-intake checkpoint `agent/c3-onboard-001-guided-intake@aa6fe239887173f3fb83366b640ad7b3121f361c` with draft PR `#92` based on that checkpoint.
 
 ## Executive determination
 
@@ -80,7 +80,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Review stack | PRs `#84`–`#90`, correct bases and green exact-head checks | `CI_GREEN`; human review/merge pending |
 | Dynamic frontend | `437b469`, CI `29856835515`, visual `29856835522` | `CI_GREEN`; synthetic and not deployed |
 | Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice, PR `#90` CI `29857981975` | `CI_GREEN`; human review/merge and live provider pending |
-| Guided intake | revision `20260721_0005`, exact API, 425-test suite, PostgreSQL twice, 16 frontend tests and WCAG browser gate | `VERIFIED_POSTGRESQL_LOCAL_ONLY`; branch/PR/CI publication pending |
+| Guided intake | revision `20260721_0005`, exact API, 425-test suite, PostgreSQL twice, 16 frontend tests, PR `#92`, CI `29865306720` and visual `29865306576` | `CI_GREEN`; human review/merge and live edit journey pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 12 PARTIAL / 16 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
@@ -103,8 +103,8 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Publish `C3-ONBOARD-001`, verify exact remote SHA, open its stacked draft PR and repair exact-head CI if needed.
-2. Start `C3-CANDIDATE-001` as a separate evidence-backed candidate workspace after the onboarding checkpoint.
+1. Start `C3-CANDIDATE-001` as a separate evidence-backed candidate workspace after the CI-green onboarding checkpoint.
+2. Advance the authenticated non-technical onboarding edit journey without merging or deploying.
 3. Advance independent platform plan-only, operations evidence and confirmed CI/supply-chain findings without AWS apply or production claims.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
