@@ -85,8 +85,9 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Guided intake | revision `20260721_0005`, exact API, 425-test suite, PostgreSQL twice, 16 frontend tests, PR `#92`, CI `29865306720` and visual `29865306576` | `CI_GREEN`; human review/merge and live edit journey pending |
 | Candidate workspace | revision `20260721_0006`, evidence contracts, exact API, PR `#93` at final head `f3c8994` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
 | Team Builder | revision `20260721_0007`, exact RACI/capacity/access-recommendation contracts, PR `#94`, CI `29870461743` and visual `29870461745` | `CI_GREEN`; human staffing acceptance, authenticated editing and live environments pending |
-| Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, 548-test suite, PostgreSQL twice and 39 frontend tests | `VERIFIED_POSTGRESQL`; human review/merge, strategy approval, authenticated editing and live environments pending |
-| Required evals | exact 33-item fail-closed catalog | `5 PASS / 12 PARTIAL / 16 NOT_RUN` |
+| Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, PR `#95`, CI `29871930387` and visual `29871930366` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
+| Evidence-first Strategy Decision Room | revision `20260721_0009`, exact API, append-only decisions, PR `#96`, CI `29876152098` and visual `29876152083` | `CI_GREEN`; authenticated editing, independent human acceptance, merge and live environments pending |
+| Required evals | exact 33-item fail-closed catalog | `5 PASS / 14 PARTIAL / 14 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
 | AWS/operations | no verified environment, backup/restore or observability | `NOT_VERIFIED` / `NOT_IMPLEMENTED` |
@@ -108,18 +109,20 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Begin `C3-STRATEGY-001` as an evidence-first, human-governed strategy and decision-room increment.
-2. Continue the highest-value independent increment: Training Academy baseline, strategy/decision governance, or platform plan-only work according to the verified task graph.
-3. Advance authenticated non-technical editing/review journeys without merging, deploying or executing external effects.
+1. Reconcile `C3-API-001`, which remains `IN_PROGRESS` and blocks the governed agent runtime despite the Strategy checkpoint being CI-green.
+2. Reconcile `C3-CI-001` before infrastructure or protected delivery work advances.
+3. Continue authenticated non-technical editing/review journeys without merging, deploying or executing external effects.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
 
-## C3-STRATEGY-001 evidence update — 2026-07-21
+## C3-STRATEGY-001 CI-green checkpoint — 2026-07-21
 
-- Durable evidence classifications preserve `VERIFIED`, `INFERRED` and `UNKNOWN` semantics.
-- Hypotheses require provenance and invalidation signals; options expose benefits, risks and tradeoffs.
-- Open contradictions and CRITICAL/HIGH red-team findings block human-decision readiness.
-- Internal decisions are exact-authorized and bound to the current strategy version, option, human role and approval receipt.
-- Historical decisions retain exact Campaign/Candidate/Team versions and the role snapshot that supported them.
-- The ES/EN shell is read-only and exposes no targeting, contact, publication, spending or mobilization action.
-- Status is `VERIFIED_POSTGRESQL`; production remains `BLOCKED`.
+- Added revision `20260721_0009`, durable strategy workspaces and append-only exact-version human decision receipts under forced RLS.
+- Verified evidence provenance, falsifiable hypotheses, comparable options, measurable objectives, contradictions, red-team blockers and prohibited profiling fields in backend and frontend runtimes.
+- Verified exact create/read/update/approve grants, optimistic versioning, replay, atomic audit/outbox/idempotency and decision invalidation after update.
+- Passed 37 focused tests, 585 full-suite tests, 8 controlled skips and 90.70% coverage.
+- Passed the eight-slice PostgreSQL gate twice, including constrained-role RLS, equal-key replay, update race and one decision per exact version.
+- Passed 48 frontend tests, strict TypeScript, lint, build, zero dependency vulnerabilities, ES/EN desktop/mobile, keyboard, reduced motion, zero overflow, zero axe violations and non-root image UID 10001.
+- Draft PR `#96` is `CLEAN`; CampaignOS CI `29876152098` and visual review `29876152083` passed on `72a4dfb722f2c671fd754af4e4e2d242677411f9`.
+- Failed runs `29874179909` and `29875933528` remain recorded as superseded evidence.
+- Production remains `BLOCKED`; no merge, deployment or external effect occurred.

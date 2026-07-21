@@ -766,8 +766,8 @@
     {
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
-      "status": "STRATEGY_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-STRATEGY-001"
+      "status": "STRATEGY_CI_GREEN",
+      "next_increment": "C3-API-001"
     },
     {
       "id": "WS-10",
@@ -926,7 +926,7 @@
     },
     {
       "id": "C3-STRATEGY-001",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-DATA-001",
         "C3-API-001"
@@ -1191,27 +1191,31 @@
     "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-STRATEGY-001",
-      "state": "VERIFIED_POSTGRESQL",
+      "state": "CI_GREEN",
       "branch": "agent/c3-strategy-001-evidence-decision-room",
       "base": "agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e",
+      "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
       "draft_pr": 96,
+      "ci_run_id": 29876152098,
+      "visual_run_id": 29876152083,
       "production_status": "BLOCKED",
       "external_effects": "NONE"
     },
     "latest_checkpoint": {
-      "id": "C3-OPS-001",
-      "branch": "agent/c3-ops-001-roadmap-war-room",
-      "base": "agent/c3-team-001-accountability-review",
-      "base_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
-      "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
-      "head_commit": "c81e4282813c0add0c3207f97066f127280e410e",
-      "draft_pr": 95,
-      "ci_run_id": 29871930387,
-      "visual_run_id": 29871930366,
+      "id": "C3-STRATEGY-001",
+      "branch": "agent/c3-strategy-001-evidence-decision-room",
+      "base": "agent/c3-ops-001-roadmap-war-room",
+      "base_commit": "c81e4282813c0add0c3207f97066f127280e410e",
+      "initial_commit": "6606f9b4ff2babd22c305d2edbf78ff48fff452a",
+      "implementation_commit": "dfd29ad02d00f6bfc469f908d7953962dcca154f",
+      "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
+      "draft_pr": 96,
+      "ci_run_id": 29876152098,
+      "visual_run_id": 29876152083,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
       "external_effects": "NONE",
-      "next_increment": "C3-STRATEGY-001"
+      "next_increment": "C3-API-001"
     }
   },
   "deployment_state": {
@@ -1454,6 +1458,28 @@
       "reviewer": "independent release verification",
       "date": "2026-07-21",
       "reason": "The repaired head normalizes relative artifact paths against repository root and all equivalent CI jobs pass."
+    },
+    {
+      "run_id": 29874179909,
+      "conclusion": "FAILURE",
+      "head_sha": "6606f9b4ff2babd22c305d2edbf78ff48fff452a",
+      "scope": "initial Strategy head failed backend, PostgreSQL and frontend contract jobs",
+      "superseded_by": 29876152098,
+      "verification_evidence": "corrected exact-head CampaignOS CI and runtime visual review on PR #96",
+      "reviewer": "independent release verification",
+      "date": "2026-07-21",
+      "reason": "The final head corrected the observed defect and all equivalent required jobs pass."
+    },
+    {
+      "run_id": 29875933528,
+      "conclusion": "FAILURE",
+      "head_sha": "dfd29ad02d00f6bfc469f908d7953962dcca154f",
+      "scope": "corrective Strategy head exposed non-standard RLS policy naming",
+      "superseded_by": 29876152098,
+      "verification_evidence": "corrected exact-head CampaignOS CI and runtime visual review on PR #96",
+      "reviewer": "independent release verification",
+      "date": "2026-07-21",
+      "reason": "The final head corrected the observed defect and all equivalent required jobs pass."
     }
   ]
 }

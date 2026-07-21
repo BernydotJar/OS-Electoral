@@ -341,7 +341,7 @@
     {
       "task_id": "C3-STRATEGY-001",
       "owner": "WS-09",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/tests/test_strategy_workspace_contracts.py",
         "backend/tests/test_strategy_workspace_model.py",
@@ -358,8 +358,7 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Corrected draft PR #96 head and CI are pending",
-        "Authenticated browser mutation, human acceptance, merge and live environments remain pending"
+        "Authenticated browser mutation, independent human acceptance, merge and live environments remain pending"
       ]
     },
     {

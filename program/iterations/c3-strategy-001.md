@@ -1,7 +1,7 @@
 # C3-STRATEGY-001 — Evidence-first Strategy and Decision Room
 
 - `workstream`: `WS-09`
-- `status`: `VERIFIED_POSTGRESQL`
+- `status`: `CI_GREEN`
 - `branch`: `agent/c3-strategy-001-evidence-decision-room`
 - `base`: `agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e`
 
@@ -80,4 +80,4 @@ Roles remain informational. Every operation must match principal, tenant, campai
 - PostgreSQL combined gate: 8 selected slices, two clean consecutive runs;
 - browser: ES/EN, mobile, keyboard, reduced motion, zero overflow and zero axe violations;
 - daemonless frontend image: UID/GID 10001:10001;
-- production remains `BLOCKED`; corrected PR #96 head/CI are pending.
+- PR #96 is `CLEAN`; CI `29876152098` and visual `29876152083` passed on `72a4dfb722f2c671fd754af4e4e2d242677411f9`; production remains `BLOCKED`.

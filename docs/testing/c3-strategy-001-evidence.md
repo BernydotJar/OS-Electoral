@@ -96,4 +96,23 @@ No CRITICAL or HIGH finding remains open inside this bounded increment.
 - The browser surface is read-only; authenticated non-technical editing and decision submission UI are not implemented.
 - An internal decision receipt is not public strategy, positioning, legal, content, publication, spending, targeting, contact, or mobilization approval.
 - No live OIDC, cloud environment, telemetry, customer acceptance, merge, or deployment is claimed.
-- Draft PR `#96` still requires a corrected published head and green CI before `CI_GREEN` may be recorded.
+- Draft PR `#96` is `CLEAN` and exact-head CI/visual runs passed on `72a4dfb722f2c671fd754af4e4e2d242677411f9`.
+
+
+## Published checkpoint receipt
+
+```yaml
+initial_commit: 6606f9b4ff2babd22c305d2edbf78ff48fff452a
+implementation_commit: dfd29ad02d00f6bfc469f908d7953962dcca154f
+head_commit: 72a4dfb722f2c671fd754af4e4e2d242677411f9
+draft_pr: 96
+merge_state: CLEAN
+campaignos_ci_run: 29876152098
+runtime_visual_run: 29876152083
+conclusion: SUCCESS
+status: CI_GREEN
+production_status: BLOCKED
+external_effects: NONE
+```
+
+Failed runs `29874179909` and `29875933528` remain recorded as superseded evidence; they are not erased or treated as passing.

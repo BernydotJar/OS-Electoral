@@ -5,7 +5,7 @@
   "updated_at": "2026-07-21",
   "branch": "agent/c3-strategy-001-evidence-decision-room",
   "current_increment": "C3-STRATEGY-001",
-  "iteration_status": "VERIFIED_POSTGRESQL",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
   "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the evidence-governed candidate workspace is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -69,8 +69,8 @@
     {
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
-      "status": "STRATEGY_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-STRATEGY-001"
+      "status": "STRATEGY_CI_GREEN",
+      "next_increment": "C3-API-001"
     },
     {
       "id": "WS-10",
@@ -198,12 +198,19 @@
       "head": "agent/c3-ops-001-roadmap-war-room",
       "head_sha": "c81e4282813c0add0c3207f97066f127280e410e",
       "ci": "SUCCESS"
+    },
+    {
+      "pr": 96,
+      "base": "agent/c3-ops-001-roadmap-war-room",
+      "head": "agent/c3-strategy-001-evidence-decision-room",
+      "head_sha": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
+      "ci": "SUCCESS"
     }
   ],
   "local_verification": {
     "tests_passed": 585,
     "tests_skipped": 8,
-    "coverage_percent": 90.70,
+    "coverage_percent": 90.7,
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_REVISION_20260721_0008_OPERATIONS_RLS_DAG_CONCURRENCY_SNAPSHOTS",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
@@ -280,10 +287,13 @@
   },
   "active_local_increment": {
     "id": "C3-STRATEGY-001",
-    "state": "VERIFIED_POSTGRESQL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-strategy-001-evidence-decision-room",
     "base": "agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e",
+    "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
     "draft_pr": 96,
+    "ci_run_id": 29876152098,
+    "visual_run_id": 29876152083,
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -298,18 +308,19 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-OPS-001",
-    "branch": "agent/c3-ops-001-roadmap-war-room",
-    "base": "agent/c3-team-001-accountability-review",
-    "base_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
-    "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
-    "head_commit": "c81e4282813c0add0c3207f97066f127280e410e",
-    "draft_pr": 95,
-    "ci_run_id": 29871930387,
-    "visual_run_id": 29871930366,
+    "id": "C3-STRATEGY-001",
+    "branch": "agent/c3-strategy-001-evidence-decision-room",
+    "base": "agent/c3-ops-001-roadmap-war-room",
+    "base_commit": "c81e4282813c0add0c3207f97066f127280e410e",
+    "initial_commit": "6606f9b4ff2babd22c305d2edbf78ff48fff452a",
+    "implementation_commit": "dfd29ad02d00f6bfc469f908d7953962dcca154f",
+    "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
+    "draft_pr": 96,
+    "ci_run_id": 29876152098,
+    "visual_run_id": 29876152083,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
     "external_effects": "NONE",
-    "next_increment": "C3-STRATEGY-001"
+    "next_increment": "C3-API-001"
   }
 }
