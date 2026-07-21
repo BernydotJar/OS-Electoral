@@ -13,4 +13,6 @@
 
 | C3-API-005 | Current framework documentation fallback | FastAPI, Pydantic and SQLAlchemy official documentation; pinned lockfile versions | Transaction/row-lock, dependency/response-model and validator decisions recorded in `program/context7-evidence.md` | Executable tests plus official-source record | FALLBACK_USED | Context7 was unavailable; no MCP retrieval was fabricated. |
 
+| C3-API-006 | Cloud Sandbox repository implementation plus official-documentation fallback | Current stacked worktree, FastAPI/Pydantic/SQLAlchemy/PostgreSQL contracts | Campaign-create API, adapters, concurrency tests, docs and program truth | `make verify`, isolated PostgreSQL and Gitleaks evidence | USED | Context7 and authenticated GitHub mutation were unavailable; no PR, CI, RDS or deployment claim is made. |
+
 No available artifact-generation or repository-specific governance skill matched this narrow program-ledger implementation. No skill was installed or invoked implicitly.

@@ -2,15 +2,13 @@
 
 from __future__ import annotations
 
-import hashlib
 from dataclasses import dataclass
 from typing import Protocol
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, ConfigDict, Field
-from sqlalchemy import select, text
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from sqlalchemy.orm import Session
 
 from campaignos.data.audit import (
     AuditScopeUnavailable,
@@ -19,6 +17,7 @@ from campaignos.data.audit import (
     lock_tenant_audit_stream,
 )
 from campaignos.data.database import Database
+from campaignos.data.idempotency import lock_idempotency_key
 from campaignos.data.models import Campaign, IdempotencyRecord, OutboxEvent, Workspace
 
 
@@ -84,15 +83,6 @@ class UnavailableWorkspaceWriter:
         raise WorkspaceWriteUnavailable("Workspace writer is unavailable")
 
 
-def _serialize_key(session: Session, tenant_id: UUID, operation: str, key: str) -> None:
-    bind = session.get_bind()
-    if bind.dialect.name != "postgresql":
-        return
-    digest = hashlib.sha256(f"{tenant_id}:{operation}:{key}".encode()).digest()
-    lock_id = int.from_bytes(digest[:8], byteorder="big", signed=True)
-    session.execute(text("SELECT pg_advisory_xact_lock(:lock_id)"), {"lock_id": lock_id})
-
-
 @dataclass(slots=True)
 class SqlAlchemyWorkspaceWriter:
     database: Database
@@ -152,7 +142,12 @@ class SqlAlchemyWorkspaceWriter:
         )
         workspace_id, outbox_id = uuid4(), uuid4()
         with self.database.tenant_transaction(tenant_id) as session:
-            _serialize_key(session, tenant_id, operation, idempotency_key)
+            lock_idempotency_key(
+                session,
+                tenant_id=tenant_id,
+                operation=operation,
+                idempotency_key=idempotency_key,
+            )
             existing = session.scalar(
                 select(IdempotencyRecord)
                 .where(

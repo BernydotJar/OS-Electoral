@@ -71,10 +71,22 @@
       ]
     },
     {
+      "id": "C3-API-006",
+      "workstream": "WS-05",
+      "title": "Idempotent tenant campaign creation",
+      "status": "VERIFIED_POSTGRESQL",
+      "depends_on": ["C3-API-005"],
+      "acceptance": [
+        "Exact tenant collection authorization precedes persistence",
+        "Campaign, audit, internal outbox and idempotency evidence commit atomically",
+        "Concurrent replay, duplicate slug, BOLA and forced-RLS PostgreSQL tests pass"
+      ]
+    },
+    {
       "id": "C3-FRONT-001",
       "workstream": "WS-06",
       "title": "Next.js application shell, typed API client, i18n and accessible design system",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "depends_on": ["C3-DEVEX-001", "C3-API-001"]
     },
     {

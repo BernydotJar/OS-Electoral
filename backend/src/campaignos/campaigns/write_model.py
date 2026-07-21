@@ -2,15 +2,13 @@
 
 from __future__ import annotations
 
-import hashlib
 from dataclasses import dataclass
 from typing import Protocol
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
-from sqlalchemy import select, text
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
 
 from campaignos.campaigns.read_model import CampaignProjection
 from campaignos.data.audit import (
@@ -20,6 +18,7 @@ from campaignos.data.audit import (
     lock_tenant_audit_stream,
 )
 from campaignos.data.database import Database
+from campaignos.data.idempotency import lock_idempotency_key
 from campaignos.data.models import Campaign, IdempotencyRecord, OutboxEvent
 
 
@@ -115,18 +114,6 @@ class UnavailableCampaignWriter:
         raise CampaignWriteUnavailable("Campaign writer is unavailable")
 
 
-def _serialize_idempotency_key(
-    session: Session, tenant_id: UUID, operation: str, idempotency_key: str
-) -> None:
-    """Serialize equal PostgreSQL keys inside the current transaction."""
-    bind = session.get_bind()
-    if bind.dialect.name != "postgresql":
-        return
-    digest = hashlib.sha256(f"{tenant_id}:{operation}:{idempotency_key}".encode()).digest()
-    lock_id = int.from_bytes(digest[:8], byteorder="big", signed=True)
-    session.execute(text("SELECT pg_advisory_xact_lock(:lock_id)"), {"lock_id": lock_id})
-
-
 @dataclass(slots=True)
 class SqlAlchemyCampaignWriter:
     """Perform a versioned campaign update plus audit/outbox append in one transaction."""
@@ -190,7 +177,12 @@ class SqlAlchemyCampaignWriter:
         operation = "campaign.update"
         outbox_event_id = uuid4()
         with self.database.tenant_transaction(tenant_id) as session:
-            _serialize_idempotency_key(session, tenant_id, operation, idempotency_key)
+            lock_idempotency_key(
+                session,
+                tenant_id=tenant_id,
+                operation=operation,
+                idempotency_key=idempotency_key,
+            )
             existing = session.scalar(
                 select(IdempotencyRecord)
                 .where(

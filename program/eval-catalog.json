@@ -20,30 +20,57 @@
       "category": "runtime_security",
       "status": "VERIFIED_POSTGRESQL",
       "gate_result": "PASS",
-      "evidence": ["backend/tests/test_database.py", "backend/tests/test_authorization.py"],
-      "commands": ["make test-postgres", "make test"],
+      "evidence": [
+        "backend/tests/test_database.py",
+        "backend/tests/test_authorization.py",
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_campaign_create_postgres.py"
+      ],
+      "commands": [
+        "make test-postgres",
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Local isolated PostgreSQL proof only; no RDS or staging claim."
+      "limitations": "Local isolated PostgreSQL proof covers implemented campaign creation/readiness and exact RLS visibility; no RDS or staging claim."
     },
     {
       "id": "EVAL-AUTHZ-001",
       "category": "runtime_security",
       "status": "VERIFIED_POSTGRESQL",
       "gate_result": "PASS",
-      "evidence": ["backend/tests/test_authorization.py", "backend/tests/test_campaign_readiness_api.py", "backend/tests/test_database.py"],
-      "commands": ["make test", "make test-postgres"],
+      "evidence": [
+        "backend/tests/test_authorization.py",
+        "backend/tests/test_campaign_readiness_api.py",
+        "backend/tests/test_database.py",
+        "backend/tests/test_campaign_create_api.py",
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_campaign_create_postgres.py"
+      ],
+      "commands": [
+        "make test",
+        "make test-postgres"
+      ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Applies to implemented identity and campaign slices; not every future domain action exists yet."
+      "limitations": "Applies to implemented identity, campaign creation/read/update/readiness and workspace-create slices; not every future domain action exists yet."
     },
     {
       "id": "EVAL-BOLA-001",
       "category": "runtime_security",
       "status": "VERIFIED_POSTGRESQL",
       "gate_result": "PASS",
-      "evidence": ["backend/tests/test_campaign_readiness_api.py", "backend/tests/test_database.py"],
-      "commands": ["make test", "make test-postgres"],
+      "evidence": [
+        "backend/tests/test_campaign_readiness_api.py",
+        "backend/tests/test_database.py",
+        "backend/tests/test_campaign_create_api.py",
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_campaign_create_postgres.py"
+      ],
+      "commands": [
+        "make test",
+        "make test-postgres"
+      ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Covers implemented campaign/readiness boundaries; broader resource families remain future work."
+      "limitations": "Covers implemented campaign creation/read/update/readiness and adapter scope checks; broader resource families remain future work."
     },
     {
       "id": "EVAL-SESSION-001",
@@ -70,30 +97,57 @@
       "category": "runtime_security",
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
-      "evidence": ["backend/tests/test_audit_append.py", "backend/tests/test_campaign_readiness.py", "backend/tests/test_database.py"],
-      "commands": ["make test", "make test-postgres"],
+      "evidence": [
+        "backend/tests/test_audit_append.py",
+        "backend/tests/test_campaign_readiness.py",
+        "backend/tests/test_database.py",
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_campaign_create_postgres.py"
+      ],
+      "commands": [
+        "make test",
+        "make test-postgres"
+      ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Hash-linked append and read receipts are tested; database-level mutation prohibition and production retention remain absent."
+      "limitations": "Hash-linked append, read receipts and atomic campaign-create evidence are tested; database-level mutation prohibition and production retention remain absent."
     },
     {
       "id": "EVAL-OUTBOX-001",
       "category": "runtime_security",
       "status": "TESTED_LOCAL",
       "gate_result": "PASS",
-      "evidence": ["backend/tests/test_outbox_worker.py", "backend/tests/test_worker_main.py"],
-      "commands": ["make test"],
+      "evidence": [
+        "backend/tests/test_outbox_worker.py",
+        "backend/tests/test_worker_main.py",
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_database.py",
+        "backend/tests/test_campaign_create_postgres.py"
+      ],
+      "commands": [
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Internal transport only; no external political effect or staging worker proof."
+      "limitations": "Internal campaign/workspace delivery evidence only; no external political transport or staging worker proof."
     },
     {
       "id": "EVAL-REPLAY-001",
       "category": "runtime_security",
       "status": "TESTED_LOCAL",
       "gate_result": "PASS",
-      "evidence": ["backend/tests/test_outbox_worker.py", "backend/tests/test_campaign_write_model.py", "backend/tests/test_workspace_write_model.py"],
-      "commands": ["make test"],
+      "evidence": [
+        "backend/tests/test_outbox_worker.py",
+        "backend/tests/test_campaign_write_model.py",
+        "backend/tests/test_workspace_write_model.py",
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_campaign_create_api.py",
+        "backend/tests/test_database.py",
+        "backend/tests/test_campaign_create_postgres.py"
+      ],
+      "commands": [
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Replay/idempotency is local and scoped to implemented writes and internal worker delivery."
+      "limitations": "Replay/idempotency is local/PostgreSQL and scoped to implemented campaign/workspace writes and internal worker delivery."
     },
     {
       "id": "EVAL-PROMPT-INJECTION-001",
@@ -110,18 +164,32 @@
       "category": "product",
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
-      "evidence": ["backend/tests/test_campaign_readiness.py", "backend/tests/test_campaign_readiness_api.py", "docs/api/campaign-readiness.md"],
-      "commands": ["make test"],
+      "evidence": [
+        "backend/tests/test_campaign_readiness.py",
+        "backend/tests/test_campaign_readiness_api.py",
+        "docs/api/campaign-readiness.md",
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_campaign_create_api.py",
+        "docs/api/campaign-create.md",
+        "docs/testing/c3-api-006-evidence.md"
+      ],
+      "commands": [
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Operational readiness projection exists; the guided intake journey and evidence collection are not implemented."
+      "limitations": "Draft campaign creation and operational readiness exist; the guided intake journey, evidence collection and save/resume workflow are not implemented."
     },
     {
       "id": "EVAL-CANDIDATE-001",
       "category": "product",
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
-      "evidence": ["tests/test_candidate_brand.py"],
-      "commands": ["make test"],
+      "evidence": [
+        "tests/test_candidate_brand.py"
+      ],
+      "commands": [
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
       "limitations": "Prototype domain tests only; no durable dynamic Candidate Workspace."
     },
@@ -130,8 +198,12 @@
       "category": "product",
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
-      "evidence": ["tests/test_campaign_workspace.py"],
-      "commands": ["make test"],
+      "evidence": [
+        "tests/test_campaign_workspace.py"
+      ],
+      "commands": [
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
       "limitations": "Prototype organization invariants only; no durable team-builder workflow."
     },
@@ -140,8 +212,13 @@
       "category": "product",
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
-      "evidence": ["tests/test_daily_workflow.py", "tests/test_campaign_workspace.py"],
-      "commands": ["make test"],
+      "evidence": [
+        "tests/test_daily_workflow.py",
+        "tests/test_campaign_workspace.py"
+      ],
+      "commands": [
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
       "limitations": "Prototype workflow evidence only; no PostgreSQL roadmap API."
     },
@@ -150,8 +227,13 @@
       "category": "product",
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
-      "evidence": ["tests/test_daily_workflow.py", "scripts/frontend/validate_daily_war_room.py"],
-      "commands": ["make test"],
+      "evidence": [
+        "tests/test_daily_workflow.py",
+        "scripts/frontend/validate_daily_war_room.py"
+      ],
+      "commands": [
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
       "limitations": "Static/prototype Daily War Room, not a durable authenticated application journey."
     },
@@ -180,8 +262,13 @@
       "category": "product",
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
-      "evidence": ["scripts/frontend/runtime_visual_review.py", "web/index.html"],
-      "commands": ["uv run --locked python scripts/frontend/runtime_visual_review.py"],
+      "evidence": [
+        "scripts/frontend/runtime_visual_review.py",
+        "web/index.html"
+      ],
+      "commands": [
+        "uv run --locked python scripts/frontend/runtime_visual_review.py"
+      ],
       "last_verified_at": "2026-07-21",
       "limitations": "Static demo review only; no authenticated end-to-end non-technical journey."
     },
@@ -280,8 +367,12 @@
       "category": "democratic_safety",
       "status": "PARTIAL_TESTED_LOCAL",
       "gate_result": "PARTIAL",
-      "evidence": ["tests/test_candidate_brand.py"],
-      "commands": ["make test"],
+      "evidence": [
+        "tests/test_candidate_brand.py"
+      ],
+      "commands": [
+        "make test"
+      ],
       "last_verified_at": "2026-07-21",
       "limitations": "Candidate-brand prototype only; no reviewed campaign-wide coherence workflow."
     },

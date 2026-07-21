@@ -5,10 +5,17 @@ from __future__ import annotations
 from typing import Annotated, cast
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response, status
 
 from campaignos.api.dependencies import CurrentTenantAuthorization
+from campaignos.api.errors import ProblemException
 from campaignos.campaigns import (
+    CampaignCreate,
+    CampaignCreateConflict,
+    CampaignCreateEvidence,
+    CampaignCreateIdempotencyConflict,
+    CampaignCreateUnavailable,
+    CampaignCreator,
     CampaignDirectory,
     CampaignDirectoryUnavailable,
     CampaignIdempotencyConflict,
@@ -32,8 +39,145 @@ from campaignos.identity.authorization import (
 )
 
 router = APIRouter(tags=["campaigns"])
+CREATE_CAMPAIGN_PURPOSE = "Create tenant campaign"
 READ_CAMPAIGN_PURPOSE = "Operate assigned campaign"
 READ_CAMPAIGN_READINESS_PURPOSE = "Assess assigned campaign readiness"
+
+
+def campaign_creator(request: Request) -> CampaignCreator:
+    return cast(CampaignCreator, request.app.state.campaign_creator)
+
+
+CampaignCreatorDependency = Annotated[CampaignCreator, Depends(campaign_creator)]
+
+
+def _create_grant(
+    authorization: TenantAuthorizationContext,
+    tenant_id: UUID,
+) -> EffectivePermissionGrant | None:
+    for membership in authorization.memberships:
+        for grant in membership.grants:
+            if grant.permits(
+                action="create",
+                resource_type="campaign_collection",
+                resource_id=str(tenant_id),
+                purpose=CREATE_CAMPAIGN_PURPOSE,
+                campaign_id=None,
+                workspace_id=None,
+            ):
+                return grant
+    return None
+
+
+@router.post(
+    "/tenants/{tenant_id}/campaigns",
+    response_model=CampaignCreateEvidence,
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_201_CREATED: {
+            "headers": {
+                "Location": {
+                    "description": "Canonical tenant campaign resource path",
+                    "schema": {"type": "string"},
+                },
+                "ETag": {
+                    "description": "Quoted optimistic-concurrency version",
+                    "schema": {"type": "string"},
+                },
+            }
+        }
+    },
+    summary="Create an internal draft campaign",
+    description=(
+        "Creates only a tenant-scoped DRAFT campaign plus atomic audit, internal "
+        "outbox, and idempotency evidence. It does not approve strategy, spending, "
+        "publication, outreach, mobilization, or production use."
+    ),
+)
+def create_campaign(
+    request: Request,
+    response: Response,
+    tenant_id: UUID,
+    campaign: CampaignCreate,
+    authorization: CurrentTenantAuthorization,
+    creator: CampaignCreatorDependency,
+    idempotency_key: Annotated[
+        str,
+        Header(
+            alias="Idempotency-Key",
+            description="Required stable key for one tenant campaign-create intent",
+        ),
+    ],
+) -> CampaignCreateEvidence:
+    """Create one draft campaign after exact tenant collection authorization."""
+    grant = _create_grant(authorization, tenant_id)
+    if grant is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Campaign creation is not authorized",
+        )
+    raw_idempotency_values = request.headers.getlist("idempotency-key")
+    if len(raw_idempotency_values) != 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Exactly one Idempotency-Key header is required",
+        )
+    normalized_key = idempotency_key.strip()
+    if not normalized_key:
+        raise HTTPException(
+            status_code=status.HTTP_428_PRECONDITION_REQUIRED,
+            detail="Idempotency-Key is required for campaign creation",
+        )
+    if len(normalized_key) > 255:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Idempotency-Key must not exceed 255 characters",
+        )
+    try:
+        evidence = creator.create(
+            tenant_id,
+            request=campaign,
+            principal_id=authorization.principal_id,
+            authorization_grant_id=grant.grant_id,
+            approval_receipt_id=grant.approval_receipt_id,
+            authorization_purpose=grant.purpose,
+            correlation_id=getattr(request.state, "correlation_id", "unknown"),
+            idempotency_key=normalized_key,
+        )
+    except CampaignCreateIdempotencyConflict as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Idempotency key conflicts with a previous request",
+        ) from exc
+    except CampaignCreateConflict as exc:
+        raise ProblemException(
+            status=status.HTTP_409_CONFLICT,
+            title="Resource conflict",
+            detail="Campaign slug is already reserved",
+            code="RESOURCE_CONFLICT",
+        ) from exc
+    except CampaignCreateUnavailable as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Campaign creation is temporarily unavailable",
+        ) from exc
+    created_campaign = evidence.campaign
+    if (
+        created_campaign.tenant_id != tenant_id
+        or created_campaign.slug != campaign.slug
+        or created_campaign.name != campaign.name
+        or created_campaign.jurisdiction != campaign.jurisdiction
+        or created_campaign.stage != campaign.stage
+        or created_campaign.status != "DRAFT"
+        or created_campaign.version != 1
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Campaign creation is temporarily unavailable",
+        )
+    response.headers["Location"] = f"/api/v1/tenants/{tenant_id}/campaigns/{evidence.campaign.id}"
+    response.headers["ETag"] = f'"{evidence.campaign.version}"'
+    return evidence
 
 
 def campaign_directory(request: Request) -> CampaignDirectory:
