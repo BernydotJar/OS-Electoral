@@ -85,3 +85,48 @@
 2. Integrate live identity plus server-owned membership/grant loading.
 3. Connect durable domain repositories/API/outbox-worker behavior.
 4. Build reviewed AWS development infrastructure before any staging or production action.
+
+## C3 API campaign read boundary — 2026-07-20
+
+- `branch`: `agent/c3-api-001-campaign-read-boundary`
+- `base`: `agent/c3-iam-001-membership-authorization@5b203ec7d52c87950778b67b298de5d9b0a7a6fb`
+- `production_status`: `BLOCKED`
+- `external_effects`: local and review-branch code only; no campaign action, publication, deployment or data mutation.
+
+### Implementation evidence
+
+- Added `GET /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}` as the first protected campaign-domain projection.
+- Requires fresh server-owned tenant authorization and an exact `read` grant over the requested campaign identifier, campaign scope and approved purpose before persistence is queried.
+- Added a tenant-scoped SQLAlchemy campaign directory that returns only `DRAFT` or `ACTIVE` campaigns and fails closed for foreign-tenant or archived identifiers.
+- Added sanitized 403, 404 and 503 behavior plus mismatched projection scope rejection.
+- Added `GET /api/v1/tenants/{tenant_id}/campaigns` with UUID keyset pagination, a maximum page size of 100, no total-count leakage and a query restricted to exact authorized campaign identifiers.
+
+### Verification evidence
+
+- Ruff lint/format and strict mypy passed across the maintained backend.
+- Focused API/read-model suite: `19 passed`.
+- Workstation Python 3.14 full suite before pagination: `218 passed`, `1 skipped`, `18 subtests passed`; strict resource warnings exposed and corrected deterministic SQLite cleanup.
+- Workstation Docker Compose E2E passed with PostgreSQL 18, Alembic upgrade/check, constrained API role, S3Mock and Mailpit after moving the internal daemon data root off the host-backed `fakeowner` mount.
+- Program truth validator and campaign safety scanner passed; production remains `BLOCKED` with five critical/high findings and six retained failed runs.
+- `C3-API-001` remains `IN_PROGRESS`: writes, concurrency contracts and the background worker runtime are not implemented.
+
+## C3 API campaign write boundary — 2026-07-20
+
+- `branch`: `agent/c3-api-001-campaign-read-boundary`
+- `base_checkpoint`: `6155f77d5d1e9de7acc448c20c6f8385764df00e`
+- `production_status`: `BLOCKED`
+- `external_effects`: none; outbox rows remain local `PENDING` records and no worker delivery exists.
+
+### Implementation evidence
+
+- Added authenticated `PATCH /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}`.
+- Requires an exact current `update` grant for the campaign and purpose `Maintain assigned campaign`.
+- Requires `If-Match` with the current positive aggregate version and returns 412 for stale writes.
+- Updates bounded campaign fields, increments version, appends a hash-linked audit event and creates a `PENDING` outbox event in one tenant-scoped transaction.
+- Returns committed campaign, audit event and outbox event identifiers without delivering any external effect.
+
+### Verification evidence
+
+- Focused write/read/API suite: `30 passed`.
+- Ruff and strict mypy passed before the full gate.
+- `C3-API-001` remains `IN_PROGRESS`: idempotency keys, worker claiming/retry/dead-letter behavior and broader domain writes remain incomplete.
