@@ -1,5 +1,18 @@
 """Campaign-domain application boundaries."""
 
+from campaignos.campaigns.create_model import (
+    CampaignCreate,
+    CampaignCreateConflict,
+    CampaignCreateEvidence,
+    CampaignCreateIdempotencyConflict,
+    CampaignCreateUnavailable,
+    CampaignCreator,
+    InMemoryCampaignCreateAudit,
+    InMemoryCampaignCreateOutbox,
+    InMemoryCampaignCreator,
+    SqlAlchemyCampaignCreator,
+    UnavailableCampaignCreator,
+)
 from campaignos.campaigns.read_model import (
     CampaignDirectory,
     CampaignDirectoryUnavailable,
@@ -36,6 +49,12 @@ from campaignos.campaigns.write_model import (
 )
 
 __all__ = [
+    "CampaignCreate",
+    "CampaignCreateConflict",
+    "CampaignCreateEvidence",
+    "CampaignCreateIdempotencyConflict",
+    "CampaignCreateUnavailable",
+    "CampaignCreator",
     "CampaignDirectory",
     "CampaignDirectoryUnavailable",
     "CampaignIdempotencyConflict",
@@ -55,11 +74,16 @@ __all__ = [
     "CampaignWriteEvidence",
     "CampaignWriter",
     "CampaignWriteUnavailable",
+    "InMemoryCampaignCreateAudit",
+    "InMemoryCampaignCreateOutbox",
+    "InMemoryCampaignCreator",
     "InMemoryCampaignReadinessAudit",
     "InMemoryCampaignReadinessReader",
+    "SqlAlchemyCampaignCreator",
     "SqlAlchemyCampaignDirectory",
     "SqlAlchemyCampaignReadinessReader",
     "SqlAlchemyCampaignWriter",
+    "UnavailableCampaignCreator",
     "UnavailableCampaignDirectory",
     "UnavailableCampaignReadinessReader",
     "UnavailableCampaignWriter",

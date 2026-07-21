@@ -12,12 +12,15 @@ from campaignos.api.errors import install_exception_handlers
 from campaignos.api.middleware import request_controls
 from campaignos.api.routes import campaigns, health, me, tenant_me, workspaces
 from campaignos.campaigns import (
+    CampaignCreator,
     CampaignDirectory,
     CampaignReadinessReader,
     CampaignWriter,
+    SqlAlchemyCampaignCreator,
     SqlAlchemyCampaignDirectory,
     SqlAlchemyCampaignReadinessReader,
     SqlAlchemyCampaignWriter,
+    UnavailableCampaignCreator,
     UnavailableCampaignDirectory,
     UnavailableCampaignReadinessReader,
     UnavailableCampaignWriter,
@@ -43,6 +46,7 @@ def create_app(
     token_verifier: TokenVerifier | None = None,
     database: DatabaseRuntime | None = None,
     membership_directory: MembershipDirectory | None = None,
+    campaign_creator: CampaignCreator | None = None,
     campaign_directory: CampaignDirectory | None = None,
     campaign_readiness_reader: CampaignReadinessReader | None = None,
     campaign_writer: CampaignWriter | None = None,
@@ -66,6 +70,10 @@ def create_app(
     if authorization_directory is None and isinstance(database_runtime, Database):
         authorization_directory = SqlAlchemyMembershipDirectory(database_runtime)
     authorization_directory = authorization_directory or UnavailableMembershipDirectory()
+    campaign_create_boundary = campaign_creator
+    if campaign_create_boundary is None and isinstance(database_runtime, Database):
+        campaign_create_boundary = SqlAlchemyCampaignCreator(database_runtime)
+    campaign_create_boundary = campaign_create_boundary or UnavailableCampaignCreator()
     campaign_read_directory = campaign_directory
     if campaign_read_directory is None and isinstance(database_runtime, Database):
         campaign_read_directory = SqlAlchemyCampaignDirectory(database_runtime)
@@ -110,6 +118,7 @@ def create_app(
     app.state.token_verifier = verifier
     app.state.database = database_runtime
     app.state.membership_directory = authorization_directory
+    app.state.campaign_creator = campaign_create_boundary
     app.state.campaign_directory = campaign_read_directory
     app.state.campaign_readiness_reader = campaign_readiness_boundary
     app.state.campaign_writer = campaign_write_boundary

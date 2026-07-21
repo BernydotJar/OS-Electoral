@@ -179,3 +179,17 @@
 - Full locked suite: `286 passed`, `1 skipped`; strict mypy across 31 source files, Ruff, program truth, eval catalog and campaign safety PASS.
 - Isolated PostgreSQL migration/RLS/readiness/audit proof: `1 passed`, `5 deselected`.
 - Implementation commit `22bc9a3f324a9a3cb1312fad7322596c7b719249` is published on `agent/c3-api-005-campaign-readiness`. Public API verification found zero open PRs and zero workflow runs for that head; no review, merge, deployment or external campaign effect is claimed.
+
+
+## C3-API-006 idempotent tenant campaign creation - 2026-07-21
+
+- Added exact-authorized `POST /api/v1/tenants/{tenant_id}/campaigns` with a required single `Idempotency-Key`, bounded normalized metadata, typed OpenAPI, `Location` and quoted `ETag`.
+- Added server-owned `DRAFT`/version `1`, in-memory/unavailable/SQLAlchemy adapters and atomic campaign, audit, internal outbox and idempotency evidence.
+- Bound tenant, normalized request, principal, grant, approval receipt and authorization purpose into replay identity; correlation remains immutable audit metadata.
+- Centralized PostgreSQL equal-key serialization for campaign create/update and workspace create.
+- The critic pass repaired duplicate validation handlers, missing/deprecated status constants, a misplaced test parametrizer, duplicate-header error taxonomy and missing purpose binding.
+- Real PostgreSQL exposed and verified the required parent flush before the FK-bound audit append without weakening transaction atomicity.
+- Full locked suite: `327 passed`, `2 skipped`; coverage `90.92%`; Ruff, format, strict mypy across 33 source files, program truth, eval catalog and campaign safety PASS.
+- Isolated constrained-role PostgreSQL: `2 passed`, `5 deselected`, covering forced RLS, equal-key replay, same-slug race conflict and cross-tenant invisibility.
+- Effective-worktree Gitleaks `8.30.1`: PASS. Exact committed-history scan and remote publication are pending the implementation commit.
+- Production remains `BLOCKED`; no external delivery, campaign publication, outreach, spending, mobilization or political approval occurred.

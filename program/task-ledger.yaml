@@ -168,12 +168,36 @@
       ]
     },
     {
+      "task_id": "C3-API-006",
+      "owner": "WS-05",
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/src/campaignos/campaigns/create_model.py",
+        "backend/src/campaignos/data/idempotency.py",
+        "backend/src/campaignos/api/routes/campaigns.py",
+        "backend/tests/test_campaign_create_model.py",
+        "backend/tests/test_campaign_create_api.py",
+        "backend/tests/test_campaign_create_postgres.py",
+        "docs/api/campaign-create.md",
+        "docs/testing/c3-api-006-evidence.md",
+        "program/validations/c3-api-006.json",
+        "program/iterations/c3-api-006.md"
+      ],
+      "external_effects": "NONE",
+      "publication_state": "LOCAL_VERIFIED_NOT_YET_PUBLISHED",
+      "blockers": [
+        "CI and independent human review have not run for this branch",
+        "No draft PR can be created without an authenticated GitHub mutation session",
+        "No RDS, dev, staging or production verification"
+      ]
+    },
+    {
       "task_id": "C3-FRONT-001",
       "owner": "WS-06",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "evidence": [],
       "external_effects": "NONE",
-      "blockers": ["C3-DEVEX-001", "C3-API-001"]
+      "blockers": []
     },
     {
       "task_id": "C3-ONBOARD-001",

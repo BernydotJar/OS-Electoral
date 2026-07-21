@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-api-005-campaign-readiness",
+  "source_branch": "agent/c3-api-006-campaign-create",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -12,7 +12,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, unverified required-check enforcement, no verified AWS environments and incomplete product, identity, operations and human gates remain. Foundation, IAM and the first campaign API slice are merged; idempotency, the internal outbox worker and workspace writes are draft and CI-green; campaign readiness is verified only in local and isolated PostgreSQL tests.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, unverified required-check enforcement, no verified AWS environments and incomplete product, identity, frontend, operations and human gates remain. Foundation, IAM and the first campaign API slice are merged; idempotency, the internal outbox worker and workspace writes are draft and CI-green; campaign readiness and idempotent campaign creation are verified only in local and isolated PostgreSQL tests.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -220,14 +220,15 @@
     {"id": "context:internal-outbox-worker", "owner": "Campaign Platform", "maturity": "DRAFT_PR_CI_GREEN_INTERNAL_ONLY", "code": ["backend/src/campaignos/workers/outbox.py", "backend/src/campaignos/worker_main.py"], "validators": ["backend/tests/test_outbox_worker.py", "backend/tests/test_worker_main.py"]},
     {"id": "context:workspace-write-api", "owner": "Campaign Platform", "maturity": "DRAFT_PR_CI_GREEN", "code": ["backend/src/campaignos/api/routes/workspaces.py", "backend/src/campaignos/workspaces/write_model.py"], "validators": ["backend/tests/test_workspace_write_api.py", "backend/tests/test_workspace_write_model.py"]},
     {"id": "context:campaign-readiness", "owner": "Campaign Platform", "maturity": "VERIFIED_POSTGRESQL_LOCAL_ONLY", "code": ["backend/src/campaignos/campaigns/readiness.py", "backend/src/campaignos/data/audit.py", "backend/src/campaignos/api/routes/campaigns.py"], "validators": ["backend/tests/test_audit_append.py", "backend/tests/test_campaign_readiness.py", "backend/tests/test_campaign_readiness_api.py", "backend/tests/test_database.py"]},
+    {"id": "context:campaign-creation", "owner": "Campaign Platform", "maturity": "VERIFIED_POSTGRESQL_LOCAL_ONLY", "code": ["backend/src/campaignos/campaigns/create_model.py", "backend/src/campaignos/data/idempotency.py", "backend/src/campaignos/api/routes/campaigns.py"], "validators": ["backend/tests/test_campaign_create_model.py", "backend/tests/test_campaign_create_api.py", "backend/tests/test_campaign_create_postgres.py"]},
     {"id": "context:required-eval-catalog", "owner": "Campaign Quality", "maturity": "FAIL_CLOSED_PARTIAL_CATALOG", "code": ["program/eval-catalog.json", "scripts/architecture/validate_eval_catalog.py"], "validators": ["scripts/architecture/validate_eval_catalog.py", "backend/tests/test_eval_catalog_validator.py"]}
   ],
   "workstreams": [
     {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_MERGED", "next_increment": "C3-IAM-002"},
     {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "PR_CI_GREEN_ENFORCEMENT_PENDING", "next_increment": "C3-CI-001"},
     {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "TENANT_AUTHORIZATION_MERGED_LIFECYCLE_PENDING", "next_increment": "C3-IAM-002"},
-    {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "READINESS_VERIFIED_POSTGRESQL_OPEN_STACK_ACTIVE", "next_increment": "C3-API-006"},
-    {"id": "WS-05", "name": "API and Background Jobs", "status": "READINESS_VERIFIED_POSTGRESQL_WORKER_DRAFT_GREEN", "next_increment": "C3-API-006"},
+    {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_OPEN_STACK_ACTIVE", "next_increment": "C3-ONBOARD-001"},
+    {"id": "WS-05", "name": "API and Background Jobs", "status": "CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_WORKER_DRAFT_GREEN", "next_increment": "C3-IAM-002"},
     {"id": "WS-06", "name": "Frontend, Design System and i18n", "status": "STATIC_PROTOTYPE", "next_increment": "C3-FRONT-001"},
     {"id": "WS-07", "name": "Guided Onboarding and Candidate Workspace", "status": "NOT_STARTED", "next_increment": "C3-ONBOARD-001"},
     {"id": "WS-08", "name": "Team Builder and Training Academy", "status": "STATIC_PROTOTYPE", "next_increment": "C3-TEAM-001"},
@@ -248,7 +249,8 @@
     {"id": "C3-DATA-001", "status": "MERGED_TO_MAIN", "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"], "workstream": "WS-04"},
     {"id": "C3-API-001", "status": "ACTIVE", "depends_on": ["C3-IAM-001", "C3-DATA-001"], "workstream": "WS-05"},
     {"id": "C3-API-005", "status": "VERIFIED_POSTGRESQL", "depends_on": ["C3-API-001"], "workstream": "WS-05"},
-    {"id": "C3-FRONT-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-DEVEX-001", "C3-API-001"], "workstream": "WS-06"},
+    {"id": "C3-API-006", "status": "VERIFIED_POSTGRESQL", "depends_on": ["C3-API-005"], "workstream": "WS-05"},
+    {"id": "C3-FRONT-001", "status": "EXECUTABLE_NEXT", "depends_on": ["C3-DEVEX-001", "C3-API-001"], "workstream": "WS-06"},
     {"id": "C3-ONBOARD-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-FRONT-001", "C3-API-001"], "workstream": "WS-07"},
     {"id": "C3-TEAM-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-FRONT-001", "C3-API-001"], "workstream": "WS-08"},
     {"id": "C3-STRATEGY-001", "status": "BLOCKED_BY_DEPENDENCY", "depends_on": ["C3-DATA-001", "C3-API-001"], "workstream": "WS-09"},

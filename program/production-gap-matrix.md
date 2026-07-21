@@ -15,17 +15,17 @@ No row marked `PARTIAL` is counted as production-ready.
 | Gate | Current evidence | Status | Required proof |
 |---|---|---:|---|
 | Product boundaries approved | Canonical boundaries/non-goals and architecture ADRs exist; human/domain approval is absent | PARTIAL | Approved product boundaries and non-goals |
-| Generic consultancy tenant model | Two deterministic tenant fixtures | PARTIAL | Durable multi-campaign tenant model and provisioning tests |
+| Generic consultancy tenant model | Tenant-scoped campaign creation supports multiple campaigns, replay and cross-tenant slug independence under forced RLS | PARTIAL | Controlled tenant provisioning, portfolio administration, entitlements and staging evidence |
 | Real authentication | Fixed-algorithm OIDC ID-token verifier and protected identity endpoint; no live provider/login flow | PARTIAL | OIDC/Cognito login, invitation and recovery flows |
 | Real session validation | Cryptographic bearer ID-token validation is covered; no server session/rotation/revocation lifecycle | PARTIAL | Issuer/audience/signature/expiry validation plus session revocation tests |
 | Tenant isolation | Composite schema constraints, transaction-local scope and forced RLS passed an isolated non-superuser test | PARTIAL | Application repository integration plus staging adversarial evidence |
-| RBAC | PostgreSQL-backed active membership and exact-purpose grants protect campaign list/get/update, workspace creation and campaign readiness; roles never imply permission | PARTIAL | Grant administration, reviewed role catalog, support elevation and enforcement on every remaining domain/worker action |
-| PostgreSQL persistence | Identity/tenancy plus campaign read/write, idempotency, workspace, audit, outbox and readiness adapters are merged, draft-green or locally verified; constrained-role PostgreSQL readiness/audit proof passes | PARTIAL | Campaign creation and broader domain adapters, managed-role rotation and RDS/staging transaction evidence |
+| RBAC | PostgreSQL-backed active membership and exact-purpose grants protect tenant campaign creation, campaign list/get/update, workspace creation and campaign readiness; roles never imply permission | PARTIAL | Grant administration, reviewed role catalog, support elevation and enforcement on every remaining domain/worker action |
+| PostgreSQL persistence | Identity/tenancy plus campaign create/read/update, idempotency, workspace, audit, outbox and readiness adapters are merged, draft-green or locally verified; constrained-role PostgreSQL create/readiness/concurrency proof passes | PARTIAL | Broader domain adapters, managed-role rotation and RDS/staging transaction evidence |
 | Database migrations | Alembic environment and initial migration pass downgrade/upgrade/check locally | PARTIAL | Reviewed release policy plus staging forward/compatibility rehearsal |
-| Versioned REST API | `/api/v1` exposes health, dependency readiness, identity, tenant authorization, protected campaign list/get/update, draft workspace creation and local audited campaign readiness with safe errors and typed OpenAPI | PARTIAL | Campaign creation, broader bounded contexts, reviewed OpenAPI policy, rate controls and deployed verification |
+| Versioned REST API | `/api/v1` exposes health, dependency readiness, identity, tenant authorization, exact-authorized campaign create/list/get/update, draft workspace creation and audited campaign readiness with safe errors, idempotency, concurrency headers and typed OpenAPI | PARTIAL | Broader bounded contexts, reviewed OpenAPI policy, rate controls and deployed verification |
 | Background jobs | Draft PR `#85` adds a tenant-explicit internal outbox worker with leases, `SKIP LOCKED`, expired-claim recovery, bounded retries, dead-letter state and evidence revalidation; no external delivery exists | PARTIAL | Worker administration, metrics/traces/alerts, staging replay/concurrency proof and reviewed transport contracts |
 | Object storage | Typed configuration and initialized Adobe S3Mock local harness only | PARTIAL | Production adapter, signed operations, MIME/size validation, scan strategy and KMS/retention controls |
-| Guided onboarding | Deterministic operational readiness projection exists; no persisted save/resume intake wizard or evidence collection journey | PARTIAL | Save/resume intake, evidence requirements, known unknowns and guided next actions |
+| Guided onboarding | A tenant campaign can be created as `DRAFT` and assessed for deterministic operational readiness; no persisted save/resume intake wizard or evidence collection journey exists | PARTIAL | Save/resume intake, evidence requirements, known unknowns and guided next actions |
 | Candidate Workspace | Deterministic candidate-brand aggregate | PARTIAL | Authenticated API-backed candidate experience |
 | Team Builder | Static team command-center snapshot | PARTIAL | Durable roles, RACI, capacity, onboarding and authorization |
 | Roadmap/workstreams | Program fallback graph; no campaign roadmap service | PARTIAL | Campaign-scoped tasks, dependencies, critical path and owners |
@@ -46,7 +46,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | Rate limiting and abuse protection | Network API exists but has no principal/tenant limiter | NOT_IMPLEMENTED | Per-principal/tenant controls and abuse tests |
 | Structured operational errors | RFC 9457-style API errors, correlation IDs and sanitized auth failures | PARTIAL | Domain error taxonomy, observability linkage and staging verification |
 | Observability | Offline audit read model | PARTIAL | Logs, metrics, traces, dashboards, alerts and SLOs |
-| Audit immutability | PostgreSQL campaign/workspace/readiness events use a tenant-serialized monotonic hash chain; application enforcement can still be bypassed by privileged direct database mutation | PARTIAL | Database-level append-only controls, protected integrity anchor, retention and restore verification |
+| Audit immutability | PostgreSQL campaign create/update, workspace and readiness events use a tenant-serialized monotonic hash chain with purpose-bound authority evidence; privileged direct database mutation can still bypass application enforcement | PARTIAL | Database-level append-only controls, protected integrity anchor, retention and restore verification |
 | Backups | None | NOT_IMPLEMENTED | Automated encrypted backups and retention evidence |
 | Restore test | None | NOT_IMPLEMENTED | Successful measured restore with RPO/RTO and audit verification |
 | Incident response | Narrow corruption runbook | PARTIAL | Full incident roles, escalation, communications and exercises |
@@ -68,7 +68,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | AWS dev | AWS session expired; no IaC evidence | NOT_VERIFIED | Reviewed plan/apply and smoke evidence |
 | AWS staging | None | NOT_IMPLEMENTED | Migration, security, load, restore and agent-eval evidence |
 | AWS production | No approved deployment | BLOCKED | All gates plus explicit human approval |
-| PR CI | PRs `#72`, `#73` and `#83` merged with green recorded checks; draft stack `#84` -> `#85` -> `#86` is green; current readiness branch has no PR or CI yet | PARTIAL | Publish current branch for review, obtain green checks, human review and required-check enforcement on protected main |
+| PR CI | PRs `#72`, `#73` and `#83` merged with green recorded checks; draft stack `#84` -> `#85` -> `#86` is green; readiness is published without PR/CI and the current campaign-create branch has no PR/CI yet | PARTIAL | Publish current branch for review, obtain green checks, human review and required-check enforcement on protected main |
 | Main CI | CampaignOS CI push run `29803405277` succeeded at `main@d0719c9`; no controlled environment deployment follows it | PARTIAL | Required-check enforcement, immutable artifact evidence, controlled dev deployment and post-deploy verification |
 | Branch protection | Public rulesets are empty; branch-protection and Actions-permission endpoints require authenticated repository-settings access, so current enforcement is unverified | NOT_VERIFIED | Authenticated ruleset evidence with required review and checks |
 | Staging promotion | None | NOT_IMPLEMENTED | Controlled candidate promotion and manual acceptance |
@@ -85,7 +85,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | Required evals | Exact inventory records `5 PASS`, `8 PARTIAL`, `20 NOT_RUN`; absent capabilities remain fail-closed | PARTIAL | Implement every underlying capability and obtain 33 reviewed PASS results with zero hard-gate failures |
 | AutoSkills review | `autoskills@0.3.6` npm integrity/license/manifest reviewed; pinned dry-run proposed eleven skills, installed none and made no repository mutation | PASS | Per-skill payload, license, path and prompt-safety review plus explicit approval before any install |
 | Context7 evidence | Foundation guidance, official cross-checks and installed pins are recorded | PASS | Repeat for new implementation dependencies |
-| Required documentation tree | Campaign readiness API/testing docs now exist, but most canonical goal paths remain absent | PARTIAL | Complete all required docs, ownership and stale-content validation |
+| Required documentation tree | Campaign readiness and campaign-create API/testing docs exist, but most canonical goal paths remain absent | PARTIAL | Complete all required docs, ownership and stale-content validation |
 | Obsolete-doc release gate | C2/main drift corrected in owned overview docs | PARTIAL | Repository-wide stale-doc scan and ownership policy |
 | Political-science review | No approval record | NOT_IMPLEMENTED | Qualified human review |
 | Sociological/anthropological review | No approval record | NOT_IMPLEMENTED | Qualified human review |

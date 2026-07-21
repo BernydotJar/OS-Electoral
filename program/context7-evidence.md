@@ -145,3 +145,31 @@ Context7 is mandatory implementation evidence, but its index can lag package reg
 - `documentation_summary`: use after-model validators for whole-model invariants and return the validated instance; reject unknown fields and freeze read projections where mutation would undermine trust.
 - `implementation_decision`: readiness input/output models use `extra="forbid"`, frozen projections and an after-model validator that reconciles ordered checks, totals, status and the guided-intake boolean.
 - `limitations`: model validation prevents malformed projection objects; it does not replace authorization, tenant isolation, evidence review or human approval.
+
+## C3-API-006 official documentation record
+
+- `date`: `2026-07-21 America/Guatemala`
+- `task_id`: `C3-API-006`
+- `Context7_runtime`: unavailable in the Cloud Sandbox toolset; no Context7 retrieval is claimed.
+- `installed_versions`: FastAPI `0.139.2`; Pydantic `2.13.4`; SQLAlchemy `2.0.51` from `pyproject.toml` and `uv.lock`.
+
+### SQLAlchemy atomic transaction and integrity boundary
+
+- `official_sources`: [transactions and connection management](https://docs.sqlalchemy.org/en/20/orm/session_transaction.html), [Session basics](https://docs.sqlalchemy.org/en/20/orm/session_basics.html), [core exceptions and `IntegrityError`](https://docs.sqlalchemy.org/en/20/core/exceptions.html#sqlalchemy.exc.IntegrityError).
+- `documentation_summary`: keep related ORM writes inside one explicit Session transaction; commit only when the context completes; treat integrity exceptions as the database constraint boundary and roll the failed transaction back before reuse.
+- `implementation_decision`: campaign, audit, internal outbox and idempotency rows share one `Database.tenant_transaction`. A transaction advisory lock serializes equal idempotency tuples, while the tenant/slug and idempotency unique constraints remain final integrity guards. Constraint failures are mapped to sanitized domain exceptions.
+- `limitations`: the isolated PostgreSQL test proves local transaction, concurrency and RLS behavior. No RDS, AWS dev/staging, production concurrency, backup or restore claim is made.
+
+### FastAPI response, dependency and header contract
+
+- `official_sources`: [dependencies](https://fastapi.tiangolo.com/tutorial/dependencies/), [additional responses in OpenAPI](https://fastapi.tiangolo.com/advanced/additional-responses/), [response headers](https://fastapi.tiangolo.com/advanced/response-headers/).
+- `documentation_summary`: dependencies can enforce authorization before the operation body; response models validate and document output; explicit response metadata documents non-body headers while a `Response` parameter sets runtime headers.
+- `implementation_decision`: the route receives current tenant authorization and the creator as typed dependencies, validates the exact collection grant before persistence, returns `CampaignCreateEvidence`, sets `Location` and quoted `ETag`, and declares both headers in the `201` OpenAPI response.
+- `limitations`: local TestClient/OpenAPI evidence is not a gateway, rate-limit, browser-session or deployed environment proof.
+
+### Pydantic pre-validation normalization
+
+- `official_sources`: [validators](https://docs.pydantic.dev/latest/concepts/validators/), [models](https://docs.pydantic.dev/latest/concepts/models/), [configuration](https://docs.pydantic.dev/latest/concepts/config/).
+- `documentation_summary`: before-field validators can normalize raw input before standard type, length and pattern validation; extra fields can be forbidden; frozen models prevent post-validation mutation.
+- `implementation_decision`: campaign creation normalizes slug case/whitespace and collapses metadata whitespace before bounded validation. `extra="forbid"` rejects caller attempts to set server-owned identifiers, status or version.
+- `limitations`: normalization and schema validation do not confer authority; authorization, RLS, database constraints, audit and human gates remain separate controls.

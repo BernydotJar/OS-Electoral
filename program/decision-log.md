@@ -46,3 +46,31 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `Makefile`, `program/eval-catalog.json`, `scripts/architecture/validate_eval_catalog.py`
 - `rationale`: Configuration or prose that CI does not execute is not a gate.
 - `consequences`: Coverage below 90%, an omitted/duplicate eval ID, unsupported status, missing evidence path or a recorded required-eval failure causes validation failure.
+
+
+## DEC-2026-07-21-006 — Campaign creation is an internal draft operation
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-API-006`
+- `decision`: Tenant campaign creation produces only a server-owned `DRAFT` aggregate, an audit receipt, an internal outbox event and a replay receipt. It does not create a workspace, strategy, approval or external political effect.
+- `evidence`: `backend/src/campaignos/campaigns/create_model.py`, `docs/api/campaign-create.md`
+- `rationale`: Creating the aggregate must not manufacture downstream authority or skip guided intake.
+- `consequences`: The route fixes status/version, rejects caller-owned authority fields and records `external_effects=NONE`.
+
+## DEC-2026-07-21-007 — Replay identity includes purpose-bound authority
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-API-006`
+- `decision`: A campaign-create replay digest binds tenant, normalized request, principal, exact grant, approval receipt and authorization purpose; correlation remains audit metadata rather than replay identity.
+- `evidence`: `backend/src/campaignos/campaigns/create_model.py`, `backend/tests/test_campaign_create_model.py`
+- `rationale`: The same payload under changed authority or purpose is not the same authorized intent.
+- `consequences`: Reusing a key after any bound authority change fails closed with `IDEMPOTENCY_CONFLICT`.
+
+## DEC-2026-07-21-008 — Flush aggregate parent before FK-bound audit append
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-API-006`
+- `decision`: A newly created campaign is flushed inside the surrounding transaction before appending the audit event that references its composite tenant/campaign key.
+- `evidence`: `backend/src/campaignos/campaigns/create_model.py`, `backend/tests/test_campaign_create_postgres.py`
+- `rationale`: Real PostgreSQL exposed that independent ORM insert ordering could attempt the audit child before the new parent and violate the composite foreign key.
+- `consequences`: Parent and evidence remain atomic; a later failure rolls back the flush and the whole unit of work.
