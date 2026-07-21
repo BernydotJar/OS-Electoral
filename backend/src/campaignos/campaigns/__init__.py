@@ -10,6 +10,7 @@ from campaignos.campaigns.read_model import (
     UnavailableCampaignDirectory,
 )
 from campaignos.campaigns.write_model import (
+    CampaignIdempotencyConflict,
     CampaignMutationNotFound,
     CampaignUpdate,
     CampaignWriteConflict,
@@ -23,6 +24,7 @@ from campaignos.campaigns.write_model import (
 __all__ = [
     "CampaignDirectory",
     "CampaignDirectoryUnavailable",
+    "CampaignIdempotencyConflict",
     "CampaignMutationNotFound",
     "CampaignNotFound",
     "CampaignPage",
