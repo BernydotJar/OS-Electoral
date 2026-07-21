@@ -629,3 +629,149 @@ export type WarRoomSnapshotReadEvidence = Readonly<{
   snapshot: WarRoomSnapshotProjection;
   audit_event_id: UUID;
 }>;
+
+export type StrategyEvidenceClassification =
+  "VERIFIED" | "INFERRED" | "UNKNOWN";
+export type StrategyEvidenceStatus = "ACCEPTED" | "NEEDS_REVIEW" | "REJECTED";
+export type StrategyWorkspaceStatus =
+  | "EVIDENCE_REQUIRED"
+  | "CONTRADICTIONS_OPEN"
+  | "RED_TEAM_BLOCKED"
+  | "OPTIONS_INCOMPLETE"
+  | "OBJECTIVES_INCOMPLETE"
+  | "READY_FOR_HUMAN_DECISION"
+  | "DECIDED_INTERNAL";
+export type StrategyNextAction =
+  | "ADD_VERIFIED_EVIDENCE"
+  | "RESOLVE_CONTRADICTIONS"
+  | "ADDRESS_RED_TEAM_FINDINGS"
+  | "COMPLETE_COMPARABLE_OPTIONS"
+  | "DEFINE_MEASURABLE_OBJECTIVES"
+  | "MAKE_HUMAN_DECISION"
+  | "REVALIDATE_DECISION";
+export type StrategyLimitation =
+  | "NOT_PUBLIC_POSITIONING"
+  | "NOT_A_HUMAN_APPROVAL"
+  | "NO_VOTER_PROFILING_OR_INDIVIDUAL_TARGETING"
+  | "NO_CITIZEN_CONTACT_OR_EXTERNAL_EFFECTS";
+
+export type StrategyEvidenceRecord = Readonly<{
+  id: UUID;
+  classification: StrategyEvidenceClassification;
+  statement: string;
+  source_reference: string | null;
+  authority: string | null;
+  jurisdiction: string | null;
+  status: StrategyEvidenceStatus;
+  collected_at: string;
+}>;
+
+export type StrategyAssumptionRecord = Readonly<{
+  id: UUID;
+  statement: string;
+  evidence_refs: readonly UUID[];
+  invalidation_signals: readonly string[];
+  status: "ACTIVE" | "INVALIDATED";
+}>;
+
+export type StrategyHypothesisRecord = Readonly<{
+  id: UUID;
+  title: string;
+  statement: string;
+  evidence_refs: readonly UUID[];
+  assumption_refs: readonly UUID[];
+  invalidation_signals: readonly string[];
+  status: "DRAFT" | "IN_REVIEW" | "REJECTED";
+}>;
+
+export type StrategyOptionRecord = Readonly<{
+  id: UUID;
+  title: string;
+  summary: string;
+  hypothesis_refs: readonly UUID[];
+  evidence_refs: readonly UUID[];
+  benefits: readonly string[];
+  risks: readonly string[];
+  tradeoffs: readonly string[];
+}>;
+
+export type StrategyObjectiveRecord = Readonly<{
+  id: UUID;
+  outcome: string;
+  metric: string;
+  baseline: string;
+  target: string;
+  deadline: string;
+  owner_role_id: UUID;
+  evidence_refs: readonly UUID[];
+}>;
+
+export type StrategyContradictionRecord = Readonly<{
+  id: UUID;
+  left_ref: UUID;
+  right_ref: UUID;
+  description: string;
+  evidence_refs: readonly UUID[];
+  status: "OPEN" | "RESOLVED";
+  resolution: string | null;
+}>;
+
+export type StrategyRedTeamFindingRecord = Readonly<{
+  id: UUID;
+  severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+  description: string;
+  option_refs: readonly UUID[];
+  mitigation: string;
+  status: "OPEN" | "RESOLVED";
+}>;
+
+export type StrategyDecisionRecord = Readonly<{
+  id: UUID;
+  workspace_version: number;
+  selected_option_id: UUID;
+  reason: string;
+  human_role_id: UUID;
+  approval_receipt_id: string;
+  decided_at: string;
+}>;
+
+export type StrategyWorkspaceProjection = Readonly<{
+  id: UUID;
+  tenant_id: UUID;
+  campaign_id: UUID;
+  campaign_version: number;
+  campaign_status: "DRAFT" | "ACTIVE";
+  campaign_name: string;
+  candidate_workspace_version: number;
+  team_workspace_version: number;
+  title: string;
+  evidence: readonly StrategyEvidenceRecord[] | null;
+  assumptions: readonly StrategyAssumptionRecord[] | null;
+  hypotheses: readonly StrategyHypothesisRecord[] | null;
+  options: readonly StrategyOptionRecord[] | null;
+  objectives: readonly StrategyObjectiveRecord[] | null;
+  contradictions: readonly StrategyContradictionRecord[] | null;
+  red_team_findings: readonly StrategyRedTeamFindingRecord[] | null;
+  decision: StrategyDecisionRecord | null;
+  status: StrategyWorkspaceStatus;
+  verified_evidence_count: number;
+  inferred_evidence_count: number;
+  unknown_evidence_count: number;
+  open_contradiction_count: number;
+  open_high_risk_count: number;
+  complete_option_count: number;
+  measurable_objective_count: number;
+  next_action: StrategyNextAction;
+  human_decision_required: boolean;
+  authority_effect: "NONE";
+  external_effects: "NONE";
+  limitation_codes: readonly StrategyLimitation[];
+  version: number;
+  created_at: string;
+  updated_at: string;
+}>;
+
+export type StrategyWorkspaceReadEvidence = Readonly<{
+  workspace: StrategyWorkspaceProjection;
+  audit_event_id: UUID;
+}>;

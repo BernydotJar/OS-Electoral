@@ -118,10 +118,10 @@
     "branch": "agent/c3-ops-001-roadmap-war-room",
     "base": "agent/c3-team-001-accountability-review",
     "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
-    "head_commit": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+    "head_commit": "c81e4282813c0add0c3207f97066f127280e410e",
     "draft_pr": 95,
-    "ci_run_id": 29871611889,
-    "visual_run_id": 29871611856
+    "ci_run_id": 29871930387,
+    "visual_run_id": 29871930366
   },
   "review_stack": [
     {
@@ -198,7 +198,7 @@
       "pr": 95,
       "base": "agent/c3-team-001-accountability-review",
       "head": "agent/c3-ops-001-roadmap-war-room",
-      "head_sha": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+      "head_sha": "c81e4282813c0add0c3207f97066f127280e410e",
       "ci": "SUCCESS"
     }
   ],
@@ -276,9 +276,9 @@
   },
   "active_local_increment": {
     "id": "C3-STRATEGY-001",
-    "state": "READY",
-    "branch": "NOT_CREATED",
-    "base": "agent/c3-team-001-accountability-review",
+    "state": "IN_PROGRESS",
+    "branch": "agent/c3-strategy-001-evidence-decision-room",
+    "base": "agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e",
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -298,10 +298,10 @@
     "base": "agent/c3-team-001-accountability-review",
     "base_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
     "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
-    "head_commit": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+    "head_commit": "c81e4282813c0add0c3207f97066f127280e410e",
     "draft_pr": 95,
-    "ci_run_id": 29871611889,
-    "visual_run_id": 29871611856,
+    "ci_run_id": 29871930387,
+    "visual_run_id": 29871930366,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
     "external_effects": "NONE",

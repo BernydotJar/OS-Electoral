@@ -1401,3 +1401,186 @@ dd {
     text-align: left;
   }
 }
+
+.strategy-workspace-panel {
+  margin-top: var(--space-7);
+  padding: clamp(1.25rem, 2vw, 2rem);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-large);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-soft);
+}
+
+.strategy-authority-boundary {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(12rem, 0.7fr);
+  gap: var(--space-4);
+  align-items: center;
+  margin: var(--space-5) 0;
+  padding: var(--space-4);
+  border-left: 4px solid var(--accent-warning);
+  background: var(--surface-muted);
+}
+
+.strategy-authority-boundary p {
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+}
+
+.strategy-authority-boundary > div:last-child {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: end;
+  text-align: right;
+}
+
+.strategy-evidence-summary {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.strategy-evidence-summary article {
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--surface-base);
+}
+
+.strategy-evidence-summary article[data-classification="verified"] {
+  border-top: 3px solid var(--accent-positive);
+}
+
+.strategy-evidence-summary article[data-classification="inferred"] {
+  border-top: 3px solid var(--accent-primary);
+}
+
+.strategy-evidence-summary article[data-classification="unknown"] {
+  border-top: 3px solid var(--accent-warning);
+}
+
+.strategy-evidence-summary span {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.strategy-evidence-summary strong {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.strategy-comparison-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: var(--space-5);
+}
+
+.strategy-comparison-grid h3 {
+  margin: 0 0 var(--space-3);
+}
+
+.strategy-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.strategy-options article,
+.strategy-objectives li {
+  min-width: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--surface-base);
+}
+
+.strategy-options h4,
+.strategy-options p,
+.strategy-objectives strong {
+  margin-top: 0;
+}
+
+.strategy-options dl,
+.strategy-objectives dl,
+.strategy-decision dl {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 0;
+}
+
+.strategy-options dl > div,
+.strategy-objectives dl > div,
+.strategy-decision dl > div {
+  min-width: 0;
+}
+
+.strategy-options dd,
+.strategy-objectives dd,
+.strategy-decision dd {
+  margin: var(--space-1) 0 0;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.strategy-objectives {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.strategy-decision {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.3fr) minmax(
+      12rem,
+      0.7fr
+    );
+  gap: var(--space-4);
+  align-items: start;
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-medium);
+  background: var(--surface-muted);
+}
+
+.strategy-decision h3,
+.strategy-decision p {
+  margin-top: 0;
+}
+
+@media (max-width: 1000px) {
+  .strategy-evidence-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .strategy-comparison-grid,
+  .strategy-decision {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .strategy-authority-boundary,
+  .strategy-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .strategy-authority-boundary > div:last-child {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 520px) {
+  .strategy-evidence-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

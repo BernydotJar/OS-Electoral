@@ -93,6 +93,22 @@ export function deriveNavigation(
       reason: "EXACT_GRANT",
     },
     {
+      key: "strategy",
+      href: `${base}#strategy-room`,
+      enabled: hasGrant(
+        memberships,
+        (grant) =>
+          currentCampaignId !== undefined &&
+          grant.action === "read" &&
+          grant.resource_type === "strategy_workspace" &&
+          grant.resource_id === currentCampaignId &&
+          grant.campaign_id === currentCampaignId &&
+          grant.workspace_id === null &&
+          grant.purpose === "Review campaign strategy workspace",
+      ),
+      reason: "EXACT_GRANT",
+    },
+    {
       key: "warRoom",
       href: `${base}#war-room`,
       enabled: hasGrant(

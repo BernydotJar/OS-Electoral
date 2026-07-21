@@ -1,5 +1,6 @@
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { OperationsWorkspace } from "@/components/operations-workspace";
+import { StrategyWorkspace } from "@/components/strategy-workspace";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import { deriveNavigation } from "@/lib/navigation";
 import type { ShellViewModel } from "@/lib/shell-view-model";
@@ -144,6 +145,7 @@ export function CampaignShell({
       ...(candidateWorkspace?.limitation_codes ?? []),
       ...(teamWorkspace?.limitation_codes ?? []),
       ...(model.campaignRoadmap?.roadmap.limitation_codes ?? []),
+      ...(model.strategyWorkspace?.workspace.limitation_codes ?? []),
     ]),
   ];
 
@@ -975,6 +977,12 @@ export function CampaignShell({
               </p>
             )}
           </section>
+
+          <StrategyWorkspace
+            dictionary={dictionary}
+            evidence={model.strategyWorkspace}
+            availability={model.strategyWorkspaceAvailability}
+          />
 
           <OperationsWorkspace
             dictionary={dictionary}

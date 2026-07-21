@@ -66,5 +66,18 @@
       "run_id": 29871611856,
       "head_sha": "47e34a408da881b3f7e77660a4dc3435032b36f4"
     }
+  },
+  "receipt_head": "c81e4282813c0add0c3207f97066f127280e410e",
+  "final_ci": {
+    "campaignos": {
+      "result": "PASS",
+      "run_id": 29871930387,
+      "head_sha": "c81e4282813c0add0c3207f97066f127280e410e"
+    },
+    "runtime_visual": {
+      "result": "PASS",
+      "run_id": 29871930366,
+      "head_sha": "c81e4282813c0add0c3207f97066f127280e410e"
+    }
   }
 }
