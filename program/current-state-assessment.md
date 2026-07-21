@@ -109,7 +109,7 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Reconcile `C3-API-001`, which remains `IN_PROGRESS` and blocks the governed agent runtime despite the Strategy checkpoint being CI-green.
+1. Publish the cumulative `C3-API-001` reconciliation and require exact-head CI before unblocking the governed agent runtime.
 2. Reconcile `C3-CI-001` before infrastructure or protected delivery work advances.
 3. Continue authenticated non-technical editing/review journeys without merging, deploying or executing external effects.
 
@@ -126,3 +126,13 @@ Production deployment remains prohibited until every production gate passes and 
 - Draft PR `#96` is `CLEAN`; CampaignOS CI `29876152098` and visual review `29876152083` passed on `72a4dfb722f2c671fd754af4e4e2d242677411f9`.
 - Failed runs `29874179909` and `29875933528` remain recorded as superseded evidence.
 - Production remains `BLOCKED`; no merge, deployment or external effect occurred.
+
+
+## C3-API-001 cumulative reconciliation — 2026-07-21
+
+- Original protected campaign read/write boundary PR `#83` was merged with green CI `29802998261`.
+- Historical missing slices were delivered in PRs `#84`–`#88`: durable idempotency, recoverable outbox worker, workspace writes, readiness and campaign creation.
+- Current cumulative gate passes 120 focused API/worker tests, Ruff/format/mypy over 27 source files and the eight-slice PostgreSQL gate twice.
+- Health/readiness, exact authorization, optimistic versioning, atomic audit/outbox/replay evidence and tenant-scoped worker leases/retries/dead-letter are verified.
+- Worker administration, observability, dead-letter replay UI and external transport remain separate platform/operations work and authorize no external effect.
+- Status is `VERIFIED_POSTGRESQL`; production remains `BLOCKED` and Agent remains dependency-blocked until reconciliation CI is green.

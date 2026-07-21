@@ -50,10 +50,10 @@
     "No live identity, telemetry, cloud environment, customer acceptance, merge or deployment is claimed"
   ],
   "draft_pr": 96,
-  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR",
+  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR_FINAL_RECEIPT",
   "initial_commit": "6606f9b4ff2babd22c305d2edbf78ff48fff452a",
   "implementation_commit": "dfd29ad02d00f6bfc469f908d7953962dcca154f",
-  "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
-  "ci_run_id": 29876152098,
-  "visual_run_id": 29876152083
+  "head_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
+  "ci_run_id": 29876488499,
+  "visual_run_id": 29876488479
 }

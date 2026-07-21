@@ -35,3 +35,10 @@ Production remains `BLOCKED`. Risks are not closed by local tests, green draft c
 - **Status:** OPEN / non-blocking for continued pre-production development.
 - **Evidence:** contracts, durable API/SQL adapter, PostgreSQL races/RLS, read-only ES/EN browser journey and internal exact-version decision receipts pass.
 - **Mitigation:** keep the browser read-only, require separate exact authorization for any future mutation, preserve `authority_effect=NONE`/`external_effects=NONE`, and keep production `BLOCKED` until human, identity, environment and release gates pass.
+
+
+## C3-API-001 residual risk — internal worker without control plane
+
+- **Status:** OPEN / non-blocking for the internal API baseline; production-blocking through existing observability/platform gates.
+- **Evidence:** tenant-explicit leases, retries, dead-letter, RLS and internal envelope validation pass; no network transport is registered.
+- **Mitigation:** keep external transport absent, require a future human-audited dead-letter/replay workflow, add telemetry and operational ownership in `C3-OBS-001`, and retain production `BLOCKED` until all release gates pass.

@@ -3,9 +3,9 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-strategy-001-evidence-decision-room",
-  "current_increment": "C3-STRATEGY-001",
-  "iteration_status": "CI_GREEN",
+  "branch": "agent/c3-api-001-reconciliation",
+  "current_increment": "C3-API-001",
+  "iteration_status": "VERIFIED_POSTGRESQL",
   "production_status": "BLOCKED",
   "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the evidence-governed candidate workspace is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -45,8 +45,8 @@
     {
       "id": "WS-05",
       "name": "API and Background Jobs",
-      "status": "CAMPAIGN_STACK_AND_FRONTEND_CI_GREEN_IDENTITY_LOCAL_VERIFIED",
-      "next_increment": "C3-ONBOARD-001"
+      "status": "API_BASELINE_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-API-001"
     },
     {
       "id": "WS-06",
@@ -203,7 +203,7 @@
       "pr": 96,
       "base": "agent/c3-ops-001-roadmap-war-room",
       "head": "agent/c3-strategy-001-evidence-decision-room",
-      "head_sha": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
+      "head_sha": "427ed62cc8272efe9515d908d590187cfee94ae8",
       "ci": "SUCCESS"
     }
   ],
@@ -244,7 +244,10 @@
     "strategy_frontend_tests": 48,
     "strategy_browser_review": "PASS_ZERO_AXE",
     "strategy_frontend_image": "PASS_UID_10001",
-    "strategy_dependency_audit": "PASS_ZERO_VULNERABILITIES"
+    "strategy_dependency_audit": "PASS_ZERO_VULNERABILITIES",
+    "api_001_focused_tests": 120,
+    "api_001_static_source_files": 27,
+    "api_001_postgresql": "PASS_8_SLICES_TWICE"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -286,14 +289,10 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-STRATEGY-001",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-strategy-001-evidence-decision-room",
-    "base": "agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e",
-    "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
-    "draft_pr": 96,
-    "ci_run_id": 29876152098,
-    "visual_run_id": 29876152083,
+    "id": "C3-API-001",
+    "state": "VERIFIED_POSTGRESQL",
+    "branch": "agent/c3-api-001-reconciliation",
+    "base": "agent/c3-strategy-001-evidence-decision-room@427ed62cc8272efe9515d908d590187cfee94ae8",
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -314,10 +313,11 @@
     "base_commit": "c81e4282813c0add0c3207f97066f127280e410e",
     "initial_commit": "6606f9b4ff2babd22c305d2edbf78ff48fff452a",
     "implementation_commit": "dfd29ad02d00f6bfc469f908d7953962dcca154f",
-    "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
+    "policy_fix_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
+    "head_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
     "draft_pr": 96,
-    "ci_run_id": 29876152098,
-    "visual_run_id": 29876152083,
+    "ci_run_id": 29876488499,
+    "visual_run_id": 29876488479,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
     "external_effects": "NONE",

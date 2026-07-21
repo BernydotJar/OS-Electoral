@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-strategy-001-evidence-decision-room",
+  "source_branch": "agent/c3-api-001-reconciliation",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -742,8 +742,8 @@
     {
       "id": "WS-05",
       "name": "API and Background Jobs",
-      "status": "CAMPAIGN_STACK_AND_FRONTEND_CI_GREEN_IDENTITY_LOCAL_VERIFIED",
-      "next_increment": "C3-ONBOARD-001"
+      "status": "API_BASELINE_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-API-001"
     },
     {
       "id": "WS-06",
@@ -866,7 +866,7 @@
     },
     {
       "id": "C3-API-001",
-      "status": "ACTIVE",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-IAM-001",
         "C3-DATA-001"
@@ -1174,6 +1174,15 @@
         "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe",
         "campaignos_ci_run_id": 29857981975,
         "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 96,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-ops-001-roadmap-war-room",
+        "head": "agent/c3-strategy-001-evidence-decision-room",
+        "head_sha": "427ed62cc8272efe9515d908d590187cfee94ae8",
+        "campaignos_ci_run_id": 29876488499,
+        "conclusion": "SUCCESS"
       }
     ],
     "git_push_incident": {
@@ -1190,14 +1199,10 @@
     },
     "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-STRATEGY-001",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-strategy-001-evidence-decision-room",
-      "base": "agent/c3-ops-001-roadmap-war-room@c81e4282813c0add0c3207f97066f127280e410e",
-      "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
-      "draft_pr": 96,
-      "ci_run_id": 29876152098,
-      "visual_run_id": 29876152083,
+      "id": "C3-API-001",
+      "state": "VERIFIED_POSTGRESQL",
+      "branch": "agent/c3-api-001-reconciliation",
+      "base": "agent/c3-strategy-001-evidence-decision-room@427ed62cc8272efe9515d908d590187cfee94ae8",
       "production_status": "BLOCKED",
       "external_effects": "NONE"
     },
@@ -1208,10 +1213,11 @@
       "base_commit": "c81e4282813c0add0c3207f97066f127280e410e",
       "initial_commit": "6606f9b4ff2babd22c305d2edbf78ff48fff452a",
       "implementation_commit": "dfd29ad02d00f6bfc469f908d7953962dcca154f",
-      "head_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
+      "policy_fix_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
+      "head_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
       "draft_pr": 96,
-      "ci_run_id": 29876152098,
-      "visual_run_id": 29876152083,
+      "ci_run_id": 29876488499,
+      "visual_run_id": 29876488479,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
       "external_effects": "NONE",

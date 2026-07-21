@@ -36,11 +36,11 @@ Important limits:
 | WS-02 | Monorepo and Developer Experience | Ready | C3-DEVEX-001 |
 | WS-03 | Identity, Tenancy and RBAC | Local OIDC and membership authorization; lifecycle pending | C3-IAM-001 |
 | WS-04 | Campaign Domain and Persistence | In-memory prototype only | C3-DATA-001 |
-| WS-05 | API and Background Jobs | Local versioned health/identity runtime; domain actions and jobs pending | C3-API-001 |
+| WS-05 | API and Background Jobs | Versioned API, exact authorization, durable idempotency and tenant-scoped recoverable internal worker verified locally/PostgreSQL; observability and external transport remain separate | C3-API-001 |
 | WS-06 | Frontend, Design System and i18n | Static prototype | C3-FRONT-001 |
 | WS-07 | Guided Onboarding and Candidate Workspace | Guided intake and Candidate Workspace draft-PR CI-green with read-only ES/EN surfaces; authenticated editing and dedicated review separation pending | C3-TEAM-001 |
 | WS-08 | Team Builder and Training Academy | Team Builder PR `#94` is exact-head CI-green; authenticated editing and full academy content pending | C3-TRAINING-001 |
-| WS-09 | Strategy and Decision Governance | Evidence-first Decision Room verified locally/PostgreSQL/browser; exact human receipt implemented, external effects disabled | C3-AI-001 |
+| WS-09 | Strategy and Decision Governance | Evidence-first Decision Room PR #96 is exact-head CI-green; exact human receipt implemented, external effects disabled | C3-API-001 |
 | WS-10 | Roadmap, War Room and Campaign Health | Durable roadmap and immutable Daily War Room verified locally/PostgreSQL/browser; publication and operations follow-up pending | C3-OPS-002 |
 | WS-11 | Agent Runtime, Guardrails and Evals | Deterministic prototype | C3-AGENT-001 |
 | WS-12 | AWS Platform and Terraform | Not started | C3-INFRA-001 |
