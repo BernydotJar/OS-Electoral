@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-19",
-  "branch": "agent/c3-api-002-idempotency",
+  "branch": "agent/c3-api-004-workspace-write",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -124,11 +124,16 @@
         "backend/tests/test_outbox_worker.py",
         "backend/tests/test_worker_main.py",
         "docs/operations/background-workers.md",
-        "program/iterations/c3-api-003-outbox-worker.md"
+        "program/iterations/c3-api-003-outbox-worker.md",
+        "backend/src/campaignos/api/routes/workspaces.py",
+        "backend/src/campaignos/workspaces/write_model.py",
+        "backend/tests/test_workspace_write_api.py",
+        "backend/tests/test_workspace_write_model.py",
+        "program/iterations/c3-api-004-workspace-write.md"
       ],
       "external_effects": "NONE",
       "blockers": [
-        "No broader domain writes",
+        "No candidate, approval, assignment or artifact domain writes",
         "No worker administration, observability or reviewed external event transport"
       ]
     },

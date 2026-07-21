@@ -10,7 +10,7 @@ from fastapi import FastAPI
 
 from campaignos.api.errors import install_exception_handlers
 from campaignos.api.middleware import request_controls
-from campaignos.api.routes import campaigns, health, me, tenant_me
+from campaignos.api.routes import campaigns, health, me, tenant_me, workspaces
 from campaignos.campaigns import (
     CampaignDirectory,
     CampaignWriter,
@@ -27,6 +27,11 @@ from campaignos.identity.authorization import (
     UnavailableMembershipDirectory,
 )
 from campaignos.identity.oidc import OidcTokenVerifier, TokenVerifier, UnavailableTokenVerifier
+from campaignos.workspaces import (
+    SqlAlchemyWorkspaceWriter,
+    UnavailableWorkspaceWriter,
+    WorkspaceWriter,
+)
 
 
 def create_app(
@@ -37,6 +42,7 @@ def create_app(
     membership_directory: MembershipDirectory | None = None,
     campaign_directory: CampaignDirectory | None = None,
     campaign_writer: CampaignWriter | None = None,
+    workspace_writer: WorkspaceWriter | None = None,
 ) -> FastAPI:
     runtime_settings = settings or get_settings()
     verifier = token_verifier
@@ -64,6 +70,10 @@ def create_app(
     if campaign_write_boundary is None and isinstance(database_runtime, Database):
         campaign_write_boundary = SqlAlchemyCampaignWriter(database_runtime)
     campaign_write_boundary = campaign_write_boundary or UnavailableCampaignWriter()
+    workspace_write_boundary = workspace_writer
+    if workspace_write_boundary is None and isinstance(database_runtime, Database):
+        workspace_write_boundary = SqlAlchemyWorkspaceWriter(database_runtime)
+    workspace_write_boundary = workspace_write_boundary or UnavailableWorkspaceWriter()
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -92,6 +102,7 @@ def create_app(
     app.state.membership_directory = authorization_directory
     app.state.campaign_directory = campaign_read_directory
     app.state.campaign_writer = campaign_write_boundary
+    app.state.workspace_writer = workspace_write_boundary
     app.state.logger = logging.getLogger(runtime_settings.service_name)
 
     app.middleware("http")(request_controls)
@@ -100,6 +111,7 @@ def create_app(
     app.include_router(me.router, prefix="/api/v1")
     app.include_router(tenant_me.router, prefix="/api/v1")
     app.include_router(campaigns.router, prefix="/api/v1")
+    app.include_router(workspaces.router, prefix="/api/v1")
     return app
 
 

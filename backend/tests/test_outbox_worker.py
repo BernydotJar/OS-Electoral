@@ -8,7 +8,7 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
 
 from campaignos.data.database import Database, TenantSession
-from campaignos.data.models import AuditEvent, Base, Campaign, OutboxEvent, Tenant
+from campaignos.data.models import AuditEvent, Base, Campaign, OutboxEvent, Tenant, Workspace
 from campaignos.workers import (
     ClaimedOutboxEvent,
     InternalCampaignUpdatedHandler,
@@ -283,3 +283,122 @@ def test_handler_rejects_scope_mismatch() -> None:
 
     with pytest.raises(Exception, match="payload does not match"):
         InternalCampaignUpdatedHandler().handle(event)
+
+
+def test_workspace_created_event_requires_matching_workspace_evidence(database: Database) -> None:
+    workspace_id = uuid4()
+    audit_id = uuid4()
+    event_id = uuid4()
+    with database.tenant_transaction(TENANT_ID) as session:
+        session.add(
+            Workspace(
+                id=workspace_id,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                slug="war-room",
+                name="War Room",
+                status="ACTIVE",
+                version=1,
+            )
+        )
+        session.add(
+            AuditEvent(
+                id=audit_id,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                workspace_id=workspace_id,
+                principal_id=None,
+                event_type="workspace.created",
+                resource_type="workspace",
+                resource_id=str(workspace_id),
+                payload={},
+                occurred_at=NOW,
+                previous_hash="GENESIS",
+                event_hash=uuid4().hex + uuid4().hex,
+            )
+        )
+        session.add(
+            OutboxEvent(
+                id=event_id,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                topic="workspace.created",
+                payload={
+                    "audit_event_id": str(audit_id),
+                    "campaign_id": str(CAMPAIGN_ID),
+                    "tenant_id": str(TENANT_ID),
+                    "workspace_id": str(workspace_id),
+                    "version": 1,
+                },
+                status="PENDING",
+                attempts=0,
+                available_at=NOW,
+                created_at=NOW,
+            )
+        )
+
+    worker = OutboxWorker(database, "worker-1", InternalCampaignUpdatedHandler())
+    result = worker.run_once(TENANT_ID, now=NOW)
+
+    assert result.delivered == 1
+    assert get_event(database, event_id).status == "DELIVERED"
+
+
+def test_workspace_created_event_with_wrong_audit_scope_is_retried(database: Database) -> None:
+    workspace_id = uuid4()
+    wrong_workspace_id = uuid4()
+    audit_id = uuid4()
+    event_id = uuid4()
+    with database.tenant_transaction(TENANT_ID) as session:
+        session.add(
+            Workspace(
+                id=workspace_id,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                slug="war-room",
+                name="War Room",
+                status="ACTIVE",
+                version=1,
+            )
+        )
+        session.add(
+            AuditEvent(
+                id=audit_id,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                workspace_id=workspace_id,
+                principal_id=None,
+                event_type="workspace.created",
+                resource_type="workspace",
+                resource_id=str(workspace_id),
+                payload={},
+                occurred_at=NOW,
+                previous_hash="GENESIS",
+                event_hash=uuid4().hex + uuid4().hex,
+            )
+        )
+        session.add(
+            OutboxEvent(
+                id=event_id,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                topic="workspace.created",
+                payload={
+                    "audit_event_id": str(audit_id),
+                    "campaign_id": str(CAMPAIGN_ID),
+                    "tenant_id": str(TENANT_ID),
+                    "workspace_id": str(wrong_workspace_id),
+                    "version": 1,
+                },
+                status="PENDING",
+                attempts=0,
+                available_at=NOW,
+                created_at=NOW,
+            )
+        )
+
+    worker = OutboxWorker(database, "worker-1", InternalCampaignUpdatedHandler())
+    result = worker.run_once(TENANT_ID, now=NOW)
+
+    assert result.retried == 1 and result.delivered == 0
+    assert get_event(database, event_id).last_error == "InvalidOutboxEvent"
