@@ -87,7 +87,8 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Team Builder | revision `20260721_0007`, exact RACI/capacity/access-recommendation contracts, PR `#94`, CI `29870461743` and visual `29870461745` | `CI_GREEN`; human staffing acceptance, authenticated editing and live environments pending |
 | Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, PR `#95`, CI `29871930387` and visual `29871930366` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
 | Evidence-first Strategy Decision Room | revision `20260721_0009`, exact API, append-only decisions, PR `#96`, CI `29876152098` and visual `29876152083` | `CI_GREEN`; authenticated editing, independent human acceptance, merge and live environments pending |
-| Required evals | exact 33-item fail-closed catalog | `5 PASS / 14 PARTIAL / 14 NOT_RUN` |
+| Governed Agent Runtime | revision `20260721_0010`, strict no-tool contracts, exact API, append-only journal, prompt-injection guards and PostgreSQL replay/RLS | `VERIFIED_POSTGRESQL`; live provider/privacy review, human disposition UI, publication/CI and environments pending |
+| Required evals | exact 33-item fail-closed catalog | `5 PASS / 15 PARTIAL / 13 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
 | AWS/operations | no verified environment, backup/restore or observability | `NOT_VERIFIED` / `NOT_IMPLEMENTED` |
@@ -109,9 +110,9 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Begin `C3-AGENT-001` as a provider-neutral, deterministic, non-executing runtime now that API and Strategy dependencies are CI-green.
+1. Publish `C3-AGENT-001` and require exact-head CI/visual success before recording `CI_GREEN`.
 2. Reconcile `C3-CI-001` before infrastructure or protected delivery work advances.
-3. Continue authenticated non-technical editing/review journeys without merging, deploying or executing external effects.
+3. Add live-provider/privacy and human-disposition work only under separate reviewed increments; keep external effects disabled.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
 
@@ -136,4 +137,17 @@ Production deployment remains prohibited until every production gate passes and 
 - Health/readiness, exact authorization, optimistic versioning, atomic audit/outbox/replay evidence and tenant-scoped worker leases/retries/dead-letter are verified.
 - Worker administration, observability, dead-letter replay UI and external transport remain separate platform/operations work and authorize no external effect.
 - Status is `CI_GREEN`; PR `#97` is `CLEAN`, CI `29876982499` and visual `29876982490` passed on `55215a86b54be2f1cca3a0e78248ab5ae66fecb2`.
-- `C3-AGENT-001` is `EXECUTABLE_NEXT`; production remains `BLOCKED`.
+- `C3-AGENT-001` is `VERIFIED_POSTGRESQL`; publication/CI and live-provider/privacy gates remain pending, and production remains `BLOCKED`.
+
+
+## C3-AGENT-001 local/PostgreSQL checkpoint — 2026-07-21
+
+- Added revision `20260721_0010`, provider-neutral strict contracts, deterministic pre/post guards and an append-only Agent Run journal.
+- Evidence is delimited as untrusted data; tools are always empty and prohibited instructions are refused before provider invocation.
+- Provider identity, refusal, tool calls, schema, evidence/option references, supported claims and token/latency/cost budgets fail closed.
+- Default provider is unavailable and performs no network call; refusals persist as attributable internal evidence.
+- Exact create/read API, durable replay, audit, internal no-effect outbox and forced RLS are implemented.
+- Passed 18 runtime adversarial tests, 60 focused Agent/worker tests, 628 full-suite tests, 9 skips and 90.95% coverage.
+- Passed the nine-slice PostgreSQL gate twice, including one provider call under equal-key concurrency and cross-tenant denial.
+- Prompt-injection eval is `PARTIAL_TESTED_LOCAL`; provider privacy/leakage approval remains `NOT_IMPLEMENTED`.
+- Status is `VERIFIED_POSTGRESQL`; production remains `BLOCKED`, branch publication/CI are pending and external effects remain `NONE`.

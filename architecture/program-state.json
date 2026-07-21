@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-api-001-reconciliation",
+  "source_branch": "agent/c3-agent-001-governed-runtime",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -778,7 +778,7 @@
     {
       "id": "WS-11",
       "name": "Agent Runtime, Guardrails and Evals",
-      "status": "AGENT_EXECUTABLE_NEXT",
+      "status": "AGENT_VERIFIED_POSTGRESQL_NO_LIVE_PROVIDER",
       "next_increment": "C3-AGENT-001"
     },
     {
@@ -943,7 +943,7 @@
     },
     {
       "id": "C3-AGENT-001",
-      "status": "EXECUTABLE_NEXT",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-API-001",
         "C3-STRATEGY-001"
@@ -1189,8 +1189,8 @@
         "state": "OPEN_DRAFT",
         "base": "agent/c3-strategy-001-evidence-decision-room",
         "head": "agent/c3-api-001-reconciliation",
-        "head_sha": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
-        "campaignos_ci_run_id": 29876982499,
+        "head_sha": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
+        "campaignos_ci_run_id": 29877182395,
         "conclusion": "SUCCESS"
       }
     ],
@@ -1208,14 +1208,10 @@
     },
     "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-API-001",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-api-001-reconciliation",
-      "base": "agent/c3-strategy-001-evidence-decision-room@427ed62cc8272efe9515d908d590187cfee94ae8",
-      "head_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
-      "draft_pr": 97,
-      "ci_run_id": 29876982499,
-      "visual_run_id": 29876982490,
+      "id": "C3-AGENT-001",
+      "state": "VERIFIED_POSTGRESQL",
+      "branch": "agent/c3-agent-001-governed-runtime",
+      "base": "agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
       "production_status": "BLOCKED",
       "external_effects": "NONE"
     },
@@ -1225,10 +1221,11 @@
       "base": "agent/c3-strategy-001-evidence-decision-room",
       "base_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
       "implementation_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
-      "head_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+      "receipt_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
+      "head_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
       "draft_pr": 97,
-      "ci_run_id": 29876982499,
-      "visual_run_id": 29876982490,
+      "ci_run_id": 29877182395,
+      "visual_run_id": 29877182397,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
       "external_effects": "NONE",

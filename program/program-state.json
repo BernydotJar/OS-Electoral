@@ -3,9 +3,9 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-api-001-reconciliation",
-  "current_increment": "C3-API-001",
-  "iteration_status": "CI_GREEN",
+  "branch": "agent/c3-agent-001-governed-runtime",
+  "current_increment": "C3-AGENT-001",
+  "iteration_status": "VERIFIED_POSTGRESQL",
   "production_status": "BLOCKED",
   "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the evidence-governed candidate workspace is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -81,7 +81,7 @@
     {
       "id": "WS-11",
       "name": "Agent Runtime, Guardrails and Evals",
-      "status": "AGENT_EXECUTABLE_NEXT",
+      "status": "AGENT_VERIFIED_POSTGRESQL_NO_LIVE_PROVIDER",
       "next_increment": "C3-AGENT-001"
     },
     {
@@ -109,9 +109,7 @@
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [
-    "C3-AGENT-001"
-  ],
+  "ready_tasks": [],
   "published_unreviewed_increment": {
     "id": "C3-OPS-001",
     "state": "DRAFT_PR_CI_GREEN",
@@ -212,14 +210,14 @@
       "pr": 97,
       "base": "agent/c3-strategy-001-evidence-decision-room",
       "head": "agent/c3-api-001-reconciliation",
-      "head_sha": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+      "head_sha": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
       "ci": "SUCCESS"
     }
   ],
   "local_verification": {
-    "tests_passed": 585,
-    "tests_skipped": 8,
-    "coverage_percent": 90.7,
+    "tests_passed": 628,
+    "tests_skipped": 9,
+    "coverage_percent": 90.95,
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_REVISION_20260721_0008_OPERATIONS_RLS_DAG_CONCURRENCY_SNAPSHOTS",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
@@ -256,7 +254,11 @@
     "strategy_dependency_audit": "PASS_ZERO_VULNERABILITIES",
     "api_001_focused_tests": 120,
     "api_001_static_source_files": 27,
-    "api_001_postgresql": "PASS_8_SLICES_TWICE"
+    "api_001_postgresql": "PASS_8_SLICES_TWICE",
+    "agent_focused_local": "PASS_60_SKIPPED_2",
+    "agent_runtime_adversarial_tests": 18,
+    "agent_postgresql": "PASS_9_SLICES_TWICE",
+    "agent_provider_mode": "UNAVAILABLE_NO_NETWORK"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -298,14 +300,10 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-API-001",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-api-001-reconciliation",
-    "base": "agent/c3-strategy-001-evidence-decision-room@427ed62cc8272efe9515d908d590187cfee94ae8",
-    "head_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
-    "draft_pr": 97,
-    "ci_run_id": 29876982499,
-    "visual_run_id": 29876982490,
+    "id": "C3-AGENT-001",
+    "state": "VERIFIED_POSTGRESQL",
+    "branch": "agent/c3-agent-001-governed-runtime",
+    "base": "agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -325,10 +323,11 @@
     "base": "agent/c3-strategy-001-evidence-decision-room",
     "base_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
     "implementation_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
-    "head_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+    "receipt_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
+    "head_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
     "draft_pr": 97,
-    "ci_run_id": 29876982499,
-    "visual_run_id": 29876982490,
+    "ci_run_id": 29877182395,
+    "visual_run_id": 29877182397,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
     "external_effects": "NONE",

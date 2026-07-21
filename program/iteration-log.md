@@ -354,3 +354,13 @@
 - PR #97 is `CLEAN`; CampaignOS CI `29876982499` and visual review `29876982490` concluded `SUCCESS`.
 - Recorded `C3-API-001` as `CI_GREEN` and unblocked `C3-AGENT-001` as `EXECUTABLE_NEXT`.
 - Production remains `BLOCKED`; no merge, deployment, provider call or external campaign effect occurred.
+
+
+## C3-AGENT-001 local/PostgreSQL checkpoint — 2026-07-21
+
+- Implemented a provider-neutral, deterministic, no-tool internal recommendation runtime over the exact Strategy snapshot.
+- Added migration `20260721_0010`, append-only run journal, exact API, idempotency, audit and internal no-effect outbox integration.
+- Passed 18 adversarial runtime tests, 60 focused Agent/worker tests, 628 full-suite tests and 90.95% coverage.
+- Passed nine PostgreSQL slices twice; concurrent equal keys invoke the provider once and forced RLS denies foreign access.
+- Elevated `EVAL-PROMPT-INJECTION-001` to PARTIAL while retaining live-provider privacy/leakage gates as unimplemented.
+- Recorded `VERIFIED_POSTGRESQL`; publication/CI remain pending, production remains `BLOCKED` and external effects remain `NONE`.

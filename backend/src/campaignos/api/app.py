@@ -9,9 +9,18 @@ from typing import cast
 
 from fastapi import FastAPI
 
+from campaignos.agents import (
+    AgentRunService,
+    AgentRuntime,
+    SqlAlchemyAgentRunService,
+    StructuredGenerationProvider,
+    UnavailableAgentRunService,
+    UnavailableStructuredGenerationProvider,
+)
 from campaignos.api.errors import install_exception_handlers
 from campaignos.api.middleware import request_controls
 from campaignos.api.routes import (
+    agent_runs,
     campaign_operations,
     campaigns,
     candidate_workspace,
@@ -96,6 +105,8 @@ def create_app(
     candidate_workspace_service: CandidateWorkspaceService | None = None,
     team_workspace_service: TeamWorkspaceService | None = None,
     strategy_workspace_service: StrategyWorkspaceService | None = None,
+    agent_run_service: AgentRunService | None = None,
+    agent_provider: StructuredGenerationProvider | None = None,
     campaign_operations_service: CampaignOperationsService | None = None,
     campaign_creator: CampaignCreator | None = None,
     campaign_directory: CampaignDirectory | None = None,
@@ -146,6 +157,11 @@ def create_app(
     strategy_workspace_boundary = (
         strategy_workspace_boundary or UnavailableStrategyWorkspaceService()
     )
+    agent_run_boundary = agent_run_service
+    if agent_run_boundary is None and isinstance(database_runtime, Database):
+        provider = agent_provider or UnavailableStructuredGenerationProvider()
+        agent_run_boundary = SqlAlchemyAgentRunService(database_runtime, AgentRuntime(provider))
+    agent_run_boundary = agent_run_boundary or UnavailableAgentRunService()
     campaign_operations_boundary = campaign_operations_service
     if campaign_operations_boundary is None and isinstance(database_runtime, Database):
         campaign_operations_boundary = SqlAlchemyCampaignOperationsService(database_runtime)
@@ -205,6 +221,7 @@ def create_app(
     app.state.candidate_workspace_service = candidate_workspace_boundary
     app.state.team_workspace_service = team_workspace_boundary
     app.state.strategy_workspace_service = strategy_workspace_boundary
+    app.state.agent_run_service = agent_run_boundary
     app.state.campaign_operations_service = campaign_operations_boundary
     app.state.campaign_creator = campaign_create_boundary
     app.state.campaign_directory = campaign_read_directory
@@ -223,6 +240,7 @@ def create_app(
     app.include_router(candidate_workspace.router, prefix="/api/v1")
     app.include_router(team_workspace.router, prefix="/api/v1")
     app.include_router(strategy_workspace.router, prefix="/api/v1")
+    app.include_router(agent_runs.router, prefix="/api/v1")
     app.include_router(campaign_operations.router, prefix="/api/v1")
     app.include_router(campaigns.router, prefix="/api/v1")
     app.include_router(workspaces.router, prefix="/api/v1")

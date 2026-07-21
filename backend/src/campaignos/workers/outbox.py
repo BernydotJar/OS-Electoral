@@ -11,7 +11,7 @@ from sqlalchemy import or_, select
 from sqlalchemy.exc import SQLAlchemyError
 
 from campaignos.data.database import Database
-from campaignos.data.models import AuditEvent, Campaign, OutboxEvent, Workspace
+from campaignos.data.models import AgentRun, AuditEvent, Campaign, OutboxEvent, Workspace
 
 
 class OutboxWorkerUnavailable(RuntimeError):
@@ -48,7 +48,7 @@ class OutboxRunResult:
 
 class OutboxHandler(Protocol):
     def handle(self, event: ClaimedOutboxEvent) -> None:
-        """Handle one event without bypassing the worker's state machine."""
+        """Handle one event without bypassing the worker state machine."""
 
 
 def _is_uuid(value: str) -> bool:
@@ -60,33 +60,40 @@ def _is_uuid(value: str) -> bool:
 
 
 class InternalCampaignUpdatedHandler:
-    """Validate the campaign update envelope without producing an external effect."""
+    """Validate internal envelopes without producing an external effect."""
 
     def handle(self, event: ClaimedOutboxEvent) -> None:
-        if event.topic not in {"campaign.updated", "workspace.created"}:
+        if event.topic not in {"campaign.updated", "workspace.created", "agent.run.recorded"}:
             raise UnsupportedOutboxTopic(event.topic)
         tenant_id = event.payload.get("tenant_id")
         campaign_id = event.payload.get("campaign_id")
         audit_event_id = event.payload.get("audit_event_id")
         version = event.payload.get("version")
-        workspace_id = event.payload.get("workspace_id")
-        workspace_valid = event.topic == "campaign.updated" or (
-            isinstance(workspace_id, str) and _is_uuid(workspace_id)
-        )
         if (
             tenant_id != str(event.tenant_id)
             or event.campaign_id is None
             or campaign_id != str(event.campaign_id)
             or not isinstance(audit_event_id, str)
+            or not _is_uuid(audit_event_id)
             or not isinstance(version, int)
             or version < 1
-            or not workspace_valid
         ):
             raise InvalidOutboxEvent(f"{event.topic} payload does not match event scope")
-        try:
-            UUID(audit_event_id)
-        except ValueError as exc:
-            raise InvalidOutboxEvent("campaign.updated audit_event_id must be a UUID") from exc
+        if event.topic == "workspace.created":
+            workspace_id = event.payload.get("workspace_id")
+            if not isinstance(workspace_id, str) or not _is_uuid(workspace_id):
+                raise InvalidOutboxEvent("workspace.created requires a valid workspace_id")
+        if event.topic == "agent.run.recorded":
+            agent_run_id = event.payload.get("agent_run_id")
+            if (
+                not isinstance(agent_run_id, str)
+                or not _is_uuid(agent_run_id)
+                or event.payload.get("status") not in {"COMPLETED", "REFUSED"}
+                or event.payload.get("human_disposition") != "PENDING"
+                or event.payload.get("authority_effect") != "NONE"
+                or event.payload.get("external_effects") != "NONE"
+            ):
+                raise InvalidOutboxEvent("agent.run.recorded payload violates governance")
 
 
 @dataclass(slots=True)
@@ -249,6 +256,28 @@ class OutboxWorker:
                     or audit.resource_id != str(workspace_id)
                 ):
                     raise InvalidOutboxEvent("Workspace audit evidence does not match event scope")
+            elif row.topic == "agent.run.recorded":
+                try:
+                    agent_run_id = UUID(str(row.payload.get("agent_run_id")))
+                except ValueError as exc:
+                    raise InvalidOutboxEvent("Agent run identifier is invalid") from exc
+                agent_run = session.scalar(
+                    select(AgentRun).where(
+                        AgentRun.id == agent_run_id,
+                        AgentRun.tenant_id == tenant_id,
+                        AgentRun.campaign_id == row.campaign_id,
+                    )
+                )
+                if (
+                    agent_run is None
+                    or audit.resource_type != "agent_run"
+                    or audit.resource_id != str(agent_run_id)
+                    or agent_run.status != row.payload.get("status")
+                    or agent_run.human_disposition != "PENDING"
+                    or agent_run.authority_effect != "NONE"
+                    or agent_run.external_effects != "NONE"
+                ):
+                    raise InvalidOutboxEvent("Agent run evidence does not match event scope")
             row.status = "DELIVERED"
             row.processed_at = now
             row.lease_owner = None

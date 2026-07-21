@@ -1,0 +1,59 @@
+{
+  "increment": "C3-AGENT-001",
+  "verified_at": "2026-07-21",
+  "branch": "agent/c3-agent-001-governed-runtime",
+  "base": "agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
+  "status": "VERIFIED_POSTGRESQL",
+  "production_status": "BLOCKED",
+  "external_effects": "NONE",
+  "provider_mode": "UNAVAILABLE_NO_NETWORK",
+  "results": {
+    "focused_agent_worker": {
+      "passed": 60,
+      "skipped": 2
+    },
+    "runtime_adversarial": {
+      "passed": 18
+    },
+    "pytest": {
+      "passed": 628,
+      "skipped": 9
+    },
+    "coverage": {
+      "percent": 90.95,
+      "floor": 90,
+      "result": "PASS"
+    },
+    "static": {
+      "ruff": "PASS",
+      "format": "PASS",
+      "mypy_source_files": 63
+    },
+    "frontend": {
+      "tests": 48,
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "vulnerabilities": 0
+    },
+    "postgresql": {
+      "result": "PASS",
+      "consecutive_runs": 2,
+      "selected": 9,
+      "migration_head": "20260721_0010"
+    },
+    "eval_catalog": {
+      "pass": 5,
+      "partial": 15,
+      "not_run": 13
+    },
+    "program_truth": "PASS_PRODUCTION_BLOCKED"
+  },
+  "limitations": [
+    "No live model provider or production data-processing/privacy approval",
+    "No staging leakage, fallback, regional failure, load or retention evidence",
+    "No authenticated human disposition frontend or independent acceptance",
+    "No merge, deployment or external campaign effect is claimed"
+  ],
+  "remote_state": "LOCAL_VERIFIED_PENDING_PR_CI"
+}
