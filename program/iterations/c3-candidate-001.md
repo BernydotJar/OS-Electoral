@@ -76,11 +76,11 @@ branch_publication: PENDING
 draft_pr: PENDING
 ci: PENDING
 full_suite:
-  passed: 466
+  passed: 467
   skipped: 5
-  coverage_percent: 91.56
+  coverage_percent: 91.67
 frontend:
-  vitest: 0
+  vitest: 22
   lint: PASS
   strict_typescript: PASS
   production_build: PASS

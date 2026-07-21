@@ -33,8 +33,8 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - `make verify`: PASS.
 - Ruff lint and format: PASS.
 - strict mypy: PASS across 44 source files.
-- Full locked suite: `466 passed`, `5 skipped`.
-- Enforced coverage: `91.56%` with `fail_under=90`.
+- Full locked suite: `467 passed`, `5 skipped`.
+- Enforced coverage: `91.67%` with `fail_under=90`.
 - Isolated PostgreSQL gate reaches revision `20260721_0006` and is reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
 - PostgreSQL evidence covers forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, candidate create/update concurrency, exact replay and version-bound approvals.
 - Frontend regression: ESLint, strict TypeScript, 0 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
@@ -83,7 +83,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Dynamic frontend | `437b469`, CI `29856835515`, visual `29856835522` | `CI_GREEN`; synthetic and not deployed |
 | Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice, PR `#90` CI `29857981975` | `CI_GREEN`; human review/merge and live provider pending |
 | Guided intake | revision `20260721_0005`, exact API, 425-test suite, PostgreSQL twice, 16 frontend tests, PR `#92`, CI `29865306720` and visual `29865306576` | `CI_GREEN`; human review/merge and live edit journey pending |
-| Candidate workspace | revision `20260721_0006`, evidence contracts, exact API, 466-test suite, PostgreSQL twice, 0 frontend tests and WCAG browser gate | `VERIFIED_POSTGRESQL_LOCAL_ONLY`; branch/PR/CI publication pending |
+| Candidate workspace | revision `20260721_0006`, evidence contracts, exact API, 467-test suite, PostgreSQL twice, 22 frontend tests and WCAG browser gate | `VERIFIED_POSTGRESQL_LOCAL_ONLY`; branch/PR/CI publication pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 12 PARTIAL / 16 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |

@@ -31,14 +31,14 @@ focused_candidate_workspace:
   passed: 42
 full_locked_suite:
   result: PASS
-  passed: 466
+  passed: 467
   skipped: 5
-  coverage_percent: 91.56
+  coverage_percent: 91.67
   coverage_floor: 90
 frontend:
   eslint: PASS
   strict_typescript: PASS
-  vitest: PASS_0
+  vitest: PASS_22
   next_production_build: PASS
   npm_audit_vulnerabilities: 0
 browser_wcag:

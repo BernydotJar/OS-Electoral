@@ -14,12 +14,12 @@
     "mypy": "PASS_44_SOURCE_FILES",
     "pytest": {
       "result": "PASS",
-      "passed": 466,
+      "passed": 467,
       "skipped": 5
     },
     "coverage": {
       "result": "PASS",
-      "percent": 91.56,
+      "percent": 91.67,
       "floor": 90
     },
     "focused_candidate_tests": 42,
@@ -31,7 +31,7 @@
     },
     "frontend": {
       "result": "PASS",
-      "vitest": 0,
+      "vitest": 22,
       "eslint": "PASS",
       "strict_typescript": "PASS",
       "production_build": "PASS",

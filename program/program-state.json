@@ -175,9 +175,9 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 466,
+    "tests_passed": 467,
     "tests_skipped": 5,
-    "coverage_percent": 91.56,
+    "coverage_percent": 91.67,
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_REVISION_20260721_0006_CANDIDATE_RLS_CONCURRENCY_APPROVALS",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
