@@ -772,8 +772,8 @@
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "ROADMAP_WAR_ROOM_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-OPS-002"
+      "status": "ROADMAP_WAR_ROOM_CI_GREEN",
+      "next_increment": "C3-STRATEGY-001"
     },
     {
       "id": "WS-11",
@@ -926,7 +926,7 @@
     },
     {
       "id": "C3-STRATEGY-001",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "EXECUTABLE_NEXT",
       "depends_on": [
         "C3-DATA-001",
         "C3-API-001"
@@ -935,9 +935,8 @@
     },
     {
       "id": "C3-OPS-001",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
-        "C3-STRATEGY-001",
         "C3-TEAM-001"
       ],
       "workstream": "WS-10"

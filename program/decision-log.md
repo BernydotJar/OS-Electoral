@@ -244,3 +244,10 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** When the Cloud push wrapper pushed current Ops HEAD to the requested Team branch, preserve the remote history without force-push, restore its tree by fast-forward, and publish a separate clean Team review branch for PR `#94`.
 - **Evidence:** `agent/c3-team-001-accountability-review@af3e430`, PR `#94`, CI `29870461743`, visual `29870461745`.
 - **Consequence:** reviewers receive a clean Team-only history; the original builder branch remains auditable but is not the review source of truth.
+
+
+## 2026-07-21 — Roadmap coordination can precede strategy persistence
+
+- **Decision:** The bounded `C3-OPS-001` slice owns generic phases, dependencies, tasks, blockers, human decisions and immutable daily snapshots; it does not persist or approve political strategy.
+- **Evidence:** implementation/API contracts, PR `#95`, and the absence of strategy-generation or strategy-approval fields.
+- **Consequence:** `C3-OPS-001` depends on Team Builder only. `C3-STRATEGY-001` remains a separate evidence-first increment and may later contribute approved decisions or work items through versioned contracts.

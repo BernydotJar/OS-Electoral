@@ -4,7 +4,7 @@
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
   "branch": "agent/c3-ops-001-roadmap-war-room",
-  "current_increment": "C3-OPS-001",
+  "current_increment": "C3-STRATEGY-001",
   "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
   "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the evidence-governed candidate workspace is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
@@ -75,8 +75,8 @@
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "ROADMAP_WAR_ROOM_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-OPS-002"
+      "status": "ROADMAP_WAR_ROOM_CI_GREEN",
+      "next_increment": "C3-STRATEGY-001"
     },
     {
       "id": "WS-11",
@@ -109,17 +109,19 @@
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [],
+  "ready_tasks": [
+    "C3-STRATEGY-001"
+  ],
   "published_unreviewed_increment": {
-    "id": "C3-TEAM-001",
+    "id": "C3-OPS-001",
     "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-team-001-accountability-review",
-    "base": "agent/c3-candidate-001-evidence-workspace",
-    "implementation_commit": "d18d89b",
-    "head_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
-    "draft_pr": 94,
-    "ci_run_id": 29870461743,
-    "visual_run_id": 29870461745
+    "branch": "agent/c3-ops-001-roadmap-war-room",
+    "base": "agent/c3-team-001-accountability-review",
+    "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
+    "head_commit": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+    "draft_pr": 95,
+    "ci_run_id": 29871611889,
+    "visual_run_id": 29871611856
   },
   "review_stack": [
     {
@@ -191,6 +193,13 @@
       "head": "agent/c3-team-001-accountability-review",
       "head_sha": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
       "ci": "SUCCESS"
+    },
+    {
+      "pr": 95,
+      "base": "agent/c3-team-001-accountability-review",
+      "head": "agent/c3-ops-001-roadmap-war-room",
+      "head_sha": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+      "ci": "SUCCESS"
     }
   ],
   "local_verification": {
@@ -222,7 +231,9 @@
     "operations_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_OVERFLOW",
     "operations_image": "PASS_UID_10001_HEALTH_SMOKE",
     "team_pr_ci": "PASS_PR_94_HEAD_AF3E430_RUN_29870461743",
-    "team_runtime_visual": "PASS_RUN_29870461745"
+    "team_runtime_visual": "PASS_RUN_29870461745",
+    "operations_pr_ci": "PASS_PR_95_HEAD_47E34A4_RUN_29871611889",
+    "operations_runtime_visual": "PASS_RUN_29871611856"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -264,13 +275,12 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-OPS-001",
-    "state": "VERIFIED_POSTGRESQL",
-    "branch": "agent/c3-ops-001-roadmap-war-room",
-    "base": "agent/c3-team-001-accountability-review@af3e43074e3876fe26f8ba1497269f1d69183bf8",
+    "id": "C3-STRATEGY-001",
+    "state": "READY",
+    "branch": "NOT_CREATED",
+    "base": "agent/c3-team-001-accountability-review",
     "production_status": "BLOCKED",
-    "external_effects": "NONE",
-    "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f"
+    "external_effects": "NONE"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -287,9 +297,14 @@
     "branch": "agent/c3-ops-001-roadmap-war-room",
     "base": "agent/c3-team-001-accountability-review",
     "base_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
-    "status": "VERIFIED_POSTGRESQL",
+    "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
+    "head_commit": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+    "draft_pr": 95,
+    "ci_run_id": 29871611889,
+    "visual_run_id": 29871611856,
+    "ci": "SUCCESS",
+    "status": "CI_GREEN",
     "external_effects": "NONE",
-    "next_increment": "C3-OPS-002",
-    "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f"
+    "next_increment": "C3-STRATEGY-001"
   }
 }

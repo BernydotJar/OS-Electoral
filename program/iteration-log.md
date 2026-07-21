@@ -309,3 +309,12 @@
 - Passed 34 focused tests, 548 full-suite tests, 90.85% coverage and the seven-slice PostgreSQL gate twice.
 - Passed the ES/EN desktop/mobile, keyboard, reduced-motion, zero-overflow, zero-axe and non-root image gates with 39 frontend tests.
 - Recorded `VERIFIED_POSTGRESQL`; production remains `BLOCKED`, branch publication/CI is pending and external effects remain `NONE`.
+
+
+## C3-OPS-001 publication checkpoint — 2026-07-21
+
+- Published `agent/c3-ops-001-roadmap-war-room@47e34a408da881b3f7e77660a4dc3435032b36f4` and opened draft PR `#95` against `agent/c3-team-001-accountability-review`.
+- CampaignOS CI `29871611889` and runtime visual review `29871611856` succeeded at the exact published head; merge state is `CLEAN`.
+- Corrected program scope: this internal roadmap/War Room slice depends on Team Builder, not on strategy persistence or approval.
+- Recorded `C3-OPS-001` as `CI_GREEN`; production remains `BLOCKED` and external effects remain `NONE`.
+- Selected `C3-STRATEGY-001` as the next independent executable increment.

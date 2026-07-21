@@ -160,7 +160,7 @@
       "id": "C3-STRATEGY-001",
       "workstream": "WS-09",
       "title": "Research, evidence, strategy and decision-governance persistence",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "depends_on": [
         "C3-DATA-001",
         "C3-API-001"
@@ -169,10 +169,9 @@
     {
       "id": "C3-OPS-001",
       "workstream": "WS-10",
-      "title": "Roadmap, War Room, approvals and campaign-health workflows",
-      "status": "VERIFIED_POSTGRESQL",
+      "title": "Campaign roadmap and Daily War Room coordination",
+      "status": "CI_GREEN",
       "depends_on": [
-        "C3-STRATEGY-001",
         "C3-TEAM-001"
       ]
     },
