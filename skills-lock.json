@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-18",
+  "generator": {
+    "name": "midudev/autoskills",
+    "version": "0.3.6",
+    "mode": "dry-run"
+  },
+  "detected_agents": ["universal", "kiro-cli"],
+  "decision": "NO_INSTALL",
+  "decision_reasons": [
+    "AutoSkills is CC BY-NC 4.0 and requires a commercial-use review",
+    "The retained dry-run exposed no per-skill manifest or immutable content hashes",
+    "The retained dry-run exposed no proposed installation paths or per-skill license metadata",
+    "Prompt-injection and transitive supply-chain risk were not reviewable from the retained output"
+  ],
+  "installed_skills": [],
+  "suggestions": [
+    {
+      "source": "anthropics",
+      "name": "frontend-design",
+      "category": "Frontend",
+      "installed": false,
+      "manifest_verified": false,
+      "content_hash": null,
+      "license_verified": false
+    },
+    {
+      "source": "addyosmani",
+      "name": "accessibility",
+      "category": "Frontend",
+      "installed": false,
+      "manifest_verified": false,
+      "content_hash": null,
+      "license_verified": false
+    },
+    {
+      "source": "addyosmani",
+      "name": "seo",
+      "category": "Frontend",
+      "installed": false,
+      "manifest_verified": false,
+      "content_hash": null,
+      "license_verified": false
+    }
+  ]
+}

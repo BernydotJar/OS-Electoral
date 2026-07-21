@@ -32,61 +32,68 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
-          python-version: "3.12"
+          python-version: "3.14"
+      - name: Set up uv
+        uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+        with:
+          version: "0.11.29"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Install locked dependencies
+        run: uv sync --all-groups --locked
       - name: Install Playwright
-        run: |
-          python -m pip install --disable-pip-version-check playwright==1.52.0
-          python -m playwright install --with-deps chromium
+        run: uv run --locked playwright install --with-deps chromium
       - name: Validate evidence snapshot
-        run: python3 scripts/frontend/validate_evidence_control_room.py
+        run: uv run --locked python scripts/frontend/validate_evidence_control_room.py
       - name: Validate Campaign Team Command Center
-        run: python3 scripts/frontend/validate_campaign_team_command_center.py
+        run: uv run --locked python scripts/frontend/validate_campaign_team_command_center.py
       - name: Validate Daily War Room
-        run: python3 scripts/frontend/validate_daily_war_room.py
+        run: uv run --locked python scripts/frontend/validate_daily_war_room.py
       - name: Validate Premium Slate design system
-        run: python3 scripts/frontend/validate_premium_slate.py
+        run: uv run --locked python scripts/frontend/validate_premium_slate.py
       - name: Validate Governance Workspace
-        run: python3 scripts/frontend/validate_governance_workspace.py
+        run: uv run --locked python scripts/frontend/validate_governance_workspace.py
       - name: Validate governed campaign workspace core
-        run: python3 scripts/campaign/validate_c2_plat_001.py
+        run: uv run --locked python scripts/campaign/validate_c2_plat_001.py
       - name: Validate Candidate Brand workspace
-        run: python3 scripts/campaign/validate_c2_prod_001.py
+        run: uv run --locked python scripts/campaign/validate_c2_prod_001.py
       - name: Validate Approval Inbox and Decision Ledger
-        run: python3 scripts/campaign/validate_c2_prod_002.py
+        run: uv run --locked python scripts/campaign/validate_c2_prod_002.py
       - name: Validate Daily Operating Workflow
-        run: python3 scripts/campaign/validate_c2_prod_003.py
+        run: uv run --locked python scripts/campaign/validate_c2_prod_003.py
       - name: Validate authorization policy boundary
-        run: python3 scripts/campaign/validate_c2_saas_001a.py
+        run: uv run --locked python scripts/campaign/validate_c2_saas_001a.py
       - name: Validate append-only persistence and audit boundary
-        run: python3 scripts/campaign/validate_c2_saas_001b.py
+        run: uv run --locked python scripts/campaign/validate_c2_saas_001b.py
       - name: Validate repository interfaces and transaction boundary
-        run: python3 scripts/campaign/validate_c2_saas_001c.py
+        run: uv run --locked python scripts/campaign/validate_c2_saas_001c.py
       - name: Validate audit observability read model
-        run: python3 scripts/campaign/validate_c2_obs_001.py
+        run: uv run --locked python scripts/campaign/validate_c2_obs_001.py
       - name: Validate read-only application service contracts
-        run: python3 scripts/campaign/validate_c2_api_001a.py
+        run: uv run --locked python scripts/campaign/validate_c2_api_001a.py
       - name: Validate cross-tenant adversarial integration harness
-        run: python3 scripts/campaign/validate_c2_test_001.py
+        run: uv run --locked python scripts/campaign/validate_c2_test_001.py
       - name: Validate operator runbook and release gate guide
-        run: python3 scripts/campaign/validate_c2_docs_001.py
+        run: uv run --locked python scripts/campaign/validate_c2_docs_001.py
       - name: Validate evidence-grounded extraction and citation contracts
-        run: python3 scripts/campaign/validate_c2_ai_001a.py
+        run: uv run --locked python scripts/campaign/validate_c2_ai_001a.py
       - name: Validate executable program architecture
-        run: python3 scripts/architecture/validate_program_state.py
+        run: uv run --locked python scripts/architecture/validate_program_state.py
       - name: Validate diff whitespace
         run: git diff --check origin/main...HEAD
       - name: Start static server
         run: |
           mkdir -p artifacts/c1-front-002-v1
-          python3 -m http.server 4173 --directory web > artifacts/c1-front-002-v1/server.log 2>&1 &
+          uv run --locked python -m http.server 4173 --directory web > artifacts/c1-front-002-v1/server.log 2>&1 &
           echo $! > artifacts/c1-front-002-v1/server.pid
-          for attempt in $(seq 1 30); do
+          for _ in $(seq 1 30); do
             if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then exit 0; fi
             sleep 1
           done
@@ -98,15 +105,15 @@ jobs:
           CAMPAIGNOS_ARTIFACT_DIR: artifacts/c1-front-002-v1
         run: |
           set -o pipefail
-          python3 scripts/frontend/runtime_visual_review.py 2>&1 | tee artifacts/c1-front-002-v1/runtime-run.log
+          uv run --locked python scripts/frontend/runtime_visual_review.py 2>&1 | tee artifacts/c1-front-002-v1/runtime-run.log
       - name: Review Governance Workspace
         env:
           CAMPAIGNOS_URL: http://127.0.0.1:4173
           CAMPAIGNOS_ARTIFACT_DIR: artifacts/c1-front-002-v1
-        run: python3 scripts/frontend/review_governance_workspace.py
+        run: uv run --locked python scripts/frontend/review_governance_workspace.py
       - name: Upload visual review evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: c1-front-002-v1-visual-review
           path: artifacts/c1-front-002-v1/

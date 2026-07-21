@@ -1,53 +1,64 @@
-# CampaignOS Executable Program Architecture
+# CampaignOS program architecture
 
-`architecture/program-state.json` is the machine-readable source of truth for the current C2 program stack. It distinguishes code that exists in draft branches from code merged to `main`, human-blocked release actions, executable next increments and deliberately deferred work.
+CampaignOS is a production-readiness program, not a single feature or release. The target is an open-source-first modular monolith on AWS with explicit bounded contexts, multi-tenant authorization, PostgreSQL persistence, governed AI assistance and human approval for sensitive actions.
 
-## Current stack
+## Sources of truth
 
-```text
-main
-└── #42 C2-PLAT-001 approval binding hardening
-    └── #44 C2-PROD-001 Candidate Brand
-        └── #46 C2-PROD-002 Approval Inbox and Decision Ledger
-            └── #48 C2-PROD-003 Daily Operating Workflow
-                └── #50 C2-FRONT-001 Governance Workspace
-                    └── #52 C2-SAAS-001A Authorization Policy Boundary
-                        └── #54 C2-ARCH-001 Executable Program State
-                            └── #56 C2-SAAS-001B Persistence and Audit
-                                └── #58 C2-SAAS-001C Repository and Transaction Boundary
-                                    └── #60 C2-OBS-001 Audit Observability and Integrity Read Model
-                                        └── #62 C2-API-001A Read-Only Application Service Contracts
-                                            └── #64 C2-TEST-001 Cross-Tenant Adversarial Integration Harness
-                                                └── #66 C2-DOCS-001 Operator Runbook and Release Gate Guide
-                                                    └── C2-AI-001A Evidence-Grounded Extraction and Citation Contracts
-```
+| Artifact | Purpose |
+|---|---|
+| `architecture/program-state.json` | Validated manifest for merged evidence, findings, CI runs, gates and roadmap |
+| `program/program-state.json` | Farmtable-compatible fallback program summary |
+| `program/task-graph.yaml` | Dependency graph and acceptance intent |
+| `program/task-ledger.yaml` | Ownership, status, evidence and blockers |
+| `program/production-gap-matrix.md` | Requirement-by-requirement production gaps |
+| `program/iteration-log.md` | Observe/execute/verify/record history |
 
-Every layer is draft, independently validated and blocked from merge or deployment pending human approval.
+The repository and verified external state override stale prose. A run ID is not green evidence unless its conclusion and commit SHA are recorded. A merged PR does not prove production readiness.
 
-## Bounded contexts
+## Current baseline
 
-- Campaign Workspace: governed tenant/campaign/workspace state and strategic gates.
-- Candidate Brand: identity, biography, purpose, attributes, evidence and reputation risks.
-- Approval Ledger: pending requests plus immutable, hash-chained decision history.
-- Daily Operations: internal assignments, meeting preparation, blockers and learning.
-- Governance Frontend: display-only projection of brand, approvals and operations.
-- Authorization Policy: exact-scope allow/deny decision without authentication or execution.
-- Persistence Audit: pure persistence boundary, optimistic concurrency, cryptographic hash chaining and idempotency keys.
-- Repository Transaction: tenant-scoped repositories and unit of work context manager for transaction coordination.
-- Audit Observability: read-only query and integrity verifier for persistence audit events.
-- Application Service: unified, tenant-isolated query facade and application contracts.
-- Extraction Citation: offline deterministic claim extraction and citation verification.
+The C2 increments are merged into `main`. They implement deterministic prototype contracts for campaign workspaces, candidate-brand assessment, approvals, daily operations, authorization decisions, in-memory persistence coordination, audit-event hash chaining, read-only service projections and evidence citation.
 
-## Program-state validation
+Important limits:
 
-```bash
-python3 scripts/architecture/validate_program_state.py
-```
+- repositories and transactions are in-memory test doubles, not PostgreSQL;
+- the service facade is not a network API;
+- audit hashes are unkeyed SHA-256 links, not digital signatures or an immutable external ledger;
+- frontend data is static and read-only;
+- GitHub Pages is a non-production demo;
+- production status remains `BLOCKED`.
 
-The validator rejects unknown dependencies, dependency cycles, missing code or validators, stack-base drift, missing CI evidence, prohibited-capability drift, unresolved CRITICAL/HIGH findings and any unexpected opening of Antigua tactical gates.
+## Workstreams
 
-## Current executable next work
+| ID | Workstream | Current state | Next increment |
+|---|---|---|---|
+| WS-01 | Product Definition and Architecture | Active foundation reconciliation | C3-ARCH-001 |
+| WS-02 | Monorepo and Developer Experience | Ready | C3-DEVEX-001 |
+| WS-03 | Identity, Tenancy and RBAC | Prototype policy only | C3-IAM-001 |
+| WS-04 | Campaign Domain and Persistence | In-memory prototype only | C3-DATA-001 |
+| WS-05 | API and Background Jobs | In-process read facade only | C3-API-001 |
+| WS-06 | Frontend, Design System and i18n | Static prototype | C3-FRONT-001 |
+| WS-07 | Guided Onboarding and Candidate Workspace | Not started at production scope | C3-ONBOARD-001 |
+| WS-08 | Team Builder and Training Academy | Static team prototype only | C3-TEAM-001 |
+| WS-09 | Research, Strategy and Decision Governance | Partial deterministic prototype | C3-STRATEGY-001 |
+| WS-10 | Roadmap, War Room and Campaign Health | Static/deterministic prototype | C3-OPS-001 |
+| WS-11 | Agent Runtime, Guardrails and Evals | Deterministic prototype | C3-AGENT-001 |
+| WS-12 | AWS Platform and Terraform | Not started | C3-INFRA-001 |
+| WS-13 | Security, Privacy and Compliance | Partial policy prototype | C3-SEC-001 |
+| WS-14 | Testing, Observability and Operations | In-memory tests only | C3-OBS-001 |
+| WS-15 | Documentation, Migration and Release | Active | C3-RELEASE-001 |
 
-The manifest identifies C2-AI-001A as implemented. C2-SAAS-001-auth (Real identity provider and session validation) may follow.
+The exact dependency graph lives in `program/task-graph.yaml`. It preserves research-before-strategy, identity/data prerequisites for API work, and security/observability prerequisites for release.
 
-Real authentication, billing, deployment, tactical activation and public campaign actions remain deferred or human-blocked.
+## Delivery classifications
+
+- `DEMO_NON_PRODUCTION`: static demonstration; may never be cited as SaaS readiness.
+- `DEV`: application environment created through reviewed infrastructure and CI.
+- `STAGING`: production-like environment with migration, security, load, restore and eval evidence.
+- `PRODUCTION`: permitted only after every required gate passes and an authorized human records explicit approval.
+
+The Pages workflow accepts only a manual dispatch with the literal confirmation `DEMO_NON_PRODUCTION`. It does not create or promote a production release.
+
+## Completion rule
+
+The manifest validator intentionally accepts a truthful `BLOCKED` state with declared red runs and open findings. It rejects `READY` whenever an unsuperseded failed run, open CRITICAL/HIGH finding, incomplete production gate or missing human production approval remains.

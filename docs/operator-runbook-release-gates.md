@@ -1,6 +1,9 @@
 # Operator Runbook and Release Gate Guide
 
-This guide describes operational procedures, incident response protocols, and human release gates for CampaignOS.
+Status: **C2 PROTOTYPE PROCEDURE; not a production incident/restore runbook**
+Last reconciled: `2026-07-19`
+
+This guide describes prototype integrity triage and human release gates for CampaignOS. The current unkeyed hash chain is not a digital signature or immutable external ledger, and no backup/restore procedure below is production-approved.
 
 ## Gestión de Incidentes: Integración Corrupta (`CORRUPTED`)
 
@@ -14,11 +17,12 @@ Si la consulta del modelo de lectura observable o el reporte de auditoría de in
      --output artifacts/persistence-audit/incident-report.md
    ```
 2. **Análisis**: Inspeccione el reporte generado. Busque la línea que indique el índice del evento corrupto, la causa (por ejemplo, hash mismatch o versión de agregado fuera de secuencia).
-3. **Validación**: Compare el digest del payload y la firma criptográfica del evento reportado con la bitácora física o copias de seguridad de intents aprobados.
+3. **Validación**: Compare el digest canónico y los enlaces `previous_hash` con la entrada y el intent aprobado. No describa esta comparación como una firma criptográfica ni como prueba independiente de inmutabilidad.
 4. **Remediación**:
    - Detenga inmediatamente el procesamiento de nuevos intents de escritura.
-   - Restaure el archivo de persistencia (`store.json`) al último estado hash-chained verificado y limpio.
-   - Revoque y genere nuevas llaves de firma para los principales involucrados en la discrepancia.
+   - Preserve una copia de solo lectura del archivo, reporte, commit y contexto antes de modificar cualquier estado.
+   - Aísle el adaptador de prototipo y escale el incidente. No reescriba silenciosamente eventos ni trate una copia local como backup de producción.
+   - La recuperación real requiere el runbook, backup cifrado, restauración aislada, RPO/RTO y verificación de auditoría que todavía no están implementados.
 
 ---
 

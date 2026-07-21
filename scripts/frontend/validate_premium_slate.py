@@ -35,6 +35,10 @@ def main() -> None:
     )
     require('data-active-module="team"' in index, "initial module state metadata is missing")
     require('id="activeModuleStatus"' in index, "module coordinate status is missing")
+    require(
+        'governance: "Coordinate 04 · Human governance"' in js,
+        "premium module status map must include the Governance Workspace",
+    )
 
     required_tokens = (
         "--canvas:",

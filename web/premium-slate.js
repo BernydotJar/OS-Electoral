@@ -18,7 +18,8 @@
   const moduleLabels = {
     team: "Coordinate 01 · Governed team",
     "war-room": "Coordinate 02 · Daily decisions",
-    evidence: "Coordinate 03 · Evidence control"
+    evidence: "Coordinate 03 · Evidence control",
+    governance: "Coordinate 04 · Human governance"
   };
 
   let nodes = [];

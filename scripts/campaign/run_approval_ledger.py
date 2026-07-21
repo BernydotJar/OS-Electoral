@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
-from core.approval_ledger import ApprovalLedgerValidationError, canonical_json, project_inbox, propose_transition
+from core.approval_ledger import AuthenticatedPrincipalBinding, ApprovalLedgerValidationError, canonical_json, project_inbox, propose_transition
 
 def safe_path(value:str,label:str,must_exist:bool)->Path:
     raw=Path(value)
@@ -24,7 +24,10 @@ def safe_path(value:str,label:str,must_exist:bool)->Path:
 
 def main()->int:
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--state",required=True); parser.add_argument("--command"); parser.add_argument("--output",required=True)
+    parser.add_argument("--state",required=True); parser.add_argument("--command")
+    parser.add_argument("--principal"); parser.add_argument("--authorization-request")
+    parser.add_argument("--authentication-binding")
+    parser.add_argument("--output",required=True)
     args=parser.parse_args()
     try:
         state_path=safe_path(args.state,"state",True); output_path=safe_path(args.output,"output",False)
@@ -34,7 +37,19 @@ def main()->int:
         state=json.loads(state_path.read_text(encoding="utf-8"))
         if args.command:
             command_path=safe_path(args.command,"command",True)
-            result=propose_transition(state,json.loads(command_path.read_text(encoding="utf-8")))
+            if not args.principal or not args.authorization_request or not args.authentication_binding:
+                raise ApprovalLedgerValidationError("transition command requires --principal, --authorization-request and --authentication-binding")
+            principal_path=safe_path(args.principal,"principal",True)
+            authorization_path=safe_path(args.authorization_request,"authorization request",True)
+            authentication_path=safe_path(args.authentication_binding,"authentication binding",True)
+            authentication_binding=AuthenticatedPrincipalBinding(**json.loads(authentication_path.read_text(encoding="utf-8")))
+            result=propose_transition(
+                state,
+                json.loads(command_path.read_text(encoding="utf-8")),
+                principal_context=json.loads(principal_path.read_text(encoding="utf-8")),
+                authorization_request=json.loads(authorization_path.read_text(encoding="utf-8")),
+                authenticated_principal=authentication_binding,
+            )
         else: result=project_inbox(state)
         output_path.parent.mkdir(parents=True,exist_ok=True)
         output_path.write_text(json.dumps(result,ensure_ascii=False,indent=2,sort_keys=True)+"\n",encoding="utf-8")

@@ -1,40 +1,69 @@
-# OS Electoral
+# CampaignOS / OS Electoral
 
-OS Electoral is a War Room operating system for building an evidence-led campaign workflow.
+CampaignOS is intended to become a guided, evidence-led campaign operating system with human-gated decisions, multi-tenant isolation and auditable internal operations.
 
-The repository is currently in **Cycle 1: Electoral Evidence Baseline**. Cycle 0 established the governed War Room; Cycle 1 builds a shared, verifiable evidence state before producing content, paid media, or field operations.
+## Current status
 
-## Current Gate
+**Production readiness: `BLOCKED`.**
 
-The campaign has an approved 90-day research objective, exploratory stage and initial municipal territory. It cannot move into tactics until the remaining strategic lines are researched and approved:
+The merged C2 stack and the current C3 foundation provide:
+
+- deterministic Python domain contracts and in-memory repository test doubles;
+- a versioned FastAPI application factory with liveness, dependency readiness, safe errors and correlation/security headers;
+- fixed-algorithm OIDC ID-token verification with issuer, audience, time, token-use and key checks;
+- an initial PostgreSQL/Alembic identity, tenancy, campaign, membership, grant, audit and outbox schema;
+- transaction-local tenant scope plus forced PostgreSQL row-level security, exercised against an isolated non-superuser role;
+- a locked Python toolchain, non-root API image and loopback-only Compose stack for PostgreSQL, S3Mock and Mailpit;
+- pinned CI definitions for quality, PostgreSQL/RLS, dependency, secret, CodeQL, workflow and disposable-stack E2E checks;
+- read-only campaign, candidate, approval and Daily War Room projections;
+- a static CampaignOS frontend demonstration.
+
+These are local foundations, not a production system. CampaignOS still lacks a live identity/login/recovery flow, membership-backed endpoint authorization, campaign-domain persistence adapters and APIs, a worker runtime, production object storage, a dynamic application frontend, Terraform/AWS environments, protected-branch evidence, backup/restore evidence, independent security/privacy/domain approvals and production deployment approval.
+
+The public GitHub Pages site is classified as `DEMO_NON_PRODUCTION`. It serves static snapshots, is not a SaaS runtime, and is not evidence of production readiness. Its workflow is manual-only and requires the explicit confirmation value `DEMO_NON_PRODUCTION`.
+
+## Program truth
+
+- [Current-state assessment](program/current-state-assessment.md)
+- [Production-gap matrix](program/production-gap-matrix.md)
+- [Program state](program/program-state.json)
+- [Task graph](program/task-graph.yaml)
+- [Task ledger](program/task-ledger.yaml)
+- [Executable architecture](docs/executable-architecture.md)
+
+`architecture/program-state.json` is the validated machine-readable manifest for merged C2 evidence, open findings, production gates and the C3 roadmap. Historical failed CI runs remain recorded; a later green integration run does not rewrite their conclusions.
+
+## Repository map
 
 ```text
-Priority segment:
-Public positioning/message:
-Budget ceiling:
-Geographic mobilization priority:
+architecture/  Validated program manifest
+program/       Program truth, dependency graph, evidence and iteration records
+core/          Deterministic domain contracts and in-memory adapters
+tests/         Unit and adversarial characterization tests
+backend/       FastAPI, OIDC, SQLAlchemy models, Alembic migrations and backend tests
+schemas/       JSON schemas for current prototype contracts
+web/           Static read-only demonstration
+campaign/      Governed Antigua working artifacts
+research/      Evidence register, extraction and curated research
+docs/          Current bounded-context and operator documentation
+compose.yaml   Hermetic local API/PostgreSQL/S3Mock/Mailpit stack
+infra/         Target location for future Terraform; absence means AWS platform is not implemented
 ```
 
-## Repository Map
+## Current verification
 
-```text
-campaign/    Campaign charter, current state, decisions, risks
-research/    Evidence register, baseline, segments, sources
-territory/   Geographic prioritization and field reports
-strategy/    Objectives, narrative, message house
-operations/  Weekly plan, dashboard, approvals
-content/     Draft-only content assets after gates are approved
-media/       Paid media and creative assets after gates are approved
-prompts/     Agent loop prompts and operating instructions
-archive/     Superseded decisions and old artifacts
+Install [uv](https://docs.astral.sh/uv/) and Docker, then use the reviewed entry points:
+
+```bash
+make bootstrap
+make verify
+make e2e
 ```
 
-## First Workflow
+`make test-postgres` requires an explicitly isolated `CAMPAIGNOS_TEST_DATABASE_URL` whose database name ends in `_test`. The end-to-end script creates a unique Compose project, applies and checks the Alembic migration, verifies dependency readiness, and removes its containers and volumes on exit. S3Mock accepts dummy credentials and is strictly a local test service; it is not a production storage design.
 
-1. Fill `campaign/charter.md`.
-2. Update `campaign/current-state.md`.
-3. Register known evidence in `research/evidence-register.md`.
-4. Approve or block gates in `operations/approvals.md`.
-5. Run the loop in `prompts/war-room-loop.md`.
+Some legacy validation harnesses generate files under `artifacts/`; inspect their behavior before running them in a dirty worktree.
 
-The reusable governed workspace core and CLI are documented in `docs/campaign-workspaces.md`. Eligibility produced by the core never constitutes human approval or execution authorization.
+## Safety boundary
+
+AI output is advisory. Eligibility never constitutes human approval. The current repository does not authorize autonomous publishing, spending, political persuasion, field mobilization, citizen contact or production deployment.

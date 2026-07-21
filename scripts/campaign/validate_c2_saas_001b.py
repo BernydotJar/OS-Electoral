@@ -8,14 +8,24 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Ensure jsonschema is available
+# Validation must be reproducible. Never mutate the runner environment or reach a
+# package index from inside a validator.
 try:
     import jsonschema
 except ImportError:
-    subprocess.run([sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "jsonschema"], check=True)
-    import jsonschema
+    jsonschema = None
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def require_validation_dependencies() -> None:
+    if jsonschema is None:
+        raise RuntimeError(
+            "Missing required validation dependency 'jsonschema'. "
+            "Install the repository's locked development dependencies first "
+            "(preferred: `make bootstrap`) and rerun this validator. "
+            "Validators never install packages at runtime."
+        )
 
 
 def run_unit_tests() -> None:
@@ -77,7 +87,8 @@ def verify_safety() -> None:
 
 def main() -> int:
     try:
-        # 1. Run unit tests
+        # 1. Verify the already-locked validation environment and run unit tests.
+        require_validation_dependencies()
         run_unit_tests()
 
         # 2. Schema paths

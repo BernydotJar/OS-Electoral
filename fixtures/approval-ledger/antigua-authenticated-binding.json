@@ -1,0 +1,7 @@
+{
+  "principal_id": "human:campaign-chief",
+  "actor_type": "HUMAN",
+  "authentication_session_id": "session:antigua-chief-c3-sec-001a",
+  "authentication_evidence_id": "authn-evidence:fixture",
+  "trust_source": "OIDC_VERIFIED_SESSION"
+}

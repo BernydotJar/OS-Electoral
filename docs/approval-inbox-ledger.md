@@ -28,10 +28,17 @@ python3 scripts/campaign/run_approval_ledger.py \
 python3 scripts/campaign/run_approval_ledger.py \
   --state fixtures/approval-ledger/antigua.json \
   --command fixtures/approval-ledger/antigua-approve-command.json \
+  --principal fixtures/approval-ledger/antigua-trusted-principal.json \
+  --authorization-request fixtures/approval-ledger/antigua-transition-authorization-request.json \
+  --authentication-binding fixtures/approval-ledger/antigua-authenticated-binding.json \
   --output artifacts/approval-ledger/antigua-transition-proposal.json
 ```
 
-The CLI is read-only and writes only beneath `artifacts/approval-ledger/`.
+The CLI is read-only and writes only beneath `artifacts/approval-ledger/`. The
+authentication binding is deterministic fixture evidence for contract testing;
+it is not a login mechanism or production authentication proof. Runtime code
+must construct `AuthenticatedPrincipalBinding` only after a real authentication
+adapter verifies the external principal and session.
 
 ## Antigua safety state
 

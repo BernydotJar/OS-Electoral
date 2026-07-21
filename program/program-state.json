@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "program_id": "program:campaignos-production-readiness",
+  "product_name": "CampaignOS",
+  "updated_at": "2026-07-19",
+  "branch": "agent/c3-found-001-production-foundation",
+  "current_increment": "C3-CI-001",
+  "iteration_status": "IN_PROGRESS",
+  "production_status": "BLOCKED",
+  "production_status_reason": "Local FastAPI, OIDC-verification, PostgreSQL/RLS, migration and Compose foundations now exist, and draft PR 72 is green at its recorded head, but no verified AWS environment or protected-main delivery enforcement exists. Live identity, membership-backed authorization, domain adapters, jobs, production object storage, Terraform, backup/restore and production review gates remain incomplete.",
+  "authoritative_manifest": "architecture/program-state.json",
+  "fallback_records": {
+    "task_graph": "program/task-graph.yaml",
+    "task_ledger": "program/task-ledger.yaml",
+    "iteration_log": "program/iteration-log.md"
+  },
+  "workstreams": [
+    {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_COMPLETE_LOCAL", "next_increment": "C3-IAM-001"},
+    {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "PR_CI_GREEN_ENFORCEMENT_PENDING", "next_increment": "C3-CI-001"},
+    {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "PARTIAL_RUNTIME_FOUNDATION", "next_increment": "C3-IAM-001"},
+    {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "LOCAL_POSTGRESQL_FOUNDATION", "next_increment": "C3-API-001"},
+    {"id": "WS-05", "name": "API and Background Jobs", "status": "PARTIAL_HTTP_RUNTIME", "next_increment": "C3-API-001"},
+    {"id": "WS-06", "name": "Frontend, Design System and i18n", "status": "STATIC_PROTOTYPE", "next_increment": "C3-FRONT-001"},
+    {"id": "WS-07", "name": "Guided Onboarding and Candidate Workspace", "status": "NOT_STARTED", "next_increment": "C3-ONBOARD-001"},
+    {"id": "WS-08", "name": "Team Builder and Training Academy", "status": "STATIC_PROTOTYPE", "next_increment": "C3-TEAM-001"},
+    {"id": "WS-09", "name": "Research, Strategy and Decision Governance", "status": "PROTOTYPE_ONLY", "next_increment": "C3-STRATEGY-001"},
+    {"id": "WS-10", "name": "Roadmap, War Room and Campaign Health", "status": "STATIC_PROTOTYPE", "next_increment": "C3-OPS-001"},
+    {"id": "WS-11", "name": "Agent Runtime, Guardrails and Evals", "status": "DETERMINISTIC_PROTOTYPE", "next_increment": "C3-AGENT-001"},
+    {"id": "WS-12", "name": "AWS Platform and Terraform", "status": "NOT_STARTED", "next_increment": "C3-INFRA-001"},
+    {"id": "WS-13", "name": "Security, Privacy and Compliance", "status": "SECURITY_REMEDIATION_ACTIVE", "next_increment": "C3-SEC-001"},
+    {"id": "WS-14", "name": "Testing, Observability and Operations", "status": "LOCAL_TEST_AND_CI_FOUNDATION", "next_increment": "C3-OBS-001"},
+    {"id": "WS-15", "name": "Documentation, Migration and Release", "status": "ACTIVE", "next_increment": "C3-RELEASE-001"}
+  ],
+  "ready_tasks": [],
+  "critical_path": ["C3-FOUND-001A", "C3-DEVEX-001", "C3-DATA-001", "C3-IAM-001", "C3-API-001", "C3-INFRA-001", "C3-SEC-001", "C3-OBS-001", "C3-RELEASE-001"],
+  "external_state": {
+    "github_pages": "LIVE_DEMO_NON_PRODUCTION",
+    "github_pages_url": "https://bernydotjar.github.io/OS-Electoral/",
+    "aws": "NOT_VERIFIED_SESSION_EXPIRED",
+    "production": "NOT_DEPLOYED_OR_PROVEN"
+  },
+  "blockers": [
+    "Open CRITICAL/HIGH production gaps",
+    "Historical validation runs with FAILURE conclusions",
+    "No live OIDC provider, login/recovery flow or membership-backed authorization",
+    "Local PostgreSQL/RLS proof is not deployed or operationally verified",
+    "No domain persistence adapters or background worker runtime",
+    "No protected-main required-check enforcement",
+    "No deployable AWS Terraform baseline",
+    "No backup/restore evidence",
+    "No explicit human production approval"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "request_id": "auth-request:antigua-approve-brand-research",
+  "principal_id": "human:campaign-chief",
+  "tenant_id": "tenant:bernydotjar",
+  "campaign_id": "campaign:antigua-guatemala-exploratory",
+  "workspace_id": "workspace:antigua-2026",
+  "permission": "PROPOSE_TRANSITION",
+  "resource_type": "APPROVAL_REQUEST",
+  "resource_id": "approval-request:brand-research-plan",
+  "evaluation_date": "2026-07-18",
+  "transition_action": "APPROVE",
+  "selected_option_ref": "option:conduct-identity-interview",
+  "transition_payload_digest": "be9f498ff458aaeedd0b99be2fe660bdaef596f2f1f2ab6a0dfb2bad0d3faf84"
+}

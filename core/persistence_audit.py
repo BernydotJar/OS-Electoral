@@ -7,6 +7,7 @@ from typing import Any
 SCHEMA_VERSION="1.0"
 SAFE_ID=re.compile(r"^[a-z][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9._-]*$")
 WRITE_OPERATIONS={"APPEND_EVENT","CREATE_ARTIFACT","UPDATE_PROJECTION"}
+REQUIRED_PERMISSION_BY_OPERATION={"APPEND_EVENT":"APPEND_INTERNAL_EVENT","CREATE_ARTIFACT":"CREATE_DRAFT","UPDATE_PROJECTION":"UPDATE_INTERNAL_PROJECTION"}
 READ_ONLY_RESOURCES={"GOVERNANCE_SNAPSHOT","EVIDENCE_SOURCE","AUDIT_EVENT"}
 PROHIBITED_OPERATIONS={"PUBLISH","SPEND","ACTIVATE_PAID_MEDIA","MOBILIZE","CONTACT_CITIZEN"}
 HUMAN_ONLY_PERMISSIONS={"APPROVE_POLITICAL","APPROVE_LEGAL","APPROVE_FINANCIAL","APPROVE_PUBLICATION","APPROVE_SPENDING","APPROVE_MOBILIZATION"}
@@ -50,6 +51,7 @@ def validate_write_intent(intent:dict[str,Any],authorization:dict[str,Any],store
     for field in ("intent_id","tenant_id","campaign_id","workspace_id","principal_id","authorization_request_id","resource_id"):
         _require(SAFE_ID.fullmatch(intent[field]) is not None,f"invalid write intent field: {field}")
     _require(intent["operation"] in WRITE_OPERATIONS,f"unsupported or prohibited write operation: {intent['operation']}")
+    _require(intent["required_permission"]==REQUIRED_PERMISSION_BY_OPERATION[intent["operation"]],"write permission does not match operation")
     _require(intent["operation"] not in PROHIBITED_OPERATIONS,"prohibited external operation")
     _require(intent["resource_type"] not in READ_ONLY_RESOURCES,f"resource is read-only: {intent['resource_type']}")
     _require(isinstance(intent["payload"],dict),"payload must be an object")

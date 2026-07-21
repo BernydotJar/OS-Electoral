@@ -101,7 +101,7 @@ class PersistenceAuditTests(unittest.TestCase):
         auth["permission"]="APPROVE_POLITICAL"
         auth["actor_type"]="AGENT"
         auth["principal_id"]="agent:validator"
-        with self.assertRaisesRegex(PersistenceContractError,"cannot acquire human authority"): plan_append(self.store,intent,auth)
+        with self.assertRaisesRegex(PersistenceContractError,"permission does not match operation"): plan_append(self.store,intent,auth)
 
     def test_cross_campaign_rejected(self):
         intent=copy.deepcopy(self.intent)

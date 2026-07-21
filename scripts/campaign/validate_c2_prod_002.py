@@ -10,7 +10,7 @@ def main()->int:
     if tests.returncode: return tests.returncode
     commands=[
         [sys.executable,"scripts/campaign/run_approval_ledger.py","--state","fixtures/approval-ledger/antigua.json","--output","artifacts/approval-ledger/antigua-inbox.json"],
-        [sys.executable,"scripts/campaign/run_approval_ledger.py","--state","fixtures/approval-ledger/antigua.json","--command","fixtures/approval-ledger/antigua-approve-command.json","--output","artifacts/approval-ledger/antigua-transition-proposal.json"],
+        [sys.executable,"scripts/campaign/run_approval_ledger.py","--state","fixtures/approval-ledger/antigua.json","--command","fixtures/approval-ledger/antigua-approve-command.json","--principal","fixtures/approval-ledger/antigua-trusted-principal.json","--authorization-request","fixtures/approval-ledger/antigua-transition-authorization-request.json","--authentication-binding","fixtures/approval-ledger/antigua-authenticated-binding.json","--output","artifacts/approval-ledger/antigua-transition-proposal.json"],
         [sys.executable,"scripts/campaign/run_approval_ledger.py","--state","fixtures/approval-ledger/rio-claro.json","--output","artifacts/approval-ledger/rio-claro-inbox.json"],
     ]
     for command in commands:
