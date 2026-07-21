@@ -328,3 +328,12 @@
 - Remediated the `sharp <0.35.0` transitive advisory with a locked `sharp 0.35.3` override and zero audit vulnerabilities.
 - Recorded `VERIFIED_POSTGRESQL`; corrected branch publication and CI remain pending.
 - Production remains `BLOCKED`; external effects remain `NONE`.
+
+
+## C3-STRATEGY-001 published checkpoint — 2026-07-21
+
+- Published final head `72a4dfb722f2c671fd754af4e4e2d242677411f9` to `agent/c3-strategy-001-evidence-decision-room` by fast-forward.
+- Draft PR #96 is `CLEAN`; CampaignOS CI `29876152098` and runtime visual review `29876152083` both concluded `SUCCESS`.
+- Recorded earlier failed runs `29874179909` and `29875933528` as superseded evidence rather than deleting them.
+- Strategy is `CI_GREEN`; production remains `BLOCKED`, no merge/deployment occurred and external effects remain `NONE`.
+- Next safe dependency-reconciliation target is `C3-API-001`; governed agents remain blocked until that program truth is resolved.
