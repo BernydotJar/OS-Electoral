@@ -6,7 +6,11 @@ from uuid import UUID
 from fastapi.testclient import TestClient
 
 from campaignos.api.app import create_app
-from campaignos.campaigns import CampaignProjection, CampaignWriteEvidence
+from campaignos.campaigns import (
+    CampaignIdempotencyConflict,
+    CampaignProjection,
+    CampaignWriteEvidence,
+)
 from campaignos.config import Environment, Settings
 from campaignos.identity.authorization import (
     EffectiveMembership,
@@ -87,11 +91,13 @@ class Directory:
 class Writer:
     def __init__(self) -> None:
         self.expected_version: int | None = None
+        self.idempotency_key: str | None = None
 
     def update(self, tenant_id: UUID, campaign_id: UUID, **kwargs: object) -> CampaignWriteEvidence:
         assert tenant_id == TENANT_ID
         assert campaign_id == CAMPAIGN_ID
         self.expected_version = int(kwargs["expected_version"])
+        self.idempotency_key = str(kwargs["idempotency_key"])
         return CampaignWriteEvidence(
             campaign=CampaignProjection(
                 id=CAMPAIGN_ID,
@@ -106,6 +112,12 @@ class Writer:
             audit_event_id=AUDIT_ID,
             outbox_event_id=OUTBOX_ID,
         )
+
+
+class ConflictingWriter(Writer):
+    def update(self, tenant_id: UUID, campaign_id: UUID, **kwargs: object) -> CampaignWriteEvidence:
+        del tenant_id, campaign_id, kwargs
+        raise CampaignIdempotencyConflict("conflict")
 
 
 def settings() -> Settings:
@@ -141,11 +153,27 @@ def test_patch_requires_version_precondition() -> None:
     with client(Directory(), writer) as api:
         response = api.patch(
             f"/api/v1/tenants/{TENANT_ID}/campaigns/{CAMPAIGN_ID}",
-            headers={"Authorization": "Bearer valid-token"},
+            headers={
+                "Authorization": "Bearer valid-token",
+                "Idempotency-Key": "campaign-update-1",
+            },
             json={"name": "Updated"},
         )
     assert response.status_code == 428
     assert response.json()["code"] == "VERSION_REQUIRED"
+
+
+def test_patch_requires_idempotency_key_after_authorization() -> None:
+    writer = Writer()
+    with client(Directory(), writer) as api:
+        response = api.patch(
+            f"/api/v1/tenants/{TENANT_ID}/campaigns/{CAMPAIGN_ID}",
+            headers={"Authorization": "Bearer valid-token", "If-Match": '"1"'},
+            json={"name": "Updated"},
+        )
+    assert response.status_code == 428
+    assert "Idempotency-Key" in response.json()["detail"]
+    assert writer.expected_version is None
 
 
 def test_patch_returns_transactional_evidence() -> None:
@@ -156,12 +184,29 @@ def test_patch_returns_transactional_evidence() -> None:
             headers={
                 "Authorization": "Bearer valid-token",
                 "If-Match": '"3"',
+                "Idempotency-Key": "campaign-update-3",
                 "X-Correlation-ID": "write-1",
             },
             json={"name": "Updated", "status": "ACTIVE"},
         )
     assert response.status_code == 200
     assert writer.expected_version == 3
+    assert writer.idempotency_key == "campaign-update-3"
     assert response.json()["campaign"]["version"] == 4
     assert response.json()["audit_event_id"] == str(AUDIT_ID)
     assert response.json()["outbox_event_id"] == str(OUTBOX_ID)
+
+
+def test_patch_maps_idempotency_conflict_to_structured_409() -> None:
+    with client(Directory(), ConflictingWriter()) as api:
+        response = api.patch(
+            f"/api/v1/tenants/{TENANT_ID}/campaigns/{CAMPAIGN_ID}",
+            headers={
+                "Authorization": "Bearer valid-token",
+                "If-Match": '"1"',
+                "Idempotency-Key": "campaign-update-conflict",
+            },
+            json={"name": "Updated"},
+        )
+    assert response.status_code == 409
+    assert response.json()["code"] == "IDEMPOTENCY_CONFLICT"
