@@ -4,7 +4,7 @@
   "branch": "agent/c3-ops-001-roadmap-war-room",
   "base": "agent/c3-team-001-accountability-review@af3e43074e3876fe26f8ba1497269f1d69183bf8",
   "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
-  "status": "VERIFIED_POSTGRESQL",
+  "status": "CI_GREEN",
   "production_status": "BLOCKED",
   "external_effects": "NONE",
   "results": {
@@ -50,5 +50,21 @@
     "Snapshot creation remains API-only and exact-authorized",
     "No live OIDC, telemetry, RDS, dev, staging or production environment is claimed",
     "Human review, merge and production approval remain pending"
-  ]
+  ],
+  "validated_head": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+  "remote_branch": "PUBLISHED_SHA_VERIFIED",
+  "remote_sha": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+  "draft_pr": 95,
+  "ci": {
+    "campaignos": {
+      "result": "PASS",
+      "run_id": 29871611889,
+      "head_sha": "47e34a408da881b3f7e77660a4dc3435032b36f4"
+    },
+    "runtime_visual": {
+      "result": "PASS",
+      "run_id": 29871611856,
+      "head_sha": "47e34a408da881b3f7e77660a4dc3435032b36f4"
+    }
+  }
 }

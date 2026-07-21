@@ -85,7 +85,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Guided intake | revision `20260721_0005`, exact API, 425-test suite, PostgreSQL twice, 16 frontend tests, PR `#92`, CI `29865306720` and visual `29865306576` | `CI_GREEN`; human review/merge and live edit journey pending |
 | Candidate workspace | revision `20260721_0006`, evidence contracts, exact API, PR `#93` at final head `f3c8994` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
 | Team Builder | revision `20260721_0007`, exact RACI/capacity/access-recommendation contracts, PR `#94`, CI `29870461743` and visual `29870461745` | `CI_GREEN`; human staffing acceptance, authenticated editing and live environments pending |
-| Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, 548-test suite, PostgreSQL twice and 39 frontend tests | `VERIFIED_POSTGRESQL`; branch publication/CI, strategy approval, authenticated editing and live environments pending |
+| Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, 548-test suite, PostgreSQL twice and 39 frontend tests | `VERIFIED_POSTGRESQL`; human review/merge, strategy approval, authenticated editing and live environments pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 12 PARTIAL / 16 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
@@ -108,7 +108,7 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Publish and review `C3-OPS-001` as a clean stacked draft PR.
+1. Begin `C3-STRATEGY-001` as an evidence-first, human-governed strategy and decision-room increment.
 2. Continue the highest-value independent increment: Training Academy baseline, strategy/decision governance, or platform plan-only work according to the verified task graph.
 3. Advance authenticated non-technical editing/review journeys without merging, deploying or executing external effects.
 

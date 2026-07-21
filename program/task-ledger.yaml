@@ -341,18 +341,15 @@
     {
       "task_id": "C3-STRATEGY-001",
       "owner": "WS-09",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "evidence": [],
       "external_effects": "NONE",
-      "blockers": [
-        "C3-DATA-001",
-        "C3-API-001"
-      ]
+      "blockers": []
     },
     {
       "task_id": "C3-OPS-001",
       "owner": "WS-10",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/tests/test_campaign_operations_contracts.py",
         "backend/tests/test_campaign_operations_model.py",
@@ -367,9 +364,14 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Strategy approval, authenticated editing, human acceptance and live environments remain pending"
+        "Human review/merge, authenticated editing, customer acceptance and live environments remain pending"
       ],
-      "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f"
+      "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
+      "validated_head": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+      "head_commit": "47e34a408da881b3f7e77660a4dc3435032b36f4",
+      "draft_pr": 95,
+      "ci_run_id": 29871611889,
+      "visual_run_id": 29871611856
     },
     {
       "task_id": "C3-AGENT-001",

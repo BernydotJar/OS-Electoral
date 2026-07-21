@@ -91,3 +91,14 @@ No CRITICAL or HIGH finding remains open inside this bounded increment.
 - Snapshot creation is API-only and still requires exact human authorization.
 - Alerts, production telemetry, customer acceptance, live OIDC and cloud environments are not claimed.
 - Human review, merge and all production gates remain pending.
+
+
+## Publication checkpoint
+
+- implementation commit: `0b1436f334726d10eae75a9fba06884bae34af3f`;
+- exact published and validated head: `47e34a408da881b3f7e77660a4dc3435032b36f4`;
+- draft PR: `#95` against `agent/c3-team-001-accountability-review`;
+- CampaignOS CI: `29871611889` `SUCCESS`;
+- runtime visual review: `29871611856` `SUCCESS`;
+- merge state: `CLEAN`;
+- production: `BLOCKED`; external effects: `NONE`.
