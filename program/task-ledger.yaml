@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-19",
-  "branch": "agent/c3-iam-001-membership-authorization",
+  "branch": "agent/c3-api-001-campaign-read-boundary",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -18,21 +18,190 @@
       "external_effects": "NONE",
       "blockers": []
     },
-    {"task_id": "C3-ARCH-001", "owner": "WS-01", "status": "COMPLETE_LOCAL", "evidence": ["docs/product/product-boundaries.md", "docs/product/non-goals.md", "docs/architecture/bounded-contexts.md", "docs/adr/002-modular-monolith-before-microservices.md"], "external_effects": "NONE", "blockers": []},
-    {"task_id": "C3-DEVEX-001", "owner": "WS-02", "status": "COMPLETE_LOCAL", "evidence": ["Makefile", "compose.yaml", "backend/Dockerfile", "scripts/dev/e2e.sh", "pyproject.toml", "uv.lock"], "external_effects": "NONE", "blockers": []},
-    {"task_id": "C3-CI-001", "owner": "WS-02", "status": "IN_PROGRESS", "evidence": [".github/workflows/campaignos-ci.yml", ".github/dependabot.yml", ".github/workflows/deploy-pages.yml", ".gitleaks.toml", "program/iteration-log.md"], "external_effects": "REVIEW_BRANCH_AND_DRAFT_PR", "blockers": ["No observed branch protection, ruleset or required-check enforcement", "No SBOM, provenance or signing gate"]},
-    {"task_id": "C3-IAM-001", "owner": "WS-03", "status": "IN_PROGRESS", "evidence": ["backend/src/campaignos/identity/oidc.py", "backend/src/campaignos/identity/authorization.py", "backend/src/campaignos/api/routes/tenant_me.py", "backend/src/campaignos/config.py", "backend/tests/test_oidc.py", "backend/tests/test_authorization.py", "backend/tests/test_api.py", "backend/tests/test_database.py", "docs/adr/003-identity-and-tenant-authorization.md", "docs/security/rbac.md"], "external_effects": "NONE", "blockers": ["No live identity provider or login/recovery/session lifecycle", "No membership administration, support elevation or domain/worker action enforcement"]},
-    {"task_id": "C3-DATA-001", "owner": "WS-04", "status": "COMPLETE_LOCAL", "evidence": ["backend/src/campaignos/data/database.py", "backend/src/campaignos/data/models.py", "backend/migrations/versions/20260719_0001_identity_tenancy.py", "backend/tests/test_database.py", "docs/adr/004-postgresql-tenant-isolation.md"], "external_effects": "NONE", "blockers": []},
-    {"task_id": "C3-API-001", "owner": "WS-05", "status": "IN_PROGRESS", "evidence": ["backend/src/campaignos/api/app.py", "backend/src/campaignos/api/routes/health.py", "backend/src/campaignos/api/routes/me.py", "backend/src/campaignos/api/routes/tenant_me.py", "backend/tests/test_api.py"], "external_effects": "NONE", "blockers": ["No campaign-domain write/read endpoints", "No background worker runtime"]},
-    {"task_id": "C3-FRONT-001", "owner": "WS-06", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-DEVEX-001", "C3-API-001"]},
-    {"task_id": "C3-ONBOARD-001", "owner": "WS-07", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-FRONT-001", "C3-API-001"]},
-    {"task_id": "C3-TEAM-001", "owner": "WS-08", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-FRONT-001", "C3-API-001"]},
-    {"task_id": "C3-STRATEGY-001", "owner": "WS-09", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-DATA-001", "C3-API-001"]},
-    {"task_id": "C3-OPS-001", "owner": "WS-10", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-STRATEGY-001", "C3-TEAM-001"]},
-    {"task_id": "C3-AGENT-001", "owner": "WS-11", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-API-001", "C3-STRATEGY-001"]},
-    {"task_id": "C3-INFRA-001", "owner": "WS-12", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-CI-001", "C3-API-001"]},
-    {"task_id": "C3-SEC-001", "owner": "WS-13", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-IAM-001", "C3-DATA-001", "C3-INFRA-001"]},
-    {"task_id": "C3-OBS-001", "owner": "WS-14", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-API-001", "C3-INFRA-001", "C3-SEC-001"]},
-    {"task_id": "C3-RELEASE-001", "owner": "WS-15", "status": "BLOCKED_BY_DEPENDENCY", "evidence": [], "external_effects": "NONE", "blockers": ["C3-ONBOARD-001", "C3-TEAM-001", "C3-OPS-001", "C3-AGENT-001", "C3-OBS-001"]}
+    {
+      "task_id": "C3-ARCH-001",
+      "owner": "WS-01",
+      "status": "COMPLETE_LOCAL",
+      "evidence": [
+        "docs/product/product-boundaries.md",
+        "docs/product/non-goals.md",
+        "docs/architecture/bounded-contexts.md",
+        "docs/adr/002-modular-monolith-before-microservices.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": []
+    },
+    {
+      "task_id": "C3-DEVEX-001",
+      "owner": "WS-02",
+      "status": "COMPLETE_LOCAL",
+      "evidence": [
+        "Makefile",
+        "compose.yaml",
+        "backend/Dockerfile",
+        "scripts/dev/e2e.sh",
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      "external_effects": "NONE",
+      "blockers": []
+    },
+    {
+      "task_id": "C3-CI-001",
+      "owner": "WS-02",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        ".github/workflows/campaignos-ci.yml",
+        ".github/dependabot.yml",
+        ".github/workflows/deploy-pages.yml",
+        ".gitleaks.toml",
+        "program/iteration-log.md"
+      ],
+      "external_effects": "REVIEW_BRANCH_AND_DRAFT_PR",
+      "blockers": [
+        "No observed branch protection, ruleset or required-check enforcement",
+        "No SBOM, provenance or signing gate"
+      ]
+    },
+    {
+      "task_id": "C3-IAM-001",
+      "owner": "WS-03",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "backend/src/campaignos/identity/oidc.py",
+        "backend/src/campaignos/identity/authorization.py",
+        "backend/src/campaignos/api/routes/tenant_me.py",
+        "backend/src/campaignos/config.py",
+        "backend/tests/test_oidc.py",
+        "backend/tests/test_authorization.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_database.py",
+        "docs/adr/003-identity-and-tenant-authorization.md",
+        "docs/security/rbac.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "No live identity provider or login/recovery/session lifecycle",
+        "No membership administration, support elevation or domain/worker action enforcement"
+      ]
+    },
+    {
+      "task_id": "C3-DATA-001",
+      "owner": "WS-04",
+      "status": "COMPLETE_LOCAL",
+      "evidence": [
+        "backend/src/campaignos/data/database.py",
+        "backend/src/campaignos/data/models.py",
+        "backend/migrations/versions/20260719_0001_identity_tenancy.py",
+        "backend/tests/test_database.py",
+        "docs/adr/004-postgresql-tenant-isolation.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": []
+    },
+    {
+      "task_id": "C3-API-001",
+      "owner": "WS-05",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "backend/src/campaignos/api/app.py",
+        "backend/src/campaignos/api/routes/health.py",
+        "backend/src/campaignos/api/routes/me.py",
+        "backend/src/campaignos/api/routes/tenant_me.py",
+        "backend/src/campaignos/api/routes/campaigns.py",
+        "backend/src/campaignos/campaigns/read_model.py",
+        "backend/src/campaignos/campaigns/write_model.py",
+        "backend/tests/test_api.py",
+        "backend/tests/test_campaign_read_model.py",
+        "backend/tests/test_campaign_list_api.py",
+        "backend/tests/test_campaign_write_model.py",
+        "backend/tests/test_campaign_write_api.py"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "No idempotency contract or broader domain writes",
+        "No background worker runtime"
+      ]
+    },
+    {
+      "task_id": "C3-FRONT-001",
+      "owner": "WS-06",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-DEVEX-001", "C3-API-001"]
+    },
+    {
+      "task_id": "C3-ONBOARD-001",
+      "owner": "WS-07",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-FRONT-001", "C3-API-001"]
+    },
+    {
+      "task_id": "C3-TEAM-001",
+      "owner": "WS-08",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-FRONT-001", "C3-API-001"]
+    },
+    {
+      "task_id": "C3-STRATEGY-001",
+      "owner": "WS-09",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-DATA-001", "C3-API-001"]
+    },
+    {
+      "task_id": "C3-OPS-001",
+      "owner": "WS-10",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-STRATEGY-001", "C3-TEAM-001"]
+    },
+    {
+      "task_id": "C3-AGENT-001",
+      "owner": "WS-11",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-API-001", "C3-STRATEGY-001"]
+    },
+    {
+      "task_id": "C3-INFRA-001",
+      "owner": "WS-12",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-CI-001", "C3-API-001"]
+    },
+    {
+      "task_id": "C3-SEC-001",
+      "owner": "WS-13",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-IAM-001", "C3-DATA-001", "C3-INFRA-001"]
+    },
+    {
+      "task_id": "C3-OBS-001",
+      "owner": "WS-14",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-API-001", "C3-INFRA-001", "C3-SEC-001"]
+    },
+    {
+      "task_id": "C3-RELEASE-001",
+      "owner": "WS-15",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [],
+      "external_effects": "NONE",
+      "blockers": ["C3-ONBOARD-001", "C3-TEAM-001", "C3-OPS-001", "C3-AGENT-001", "C3-OBS-001"]
+    }
   ]
 }
