@@ -7,12 +7,21 @@ from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import sessionmaker
 
 from campaignos.campaigns import (
+    CampaignIdempotencyConflict,
     CampaignUpdate,
     CampaignWriteConflict,
     SqlAlchemyCampaignWriter,
 )
 from campaignos.data.database import Database, TenantSession
-from campaignos.data.models import AuditEvent, Base, Campaign, OutboxEvent, Principal, Tenant
+from campaignos.data.models import (
+    AuditEvent,
+    Base,
+    Campaign,
+    IdempotencyRecord,
+    OutboxEvent,
+    Principal,
+    Tenant,
+)
 
 TENANT_ID = UUID("11111111-1111-4111-8111-111111111111")
 CAMPAIGN_ID = UUID("22222222-2222-4222-8222-222222222222")
@@ -58,16 +67,23 @@ def database() -> Database:
         database.dispose()
 
 
-def _update(database: Database, *, expected_version: int = 1):
+def _update(
+    database: Database,
+    *,
+    expected_version: int = 1,
+    idempotency_key: str = "campaign-update-1",
+    name: str = "After",
+):
     return SqlAlchemyCampaignWriter(database).update(
         TENANT_ID,
         CAMPAIGN_ID,
         expected_version=expected_version,
-        changes=CampaignUpdate(name="After", status="ACTIVE"),
+        changes=CampaignUpdate(name=name, status="ACTIVE"),
         principal_id=PRINCIPAL_ID,
         authorization_grant_id=GRANT_ID,
         approval_receipt_id="approval-1",
         correlation_id="correlation-1",
+        idempotency_key=idempotency_key,
     )
 
 
@@ -115,6 +131,7 @@ def test_second_update_links_audit_hash_chain(database: Database) -> None:
         authorization_grant_id=GRANT_ID,
         approval_receipt_id="approval-1",
         correlation_id="correlation-2",
+        idempotency_key="campaign-update-2",
     )
 
     with database.tenant_transaction(TENANT_ID) as session:
@@ -125,3 +142,30 @@ def test_second_update_links_audit_hash_chain(database: Database) -> None:
     assert events[0].id == first.audit_event_id
     assert events[1].id == second.audit_event_id
     assert events[1].previous_hash == events[0].event_hash
+
+
+def test_same_idempotency_key_replays_committed_evidence(database: Database) -> None:
+    first = _update(database)
+    replay = _update(database)
+
+    assert replay == first
+    with database.tenant_transaction(TENANT_ID) as session:
+        campaign = session.get(Campaign, CAMPAIGN_ID)
+        assert campaign is not None and campaign.version == 2
+        assert session.scalar(select(func.count()).select_from(AuditEvent)) == 1
+        assert session.scalar(select(func.count()).select_from(OutboxEvent)) == 1
+        assert session.scalar(select(func.count()).select_from(IdempotencyRecord)) == 1
+
+
+def test_reused_idempotency_key_with_different_request_fails_closed(database: Database) -> None:
+    _update(database)
+
+    with pytest.raises(CampaignIdempotencyConflict):
+        _update(database, name="Different")
+
+    with database.tenant_transaction(TENANT_ID) as session:
+        campaign = session.get(Campaign, CAMPAIGN_ID)
+        assert campaign is not None and campaign.version == 2 and campaign.name == "After"
+        assert session.scalar(select(func.count()).select_from(AuditEvent)) == 1
+        assert session.scalar(select(func.count()).select_from(OutboxEvent)) == 1
+        assert session.scalar(select(func.count()).select_from(IdempotencyRecord)) == 1
