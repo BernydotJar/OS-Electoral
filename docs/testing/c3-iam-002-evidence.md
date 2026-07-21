@@ -65,3 +65,12 @@ The selected tests cover:
 ## Limits
 
 This is local and isolated PostgreSQL evidence, not Cognito, RDS, staging or production evidence. No external invitation, email, provider token revocation, infrastructure mutation, political effect or human production approval occurred.
+
+## Published review evidence
+
+- Branch: `agent/c3-iam-002-identity-lifecycle`
+- Implementation commit: `5eb45e92f6f292ea673c572811031805cc89cabe`
+- Draft PR: `#90`, base `agent/c3-front-001-dynamic-shell`
+- CampaignOS CI: run `29857981975`, SUCCESS
+- Runtime visual review: run `29857981487`, SUCCESS
+- GitHub merge-state observation: `CLEAN`

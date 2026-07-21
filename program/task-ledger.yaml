@@ -89,7 +89,7 @@
     {
       "task_id": "C3-IAM-002",
       "owner": "WS-03",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/migrations/versions/20260721_0004_identity_lifecycle.py",
         "backend/src/campaignos/identity/lifecycle.py",
@@ -106,12 +106,15 @@
         "program/iterations/c3-iam-002.md"
       ],
       "external_effects": "NONE",
-      "publication_state": "LOCAL_VERIFIED_NOT_YET_PUBLISHED",
+      "publication_state": "DRAFT_PR_CI_GREEN",
       "blockers": [
-        "No live provider login, recovery, MFA, email delivery or provider revocation",
-        "Current branch has no remote branch, draft PR or CI yet",
-        "No RDS, dev, staging or production verification"
-      ]
+        "Human review and merge pending",
+        "No live provider/RDS/dev/staging/production verification"
+      ],
+      "implementation_commit": "5eb45e92f6f292ea673c572811031805cc89cabe",
+      "draft_pr": 90,
+      "ci_run_id": 29857981975,
+      "visual_run_id": 29857981487
     },
     {
       "task_id": "C3-DATA-001",

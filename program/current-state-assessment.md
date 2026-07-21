@@ -10,9 +10,9 @@ Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draf
 
 Production readiness is **BLOCKED**.
 
-Foundation PR `#72`, IAM PR `#73` and the first protected campaign API PR `#83` are merged. Draft PRs `#84` through `#89` form a correctly based review chain and are green at their recorded heads. PR `#89` initially exposed a relative frontend artifact-path defect in run `29854467576`; commit `437b469` repaired the root cause and exact-head run `29856835515` plus visual run `29856835522` succeeded.
+Foundation PR `#72`, IAM PR `#73` and the first protected campaign API PR `#83` are merged. Draft PRs `#84` through `#90` form a correctly based review chain and are green at their recorded heads. PR `#89` initially exposed a relative frontend artifact-path defect in run `29854467576`; commit `437b469` repaired the root cause and exact-head run `29856835515` plus visual run `29856835522` succeeded.
 
-The active `C3-IAM-002` worktree adds tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles. Those controls are verified locally and against isolated PostgreSQL, but the branch is not yet published and no live provider operation exists. None of this evidence is a deployment or human production approval.
+Draft PR `#90` adds tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles at `5eb45e9`. Those controls are local/PostgreSQL and exact-head CI-green, but no live provider operation exists. None of this evidence is a deployment or human production approval.
 
 The only public deployed surface remains the static, read-only GitHub Pages demonstration classified `DEMO_NON_PRODUCTION`.
 
@@ -75,9 +75,9 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Area | Evidence | Determination |
 |---|---|---|
 | Foundation/IAM/first campaign API | PRs `#72`, `#73`, `#83` merged | `MERGED`; not deployed |
-| Review stack | PRs `#84`–`#89`, correct bases and green exact-head checks | `CI_GREEN`; human review/merge pending |
+| Review stack | PRs `#84`–`#90`, correct bases and green exact-head checks | `CI_GREEN`; human review/merge pending |
 | Dynamic frontend | `437b469`, CI `29856835515`, visual `29856835522` | `CI_GREEN`; synthetic and not deployed |
-| Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice | `VERIFIED_POSTGRESQL`; unpublished local branch |
+| Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice, PR `#90` CI `29857981975` | `CI_GREEN`; human review/merge and live provider pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 12 PARTIAL / 16 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
@@ -100,9 +100,8 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Publish `C3-IAM-002`, create its draft PR against `agent/c3-front-001-dynamic-shell`, obtain exact-head CI and record the checkpoint.
-2. Begin `C3-ONBOARD-001`: persisted resumable guided intake starting from campaign creation/readiness, with no automatic strategy or external effect.
-3. Advance independent platform plan-only and operations evidence without AWS apply or production claims.
-4. Continue closing required evals and confirmed CI/supply-chain findings.
+1. Begin `C3-ONBOARD-001`: persisted resumable guided intake starting from campaign creation/readiness, with no automatic strategy or external effect.
+2. Advance independent platform plan-only and operations evidence without AWS apply or production claims.
+3. Continue closing required evals and confirmed CI/supply-chain findings.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.

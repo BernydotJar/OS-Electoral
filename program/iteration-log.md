@@ -235,3 +235,10 @@
 - Disposable PostgreSQL gate passed twice: `3 passed`, `5 deselected` per run.
 - `EVAL-SESSION-001` and `EVAL-INVITATION-001` advance only to `PARTIAL_TESTED_LOCAL`; no live provider claim is made.
 - Production remains `BLOCKED`. The next delivery step is commit, rebase onto frontend `437b469`, push, draft PR and exact-head CI.
+
+## C3-IAM-002 publication checkpoint - 2026-07-21
+
+- Published implementation `5eb45e92f6f292ea673c572811031805cc89cabe`; exact remote SHA verified.
+- Opened draft PR `#90` against the CI-green frontend head.
+- CampaignOS CI `29857981975` and runtime visual review `29857981487` succeeded at the exact implementation head.
+- Recorded `C3-IAM-002` as `CI_GREEN`; production remains `BLOCKED` and no external effect occurred.

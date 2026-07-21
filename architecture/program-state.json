@@ -12,7 +12,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the dynamic frontend is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally and against isolated PostgreSQL, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the governed identity lifecycle is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -395,6 +395,18 @@
       "conclusion": "SUCCESS",
       "head_sha": "437b46930c68d6ed3a8233c139b0eaa03724b068",
       "scope": "draft PR 89 runtime visual review after relative artifact-path repair"
+    },
+    {
+      "run_id": 29857981975,
+      "conclusion": "SUCCESS",
+      "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe",
+      "scope": "draft PR 90 governed identity lifecycle"
+    },
+    {
+      "run_id": 29857981487,
+      "conclusion": "SUCCESS",
+      "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe",
+      "scope": "draft PR 90 inherited frontend runtime visual review"
     }
   ],
   "bounded_contexts": [
@@ -837,7 +849,7 @@
     },
     {
       "id": "C3-IAM-002",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-IAM-001"
       ],
@@ -1074,7 +1086,8 @@
       86,
       87,
       88,
-      89
+      89,
+      90
     ],
     "main_branch_protection": "ABSENT_CONFIRMED_AUTHENTICATED_2026_07_21",
     "rulesets": "NONE_CONFIRMED_AUTHENTICATED_2026_07_21",
@@ -1145,6 +1158,15 @@
         "head_sha": "437b46930c68d6ed3a8233c139b0eaa03724b068",
         "campaignos_ci_run_id": 29856835515,
         "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 90,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-front-001-dynamic-shell",
+        "head": "agent/c3-iam-002-identity-lifecycle",
+        "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe",
+        "campaignos_ci_run_id": 29857981975,
+        "conclusion": "SUCCESS"
       }
     ],
     "git_push_incident": {
@@ -1160,14 +1182,18 @@
       "frontend_target_verified": true
     },
     "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
-    "active_local_increment": {
+    "active_local_increment": null,
+    "latest_checkpoint": {
       "id": "C3-IAM-002",
       "branch": "agent/c3-iam-002-identity-lifecycle",
       "base": "agent/c3-front-001-dynamic-shell",
       "base_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
-      "status": "VERIFIED_POSTGRESQL_LOCAL_NOT_YET_PUBLISHED",
-      "draft_pr": null,
-      "ci": "NOT_RUN_UNPUBLISHED_WORKTREE",
+      "implementation_commit": "5eb45e92f6f292ea673c572811031805cc89cabe",
+      "draft_pr": 90,
+      "ci_run_id": 29857981975,
+      "visual_run_id": 29857981487,
+      "ci": "SUCCESS",
+      "status": "CI_GREEN",
       "external_effects": "NONE"
     }
   },
