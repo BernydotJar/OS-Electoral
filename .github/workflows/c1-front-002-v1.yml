@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "web/**"
+      - "frontend/**"
       - "core/**"
       - "tests/**"
       - "schemas/**"

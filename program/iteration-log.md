@@ -193,3 +193,20 @@
 - Isolated constrained-role PostgreSQL: `2 passed`, `5 deselected`, covering forced RLS, equal-key replay, same-slug race conflict and cross-tenant invisibility.
 - Implementation commit `c91d60217e2ee0c0ec0f38c139852e7d73c78a58` is published on `agent/c3-api-006-campaign-create`; exact local/remote/GitHub branch SHAs match. Effective-worktree and `origin/main..HEAD` Gitleaks `8.30.1` scans PASS. Public GitHub inspection found zero open PRs and zero workflow runs for this head.
 - Production remains `BLOCKED`; no external delivery, campaign publication, outreach, spending, mobilization or political approval occurred.
+
+## C3-FRONT-001 dynamic application shell - 2026-07-21
+
+- Created a separate Next.js `16.2.10` / React `19.2.7` / TypeScript application under `frontend/`; preserved `web/` unchanged as the static `DEMO_NON_PRODUCTION` reference.
+- Added fail-closed live/demo configuration, server-only bearer handling, typed no-store API calls, exact runtime JSON parsers, tenant/campaign scope reconciliation and grant-derived navigation that never treats roles as permission.
+- Added structurally tested Spanish/English dictionaries, locale routing, correct document language, loading/error/unauthenticated/context/empty/unavailable states and responsive Premium Slate foundations.
+- Added a digest-pinned non-root standalone Dockerfile, exact npm lock, zero-vulnerability audit, npm/Docker Dependabot coverage, JavaScript/TypeScript CodeQL and a dedicated frontend CI/browser-review job.
+- Critic pass repaired a PostCSS advisory, stale root-layout language during App Router navigation, missing standalone static assets in local E2E, stale-server port collisions and the absence of runtime response validation.
+- Static gates: ESLint, strict TypeScript, 12 Vitest tests, production build and npm audit PASS.
+- Browser gate: ES/EN desktop, ES mobile, keyboard skip link, reduced motion, no overflow, empty storage, no external hosts, no console/page errors and zero axe-core WCAG 2.2 A/AA violations PASS.
+- Official Playwright Chromium and checksum-verified actionlint `1.7.12` were installed inside the workstation; all workflows pass actionlint.
+- AutoSkills `0.3.6` dry-run proposed eleven skills, installed none and left Git status unchanged; decision remains `NO_INSTALL`.
+- The nested Docker daemon remained namespace-blocked, so the frontend image was rebuilt with Buildah `1.28.2`, `vfs` storage and `chroot` isolation. Docker-format metadata preserved UID/GID `10001:10001`, command and health check; an in-image synthetic-shell smoke test passed. The daemon limitation now applies only to the complete Compose stack.
+- A generated `.next` manifest triggered six local generic-key findings when scanning the raw directory. The release gate now snapshots tracked plus non-ignored files from Git before scanning; this excludes generated ignored output without a scanner allowlist. Effective-worktree and `origin/main..HEAD` Gitleaks scans pass.
+- Independent BOLA review added a full-page tenant invariant: one valid selected campaign can no longer mask a foreign-tenant item returned in the same upstream list. The exact runtime parser and adversarial Vitest now fail closed.
+- Final staged-set review found that empty `frontend/public/` would disappear in a clean checkout even though Docker/E2E copy it. Added a tracked placeholder and reran frontend build, browser, image and secret gates successfully.
+- Production remains `BLOCKED`; no live identity, domain mutation UI, deployment or external effect occurred.

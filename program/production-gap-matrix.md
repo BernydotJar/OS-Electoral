@@ -23,6 +23,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | PostgreSQL persistence | Identity/tenancy plus campaign create/read/update, idempotency, workspace, audit, outbox and readiness adapters are merged, draft-green or locally verified; constrained-role PostgreSQL create/readiness/concurrency proof passes | PARTIAL | Broader domain adapters, managed-role rotation and RDS/staging transaction evidence |
 | Database migrations | Alembic environment and initial migration pass downgrade/upgrade/check locally | PARTIAL | Reviewed release policy plus staging forward/compatibility rehearsal |
 | Versioned REST API | `/api/v1` exposes health, dependency readiness, identity, tenant authorization, exact-authorized campaign create/list/get/update, draft workspace creation and audited campaign readiness with safe errors, idempotency, concurrency headers and typed OpenAPI | PARTIAL | Broader bounded contexts, reviewed OpenAPI policy, rate controls and deployed verification |
+| Dynamic frontend shell | Next.js 16/React 19 server-rendered shell, server-only typed API client, runtime JSON validation, fail-closed states, ES/EN, responsive Premium Slate foundations and synthetic read-only demo mode pass local build/browser gates | PARTIAL | Live OIDC/session integration, trusted tenant selection, complete authorized journeys, current-branch CI/review, dev/staging deployment and user acceptance |
 | Background jobs | Draft PR `#85` adds a tenant-explicit internal outbox worker with leases, `SKIP LOCKED`, expired-claim recovery, bounded retries, dead-letter state and evidence revalidation; no external delivery exists | PARTIAL | Worker administration, metrics/traces/alerts, staging replay/concurrency proof and reviewed transport contracts |
 | Object storage | Typed configuration and initialized Adobe S3Mock local harness only | PARTIAL | Production adapter, signed operations, MIME/size validation, scan strategy and KMS/retention controls |
 | Guided onboarding | A tenant campaign can be created as `DRAFT` and assessed for deterministic operational readiness; no persisted save/resume intake wizard or evidence collection journey exists | PARTIAL | Save/resume intake, evidence requirements, known unknowns and guided next actions |
@@ -33,8 +34,8 @@ No row marked `PARTIAL` is counted as production-ready.
 | Approval ledger | In-memory hash-chained prototype | PARTIAL | Durable append-only ledger, concurrency and authorized receipts |
 | Training Academy | Static team guidance only | NOT_IMPLEMENTED | Learning paths, content governance, completions and assessments |
 | AI runtime guardrails | Deterministic extraction/guard prototypes | PARTIAL | Provider abstraction, schema enforcement, audit metadata and hard eval suite |
-| Spanish and English | UI primarily Spanish with hard-coded strings | NOT_IMPLEMENTED | Translation keys, parity tests and locale-aware formats |
-| Accessibility | Static Playwright review and draft-PR browser run `29706162740` pass | PARTIAL | WCAG 2.2 AA audit across production critical paths |
+| Spanish and English | Dynamic shell has structurally tested ES/EN dictionaries, locale routes, document language and browser parity; legacy/static and future journeys are not fully localized | PARTIAL | Complete product dictionaries, locale-aware formats, error/content parity and human language review |
+| Accessibility | Static review remains green; dynamic shell passes keyboard skip-link, mobile/reduced-motion, overflow and axe-core WCAG 2.2 A/AA checks in ES/EN | PARTIAL | Manual assistive-technology review, production critical-path coverage and independent WCAG 2.2 AA acceptance |
 
 ## Security, privacy and operations gates
 
@@ -82,7 +83,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | Gate | Current evidence | Status | Required proof |
 |---|---|---:|---|
 | Program ledger | Manifest, graph, ledger and exact 33-item eval catalog reconcile fail closed under validators | PASS | Continue reconciliation with every GitHub/environment change |
-| Required evals | Exact inventory records `5 PASS`, `8 PARTIAL`, `20 NOT_RUN`; absent capabilities remain fail-closed | PARTIAL | Implement every underlying capability and obtain 33 reviewed PASS results with zero hard-gate failures |
+| Required evals | Exact inventory records `5 PASS`, `10 PARTIAL`, `18 NOT_RUN`; absent capabilities remain fail-closed | PARTIAL | Implement every underlying capability and obtain 33 reviewed PASS results with zero hard-gate failures |
 | AutoSkills review | `autoskills@0.3.6` npm integrity/license/manifest reviewed; pinned dry-run proposed eleven skills, installed none and made no repository mutation | PASS | Per-skill payload, license, path and prompt-safety review plus explicit approval before any install |
 | Context7 evidence | Foundation guidance, official cross-checks and installed pins are recorded | PASS | Repeat for new implementation dependencies |
 | Required documentation tree | Campaign readiness and campaign-create API/testing docs exist, but most canonical goal paths remain absent | PARTIAL | Complete all required docs, ownership and stale-content validation |
