@@ -1,0 +1,349 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-07-21",
+  "program": "CampaignOS Product Program",
+  "production_gate": "BLOCKED",
+  "hard_gates": {
+    "critical_failures_allowed": 0,
+    "high_failures_allowed": 0,
+    "required_tests_pass_rate": 100,
+    "required_acceptance_criteria": 100,
+    "cross_tenant_leaks_allowed": 0,
+    "authorization_bypasses_allowed": 0,
+    "approval_bypasses_allowed": 0,
+    "external_effects_allowed": 0,
+    "unsupported_evidence_claims_allowed": 0
+  },
+  "evals": [
+    {
+      "id": "EVAL-TENANT-001",
+      "category": "runtime_security",
+      "status": "VERIFIED_POSTGRESQL",
+      "gate_result": "PASS",
+      "evidence": ["backend/tests/test_database.py", "backend/tests/test_authorization.py"],
+      "commands": ["make test-postgres", "make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Local isolated PostgreSQL proof only; no RDS or staging claim."
+    },
+    {
+      "id": "EVAL-AUTHZ-001",
+      "category": "runtime_security",
+      "status": "VERIFIED_POSTGRESQL",
+      "gate_result": "PASS",
+      "evidence": ["backend/tests/test_authorization.py", "backend/tests/test_campaign_readiness_api.py", "backend/tests/test_database.py"],
+      "commands": ["make test", "make test-postgres"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Applies to implemented identity and campaign slices; not every future domain action exists yet."
+    },
+    {
+      "id": "EVAL-BOLA-001",
+      "category": "runtime_security",
+      "status": "VERIFIED_POSTGRESQL",
+      "gate_result": "PASS",
+      "evidence": ["backend/tests/test_campaign_readiness_api.py", "backend/tests/test_database.py"],
+      "commands": ["make test", "make test-postgres"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Covers implemented campaign/readiness boundaries; broader resource families remain future work."
+    },
+    {
+      "id": "EVAL-SESSION-001",
+      "category": "runtime_security",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No live session lifecycle, rotation, recovery or revocation implementation."
+    },
+    {
+      "id": "EVAL-INVITATION-001",
+      "category": "runtime_security",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Invitation lifecycle is pending C3-IAM-002."
+    },
+    {
+      "id": "EVAL-AUDIT-001",
+      "category": "runtime_security",
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": ["backend/tests/test_audit_append.py", "backend/tests/test_campaign_readiness.py", "backend/tests/test_database.py"],
+      "commands": ["make test", "make test-postgres"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Hash-linked append and read receipts are tested; database-level mutation prohibition and production retention remain absent."
+    },
+    {
+      "id": "EVAL-OUTBOX-001",
+      "category": "runtime_security",
+      "status": "TESTED_LOCAL",
+      "gate_result": "PASS",
+      "evidence": ["backend/tests/test_outbox_worker.py", "backend/tests/test_worker_main.py"],
+      "commands": ["make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Internal transport only; no external political effect or staging worker proof."
+    },
+    {
+      "id": "EVAL-REPLAY-001",
+      "category": "runtime_security",
+      "status": "TESTED_LOCAL",
+      "gate_result": "PASS",
+      "evidence": ["backend/tests/test_outbox_worker.py", "backend/tests/test_campaign_write_model.py", "backend/tests/test_workspace_write_model.py"],
+      "commands": ["make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Replay/idempotency is local and scoped to implemented writes and internal worker delivery."
+    },
+    {
+      "id": "EVAL-PROMPT-INJECTION-001",
+      "category": "runtime_security",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Governed agent runtime is not implemented."
+    },
+    {
+      "id": "EVAL-ONBOARDING-001",
+      "category": "product",
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": ["backend/tests/test_campaign_readiness.py", "backend/tests/test_campaign_readiness_api.py", "docs/api/campaign-readiness.md"],
+      "commands": ["make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Operational readiness projection exists; the guided intake journey and evidence collection are not implemented."
+    },
+    {
+      "id": "EVAL-CANDIDATE-001",
+      "category": "product",
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": ["tests/test_candidate_brand.py"],
+      "commands": ["make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Prototype domain tests only; no durable dynamic Candidate Workspace."
+    },
+    {
+      "id": "EVAL-TEAM-001",
+      "category": "product",
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": ["tests/test_campaign_workspace.py"],
+      "commands": ["make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Prototype organization invariants only; no durable team-builder workflow."
+    },
+    {
+      "id": "EVAL-ROADMAP-001",
+      "category": "product",
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": ["tests/test_daily_workflow.py", "tests/test_campaign_workspace.py"],
+      "commands": ["make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Prototype workflow evidence only; no PostgreSQL roadmap API."
+    },
+    {
+      "id": "EVAL-WARROOM-001",
+      "category": "product",
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": ["tests/test_daily_workflow.py", "scripts/frontend/validate_daily_war_room.py"],
+      "commands": ["make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Static/prototype Daily War Room, not a durable authenticated application journey."
+    },
+    {
+      "id": "EVAL-TRAINING-001",
+      "category": "product",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Training Academy baseline is absent."
+    },
+    {
+      "id": "EVAL-I18N-001",
+      "category": "product",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Complete Spanish/English application coverage is absent."
+    },
+    {
+      "id": "EVAL-NONTECH-001",
+      "category": "product",
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": ["scripts/frontend/runtime_visual_review.py", "web/index.html"],
+      "commands": ["uv run --locked python scripts/frontend/runtime_visual_review.py"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Static demo review only; no authenticated end-to-end non-technical journey."
+    },
+    {
+      "id": "EVAL-OBJECTIVE-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No dedicated executable objective-governance eval."
+    },
+    {
+      "id": "EVAL-METHOD-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No dedicated executable methodology-review eval."
+    },
+    {
+      "id": "EVAL-BIOPOLITICS-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Safety scanner is not a complete biopolitics evaluation."
+    },
+    {
+      "id": "EVAL-NEUROMARKETING-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No dedicated prohibited-neuromarketing eval."
+    },
+    {
+      "id": "EVAL-CONTACT-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No citizen-contact runtime exists and no complete contact-policy eval exists."
+    },
+    {
+      "id": "EVAL-TROLL-CENTER-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No dedicated anti-astroturfing or coordinated-abuse eval."
+    },
+    {
+      "id": "EVAL-PARTICIPATION-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No dedicated participation and citizen-autonomy eval."
+    },
+    {
+      "id": "EVAL-CAMPAIGN-GOVERNMENT-FIREWALL-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Policy boundary is documented but lacks complete executable evaluation."
+    },
+    {
+      "id": "EVAL-TEAM-WELLBEING-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No dedicated team-wellbeing controls or eval."
+    },
+    {
+      "id": "EVAL-BRAND-COHERENCE-001",
+      "category": "democratic_safety",
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": ["tests/test_candidate_brand.py"],
+      "commands": ["make test"],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Candidate-brand prototype only; no reviewed campaign-wide coherence workflow."
+    },
+    {
+      "id": "EVAL-OPPOSITION-RESEARCH-001",
+      "category": "democratic_safety",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No dedicated lawful opposition-research eval."
+    },
+    {
+      "id": "EVAL-RECOVERY-001",
+      "category": "operations",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No backup/restore or disaster-recovery rehearsal."
+    },
+    {
+      "id": "EVAL-ACCESSIBILITY-001",
+      "category": "operations",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Visual review exists, but no complete automated/manual accessibility eval."
+    },
+    {
+      "id": "EVAL-LOAD-001",
+      "category": "operations",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "No reviewed load or capacity test."
+    },
+    {
+      "id": "EVAL-ROLLBACK-001",
+      "category": "operations",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Migration downgrade is tested locally, but no environment rollback rehearsal exists."
+    },
+    {
+      "id": "EVAL-OBSERVABILITY-001",
+      "category": "operations",
+      "status": "NOT_IMPLEMENTED",
+      "gate_result": "NOT_RUN",
+      "evidence": [],
+      "commands": [],
+      "last_verified_at": null,
+      "limitations": "Prototype audit read model does not constitute production observability."
+    }
+  ]
+}

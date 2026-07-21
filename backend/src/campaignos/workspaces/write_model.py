@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass
-from datetime import UTC, datetime
 from typing import Protocol
 from uuid import UUID, uuid4
 
@@ -14,8 +12,14 @@ from sqlalchemy import select, text
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from campaignos.data.audit import (
+    AuditScopeUnavailable,
+    append_audit_event,
+    canonical_hash,
+    lock_tenant_audit_stream,
+)
 from campaignos.data.database import Database
-from campaignos.data.models import AuditEvent, Campaign, IdempotencyRecord, OutboxEvent, Workspace
+from campaignos.data.models import Campaign, IdempotencyRecord, OutboxEvent, Workspace
 
 
 class WorkspaceIdempotencyConflict(RuntimeError):
@@ -80,13 +84,6 @@ class UnavailableWorkspaceWriter:
         raise WorkspaceWriteUnavailable("Workspace writer is unavailable")
 
 
-def _canonical_hash(value: object) -> str:
-    encoded = json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=True, default=str
-    ).encode()
-    return hashlib.sha256(encoded).hexdigest()
-
-
 def _serialize_key(session: Session, tenant_id: UUID, operation: str, key: str) -> None:
     bind = session.get_bind()
     if bind.dialect.name != "postgresql":
@@ -127,7 +124,7 @@ class SqlAlchemyWorkspaceWriter:
             raise
         except IntegrityError as exc:
             raise WorkspaceWriteUnavailable("Workspace slug is unavailable") from exc
-        except SQLAlchemyError as exc:
+        except (AuditScopeUnavailable, SQLAlchemyError, ValueError) as exc:
             raise WorkspaceWriteUnavailable("Workspace write is unavailable") from exc
 
     def _create(
@@ -143,7 +140,7 @@ class SqlAlchemyWorkspaceWriter:
         idempotency_key: str,
     ) -> WorkspaceWriteEvidence:
         operation = "workspace.create"
-        digest = _canonical_hash(
+        digest = canonical_hash(
             {
                 "tenant_id": str(tenant_id),
                 "campaign_id": str(campaign_id),
@@ -153,8 +150,7 @@ class SqlAlchemyWorkspaceWriter:
                 "approval_receipt_id": approval_receipt_id,
             }
         )
-        occurred_at = datetime.now(UTC)
-        workspace_id, audit_id, outbox_id = uuid4(), uuid4(), uuid4()
+        workspace_id, outbox_id = uuid4(), uuid4()
         with self.database.tenant_transaction(tenant_id) as session:
             _serialize_key(session, tenant_id, operation, idempotency_key)
             existing = session.scalar(
@@ -173,6 +169,7 @@ class SqlAlchemyWorkspaceWriter:
                     )
                 return WorkspaceWriteEvidence.model_validate(existing.response_payload)
 
+            audit_lock = lock_tenant_audit_stream(session, tenant_id)
             campaign_exists = session.scalar(
                 select(Campaign.id).where(
                     Campaign.id == campaign_id,
@@ -183,6 +180,7 @@ class SqlAlchemyWorkspaceWriter:
             if campaign_exists is None:
                 raise WorkspaceMutationNotFound("Campaign was not found")
 
+            operation_at = audit_lock.acquired_at
             workspace = Workspace(
                 id=workspace_id,
                 tenant_id=tenant_id,
@@ -191,55 +189,28 @@ class SqlAlchemyWorkspaceWriter:
                 name=request.name,
                 status="ACTIVE",
                 version=1,
-                created_at=occurred_at,
-                updated_at=occurred_at,
+                created_at=operation_at,
+                updated_at=operation_at,
             )
             session.add(workspace)
-            previous_hash = (
-                session.scalar(
-                    select(AuditEvent.event_hash)
-                    .where(AuditEvent.tenant_id == tenant_id)
-                    .order_by(AuditEvent.occurred_at.desc(), AuditEvent.id.desc())
-                    .limit(1)
-                    .with_for_update()
-                )
-                or "GENESIS"
-            )
             payload = {
                 "workspace": {"slug": request.slug, "name": request.name, "version": 1},
                 "authorization_grant_id": str(authorization_grant_id),
                 "approval_receipt_id": approval_receipt_id,
                 "correlation_id": correlation_id,
             }
-            event_hash = _canonical_hash(
-                {
-                    "id": str(audit_id),
-                    "tenant_id": str(tenant_id),
-                    "campaign_id": str(campaign_id),
-                    "workspace_id": str(workspace_id),
-                    "principal_id": str(principal_id),
-                    "event_type": "workspace.created",
-                    "payload": payload,
-                    "occurred_at": occurred_at.isoformat(),
-                    "previous_hash": previous_hash,
-                }
+            audit_append = append_audit_event(
+                session,
+                audit_lock=audit_lock,
+                campaign_id=campaign_id,
+                workspace_id=workspace_id,
+                principal_id=principal_id,
+                event_type="workspace.created",
+                resource_type="workspace",
+                resource_id=str(workspace_id),
+                payload=payload,
             )
-            session.add(
-                AuditEvent(
-                    id=audit_id,
-                    tenant_id=tenant_id,
-                    campaign_id=campaign_id,
-                    workspace_id=workspace_id,
-                    principal_id=principal_id,
-                    event_type="workspace.created",
-                    resource_type="workspace",
-                    resource_id=str(workspace_id),
-                    payload=payload,
-                    occurred_at=occurred_at,
-                    previous_hash=previous_hash,
-                    event_hash=event_hash,
-                )
-            )
+            audit_id = audit_append.event_id
             session.add(
                 OutboxEvent(
                     id=outbox_id,
@@ -255,8 +226,8 @@ class SqlAlchemyWorkspaceWriter:
                     },
                     status="PENDING",
                     attempts=0,
-                    available_at=occurred_at,
-                    created_at=occurred_at,
+                    available_at=operation_at,
+                    created_at=operation_at,
                 )
             )
             evidence = WorkspaceWriteEvidence(
@@ -280,7 +251,7 @@ class SqlAlchemyWorkspaceWriter:
                     idempotency_key=idempotency_key,
                     request_digest=digest,
                     response_payload=evidence.model_dump(mode="json"),
-                    created_at=occurred_at,
+                    created_at=operation_at,
                 )
             )
             session.flush()

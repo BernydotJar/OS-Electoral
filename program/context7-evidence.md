@@ -117,3 +117,31 @@ Context7 is mandatory implementation evidence, but its index can lag package reg
 - `framework_change`: none; this increment reconciles repository, CI and program truth rather than changing a framework contract.
 - `evidence_basis`: exact versions in `uv.lock`, official package/release metadata used for environment remediation, existing retained framework records, and executable local/CI tests.
 - `limitation`: no new Context7 retrieval is claimed or fabricated. The next framework-affecting increment must add current official documentation evidence and, when available, a Context7 record.
+
+## C3-API-005 official documentation record
+
+- `date`: `2026-07-21 America/Guatemala`
+- `task_id`: `C3-API-005`
+- `Context7_runtime`: unavailable in the Cloud Sandbox toolset; no Context7 retrieval is claimed.
+- `installed_versions`: FastAPI `0.139.2`; Pydantic `2.13.4`; SQLAlchemy `2.0.51` from `pyproject.toml` and `uv.lock`.
+
+### SQLAlchemy transaction and row-lock boundary
+
+- `official_sources`: [transactions and connection management](https://docs.sqlalchemy.org/en/20/orm/session_transaction.html), [Session basics](https://docs.sqlalchemy.org/en/20/orm/session_basics.html), [ORM SELECT statements and `with_for_update`](https://docs.sqlalchemy.org/en/20/orm/queryguide/select.html#using-select-for-update).
+- `documentation_summary`: keep the campaign observation and audit append inside one explicit Session transaction; use a row lock to serialize access to a shared mutable chain head; flush pending state without committing outside the transaction owner.
+- `implementation_decision`: `Database.tenant_transaction` remains the unit of work. A stable tenant row is locked before audited reads/writes, and a session-bound lock token is required by the shared audit appender. The append assigns a monotonic timestamp and flushes the new head while preserving rollback semantics.
+- `limitations`: local SQLite proves adapter contracts but not row-lock behavior; the isolated PostgreSQL test is the authority for forced RLS and `FOR UPDATE` behavior. No RDS or staging concurrency claim is made.
+
+### FastAPI dependency and response contract
+
+- `official_sources`: [dependencies](https://fastapi.tiangolo.com/tutorial/dependencies/), [response model](https://fastapi.tiangolo.com/tutorial/response-model/).
+- `documentation_summary`: declare shared authentication/authorization inputs as dependencies so their requirements flow into OpenAPI; use a response model to validate, document and filter the API output.
+- `implementation_decision`: tenant authorization and the readiness reader are typed dependencies. The route declares `CampaignReadinessEvidence` as its response model and tests the generated bearer-security/OpenAPI contract.
+- `limitations`: OpenAPI and `TestClient` evidence is local API-contract proof, not a live browser session, gateway policy, rate limit or deployment proof.
+
+### Pydantic model invariants
+
+- `official_sources`: [validators](https://docs.pydantic.dev/latest/concepts/validators/), [configuration](https://docs.pydantic.dev/latest/concepts/config/).
+- `documentation_summary`: use after-model validators for whole-model invariants and return the validated instance; reject unknown fields and freeze read projections where mutation would undermine trust.
+- `implementation_decision`: readiness input/output models use `extra="forbid"`, frozen projections and an after-model validator that reconciles ordered checks, totals, status and the guided-intake boolean.
+- `limitations`: model validation prevents malformed projection objects; it does not replace authorization, tenant isolation, evidence review or human approval.

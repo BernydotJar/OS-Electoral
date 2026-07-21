@@ -59,6 +59,18 @@
       "depends_on": ["C3-IAM-001", "C3-DATA-001"]
     },
     {
+      "id": "C3-API-005",
+      "workstream": "WS-05",
+      "title": "Audited operational campaign readiness projection",
+      "status": "VERIFIED_POSTGRESQL",
+      "depends_on": ["C3-API-001"],
+      "acceptance": [
+        "Exact tenant/campaign/resource/purpose authorization precedes persistence",
+        "Successful readiness reads append a tenant hash-chain receipt and emit no outbox event",
+        "BOLA, wrong-purpose, adapter-scope and isolated PostgreSQL tests pass"
+      ]
+    },
+    {
       "id": "C3-FRONT-001",
       "workstream": "WS-06",
       "title": "Next.js application shell, typed API client, i18n and accessible design system",

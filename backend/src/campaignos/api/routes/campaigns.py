@@ -16,6 +16,10 @@ from campaignos.campaigns import (
     CampaignNotFound,
     CampaignPage,
     CampaignProjection,
+    CampaignReadinessEvidence,
+    CampaignReadinessNotFound,
+    CampaignReadinessReader,
+    CampaignReadinessUnavailable,
     CampaignUpdate,
     CampaignWriteConflict,
     CampaignWriteEvidence,
@@ -29,6 +33,7 @@ from campaignos.identity.authorization import (
 
 router = APIRouter(tags=["campaigns"])
 READ_CAMPAIGN_PURPOSE = "Operate assigned campaign"
+READ_CAMPAIGN_READINESS_PURPOSE = "Assess assigned campaign readiness"
 
 
 def campaign_directory(request: Request) -> CampaignDirectory:
@@ -128,6 +133,83 @@ def get_campaign(
             detail="Campaign data is temporarily unavailable",
         )
     return projection
+
+
+def campaign_readiness_reader(request: Request) -> CampaignReadinessReader:
+    return cast(CampaignReadinessReader, request.app.state.campaign_readiness_reader)
+
+
+CampaignReadinessReaderDependency = Annotated[
+    CampaignReadinessReader, Depends(campaign_readiness_reader)
+]
+
+
+def _readiness_grant(
+    authorization: TenantAuthorizationContext, campaign_id: UUID
+) -> EffectivePermissionGrant | None:
+    for membership in authorization.memberships:
+        for grant in membership.grants:
+            if grant.permits(
+                action="read",
+                resource_type="campaign_readiness",
+                resource_id=str(campaign_id),
+                purpose=READ_CAMPAIGN_READINESS_PURPOSE,
+                campaign_id=campaign_id,
+                workspace_id=None,
+            ):
+                return grant
+    return None
+
+
+@router.get(
+    "/tenants/{tenant_id}/campaigns/{campaign_id}/readiness",
+    response_model=CampaignReadinessEvidence,
+    summary="Assess operational campaign setup readiness",
+    description=(
+        "Returns an audited operational setup projection. It is not a political, legal, "
+        "financial, security, publication, production, or other human approval."
+    ),
+)
+def get_campaign_readiness(
+    request: Request,
+    tenant_id: UUID,
+    campaign_id: UUID,
+    authorization: CurrentTenantAuthorization,
+    reader: CampaignReadinessReaderDependency,
+) -> CampaignReadinessEvidence:
+    """Return deterministic setup readiness only after exact current authorization."""
+    grant = _readiness_grant(authorization, campaign_id)
+    if grant is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Campaign readiness access is not authorized",
+        )
+    try:
+        evidence = reader.get(
+            tenant_id,
+            campaign_id,
+            principal_id=authorization.principal_id,
+            authorization_grant_id=grant.grant_id,
+            approval_receipt_id=grant.approval_receipt_id,
+            authorization_purpose=grant.purpose,
+            correlation_id=getattr(request.state, "correlation_id", "unknown"),
+        )
+    except CampaignReadinessNotFound as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Campaign was not found",
+        ) from exc
+    except CampaignReadinessUnavailable as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Campaign readiness is temporarily unavailable",
+        ) from exc
+    if evidence.readiness.tenant_id != tenant_id or evidence.readiness.campaign_id != campaign_id:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Campaign readiness is temporarily unavailable",
+        )
+    return evidence
 
 
 # Write operations are deliberately separate from read authorization semantics.

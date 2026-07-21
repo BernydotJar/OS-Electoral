@@ -20,8 +20,8 @@ bootstrap: compose-config ## Install locked Python dependencies and build/pull t
 dev: compose-config ## Build and run the local stack with API hot reload.
 	$(COMPOSE) up --build --remove-orphans
 
-test: ## Run the complete locked pytest suite.
-	$(UV) run --locked pytest -W error
+test: ## Run the complete locked pytest suite with the enforced coverage floor.
+	$(UV) run --locked pytest -W error --cov=campaignos --cov-report=term-missing --cov-fail-under=90
 
 test-postgres: ## Run isolated PostgreSQL migration and RLS tests (requires *_test URL).
 	@test -n "$(CAMPAIGNOS_TEST_DATABASE_URL)" || { echo "CAMPAIGNOS_TEST_DATABASE_URL is required" >&2; exit 1; }
@@ -43,8 +43,9 @@ migrate: ## Upgrade an explicitly configured database to the reviewed Alembic he
 e2e: compose-config ## Build an isolated stack and exercise every local service.
 	ENV_FILE="$(ENV_FILE)" ./scripts/dev/e2e.sh
 
-program-verify: ## Validate the machine-readable program truth and safety scanner.
+program-verify: ## Validate machine-readable program truth, required evals and safety.
 	$(UV) run --locked python scripts/architecture/validate_program_state.py
+	$(UV) run --locked python scripts/architecture/validate_eval_catalog.py
 	$(UV) run --locked python scripts/campaign/scan_c2_safety.py
 
 verify: compose-config lint format-check typecheck test program-verify ## Validate all local quality gates.

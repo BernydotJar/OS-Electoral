@@ -13,10 +13,13 @@ from campaignos.api.middleware import request_controls
 from campaignos.api.routes import campaigns, health, me, tenant_me, workspaces
 from campaignos.campaigns import (
     CampaignDirectory,
+    CampaignReadinessReader,
     CampaignWriter,
     SqlAlchemyCampaignDirectory,
+    SqlAlchemyCampaignReadinessReader,
     SqlAlchemyCampaignWriter,
     UnavailableCampaignDirectory,
+    UnavailableCampaignReadinessReader,
     UnavailableCampaignWriter,
 )
 from campaignos.config import Settings, get_settings
@@ -41,6 +44,7 @@ def create_app(
     database: DatabaseRuntime | None = None,
     membership_directory: MembershipDirectory | None = None,
     campaign_directory: CampaignDirectory | None = None,
+    campaign_readiness_reader: CampaignReadinessReader | None = None,
     campaign_writer: CampaignWriter | None = None,
     workspace_writer: WorkspaceWriter | None = None,
 ) -> FastAPI:
@@ -66,6 +70,12 @@ def create_app(
     if campaign_read_directory is None and isinstance(database_runtime, Database):
         campaign_read_directory = SqlAlchemyCampaignDirectory(database_runtime)
     campaign_read_directory = campaign_read_directory or UnavailableCampaignDirectory()
+    campaign_readiness_boundary = campaign_readiness_reader
+    if campaign_readiness_boundary is None and isinstance(database_runtime, Database):
+        campaign_readiness_boundary = SqlAlchemyCampaignReadinessReader(database_runtime)
+    campaign_readiness_boundary = (
+        campaign_readiness_boundary or UnavailableCampaignReadinessReader()
+    )
     campaign_write_boundary = campaign_writer
     if campaign_write_boundary is None and isinstance(database_runtime, Database):
         campaign_write_boundary = SqlAlchemyCampaignWriter(database_runtime)
@@ -101,6 +111,7 @@ def create_app(
     app.state.database = database_runtime
     app.state.membership_directory = authorization_directory
     app.state.campaign_directory = campaign_read_directory
+    app.state.campaign_readiness_reader = campaign_readiness_boundary
     app.state.campaign_writer = campaign_write_boundary
     app.state.workspace_writer = workspace_write_boundary
     app.state.logger = logging.getLogger(runtime_settings.service_name)

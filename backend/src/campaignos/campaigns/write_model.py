@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass
-from datetime import UTC, datetime
 from typing import Protocol
 from uuid import UUID, uuid4
 
@@ -15,8 +13,14 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from campaignos.campaigns.read_model import CampaignProjection
+from campaignos.data.audit import (
+    AuditScopeUnavailable,
+    append_audit_event,
+    canonical_hash,
+    lock_tenant_audit_stream,
+)
 from campaignos.data.database import Database
-from campaignos.data.models import AuditEvent, Campaign, IdempotencyRecord, OutboxEvent
+from campaignos.data.models import Campaign, IdempotencyRecord, OutboxEvent
 
 
 class CampaignWriteConflict(RuntimeError):
@@ -111,17 +115,6 @@ class UnavailableCampaignWriter:
         raise CampaignWriteUnavailable("Campaign writer is unavailable")
 
 
-def _canonical_hash(value: object) -> str:
-    encoded = json.dumps(
-        value,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=True,
-        default=str,
-    ).encode("utf-8")
-    return hashlib.sha256(encoded).hexdigest()
-
-
 def _serialize_idempotency_key(
     session: Session, tenant_id: UUID, operation: str, idempotency_key: str
 ) -> None:
@@ -167,7 +160,7 @@ class SqlAlchemyCampaignWriter:
             )
         except (CampaignIdempotencyConflict, CampaignMutationNotFound, CampaignWriteConflict):
             raise
-        except SQLAlchemyError as exc:
+        except (AuditScopeUnavailable, SQLAlchemyError, ValueError) as exc:
             raise CampaignWriteUnavailable("Campaign write is unavailable") from exc
 
     def _update(
@@ -183,7 +176,7 @@ class SqlAlchemyCampaignWriter:
         correlation_id: str,
         idempotency_key: str,
     ) -> CampaignWriteEvidence:
-        request_digest = _canonical_hash(
+        request_digest = canonical_hash(
             {
                 "tenant_id": str(tenant_id),
                 "campaign_id": str(campaign_id),
@@ -195,8 +188,6 @@ class SqlAlchemyCampaignWriter:
             }
         )
         operation = "campaign.update"
-        occurred_at = datetime.now(UTC)
-        audit_event_id = uuid4()
         outbox_event_id = uuid4()
         with self.database.tenant_transaction(tenant_id) as session:
             _serialize_idempotency_key(session, tenant_id, operation, idempotency_key)
@@ -216,6 +207,7 @@ class SqlAlchemyCampaignWriter:
                     )
                 return CampaignWriteEvidence.model_validate(existing.response_payload)
 
+            audit_lock = lock_tenant_audit_stream(session, tenant_id)
             campaign = session.scalar(
                 select(Campaign)
                 .where(
@@ -235,18 +227,9 @@ class SqlAlchemyCampaignWriter:
             for field, value in changed.items():
                 setattr(campaign, field, value)
             campaign.version += 1
-            campaign.updated_at = occurred_at
+            operation_at = audit_lock.acquired_at
+            campaign.updated_at = operation_at
 
-            previous_hash = (
-                session.scalar(
-                    select(AuditEvent.event_hash)
-                    .where(AuditEvent.tenant_id == tenant_id)
-                    .order_by(AuditEvent.occurred_at.desc(), AuditEvent.id.desc())
-                    .limit(1)
-                    .with_for_update()
-                )
-                or "GENESIS"
-            )
             payload = {
                 "before": before,
                 "after": changed,
@@ -255,34 +238,18 @@ class SqlAlchemyCampaignWriter:
                 "approval_receipt_id": approval_receipt_id,
                 "correlation_id": correlation_id,
             }
-            hash_input = {
-                "id": str(audit_event_id),
-                "tenant_id": str(tenant_id),
-                "campaign_id": str(campaign_id),
-                "principal_id": str(principal_id),
-                "event_type": "campaign.updated",
-                "resource_type": "campaign",
-                "resource_id": str(campaign_id),
-                "payload": payload,
-                "occurred_at": occurred_at.isoformat(),
-                "previous_hash": previous_hash,
-            }
-            event_hash = _canonical_hash(hash_input)
-            session.add(
-                AuditEvent(
-                    id=audit_event_id,
-                    tenant_id=tenant_id,
-                    campaign_id=campaign_id,
-                    principal_id=principal_id,
-                    event_type="campaign.updated",
-                    resource_type="campaign",
-                    resource_id=str(campaign_id),
-                    payload=payload,
-                    occurred_at=occurred_at,
-                    previous_hash=previous_hash,
-                    event_hash=event_hash,
-                )
+            audit_append = append_audit_event(
+                session,
+                audit_lock=audit_lock,
+                campaign_id=campaign_id,
+                workspace_id=None,
+                principal_id=principal_id,
+                event_type="campaign.updated",
+                resource_type="campaign",
+                resource_id=str(campaign_id),
+                payload=payload,
             )
+            audit_event_id = audit_append.event_id
             session.add(
                 OutboxEvent(
                     id=outbox_event_id,
@@ -297,8 +264,8 @@ class SqlAlchemyCampaignWriter:
                     },
                     status="PENDING",
                     attempts=0,
-                    available_at=occurred_at,
-                    created_at=occurred_at,
+                    available_at=operation_at,
+                    created_at=operation_at,
                 )
             )
             projection = CampaignProjection(
@@ -324,7 +291,7 @@ class SqlAlchemyCampaignWriter:
                     idempotency_key=idempotency_key,
                     request_digest=request_digest,
                     response_payload=evidence.model_dump(mode="json"),
-                    created_at=occurred_at,
+                    created_at=operation_at,
                 )
             )
             session.flush()
