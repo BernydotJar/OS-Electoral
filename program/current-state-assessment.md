@@ -87,7 +87,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Team Builder | revision `20260721_0007`, exact RACI/capacity/access-recommendation contracts, PR `#94`, CI `29870461743` and visual `29870461745` | `CI_GREEN`; human staffing acceptance, authenticated editing and live environments pending |
 | Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, PR `#95`, CI `29871930387` and visual `29871930366` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
 | Evidence-first Strategy Decision Room | revision `20260721_0009`, exact API, append-only decisions, PR `#96`, CI `29876152098` and visual `29876152083` | `CI_GREEN`; authenticated editing, independent human acceptance, merge and live environments pending |
-| Governed Agent Runtime | revision `20260721_0010`, strict no-tool contracts, exact API, append-only journal, prompt-injection guards and PostgreSQL replay/RLS | `VERIFIED_POSTGRESQL`; live provider/privacy review, human disposition UI, publication/CI and environments pending |
+| Governed Agent Runtime | revision `20260721_0010`, strict no-tool contracts, exact API, append-only journal, PR `#98`, CI `29878699324` and visual `29878699317` | `CI_GREEN`; live provider/privacy review, human disposition UI, merge and environments pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 15 PARTIAL / 13 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
@@ -110,9 +110,9 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Publish `C3-AGENT-001` and require exact-head CI/visual success before recording `CI_GREEN`.
-2. Reconcile `C3-CI-001` before infrastructure or protected delivery work advances.
-3. Add live-provider/privacy and human-disposition work only under separate reviewed increments; keep external effects disabled.
+1. Reconcile `C3-CI-001`, including protected delivery, provenance/SBOM/signing gaps and required-check enforcement.
+2. Add live-provider/privacy work only under a separate reviewed increment after processor, residency, retention and leakage controls are accepted.
+3. Add human disposition UI separately; keep tools and external effects disabled.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
 
@@ -150,4 +150,5 @@ Production deployment remains prohibited until every production gate passes and 
 - Passed 18 runtime adversarial tests, 60 focused Agent/worker tests, 628 full-suite tests, 9 skips and 90.95% coverage.
 - Passed the nine-slice PostgreSQL gate twice, including one provider call under equal-key concurrency and cross-tenant denial.
 - Prompt-injection eval is `PARTIAL_TESTED_LOCAL`; provider privacy/leakage approval remains `NOT_IMPLEMENTED`.
-- Status is `VERIFIED_POSTGRESQL`; production remains `BLOCKED`, branch publication/CI are pending and external effects remain `NONE`.
+- Status is `CI_GREEN`; PR `#98` is `CLEAN`, CI `29878699324` and visual `29878699317` passed on `04db6bcd0cd8e61a848c7416d7ef1109246f9cd5`.
+- Production remains `BLOCKED`; default provider is unavailable/no-network and external effects remain `NONE`.

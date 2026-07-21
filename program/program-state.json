@@ -5,7 +5,7 @@
   "updated_at": "2026-07-21",
   "branch": "agent/c3-agent-001-governed-runtime",
   "current_increment": "C3-AGENT-001",
-  "iteration_status": "VERIFIED_POSTGRESQL",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
   "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the evidence-governed candidate workspace is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -81,8 +81,8 @@
     {
       "id": "WS-11",
       "name": "Agent Runtime, Guardrails and Evals",
-      "status": "AGENT_VERIFIED_POSTGRESQL_NO_LIVE_PROVIDER",
-      "next_increment": "C3-AGENT-001"
+      "status": "AGENT_CI_GREEN_NO_LIVE_PROVIDER",
+      "next_increment": "C3-CI-001"
     },
     {
       "id": "WS-12",
@@ -212,6 +212,13 @@
       "head": "agent/c3-api-001-reconciliation",
       "head_sha": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
       "ci": "SUCCESS"
+    },
+    {
+      "pr": 98,
+      "base": "agent/c3-api-001-reconciliation",
+      "head": "agent/c3-agent-001-governed-runtime",
+      "head_sha": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+      "ci": "SUCCESS"
     }
   ],
   "local_verification": {
@@ -301,10 +308,15 @@
   },
   "active_local_increment": {
     "id": "C3-AGENT-001",
-    "state": "VERIFIED_POSTGRESQL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-agent-001-governed-runtime",
     "base": "agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
+    "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+    "draft_pr": 98,
+    "ci_run_id": 29878699324,
+    "visual_run_id": 29878699317,
     "production_status": "BLOCKED",
+    "provider_mode": "UNAVAILABLE_NO_NETWORK",
     "external_effects": "NONE"
   },
   "frontend_ci_fix_push_incident": {
@@ -318,19 +330,19 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-API-001",
-    "branch": "agent/c3-api-001-reconciliation",
-    "base": "agent/c3-strategy-001-evidence-decision-room",
-    "base_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
-    "implementation_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
-    "receipt_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-    "head_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-    "draft_pr": 97,
-    "ci_run_id": 29877182395,
-    "visual_run_id": 29877182397,
+    "id": "C3-AGENT-001",
+    "branch": "agent/c3-agent-001-governed-runtime",
+    "base": "agent/c3-api-001-reconciliation",
+    "base_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
+    "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+    "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+    "draft_pr": 98,
+    "ci_run_id": 29878699324,
+    "visual_run_id": 29878699317,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
+    "provider_mode": "UNAVAILABLE_NO_NETWORK",
     "external_effects": "NONE",
-    "next_increment": "C3-AGENT-001"
+    "next_increment": "C3-CI-001"
   }
 }

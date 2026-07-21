@@ -3,7 +3,7 @@
   "verified_at": "2026-07-21",
   "branch": "agent/c3-agent-001-governed-runtime",
   "base": "agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-  "status": "VERIFIED_POSTGRESQL",
+  "status": "CI_GREEN",
   "production_status": "BLOCKED",
   "external_effects": "NONE",
   "provider_mode": "UNAVAILABLE_NO_NETWORK",
@@ -55,5 +55,10 @@
     "No authenticated human disposition frontend or independent acceptance",
     "No merge, deployment or external campaign effect is claimed"
   ],
-  "remote_state": "LOCAL_VERIFIED_PENDING_PR_CI"
+  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR",
+  "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+  "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+  "draft_pr": 98,
+  "ci_run_id": 29878699324,
+  "visual_run_id": 29878699317
 }
