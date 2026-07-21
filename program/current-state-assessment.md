@@ -109,7 +109,7 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Publish the cumulative `C3-API-001` reconciliation and require exact-head CI before unblocking the governed agent runtime.
+1. Begin `C3-AGENT-001` as a provider-neutral, deterministic, non-executing runtime now that API and Strategy dependencies are CI-green.
 2. Reconcile `C3-CI-001` before infrastructure or protected delivery work advances.
 3. Continue authenticated non-technical editing/review journeys without merging, deploying or executing external effects.
 
@@ -135,4 +135,5 @@ Production deployment remains prohibited until every production gate passes and 
 - Current cumulative gate passes 120 focused API/worker tests, Ruff/format/mypy over 27 source files and the eight-slice PostgreSQL gate twice.
 - Health/readiness, exact authorization, optimistic versioning, atomic audit/outbox/replay evidence and tenant-scoped worker leases/retries/dead-letter are verified.
 - Worker administration, observability, dead-letter replay UI and external transport remain separate platform/operations work and authorize no external effect.
-- Status is `VERIFIED_POSTGRESQL`; production remains `BLOCKED` and Agent remains dependency-blocked until reconciliation CI is green.
+- Status is `CI_GREEN`; PR `#97` is `CLEAN`, CI `29876982499` and visual `29876982490` passed on `55215a86b54be2f1cca3a0e78248ab5ae66fecb2`.
+- `C3-AGENT-001` is `EXECUTABLE_NEXT`; production remains `BLOCKED`.
