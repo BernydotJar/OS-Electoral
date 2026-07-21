@@ -271,3 +271,10 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** Treat `C3-API-001` as an umbrella milestone. Its merged PR #83 and subsequent PRs #84–#88 collectively satisfy the versioned API, readiness, idempotency, workspace write and recoverable internal worker baseline.
 - **Evidence:** 120 focused tests, eight PostgreSQL slices twice, merged/green PR #83, green stacked delivery records, current full-suite and exact-head Strategy CI.
 - **Consequence:** No duplicate API implementation is created. Worker administration, observability, replay tooling and external transport remain scoped to later operations/platform increments and do not grant campaign execution authority.
+
+
+## 2026-07-21 — Agent runs are append-only recommendations or refusals, never autonomous actions
+
+- **Decision:** The first Agent Runtime accepts only three internal review purposes, an exact persisted Strategy snapshot, no tools, explicit budgets and strict structured output. Completed and refused runs both remain `PENDING` human review with no authority or external effect.
+- **Evidence:** contracts, runtime guards, SQL journal, exact API, worker validation, 18 adversarial tests and PostgreSQL concurrency/RLS proof.
+- **Consequence:** no provider SDK, network adapter, fallback, publication, contact, targeting, spending, permission change, deployment or mobilization path exists. Future provider or disposition work requires separate privacy/security/human gates.

@@ -402,10 +402,31 @@
     {
       "task_id": "C3-AGENT-001",
       "owner": "WS-11",
-      "status": "READY",
-      "evidence": [],
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/migrations/versions/20260721_0010_governed_agent_runs.py",
+        "backend/src/campaignos/agents/contracts.py",
+        "backend/src/campaignos/agents/runtime.py",
+        "backend/src/campaignos/agents/service.py",
+        "backend/src/campaignos/agents/sql_service.py",
+        "backend/src/campaignos/api/routes/agent_runs.py",
+        "backend/src/campaignos/workers/outbox.py",
+        "backend/tests/test_agent_runtime.py",
+        "backend/tests/test_agent_run_sql.py",
+        "backend/tests/test_agent_run_api.py",
+        "backend/tests/test_agent_run_postgres.py",
+        "docs/api/agent-runs.md",
+        "docs/product/governed-agent-runtime.md",
+        "docs/testing/c3-agent-001-evidence.md",
+        "program/iterations/c3-agent-001.md",
+        "program/validations/c3-agent-001.json"
+      ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [
+        "Draft PR publication and exact-head CI are pending",
+        "No live provider, processor/privacy/residency/retention approval or staging leakage exercise",
+        "No authenticated human disposition UI, independent acceptance, merge or production environment"
+      ]
     },
     {
       "task_id": "C3-INFRA-001",

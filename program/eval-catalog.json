@@ -176,12 +176,25 @@
     {
       "id": "EVAL-PROMPT-INJECTION-001",
       "category": "runtime_security",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "Governed agent runtime is not implemented."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "backend/src/campaignos/agents/contracts.py",
+        "backend/src/campaignos/agents/runtime.py",
+        "backend/src/campaignos/agents/sql_service.py",
+        "backend/tests/test_agent_runtime.py",
+        "backend/tests/test_agent_run_sql.py",
+        "backend/tests/test_agent_run_api.py",
+        "backend/tests/test_agent_run_postgres.py",
+        "docs/product/governed-agent-runtime.md",
+        "docs/testing/c3-agent-001-evidence.md"
+      ],
+      "commands": [
+        "make verify",
+        "CAMPAIGNOS_TEST_DATABASE_URL=<isolated *_test URL> make test-postgres"
+      ],
+      "last_verified_at": "2026-07-21",
+      "limitations": "Deterministic no-tool prompt-injection, unsupported-claim, budget, provider-identity, idempotency and tenant-isolation controls are locally/PostgreSQL tested; no live provider, processor/privacy approval, staging leakage exercise or independent review exists."
     },
     {
       "id": "EVAL-ONBOARDING-001",

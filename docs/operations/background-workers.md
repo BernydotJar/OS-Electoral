@@ -12,7 +12,7 @@ PENDING -> PROCESSING -> DELIVERED
 
 A claim uses `FOR UPDATE SKIP LOCKED`, increments `attempts`, and records `lease_owner` plus `lease_expires_at`. An expired `PROCESSING` lease is recoverable by another worker. Completion and failure transitions require the same worker lease.
 
-The initial `campaign.updated` handler performs only internal envelope, tenant, campaign, and audit-evidence validation. It produces no network or political effect.
+The internal handler validates `campaign.updated`, `workspace.created`, and `agent.run.recorded` envelopes against tenant-scoped campaign, audit, workspace, and Agent Run evidence. It produces no network or political effect.
 
 ## Tenant scope
 

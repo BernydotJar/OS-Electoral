@@ -34,7 +34,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | War Room | Append-only exact-version daily snapshots, latest-read API, race protection and read-only ES/EN brief pass local/PostgreSQL/browser gates | PARTIAL | Authenticated creation UI, alerts/telemetry, human acceptance, publication/CI and live environments |
 | Approval ledger | In-memory hash-chained prototype | PARTIAL | Durable append-only ledger, concurrency and authorized receipts |
 | Training Academy | Static team guidance only | NOT_IMPLEMENTED | Learning paths, content governance, completions and assessments |
-| AI runtime guardrails | Deterministic extraction/guard prototypes | PARTIAL | Provider abstraction, schema enforcement, audit metadata and hard eval suite |
+| AI runtime guardrails | Revision `20260721_0010`, provider abstraction, strict schema, versioned prompt policy, no-tool guards, append-only journal, exact API, idempotency, audit, RLS and prompt-injection hard evals pass locally/PostgreSQL | PARTIAL | Live provider/privacy review, staging leakage/fallback/load evidence, human disposition UX and independent acceptance |
 | Spanish and English | Dynamic shell has structurally tested ES/EN dictionaries, locale routes, document language and browser parity; legacy/static and future journeys are not fully localized | PARTIAL | Complete product dictionaries, locale-aware formats, error/content parity and human language review |
 | Accessibility | Static review remains green; dynamic shell passes keyboard skip-link, mobile/reduced-motion, overflow and axe-core WCAG 2.2 A/AA checks in ES/EN | PARTIAL | Manual assistive-technology review, production critical-path coverage and independent WCAG 2.2 AA acceptance |
 

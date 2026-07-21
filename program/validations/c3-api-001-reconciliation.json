@@ -46,10 +46,11 @@
     "No external event transport or third-party campaign system integration is configured",
     "No live identity, telemetry, cloud environment, customer acceptance, merge or deployment is claimed"
   ],
-  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR",
+  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR_FINAL_RECEIPT",
   "implementation_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
-  "head_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+  "head_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
   "draft_pr": 97,
-  "ci_run_id": 29876982499,
-  "visual_run_id": 29876982490
+  "ci_run_id": 29877182395,
+  "visual_run_id": 29877182397,
+  "receipt_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c"
 }

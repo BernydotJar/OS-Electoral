@@ -914,3 +914,67 @@ class StrategyDecisionReceipt(Base, TimestampMixin):
     approval_receipt_id: Mapped[str] = mapped_column(String(180), nullable=False)
     reason: Mapped[str] = mapped_column(Text, nullable=False)
     decided_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class AgentRun(Base):
+    __tablename__ = "agent_runs"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_agent_runs_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "strategy_workspace_id"],
+            ["strategy_workspaces.tenant_id", "strategy_workspaces.id"],
+            name="fk_agent_runs_strategy_workspace",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint("tenant_id", "id", name="uq_agent_runs_tenant_id_id"),
+        CheckConstraint("strategy_workspace_version >= 1", name="ck_agent_runs_strategy_version"),
+        CheckConstraint("status IN ('COMPLETED', 'REFUSED')", name="ck_agent_runs_status"),
+        CheckConstraint("human_disposition = 'PENDING'", name="ck_agent_runs_human_pending"),
+        CheckConstraint("authority_effect = 'NONE'", name="ck_agent_runs_authority_none"),
+        CheckConstraint("external_effects = 'NONE'", name="ck_agent_runs_external_none"),
+        CheckConstraint("prompt_tokens >= 0", name="ck_agent_runs_prompt_tokens"),
+        CheckConstraint("output_tokens >= 0", name="ck_agent_runs_output_tokens"),
+        CheckConstraint("latency_ms >= 0", name="ck_agent_runs_latency"),
+        CheckConstraint("cost_micros >= 0", name="ck_agent_runs_cost"),
+        Index("ix_agent_runs_tenant_campaign_created", "tenant_id", "campaign_id", "created_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    strategy_workspace_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
+    strategy_workspace_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    principal_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    purpose: Mapped[str] = mapped_column(String(80), nullable=False)
+    instruction_digest: Mapped[str] = mapped_column(String(64), nullable=False)
+    policy_id: Mapped[str] = mapped_column(String(160), nullable=False)
+    policy_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    prompt_template_id: Mapped[str] = mapped_column(String(160), nullable=False)
+    prompt_template_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    output_schema_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    prompt_digest: Mapped[str | None] = mapped_column(String(64))
+    provider: Mapped[str | None] = mapped_column(String(80))
+    model: Mapped[str | None] = mapped_column(String(160))
+    status: Mapped[str] = mapped_column(String(32), nullable=False)
+    refusal_code: Mapped[str | None] = mapped_column(String(100))
+    refusal_detail: Mapped[str | None] = mapped_column(String(255))
+    recommendation: Mapped[dict[str, object] | None] = mapped_column(JSON_DOCUMENT)
+    evidence_refs: Mapped[list[str]] = mapped_column(JSON_DOCUMENT, nullable=False)
+    option_refs: Mapped[list[str]] = mapped_column(JSON_DOCUMENT, nullable=False)
+    prompt_tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    output_tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    latency_ms: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    cost_micros: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    human_disposition: Mapped[str] = mapped_column(String(32), nullable=False, default="PENDING")
+    authority_effect: Mapped[str] = mapped_column(String(32), nullable=False, default="NONE")
+    external_effects: Mapped[str] = mapped_column(String(32), nullable=False, default="NONE")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )

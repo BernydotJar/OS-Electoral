@@ -1,6 +1,6 @@
 # ADR 005: Provider-neutral, evidence-bound AI orchestration
 
-Status: **PROPOSED; NOT IMPLEMENTED AT PRODUCTION SCOPE**
+Status: **ACCEPTED; BOUNDED LOCAL/POSTGRESQL IMPLEMENTATION, NOT PRODUCTION-ENABLED**
 Date: `2026-07-19`
 
 ## Context
@@ -20,3 +20,8 @@ Deterministic pre- and post-guards reject prohibited capabilities and sensitive 
 - Hard evals cover prompt injection, fabrication, unsupported claims, cross-tenant context, privacy, prohibited political behavior, and external-action refusal.
 - Provider fallback must preserve scope, policy, and audit semantics; it may not silently lower safety controls.
 - Production enablement requires model/provider review and explicit configuration, not merely an API key.
+
+
+## Bounded implementation checkpoint — 2026-07-21
+
+Revision `20260721_0010` and the `campaignos.agents` package implement the application-owned contracts, deterministic guards, append-only run journal, exact API, idempotency, audit, internal outbox and forced RLS. The configured default provider is unavailable and performs no network request. No production provider, tool adapter, fallback, privacy/data-processing approval or external effect is implemented.
