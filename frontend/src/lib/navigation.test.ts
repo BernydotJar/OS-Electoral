@@ -91,6 +91,24 @@ describe("deriveNavigation", () => {
     expect(wrongPurpose.find((item) => item.key === "candidate")?.enabled).toBe(false);
   });
 
+  it("requires the exact current-campaign team workspace read grant", () => {
+    const teamMembership = membership("team_workspace");
+    const exactMembership = {
+      ...teamMembership,
+      grants: teamMembership.grants.map((grant) => ({
+        ...grant,
+        campaign_id: CAMPAIGN_ID,
+        purpose: "Review campaign team workspace",
+      })),
+    };
+    const exact = deriveNavigation("es", [exactMembership], CAMPAIGN_ID);
+    expect(exact.find((item) => item.key === "team")?.enabled).toBe(true);
+    const crossCampaign = deriveNavigation("es", [exactMembership], OTHER_CAMPAIGN_ID);
+    expect(crossCampaign.find((item) => item.key === "team")?.enabled).toBe(false);
+    const wrongPurpose = deriveNavigation("es", [teamMembership], CAMPAIGN_ID);
+    expect(wrongPurpose.find((item) => item.key === "team")?.enabled).toBe(false);
+  });
+
   it("reveals only modules backed by relevant server-owned grants", () => {
     const navigation = deriveNavigation("en", [
       membership("campaign_readiness"),

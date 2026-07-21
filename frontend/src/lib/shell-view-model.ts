@@ -3,36 +3,39 @@ import "server-only";
 import { cookies } from "next/headers";
 
 import { CampaignOsApiClient, CampaignOsApiError } from "@/lib/api-client";
-import { FrontendConfigurationError, resolveFrontendConfig } from "@/lib/config";
+import {
+  FrontendConfigurationError,
+  resolveFrontendConfig,
+} from "@/lib/config";
 import type {
   CampaignProjection,
   CampaignReadinessEvidence,
   CandidateWorkspaceReadEvidence,
   EffectiveMembership,
   GuidedIntakeReadEvidence,
+  TeamWorkspaceReadEvidence,
   TenantMeResponse,
 } from "@/lib/contracts";
 import {
   demoCampaign,
   demoCandidateWorkspace,
   demoGuidedIntake,
+  demoTeamWorkspace,
   demoReadiness,
   demoTenantIdentity,
 } from "@/lib/demo-data";
 
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export type GuidedIntakeAvailability =
-  | "AVAILABLE"
-  | "NOT_STARTED"
-  | "NOT_AUTHORIZED"
-  | "DEPENDENCY_UNAVAILABLE";
+  "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
 
 export type CandidateWorkspaceAvailability =
-  | "AVAILABLE"
-  | "NOT_STARTED"
-  | "NOT_AUTHORIZED"
-  | "DEPENDENCY_UNAVAILABLE";
+  "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
+
+export type TeamWorkspaceAvailability =
+  "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
 
 export type ShellViewModel =
   | Readonly<{ kind: "unauthenticated" }>
@@ -51,6 +54,8 @@ export type ShellViewModel =
       guidedIntakeAvailability: GuidedIntakeAvailability;
       candidateWorkspace: CandidateWorkspaceReadEvidence | null;
       candidateWorkspaceAvailability: CandidateWorkspaceAvailability;
+      teamWorkspace: TeamWorkspaceReadEvidence | null;
+      teamWorkspaceAvailability: TeamWorkspaceAvailability;
     }>
   | Readonly<{
       kind: "unavailable";
@@ -93,6 +98,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       guidedIntakeAvailability: "AVAILABLE",
       candidateWorkspace: demoCandidateWorkspace,
       candidateWorkspaceAvailability: "AVAILABLE",
+      teamWorkspace: demoTeamWorkspace,
+      teamWorkspaceAvailability: "AVAILABLE",
     };
   }
 
@@ -140,16 +147,17 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       };
     }
 
-    const hasReadinessGrant = tenantIdentity.application_memberships.some((membership) =>
-      membership.grants.some(
-        (grant) =>
-          grant.action === "read" &&
-          grant.resource_type === "campaign_readiness" &&
-          grant.resource_id === campaign.id &&
-          grant.campaign_id === campaign.id &&
-          grant.workspace_id === null &&
-          grant.purpose === "Assess assigned campaign readiness",
-      ),
+    const hasReadinessGrant = tenantIdentity.application_memberships.some(
+      (membership) =>
+        membership.grants.some(
+          (grant) =>
+            grant.action === "read" &&
+            grant.resource_type === "campaign_readiness" &&
+            grant.resource_id === campaign.id &&
+            grant.campaign_id === campaign.id &&
+            grant.workspace_id === null &&
+            grant.purpose === "Assess assigned campaign readiness",
+        ),
     );
     let readiness: CampaignReadinessEvidence | null = null;
     let readinessUnavailable = false;
@@ -175,16 +183,17 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
         }
       }
     }
-    const hasGuidedIntakeGrant = tenantIdentity.application_memberships.some((membership) =>
-      membership.grants.some(
-        (grant) =>
-          grant.action === "read" &&
-          grant.resource_type === "guided_intake" &&
-          grant.resource_id === campaign.id &&
-          grant.campaign_id === campaign.id &&
-          grant.workspace_id === null &&
-          grant.purpose === "Review guided campaign intake",
-      ),
+    const hasGuidedIntakeGrant = tenantIdentity.application_memberships.some(
+      (membership) =>
+        membership.grants.some(
+          (grant) =>
+            grant.action === "read" &&
+            grant.resource_type === "guided_intake" &&
+            grant.resource_id === campaign.id &&
+            grant.campaign_id === campaign.id &&
+            grant.workspace_id === null &&
+            grant.purpose === "Review guided campaign intake",
+        ),
     );
     let guidedIntake: GuidedIntakeReadEvidence | null = null;
     let guidedIntakeAvailability: GuidedIntakeAvailability = "NOT_AUTHORIZED";
@@ -206,7 +215,10 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       } catch (error) {
         if (error instanceof CampaignOsApiError && error.status === 404) {
           guidedIntakeAvailability = "NOT_STARTED";
-        } else if (error instanceof CampaignOsApiError && error.status === 503) {
+        } else if (
+          error instanceof CampaignOsApiError &&
+          error.status === 503
+        ) {
           guidedIntakeAvailability = "DEPENDENCY_UNAVAILABLE";
         } else {
           throw error;
@@ -214,8 +226,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       }
     }
 
-    const hasCandidateWorkspaceGrant = tenantIdentity.application_memberships.some(
-      (membership) =>
+    const hasCandidateWorkspaceGrant =
+      tenantIdentity.application_memberships.some((membership) =>
         membership.grants.some(
           (grant) =>
             grant.action === "read" &&
@@ -225,12 +237,16 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
             grant.workspace_id === null &&
             grant.purpose === "Review candidate evidence workspace",
         ),
-    );
+      );
     let candidateWorkspace: CandidateWorkspaceReadEvidence | null = null;
-    let candidateWorkspaceAvailability: CandidateWorkspaceAvailability = "NOT_AUTHORIZED";
+    let candidateWorkspaceAvailability: CandidateWorkspaceAvailability =
+      "NOT_AUTHORIZED";
     if (hasCandidateWorkspaceGrant) {
       try {
-        candidateWorkspace = await api.candidateWorkspace(tenantId, campaign.id);
+        candidateWorkspace = await api.candidateWorkspace(
+          tenantId,
+          campaign.id,
+        );
         if (
           candidateWorkspace.workspace.tenant_id !== tenantId ||
           candidateWorkspace.workspace.campaign_id !== campaign.id
@@ -246,8 +262,54 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       } catch (error) {
         if (error instanceof CampaignOsApiError && error.status === 404) {
           candidateWorkspaceAvailability = "NOT_STARTED";
-        } else if (error instanceof CampaignOsApiError && error.status === 503) {
+        } else if (
+          error instanceof CampaignOsApiError &&
+          error.status === 503
+        ) {
           candidateWorkspaceAvailability = "DEPENDENCY_UNAVAILABLE";
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    const hasTeamWorkspaceGrant = tenantIdentity.application_memberships.some(
+      (membership) =>
+        membership.grants.some(
+          (grant) =>
+            grant.action === "read" &&
+            grant.resource_type === "team_workspace" &&
+            grant.resource_id === campaign.id &&
+            grant.campaign_id === campaign.id &&
+            grant.workspace_id === null &&
+            grant.purpose === "Review campaign team workspace",
+        ),
+    );
+    let teamWorkspace: TeamWorkspaceReadEvidence | null = null;
+    let teamWorkspaceAvailability: TeamWorkspaceAvailability = "NOT_AUTHORIZED";
+    if (hasTeamWorkspaceGrant) {
+      try {
+        teamWorkspace = await api.teamWorkspace(tenantId, campaign.id);
+        if (
+          teamWorkspace.workspace.tenant_id !== tenantId ||
+          teamWorkspace.workspace.campaign_id !== campaign.id
+        ) {
+          return {
+            kind: "unavailable",
+            code: "TEAM_WORKSPACE_SCOPE_MISMATCH",
+            correlationId: null,
+            configuration: false,
+          };
+        }
+        teamWorkspaceAvailability = "AVAILABLE";
+      } catch (error) {
+        if (error instanceof CampaignOsApiError && error.status === 404) {
+          teamWorkspaceAvailability = "NOT_STARTED";
+        } else if (
+          error instanceof CampaignOsApiError &&
+          error.status === 503
+        ) {
+          teamWorkspaceAvailability = "DEPENDENCY_UNAVAILABLE";
         } else {
           throw error;
         }
@@ -267,6 +329,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       guidedIntakeAvailability,
       candidateWorkspace,
       candidateWorkspaceAvailability,
+      teamWorkspace,
+      teamWorkspaceAvailability,
     };
   } catch (error) {
     if (error instanceof CampaignOsApiError) {

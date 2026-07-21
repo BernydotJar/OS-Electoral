@@ -98,6 +98,13 @@ export function CampaignShell({
     NOT_AUTHORIZED: dictionary.candidate.notAuthorized,
     DEPENDENCY_UNAVAILABLE: dictionary.candidate.unavailable,
   }[model.candidateWorkspaceAvailability];
+  const teamWorkspace = model.teamWorkspace?.workspace ?? null;
+  const teamWorkspaceStateMessage = {
+    AVAILABLE: "",
+    NOT_STARTED: dictionary.teamWorkspace.notStarted,
+    NOT_AUTHORIZED: dictionary.teamWorkspace.notAuthorized,
+    DEPENDENCY_UNAVAILABLE: dictionary.teamWorkspace.unavailable,
+  }[model.teamWorkspaceAvailability];
   const roles = [...new Set(model.memberships.flatMap((membership) => membership.roles))];
   const grantCount = model.memberships.reduce(
     (count, membership) => count + membership.grants.length,
@@ -112,6 +119,7 @@ export function CampaignShell({
       ...readinessLimitations,
       ...(guidedIntake?.limitation_codes ?? []),
       ...(candidateWorkspace?.limitation_codes ?? []),
+      ...(teamWorkspace?.limitation_codes ?? []),
     ]),
   ];
 
@@ -558,6 +566,209 @@ export function CampaignShell({
             ) : (
               <p className="intake-state" role="status">
                 {candidateWorkspaceStateMessage}
+              </p>
+            )}
+          </section>
+
+          <section
+            id="team-workspace"
+            className="team-workspace-panel"
+            aria-labelledby="team-workspace-title"
+          >
+            <div className="intake-heading">
+              <div>
+                <p className="eyebrow">{dictionary.teamWorkspace.eyebrow}</p>
+                <h2 id="team-workspace-title">{dictionary.teamWorkspace.title}</h2>
+                <p>{dictionary.teamWorkspace.body}</p>
+              </div>
+              {teamWorkspace ? (
+                <div className="intake-progress" aria-label={dictionary.teamWorkspace.progress}>
+                  <strong>
+                    {teamWorkspace.completed_checks}/{teamWorkspace.total_checks}
+                  </strong>
+                  <span>{dictionary.teamWorkspace.progress}</span>
+                  <progress max={teamWorkspace.total_checks} value={teamWorkspace.completed_checks}>
+                    {teamWorkspace.completed_checks}/{teamWorkspace.total_checks}
+                  </progress>
+                </div>
+              ) : null}
+            </div>
+
+            {teamWorkspace ? (
+              <>
+                <div className="intake-status-row">
+                  <div>
+                    <span>{dictionary.teamWorkspace.status}</span>
+                    <strong>{dictionary.teamWorkspace.statusLabels[teamWorkspace.status]}</strong>
+                  </div>
+                  <div>
+                    <span>{dictionary.teamWorkspace.nextAction}</span>
+                    <strong>
+                      {dictionary.teamWorkspace.nextActionLabels[teamWorkspace.next_action]}
+                    </strong>
+                  </div>
+                </div>
+
+                <div className="team-authority-boundary" role="note">
+                  <strong>{dictionary.teamWorkspace.authorityBoundary}</strong>
+                  <p>{dictionary.teamWorkspace.authorityBody}</p>
+                  <code>{teamWorkspace.authority_effect}</code>
+                </div>
+
+                <div className="team-metrics">
+                  <article>
+                    <span>{dictionary.teamWorkspace.filledRoles}</span>
+                    <strong>{teamWorkspace.filled_role_count}</strong>
+                  </article>
+                  <article>
+                    <span>{dictionary.teamWorkspace.vacantRoles}</span>
+                    <strong>{teamWorkspace.vacant_role_count}</strong>
+                  </article>
+                  <article>
+                    <span>{dictionary.teamWorkspace.capacity}</span>
+                    <strong>
+                      {teamWorkspace.total_weekly_capacity_hours} {dictionary.teamWorkspace.hours}
+                    </strong>
+                  </article>
+                </div>
+
+                <div className="team-layout">
+                  <section aria-labelledby="team-checks-title">
+                    <h3 id="team-checks-title">{dictionary.teamWorkspace.progress}</h3>
+                    <ol className="intake-checks">
+                      {teamWorkspace.checks.map((check, index) => (
+                        <li key={check.key} data-complete={check.complete}>
+                          <span className="intake-step" aria-hidden="true">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <div>
+                            <strong>{dictionary.teamWorkspace.checkLabels[check.key]}</strong>
+                            <code>{check.reason_code}</code>
+                          </div>
+                          <span className="intake-check-mark" aria-hidden="true">
+                            {check.complete ? "✓" : "·"}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+
+                  <section aria-labelledby="team-roles-title">
+                    <h3 id="team-roles-title">{dictionary.teamWorkspace.roles}</h3>
+                    {teamWorkspace.roles === null ? (
+                      <p className="intake-empty">{dictionary.teamWorkspace.notAssessed}</p>
+                    ) : teamWorkspace.roles.length === 0 ? (
+                      <p className="intake-empty">{dictionary.teamWorkspace.noItems}</p>
+                    ) : (
+                      <div className="team-role-grid">
+                        {teamWorkspace.roles.map((role) => (
+                          <article key={role.id} data-status={role.status}>
+                            <div>
+                              <span>{role.area}</span>
+                              <h4>{role.title}</h4>
+                            </div>
+                            <p>{role.purpose}</p>
+                            <dl>
+                              <div>
+                                <dt>{dictionary.teamWorkspace.capacity}</dt>
+                                <dd>
+                                  {role.weekly_capacity_hours === null
+                                    ? "—"
+                                    : `${role.weekly_capacity_hours} ${dictionary.teamWorkspace.hours}`}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>{dictionary.teamWorkspace.status}</dt>
+                                <dd>{role.status}</dd>
+                              </div>
+                            </dl>
+                            {role.vacancy_plan ? <p className="team-vacancy-plan">{role.vacancy_plan}</p> : null}
+                          </article>
+                        ))}
+                      </div>
+                    )}
+                  </section>
+                </div>
+
+                <div className="team-detail-grid">
+                  <article>
+                    <h3>{dictionary.teamWorkspace.workItems}</h3>
+                    {teamWorkspace.work_items === null ? (
+                      <p className="intake-empty">{dictionary.teamWorkspace.notAssessed}</p>
+                    ) : teamWorkspace.work_items.length === 0 ? (
+                      <p className="intake-empty">{dictionary.teamWorkspace.noItems}</p>
+                    ) : (
+                      <ul className="team-work-items">
+                        {teamWorkspace.work_items.map((item) => (
+                          <li key={item.id}>
+                            <strong>{item.name}</strong>
+                            <p>{item.description}</p>
+                            <ul>
+                              {item.assignments.map((assignment) => {
+                                const role = teamWorkspace.roles?.find(
+                                  (candidate) => candidate.id === assignment.role_id,
+                                );
+                                return (
+                                  <li key={`${item.id}-${assignment.role_id}-${assignment.responsibility}`}>
+                                    <span>{dictionary.teamWorkspace.responsibilityLabels[assignment.responsibility]}</span>
+                                    {role?.title ?? assignment.role_id}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </article>
+                  <article>
+                    <h3>{dictionary.teamWorkspace.training}</h3>
+                    {teamWorkspace.training_requirements === null ? (
+                      <p className="intake-empty">{dictionary.teamWorkspace.notAssessed}</p>
+                    ) : teamWorkspace.training_requirements.length === 0 ? (
+                      <p className="intake-empty">{dictionary.teamWorkspace.noItems}</p>
+                    ) : (
+                      <ul className="intake-items">
+                        {teamWorkspace.training_requirements.map((item) => (
+                          <li key={item.id}>
+                            {item.status} · {item.title}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </article>
+                  <article>
+                    <h3>{dictionary.teamWorkspace.accessRecommendations}</h3>
+                    {teamWorkspace.access_recommendations === null ? (
+                      <p className="intake-empty">{dictionary.teamWorkspace.notAssessed}</p>
+                    ) : teamWorkspace.access_recommendations.length === 0 ? (
+                      <p className="intake-empty">{dictionary.teamWorkspace.noItems}</p>
+                    ) : (
+                      <ul className="intake-items">
+                        {teamWorkspace.access_recommendations.map((item) => (
+                          <li key={item.id}>
+                            {item.status} · {item.action} · {item.resource_type} · {item.purpose}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </article>
+                </div>
+
+                <dl className="intake-evidence">
+                  <div>
+                    <dt>{dictionary.teamWorkspace.readReceipt}</dt>
+                    <dd>{model.teamWorkspace?.audit_event_id}</dd>
+                  </div>
+                  <div>
+                    <dt>{dictionary.teamWorkspace.updatedAt}</dt>
+                    <dd>{teamWorkspace.updated_at}</dd>
+                  </div>
+                </dl>
+              </>
+            ) : (
+              <p className="intake-state" role="status">
+                {teamWorkspaceStateMessage}
               </p>
             )}
           </section>

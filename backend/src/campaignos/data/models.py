@@ -563,6 +563,40 @@ class CandidateSectionApproval(Base):
     approved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
+class TeamWorkspace(Base, TimestampMixin):
+    __tablename__ = "team_workspaces"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_team_workspaces_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            name="uq_team_workspaces_tenant_campaign",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            "id",
+            name="uq_team_workspaces_scope_id",
+        ),
+        Index("ix_team_workspaces_tenant_updated", "tenant_id", "updated_at"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    organization_template: Mapped[str] = mapped_column(String(64), nullable=False)
+    roles: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    work_items: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    training_requirements: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    access_recommendations: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
 class GuidedIntake(Base, TimestampMixin):
     __tablename__ = "guided_intakes"
     __table_args__ = (
