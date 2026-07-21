@@ -2,12 +2,12 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-19",
-  "branch": "agent/c3-api-001-campaign-read-boundary",
+  "updated_at": "2026-07-21",
+  "branch": "agent/c3-resume-001-reconcile-review-stack",
   "current_increment": "C3-API-001",
   "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
-  "production_status_reason": "Local FastAPI, OIDC verification, PostgreSQL/RLS, membership-backed tenant authorization, migration and Compose foundations now exist, and draft PR 72 is green at its recorded foundation head, but no verified AWS environment or protected-main delivery enforcement exists. Live identity/session lifecycle, membership administration, domain-action enforcement, adapters, jobs, production object storage, Terraform, backup/restore and production review gates remain incomplete.",
+  "production_status_reason": "Foundation, tenant authorization and the first protected campaign API slice are merged, while idempotency, an internal outbox worker and workspace writes are draft and CI-green. Five CRITICAL/HIGH findings, six retained failed runs, unverified required-check enforcement, no live identity lifecycle, incomplete domain APIs, no verified AWS environments, no backup/restore and no human production approval keep production BLOCKED.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -15,11 +15,11 @@
     "iteration_log": "program/iteration-log.md"
   },
   "workstreams": [
-    {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_COMPLETE_LOCAL", "next_increment": "C3-IAM-001"},
+    {"id": "WS-01", "name": "Product Definition and Architecture", "status": "BASELINE_MERGED", "next_increment": "C3-IAM-002"},
     {"id": "WS-02", "name": "Monorepo and Developer Experience", "status": "PR_CI_GREEN_ENFORCEMENT_PENDING", "next_increment": "C3-CI-001"},
-    {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "TENANT_AUTHORIZATION_LOCAL_LIFECYCLE_PENDING", "next_increment": "C3-IAM-001"},
-    {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "LOCAL_POSTGRESQL_FOUNDATION", "next_increment": "C3-API-001"},
-    {"id": "WS-05", "name": "API and Background Jobs", "status": "PARTIAL_HTTP_RUNTIME", "next_increment": "C3-API-001"},
+    {"id": "WS-03", "name": "Identity, Tenancy and RBAC", "status": "TENANT_AUTHORIZATION_MERGED_LIFECYCLE_PENDING", "next_increment": "C3-IAM-002"},
+    {"id": "WS-04", "name": "Campaign Domain and Persistence", "status": "CAMPAIGN_SLICE_MERGED_OPEN_STACK_ACTIVE", "next_increment": "C3-API-005"},
+    {"id": "WS-05", "name": "API and Background Jobs", "status": "CAMPAIGN_API_MERGED_WORKER_DRAFT_GREEN", "next_increment": "C3-API-005"},
     {"id": "WS-06", "name": "Frontend, Design System and i18n", "status": "STATIC_PROTOTYPE", "next_increment": "C3-FRONT-001"},
     {"id": "WS-07", "name": "Guided Onboarding and Candidate Workspace", "status": "NOT_STARTED", "next_increment": "C3-ONBOARD-001"},
     {"id": "WS-08", "name": "Team Builder and Training Academy", "status": "STATIC_PROTOTYPE", "next_increment": "C3-TEAM-001"},
@@ -32,6 +32,12 @@
     {"id": "WS-15", "name": "Documentation, Migration and Release", "status": "ACTIVE", "next_increment": "C3-RELEASE-001"}
   ],
   "ready_tasks": [],
+  "review_stack": [
+    {"pr": 84, "base": "main", "head": "agent/c3-api-002-idempotency", "head_sha": "e938930eb1088f82603415c11182ab730994cb53", "ci": "SUCCESS"},
+    {"pr": 85, "base": "agent/c3-api-002-idempotency", "head": "agent/c3-api-003-outbox-worker", "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e", "ci": "SUCCESS"},
+    {"pr": 86, "base": "agent/c3-api-003-outbox-worker", "head": "agent/c3-api-004-workspace-write", "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f", "ci": "SUCCESS"}
+  ],
+  "local_verification": {"tests_passed": 256, "tests_skipped": 1, "postgresql_integration": "PASS", "gitleaks": "PASS", "compose": "LOCAL_BLOCKER_REMOTE_CI_GREEN"},
   "critical_path": ["C3-FOUND-001A", "C3-DEVEX-001", "C3-DATA-001", "C3-IAM-001", "C3-API-001", "C3-INFRA-001", "C3-SEC-001", "C3-OBS-001", "C3-RELEASE-001"],
   "external_state": {
     "github_pages": "LIVE_DEMO_NON_PRODUCTION",
@@ -42,10 +48,10 @@
   "blockers": [
     "Open CRITICAL/HIGH production gaps",
     "Historical validation runs with FAILURE conclusions",
-    "No live OIDC provider, login/recovery/session lifecycle, membership administration or domain-action authorization enforcement",
-    "Local PostgreSQL/RLS proof is not deployed or operationally verified",
-    "No domain persistence adapters or background worker runtime",
-    "No protected-main required-check enforcement",
+    "No live OIDC provider, login/recovery/session lifecycle, membership administration or support elevation",
+    "Local PostgreSQL/RLS and campaign adapter proof is not deployed or operationally verified",
+    "Campaign creation/readiness and broader domain adapters are absent; the worker is internal-only and draft",
+    "Protected-main required-check enforcement is unverified",
     "No deployable AWS Terraform baseline",
     "No backup/restore evidence",
     "No explicit human production approval"

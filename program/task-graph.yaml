@@ -2,13 +2,13 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-19",
+  "updated_at": "2026-07-21",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
       "workstream": "WS-15",
       "title": "Truthful program ledger and guarded demo delivery",
-      "status": "COMPLETE_LOCAL",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [],
       "acceptance": [
         "Program truth records exist and agree",
@@ -20,14 +20,14 @@
       "id": "C3-ARCH-001",
       "workstream": "WS-01",
       "title": "Canonical product boundaries and modular-monolith ADR baseline",
-      "status": "COMPLETE_LOCAL",
+      "status": "MERGED_TO_MAIN",
       "depends_on": ["C3-FOUND-001A"]
     },
     {
       "id": "C3-DEVEX-001",
       "workstream": "WS-02",
       "title": "Reproducible local bootstrap, locked dependencies and Compose services",
-      "status": "COMPLETE_LOCAL",
+      "status": "MERGED_TO_MAIN",
       "depends_on": ["C3-FOUND-001A"]
     },
     {
@@ -40,15 +40,15 @@
     {
       "id": "C3-IAM-001",
       "workstream": "WS-03",
-      "title": "Real OIDC identity, session validation and deny-by-default RBAC",
-      "status": "IN_PROGRESS",
+      "title": "OIDC verification and server-owned tenant authorization foundation",
+      "status": "MERGED_TO_MAIN",
       "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"]
     },
     {
       "id": "C3-DATA-001",
       "workstream": "WS-04",
       "title": "PostgreSQL persistence, Alembic migrations and tenant isolation",
-      "status": "COMPLETE_LOCAL",
+      "status": "MERGED_TO_MAIN",
       "depends_on": ["C3-ARCH-001", "C3-DEVEX-001"]
     },
     {

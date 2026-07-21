@@ -1,63 +1,85 @@
 # CampaignOS current-state assessment
 
-Assessment date: `2026-07-19 America/Guatemala`
+Assessment date: `2026-07-21 America/Guatemala`
 
-Authoritative target: `os_electoral_prod_ready_goal_v2.md`
+Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main` at `8f32bc158003a55a76cb471af45da2193ca71003`; stacked implementation branch `agent/c3-iam-001-membership-authorization` on foundation head `bac781eea1d0de1b9a845f0f4243924ee4808c54`.
+Repository evidence point: `main` at `d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; active review stack through `agent/c3-api-004-workspace-write@236a0d04c5b2c061948261a5c60852e0d4736b0f`.
 
 ## Executive determination
 
 Production readiness is **BLOCKED**.
 
-The repository now contains a real local application foundation: a versioned FastAPI runtime, fail-closed OIDC token verification, server-owned tenant membership/exact-grant loading, typed configuration, an initial SQLAlchemy/Alembic PostgreSQL schema, transaction-local tenant scope, forced row-level-security policies, a non-root container, a hermetic Compose stack and locked dependencies. Draft PR `#72` has green pinned foundation evidence at its recorded head. The stacked IAM increment passes local quality, authorization and disposable-stack checks. These are meaningful implementation and review-branch proofs, but they are not deployed or operational production evidence.
+Foundation PR `#72`, IAM PR `#73`, and the first protected campaign API PR `#83` are merged to `main`. Draft PRs `#84`, `#85`, and `#86` form a correctly based review stack and have green checks at their recorded heads. The stack adds durable write idempotency, a tenant-explicit recoverable outbox worker with no external transport, and an idempotent workspace-creation boundary. These are meaningful local and review-branch proofs, not deployment or production approval.
 
 The only public deployed surface remains the static, read-only GitHub Pages demonstration. It is classified `DEMO_NON_PRODUCTION`, publishes only through a manual confirmation workflow, and never counts as a production environment.
 
-## Verified in this increment
+## Reconciled repository and delivery state
 
-- The full Python unit/contract suite passed on Python `3.14.2`: `193 passed`, `1 skipped`; the skip is the deliberately isolated PostgreSQL marker.
-- The isolated PostgreSQL test passed separately against PostgreSQL `18.3`: Alembic downgrade/upgrade/check, expected tables and policies, non-superuser/non-`BYPASSRLS` access, tenant-A visibility and cross-tenant write denial.
-- The Compose end-to-end run built the pinned non-root API image, started PostgreSQL, initialized Adobe S3Mock and Mailpit, applied and checked the migration as the bootstrap administrator, proved that the API used the constrained `campaignos_app` role, verified liveness/readiness behavior, exercised SMTP and removed its unique containers/volumes.
-- Ruff, Ruff format, strict mypy, JSON/YAML parsing, Compose validation, shell syntax and actionlint passed locally.
-- Hash-locked production requirements were exported and `pip-audit 2.10.1` reported no known vulnerabilities at the check time. This is point-in-time evidence, not a guarantee.
-- OIDC verification requires the fixed `RS256` algorithm, a matching key ID, signature, issuer, audience, expiry, issued-at, not-before when present, ID-token use, and `azp` for multi-audience tokens. Readiness fetches JWKS and fails closed.
-- `/api/v1/me` remains identity-only. `/api/v1/tenants/{tenant_id}/me` maps the verified issuer/subject to a server-owned principal and returns active memberships, unexpired roles and exact active grants from a tenant-scoped transaction. Token role claims are not treated as authorization.
-- Exact application permission matching now includes action, resource type/identifier, campaign/workspace scope and purpose. Inactive tenants, disabled principals, expired/revoked state, archived campaign/workspace scope, cross-campaign grant corruption, mismatched directory scope and unavailable persistence fail closed.
-- The initial migration creates tenant, principal, campaign, workspace, membership, role/grant, audit and outbox structures with composite scope constraints and forced RLS on tenant-owned tables.
-- Approval transitions now bind an immutable authenticated principal to the exact requested action, option, reason, date, scope and target digest. Repository writes reject scope/identity mutation and persistence authorization is operation-specific.
-- Evidence-review receipts bind exact scope, evidence, claim digest, disposition, reviewer authentication and grants; enabling evidence must be verifiable before it can create a contradiction.
-- GitHub Actions and runtime container references used in the new foundation are pinned to immutable commits/digests. On draft PR `#72` head `e8adf4ce008bbf4b82fe9d7e6515ee4b37595922`, CampaignOS CI run `29706162737` and visual run `29706162740` completed successfully across quality, PostgreSQL/RLS, dependency audit, Gitleaks, CodeQL, constrained-stack E2E and browser review.
+- PR `#72` (`bac781e`) merged on `2026-07-21`; its final-head CampaignOS CI run `29706314953` and visual run `29706314936` succeeded.
+- PR `#73` (`5b203ec`) merged on `2026-07-21`; CampaignOS CI run `29770562360` and visual run `29770562352` succeeded.
+- PR `#83` (`ed41ae0`) merged as `main@d0719c9`; CampaignOS CI run `29802998261` succeeded.
+- PR `#84` (`e938930`) is draft against `main`; CampaignOS CI run `29804446308` succeeded.
+- PR `#85` (`0f38361`) is draft against `agent/c3-api-002-idempotency`; CampaignOS CI run `29807485042` and visual run `29807485041` succeeded.
+- PR `#86` (`236a0d0`) is draft against `agent/c3-api-003-outbox-worker`; CampaignOS CI run `29807878943` succeeded.
+- The public rulesets endpoint returned an empty list. Branch-protection and Actions-permission endpoints require authentication, so required-check enforcement is not currently verifiable and remains a production blocker.
+- Twenty-three non-PR issues remain open. The C2 issues associated with already merged PRs have not been rewritten or closed by this checkpoint.
+
+## Verification reproduced at the current stacked head
+
+- `make verify`: PASS.
+- Ruff lint and format: PASS.
+- Strict mypy across 29 source files: PASS.
+- Full locked suite: `256 passed`, `1 skipped` on the uv-managed Python `3.14.6` environment.
+- Program-truth validator: PASS with `production=BLOCKED`, five open CRITICAL/HIGH findings, and six retained failed runs.
+- Campaign safety scan: PASS.
+- Isolated PostgreSQL integration: `1 passed`, `5 deselected` against a temporary PostgreSQL `15.18` instance, covering Alembic downgrade/upgrade/check, forced RLS, constrained-role behavior, tenant visibility, cross-tenant denial, membership loading, and exact grant loading.
+- Gitleaks `8.30.1`: tracked-tree snapshot and `origin/main..HEAD` stack scans PASS with no leaks.
+- AutoSkills `0.3.6`: package integrity and manifest reviewed; pinned `--dry-run` proposed eleven skills, installed none, and did not mutate the repository. The decision remains `NO_INSTALL`.
+
+The nested Docker daemon in the sandbox could not register any pulled image layer because its outer user namespace denied `lchown /var/empty`. This is a local platform limitation, not a product assertion. No local Compose PASS is claimed for this session. The equivalent constrained-stack E2E remains green in GitHub Actions at the recorded PR heads.
+
+## Implemented and preserved
+
+- Fixed-algorithm OIDC identity verification remains separate from server-owned application authorization.
+- Active, non-expired memberships and exact grants are loaded from tenant-scoped PostgreSQL transactions.
+- Effective permission matching includes principal, tenant, campaign, workspace, action, resource type, resource identifier, purpose, validity, and revocation state.
+- Campaign list/get/update boundaries enforce exact campaign grants, sanitized errors, pagination, optimistic concurrency, idempotency, atomic audit, and outbox evidence.
+- The draft stack serializes equal idempotency keys, claims outbox rows with leases and `SKIP LOCKED`, recovers expired work, applies bounded retries/dead-letter state, and revalidates tenant evidence before internal delivery.
+- Workspace creation requires an exact campaign-scoped grant and commits workspace, audit, outbox, and idempotency evidence atomically.
+- The Governance Workspace mutation-race regression and narrow Gitleaks false-positive handling remain present.
+- `RTK.md` was read only and remains unchanged. `artifacts/c1-front-003/` is not present in this sandbox checkout; no cleanup or destructive Git operation was used.
 
 ## What remains unproven or absent
 
-- No live OIDC provider, login/invitation/recovery flow, MFA policy, server session lifecycle or revocation path has been integrated.
-- There is no invitation or membership-administration workflow, reviewed production role catalog, support-elevation path or authorization/audit enforcement on campaign-domain actions and workers; authenticated domain endpoints do not exist.
-- The initial schema is not yet connected to the deterministic campaign-domain repositories. No durable approval/evidence workflow or background worker runtime exists.
-- S3Mock and Mailpit are local test dependencies. There is no production object-storage/email adapter, attachment validation, quarantine, malware strategy or signed-operation policy.
-- The dynamic application frontend, guided onboarding, i18n, Training Academy and API-backed campaign workspaces remain absent or static prototypes.
-- No Terraform, AWS dev/staging/production environment, short-lived deployment federation, backup, restore, load, rollback or disaster-recovery evidence exists.
-- Draft PR `#72` is not reviewed or merged. Main branch protection and rulesets were still absent when rechecked after the green run, so none of its checks is required for integration and repository settings do not require Action SHA pinning.
-- CodeQL, Gitleaks and dependency-audit jobs executed successfully at the recorded PR head, but protected-main enforcement, alert/response policy evidence, SBOM, provenance and signing remain absent.
-- Audit hashes remain unkeyed local integrity links, not digital signatures, immutable external anchors or KMS-backed evidence.
-- No independent production security, privacy, legal, political-science, research-methodology or communication-ethics approval is recorded.
+- No live OIDC provider, login, invitation, recovery, MFA, durable session lifecycle, or revocation path is integrated.
+- No membership-administration, support-elevation, or time-bound support-access workflow exists.
+- Campaign creation and campaign-readiness endpoints are absent; candidate, approval, assignment, artifact, and broader evidence workflows remain unimplemented or prototype-only.
+- The outbox worker has no reviewed external transport, administration surface, production observability, staging concurrency proof, or external political effects.
+- S3Mock and Mailpit remain local test dependencies; production object storage, email, attachment validation, quarantine, malware handling, KMS, and retention are absent.
+- The dynamic Next.js application shell, guided onboarding, full i18n, Training Academy, and API-backed non-technical journeys are absent.
+- No Terraform, AWS dev/staging/production environment, backup, restore, load, rollback, disaster-recovery, or production observability evidence exists.
+- Branch-protection enforcement is unverified; no SBOM, provenance, image signing, or protected promotion flow exists.
+- Six historical CI failures and five CRITICAL/HIGH findings remain explicit blockers; none has been removed or inferred away.
+- No independent production security, privacy, legal, political-science, research-methodology, communication-ethics, or human production approval is recorded.
 
-## Delivery and repository state
+## Delivery table
 
 | Area | Evidence | Determination |
 |---|---|---|
-| C2 integration | PR stack merged to `main` | Integrated deterministic prototype |
-| C3 runtime | Local FastAPI/PostgreSQL/OIDC/tenant-authorization/Compose implementation and tests | Partial foundation; not deployed |
-| Local worktree | User-owned `RTK.md` and `artifacts/c1-front-003/` were present | Preserved and excluded from task scope |
-| Draft PR CI | Runs `29706162737` and `29706162740` passed at head `e8adf4c` | Green review-branch evidence; not protected-main enforcement |
-| Historical PR validation | Six manifest-linked runs retain `FAILURE` conclusions | Still blocking; no history rewriting |
-| Main protection | GitHub API returned no branch protection and no rulesets | High release-governance gap |
-| Pages | Live HTTPS static site; local workflow is manual-only | `DEMO_NON_PRODUCTION` |
-| AWS | Session expired and no Terraform/environment evidence exists | External state not verified |
+| Foundation, IAM, first campaign API | PRs `#72`, `#73`, `#83` merged with green recorded checks | `MERGED`; not deployed |
+| Active review stack | PRs `#84` → `#85` → `#86`, draft and green at recorded heads | `CI_GREEN`; not merged |
+| Local quality | 256 tests, lint, format, mypy, program and safety validators | `TESTED_LOCAL` |
+| PostgreSQL | Native temporary PostgreSQL integration PASS; CI PostgreSQL jobs green | `VERIFIED_POSTGRESQL_LOCAL_AND_CI` |
+| Local Compose | Nested-daemon ownership limitation | `LOCAL_BLOCKER`; CI substitute retained |
+| Historical validation | Six manifest-linked runs retain `FAILURE` | Production-blocking until explicit supersession |
+| Rulesets/protection | Public rulesets empty; protection endpoint requires auth | Required-check enforcement unverified |
+| Pages | Live HTTPS static site; workflow manual-only | `DEMO_NON_PRODUCTION` |
+| AWS | No current credentials or IaC environment evidence | `NOT_VERIFIED` |
 
-## Historical CI evidence requiring reconciliation
+## Historical CI evidence requiring explicit supersession
 
-These recorded run IDs retain conclusion `FAILURE` until explicit, reviewed, scope-equivalent GitHub evidence supersedes them:
+These run IDs retain conclusion `FAILURE` until a reviewed record supplies `superseded_by`, scope-equivalent verification evidence, reviewer, date, and reason:
 
 ```text
 29659355550
@@ -68,20 +90,20 @@ These recorded run IDs retain conclusion `FAILURE` until explicit, reviewed, sco
 29659733648
 ```
 
-Later integration runs `29660653755`, `29662896729`, `29706162737` and `29706162740` passed their checked commits, but do not rewrite those six records.
+Later green runs do not rewrite those records automatically.
 
 ## Program-tool evidence
 
-- AutoSkills `0.3.6` dry-run suggested three skills; no package was installed because provenance, lock and license review had not occurred.
-- Context7 identifiers, retrieved guidance, official version cross-checks and installed pins are recorded in `program/context7-evidence.md`.
-- Farmtable was unavailable; the JSON-compatible task graph, ledger and state records preserve dependencies and are validated fail closed.
-- Specialized production, critic and verification roles were used where agent capacity was available; remaining work preserved explicit separation between implementation, adversarial review and test evidence.
+- AutoSkills `0.3.6` package integrity is recorded, but suggested third-party skill payloads remain uninstalled because individual license, path, provenance, and prompt-injection review is incomplete.
+- Context7 is not available as a live MCP capability in this workspace. Previously retained references remain advisory; current implementation uses pinned dependencies, official source cross-checks, and executable tests.
+- Farmtable is unavailable; the fail-closed task graph, ledger, manifest, and iteration records preserve equivalent dependency semantics.
+- Producer, critic, fixer, independent verifier, and release-review responsibilities are separated sequentially in this session record; no producer self-approval is claimed.
 
-## Next increments
+## Next executable increments
 
-1. Obtain human review of draft PR `#72`, reconcile the six historical failures explicitly, and configure protected-main rules without weakening the now-green checks.
-2. Integrate a real OIDC provider and invitation/login/recovery/session lifecycle; add membership/grant administration and enforce fresh authorization on every domain and worker action.
-3. Connect campaign-domain repositories and approval/audit/outbox flows to PostgreSQL; add versioned domain endpoints and an idempotent worker runtime.
-4. Implement reviewed Terraform for an isolated AWS development environment, then prove staging security, migration, load, backup/restore and rollback gates.
+1. `C3-API-005`: add the authenticated, tenant/campaign-scoped readiness projection required by onboarding, with BOLA and wrong-purpose tests.
+2. Complete campaign creation as a separate idempotent audited slice rather than expanding one PR across unrelated modules.
+3. Continue `C3-IAM-002` contract-first invitation, membership, session, and support-elevation lifecycle work without claiming live Cognito integration.
+4. Start the dynamic application shell and Terraform validation work as independent or stacked increments when their explicit dependencies are satisfied.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records an explicit scoped approval receipt.

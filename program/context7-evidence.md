@@ -43,7 +43,7 @@ Retrieval/reconciliation date: `2026-07-19 America/Guatemala`
 - `installed_version`: `2.0.51` (exact production pin)
 - `query`: SQLAlchemy 2.0 session and transaction boundaries
 - `documentation_summary`: use explicit unit-of-work transaction scopes and avoid sharing mutable sessions across requests or background jobs.
-- `implementation_decision`: added engine/session ownership with `pool_pre_ping`, explicit transaction-local tenant scope and detached application sessions; domain adapters remain future work.
+- `implementation_decision`: added engine/session ownership with `pool_pre_ping`, explicit transaction-local tenant scope and detached application sessions; campaign read/write adapters now use that boundary, while broader domain adapters remain future work.
 - `official_cross_check`: PyPI reports SQLAlchemy `2.0.51`.
 - `source_links`: [Context7 SQLAlchemy 2.0](https://context7.com/websites/sqlalchemy_en_20), [PyPI](https://pypi.org/project/SQLAlchemy/)
 - `limitations`: the Context7 identifier is a documentation-site index rather than the upstream repository identifier; official release metadata remains the version authority.
@@ -72,7 +72,7 @@ Retrieval/reconciliation date: `2026-07-19 America/Guatemala`
 - `documentation_summary`: retrieve signing keys through the supported JWK client and require expected claims, issuer and audience; token decoding alone does not establish application authorization.
 - `implementation_decision`: implemented a fixed-`RS256` ID-token verifier requiring signature, key ID, issuer, audience, `exp`, `iat`, optional `nbf`, token use and multi-audience `azp`; authorization remains a separate server-owned decision.
 - `source_links`: [Context7 PyJWT](https://context7.com/jpadilla/pyjwt), [PyPI](https://pypi.org/project/PyJWT/)
-- `limitations`: no live identity provider, browser login flow, session lifecycle or persistent membership/grant loading is proven.
+- `limitations`: no live identity provider, browser login flow or session lifecycle is proven; persistent membership and exact-grant loading are covered separately by authorization and PostgreSQL tests.
 
 ### HTTPX
 
@@ -103,8 +103,17 @@ Retrieval/reconciliation date: `2026-07-19 America/Guatemala`
 - `installed_versions`: `pip-audit 2.10.1`; `Playwright 1.61.0`; `actionlint 1.7.12` runs from a digest-pinned container.
 - `implementation_decision`: export hash-locked production requirements for blocking vulnerability audit; install the locked Playwright CLI/browser in visual CI; validate all workflow expressions and embedded shell with actionlint.
 - `source_links`: [pip-audit on PyPI](https://pypi.org/project/pip-audit/), [Playwright Python on PyPI](https://pypi.org/project/playwright/), [actionlint releases](https://github.com/rhysd/actionlint/releases)
-- `limitations`: local clean results are point-in-time. The GitHub jobs remain unproven until executed on a reviewed commit.
+- `limitations`: local and GitHub clean results are point-in-time. Recorded jobs now pass on merged and draft review heads, but required-check enforcement and alert response remain unverified.
 
 ## Index limitation
 
 Context7 is mandatory implementation evidence, but its index can lag package registries and can expose multiple identifiers with different reputation. Every implementation task must therefore record the exact documentation identifier and version used, cross-check the current official release, pin a compatible installed version, and test behavior locally. This register does not authorize automatic upgrades.
+
+## C3-RESUME-001 availability record
+
+- `date`: `2026-07-21 America/Guatemala`
+- `task_id`: `C3-RESUME-001`
+- `Context7_runtime`: unavailable in the Cloud Sandbox toolset used for this checkpoint.
+- `framework_change`: none; this increment reconciles repository, CI and program truth rather than changing a framework contract.
+- `evidence_basis`: exact versions in `uv.lock`, official package/release metadata used for environment remediation, existing retained framework records, and executable local/CI tests.
+- `limitation`: no new Context7 retrieval is claimed or fabricated. The next framework-affecting increment must add current official documentation evidence and, when available, a Context7 record.

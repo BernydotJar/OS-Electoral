@@ -2,18 +2,19 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-19",
-  "branch": "agent/c3-api-004-workspace-write",
+  "updated_at": "2026-07-21",
+  "branch": "agent/c3-resume-001-reconcile-review-stack",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
       "owner": "Program truth and delivery governance",
-      "status": "COMPLETE_LOCAL",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "architecture/program-state.json",
         "program/program-state.json",
         "program/current-state-assessment.md",
-        "program/production-gap-matrix.md"
+        "program/production-gap-matrix.md",
+        "program/iterations/c3-resume-001.md"
       ],
       "external_effects": "NONE",
       "blockers": []
@@ -21,7 +22,7 @@
     {
       "task_id": "C3-ARCH-001",
       "owner": "WS-01",
-      "status": "COMPLETE_LOCAL",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "docs/product/product-boundaries.md",
         "docs/product/non-goals.md",
@@ -34,7 +35,7 @@
     {
       "task_id": "C3-DEVEX-001",
       "owner": "WS-02",
-      "status": "COMPLETE_LOCAL",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "Makefile",
         "compose.yaml",
@@ -66,7 +67,7 @@
     {
       "task_id": "C3-IAM-001",
       "owner": "WS-03",
-      "status": "IN_PROGRESS",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/identity/oidc.py",
         "backend/src/campaignos/identity/authorization.py",
@@ -82,13 +83,13 @@
       "external_effects": "NONE",
       "blockers": [
         "No live identity provider or login/recovery/session lifecycle",
-        "No membership administration, support elevation or domain/worker action enforcement"
+        "No membership administration, support elevation or complete domain/worker action enforcement"
       ]
     },
     {
       "task_id": "C3-DATA-001",
       "owner": "WS-04",
-      "status": "COMPLETE_LOCAL",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/data/database.py",
         "backend/src/campaignos/data/models.py",
