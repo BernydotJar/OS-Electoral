@@ -44,6 +44,7 @@ TENANT_TABLES = {
     "audit_events",
     "outbox_events",
     "idempotency_records",
+    "guided_intakes",
     "identity_invitations",
     "application_sessions",
     "support_access_requests",
@@ -123,7 +124,7 @@ def test_migration_and_rls_isolate_existing_foreign_tenant_rows(
         tables = set(inspect(connection).get_table_names())
         assert set(Base.metadata.tables) <= tables
         revision = connection.scalar(text("SELECT version_num FROM alembic_version"))
-        assert revision == "20260721_0004"
+        assert revision == "20260721_0005"
         policies = connection.execute(
             text(
                 "SELECT tablename FROM pg_policies "

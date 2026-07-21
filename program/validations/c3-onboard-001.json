@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "task_id": "C3-ONBOARD-001",
+  "branch": "agent/c3-onboard-001-guided-intake",
+  "base_branch": "agent/c3-iam-002-identity-lifecycle",
+  "base_commit": "fecb1d347389eebd08d04be6d38a3f518787e4e4",
+  "implementation_commit": null,
+  "draft_pr": null,
+  "status": "VERIFIED_POSTGRESQL_LOCAL_ONLY",
+  "verified_at": "2026-07-21 America/Guatemala",
+  "results": {
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy": "PASS_40_SOURCE_FILES",
+    "pytest": {
+      "result": "PASS",
+      "passed": 425,
+      "skipped": 4
+    },
+    "coverage": {
+      "result": "PASS",
+      "percent": 91.58,
+      "floor": 90
+    },
+    "postgresql": {
+      "result": "PASS",
+      "selected": 4,
+      "deselected": 5,
+      "local_repetitions": 2,
+      "revision": "20260721_0005",
+      "engine": "PostgreSQL 15 UTF8 disposable cluster"
+    },
+    "frontend": {
+      "result": "PASS",
+      "vitest": 16,
+      "eslint": "PASS",
+      "strict_typescript": "PASS",
+      "production_build": "PASS",
+      "npm_vulnerabilities": 0
+    },
+    "browser_wcag": {
+      "result": "PASS",
+      "axe_violations": 0,
+      "unexpected_hosts": 0,
+      "console_errors": 0
+    },
+    "frontend_image": "PASS_BUILDAH_DAEMONLESS_NONROOT_HEALTH_SMOKE",
+    "actionlint": "PASS",
+    "pip_audit": "PASS_ZERO_KNOWN_VULNERABILITIES",
+    "gitleaks": {
+      "effective_worktree": "PASS",
+      "origin_main_to_head": "PASS_25_COMMITS"
+    },
+    "program_truth": "PASS_PRODUCTION_BLOCKED",
+    "campaign_safety": "PASS"
+  },
+  "evidence": [
+    "backend/migrations/versions/20260721_0005_guided_intake.py",
+    "backend/src/campaignos/onboarding/contracts.py",
+    "backend/src/campaignos/onboarding/service.py",
+    "backend/src/campaignos/api/routes/guided_intake.py",
+    "backend/tests/test_guided_intake_contracts.py",
+    "backend/tests/test_guided_intake_model.py",
+    "backend/tests/test_guided_intake_api.py",
+    "backend/tests/test_guided_intake_postgres.py",
+    "frontend/src/lib/contract-parsers.test.ts",
+    "frontend/src/lib/navigation.test.ts",
+    "docs/api/guided-intake.md",
+    "docs/testing/c3-onboard-001-evidence.md"
+  ],
+  "external_effects": "NONE",
+  "production_status": "BLOCKED",
+  "limitations": [
+    "No authenticated non-technical create/update UI yet",
+    "No live OIDC tenant-selection or customer acceptance proof",
+    "No current-branch remote SHA, draft PR or CI evidence yet",
+    "No RDS, dev, staging, production or human production approval"
+  ]
+}

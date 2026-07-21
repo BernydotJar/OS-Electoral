@@ -3,6 +3,9 @@ import { describe, expect, it } from "vitest";
 import type { EffectiveMembership } from "@/lib/contracts";
 import { deriveNavigation } from "@/lib/navigation";
 
+const CAMPAIGN_ID = "33333333-3333-4333-8333-333333333333";
+const OTHER_CAMPAIGN_ID = "44444444-4444-4444-8444-444444444444";
+
 function membership(resourceType: string, action = "read"): EffectiveMembership {
   return {
     membership_id: "11111111-1111-4111-8111-111111111111",
@@ -15,7 +18,7 @@ function membership(resourceType: string, action = "read"): EffectiveMembership 
         workspace_id: null,
         action,
         resource_type: resourceType,
-        resource_id: "33333333-3333-4333-8333-333333333333",
+        resource_id: CAMPAIGN_ID,
         purpose: "Test exact navigation projection",
         approval_receipt_id: "test-approval",
       },
@@ -29,6 +32,39 @@ describe("deriveNavigation", () => {
     expect(navigation.filter((item) => item.enabled).map((item) => item.key)).toEqual([
       "overview",
     ]);
+  });
+
+  it("requires the exact guided intake read purpose", () => {
+    const wrongPurposeMembership = membership("guided_intake");
+    const wrongPurpose = deriveNavigation(
+      "es",
+      [
+        {
+          ...wrongPurposeMembership,
+          grants: wrongPurposeMembership.grants.map((grant) => ({
+            ...grant,
+            campaign_id: CAMPAIGN_ID,
+          })),
+        },
+      ],
+      CAMPAIGN_ID,
+    );
+    expect(wrongPurpose.find((item) => item.key === "intake")?.enabled).toBe(false);
+
+    const exactMembership = membership("guided_intake");
+    const scopedMembership = {
+      ...exactMembership,
+      grants: exactMembership.grants.map((grant) => ({
+        ...grant,
+        campaign_id: CAMPAIGN_ID,
+        purpose: "Review guided campaign intake",
+      })),
+    };
+    const exact = deriveNavigation("es", [scopedMembership], CAMPAIGN_ID);
+    expect(exact.find((item) => item.key === "intake")?.enabled).toBe(true);
+
+    const crossCampaign = deriveNavigation("es", [scopedMembership], OTHER_CAMPAIGN_ID);
+    expect(crossCampaign.find((item) => item.key === "intake")?.enabled).toBe(false);
   });
 
   it("reveals only modules backed by relevant server-owned grants", () => {

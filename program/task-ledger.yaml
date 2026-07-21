@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-iam-002-identity-lifecycle",
+  "branch": "agent/c3-onboard-001-guided-intake",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -267,10 +267,22 @@
     {
       "task_id": "C3-ONBOARD-001",
       "owner": "WS-07",
-      "status": "READY",
-      "evidence": [],
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/migrations/versions/20260721_0005_guided_intake.py",
+        "backend/tests/test_guided_intake_contracts.py",
+        "backend/tests/test_guided_intake_model.py",
+        "backend/tests/test_guided_intake_api.py",
+        "backend/tests/test_guided_intake_postgres.py",
+        "frontend/src/lib/contract-parsers.test.ts",
+        "frontend/src/lib/navigation.test.ts",
+        "docs/testing/c3-onboard-001-evidence.md"
+      ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [
+        "Remote branch, draft PR and exact-head CI pending",
+        "Authenticated non-technical mutation journey and human acceptance remain future work"
+      ]
     },
     {
       "task_id": "C3-TEAM-001",
