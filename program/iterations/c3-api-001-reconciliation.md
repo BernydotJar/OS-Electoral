@@ -2,7 +2,7 @@
 
 - `branch`: `agent/c3-api-001-reconciliation`
 - `base`: `agent/c3-strategy-001-evidence-decision-room@427ed62cc8272efe9515d908d590187cfee94ae8`
-- `status`: `VERIFIED_POSTGRESQL`
+- `status`: `CI_GREEN`
 - `production_status`: `BLOCKED`
 - `external_effects`: `NONE`
 
@@ -47,3 +47,13 @@
 - No live identity provider, RDS, staging, production, telemetry, backup/restore or customer acceptance is claimed.
 - No worker control plane, dead-letter replay UI or external transport exists.
 - No external campaign effect is authorized or implemented by this baseline.
+
+
+## Published checkpoint — 2026-07-21
+
+- implementation/head `55215a86b54be2f1cca3a0e78248ab5ae66fecb2`;
+- draft PR `#97`, merge state `CLEAN`;
+- CampaignOS CI `29876982499`: `SUCCESS`;
+- runtime visual review `29876982490`: `SUCCESS`;
+- `C3-AGENT-001` is now `EXECUTABLE_NEXT`;
+- production remains `BLOCKED`; external effects remain `NONE`.

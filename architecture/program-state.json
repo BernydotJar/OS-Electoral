@@ -742,8 +742,8 @@
     {
       "id": "WS-05",
       "name": "API and Background Jobs",
-      "status": "API_BASELINE_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-API-001"
+      "status": "API_BASELINE_CI_GREEN",
+      "next_increment": "C3-AGENT-001"
     },
     {
       "id": "WS-06",
@@ -778,7 +778,7 @@
     {
       "id": "WS-11",
       "name": "Agent Runtime, Guardrails and Evals",
-      "status": "DETERMINISTIC_PROTOTYPE",
+      "status": "AGENT_EXECUTABLE_NEXT",
       "next_increment": "C3-AGENT-001"
     },
     {
@@ -866,7 +866,7 @@
     },
     {
       "id": "C3-API-001",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-IAM-001",
         "C3-DATA-001"
@@ -943,7 +943,7 @@
     },
     {
       "id": "C3-AGENT-001",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "EXECUTABLE_NEXT",
       "depends_on": [
         "C3-API-001",
         "C3-STRATEGY-001"
@@ -1183,6 +1183,15 @@
         "head_sha": "427ed62cc8272efe9515d908d590187cfee94ae8",
         "campaignos_ci_run_id": 29876488499,
         "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 97,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-strategy-001-evidence-decision-room",
+        "head": "agent/c3-api-001-reconciliation",
+        "head_sha": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+        "campaignos_ci_run_id": 29876982499,
+        "conclusion": "SUCCESS"
       }
     ],
     "git_push_incident": {
@@ -1200,28 +1209,30 @@
     "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-API-001",
-      "state": "VERIFIED_POSTGRESQL",
+      "state": "CI_GREEN",
       "branch": "agent/c3-api-001-reconciliation",
       "base": "agent/c3-strategy-001-evidence-decision-room@427ed62cc8272efe9515d908d590187cfee94ae8",
+      "head_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+      "draft_pr": 97,
+      "ci_run_id": 29876982499,
+      "visual_run_id": 29876982490,
       "production_status": "BLOCKED",
       "external_effects": "NONE"
     },
     "latest_checkpoint": {
-      "id": "C3-STRATEGY-001",
-      "branch": "agent/c3-strategy-001-evidence-decision-room",
-      "base": "agent/c3-ops-001-roadmap-war-room",
-      "base_commit": "c81e4282813c0add0c3207f97066f127280e410e",
-      "initial_commit": "6606f9b4ff2babd22c305d2edbf78ff48fff452a",
-      "implementation_commit": "dfd29ad02d00f6bfc469f908d7953962dcca154f",
-      "policy_fix_commit": "72a4dfb722f2c671fd754af4e4e2d242677411f9",
-      "head_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
-      "draft_pr": 96,
-      "ci_run_id": 29876488499,
-      "visual_run_id": 29876488479,
+      "id": "C3-API-001",
+      "branch": "agent/c3-api-001-reconciliation",
+      "base": "agent/c3-strategy-001-evidence-decision-room",
+      "base_commit": "427ed62cc8272efe9515d908d590187cfee94ae8",
+      "implementation_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+      "head_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+      "draft_pr": 97,
+      "ci_run_id": 29876982499,
+      "visual_run_id": 29876982490,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
       "external_effects": "NONE",
-      "next_increment": "C3-API-001"
+      "next_increment": "C3-AGENT-001"
     }
   },
   "deployment_state": {

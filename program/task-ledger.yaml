@@ -133,7 +133,7 @@
     {
       "task_id": "C3-API-001",
       "owner": "WS-05",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/src/campaignos/api/app.py",
         "backend/src/campaignos/api/routes/health.py",
@@ -170,10 +170,14 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Reconciliation draft PR and exact-head CI are pending",
-        "Worker administration, dead-letter replay, observability and external transport remain separate control-plane work",
-        "No live identity, cloud environment, customer acceptance, merge or deployment is claimed"
-      ]
+        "Human review and merge remain pending",
+        "Worker control plane, observability and external transport remain separate later work",
+        "No live identity, cloud environment or production verification is claimed"
+      ],
+      "publication_state": "DRAFT_PR_CI_GREEN",
+      "implementation_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
+      "draft_pr": 97,
+      "ci_run_id": 29876982499
     },
     {
       "task_id": "C3-API-005",
@@ -398,13 +402,10 @@
     {
       "task_id": "C3-AGENT-001",
       "owner": "WS-11",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "evidence": [],
       "external_effects": "NONE",
-      "blockers": [
-        "C3-API-001",
-        "C3-STRATEGY-001"
-      ]
+      "blockers": []
     },
     {
       "task_id": "C3-INFRA-001",

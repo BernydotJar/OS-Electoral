@@ -346,3 +346,11 @@
 - Passed the eight-slice PostgreSQL migration/RLS/concurrency gate twice from clean isolated databases.
 - Classified worker administration, observability, dead-letter replay and external transport as separate control-plane work rather than false blockers to the internal API baseline.
 - Recorded `VERIFIED_POSTGRESQL`; reconciliation PR/CI remain pending, production remains `BLOCKED`, and external effects remain `NONE`.
+
+
+## C3-API-001 published reconciliation checkpoint — 2026-07-21
+
+- Published `55215a86b54be2f1cca3a0e78248ab5ae66fecb2` in draft PR #97.
+- PR #97 is `CLEAN`; CampaignOS CI `29876982499` and visual review `29876982490` concluded `SUCCESS`.
+- Recorded `C3-API-001` as `CI_GREEN` and unblocked `C3-AGENT-001` as `EXECUTABLE_NEXT`.
+- Production remains `BLOCKED`; no merge, deployment, provider call or external campaign effect occurred.
