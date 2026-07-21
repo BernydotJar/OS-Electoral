@@ -11,4 +11,6 @@
 | C3-RESUME-001 | Environment remediation | Debian 12 ARM64 sandbox; missing Compose v2, PostgreSQL and Gitleaks | Official Docker APT Compose plugin `5.3.1`, PostgreSQL `15.18`, checksum-verified Gitleaks `8.30.1` | Version commands, Compose config, PostgreSQL integration and secret scans | USED | Installed only inside the workstation container; nested Docker image extraction remains namespace-blocked. |
 | C3-RESUME-001 | Farmtable-equivalent fallback | Program dependency and checkpoint state | Reconciled manifest, graph, ledger and iteration record | `make program-verify` | FALLBACK_USED | Farmtable runtime was unavailable; no production dependency was introduced. |
 
+| C3-API-005 | Current framework documentation fallback | FastAPI, Pydantic and SQLAlchemy official documentation; pinned lockfile versions | Transaction/row-lock, dependency/response-model and validator decisions recorded in `program/context7-evidence.md` | Executable tests plus official-source record | FALLBACK_USED | Context7 was unavailable; no MCP retrieval was fabricated. |
+
 No available artifact-generation or repository-specific governance skill matched this narrow program-ledger implementation. No skill was installed or invoked implicitly.

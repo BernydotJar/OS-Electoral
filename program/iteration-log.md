@@ -167,3 +167,15 @@
 - Recorded a local-only Docker daemon blocker: image layers cannot be registered because the outer namespace denies `lchown /var/empty`; no local Compose PASS is claimed. Equivalent constrained-stack CI is green at the recorded review heads.
 - Preserved five open CRITICAL/HIGH findings and six unsuperseded historical failed runs. Production remains `BLOCKED`.
 - Selected `C3-API-005` campaign readiness as the next executable bounded slice.
+
+## C3-API-005 audited campaign readiness - 2026-07-21
+
+- Added exact-purpose `GET /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/readiness` with authorization before persistence, typed OpenAPI, sanitized failures and adapter-scope verification.
+- Added deterministic operational setup checks for campaign metadata and one active workspace; fixed limitation codes prohibit treating readiness as political, legal, financial, security, publication or production approval.
+- Added mandatory successful-read audit evidence and verified zero readiness outbox events.
+- Centralized campaign/workspace/readiness audit appends behind a tenant-row lock, session-bound token, monotonic timestamp and canonical hash chain after the critic identified a concurrent ordering risk.
+- Restored the executable coverage gate: the previously inactive real value was `89.29%`; added fail-closed branch tests and reached `90.64%` under `fail_under=90`.
+- Added the exact 33-item required-eval catalog and validator: `5 PASS`, `8 PARTIAL`, `20 NOT_RUN`; production remains `BLOCKED`.
+- Full locked suite: `286 passed`, `1 skipped`; strict mypy across 31 source files, Ruff, program truth, eval catalog and campaign safety PASS.
+- Isolated PostgreSQL migration/RLS/readiness/audit proof: `1 passed`, `5 deselected`.
+- No CI, PR, review, merge, deployment or external effect is claimed for this branch yet.

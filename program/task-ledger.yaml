@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-resume-001-reconcile-review-stack",
+  "branch": "agent/c3-api-005-campaign-readiness",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -136,6 +136,33 @@
       "blockers": [
         "No candidate, approval, assignment or artifact domain writes",
         "No worker administration, observability or reviewed external event transport"
+      ]
+    },
+    {
+      "task_id": "C3-API-005",
+      "owner": "WS-05",
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/src/campaignos/campaigns/readiness.py",
+        "backend/src/campaignos/data/audit.py",
+        "backend/src/campaignos/api/routes/campaigns.py",
+        "backend/tests/test_audit_append.py",
+        "backend/tests/test_campaign_readiness.py",
+        "backend/tests/test_campaign_readiness_api.py",
+        "backend/tests/test_database.py",
+        "backend/tests/test_eval_catalog_validator.py",
+        "docs/api/campaign-readiness.md",
+        "docs/testing/c3-api-005-evidence.md",
+        "program/eval-catalog.json",
+        "program/decision-log.md",
+        "program/risk-register.md",
+        "program/iterations/c3-api-005.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "CI and independent human review have not run for this branch",
+        "No draft PR can be created without an authenticated GitHub mutation session",
+        "No RDS, dev, staging or production verification"
       ]
     },
     {
