@@ -190,18 +190,22 @@
       "gate_result": "PARTIAL",
       "evidence": [
         "backend/tests/test_campaign_readiness.py",
-        "backend/tests/test_campaign_readiness_api.py",
-        "docs/api/campaign-readiness.md",
         "backend/tests/test_campaign_create_model.py",
-        "backend/tests/test_campaign_create_api.py",
-        "docs/api/campaign-create.md",
-        "docs/testing/c3-api-006-evidence.md"
+        "backend/tests/test_guided_intake_contracts.py",
+        "backend/tests/test_guided_intake_model.py",
+        "backend/tests/test_guided_intake_api.py",
+        "backend/tests/test_guided_intake_postgres.py",
+        "frontend/src/lib/contract-parsers.test.ts",
+        "frontend/src/lib/navigation.test.ts",
+        "docs/testing/c3-onboard-001-evidence.md"
       ],
       "commands": [
-        "make test"
+        "make verify",
+        "make test-postgres",
+        "make frontend-e2e"
       ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Draft campaign creation and operational readiness exist; the guided intake journey, evidence collection and save/resume workflow are not implemented."
+      "limitations": "Persisted save/resume/read/update, deterministic research-first assessment and a read-only ES/EN roadmap are verified locally/PostgreSQL. Authenticated non-technical editing, candidate workspace, live identity and human user acceptance remain incomplete."
     },
     {
       "id": "EVAL-CANDIDATE-001",

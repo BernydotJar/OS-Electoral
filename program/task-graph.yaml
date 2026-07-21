@@ -130,8 +130,8 @@
     {
       "id": "C3-ONBOARD-001",
       "workstream": "WS-07",
-      "title": "Guided intake, readiness assessment and Candidate Workspace",
-      "status": "READY",
+      "title": "Persisted guided intake and research-first campaign roadmap",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"

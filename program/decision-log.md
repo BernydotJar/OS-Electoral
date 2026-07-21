@@ -188,3 +188,21 @@ This log records scoped implementation decisions. It does not grant political, l
 - `decision`: Authenticated GitHub API evidence is authoritative: `main` is unprotected, rulesets are empty, all Actions are allowed, repository SHA pinning is not required and vulnerability alerts are disabled.
 - `evidence`: `architecture/program-state.json#github_state`, `program/current-state-assessment.md`
 - `consequences`: The finding remains HIGH and production-blocking. Configuration changes remain a human administrative gate; feature work continues independently.
+
+## DEC-2026-07-21-022 — Guided intake completeness is recomputed at every contract boundary
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-ONBOARD-001`
+- `decision`: Backend assessment and frontend runtime parsing independently derive all eight check booleans, exact reason codes, totals, state, next action and research-action availability from server-owned campaign context plus persisted intake fields.
+- `evidence`: `backend/src/campaignos/onboarding/contracts.py`, `frontend/src/lib/contract-parsers.ts`, corresponding RED/GREEN tests.
+- `rationale`: Trusting summary fields could show a campaign as research-ready while source evidence is missing or contradictory.
+- `consequences`: Any contradiction fails closed as an invalid upstream response; no research action is displayed before every canonical check is genuinely complete.
+
+## DEC-2026-07-21-023 — Candidate Workspace remains a separate increment
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-ONBOARD-001`
+- `decision`: Narrow `C3-ONBOARD-001` to persisted guided intake and its research-first roadmap. Do not claim or implement Candidate Workspace inside this checkpoint; select `C3-CANDIDATE-001` separately after publication.
+- `evidence`: `program/task-graph.yaml`, `program/iterations/c3-onboard-001.md`, `docs/product/guided-intake.md`.
+- `rationale`: Combining intake and candidate evidence would broaden review scope and permit a partial implementation to overclaim completion.
+- `consequences`: Onboarding remains auditable as one bounded aggregate; candidate biography, purpose, values, contradictions, evidence and approvals remain explicitly pending.

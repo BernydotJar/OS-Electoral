@@ -14,6 +14,24 @@ function StatePanel({ title, body, code }: { title: string; body: string; code?:
   );
 }
 
+function IntakeItems({
+  items,
+  dictionary,
+}: {
+  items: readonly string[] | null;
+  dictionary: Dictionary;
+}) {
+  if (items === null) return <p className="intake-empty">{dictionary.intake.notAssessed}</p>;
+  if (items.length === 0) return <p className="intake-empty">{dictionary.intake.noItems}</p>;
+  return (
+    <ul className="intake-items">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
 export function CampaignShell({
   locale,
   dictionary,
@@ -64,16 +82,26 @@ export function CampaignShell({
     );
   }
 
-  const navigation = deriveNavigation(locale, model.memberships);
+  const navigation = deriveNavigation(locale, model.memberships, model.campaign.id);
   const readiness = model.readiness?.readiness ?? null;
+  const guidedIntake = model.guidedIntake?.intake ?? null;
+  const guidedIntakeStateMessage = {
+    AVAILABLE: "",
+    NOT_STARTED: dictionary.intake.notStarted,
+    NOT_AUTHORIZED: dictionary.intake.notAuthorized,
+    DEPENDENCY_UNAVAILABLE: dictionary.intake.unavailable,
+  }[model.guidedIntakeAvailability];
   const roles = [...new Set(model.memberships.flatMap((membership) => membership.roles))];
   const grantCount = model.memberships.reduce(
     (count, membership) => count + membership.grants.length,
     0,
   );
-  const limitationCodes = readiness?.limitation_codes ?? [
+  const readinessLimitations = readiness?.limitation_codes ?? [
     "NOT_A_HUMAN_APPROVAL",
     "NO_STRATEGY_EVIDENCE_OR_CITIZEN_ASSESSMENT",
+  ];
+  const limitationCodes = [
+    ...new Set([...readinessLimitations, ...(guidedIntake?.limitation_codes ?? [])]),
   ];
 
   return (
@@ -175,6 +203,149 @@ export function CampaignShell({
                 <dd>{model.campaign.version}</dd>
               </div>
             </dl>
+          </section>
+
+          <section
+            id="guided-intake"
+            className="guided-intake-panel"
+            aria-labelledby="guided-intake-title"
+          >
+            <div className="intake-heading">
+              <div>
+                <p className="eyebrow">{dictionary.intake.eyebrow}</p>
+                <h2 id="guided-intake-title">{dictionary.intake.title}</h2>
+                <p>{dictionary.intake.body}</p>
+              </div>
+              {guidedIntake ? (
+                <div className="intake-progress" aria-label={dictionary.intake.progress}>
+                  <strong>
+                    {guidedIntake.completed_checks}/{guidedIntake.total_checks}
+                  </strong>
+                  <span>{dictionary.intake.progress}</span>
+                  <progress
+                    max={guidedIntake.total_checks}
+                    value={guidedIntake.completed_checks}
+                  >
+                    {guidedIntake.completed_checks}/{guidedIntake.total_checks}
+                  </progress>
+                </div>
+              ) : null}
+            </div>
+
+            {guidedIntake ? (
+              <>
+                <div className="intake-status-row">
+                  <div>
+                    <span>{dictionary.intake.status}</span>
+                    <strong>{dictionary.intake.statusLabels[guidedIntake.status]}</strong>
+                  </div>
+                  <div>
+                    <span>{dictionary.intake.nextAction}</span>
+                    <strong>{dictionary.intake.nextActionLabels[guidedIntake.next_action]}</strong>
+                  </div>
+                </div>
+
+                <div className="intake-layout">
+                  <section aria-labelledby="intake-checks-title">
+                    <h3 id="intake-checks-title">{dictionary.intake.checks}</h3>
+                    <ol className="intake-checks">
+                      {guidedIntake.checks.map((check, index) => (
+                        <li key={check.key} data-complete={check.complete}>
+                          <span className="intake-step" aria-hidden="true">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <div>
+                            <strong>{dictionary.intake.checkLabels[check.key]}</strong>
+                            <code>{check.reason_code}</code>
+                          </div>
+                          <span className="intake-check-mark" aria-hidden="true">
+                            {check.complete ? "✓" : "·"}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+
+                  <section aria-labelledby="intake-context-title">
+                    <h3 id="intake-context-title">{dictionary.shell.currentContext}</h3>
+                    <dl className="intake-data">
+                      <div>
+                        <dt>{dictionary.intake.office}</dt>
+                        <dd>{guidedIntake.office ?? dictionary.intake.notAssessed}</dd>
+                      </div>
+                      <div>
+                        <dt>{dictionary.intake.candidateProject}</dt>
+                        <dd>{guidedIntake.candidate_project ?? dictionary.intake.notAssessed}</dd>
+                      </div>
+                      <div>
+                        <dt>{dictionary.intake.currentTeam}</dt>
+                        <dd>
+                          <IntakeItems items={guidedIntake.current_team} dictionary={dictionary} />
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>{dictionary.intake.currentAssets}</dt>
+                        <dd>
+                          <IntakeItems items={guidedIntake.current_assets} dictionary={dictionary} />
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>{dictionary.intake.budgetStatus}</dt>
+                        <dd>{dictionary.intake.budgetStatusLabels[guidedIntake.budget_status]}</dd>
+                      </div>
+                      <div>
+                        <dt>{dictionary.intake.knownUnknowns}</dt>
+                        <dd>
+                          <IntakeItems items={guidedIntake.known_unknowns} dictionary={dictionary} />
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>{dictionary.intake.evidenceRequirements}</dt>
+                        <dd>
+                          <IntakeItems
+                            items={guidedIntake.evidence_requirements}
+                            dictionary={dictionary}
+                          />
+                        </dd>
+                      </div>
+                    </dl>
+                  </section>
+                </div>
+
+                <section className="research-actions" aria-labelledby="research-actions-title">
+                  <div>
+                    <h3 id="research-actions-title">{dictionary.intake.researchActions}</h3>
+                    <p>{dictionary.common.notApproval}</p>
+                  </div>
+                  {guidedIntake.research_first_actions.length > 0 ? (
+                    <ol>
+                      {guidedIntake.research_first_actions.map((action) => (
+                        <li key={action}>{dictionary.intake.researchActionLabels[action]}</li>
+                      ))}
+                    </ol>
+                  ) : (
+                    <p className="intake-empty">
+                      {dictionary.intake.nextActionLabels[guidedIntake.next_action]}
+                    </p>
+                  )}
+                </section>
+
+                <dl className="intake-evidence">
+                  <div>
+                    <dt>{dictionary.intake.readReceipt}</dt>
+                    <dd>{model.guidedIntake?.audit_event_id}</dd>
+                  </div>
+                  <div>
+                    <dt>{dictionary.intake.updatedAt}</dt>
+                    <dd>{guidedIntake.updated_at}</dd>
+                  </div>
+                </dl>
+              </>
+            ) : (
+              <p className="intake-state" role="status">
+                {guidedIntakeStateMessage}
+              </p>
+            )}
           </section>
 
           <section className="dashboard-grid">

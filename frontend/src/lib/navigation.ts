@@ -19,6 +19,7 @@ function hasGrant(
 export function deriveNavigation(
   locale: string,
   memberships: readonly EffectiveMembership[],
+  currentCampaignId?: string,
 ): readonly NavigationItem[] {
   const base = `/${locale}`;
   return [
@@ -37,6 +38,22 @@ export function deriveNavigation(
       key: "readiness",
       href: `${base}#readiness`,
       enabled: hasGrant(memberships, (grant) => grant.resource_type === "campaign_readiness"),
+      reason: "EXACT_GRANT",
+    },
+    {
+      key: "intake",
+      href: `${base}#guided-intake`,
+      enabled: hasGrant(
+        memberships,
+        (grant) =>
+          currentCampaignId !== undefined &&
+          grant.action === "read" &&
+          grant.resource_type === "guided_intake" &&
+          grant.resource_id === currentCampaignId &&
+          grant.campaign_id === currentCampaignId &&
+          grant.workspace_id === null &&
+          grant.purpose === "Review guided campaign intake",
+      ),
       reason: "EXACT_GRANT",
     },
     { key: "team", href: `${base}#team`, enabled: false, reason: "FUTURE_CAPABILITY" },

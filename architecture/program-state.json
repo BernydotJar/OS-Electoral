@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-iam-002-identity-lifecycle",
+  "source_branch": "agent/c3-onboard-001-guided-intake",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -754,8 +754,8 @@
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "EXECUTABLE_NEXT",
-      "next_increment": "C3-ONBOARD-001"
+      "status": "GUIDED_INTAKE_VERIFIED_POSTGRESQL_READ_ONLY_UI",
+      "next_increment": "C3-CANDIDATE-001"
     },
     {
       "id": "WS-08",
@@ -900,7 +900,7 @@
     },
     {
       "id": "C3-ONBOARD-001",
-      "status": "EXECUTABLE_NEXT",
+      "status": "VERIFIED_POSTGRESQL",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -1260,7 +1260,16 @@
     },
     {
       "id": "guided-onboarding",
-      "status": "NOT_IMPLEMENTED"
+      "status": "PARTIAL",
+      "evidence": [
+        "backend/tests/test_guided_intake_contracts.py",
+        "backend/tests/test_guided_intake_model.py",
+        "backend/tests/test_guided_intake_api.py",
+        "backend/tests/test_guided_intake_postgres.py",
+        "frontend/src/lib/contract-parsers.test.ts",
+        "docs/testing/c3-onboard-001-evidence.md"
+      ],
+      "reason": "Persisted resumable exact-authorized intake and read-only ES/EN roadmap are verified locally/PostgreSQL; authenticated non-technical edit journey, human acceptance and live environments remain absent."
     },
     {
       "id": "candidate-workspace",

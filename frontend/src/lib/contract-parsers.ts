@@ -6,6 +6,13 @@ import type {
   CampaignReadinessProjection,
   EffectiveMembership,
   EffectivePermissionGrant,
+  GuidedIntakeCheck,
+  GuidedIntakeCheckKey,
+  GuidedIntakeLimitation,
+  GuidedIntakeNextAction,
+  GuidedIntakeProjection,
+  GuidedIntakeReadEvidence,
+  GuidedIntakeResearchAction,
   MeResponse,
   TenantMeResponse,
 } from "@/lib/contracts";
@@ -67,6 +74,11 @@ function boolean(value: unknown, label: string): boolean {
 function array(value: unknown, label: string): readonly unknown[] {
   if (!Array.isArray(value)) throw new ContractValidationError(`${label} must be an array`);
   return value;
+}
+
+function nullableStringArray(value: unknown, label: string): readonly string[] | null {
+  if (value === null) return null;
+  return array(value, label).map((item, index) => string(item, `${label}[${index}]`));
 }
 
 function isoTimestamp(value: unknown, label: string): string {
@@ -374,5 +386,324 @@ export function parseReadinessEvidence(value: unknown): CampaignReadinessEvidenc
   return {
     readiness: parseReadinessProjection(source.readiness),
     audit_event_id: uuid(source.audit_event_id, "readiness evidence.audit_event_id"),
+  };
+}
+
+const GUIDED_INTAKE_CHECK_ORDER = [
+  "campaign_operational_setup",
+  "office",
+  "candidate_project",
+  "current_team",
+  "current_assets",
+  "budget_status",
+  "known_unknowns",
+  "evidence_requirements",
+] as const satisfies readonly GuidedIntakeCheckKey[];
+
+const GUIDED_INTAKE_NEXT_ACTIONS = [
+  "COMPLETE_CAMPAIGN_SETUP",
+  "DEFINE_TARGET_OFFICE",
+  "DESCRIBE_CANDIDATE_PROJECT",
+  "ASSESS_CURRENT_TEAM",
+  "ASSESS_CURRENT_ASSETS",
+  "ASSESS_BUDGET_EVIDENCE",
+  "RECORD_KNOWN_UNKNOWNS",
+  "DEFINE_EVIDENCE_REQUIREMENTS",
+  "BEGIN_RESEARCH",
+] as const satisfies readonly GuidedIntakeNextAction[];
+
+const GUIDED_INTAKE_RESEARCH_ACTIONS = [
+  "VERIFY_OFFICE_AND_JURISDICTION_EVIDENCE",
+  "VALIDATE_CANDIDATE_PROJECT_EVIDENCE",
+  "ASSESS_TEAM_CAPACITY_GAPS",
+  "INVENTORY_ASSET_PROVENANCE",
+  "DOCUMENT_BUDGET_ASSUMPTIONS",
+  "RESEARCH_KNOWN_UNKNOWNS",
+  "COLLECT_REQUIRED_EVIDENCE",
+] as const satisfies readonly GuidedIntakeResearchAction[];
+
+const GUIDED_INTAKE_LIMITATIONS = [
+  "NOT_A_STRATEGY",
+  "NOT_A_HUMAN_APPROVAL",
+  "NO_CITIZEN_CONTACT_OR_PROFILING",
+  "NO_EXTERNAL_EFFECTS",
+] as const satisfies readonly GuidedIntakeLimitation[];
+
+const GUIDED_INTAKE_NEXT_ACTION_BY_CHECK: Readonly<
+  Record<GuidedIntakeCheckKey, GuidedIntakeNextAction>
+> = {
+  campaign_operational_setup: "COMPLETE_CAMPAIGN_SETUP",
+  office: "DEFINE_TARGET_OFFICE",
+  candidate_project: "DESCRIBE_CANDIDATE_PROJECT",
+  current_team: "ASSESS_CURRENT_TEAM",
+  current_assets: "ASSESS_CURRENT_ASSETS",
+  budget_status: "ASSESS_BUDGET_EVIDENCE",
+  known_unknowns: "RECORD_KNOWN_UNKNOWNS",
+  evidence_requirements: "DEFINE_EVIDENCE_REQUIREMENTS",
+};
+
+function parseGuidedIntakeCheck(value: unknown, label: string): GuidedIntakeCheck {
+  const source = record(value, label);
+  exactKeys(source, ["key", "complete", "reason_code"], label);
+  return {
+    key: literal(source.key, GUIDED_INTAKE_CHECK_ORDER, `${label}.key`),
+    complete: boolean(source.complete, `${label}.complete`),
+    reason_code: string(source.reason_code, `${label}.reason_code`),
+  };
+}
+
+function parseGuidedIntakeProjection(value: unknown): GuidedIntakeProjection {
+  const source = record(value, "guided intake");
+  exactKeys(
+    source,
+    [
+      "id",
+      "tenant_id",
+      "campaign_id",
+      "campaign_version",
+      "campaign_status",
+      "campaign_name",
+      "jurisdiction",
+      "stage",
+      "active_workspace_count",
+      "readiness_scope",
+      "status",
+      "ready_for_research",
+      "office",
+      "candidate_project",
+      "current_team",
+      "current_assets",
+      "budget_status",
+      "known_unknowns",
+      "evidence_requirements",
+      "completed_checks",
+      "total_checks",
+      "next_action",
+      "checks",
+      "research_first_actions",
+      "limitation_codes",
+      "version",
+      "created_at",
+      "updated_at",
+    ],
+    "guided intake",
+  );
+
+  const campaignName = string(source.campaign_name, "guided intake.campaign_name");
+  const jurisdiction = string(source.jurisdiction, "guided intake.jurisdiction");
+  const stage = string(source.stage, "guided intake.stage");
+  const activeWorkspaceCount = integer(
+    source.active_workspace_count,
+    "guided intake.active_workspace_count",
+  );
+  const office = nullableString(source.office, "guided intake.office");
+  const candidateProject = nullableString(
+    source.candidate_project,
+    "guided intake.candidate_project",
+  );
+  const currentTeam = nullableStringArray(source.current_team, "guided intake.current_team");
+  const currentAssets = nullableStringArray(source.current_assets, "guided intake.current_assets");
+  const budgetStatus = literal(
+    source.budget_status,
+    ["NOT_ASSESSED", "NO_DOCUMENT", "ROUGH_RANGE", "DOCUMENTED"] as const,
+    "guided intake.budget_status",
+  );
+  const knownUnknowns = nullableStringArray(
+    source.known_unknowns,
+    "guided intake.known_unknowns",
+  );
+  const evidenceRequirements = nullableStringArray(
+    source.evidence_requirements,
+    "guided intake.evidence_requirements",
+  );
+
+  const checks = array(source.checks, "guided intake.checks").map((check, index) =>
+    parseGuidedIntakeCheck(check, `guided intake.checks[${index}]`),
+  );
+  if (
+    checks.length !== GUIDED_INTAKE_CHECK_ORDER.length ||
+    checks.some((check, index) => check.key !== GUIDED_INTAKE_CHECK_ORDER[index])
+  ) {
+    throw new ContractValidationError("guided intake checks are not canonical");
+  }
+
+  const campaignOperationalSetupComplete =
+    campaignName.trim().length > 0 &&
+    jurisdiction.trim().length > 0 &&
+    stage.trim().length > 0 &&
+    activeWorkspaceCount > 0;
+  const expectedChecks: Readonly<Record<GuidedIntakeCheckKey, readonly [boolean, string]>> = {
+    campaign_operational_setup: [
+      campaignOperationalSetupComplete,
+      campaignOperationalSetupComplete
+        ? "CAMPAIGN_OPERATIONAL_SETUP_COMPLETE"
+        : "CAMPAIGN_OPERATIONAL_SETUP_INCOMPLETE",
+    ],
+    office: [office !== null, office !== null ? "TARGET_OFFICE_DEFINED" : "TARGET_OFFICE_MISSING"],
+    candidate_project: [
+      candidateProject !== null,
+      candidateProject !== null ? "CANDIDATE_PROJECT_DESCRIBED" : "CANDIDATE_PROJECT_MISSING",
+    ],
+    current_team: [
+      currentTeam !== null,
+      currentTeam !== null ? "CURRENT_TEAM_ASSESSED" : "CURRENT_TEAM_NOT_ASSESSED",
+    ],
+    current_assets: [
+      currentAssets !== null,
+      currentAssets !== null ? "CURRENT_ASSETS_ASSESSED" : "CURRENT_ASSETS_NOT_ASSESSED",
+    ],
+    budget_status: [
+      budgetStatus !== "NOT_ASSESSED",
+      budgetStatus !== "NOT_ASSESSED"
+        ? "BUDGET_EVIDENCE_ASSESSED"
+        : "BUDGET_EVIDENCE_NOT_ASSESSED",
+    ],
+    known_unknowns: [
+      knownUnknowns !== null && knownUnknowns.length > 0,
+      knownUnknowns !== null && knownUnknowns.length > 0
+        ? "KNOWN_UNKNOWNS_RECORDED"
+        : "KNOWN_UNKNOWNS_MISSING",
+    ],
+    evidence_requirements: [
+      evidenceRequirements !== null && evidenceRequirements.length > 0,
+      evidenceRequirements !== null && evidenceRequirements.length > 0
+        ? "EVIDENCE_REQUIREMENTS_DEFINED"
+        : "EVIDENCE_REQUIREMENTS_MISSING",
+    ],
+  };
+  if (
+    checks.some((check) => {
+      const [complete, reasonCode] = expectedChecks[check.key];
+      return check.complete !== complete || check.reason_code !== reasonCode;
+    })
+  ) {
+    throw new ContractValidationError("guided intake checks contradict source fields");
+  }
+
+  const completedChecks = integer(source.completed_checks, "guided intake.completed_checks");
+  const totalChecks = integer(source.total_checks, "guided intake.total_checks", 1);
+  if (
+    totalChecks !== checks.length ||
+    completedChecks !== checks.filter((check) => check.complete).length
+  ) {
+    throw new ContractValidationError("guided intake summary does not match checks");
+  }
+
+  const ready = boolean(source.ready_for_research, "guided intake.ready_for_research");
+  const status = literal(
+    source.status,
+    ["BLOCKED_BY_CAMPAIGN_SETUP", "IN_PROGRESS", "READY_FOR_RESEARCH"] as const,
+    "guided intake.status",
+  );
+  if (ready !== (status === "READY_FOR_RESEARCH")) {
+    throw new ContractValidationError("guided intake status and boolean disagree");
+  }
+  const campaignSetupComplete = checks[0]?.complete === true;
+  if (
+    (campaignSetupComplete && status === "BLOCKED_BY_CAMPAIGN_SETUP") ||
+    (!campaignSetupComplete && status !== "BLOCKED_BY_CAMPAIGN_SETUP") ||
+    (ready && completedChecks !== totalChecks) ||
+    (!ready && completedChecks === totalChecks)
+  ) {
+    throw new ContractValidationError("guided intake status is inconsistent with checks");
+  }
+
+  const nextAction = literal(
+    source.next_action,
+    GUIDED_INTAKE_NEXT_ACTIONS,
+    "guided intake.next_action",
+  );
+  const firstIncomplete = checks.find((check) => !check.complete);
+  const expectedNextAction = ready
+    ? "BEGIN_RESEARCH"
+    : firstIncomplete
+      ? GUIDED_INTAKE_NEXT_ACTION_BY_CHECK[firstIncomplete.key]
+      : null;
+  if (expectedNextAction === null || nextAction !== expectedNextAction) {
+    throw new ContractValidationError("guided intake next action is inconsistent");
+  }
+
+  const researchActions = array(
+    source.research_first_actions,
+    "guided intake.research_first_actions",
+  ).map((action, index) =>
+    literal(
+      action,
+      GUIDED_INTAKE_RESEARCH_ACTIONS,
+      `guided intake.research_first_actions[${index}]`,
+    ),
+  );
+  if (!ready && researchActions.length > 0) {
+    throw new ContractValidationError("guided intake research actions require ready intake");
+  }
+  if (
+    ready &&
+    (researchActions.length !== GUIDED_INTAKE_RESEARCH_ACTIONS.length ||
+      researchActions.some((action, index) => action !== GUIDED_INTAKE_RESEARCH_ACTIONS[index]))
+  ) {
+    throw new ContractValidationError("guided intake research actions are not canonical");
+  }
+
+  const limitations = array(source.limitation_codes, "guided intake.limitation_codes").map(
+    (limitation, index) =>
+      literal(
+        limitation,
+        GUIDED_INTAKE_LIMITATIONS,
+        `guided intake.limitation_codes[${index}]`,
+      ),
+  );
+  if (
+    limitations.length !== GUIDED_INTAKE_LIMITATIONS.length ||
+    limitations.some((limitation, index) => limitation !== GUIDED_INTAKE_LIMITATIONS[index])
+  ) {
+    throw new ContractValidationError("guided intake mandatory limitations are missing");
+  }
+
+  return {
+    id: uuid(source.id, "guided intake.id"),
+    tenant_id: uuid(source.tenant_id, "guided intake.tenant_id"),
+    campaign_id: uuid(source.campaign_id, "guided intake.campaign_id"),
+    campaign_version: integer(source.campaign_version, "guided intake.campaign_version", 1),
+    campaign_status: literal(
+      source.campaign_status,
+      ["DRAFT", "ACTIVE"] as const,
+      "guided intake.campaign_status",
+    ),
+    campaign_name: campaignName,
+    jurisdiction,
+    stage,
+    active_workspace_count: activeWorkspaceCount,
+    readiness_scope: literal(
+      source.readiness_scope,
+      ["GUIDED_INTAKE_ONLY"] as const,
+      "guided intake.readiness_scope",
+    ),
+    status,
+    ready_for_research: ready,
+    office,
+    candidate_project: candidateProject,
+    current_team: currentTeam,
+    current_assets: currentAssets,
+    budget_status: budgetStatus,
+    known_unknowns: knownUnknowns,
+    evidence_requirements: evidenceRequirements,
+    completed_checks: completedChecks,
+    total_checks: totalChecks,
+    next_action: nextAction,
+    checks,
+    research_first_actions: researchActions,
+    limitation_codes: limitations,
+    version: integer(source.version, "guided intake.version", 1),
+    created_at: isoTimestamp(source.created_at, "guided intake.created_at"),
+    updated_at: isoTimestamp(source.updated_at, "guided intake.updated_at"),
+  };
+}
+
+export function parseGuidedIntakeReadEvidence(value: unknown): GuidedIntakeReadEvidence {
+  const source = record(value, "guided intake evidence");
+  exactKeys(source, ["intake", "audit_event_id"], "guided intake evidence");
+  return {
+    intake: parseGuidedIntakeProjection(source.intake),
+    audit_event_id: uuid(source.audit_event_id, "guided intake evidence.audit_event_id"),
   };
 }

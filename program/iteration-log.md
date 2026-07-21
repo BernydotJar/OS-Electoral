@@ -242,3 +242,16 @@
 - Opened draft PR `#90` against the CI-green frontend head.
 - CampaignOS CI `29857981975` and runtime visual review `29857981487` succeeded at the exact implementation head.
 - Recorded `C3-IAM-002` as `CI_GREEN`; production remains `BLOCKED` and no external effect occurred.
+
+## C3-ONBOARD-001 persisted guided campaign intake - 2026-07-21
+
+- Added revision `20260721_0005` and one tenant/campaign-owned guided-intake aggregate under forced RLS.
+- Added exact-authorized start/resume/read/update APIs with separate purposes, bounded normalization, optimistic concurrency, authority-bound replay, audit and internal no-effect outbox evidence.
+- Added deterministic eight-step progress, first-missing next action, seven research-first actions and mandatory no-strategy/no-approval/no-contact/no-effect limitations.
+- Added a server-rendered read-only ES/EN starting roadmap with exact current-campaign navigation, fail-closed upstream validation, responsive layouts and non-technical labels.
+- Critic RED/GREEN passes closed two contract defects: source fields are reconciled against exact check/reason-code evidence, and an intake grant for another campaign cannot enable current-campaign navigation.
+- Full locked gate: `425 passed`, `4 skipped`, coverage `91.58%`; Ruff, format, strict mypy across 40 source files, frontend lint/type/build/audit, program truth and campaign safety PASS.
+- Browser gate: ES/EN desktop, ES mobile, keyboard, reduced motion, no overflow, no external hosts, no console errors and zero axe WCAG 2.2 A/AA violations PASS.
+- Disposable PostgreSQL 15 UTF8 gate passed twice: `4 passed`, `5 deselected` per run, covering migration, forced RLS, constrained runtime roles, concurrency, replay and tenant isolation.
+- Actionlint, `pip-audit`, effective-worktree Gitleaks, 25-commit `origin/main..HEAD` Gitleaks and `git diff --check` PASS.
+- Scope remains `VERIFIED_POSTGRESQL_LOCAL_ONLY` until explicit branch push, exact remote SHA, stacked draft PR and exact-head CI are recorded. Production remains `BLOCKED`; external effects remain `NONE`.

@@ -4,7 +4,7 @@ Assessment date: `2026-07-21 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack `#84` through `#89`; frontend head `agent/c3-front-001-dynamic-shell@437b46930c68d6ed3a8233c139b0eaa03724b068`; active local identity worktree `agent/c3-iam-002-identity-lifecycle` based for review on that frontend head.
+Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack `#84` through `#90`; identity checkpoint `fecb1d347389eebd08d04be6d38a3f518787e4e4`; active local worktree `agent/c3-onboard-001-guided-intake` based on that checkpoint.
 
 ## Executive determination
 
@@ -32,12 +32,12 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 
 - `make verify`: PASS.
 - Ruff lint and format: PASS.
-- strict mypy: PASS across 36 source files.
-- Full locked suite: `381 passed`, `3 skipped`.
-- Enforced coverage: `91.34%` with `fail_under=90`.
-- Isolated PostgreSQL gate: `3 passed`, `5 deselected`, reproduced twice after database recreation.
-- PostgreSQL evidence covers Alembic downgrade/upgrade/check, revision `20260721_0004`, forced RLS, a `NOSUPERUSER`/`NOBYPASSRLS` runtime role, tenant isolation, invitation concurrency/replay, session digest persistence and support revocation/regrant.
-- Frontend regression: ESLint, strict TypeScript, 12 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
+- strict mypy: PASS across 40 source files.
+- Full locked suite: `425 passed`, `4 skipped`.
+- Enforced coverage: `91.58%` with `fail_under=90`.
+- Isolated PostgreSQL gate: `4 passed`, `5 deselected`, reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
+- PostgreSQL evidence covers Alembic downgrade/upgrade/check through revision `20260721_0005`, forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, campaign/identity/intake concurrency and replay.
+- Frontend regression: ESLint, strict TypeScript, 16 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
 - Frontend exact-head PR CI and automated browser/WCAG review: PASS.
 - Program truth: PASS with five open CRITICAL/HIGH findings and six retained historical failed runs.
 - Required eval inventory: `5 PASS`, `12 PARTIAL`, `16 NOT_RUN`; production remains blocked.
@@ -55,6 +55,8 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - Membership revocation disables current grants, roles and local sessions atomically.
 - Support access binds requester, target, approver, tenant/campaign/workspace, exact action/resource/purpose, reason, receipt and expiry. Separation of duty is enforced. Pre-existing membership and unrelated access are preserved.
 - Invitation, session and support expiry transitions are persisted and audited; active uniqueness slots are released only after terminal state.
+- Guided intake persists one tenant/campaign aggregate with exact-authorized start/resume/read/update, optimistic concurrency, authority-bound idempotency, audit and internal no-effect outbox evidence.
+- The dynamic shell now renders a read-only ES/EN campaign-starting roadmap and fails closed on malformed, contradictory or cross-campaign intake evidence.
 - Provider planning remains no-effect: a Cognito `AdminCreateUser` request can be described, but no SDK, email or external provider call is wired.
 - `RTK.md` and `web/` remain unchanged.
 
@@ -63,7 +65,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - No live OIDC/Cognito login, recovery, MFA, invitation email, provider token rotation or external provider revocation.
 - No trusted tenant portfolio selector or customer-facing identity-administration UI.
 - No RDS, dev, staging or production verification of identity lifecycle.
-- Guided intake, Candidate Workspace, Team Builder, campaign roadmap, durable approvals and broader product journeys remain absent or prototype-only.
+- Guided intake backend persistence and a read-only roadmap are verified locally/PostgreSQL; the authenticated editing journey, Candidate Workspace, Team Builder, campaign roadmap, durable approvals and broader product journeys remain absent or prototype-only.
 - Production object storage, attachment safety, external transport, production observability, rate controls and operational administration remain incomplete.
 - No Terraform baseline, verified AWS environment, backup/restore, load, rollback or disaster-recovery evidence.
 - Main is unprotected; rulesets and required checks are absent; Actions policy is permissive and vulnerability alerts are disabled.
@@ -78,6 +80,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Review stack | PRs `#84`–`#90`, correct bases and green exact-head checks | `CI_GREEN`; human review/merge pending |
 | Dynamic frontend | `437b469`, CI `29856835515`, visual `29856835522` | `CI_GREEN`; synthetic and not deployed |
 | Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice, PR `#90` CI `29857981975` | `CI_GREEN`; human review/merge and live provider pending |
+| Guided intake | revision `20260721_0005`, exact API, 425-test suite, PostgreSQL twice, 16 frontend tests and WCAG browser gate | `VERIFIED_POSTGRESQL_LOCAL_ONLY`; branch/PR/CI publication pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 12 PARTIAL / 16 NOT_RUN` |
 | Repository protection | authenticated API: no protection/rulesets; all Actions allowed; no SHA policy | production blocker confirmed |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
@@ -100,8 +103,8 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Begin `C3-ONBOARD-001`: persisted resumable guided intake starting from campaign creation/readiness, with no automatic strategy or external effect.
-2. Advance independent platform plan-only and operations evidence without AWS apply or production claims.
-3. Continue closing required evals and confirmed CI/supply-chain findings.
+1. Publish `C3-ONBOARD-001`, verify exact remote SHA, open its stacked draft PR and repair exact-head CI if needed.
+2. Start `C3-CANDIDATE-001` as a separate evidence-backed candidate workspace after the onboarding checkpoint.
+3. Advance independent platform plan-only, operations evidence and confirmed CI/supply-chain findings without AWS apply or production claims.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.

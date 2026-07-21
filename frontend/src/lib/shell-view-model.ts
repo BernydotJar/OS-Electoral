@@ -8,11 +8,23 @@ import type {
   CampaignProjection,
   CampaignReadinessEvidence,
   EffectiveMembership,
+  GuidedIntakeReadEvidence,
   TenantMeResponse,
 } from "@/lib/contracts";
-import { demoCampaign, demoReadiness, demoTenantIdentity } from "@/lib/demo-data";
+import {
+  demoCampaign,
+  demoGuidedIntake,
+  demoReadiness,
+  demoTenantIdentity,
+} from "@/lib/demo-data";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export type GuidedIntakeAvailability =
+  | "AVAILABLE"
+  | "NOT_STARTED"
+  | "NOT_AUTHORIZED"
+  | "DEPENDENCY_UNAVAILABLE";
 
 export type ShellViewModel =
   | Readonly<{ kind: "unauthenticated" }>
@@ -27,6 +39,8 @@ export type ShellViewModel =
       campaigns: readonly CampaignProjection[];
       readiness: CampaignReadinessEvidence | null;
       readinessUnavailable: boolean;
+      guidedIntake: GuidedIntakeReadEvidence | null;
+      guidedIntakeAvailability: GuidedIntakeAvailability;
     }>
   | Readonly<{
       kind: "unavailable";
@@ -65,6 +79,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       campaigns: [demoCampaign],
       readiness: demoReadiness,
       readinessUnavailable: false,
+      guidedIntake: demoGuidedIntake,
+      guidedIntakeAvailability: "AVAILABLE",
     };
   }
 
@@ -147,6 +163,45 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
         }
       }
     }
+    const hasGuidedIntakeGrant = tenantIdentity.application_memberships.some((membership) =>
+      membership.grants.some(
+        (grant) =>
+          grant.action === "read" &&
+          grant.resource_type === "guided_intake" &&
+          grant.resource_id === campaign.id &&
+          grant.campaign_id === campaign.id &&
+          grant.workspace_id === null &&
+          grant.purpose === "Review guided campaign intake",
+      ),
+    );
+    let guidedIntake: GuidedIntakeReadEvidence | null = null;
+    let guidedIntakeAvailability: GuidedIntakeAvailability = "NOT_AUTHORIZED";
+    if (hasGuidedIntakeGrant) {
+      try {
+        guidedIntake = await api.guidedIntake(tenantId, campaign.id);
+        if (
+          guidedIntake.intake.tenant_id !== tenantId ||
+          guidedIntake.intake.campaign_id !== campaign.id
+        ) {
+          return {
+            kind: "unavailable",
+            code: "GUIDED_INTAKE_SCOPE_MISMATCH",
+            correlationId: null,
+            configuration: false,
+          };
+        }
+        guidedIntakeAvailability = "AVAILABLE";
+      } catch (error) {
+        if (error instanceof CampaignOsApiError && error.status === 404) {
+          guidedIntakeAvailability = "NOT_STARTED";
+        } else if (error instanceof CampaignOsApiError && error.status === 503) {
+          guidedIntakeAvailability = "DEPENDENCY_UNAVAILABLE";
+        } else {
+          throw error;
+        }
+      }
+    }
+
     return {
       kind: "authorized",
       demo: false,
@@ -156,6 +211,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       campaigns: page.items,
       readiness,
       readinessUnavailable,
+      guidedIntake,
+      guidedIntakeAvailability,
     };
   } catch (error) {
     if (error instanceof CampaignOsApiError) {

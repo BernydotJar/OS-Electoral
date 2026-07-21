@@ -462,6 +462,42 @@ class SupportAccessRequest(Base, TimestampMixin):
     version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
 
+class GuidedIntake(Base, TimestampMixin):
+    __tablename__ = "guided_intakes"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_guided_intakes_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint("tenant_id", "campaign_id", name="uq_guided_intakes_tenant_campaign"),
+        UniqueConstraint("tenant_id", "id", name="uq_guided_intakes_tenant_id_id"),
+        CheckConstraint(
+            "status IN ('IN_PROGRESS', 'READY_FOR_RESEARCH')",
+            name="ck_guided_intakes_status",
+        ),
+        CheckConstraint(
+            "budget_status IN ('NOT_ASSESSED', 'NO_DOCUMENT', 'ROUGH_RANGE', 'DOCUMENTED')",
+            name="ck_guided_intakes_budget_status",
+        ),
+        Index("ix_guided_intakes_tenant_status", "tenant_id", "status"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="IN_PROGRESS")
+    office: Mapped[str | None] = mapped_column(String(255))
+    candidate_project: Mapped[str | None] = mapped_column(Text)
+    current_team: Mapped[list[str] | None] = mapped_column(JSON_DOCUMENT)
+    current_assets: Mapped[list[str] | None] = mapped_column(JSON_DOCUMENT)
+    budget_status: Mapped[str] = mapped_column(String(32), nullable=False, default="NOT_ASSESSED")
+    known_unknowns: Mapped[list[str] | None] = mapped_column(JSON_DOCUMENT)
+    evidence_requirements: Mapped[list[str] | None] = mapped_column(JSON_DOCUMENT)
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
 class AuditEvent(Base):
     __tablename__ = "audit_events"
     __table_args__ = (

@@ -94,6 +94,95 @@ export type CampaignReadinessEvidence = Readonly<{
   audit_event_id: UUID;
 }>;
 
+export type GuidedIntakeBudgetStatus =
+  | "NOT_ASSESSED"
+  | "NO_DOCUMENT"
+  | "ROUGH_RANGE"
+  | "DOCUMENTED";
+
+export type GuidedIntakeStatus =
+  | "BLOCKED_BY_CAMPAIGN_SETUP"
+  | "IN_PROGRESS"
+  | "READY_FOR_RESEARCH";
+
+export type GuidedIntakeCheckKey =
+  | "campaign_operational_setup"
+  | "office"
+  | "candidate_project"
+  | "current_team"
+  | "current_assets"
+  | "budget_status"
+  | "known_unknowns"
+  | "evidence_requirements";
+
+export type GuidedIntakeNextAction =
+  | "COMPLETE_CAMPAIGN_SETUP"
+  | "DEFINE_TARGET_OFFICE"
+  | "DESCRIBE_CANDIDATE_PROJECT"
+  | "ASSESS_CURRENT_TEAM"
+  | "ASSESS_CURRENT_ASSETS"
+  | "ASSESS_BUDGET_EVIDENCE"
+  | "RECORD_KNOWN_UNKNOWNS"
+  | "DEFINE_EVIDENCE_REQUIREMENTS"
+  | "BEGIN_RESEARCH";
+
+export type GuidedIntakeResearchAction =
+  | "VERIFY_OFFICE_AND_JURISDICTION_EVIDENCE"
+  | "VALIDATE_CANDIDATE_PROJECT_EVIDENCE"
+  | "ASSESS_TEAM_CAPACITY_GAPS"
+  | "INVENTORY_ASSET_PROVENANCE"
+  | "DOCUMENT_BUDGET_ASSUMPTIONS"
+  | "RESEARCH_KNOWN_UNKNOWNS"
+  | "COLLECT_REQUIRED_EVIDENCE";
+
+export type GuidedIntakeLimitation =
+  | "NOT_A_STRATEGY"
+  | "NOT_A_HUMAN_APPROVAL"
+  | "NO_CITIZEN_CONTACT_OR_PROFILING"
+  | "NO_EXTERNAL_EFFECTS";
+
+export type GuidedIntakeCheck = Readonly<{
+  key: GuidedIntakeCheckKey;
+  complete: boolean;
+  reason_code: string;
+}>;
+
+export type GuidedIntakeProjection = Readonly<{
+  id: UUID;
+  tenant_id: UUID;
+  campaign_id: UUID;
+  campaign_version: number;
+  campaign_status: "DRAFT" | "ACTIVE";
+  campaign_name: string;
+  jurisdiction: string;
+  stage: string;
+  active_workspace_count: number;
+  readiness_scope: "GUIDED_INTAKE_ONLY";
+  status: GuidedIntakeStatus;
+  ready_for_research: boolean;
+  office: string | null;
+  candidate_project: string | null;
+  current_team: readonly string[] | null;
+  current_assets: readonly string[] | null;
+  budget_status: GuidedIntakeBudgetStatus;
+  known_unknowns: readonly string[] | null;
+  evidence_requirements: readonly string[] | null;
+  completed_checks: number;
+  total_checks: number;
+  next_action: GuidedIntakeNextAction;
+  checks: readonly GuidedIntakeCheck[];
+  research_first_actions: readonly GuidedIntakeResearchAction[];
+  limitation_codes: readonly GuidedIntakeLimitation[];
+  version: number;
+  created_at: string;
+  updated_at: string;
+}>;
+
+export type GuidedIntakeReadEvidence = Readonly<{
+  intake: GuidedIntakeProjection;
+  audit_event_id: UUID;
+}>;
+
 export type ProblemDetail = Readonly<{
   type: string;
   title: string;
