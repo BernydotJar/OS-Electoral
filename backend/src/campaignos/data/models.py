@@ -10,7 +10,6 @@ from sqlalchemy import (
     JSON,
     Boolean,
     CheckConstraint,
-    Date,
     DateTime,
     ForeignKey,
     ForeignKeyConstraint,
@@ -562,87 +561,6 @@ class CandidateSectionApproval(Base):
     approval_receipt_id: Mapped[str] = mapped_column(String(255), nullable=False)
     reason: Mapped[str] = mapped_column(Text, nullable=False)
     approved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
-
-
-class CampaignRoadmap(Base, TimestampMixin):
-    __tablename__ = "campaign_roadmaps"
-    __table_args__ = (
-        ForeignKeyConstraint(
-            ["tenant_id", "campaign_id"],
-            ["campaigns.tenant_id", "campaigns.id"],
-            name="fk_campaign_roadmaps_tenant_campaign",
-            ondelete="CASCADE",
-        ),
-        UniqueConstraint("tenant_id", "campaign_id", name="uq_campaign_roadmaps_tenant_campaign"),
-        UniqueConstraint(
-            "tenant_id",
-            "campaign_id",
-            "id",
-            name="uq_campaign_roadmaps_scope_id",
-        ),
-        Index("ix_campaign_roadmaps_tenant_updated", "tenant_id", "updated_at"),
-    )
-
-    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
-    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
-    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
-    phases: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
-    workstreams: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
-    milestones: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
-    tasks: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
-    blockers: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
-    decisions: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
-    follow_up_items: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
-    learning_notes: Mapped[list[dict[str, Any]] | None] = mapped_column(JSON_DOCUMENT)
-    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
-
-
-class WarRoomSnapshot(Base, TimestampMixin):
-    __tablename__ = "war_room_snapshots"
-    __table_args__ = (
-        ForeignKeyConstraint(
-            ["tenant_id", "campaign_id", "roadmap_id"],
-            [
-                "campaign_roadmaps.tenant_id",
-                "campaign_roadmaps.campaign_id",
-                "campaign_roadmaps.id",
-            ],
-            name="fk_war_room_snapshots_roadmap_scope",
-            ondelete="CASCADE",
-        ),
-        UniqueConstraint(
-            "tenant_id",
-            "campaign_id",
-            "snapshot_date",
-            name="uq_war_room_snapshots_tenant_campaign_date",
-        ),
-        UniqueConstraint(
-            "tenant_id",
-            "campaign_id",
-            "id",
-            name="uq_war_room_snapshots_scope_id",
-        ),
-        Index(
-            "ix_war_room_snapshots_tenant_campaign_date",
-            "tenant_id",
-            "campaign_id",
-            "snapshot_date",
-        ),
-    )
-
-    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
-    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
-    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
-    roadmap_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
-    roadmap_version: Mapped[int] = mapped_column(Integer, nullable=False)
-    snapshot_date: Mapped[date] = mapped_column(Date, nullable=False)
-    priorities: Mapped[list[str]] = mapped_column(JSON_DOCUMENT, nullable=False)
-    ready_task_ids: Mapped[list[str]] = mapped_column(JSON_DOCUMENT, nullable=False)
-    blocked_task_ids: Mapped[list[str]] = mapped_column(JSON_DOCUMENT, nullable=False)
-    required_decision_ids: Mapped[list[str]] = mapped_column(JSON_DOCUMENT, nullable=False)
-    follow_up_notes: Mapped[list[str]] = mapped_column(JSON_DOCUMENT, nullable=False)
-    learning_note_ids: Mapped[list[str]] = mapped_column(JSON_DOCUMENT, nullable=False)
 
 
 class TeamWorkspace(Base, TimestampMixin):
