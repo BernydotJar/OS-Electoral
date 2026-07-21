@@ -61,6 +61,7 @@ def install_exception_handlers(app: FastAPI) -> None:
             401: ("Authentication required", "AUTHENTICATION_REQUIRED"),
             403: ("Authorization denied", "AUTHORIZATION_DENIED"),
             404: ("Resource not found", "RESOURCE_NOT_FOUND"),
+            409: ("Request conflict", "IDEMPOTENCY_CONFLICT"),
             412: ("Precondition failed", "VERSION_CONFLICT"),
             428: ("Precondition required", "VERSION_REQUIRED"),
             503: ("Service unavailable", "AUTHORIZATION_UNAVAILABLE"),
