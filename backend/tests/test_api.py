@@ -337,3 +337,72 @@ def test_openapi_declares_bearer_auth_for_tenant_me() -> None:
 
     security = document["paths"]["/api/v1/tenants/{tenant_id}/me"]["get"]["security"]
     assert security == [{"OIDC bearer token": []}]
+
+
+class FakeCampaignDirectory:
+    def __init__(self, failure: Exception | None = None) -> None:
+        self.failure = failure
+
+    def get(self, tenant_id: UUID, campaign_id: UUID):
+        from campaignos.campaigns import CampaignProjection
+
+        if self.failure is not None:
+            raise self.failure
+        return CampaignProjection(
+            id=campaign_id,
+            tenant_id=tenant_id,
+            slug="antigua-2027",
+            name="Antigua 2027",
+            jurisdiction="Antigua Guatemala",
+            stage="PRECAMPAIGN",
+            status="ACTIVE",
+            version=1,
+        )
+
+
+def test_campaign_read_requires_exact_server_owned_grant() -> None:
+    with TestClient(
+        create_app(
+            settings(),
+            token_verifier=FakeVerifier(),
+            membership_directory=FakeMembershipDirectory(),
+            campaign_directory=FakeCampaignDirectory(),
+        )
+    ) as client:
+        response = client.get(
+            f"/api/v1/tenants/{TENANT_ID}/campaigns/{CAMPAIGN_ID}",
+            headers={"Authorization": "Bearer valid-token"},
+        )
+        denied = client.get(
+            f"/api/v1/tenants/{TENANT_ID}/campaigns/{UUID(int=9)}",
+            headers={"Authorization": "Bearer valid-token"},
+        )
+
+    assert response.status_code == 200
+    assert response.json()["id"] == str(CAMPAIGN_ID)
+    assert denied.status_code == 403
+    assert denied.json()["code"] == "AUTHORIZATION_DENIED"
+
+
+def test_campaign_read_sanitizes_missing_and_unavailable_data() -> None:
+    from campaignos.campaigns import CampaignDirectoryUnavailable, CampaignNotFound
+
+    for failure, expected_status, expected_code in (
+        (CampaignNotFound("private"), 404, "RESOURCE_NOT_FOUND"),
+        (CampaignDirectoryUnavailable("private"), 503, "AUTHORIZATION_UNAVAILABLE"),
+    ):
+        with TestClient(
+            create_app(
+                settings(),
+                token_verifier=FakeVerifier(),
+                membership_directory=FakeMembershipDirectory(),
+                campaign_directory=FakeCampaignDirectory(failure),
+            )
+        ) as client:
+            response = client.get(
+                f"/api/v1/tenants/{TENANT_ID}/campaigns/{CAMPAIGN_ID}",
+                headers={"Authorization": "Bearer valid-token"},
+            )
+        assert response.status_code == expected_status
+        assert response.json()["code"] == expected_code
+        assert "private" not in response.text
