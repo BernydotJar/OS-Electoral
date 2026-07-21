@@ -130,3 +130,27 @@
 - Focused write/read/API suite: `30 passed`.
 - Ruff and strict mypy passed before the full gate.
 - `C3-API-001` remains `IN_PROGRESS`: idempotency keys, worker claiming/retry/dead-letter behavior and broader domain writes remain incomplete.
+
+
+## C3 API durable idempotency boundary — 2026-07-21
+
+- `branch`: `agent/c3-api-002-idempotency`
+- `base`: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`
+- `production_status`: `BLOCKED`
+- `external_effects`: none; replay returns stored internal evidence and outbox delivery remains disabled.
+
+### Implementation evidence
+
+- Added mandatory `Idempotency-Key` handling after exact authorization succeeds, preserving deny-first behavior.
+- Added a tenant-scoped durable idempotency record with a unique operation/key boundary, request digest and committed response evidence.
+- Replays with the same key and request return the original campaign/audit/outbox identifiers without a second mutation.
+- Reuse of a key with a different request fails closed with structured HTTP 409 and no additional campaign, audit or outbox write.
+- PostgreSQL equal-key requests are serialized with a transaction-scoped advisory lock; RLS is forced on the new table.
+
+### Verification evidence
+
+- Focused API, writer and database suite: `15 passed`, `1 skipped` before the full gate.
+- Full locked verification: `233 passed`, `1 skipped`; Ruff, formatting, strict mypy, program truth and safety scan all passed.
+- PostgreSQL Compose E2E: PASS with migration upgrade/check, forced RLS, constrained API role, S3Mock and Mailpit.
+- Strict mypy: PASS across 23 backend source files.
+- `C3-API-001` remains `IN_PROGRESS`: broader domain writes and a background worker runtime remain incomplete.
