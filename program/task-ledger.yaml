@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-21",
+  "updated_at": "2026-07-22",
   "branch": "agent/c3-ops-001-roadmap-war-room",
   "entries": [
     {
@@ -513,6 +513,45 @@
       "draft_pr": 105,
       "ci_run_id": 29943367172,
       "visual_run_id": 29943367823
+    },
+    {
+      "task_id": "C3-FRONT-002",
+      "owner": "WS-06",
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "backend/src/campaignos/config.py",
+        "backend/src/campaignos/identity/oidc.py",
+        "backend/tests/test_config.py",
+        "backend/tests/test_oidc.py",
+        "backend/tests/test_local_operator_seed.py",
+        "scripts/dev/seed_local_operator.py",
+        "scripts/dev/functional_frontend.sh",
+        "frontend/src/components/functional-onboarding.tsx",
+        "frontend/src/lib/server-context.ts",
+        "frontend/src/lib/journey-capabilities.ts",
+        "frontend/src/lib/guided-intake-form.ts",
+        "frontend/src/lib/api-client.ts",
+        "frontend/src/app/api/ui/campaign-context/route.ts",
+        "frontend/src/app/api/ui/guided-intake/start/route.ts",
+        "frontend/src/app/api/ui/guided-intake/update/route.ts",
+        "frontend/src/proxy.test.ts",
+        "frontend/src/lib/server-context.test.ts",
+        "frontend/src/lib/journey-capabilities.test.ts",
+        "frontend/src/lib/guided-intake-form.test.ts",
+        "scripts/frontend/e2e_functional_onboarding.sh",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/product/functional-onboarding.md",
+        "docs/testing/c3-front-002-evidence.md",
+        "program/iterations/c3-front-002.md",
+        "program/validations/c3-front-002.json"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head draft PR and CI functional Compose E2E are pending",
+        "Development identity is not live OIDC authentication",
+        "Independent human user acceptance and deployed dev/staging environments remain pending",
+        "Campaign creation and post-create access lifecycle remain intentionally absent"
+      ]
     },
     {
       "task_id": "C3-OBS-001",

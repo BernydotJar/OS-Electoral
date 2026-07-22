@@ -55,3 +55,10 @@ Production remains `BLOCKED`. Risks are not closed by local tests, green draft c
 - **Status:** OPEN / plan-only baseline tested locally; production-blocking through `FND-PLATFORM-001`.
 - **Evidence:** exact Terraform/provider pins, two mocked plan suites, six adversarial policy tests and CI integration pass without AWS credentials or API calls.
 - **Mitigation:** require an approved non-production account, least-privilege OIDC role, reviewed cost envelope, remote-state bootstrap, live plan, controlled apply, smoke/security tests, backup restore and operational acceptance before any environment or production claim.
+
+## C3-FRONT-002 residual risk — development identity and incomplete product journeys
+
+- **Status:** OPEN / non-blocking for local functional development; production-blocking through existing identity, environment and human-acceptance gates.
+- **Evidence:** the development verifier is environment-gated, token-safe and grant-free; the live intake journey passes PostgreSQL/API/browser checks.
+- **Risk:** fixed local credentials would be unsafe if copied into shared configuration, and only one mutation journey is complete.
+- **Mitigation:** shared/production validation rejects the verifier; secrets remain server-only; CI scans for leakage; live OIDC, broader journeys, rate limiting, observability and independent user acceptance remain required.

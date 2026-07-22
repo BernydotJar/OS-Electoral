@@ -66,7 +66,12 @@ from campaignos.identity.lifecycle import (
     SqlAlchemyIdentityLifecycle,
     UnavailableIdentityLifecycle,
 )
-from campaignos.identity.oidc import OidcTokenVerifier, TokenVerifier, UnavailableTokenVerifier
+from campaignos.identity.oidc import (
+    DevelopmentTokenVerifier,
+    OidcTokenVerifier,
+    TokenVerifier,
+    UnavailableTokenVerifier,
+)
 from campaignos.onboarding import (
     GuidedIntakeService,
     SqlAlchemyGuidedIntakeService,
@@ -118,6 +123,8 @@ def create_app(
     verifier = token_verifier
     if verifier is None and runtime_settings.oidc_configured:
         verifier = OidcTokenVerifier(runtime_settings)
+    if verifier is None and runtime_settings.development_identity_configured:
+        verifier = DevelopmentTokenVerifier(runtime_settings)
     verifier = verifier or UnavailableTokenVerifier()
     database_runtime = database
     if database_runtime is None and runtime_settings.database_url:

@@ -7,3 +7,6 @@
 !backend/src/**
 !backend/migrations/
 !backend/migrations/**
+**/._*
+**/.DS_Store
+**/*.egg-info/

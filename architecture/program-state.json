@@ -2,8 +2,8 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-sec-001-security-privacy-baseline",
+  "updated_at": "2026-07-22",
+  "source_branch": "agent/c3-front-002-functional-onboarding",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -748,8 +748,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "DYNAMIC_SHELL_DRAFT_PR_CI_GREEN",
-      "next_increment": "C3-ONBOARD-001"
+      "status": "FUNCTIONAL_ONBOARDING_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-FRONT-002"
     },
     {
       "id": "WS-07",
@@ -968,6 +968,16 @@
         "C3-INFRA-001"
       ],
       "workstream": "WS-13"
+    },
+    {
+      "id": "C3-FRONT-002",
+      "status": "VERIFIED_POSTGRESQL",
+      "depends_on": [
+        "C3-FRONT-001",
+        "C3-ONBOARD-001",
+        "C3-SEC-001"
+      ],
+      "workstream": "WS-06"
     },
     {
       "id": "C3-OBS-001",
@@ -1227,8 +1237,8 @@
         "state": "OPEN_DRAFT",
         "base": "agent/c3-infra-001-plan-only-baseline",
         "head": "agent/c3-sec-001-security-privacy-baseline",
-        "head_sha": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
-        "campaignos_ci_run_id": 29943367172,
+        "head_sha": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
+        "campaignos_ci_run_id": 29943743735,
         "conclusion": "SUCCESS"
       }
     ],
@@ -1246,14 +1256,10 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-SEC-001",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-sec-001-security-privacy-baseline",
-      "base": "agent/c3-infra-001-plan-only-baseline@c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-      "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
-      "draft_pr": 105,
-      "ci_run_id": 29943367172,
-      "visual_run_id": 29943367823,
+      "id": "C3-FRONT-002",
+      "state": "VERIFIED_POSTGRESQL",
+      "branch": "agent/c3-front-002-functional-onboarding",
+      "base": "agent/c3-sec-001-security-privacy-baseline@e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
       "production_status": "BLOCKED",
       "external_effects": "NONE"
     },
@@ -1263,18 +1269,15 @@
       "base": "agent/c3-infra-001-plan-only-baseline",
       "base_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
       "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
-      "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+      "receipt_commit": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
+      "head_commit": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
       "draft_pr": 105,
-      "ci_run_id": 29943367172,
-      "visual_run_id": 29943367823,
-      "postgresql_job_id": 89002561460,
-      "e2e_job_id": 89002561484,
-      "frontend_job_id": 89002561435,
-      "supply_chain_job_id": 89002561411,
+      "ci_run_id": 29943743735,
+      "visual_run_id": 29943743794,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
       "external_effects": "NONE",
-      "next_increment": "C3-OBS-001"
+      "next_increment": "C3-FRONT-002"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",

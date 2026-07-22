@@ -296,3 +296,21 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** Version the target AWS architecture as exact-pinned Terraform modules, but allow automated execution only through backend-disabled initialization, validation, mocked plans and deterministic policy checks.
 - **Evidence:** `.terraform-version`, provider lockfiles, bootstrap/platform mock tests, `scripts/infra/verify_terraform_policy.py` and `docs/testing/c3-infra-001-evidence.md`.
 - **Consequence:** No AWS credential, account, remote state or billable resource is required. `apply`, destructive/state commands, public data resources, mutable images/providers, ECS Exec and unsafe task settings fail closed. Any live plan/apply remains a separate explicit human gate.
+
+## 2026-07-22 — Product navigation exposes implemented journeys, not roadmap labels
+
+- **Decision:** Omit unavailable modules such as Administration instead of rendering inert labels. Use compact responsive navigation for implemented destinations only.
+- **Evidence:** user review, navigation tests, desktop/mobile browser reviews and the functional onboarding E2E.
+- **Consequence:** roadmap completeness remains in program truth. A module returns only when a real workflow and authorization boundary exist.
+
+## 2026-07-22 — Development identity enables local testing but never authority
+
+- **Decision:** Permit a constant-time local verifier only in `development`, mutually exclusive with OIDC. Persist memberships and exact grants in PostgreSQL and re-authorize every API action.
+- **Evidence:** configuration/OIDC/API tests, five-grant seed, RLS runtime, token-leak assertions and functional E2E.
+- **Consequence:** local testing is no longer a read-only mock, while shared/production environments still require real identity. Role labels remain non-authoritative.
+
+## 2026-07-22 — Defer campaign creation until post-create access is explicit
+
+- **Decision:** Do not expose campaign creation merely because the backend endpoint exists. A separate lifecycle must define who receives or requests access to the new campaign.
+- **Evidence:** campaign creation does not automatically create membership or an exact campaign grant.
+- **Consequence:** the first functional journey selects an existing authorized campaign and edits guided intake without inferring authority from creator identity.

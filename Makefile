@@ -7,7 +7,7 @@ COMPOSE = docker compose --env-file $(ENV_FILE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify
+.PHONY: help bootstrap dev functional-dev functional-down dev-seed test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-functional-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify
 
 help: ## Show the available developer commands.
 	@awk 'BEGIN {FS = ":.*## "; printf "CampaignOS developer commands:\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -20,6 +20,15 @@ bootstrap: compose-config ## Install locked Python dependencies and build/pull t
 
 dev: compose-config ## Build and run the local stack with API hot reload.
 	$(COMPOSE) up --build --remove-orphans
+
+functional-dev: frontend-install ## Run the API-backed local onboarding journey.
+	./scripts/dev/functional_frontend.sh
+
+functional-down: ## Stop the local functional stack and preserve its named volumes.
+	docker compose --env-file .env.functional.example down --remove-orphans
+
+dev-seed: ## Seed the bounded localhost operator and exact guided-intake grants.
+	$(UV) run --locked python scripts/dev/seed_local_operator.py --database-url "$${CAMPAIGNOS_ADMIN_DATABASE_URL:-postgresql+psycopg://campaignos_admin:campaignos_admin_dev_only@127.0.0.1:5432/campaignos}"
 
 test: ## Run the complete locked pytest suite with the enforced coverage floor.
 	$(UV) run --locked pytest -W error --cov=campaignos --cov-report=term-missing --cov-fail-under=90
@@ -47,6 +56,9 @@ frontend-verify: frontend-install ## Lint, type-check, test, build and audit the
 frontend-e2e: ## Review the production frontend build in Chromium.
 	./scripts/frontend/e2e_dynamic_shell.sh
 
+frontend-functional-e2e: ## Exercise the real PostgreSQL/API-backed onboarding journey.
+	./scripts/frontend/e2e_functional_onboarding.sh
+
 frontend-image-verify: ## Build and smoke-test the frontend image with daemonless Buildah.
 	./scripts/frontend/verify_frontend_image_buildah.sh
 
@@ -55,22 +67,22 @@ secret-scan-worktree: ## Scan tracked and non-ignored worktree files for secrets
 
 supply-chain-verify: ## Enforce pinned CI policy and generate deterministic evidence in a temporary directory.
 	@tmp_dir=$$(mktemp -d); trap 'rm -rf "$$tmp_dir"' EXIT; \
-		python3 scripts/ci/verify_ci_policy.py --report "$$tmp_dir/ci-policy-report.json"; \
-		python3 scripts/ci/generate_supply_chain_evidence.py --output-dir "$$tmp_dir"; \
+		$(UV) run --locked python scripts/ci/verify_ci_policy.py --report "$$tmp_dir/ci-policy-report.json"; \
+		$(UV) run --locked python scripts/ci/generate_supply_chain_evidence.py --output-dir "$$tmp_dir"; \
 		test -s "$$tmp_dir/cyclonedx-sbom.json"; \
 		test -s "$$tmp_dir/provenance.intoto.json"; \
 		test -s "$$tmp_dir/SHA256SUMS"
 
 supply-chain-evidence: ## Generate reviewable unsigned SBOM and provenance artifacts.
 	rm -rf artifacts/supply-chain
-	python3 scripts/ci/verify_ci_policy.py --report artifacts/supply-chain/ci-policy-report.json
-	python3 scripts/ci/generate_supply_chain_evidence.py --output-dir artifacts/supply-chain
+	$(UV) run --locked python scripts/ci/verify_ci_policy.py --report artifacts/supply-chain/ci-policy-report.json
+	$(UV) run --locked python scripts/ci/generate_supply_chain_evidence.py --output-dir artifacts/supply-chain
 
 github-security-verify: ## Compare live GitHub controls with the versioned repository policy.
-	python3 scripts/ci/verify_github_security_settings.py --report artifacts/supply-chain/github-security-report.json
+	$(UV) run --locked python scripts/ci/verify_github_security_settings.py --report artifacts/supply-chain/github-security-report.json
 
 security-verify: ## Validate data policy and append-only security declarations.
-	python3 scripts/security/verify_security_policy.py
+	$(UV) run --locked python scripts/security/verify_security_policy.py
 
 terraform-verify: ## Validate the exact plan-only Terraform baseline without AWS credentials or remote state.
 	@command -v $(TERRAFORM) >/dev/null 2>&1 || { echo "Terraform is required" >&2; exit 1; }
@@ -82,7 +94,7 @@ terraform-verify: ## Validate the exact plan-only Terraform baseline without AWS
 	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/stacks/platform init -backend=false -lockfile=readonly -input=false
 	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/stacks/platform validate
 	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/stacks/platform test -no-color
-	python3 scripts/infra/verify_terraform_policy.py
+	$(UV) run --locked python scripts/infra/verify_terraform_policy.py
 
 migrate: ## Upgrade an explicitly configured database to the reviewed Alembic head.
 	@test -n "$(CAMPAIGNOS_DATABASE_URL)" || { echo "CAMPAIGNOS_DATABASE_URL is required" >&2; exit 1; }

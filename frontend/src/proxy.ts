@@ -10,6 +10,9 @@ function preferredLocale(request: NextRequest): "es" | "en" {
 
 export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
   if (pathname === "/") {
     return NextResponse.redirect(new URL(`/${preferredLocale(request)}`, request.url));
   }

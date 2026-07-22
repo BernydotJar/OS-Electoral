@@ -12,7 +12,12 @@ from campaignos.identity.authorization import (
     UnavailableMembershipDirectory,
 )
 from campaignos.identity.models import AuthenticatedPrincipal
-from campaignos.identity.oidc import AuthenticationError, OidcTokenVerifier, TokenVerifier
+from campaignos.identity.oidc import (
+    AuthenticationError,
+    DevelopmentTokenVerifier,
+    OidcTokenVerifier,
+    TokenVerifier,
+)
 
 __all__ = [
     "AuthenticatedPrincipal",
@@ -20,6 +25,7 @@ __all__ = [
     "AuthorizationDataError",
     "AuthorizationDirectoryUnavailable",
     "EffectiveMembership",
+    "DevelopmentTokenVerifier",
     "EffectivePermissionGrant",
     "MembershipDirectory",
     "OidcTokenVerifier",

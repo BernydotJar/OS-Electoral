@@ -423,3 +423,13 @@
 - Added PostgreSQL append-only role denial and executable data policy controls.
 - Passed 652 tests, PostgreSQL twice, browser E2E twice and exact-head CI `29943367172`/visual `29943367823` on PR `#105`.
 - Kept production `BLOCKED`, live processors disabled and external effects `NONE`; selected `C3-OBS-001` next.
+
+## C3-FRONT-002 functional onboarding checkpoint — 2026-07-22
+
+- Replaced inert/oversized navigation with compact responsive links limited to implemented destinations; removed Administration from the shell.
+- Added a development-only identity adapter, exact-grant local seed and one-command `make functional-dev` workflow.
+- Added server-side campaign selection and guided-intake start/update boundaries with same-origin, idempotency and optimistic-version enforcement.
+- Closed defects found by the real journey: locale proxy interception of POST routes, loopback-origin mismatch, RLS seed scope and mobile grid overflow.
+- Passed the live PostgreSQL/FastAPI/Next/Chromium start-update-reload journey in ES/EN and mobile with zero axe violations and no browser token/storage leakage.
+- Passed 658 full tests, 10 skips, 90.92% coverage, 60 frontend tests, PostgreSQL twice, scanners, dependency audits, Terraform mocks and non-root image verification.
+- Recorded `VERIFIED_POSTGRESQL`; exact-head draft PR/CI remain pending. Production remains `BLOCKED`; external effects remain `NONE`.

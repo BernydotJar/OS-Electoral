@@ -30,6 +30,8 @@ __pycache__/
 # Local browser-review evidence (CI publishes its own retained artifact)
 artifacts/campaignos-runtime/
 artifacts/c3-front-001/
+artifacts/c3-front-002-local/
+artifacts/c3-front-002/
 
 # Local Terraform runtime and state; lock files remain versioned.
 **/.terraform/
@@ -39,3 +41,7 @@ artifacts/c3-front-001/
 crash.log
 crash.*.log
 *.tfplan
+
+._*
+
+.DS_Store

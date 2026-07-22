@@ -38,3 +38,10 @@ The CI definition covers locked quality/tests, PostgreSQL/RLS, actionlint, CodeQ
 - Require the GitHub OIDC attestation job to succeed for the exact SBOM/provenance subjects before claiming a signing gate.
 - Live repository controls must match `scripts/ci/verify_github_security_settings.py`; drift in protection, reviews, checks, allowed Actions, SHA pinning or vulnerability alerts is a release blocker.
 - Protected-main success is not deployment approval. AWS environments and production promotion remain separate explicit-human gates.
+
+
+## Development identity boundary
+
+A local development verifier may be used only when `CAMPAIGNOS_ENVIRONMENT=development`. It is mutually exclusive with OIDC, requires a token of at least 24 characters, compares bearer material in constant time and stores only a digest-derived session identifier. It proves identity only: memberships and exact grants remain PostgreSQL-owned and are re-evaluated on every API call.
+
+The versioned functional environment is a localhost fixture. Shared and production environments must reject it. The token must never enter HTML, client JavaScript, browser storage, logs, artifacts or a deployable secret bundle.

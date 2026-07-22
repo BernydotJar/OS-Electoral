@@ -1,0 +1,57 @@
+{
+  "increment": "C3-FRONT-002",
+  "verified_at": "2026-07-22",
+  "branch": "agent/c3-front-002-functional-onboarding",
+  "base": "agent/c3-sec-001-security-privacy-baseline@e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
+  "status": "VERIFIED_POSTGRESQL",
+  "production_status": "BLOCKED",
+  "external_effects": "NONE",
+  "results": {
+    "full_repository": {
+      "pytest_passed": 658,
+      "pytest_skipped": 10,
+      "coverage_percent": 90.92,
+      "coverage_floor": 90,
+      "mypy_source_files": 63,
+      "ruff": "PASS",
+      "format": "PASS_130_FILES"
+    },
+    "frontend": {
+      "vitest": 60,
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "vulnerabilities": 0
+    },
+    "postgresql": {
+      "result": "PASS",
+      "selected_slices": 10,
+      "consecutive_runs": 2,
+      "migration_head": "20260721_0011"
+    },
+    "functional_e2e": {
+      "result": "PASS",
+      "journey": "CAMPAIGN_SELECT_START_UPDATE_RELOAD_GUIDED_INTAKE",
+      "persistence": "PASS",
+      "desktop_spanish": "PASS",
+      "desktop_english": "PASS",
+      "mobile_spanish": "PASS",
+      "axe_violations": 0,
+      "horizontal_overflow": 0,
+      "browser_storage": "EMPTY",
+      "unexpected_outbound_hosts": 0
+    },
+    "demo_e2e": "PASS_READ_ONLY_NO_MUTATION_CONTROLS",
+    "frontend_image": "PASS_UID_10001",
+    "security_scanners": "PASS_ZERO_FINDINGS",
+    "terraform": "PASS_PLAN_ONLY_NO_APPLY",
+    "program_truth": "PASS_PRODUCTION_BLOCKED_2_OPEN_CRITICAL_HIGH_6_FAILED_RUNS"
+  },
+  "limitations": [
+    "Development identity is a localhost-only verifier and not live OIDC authentication",
+    "Campaign creation and post-create access lifecycle remain intentionally absent",
+    "No independent human user acceptance, dev/staging deployment, rate limiting or production observability",
+    "Compose functional E2E awaits exact-head CI because the persistent sandbox daemon cannot register a nested image layer"
+  ],
+  "remote_state": "LOCAL_VERIFIED_PR_CI_PENDING"
+}

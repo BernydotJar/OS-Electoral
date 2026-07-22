@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-07-21",
+  "updated_at": "2026-07-22",
   "program": "CampaignOS Product Program",
   "production_gate": "BLOCKED",
   "hard_gates": {
@@ -215,15 +215,21 @@
         "backend/tests/test_guided_intake_postgres.py",
         "frontend/src/lib/contract-parsers.test.ts",
         "frontend/src/lib/navigation.test.ts",
-        "docs/testing/c3-onboard-001-evidence.md"
+        "docs/testing/c3-onboard-001-evidence.md",
+        "frontend/src/components/functional-onboarding.tsx",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/testing/c3-front-002-evidence.md",
+        "program/validations/c3-front-002.json"
       ],
       "commands": [
         "make verify",
         "make test-postgres",
-        "make frontend-e2e"
+        "make frontend-e2e",
+        "make frontend-functional-e2e",
+        "make frontend-image-verify"
       ],
-      "last_verified_at": "2026-07-21",
-      "limitations": "Persisted save/resume/read/update, deterministic research-first assessment and a read-only ES/EN roadmap are verified locally/PostgreSQL. Authenticated non-technical editing, candidate workspace, live identity and human user acceptance remain incomplete."
+      "last_verified_at": "2026-07-22",
+      "limitations": "A real PostgreSQL/API/browser journey now starts, updates and reloads guided intake under exact grants. Live OIDC, independent human acceptance, campaign creation/access lifecycle and deployed environments remain incomplete."
     },
     {
       "id": "EVAL-CANDIDATE-001",
@@ -341,14 +347,20 @@
         "frontend/src/lib/i18n.ts",
         "frontend/src/lib/i18n.test.ts",
         "scripts/frontend/review_dynamic_shell.py",
-        "docs/i18n/frontend-localization.md"
+        "docs/i18n/frontend-localization.md",
+        "frontend/src/components/functional-onboarding.tsx",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/testing/c3-front-002-evidence.md",
+        "program/validations/c3-front-002.json"
       ],
       "commands": [
         "make frontend-verify",
-        "make frontend-e2e"
+        "make frontend-e2e",
+        "make frontend-functional-e2e",
+        "make frontend-image-verify"
       ],
-      "last_verified_at": "2026-07-21",
-      "limitations": "Spanish/English parity is verified for the dynamic shell only; all future product journeys and human language review remain incomplete."
+      "last_verified_at": "2026-07-22",
+      "limitations": "Spanish/English parity is verified for the shell and functional guided-intake journey; human language review and all future journeys remain incomplete."
     },
     {
       "id": "EVAL-NONTECH-001",
@@ -360,14 +372,20 @@
         "web/index.html",
         "frontend/src/components/shell.tsx",
         "scripts/frontend/review_dynamic_shell.py",
-        "docs/testing/c3-front-001-evidence.md"
+        "docs/testing/c3-front-001-evidence.md",
+        "frontend/src/components/functional-onboarding.tsx",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/testing/c3-front-002-evidence.md",
+        "program/validations/c3-front-002.json"
       ],
       "commands": [
         "uv run --locked python scripts/frontend/runtime_visual_review.py",
-        "make frontend-e2e"
+        "make frontend-e2e",
+        "make frontend-functional-e2e",
+        "make frontend-image-verify"
       ],
-      "last_verified_at": "2026-07-21",
-      "limitations": "The dynamic read-only shell is tested with synthetic context, but no live-authenticated end-to-end non-technical campaign journey or user acceptance evidence exists."
+      "last_verified_at": "2026-07-22",
+      "limitations": "The compact ES/EN live interface completes one non-technical campaign-start journey with persistence; broader modules, independent user acceptance and deployed-environment evidence remain incomplete."
     },
     {
       "id": "EVAL-OBJECTIVE-001",
@@ -537,13 +555,19 @@
       "evidence": [
         "frontend/src/app/globals.css",
         "scripts/frontend/review_dynamic_shell.py",
-        "docs/testing/c3-front-001-evidence.md"
+        "docs/testing/c3-front-001-evidence.md",
+        "frontend/src/components/functional-onboarding.tsx",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/testing/c3-front-002-evidence.md",
+        "program/validations/c3-front-002.json"
       ],
       "commands": [
-        "make frontend-e2e"
+        "make frontend-e2e",
+        "make frontend-functional-e2e",
+        "make frontend-image-verify"
       ],
-      "last_verified_at": "2026-07-21",
-      "limitations": "The shell passes automated keyboard, mobile, reduced-motion and axe-core WCAG 2.2 A/AA checks; manual assistive-technology and full-product review remain."
+      "last_verified_at": "2026-07-22",
+      "limitations": "Demo and live functional journeys pass automated keyboard, reflow, reduced-motion and axe WCAG 2.2 A/AA checks; manual assistive-technology and full-product review remain incomplete."
     },
     {
       "id": "EVAL-LOAD-001",

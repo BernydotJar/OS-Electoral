@@ -12,6 +12,8 @@ import type {
   GuidedIntakeNextAction,
   GuidedIntakeProjection,
   GuidedIntakeReadEvidence,
+  GuidedIntakeStartEvidence,
+  GuidedIntakeUpdateEvidence,
   GuidedIntakeResearchAction,
   MeResponse,
   TenantMeResponse,
@@ -897,6 +899,54 @@ export function parseGuidedIntakeReadEvidence(
     audit_event_id: uuid(
       source.audit_event_id,
       "guided intake evidence.audit_event_id",
+    ),
+  };
+}
+
+export function parseGuidedIntakeStartEvidence(
+  value: unknown,
+): GuidedIntakeStartEvidence {
+  const source = record(value, "guided intake start evidence");
+  exactKeys(
+    source,
+    ["intake", "audit_event_id", "outbox_event_id", "created"],
+    "guided intake start evidence",
+  );
+  return {
+    intake: parseGuidedIntakeProjection(source.intake),
+    audit_event_id: uuid(
+      source.audit_event_id,
+      "guided intake start evidence.audit_event_id",
+    ),
+    outbox_event_id:
+      source.outbox_event_id === null
+        ? null
+        : uuid(
+            source.outbox_event_id,
+            "guided intake start evidence.outbox_event_id",
+          ),
+    created: boolean(source.created, "guided intake start evidence.created"),
+  };
+}
+
+export function parseGuidedIntakeUpdateEvidence(
+  value: unknown,
+): GuidedIntakeUpdateEvidence {
+  const source = record(value, "guided intake update evidence");
+  exactKeys(
+    source,
+    ["intake", "audit_event_id", "outbox_event_id"],
+    "guided intake update evidence",
+  );
+  return {
+    intake: parseGuidedIntakeProjection(source.intake),
+    audit_event_id: uuid(
+      source.audit_event_id,
+      "guided intake update evidence.audit_event_id",
+    ),
+    outbox_event_id: uuid(
+      source.outbox_event_id,
+      "guided intake update evidence.outbox_event_id",
     ),
   };
 }

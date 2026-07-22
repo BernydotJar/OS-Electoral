@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Literal
 from urllib.parse import urlparse
 
-from pydantic import Field, SecretStr, model_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine import make_url
 
@@ -74,6 +74,20 @@ class Settings(BaseSettings):
     oidc_jwks_timeout_seconds: int = Field(default=5, ge=1, le=15)
     oidc_jwks_cache_seconds: int = Field(default=300, ge=60, le=3600)
 
+    development_access_token: SecretStr | None = None
+    development_principal_subject: str = Field(
+        default="local-operator", min_length=1, max_length=255
+    )
+    development_principal_display_name: str | None = Field(default="Operador local", max_length=255)
+    development_principal_email: str | None = Field(default="operator@localhost", max_length=320)
+
+    @field_validator("development_access_token", mode="before")
+    @classmethod
+    def normalize_development_access_token(cls, value: object) -> object:
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
+
     @model_validator(mode="after")
     def validate_security_configuration(self) -> Settings:
         if self.oidc_algorithm != "RS256":
@@ -82,6 +96,16 @@ class Settings(BaseSettings):
         configured = (self.oidc_issuer, self.oidc_audience, self.oidc_jwks_url)
         if any(configured) and not all(configured):
             raise ValueError("OIDC issuer, audience and JWKS URL must be configured together")
+
+        if self.development_access_token is not None:
+            if self.environment is not Environment.DEVELOPMENT:
+                raise ValueError(
+                    "Development identity is allowed only in the development environment"
+                )
+            if any(configured):
+                raise ValueError("Development identity cannot be combined with OIDC configuration")
+            if len(self.development_access_token.get_secret_value()) < 24:
+                raise ValueError("Development access token must contain at least 24 characters")
 
         if all(configured):
             for field_name, value in (
@@ -162,6 +186,10 @@ class Settings(BaseSettings):
     @property
     def oidc_configured(self) -> bool:
         return bool(self.oidc_issuer and self.oidc_audience and self.oidc_jwks_url)
+
+    @property
+    def development_identity_configured(self) -> bool:
+        return self.development_access_token is not None
 
     @property
     def object_storage_configured(self) -> bool:

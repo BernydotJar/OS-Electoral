@@ -6,14 +6,25 @@ export type FrontendConfig = Readonly<{
   mode: FrontendMode;
   apiBaseUrl: URL | null;
   requestTimeoutMs: number;
+  developmentAccessToken: string | null;
+  developmentTenantId: string | null;
 }>;
 
 export class FrontendConfigurationError extends Error {}
 
-function readEnvironment(value: string | undefined, nodeEnv: string | undefined): FrontendEnvironment {
-  const resolved = value?.trim() || (nodeEnv === "production" ? "shared" : "development");
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function readEnvironment(
+  value: string | undefined,
+  nodeEnv: string | undefined,
+): FrontendEnvironment {
+  const resolved =
+    value?.trim() || (nodeEnv === "production" ? "shared" : "development");
   if (!["development", "test", "shared", "production"].includes(resolved)) {
-    throw new FrontendConfigurationError("Unsupported CampaignOS frontend environment");
+    throw new FrontendConfigurationError(
+      "Unsupported CampaignOS frontend environment",
+    );
   }
   return resolved as FrontendEnvironment;
 }
@@ -29,45 +40,120 @@ function readMode(value: string | undefined): FrontendMode {
 function readTimeout(value: string | undefined): number {
   const resolved = value ? Number(value) : 5000;
   if (!Number.isInteger(resolved) || resolved < 250 || resolved > 30000) {
-    throw new FrontendConfigurationError("Frontend request timeout must be between 250 and 30000 ms");
+    throw new FrontendConfigurationError(
+      "Frontend request timeout must be between 250 and 30000 ms",
+    );
   }
   return resolved;
 }
 
-function readApiBaseUrl(value: string | undefined, environment: FrontendEnvironment): URL | null {
+function readApiBaseUrl(
+  value: string | undefined,
+  environment: FrontendEnvironment,
+): URL | null {
   if (!value?.trim()) return null;
   let url: URL;
   try {
     url = new URL(value);
   } catch {
-    throw new FrontendConfigurationError("CAMPAIGNOS_API_BASE_URL must be an absolute URL");
+    throw new FrontendConfigurationError(
+      "CAMPAIGNOS_API_BASE_URL must be an absolute URL",
+    );
   }
   if (url.protocol !== "https:" && url.protocol !== "http:") {
-    throw new FrontendConfigurationError("CampaignOS API URL must use HTTP or HTTPS");
+    throw new FrontendConfigurationError(
+      "CampaignOS API URL must use HTTP or HTTPS",
+    );
   }
   const localHost = ["127.0.0.1", "localhost"].includes(url.hostname);
-  if (["shared", "production"].includes(environment) && (url.protocol !== "https:" || localHost)) {
-    throw new FrontendConfigurationError("Shared frontend environments require a non-local HTTPS API");
+  if (
+    ["shared", "production"].includes(environment) &&
+    (url.protocol !== "https:" || localHost)
+  ) {
+    throw new FrontendConfigurationError(
+      "Shared frontend environments require a non-local HTTPS API",
+    );
   }
   return url;
+}
+
+function readDevelopmentContext(
+  env: Readonly<Record<string, string | undefined>>,
+  environment: FrontendEnvironment,
+  mode: FrontendMode,
+): Readonly<{
+  developmentAccessToken: string | null;
+  developmentTenantId: string | null;
+}> {
+  const token = env.CAMPAIGNOS_FRONTEND_DEVELOPMENT_TOKEN?.trim() || null;
+  const tenantId =
+    env.CAMPAIGNOS_FRONTEND_DEVELOPMENT_TENANT_ID?.trim() || null;
+  if ((token === null) !== (tenantId === null)) {
+    throw new FrontendConfigurationError(
+      "Development token and tenant ID must be configured together",
+    );
+  }
+  if (token === null || tenantId === null) {
+    return { developmentAccessToken: null, developmentTenantId: null };
+  }
+  if (mode !== "live") {
+    throw new FrontendConfigurationError(
+      "Development context is allowed only in live mode",
+    );
+  }
+  if (environment !== "development") {
+    throw new FrontendConfigurationError(
+      "Development context is allowed only in the development environment",
+    );
+  }
+  if (token.length < 24) {
+    throw new FrontendConfigurationError(
+      "Development token must contain at least 24 characters",
+    );
+  }
+  if (!UUID_PATTERN.test(tenantId)) {
+    throw new FrontendConfigurationError(
+      "Development tenant ID must be a valid UUID",
+    );
+  }
+  return {
+    developmentAccessToken: token,
+    developmentTenantId: tenantId,
+  };
 }
 
 export function resolveFrontendConfig(
   env: Readonly<Record<string, string | undefined>>,
 ): FrontendConfig {
-  const environment = readEnvironment(env.CAMPAIGNOS_FRONTEND_ENVIRONMENT, env.NODE_ENV);
+  const environment = readEnvironment(
+    env.CAMPAIGNOS_FRONTEND_ENVIRONMENT,
+    env.NODE_ENV,
+  );
   const mode = readMode(env.CAMPAIGNOS_FRONTEND_MODE);
-  const apiBaseUrl = readApiBaseUrl(env.CAMPAIGNOS_API_BASE_URL, environment);
-  if (mode === "demo_read_only" && environment !== "development" && environment !== "test") {
-    throw new FrontendConfigurationError("Synthetic demo mode is forbidden outside development and test");
+  const apiBaseUrl = readApiBaseUrl(
+    env.CAMPAIGNOS_API_BASE_URL,
+    environment,
+  );
+  if (
+    mode === "demo_read_only" &&
+    environment !== "development" &&
+    environment !== "test"
+  ) {
+    throw new FrontendConfigurationError(
+      "Synthetic demo mode is forbidden outside development and test",
+    );
   }
   if (mode === "live" && apiBaseUrl === null) {
-    throw new FrontendConfigurationError("Live frontend mode requires CAMPAIGNOS_API_BASE_URL");
+    throw new FrontendConfigurationError(
+      "Live frontend mode requires CAMPAIGNOS_API_BASE_URL",
+    );
   }
+  const development = readDevelopmentContext(env, environment, mode);
   return {
     environment,
     mode,
     apiBaseUrl,
     requestTimeoutMs: readTimeout(env.CAMPAIGNOS_API_TIMEOUT_MS),
+    ...development,
   };
 }

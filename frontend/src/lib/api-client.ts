@@ -20,6 +20,8 @@ import {
   parseCampaignPage,
   parseCandidateWorkspaceReadEvidence,
   parseGuidedIntakeReadEvidence,
+  parseGuidedIntakeStartEvidence,
+  parseGuidedIntakeUpdateEvidence,
   parseMe,
   parseReadinessEvidence,
   parseTenantMe,
@@ -30,6 +32,9 @@ import type {
   CampaignRoadmapReadEvidence,
   CandidateWorkspaceReadEvidence,
   GuidedIntakeReadEvidence,
+  GuidedIntakeStartEvidence,
+  GuidedIntakeUpdateEvidence,
+  GuidedIntakeUpdateInput,
   MeResponse,
   ProblemDetail,
   StrategyWorkspaceReadEvidence,
@@ -82,21 +87,31 @@ export class CampaignOsApiClient {
     }
   }
 
-  private async get<T>(
+  private async request<T>(
     path: string,
     label: string,
     parse: (value: unknown) => T,
+    init: Readonly<{
+      method?: "GET" | "POST" | "PATCH";
+      body?: unknown;
+      headers?: Readonly<Record<string, string>>;
+    }> = {},
   ): Promise<T> {
     const url = new URL(path, this.config.apiBaseUrl!);
+    const method = init.method ?? "GET";
+    const headers: Record<string, string> = {
+      accept: "application/json, application/problem+json",
+      authorization: `Bearer ${this.token}`,
+      ...init.headers,
+    };
+    if (init.body !== undefined) headers["content-type"] = "application/json";
     let response: Response;
     try {
       response = await fetch(url, {
-        method: "GET",
+        method,
         cache: "no-store",
-        headers: {
-          accept: "application/json, application/problem+json",
-          authorization: `Bearer ${this.token}`,
-        },
+        headers,
+        body: init.body === undefined ? undefined : JSON.stringify(init.body),
         signal: AbortSignal.timeout(this.config.requestTimeoutMs),
       });
     } catch {
@@ -138,6 +153,14 @@ export class CampaignOsApiClient {
     }
   }
 
+  private get<T>(
+    path: string,
+    label: string,
+    parse: (value: unknown) => T,
+  ): Promise<T> {
+    return this.request(path, label, parse);
+  }
+
   me(): Promise<MeResponse> {
     return this.get<MeResponse>("/api/v1/me", "Identity", parseMe);
   }
@@ -177,6 +200,41 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/guided-intake`,
       "Guided intake",
       parseGuidedIntakeReadEvidence,
+    );
+  }
+
+  startGuidedIntake(
+    tenantId: UUID,
+    campaignId: UUID,
+    idempotencyKey: string,
+  ): Promise<GuidedIntakeStartEvidence> {
+    return this.request<GuidedIntakeStartEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/guided-intake`,
+      "Guided intake start",
+      parseGuidedIntakeStartEvidence,
+      { method: "POST", headers: { "idempotency-key": idempotencyKey } },
+    );
+  }
+
+  updateGuidedIntake(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    update: GuidedIntakeUpdateInput,
+  ): Promise<GuidedIntakeUpdateEvidence> {
+    return this.request<GuidedIntakeUpdateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/guided-intake`,
+      "Guided intake update",
+      parseGuidedIntakeUpdateEvidence,
+      {
+        method: "PATCH",
+        body: update,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
     );
   }
 

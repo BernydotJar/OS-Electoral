@@ -65,6 +65,16 @@ make verify
 make e2e
 ```
 
+To exercise the first real API-backed browser journey locally:
+
+```bash
+make functional-dev
+# open http://127.0.0.1:3000/es or /en
+make functional-down
+```
+
+Functional mode applies migrations, seeds one local development identity with five exact grants, and runs the real PostgreSQL/FastAPI/Next.js guided-intake start/update journey. The development identity is rejected outside `development`; it is not production authentication.
+
 `make test-postgres` requires an explicitly isolated `CAMPAIGNOS_TEST_DATABASE_URL` whose database name ends in `_test`. The end-to-end script creates a unique Compose project, applies and checks the Alembic migration, verifies dependency readiness, and removes its containers and volumes on exit. S3Mock accepts dummy credentials and is strictly a local test service; it is not a production storage design.
 
 Some legacy validation harnesses generate files under `artifacts/`; inspect their behavior before running them in a dirty worktree.

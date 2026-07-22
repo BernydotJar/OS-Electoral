@@ -8,7 +8,11 @@ import pytest
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 from campaignos.config import Environment, Settings
-from campaignos.identity.oidc import AuthenticationError, OidcTokenVerifier
+from campaignos.identity.oidc import (
+    AuthenticationError,
+    DevelopmentTokenVerifier,
+    OidcTokenVerifier,
+)
 
 ISSUER = "https://identity.example.test/"
 AUDIENCE = "campaignos-test"
@@ -138,3 +142,30 @@ def test_token_without_kid_is_rejected_before_key_fetch() -> None:
     )
     with pytest.raises(AuthenticationError, match="identifier"):
         OidcTokenVerifier(settings()).verify(encoded)
+
+
+def test_development_verifier_accepts_only_the_configured_local_token() -> None:
+    local_settings = Settings(
+        environment=Environment.DEVELOPMENT,
+        development_access_token="campaignos-local-development-token",  # noqa: S106
+        development_principal_subject="local-operator",
+        development_principal_display_name="Operador local",
+        development_principal_email="operator@localhost",
+    )
+    verifier = DevelopmentTokenVerifier(local_settings)
+
+    principal = verifier.verify("campaignos-local-development-token")
+
+    assert principal.subject == "local-operator"
+    assert principal.issuer == "urn:campaignos:development"
+    assert principal.audience == "campaignos-local"
+    assert principal.display_name == "Operador local"
+    assert principal.email == "operator@localhost"
+    assert principal.email_verified is True
+    assert principal.session_id is not None
+    assert "campaignos-local-development-token" not in principal.session_id
+    assert not hasattr(principal, "roles")
+    assert verifier.readiness() == (True, "Development identity is configured")
+
+    with pytest.raises(AuthenticationError, match="Invalid bearer token"):
+        verifier.verify("wrong-development-token")

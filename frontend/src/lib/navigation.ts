@@ -23,17 +23,12 @@ export function deriveNavigation(
 ): readonly NavigationItem[] {
   const base = `/${locale}`;
   return [
-    { key: "overview", href: base, enabled: true, reason: "BASE" },
+    { key: "overview", href: `${base}#main`, enabled: true, reason: "BASE" },
     {
       key: "campaigns",
       href: `${base}#campaigns`,
-      enabled: hasGrant(
-        memberships,
-        (grant) =>
-          grant.resource_type === "campaign" ||
-          grant.resource_type === "campaign_collection",
-      ),
-      reason: "EXACT_GRANT",
+      enabled: true,
+      reason: "BASE",
     },
     {
       key: "readiness",
@@ -129,17 +124,6 @@ export function deriveNavigation(
       href: `${base}#evidence`,
       enabled: false,
       reason: "FUTURE_CAPABILITY",
-    },
-    {
-      key: "administration",
-      href: `${base}#administration`,
-      enabled: hasGrant(
-        memberships,
-        (grant) =>
-          grant.resource_type === "campaign_collection" &&
-          grant.action === "create",
-      ),
-      reason: "EXACT_GRANT",
     },
   ];
 }
