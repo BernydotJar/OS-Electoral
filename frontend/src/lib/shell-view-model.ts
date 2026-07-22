@@ -132,13 +132,19 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
   }
 
   const cookieStore = await cookies();
-  const token = cookieStore.get("campaignos_access_token")?.value;
+  const token =
+    cookieStore.get("campaignos_access_token")?.value ??
+    config.developmentAccessToken ??
+    undefined;
   if (!token) return { kind: "unauthenticated" };
 
   const api = new CampaignOsApiClient(config, token);
   try {
     const identity = await api.me();
-    const tenantId = cookieStore.get("campaignos_tenant_id")?.value;
+    const tenantId =
+      cookieStore.get("campaignos_tenant_id")?.value ??
+      config.developmentTenantId ??
+      undefined;
     if (!validUuid(tenantId)) {
       return {
         kind: "tenant_context_required",

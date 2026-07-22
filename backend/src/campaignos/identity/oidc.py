@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+import hashlib
+import hmac
+from datetime import UTC, datetime, timedelta
 from typing import Protocol
 
 import jwt
@@ -34,6 +36,47 @@ class UnavailableTokenVerifier:
 
     def readiness(self) -> tuple[bool, str]:
         return False, "OIDC is not configured"
+
+
+class DevelopmentTokenVerifier:
+    """Local-only verifier for explicit development sessions.
+
+    It verifies identity only. Application memberships and grants continue to be
+    loaded from PostgreSQL by the server-owned authorization directory.
+    """
+
+    def __init__(self, settings: Settings) -> None:
+        if not settings.development_identity_configured:
+            raise ValueError("Development verifier requires a configured access token")
+        if settings.environment.value != "development":
+            raise ValueError("Development verifier is allowed only in development")
+        token = settings.development_access_token
+        if token is None:
+            raise ValueError("Development verifier requires a configured access token")
+        self._token = token.get_secret_value()
+        self._subject = settings.development_principal_subject
+        self._display_name = settings.development_principal_display_name
+        self._email = settings.development_principal_email
+        self._session_digest = hashlib.sha256(self._token.encode("utf-8")).hexdigest()
+
+    def readiness(self) -> tuple[bool, str]:
+        return True, "Development identity is configured"
+
+    def verify(self, token: str) -> AuthenticatedPrincipal:
+        if not token or len(token) > 4096 or not hmac.compare_digest(token, self._token):
+            raise AuthenticationError("Invalid bearer token")
+        authenticated_at = datetime.now(UTC)
+        return AuthenticatedPrincipal(
+            subject=self._subject,
+            issuer="urn:campaignos:development",
+            audience="campaignos-local",
+            display_name=self._display_name,
+            email=self._email,
+            email_verified=True if self._email is not None else None,
+            session_id=f"development:{self._session_digest[:32]}",
+            authenticated_at=authenticated_at,
+            expires_at=authenticated_at + timedelta(hours=8),
+        )
 
 
 class OidcTokenVerifier:

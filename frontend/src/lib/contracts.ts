@@ -178,6 +178,29 @@ export type GuidedIntakeReadEvidence = Readonly<{
   audit_event_id: UUID;
 }>;
 
+export type GuidedIntakeStartEvidence = Readonly<{
+  intake: GuidedIntakeProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID | null;
+  created: boolean;
+}>;
+
+export type GuidedIntakeUpdateInput = Readonly<{
+  office?: string | null;
+  candidate_project?: string | null;
+  current_team?: readonly string[] | null;
+  current_assets?: readonly string[] | null;
+  budget_status?: GuidedIntakeBudgetStatus;
+  known_unknowns?: readonly string[] | null;
+  evidence_requirements?: readonly string[] | null;
+}>;
+
+export type GuidedIntakeUpdateEvidence = Readonly<{
+  intake: GuidedIntakeProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
 export type ProblemDetail = Readonly<{
   type: string;
   title: string;

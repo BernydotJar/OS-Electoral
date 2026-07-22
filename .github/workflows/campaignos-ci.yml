@@ -254,14 +254,20 @@ jobs:
         run: uv run --locked playwright install --with-deps chromium
       - name: Review the production shell in desktop, mobile and reduced motion
         run: make frontend-e2e
+      - name: Exercise the API-backed functional onboarding journey
+        env:
+          CAMPAIGNOS_FRONTEND_ARTIFACT_DIR: artifacts/c3-front-002
+        run: make frontend-functional-e2e
       - name: Build the non-root frontend container
         run: docker build --file frontend/Dockerfile --tag campaignos-frontend:${{ github.sha }} frontend
       - name: Upload dynamic frontend review evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: c3-front-001-dynamic-shell-review
-          path: artifacts/c3-front-001/
+          name: campaignos-frontend-review
+          path: |
+            artifacts/c3-front-001/
+            artifacts/c3-front-002/
           if-no-files-found: error
           retention-days: 30
 

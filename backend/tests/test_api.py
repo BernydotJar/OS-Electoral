@@ -152,6 +152,27 @@ def test_readiness_checks_verifier_dependency() -> None:
     ]
 
 
+def test_development_identity_can_authenticate_but_does_not_create_authority() -> None:
+    local_settings = Settings(
+        environment=Environment.DEVELOPMENT,
+        development_access_token="campaignos-local-development-token",  # noqa: S106
+        development_principal_subject="local-operator",
+        development_principal_display_name="Operador local",
+        development_principal_email="operator@localhost",
+    )
+    with TestClient(create_app(local_settings)) as client:
+        response = client.get(
+            "/api/v1/me",
+            headers={"Authorization": "Bearer campaignos-local-development-token"},
+        )
+
+    assert response.status_code == 200
+    assert response.json()["subject"] == "local-operator"
+    assert response.json()["issuer"] == "urn:campaignos:development"
+    assert response.json()["application_memberships"] == []
+    assert response.json()["authorization_status"] == "NOT_LOADED"
+
+
 def test_missing_session_returns_structured_problem() -> None:
     with TestClient(create_app(settings(), token_verifier=FakeVerifier())) as client:
         response = client.get("/api/v1/me")

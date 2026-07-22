@@ -36,7 +36,7 @@ describe("deriveNavigation", () => {
     ]);
     expect(
       navigation.filter((item) => item.enabled).map((item) => item.key),
-    ).toEqual(["overview"]);
+    ).toEqual(["overview", "campaigns"]);
   });
 
   it("requires the exact guided intake read purpose", () => {
@@ -208,8 +208,8 @@ describe("deriveNavigation", () => {
       true,
     );
     expect(
-      navigation.find((item) => item.key === "administration")?.enabled,
-    ).toBe(true);
+      navigation.some((item) => item.key === "administration"),
+    ).toBe(false);
     expect(navigation.find((item) => item.key === "warRoom")?.enabled).toBe(
       false,
     );

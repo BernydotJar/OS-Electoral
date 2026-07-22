@@ -4,7 +4,7 @@ Assessment date: `2026-07-21 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack through `#99`; C3-CI final receipt `agent/c3-ci-001-supply-chain-policy@e4c590389cf7cd8207c5e61eddef9a540767c929` is exact-head CI-green and attested; active increment is `agent/c3-infra-001-plan-only-baseline`.
+Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack through Security PR `#105`; Security receipt `agent/c3-sec-001-security-privacy-baseline@e0b4b5df711f671e8f6a1f711a0a3beff39cf173` is exact-head CI-green; active increment is `agent/c3-front-002-functional-onboarding`.
 
 ## Executive determination
 
@@ -33,11 +33,11 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - `make verify`: PASS.
 - Ruff lint and format: PASS.
 - strict mypy: PASS across 63 source files.
-- Full locked suite: `652 passed`, `10 skipped`.
-- Enforced coverage: `90.95%` with `fail_under=90`.
+- Full locked suite: `658 passed`, `10 skipped`.
+- Enforced coverage: `90.92%` with `fail_under=90`.
 - Isolated PostgreSQL gate reaches revision `20260721_0011` and is reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
 - PostgreSQL evidence covers forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, campaign/candidate/team/roadmap concurrency, exact replay, optimistic versions, append-only daily snapshots and non-owner mutation denial on six journals.
-- Frontend regression: ESLint, strict TypeScript, 48 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
+- Frontend regression: ESLint, strict TypeScript, 60 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
 - Frontend exact-head PR CI and automated browser/WCAG review: PASS.
 - C3-SEC local browser E2E: PASS with ES/EN desktop, mobile, keyboard, reduced motion, zero overflow and zero axe violations; exact-head CI remains pending.
 - Local Compose E2E remains environment-blocked at Docker layer registration (`lchown /var/empty`); the CI stack E2E is the authoritative final proof.
@@ -52,7 +52,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - Active memberships and exact grants remain server-owned and tenant scoped.
 - Campaign create/read/update, workspace create and readiness boundaries retain exact action/resource/scope/purpose checks, concurrency controls, audit and internal outbox evidence.
 - The internal outbox worker draft retains leases, `SKIP LOCKED`, recovery, bounded retries and dead-letter behavior without external political delivery.
-- The dynamic Next.js shell remains server-rendered, ES/EN, synthetic/read-only outside live configuration and fail-closed on malformed or cross-scope upstream data.
+- The dynamic Next.js shell remains server-rendered and fail-closed; live development mode now selects an authorized campaign and starts/updates guided intake through server-side boundaries, while demo mode remains read-only.
 - Identity invitations normalize email, require `email_verified=true` at acceptance, expire, accept once and create only an empty membership.
 - Application sessions persist only a digest of the provider session identifier and support audited expiry and local revocation.
 - Membership revocation disables current grants, roles and local sessions atomically.
@@ -70,7 +70,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - No live OIDC/Cognito login, recovery, MFA, invitation email, provider token rotation or external provider revocation.
 - No trusted tenant portfolio selector or customer-facing identity-administration UI.
 - No RDS, dev, staging or production verification of identity lifecycle.
-- Guided intake, Candidate Workspace and Team Builder are draft-PR CI-green; campaign roadmap and Daily War Room are locally/PostgreSQL/browser verified. Authenticated editing/approval, strategy approval, dedicated reviewer separation, durable cross-domain approvals and broader product journeys remain incomplete.
+- Guided intake now has a real local PostgreSQL/API/browser start-update-reload journey under exact grants. Live OIDC, campaign creation/access lifecycle, broader mutation journeys, independent user acceptance and deployed environments remain incomplete.
 - Production object storage, attachment safety, external transport, production observability, rate controls and operational administration remain incomplete.
 - A plan-only Terraform baseline is tested locally, but no verified AWS account, remote state, live plan/apply, dev/staging/production runtime, backup/restore, load, rollback or disaster-recovery evidence exists.
 - Main protection, restricted SHA-pinned Actions, vulnerability governance and exact-source-head supply-chain attestation are active; human review/merge and production environment gates remain pending.
@@ -85,9 +85,9 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 |---|---|---|
 | Foundation/IAM/first campaign API | PRs `#72`, `#73`, `#83` merged | `MERGED`; not deployed |
 | Review stack | PRs `#84`–`#90`, correct bases and green exact-head checks | `CI_GREEN`; human review/merge pending |
-| Dynamic frontend | `437b469`, CI `29856835515`, visual `29856835522` | `CI_GREEN`; synthetic and not deployed |
+| Dynamic frontend | original shell PR `#89` plus `C3-FRONT-002` live PostgreSQL/API/browser journey with 60 frontend tests and zero axe violations | `VERIFIED_POSTGRESQL`; exact-head PR/CI, human acceptance and deployment pending |
 | Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice, PR `#90` CI `29857981975` | `CI_GREEN`; human review/merge and live provider pending |
-| Guided intake | revision `20260721_0005`, exact API, 425-test suite, PostgreSQL twice, 16 frontend tests, PR `#92`, CI `29865306720` and visual `29865306576` | `CI_GREEN`; human review/merge and live edit journey pending |
+| Guided intake | revision `20260721_0005`, exact API, PostgreSQL twice, plus live ES/EN browser start/update/reload under exact grants | `VERIFIED_POSTGRESQL`; live OIDC, exact-head PR/CI, human acceptance and deployment pending |
 | Candidate workspace | revision `20260721_0006`, evidence contracts, exact API, PR `#93` at final head `f3c8994` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
 | Team Builder | revision `20260721_0007`, exact RACI/capacity/access-recommendation contracts, PR `#94`, CI `29870461743` and visual `29870461745` | `CI_GREEN`; human staffing acceptance, authenticated editing and live environments pending |
 | Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, PR `#95`, CI `29871930387` and visual `29871930366` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
@@ -116,9 +116,9 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Begin `C3-OBS-001` now that Security is exact-head CI-green; retain independent review, backup/restore and zero-open-high gates.
-2. Preserve AWS account selection, credentials, apply, spending and the protected-main ninth-check update as separate human policy gates.
-3. Keep observability/release blocked until Security is CI-green and no environment claim is made.
+1. Publish `C3-FRONT-002` and require hosted functional Compose E2E on the exact head.
+2. Continue `C3-OBS-001` independently after the functional onboarding checkpoint.
+3. Preserve infrastructure apply, merge and production deployment as separate human gates.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
 
@@ -190,3 +190,16 @@ Production deployment remains prohibited until every production gate passes and 
 - Local regression passed 652 tests, 10 skips and 90.95% coverage; PostgreSQL passed 10 slices twice; browser E2E passed twice.
 - Draft PR `#105` is `CLEAN`/mergeable at `ab63e19079ac0828fe3555dbbeb9493e94d02829`; CampaignOS CI `29943367172` and visual `29943367823` passed, including remote constrained stack E2E.
 - `C3-OBS-001` is executable next. Production remains `BLOCKED`; no apply, deployment or external effect occurred.
+
+## C3-FRONT-002 local/PostgreSQL functional checkpoint — 2026-07-22
+
+- Replaced inert navigation with a compact responsive menu containing only implemented, server-authorized destinations; Administration is absent until a real workflow exists.
+- Added a development-only identity verifier that carries no roles or grants, is mutually exclusive with OIDC and is rejected outside `development`.
+- Added an idempotent localhost seed containing one tenant, one existing campaign and exactly five persisted grants for campaign/readiness/intake operations.
+- Added server-only campaign selection, guided-intake start and guided-intake update routes with same-origin protection, exact grant checks, `Idempotency-Key` and `If-Match`.
+- Passed a real PostgreSQL/FastAPI/Next/Chromium journey in Spanish and English: start intake, save every field, reload and observe persisted values.
+- Passed 658 full tests, 10 skips, 90.92% coverage, 60 frontend tests, two ten-slice PostgreSQL runs, zero dependency/secret findings and a non-root frontend image as UID 10001.
+- Demo mode remains read-only; live development mode exposes no bearer token to HTML, JavaScript or browser storage.
+- Campaign creation remains absent until a separate post-create access lifecycle exists; role labels do not create permission.
+- Status is `VERIFIED_POSTGRESQL`; draft PR and hosted functional Compose E2E are pending.
+- Production remains `BLOCKED`; external effects remain `NONE`.

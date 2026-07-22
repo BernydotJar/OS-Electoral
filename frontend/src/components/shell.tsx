@@ -1,9 +1,15 @@
+import {
+  CampaignContextForm,
+  GuidedIntakeEditor,
+} from "@/components/functional-onboarding";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
 import type { Dictionary, Locale } from "@/lib/i18n";
+import { deriveGuidedIntakeCapabilities } from "@/lib/journey-capabilities";
 import { deriveNavigation } from "@/lib/navigation";
 import type { ShellViewModel } from "@/lib/shell-view-model";
+import type { UiNotice } from "@/lib/ui-notices";
 
 function StatePanel({
   title,
@@ -48,10 +54,12 @@ export function CampaignShell({
   locale,
   dictionary,
   model,
+  notice = null,
 }: {
   locale: Locale;
   dictionary: Dictionary;
   model: ShellViewModel;
+  notice?: UiNotice | null;
 }) {
   if (model.kind === "unauthenticated") {
     return (
@@ -102,6 +110,10 @@ export function CampaignShell({
 
   const navigation = deriveNavigation(
     locale,
+    model.memberships,
+    model.campaign.id,
+  ).filter((item) => item.enabled);
+  const intakeCapabilities = deriveGuidedIntakeCapabilities(
     model.memberships,
     model.campaign.id,
   );
@@ -170,11 +182,7 @@ export function CampaignShell({
           <ul>
             {navigation.map((item) => (
               <li key={item.key}>
-                {item.enabled ? (
-                  <a href={item.href}>{dictionary.nav[item.key]}</a>
-                ) : (
-                  <span aria-disabled="true">{dictionary.nav[item.key]}</span>
-                )}
+                <a href={item.href}>{dictionary.nav[item.key]}</a>
               </li>
             ))}
           </ul>
@@ -219,6 +227,11 @@ export function CampaignShell({
         </section>
 
         <main id="main" className="main-content" tabIndex={-1}>
+          {notice ? (
+            <div className="notice-banner" role="status" aria-live="polite">
+              {dictionary.notices[notice]}
+            </div>
+          ) : null}
           <section className="hero-panel">
             <div>
               <p className="eyebrow">
@@ -235,6 +248,14 @@ export function CampaignShell({
               <small>{dictionary.common.notApproval}</small>
             </div>
           </section>
+
+          <CampaignContextForm
+            locale={locale}
+            dictionary={dictionary}
+            campaigns={model.campaigns}
+            currentCampaignId={model.campaign.id}
+            demo={model.demo}
+          />
 
           <section className="context-details" aria-labelledby="context-title">
             <div>
@@ -290,6 +311,15 @@ export function CampaignShell({
                 </div>
               ) : null}
             </div>
+
+            <GuidedIntakeEditor
+              locale={locale}
+              dictionary={dictionary}
+              demo={model.demo}
+              availability={model.guidedIntakeAvailability}
+              intake={guidedIntake}
+              capabilities={intakeCapabilities}
+            />
 
             {guidedIntake ? (
               <>

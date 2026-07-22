@@ -73,7 +73,7 @@ Tenant and campaign selectors never create authority. The backend remains author
 
 Navigation is a usability projection only. `deriveNavigation` may reveal a module when a relevant current grant exists, but route visibility is never treated as permission. Every sensitive backend operation must independently match principal, tenant, campaign, workspace, action, resource, purpose, validity, and revocation state.
 
-Unavailable future modules render as disabled labels, not optimistic links.
+Only implemented, server-authorized destinations render as links. Missing modules such as Administration are omitted rather than presented as inert labels.
 
 ## Modes
 
@@ -81,8 +81,13 @@ Unavailable future modules render as disabled labels, not optimistic links.
 
 - requires `CAMPAIGNOS_API_BASE_URL`;
 - requires a verified server-side session for protected content;
-- fails closed to unauthenticated, context-required, empty, or dependency-unavailable states;
+- supports authorized campaign selection plus guided-intake start/update through server-side POST boundaries;
+- uses `If-Match` and `Idempotency-Key` for versioned writes;
+- enforces same-origin browser submissions and re-authorizes every action in FastAPI;
+- fails closed to unauthenticated, context-required, empty, conflict, validation or dependency-unavailable states;
 - shared/production environments require a non-local HTTPS API.
+
+A development-only verifier can be enabled for the local functional journey. It is mutually exclusive with OIDC, accepted only in the `development` environment, carries no roles or grants, and never exposes its token to HTML or browser storage. Exact grants remain persisted and server-owned.
 
 ### `demo_read_only`
 
@@ -109,7 +114,7 @@ The local nested Docker daemon cannot prepare the complete Compose stack in this
 
 ## External effects
 
-The shell is observation-only in this increment. It cannot:
+The live onboarding journey can mutate only the internal guided-intake aggregate. It cannot:
 
 - create or approve political decisions;
 - publish content;

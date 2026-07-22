@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-21",
-  "branch": "agent/c3-sec-001-security-privacy-baseline",
-  "current_increment": "C3-SEC-001",
-  "iteration_status": "CI_GREEN",
+  "updated_at": "2026-07-22",
+  "branch": "agent/c3-front-002-functional-onboarding",
+  "current_increment": "C3-FRONT-002",
+  "iteration_status": "VERIFIED_POSTGRESQL",
   "production_status": "BLOCKED",
   "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. A plan-only Terraform baseline, mocked plans and repository policy checks are tested locally, but no AWS account, remote state, live plan/apply, dev/staging/production environment, backup/restore, production observability, historical-run supersession or independent human production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "DYNAMIC_SHELL_DRAFT_PR_CI_GREEN",
-      "next_increment": "C3-ONBOARD-001"
+      "status": "FUNCTIONAL_ONBOARDING_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-FRONT-002"
     },
     {
       "id": "WS-07",
@@ -238,9 +238,9 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 652,
+    "tests_passed": 658,
     "tests_skipped": 10,
-    "coverage_percent": 90.95,
+    "coverage_percent": 90.92,
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_10_SLICES_REVISION_20260721_0011",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
@@ -320,7 +320,13 @@
     "security_postgresql_ci": "PASS_JOB_89002561460",
     "security_stack_e2e_ci": "PASS_JOB_89002561484",
     "security_frontend_ci": "PASS_JOB_89002561435",
-    "security_supply_chain_ci": "PASS_JOB_89002561411"
+    "security_supply_chain_ci": "PASS_JOB_89002561411",
+    "frontend_tests": 60,
+    "front_002_postgresql": "PASS_10_SLICES_TWICE",
+    "front_002_demo_browser": "PASS_READ_ONLY",
+    "front_002_functional_browser": "PASS_START_UPDATE_RELOAD_ES_EN_MOBILE_ZERO_AXE",
+    "front_002_frontend_image": "PASS_UID_10001",
+    "front_002_dependency_audit": "PASS_ZERO_VULNERABILITIES"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -362,14 +368,10 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-SEC-001",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-sec-001-security-privacy-baseline",
-    "base": "agent/c3-infra-001-plan-only-baseline@c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-    "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
-    "draft_pr": 105,
-    "ci_run_id": 29943367172,
-    "visual_run_id": 29943367823,
+    "id": "C3-FRONT-002",
+    "state": "VERIFIED_POSTGRESQL",
+    "branch": "agent/c3-front-002-functional-onboarding",
+    "base": "agent/c3-sec-001-security-privacy-baseline@e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -389,18 +391,15 @@
     "base": "agent/c3-infra-001-plan-only-baseline",
     "base_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
     "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
-    "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+    "receipt_commit": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
+    "head_commit": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
     "draft_pr": 105,
-    "ci_run_id": 29943367172,
-    "visual_run_id": 29943367823,
-    "postgresql_job_id": 89002561460,
-    "e2e_job_id": 89002561484,
-    "frontend_job_id": 89002561435,
-    "supply_chain_job_id": 89002561411,
+    "ci_run_id": 29943743735,
+    "visual_run_id": 29943743794,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
     "external_effects": "NONE",
-    "next_increment": "C3-OBS-001"
+    "next_increment": "C3-FRONT-002"
   },
   "production_blockers": []
 }

@@ -101,3 +101,27 @@ def test_smtp_configuration_is_all_or_none() -> None:
 
     settings = Settings(smtp_host="mailpit", smtp_port=1025, smtp_from="app@localhost")
     assert settings.smtp_configured
+
+
+def test_development_identity_is_local_only_and_mutually_exclusive_with_oidc() -> None:
+    token = "campaignos-local-development-token"  # noqa: S105 - explicit local fixture.
+    settings = Settings(development_access_token=token)
+
+    assert settings.development_identity_configured
+    assert str(settings.development_access_token) == "**********"
+
+    with pytest.raises(ValidationError, match="development environment"):
+        Settings(environment=Environment.TEST, development_access_token=token)
+
+    with pytest.raises(ValidationError, match="cannot be combined"):
+        Settings(
+            development_access_token=token,
+            oidc_issuer="https://identity.example.test/",
+            oidc_audience="campaignos",
+            oidc_jwks_url="https://identity.example.test/.well-known/jwks.json",
+        )
+
+
+def test_development_identity_rejects_short_token() -> None:
+    with pytest.raises(ValidationError, match="at least 24 characters"):
+        Settings(development_access_token="too-short")  # noqa: S106 - invalid fixture.

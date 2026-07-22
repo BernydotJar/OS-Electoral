@@ -75,10 +75,44 @@ const es = {
     workspaceCount: "Workspaces activos",
     limitations: "Limitaciones obligatorias",
   },
+  campaigns: {
+    eyebrow: "CONTEXTO DE CAMPAÑA",
+    title: "Elige la campaña de trabajo",
+    body:
+      "La selección cambia únicamente el contexto visible. El backend vuelve a validar cada grant y alcance.",
+    current: "Campaña actual",
+    selectLabel: "Campaña autorizada",
+    apply: "Usar esta campaña",
+    help: "Sólo aparecen campañas visibles para la sesión verificada.",
+  },
+  notices: {
+    campaign_selected: "Contexto de campaña actualizado.",
+    intake_started: "Intake iniciado y guardado en PostgreSQL.",
+    intake_saved: "Cambios guardados con nueva versión.",
+    authorization_denied: "La sesión no tiene autorización exacta para esta acción.",
+    conflict: "El registro cambió o la solicitud ya fue utilizada. Recarga y revisa la versión.",
+    validation_error: "Revisa los campos señalados y vuelve a intentar.",
+    dependency_failure: "Una dependencia no está disponible. No se guardaron cambios parciales.",
+    unauthenticated: "La sesión ya no es válida.",
+    not_found: "El recurso solicitado no está disponible en este contexto.",
+    request_failed: "La solicitud no pudo completarse de forma segura.",
+  },
   intake: {
     eyebrow: "INTAKE GUIADO · INVESTIGACIÓN PRIMERO",
     title: "Hoja de ruta para comenzar la campaña",
     body: "Ordena la información mínima antes de investigar, decidir estrategia o activar trabajo externo.",
+    startTitle: "Iniciar el intake verificable",
+    startBody:
+      "Crea el registro interno y su evidencia de auditoría. No inicia estrategia, contacto ni ejecución externa.",
+    startAction: "Iniciar intake",
+    editEyebrow: "EDICIÓN AUTORIZADA",
+    editTitle: "Actualizar información de arranque",
+    editBody:
+      "Cada guardado usa la versión actual y una clave idempotente. Un conflicto nunca sobrescribe silenciosamente.",
+    onePerLine: "Un elemento por línea. Máximo 30.",
+    saveBoundary:
+      "Guardar actualiza sólo el intake interno; no aprueba estrategia ni activa trabajo externo.",
+    saveAction: "Guardar cambios",
     status: "Estado del intake",
     statusLabels: {
       BLOCKED_BY_CAMPAIGN_SETUP: "Bloqueado por configuración de campaña",
@@ -469,10 +503,44 @@ const en: Dictionary = {
     workspaceCount: "Active workspaces",
     limitations: "Mandatory limitations",
   },
+  campaigns: {
+    eyebrow: "CAMPAIGN CONTEXT",
+    title: "Choose the working campaign",
+    body:
+      "Selection changes only the visible context. The backend revalidates every grant and scope.",
+    current: "Current campaign",
+    selectLabel: "Authorized campaign",
+    apply: "Use this campaign",
+    help: "Only campaigns visible to the verified session are listed.",
+  },
+  notices: {
+    campaign_selected: "Campaign context updated.",
+    intake_started: "Intake started and persisted in PostgreSQL.",
+    intake_saved: "Changes saved with a new version.",
+    authorization_denied: "This session lacks exact authorization for the action.",
+    conflict: "The record changed or the request key was reused. Reload and review the version.",
+    validation_error: "Review the fields and try again.",
+    dependency_failure: "A dependency is unavailable. No partial changes were saved.",
+    unauthenticated: "The session is no longer valid.",
+    not_found: "The requested resource is unavailable in this context.",
+    request_failed: "The request could not be completed safely.",
+  },
   intake: {
     eyebrow: "GUIDED INTAKE · RESEARCH FIRST",
     title: "Campaign starting roadmap",
     body: "Structures the minimum information before research, strategy decisions, or external work begins.",
+    startTitle: "Start the verifiable intake",
+    startBody:
+      "Creates the internal record and audit evidence. It does not start strategy, contact, or external execution.",
+    startAction: "Start intake",
+    editEyebrow: "AUTHORIZED EDITING",
+    editTitle: "Update campaign starting information",
+    editBody:
+      "Every save uses the current version and an idempotency key. Conflicts never overwrite silently.",
+    onePerLine: "One item per line. Maximum 30.",
+    saveBoundary:
+      "Saving updates only the internal intake; it does not approve strategy or activate external work.",
+    saveAction: "Save changes",
     status: "Intake status",
     statusLabels: {
       BLOCKED_BY_CAMPAIGN_SETUP: "Blocked by campaign setup",
