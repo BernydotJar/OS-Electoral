@@ -4,7 +4,7 @@ Production remains `BLOCKED`. Risks are not closed by local tests, green draft c
 
 | ID | Severity | Status | Risk | Current controls/evidence | Required treatment | Owner |
 |---|---|---|---|---|---|---|
-| RISK-PLATFORM-001 | CRITICAL | OPEN | No verified AWS dev/staging/production runtime, Terraform baseline, backup or restore evidence exists. | Local runtime, Compose definition, isolated PostgreSQL proof. | Implement reviewed Terraform, verify dev/staging, backup/restore and recovery evidence before any production gate. | WS-12 / WS-14 |
+| RISK-PLATFORM-001 | CRITICAL | REMEDIATION_IN_PROGRESS | A plan-only Terraform baseline is tested, but no verified AWS dev/staging/production runtime, live state, backup restore or recovery evidence exists. | Exact CLI/provider pins, locked modules, two mocked plans, policy tests, local runtime, Compose and isolated PostgreSQL proof. | Human-review/merge IaC, authorize an isolated dev account and cost envelope, then verify live state/plan/apply, smoke/security, backup restore and recovery before any production gate. | WS-12 / WS-14 |
 | RISK-CI-001 | HIGH | RESOLVED | Strict protected main, selected SHA-pinned Actions, vulnerability governance and exact-source-head SBOM/provenance/Sigstore attestation are active. | Versioned policy, 11 tests, 17 live-setting comparisons, CI `29880153335`, job `88799003125` and digest attestation API lookup pass. | Preserve periodic drift verification, required checks and human review; production remains blocked by separate platform/history/environment gates. | WS-02 |
 | RISK-AUDIT-001 | HIGH | OPEN | Audit append-only semantics are application-enforced; privileged direct database mutation could rewrite/delete receipts or chain heads. | Tenant-serialized monotonic hash chain; regression and PostgreSQL tests. | Add database-level mutation denial, privileged-access controls, external integrity anchoring, retention and restore verification. | WS-04 / WS-13 |
 | RISK-EVAL-001 | HIGH | OPEN | Thirteen required evals are `NOT_RUN` and fifteen are only `PARTIAL`; passing implemented slices cannot imply product-wide safety. | Exact fail-closed 33-item catalog; session/invitation remain partial local/PostgreSQL only. | Implement underlying capabilities and independently review every eval to PASS with zero hard-gate failures. | WS-11 / WS-13 / WS-14 |
@@ -49,3 +49,9 @@ Production remains `BLOCKED`. Risks are not closed by local tests, green draft c
 - **Status:** OPEN / non-blocking for continued bounded pre-production development; production-blocking through privacy, observability and human gates.
 - **Evidence:** strict no-tool contracts, prompt-injection guards, append-only journal, exact authorization, one-call idempotent replay and forced RLS pass locally/PostgreSQL with an unavailable no-network provider.
 - **Mitigation:** keep live providers and fallback disabled until processor, residency, retention, no-training, leakage, staging and independent privacy/security reviews pass; require a separate authenticated human-disposition workflow and preserve `authority_effect=NONE`/`external_effects=NONE`.
+
+## C3-INFRA-001 residual risk — validated design without an AWS environment
+
+- **Status:** OPEN / plan-only baseline tested locally; production-blocking through `FND-PLATFORM-001`.
+- **Evidence:** exact Terraform/provider pins, two mocked plan suites, six adversarial policy tests and CI integration pass without AWS credentials or API calls.
+- **Mitigation:** require an approved non-production account, least-privilege OIDC role, reviewed cost envelope, remote-state bootstrap, live plan, controlled apply, smoke/security tests, backup restore and operational acceptance before any environment or production claim.

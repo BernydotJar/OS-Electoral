@@ -453,10 +453,33 @@
     {
       "task_id": "C3-INFRA-001",
       "owner": "WS-12",
-      "status": "READY",
-      "evidence": [],
+      "status": "IN_PROGRESS",
+      "evidence": [
+        ".terraform-version",
+        "infra/terraform/bootstrap/.terraform.lock.hcl",
+        "infra/terraform/bootstrap/main.tf",
+        "infra/terraform/bootstrap/tests/bootstrap.tftest.hcl",
+        "infra/terraform/stacks/platform/.terraform.lock.hcl",
+        "infra/terraform/stacks/platform/backend.tf",
+        "infra/terraform/stacks/platform/main.tf",
+        "infra/terraform/stacks/platform/tests/platform.tftest.hcl",
+        "infra/terraform/modules/security/main.tf",
+        "infra/terraform/modules/network/main.tf",
+        "infra/terraform/modules/runtime/main.tf",
+        "infra/terraform/modules/data/main.tf",
+        "scripts/infra/verify_terraform_policy.py",
+        "backend/tests/test_terraform_policy.py",
+        "docs/operations/terraform-plan-only.md",
+        "docs/testing/c3-infra-001-evidence.md",
+        "program/iterations/c3-infra-001.md",
+        "program/validations/c3-infra-001.json"
+      ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [
+        "Protected main does not yet require Terraform plan-only policy; branch-protection mutation is a human policy gate",
+        "AWS account selection, credentials, remote state, live plan/apply and paid resources are explicitly prohibited",
+        "No dev/staging/production environment, backup restore, observability, load, rollback or independent acceptance exists"
+      ]
     },
     {
       "task_id": "C3-SEC-001",

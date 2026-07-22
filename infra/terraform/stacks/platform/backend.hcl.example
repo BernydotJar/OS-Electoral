@@ -1,0 +1,7 @@
+# Supplied only by an authorized environment owner after state bootstrap approval.
+bucket       = "replace-with-approved-state-bucket"
+key          = "campaignos/dev/platform.tfstate"
+region       = "us-east-1"
+kms_key_id   = "replace-with-approved-state-kms-key-arn"
+encrypt      = true
+use_lockfile = true

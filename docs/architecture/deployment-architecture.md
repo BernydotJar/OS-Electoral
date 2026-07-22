@@ -1,11 +1,11 @@
 # CampaignOS deployment architecture
 
-Status: **PROPOSED TARGET; NOT DEPLOYED**
+Status: **PLAN-ONLY TERRAFORM BASELINE TESTED; NOT DEPLOYED**
 Last updated: `2026-07-19`
 
 ## Current state
 
-The only public surface observed during the foundation audit is a static GitHub Pages demo. It is `DEMO_NON_PRODUCTION`, manual-only, and excluded from all production evidence. A digest-pinned, loopback-only local Compose stack now exercises a non-root API, PostgreSQL, S3Mock and Mailpit with health checks and migration rehearsal. This local stack is developer/test evidence only; the repository still contains no verified AWS environment.
+The only public surface observed during the foundation audit is a static GitHub Pages demo. It is `DEMO_NON_PRODUCTION`, manual-only, and excluded from all production evidence. A digest-pinned, loopback-only local Compose stack exercises a non-root API, PostgreSQL, S3Mock and Mailpit. Exact-pinned Terraform now models state bootstrap plus AWS network, security, runtime and data modules and passes backend-disabled mocked plans. These are developer/review artifacts only; the repository still contains no verified AWS environment or authorized apply.
 
 ## Target AWS baseline
 
@@ -63,3 +63,10 @@ GitHub Actions uses short-lived OIDC federation; static AWS access keys are proh
 - Backups are insufficient until a measured restore has succeeded in an isolated environment.
 
 No part of this target diagram may be cited as implemented without Terraform, deployment, smoke, security, and operational evidence tied to a reviewed commit.
+
+
+## Plan-only implementation boundary — 2026-07-21
+
+The versioned Terraform roots and modules are tested with `mock_provider`, exact locks and a fail-closed policy checker. CI downloads Terraform from the official release archive and verifies its SHA-256 before running only backend-disabled init, validate and tests. No AWS credential or account is consulted.
+
+This evidence does not change the deployment classification. A live state bootstrap, environment-specific plan/apply, cost authorization, smoke/security verification, backup restore and operational acceptance remain mandatory human-gated work.

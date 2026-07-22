@@ -1,12 +1,13 @@
 SHELL := /bin/sh
 
 UV ?= uv
+TERRAFORM ?= terraform
 ENV_FILE ?= $(if $(wildcard .env),.env,.env.example)
 COMPOSE = docker compose --env-file $(ENV_FILE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify
+.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify
 
 help: ## Show the available developer commands.
 	@awk 'BEGIN {FS = ":.*## "; printf "CampaignOS developer commands:\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -68,6 +69,18 @@ supply-chain-evidence: ## Generate reviewable unsigned SBOM and provenance artif
 github-security-verify: ## Compare live GitHub controls with the versioned repository policy.
 	python3 scripts/ci/verify_github_security_settings.py --report artifacts/supply-chain/github-security-report.json
 
+terraform-verify: ## Validate the exact plan-only Terraform baseline without AWS credentials or remote state.
+	@command -v $(TERRAFORM) >/dev/null 2>&1 || { echo "Terraform is required" >&2; exit 1; }
+	@$(TERRAFORM) version | head -n 1 | grep -Fx "Terraform v$$(cat .terraform-version)"
+	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) fmt -check -recursive infra/terraform
+	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/bootstrap init -backend=false -lockfile=readonly -input=false
+	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/bootstrap validate
+	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/bootstrap test -no-color
+	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/stacks/platform init -backend=false -lockfile=readonly -input=false
+	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/stacks/platform validate
+	TF_IN_AUTOMATION=1 AWS_EC2_METADATA_DISABLED=true $(TERRAFORM) -chdir=infra/terraform/stacks/platform test -no-color
+	python3 scripts/infra/verify_terraform_policy.py
+
 migrate: ## Upgrade an explicitly configured database to the reviewed Alembic head.
 	@test -n "$(CAMPAIGNOS_DATABASE_URL)" || { echo "CAMPAIGNOS_DATABASE_URL is required" >&2; exit 1; }
 	CAMPAIGNOS_DATABASE_URL="$(CAMPAIGNOS_DATABASE_URL)" $(UV) run --locked alembic upgrade head
@@ -80,7 +93,7 @@ program-verify: ## Validate machine-readable program truth, required evals and s
 	$(UV) run --locked python scripts/architecture/validate_eval_catalog.py
 	$(UV) run --locked python scripts/campaign/scan_c2_safety.py
 
-verify: compose-config supply-chain-verify lint format-check typecheck test frontend-verify program-verify ## Validate all local quality gates.
+verify: compose-config supply-chain-verify terraform-verify lint format-check typecheck test frontend-verify program-verify ## Validate all local quality gates.
 
 compose-config: ## Validate the fully interpolated Compose model.
 	@test -f "$(ENV_FILE)" || { echo "Missing ENV_FILE: $(ENV_FILE)" >&2; exit 1; }

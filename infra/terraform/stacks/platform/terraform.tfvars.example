@@ -1,0 +1,19 @@
+# Example plan inputs only. Services remain disabled and no apply is authorized.
+aws_region        = "us-east-1"
+aws_partition     = "aws"
+environment       = "dev"
+environment_owner = "platform-team"
+availability_zones = [
+  "us-east-1a",
+  "us-east-1b",
+]
+vpc_cidr             = "10.42.0.0/16"
+artifact_bucket_name  = "replace-with-globally-unique-campaignos-dev-artifacts"
+database_identifier   = "campaignos-dev"
+database_instance_class = "db.t4g.small"
+database_multi_az       = false
+backend_image  = "example.invalid/campaignos-backend@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+frontend_image = "example.invalid/campaignos-frontend@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+certificate_arn = null
+enable_services = false
+log_retention_days = 30

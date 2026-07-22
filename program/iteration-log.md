@@ -395,3 +395,13 @@
 - Resolved `FND-CI-001`, `FND-DEPLOY-001`, `FND-SUPPLY-001` and `RISK-CI-001`.
 - `C3-CI-001` is `CI_GREEN`; `C3-INFRA-001` is plan-only `READY`.
 - Production remains `BLOCKED`; no merge, deployment, Terraform apply or paid resource occurred.
+
+## C3-INFRA-001 local plan-only checkpoint — 2026-07-21
+
+- Added exact-pinned Terraform bootstrap and platform roots for KMS/S3 state, VPC/endpoints, ECS/ECR/ALB, private RDS and private application storage.
+- Corrected four ECS HCL schema defects exposed by real Terraform validation.
+- Passed bootstrap and platform mocked plan tests with backend disabled and no AWS credentials.
+- Added deterministic policy enforcement and six adversarial tests that reject apply/state mutation, mutable providers, public RDS, ECS Exec and local state artifacts.
+- Added the desired universal CI check `Terraform plan-only policy`; protected-main enforcement remains a human-gated policy change.
+- Full regression passes 645 tests, 9 skips, 90.95% coverage, 48 frontend tests and nine PostgreSQL slices twice.
+- Status is `TESTED_LOCAL`; no apply, AWS resource, cost, deployment or external effect occurred, and production remains `BLOCKED`.

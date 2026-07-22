@@ -43,7 +43,7 @@ Important limits:
 | WS-09 | Strategy and Decision Governance | Evidence-first Decision Room PR #96 is exact-head CI-green; exact human receipt implemented, external effects disabled | C3-API-001 |
 | WS-10 | Roadmap, War Room and Campaign Health | Durable roadmap and immutable Daily War Room verified locally/PostgreSQL/browser; publication and operations follow-up pending | C3-OPS-002 |
 | WS-11 | Agent Runtime, Guardrails and Evals | Bounded provider-neutral no-tool runtime PR #98 is exact-head CI-green; no live provider, privacy approval or human disposition UI | C3-CI-001 |
-| WS-12 | AWS Platform and Terraform | Dependencies CI-green; plan-only Terraform baseline executable next, apply and paid resources prohibited | C3-INFRA-001 |
+| WS-12 | AWS Platform and Terraform | Exact-pinned bootstrap/platform Terraform and mocked plans tested locally; no AWS account, apply or environment evidence | C3-INFRA-001 |
 | WS-13 | Security, Privacy and Compliance | Partial policy prototype | C3-SEC-001 |
 | WS-14 | Testing, Observability and Operations | In-memory tests only | C3-OBS-001 |
 | WS-15 | Documentation, Migration and Release | Active | C3-RELEASE-001 |

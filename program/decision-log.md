@@ -290,3 +290,9 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** `provenance.intoto.json` is a deterministic in-toto/SLSA statement and is explicitly marked unsigned as an embedded document. Signature evidence exists only when GitHub's SHA-pinned attestation action completes through OIDC for the exact subjects.
 - **Evidence:** supply-chain generator, evidence report, workflow attestation step and deterministic tests.
 - **Consequence:** Local generation cannot be cited as a signature; failed or skipped attestation prevents the signing gate from becoming green.
+
+## 2026-07-21 — Terraform evidence is plan-only and never deployment authority
+
+- **Decision:** Version the target AWS architecture as exact-pinned Terraform modules, but allow automated execution only through backend-disabled initialization, validation, mocked plans and deterministic policy checks.
+- **Evidence:** `.terraform-version`, provider lockfiles, bootstrap/platform mock tests, `scripts/infra/verify_terraform_policy.py` and `docs/testing/c3-infra-001-evidence.md`.
+- **Consequence:** No AWS credential, account, remote state or billable resource is required. `apply`, destructive/state commands, public data resources, mutable images/providers, ECS Exec and unsafe task settings fail closed. Any live plan/apply remains a separate explicit human gate.

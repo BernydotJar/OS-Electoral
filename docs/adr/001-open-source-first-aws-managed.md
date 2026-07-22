@@ -1,6 +1,6 @@
 # ADR 001: Open-source-first application on AWS managed services
 
-Status: **PROPOSED**
+Status: **PLAN-ONLY BASELINE IMPLEMENTED; LIVE ENVIRONMENTS NOT AUTHORIZED**
 Date: `2026-07-19`
 
 ## Context
@@ -20,3 +20,8 @@ Application authorization, tenant semantics, domain models, provider interfaces,
 - No service is “implemented” because it appears in this ADR; reviewed IaC and environment evidence are required.
 - A material provider substitution requires compatibility tests and an ADR update.
 - Production apply remains human-gated.
+
+
+## Implementation note — 2026-07-21
+
+Terraform now encodes the bounded ECS/ECR/ALB, VPC/endpoints, KMS/S3 and private RDS target with exact CLI/provider pins and mocked plan tests. Services remain disabled by default. The implementation is not an AWS deployment receipt and does not authorize remote state creation, credentials, apply or spending.
