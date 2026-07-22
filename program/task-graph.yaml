@@ -189,7 +189,7 @@
       "id": "C3-INFRA-001",
       "workstream": "WS-12",
       "title": "Terraform AWS dev baseline with remote state and least privilege",
-      "status": "READY",
+      "status": "IN_PROGRESS",
       "depends_on": [
         "C3-CI-001",
         "C3-API-001"

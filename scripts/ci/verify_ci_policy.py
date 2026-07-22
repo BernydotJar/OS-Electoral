@@ -36,10 +36,10 @@ def _owner_allowed(reference: str, policy: dict[str, object]) -> bool:
         action.startswith("actions/") or action.startswith("github/")
     ):
         return True
-    return any(
-        fnmatch.fnmatch(reference, str(pattern))
-        for pattern in policy["allowed_action_patterns"]  # type: ignore[union-attr]
-    )
+    patterns = policy.get("allowed_action_patterns")
+    if not isinstance(patterns, list):
+        return False
+    return any(fnmatch.fnmatch(reference, str(pattern)) for pattern in patterns)
 
 
 def verify(root: Path) -> dict[str, object]:
@@ -98,6 +98,14 @@ def verify(root: Path) -> dict[str, object]:
         "name: campaignos-supply-chain-evidence",
         "path: artifacts/supply-chain/",
         "if-no-files-found: error",
+        "terraform-plan-policy:",
+        "name: Terraform plan-only policy",
+        'TERRAFORM_VERSION: "1.15.8"',
+        (
+            "TERRAFORM_LINUX_AMD64_SHA256: "
+            '"d25ce7b6902013ad905db3d2eab0be4cd905887fe88b81a6171b8d5503c31f3d"'
+        ),
+        "make terraform-verify",
     )
     for fragment in required_fragments:
         if fragment not in ci_text:
@@ -134,13 +142,17 @@ def main() -> int:
     report = verify(args.repo_root.resolve())
     _write_report(args.report, report)
     if report["result"] != "PASS":
-        for error in report["errors"]:  # type: ignore[union-attr]
-            print(f"[ERROR] {error}")
+        errors = report.get("errors")
+        if isinstance(errors, list):
+            for error in errors:
+                print(f"[ERROR] {error}")
         return 1
+    required_checks = report.get("required_status_checks")
+    required_count = len(required_checks) if isinstance(required_checks, list) else 0
     print(
         "[OK] CI policy verified; "
         f"workflows={report['workflow_count']}; actions={report['action_reference_count']}; "
-        f"required_checks={len(report['required_status_checks'])}; production=BLOCKED"
+        f"required_checks={required_count}; production=BLOCKED"
     )
     return 0
 

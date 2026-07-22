@@ -65,14 +65,14 @@ No row marked `PARTIAL` is counted as production-ready.
 |---|---|---:|---|
 | Reproducible local development | Exact Python/tool pins, `uv.lock`, Make targets, `.env.example` and an enforced 90% coverage floor are verified | PASS | Re-run on supported clean developer hosts when pins change |
 | Docker Compose baseline | Pinned API/PostgreSQL/S3Mock/Mailpit stack, initial bucket, migrations, health and hermetic E2E pass | PASS | Keep local-only classification; production adapters are separate gates |
-| Terraform modules | No `infra/` at assessment point | NOT_IMPLEMENTED | Required reusable modules with pinned providers |
-| Separate dev/staging/prod state | None | NOT_IMPLEMENTED | Separate credentials/state, encryption and locking |
-| AWS dev | AWS session expired; no IaC evidence | NOT_VERIFIED | Reviewed plan/apply and smoke evidence |
+| Terraform modules | Exact Terraform `1.15.8`, AWS provider `6.55.0`, locked bootstrap/platform roots, reusable modules, mocked plans and fail-closed policy checks | PARTIAL | Human review/merge, approved account/OIDC role, live plan and controlled environment evidence |
+| Separate dev/staging/prod state | Private encrypted S3/KMS bootstrap and partial S3 backend with lockfile are modeled; no backend is created or initialized remotely | PARTIAL | Approved per-environment accounts/roles/state resources, live locking and access-control evidence |
+| AWS dev | Plan-only IaC and mocks exist; no AWS account, credential, live provider plan, apply or runtime exists | NOT_VERIFIED | Authorized account/OIDC role, reviewed live plan/apply, smoke/security and cost evidence |
 | AWS staging | None | NOT_IMPLEMENTED | Migration, security, load, restore and agent-eval evidence |
 | AWS production | No approved deployment | BLOCKED | All gates plus explicit human approval |
-| PR CI | PRs `#72`, `#73`, `#83` are merged; draft stack through `#99` is based correctly and exact-head CI-green; protected main requires eight universal checks including signed supply-chain evidence | PARTIAL | Obtain human review/merge across the stack |
+| PR CI | PRs `#72`, `#73`, `#83` are merged; draft stack through `#99` is exact-head CI-green; the C3-INFRA branch defines a ninth plan-only Terraform check | PARTIAL | Publish C3-INFRA, pass exact-head CI/E2E, human-review the stack and separately authorize the protected-main check change |
 | Main CI | CampaignOS CI push run `29803405277` succeeded at `main@d0719c9`; no controlled environment deployment follows it | PARTIAL | Required-check enforcement, immutable artifact evidence, controlled dev deployment and post-deploy verification |
-| Branch protection | Authenticated API and exact-head CI verify strict eight-check main protection, one approval, stale-review dismissal, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions and mandatory SHA pinning | PASS | Preserve settings through periodic drift verification and human review |
+| Branch protection | Authenticated API verifies strict eight-check main protection, one approval, stale-review dismissal, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions and mandatory SHA pinning; desired policy now includes a ninth Terraform check | PARTIAL | Human-authorized update to require the Terraform check after its exact-head CI context exists, then verify drift |
 | Staging promotion | None | NOT_IMPLEMENTED | Controlled candidate promotion and manual acceptance |
 | Production rollout/rollback | None | NOT_IMPLEMENTED | Backup, migration, progressive rollout, health and rollback criteria |
 | Deployment runbook | Narrow operator guide | PARTIAL | Environment-specific deploy procedure and evidence capture |

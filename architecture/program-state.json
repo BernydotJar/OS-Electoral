@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-ci-001-supply-chain-policy",
+  "source_branch": "agent/c3-infra-001-plan-only-baseline",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -784,7 +784,7 @@
     {
       "id": "WS-12",
       "name": "AWS Platform and Terraform",
-      "status": "PLAN_ONLY_EXECUTABLE_NEXT",
+      "status": "PLAN_ONLY_TESTED_LOCAL",
       "next_increment": "C3-INFRA-001"
     },
     {
@@ -952,7 +952,7 @@
     },
     {
       "id": "C3-INFRA-001",
-      "status": "EXECUTABLE_NEXT",
+      "status": "ACTIVE",
       "depends_on": [
         "C3-CI-001",
         "C3-API-001"
@@ -1005,8 +1005,8 @@
       "id": "FND-PLATFORM-001",
       "severity": "CRITICAL",
       "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "A local API/PostgreSQL runtime now exists, but Terraform, independently verified AWS environments, backup/restore and a production runtime do not.",
-      "evidence": "program/production-gap-matrix.md"
+      "summary": "A plan-only Terraform baseline is tested with mocks and policy checks, but no independently verified AWS environment, backup/restore or production runtime exists.",
+      "evidence": "docs/testing/c3-infra-001-evidence.md"
     },
     {
       "id": "FND-CI-001",
@@ -1227,18 +1227,17 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-CI-001",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-ci-001-supply-chain-policy",
-      "base": "agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb",
-      "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
-      "draft_pr": 99,
-      "ci_run_id": 29880153335,
-      "visual_run_id": 29880153340,
-      "supply_chain_job_id": 88799003125,
-      "attestation": "EXACT_SOURCE_HEAD_VERIFIED",
+      "id": "C3-INFRA-001",
+      "state": "TESTED_LOCAL",
+      "branch": "agent/c3-infra-001-plan-only-baseline",
+      "base": "agent/c3-ci-001-supply-chain-policy@e4c590389cf7cd8207c5e61eddef9a540767c929",
+      "execution_mode": "PLAN_ONLY_NO_APPLY",
+      "cost_authorization": "PROHIBITED",
+      "desired_required_checks": 9,
+      "live_required_checks": 8,
+      "branch_protection_change": "HUMAN_POLICY_GATE",
       "production_status": "BLOCKED",
-      "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY"
+      "external_effects": "NONE"
     },
     "latest_checkpoint": {
       "id": "C3-CI-001",
@@ -1247,15 +1246,16 @@
       "base_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
       "implementation_commit": "26b8e24f03e16c309ad20976bd8632627ecd734f",
       "exact_head_fix_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
-      "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "receipt_commit": "e4c590389cf7cd8207c5e61eddef9a540767c929",
+      "head_commit": "e4c590389cf7cd8207c5e61eddef9a540767c929",
       "draft_pr": 99,
-      "ci_run_id": 29880153335,
-      "visual_run_id": 29880153340,
-      "supply_chain_job_id": 88799003125,
-      "supply_chain_artifact_id": 8514429538,
-      "attested_subject_sha256": "68cd72f616ef5853bb59cfd7d8ecce49980c9b2d5213ec73013ec0bef58693d0",
+      "ci_run_id": 29880443033,
+      "visual_run_id": 29880443024,
+      "supply_chain_job_id": 88799915135,
+      "supply_chain_artifact_id": 8520856929,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
+      "attestation": "PASS_EXACT_SOURCE_HEAD_SIGSTORE_REKOR",
       "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY",
       "next_increment": "C3-INFRA-001"
     },
@@ -1417,7 +1417,7 @@
     },
     {
       "id": "terraform",
-      "status": "NOT_IMPLEMENTED"
+      "status": "PARTIAL"
     },
     {
       "id": "dev-staging-prod",

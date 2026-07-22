@@ -9,7 +9,8 @@
     "Dynamic frontend contracts and browser review",
     "Repository secret scan",
     "CodeQL Python and JavaScript analysis",
-    "Constrained local stack E2E"
+    "Constrained local stack E2E",
+    "Terraform plan-only policy"
   ],
   "allowed_action_patterns": [
     "astral-sh/setup-uv@*",

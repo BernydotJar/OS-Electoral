@@ -4,7 +4,7 @@ Assessment date: `2026-07-21 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack `#84` through `#98`; final Agent receipt `agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb` is exact-head CI-green; active increment is `agent/c3-ci-001-supply-chain-policy`.
+Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack through `#99`; C3-CI final receipt `agent/c3-ci-001-supply-chain-policy@e4c590389cf7cd8207c5e61eddef9a540767c929` is exact-head CI-green and attested; active increment is `agent/c3-infra-001-plan-only-baseline`.
 
 ## Executive determination
 
@@ -25,7 +25,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - PR `#89` at `437b469` passed CampaignOS CI `29856835515` and visual review `29856835522`.
 - Twenty-four non-PR issues remain open.
 - Authenticated settings now verify strict protected-main checks, one approval, admin enforcement, linear history, no force push/deletion, selected Actions with mandatory SHA pinning, vulnerability alerts and automated security fixes.
-- Deterministic SBOM/provenance and keyless GitHub OIDC/Sigstore attestations pass for exact source head `0501c4b`; protected-main and Action policy match versioned desired state.
+- Deterministic SBOM/provenance and keyless GitHub OIDC/Sigstore attestations pass for C3-CI final receipt `e4c5903`. The C3-INFRA branch adds a desired ninth Terraform check; protected `main` still requires eight, so that setting remains a human policy gate.
 - No force-push, merge or deployment occurred.
 
 ## Current verification
@@ -33,7 +33,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - `make verify`: PASS.
 - Ruff lint and format: PASS.
 - strict mypy: PASS across 63 source files.
-- Full locked suite: `639 passed`, `9 skipped`.
+- Full locked suite: `645 passed`, `9 skipped`.
 - Enforced coverage: `90.95%` with `fail_under=90`.
 - Isolated PostgreSQL gate reaches revision `20260721_0010` and is reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
 - PostgreSQL evidence covers forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, campaign/candidate/team/roadmap concurrency, exact replay, optimistic versions and immutable daily snapshots.
@@ -41,6 +41,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - Frontend exact-head PR CI and automated browser/WCAG review: PASS.
 - Program truth: PASS with five open CRITICAL/HIGH findings and six retained historical failed runs.
 - Required eval inventory: `5 PASS`, `15 PARTIAL`, `13 NOT_RUN`; production remains blocked.
+- Terraform `1.15.8` and AWS provider `6.55.0` are exact-pinned; bootstrap/platform format, backend-disabled init, validation, mocked plans and six adversarial policy tests PASS without AWS credentials.
 - Campaign safety scan: PASS.
 
 ## Implemented and preserved
@@ -69,7 +70,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - No RDS, dev, staging or production verification of identity lifecycle.
 - Guided intake, Candidate Workspace and Team Builder are draft-PR CI-green; campaign roadmap and Daily War Room are locally/PostgreSQL/browser verified. Authenticated editing/approval, strategy approval, dedicated reviewer separation, durable cross-domain approvals and broader product journeys remain incomplete.
 - Production object storage, attachment safety, external transport, production observability, rate controls and operational administration remain incomplete.
-- No Terraform baseline, verified AWS environment, backup/restore, load, rollback or disaster-recovery evidence.
+- A plan-only Terraform baseline is tested locally, but no verified AWS account, remote state, live plan/apply, dev/staging/production runtime, backup/restore, load, rollback or disaster-recovery evidence exists.
 - Main protection, restricted SHA-pinned Actions, vulnerability governance and exact-source-head supply-chain attestation are active; human review/merge and production environment gates remain pending.
 - Six historical failures and five CRITICAL/HIGH findings remain explicit production blockers.
 - No independent security, privacy, accessibility, domain, legal or human production approval is recorded.
@@ -91,7 +92,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 15 PARTIAL / 13 NOT_RUN` |
 | Repository protection and supply chain | strict protected main, selected SHA-pinned Actions, vulnerability governance, deterministic SBOM/provenance and exact-head Sigstore/Rekor attestations | `CI_GREEN`; human review/merge and production image/environment evidence pending |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
-| AWS/operations | no verified environment, backup/restore or observability | `NOT_VERIFIED` / `NOT_IMPLEMENTED` |
+| AWS/operations | exact-pinned plan-only Terraform, two mocked plans and policy tests; no live environment, backup restore or observability | `TESTED_LOCAL` design / runtime `NOT_VERIFIED` |
 
 ## Historical validation requiring explicit supersession
 
@@ -110,9 +111,9 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Begin `C3-INFRA-001` as Terraform validation/plan-only work; do not apply or create paid resources.
-2. Add live-provider/privacy work only under a separate reviewed increment after processor, residency, retention and leakage controls are accepted.
-3. Add human disposition UI separately; keep tools and external effects disabled.
+1. Publish `C3-INFRA-001`, require exact-head Terraform/quality/E2E success, and preserve the branch-protection update as a separate human policy gate.
+2. Continue `C3-SEC-001` only after the plan-only infrastructure checkpoint is CI-green; keep AWS apply and spending prohibited.
+3. Add live-provider/privacy or human-disposition work only in separate reviewed increments; keep tools and external effects disabled.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
 
@@ -163,3 +164,14 @@ Production deployment remains prohibited until every production gate passes and 
 - `FND-CI-001`, `FND-DEPLOY-001` and `FND-SUPPLY-001` are resolved.
 - Two CRITICAL/HIGH findings and six historical failed runs remain; production stays `BLOCKED`.
 - `C3-INFRA-001` is executable next only for plan/validation work. No Terraform apply or paid resource is authorized.
+
+
+## C3-INFRA-001 local plan-only checkpoint — 2026-07-21
+
+- Added Terraform `1.15.8` with AWS provider `6.55.0`, exact locks and official CLI archive checksums.
+- Added state bootstrap plus security, network, runtime and data modules for the proposed AWS target.
+- Passed backend-disabled init/validate and mocked plan tests for bootstrap and platform with no AWS credential or API call.
+- Corrected ECS HCL schema defects found by real Terraform validation and made IAM/ECR/task policy evidence deterministic under mocks.
+- Added six adversarial policy tests and a universal CI job that rejects apply/state mutation, public RDS, mutable providers, ECS Exec and local state artifacts.
+- Desired repository policy now has nine checks; protected `main` still has eight. Changing it is a human policy gate and was not performed.
+- Status is `TESTED_LOCAL`; no remote state, AWS environment, apply, paid resource, deployment or external effect occurred. Production remains `BLOCKED`.

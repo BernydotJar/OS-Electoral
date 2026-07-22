@@ -1,0 +1,5 @@
+# Example only. Applying this stack is prohibited without explicit environment-owner approval.
+aws_region        = "us-east-1"
+project_name      = "campaignos"
+state_bucket_name = "replace-with-globally-unique-campaignos-tfstate"
+environment_owner = "platform-team"

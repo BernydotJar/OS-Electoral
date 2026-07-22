@@ -100,7 +100,7 @@
     "Six historical failed runs remain production-blocking",
     "No published production image scan/signature, AWS environment, deployment or rollback evidence exists"
   ],
-  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR_EXACT_SOURCE_HEAD_ATTESTED",
+  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR_FINAL_RECEIPT_EXACT_HEAD_ATTESTED",
   "superseded_scope_insufficient_evidence": [
     {
       "run_id": 29879794354,
@@ -115,8 +115,11 @@
   ],
   "implementation_commit": "26b8e24f03e16c309ad20976bd8632627ecd734f",
   "exact_head_fix_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
-  "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+  "head_commit": "e4c590389cf7cd8207c5e61eddef9a540767c929",
   "draft_pr": 99,
-  "ci_run_id": 29880153335,
-  "visual_run_id": 29880153340
+  "ci_run_id": 29880443033,
+  "visual_run_id": 29880443024,
+  "receipt_commit": "e4c590389cf7cd8207c5e61eddef9a540767c929",
+  "supply_chain_job_id": 88799915135,
+  "supply_chain_artifact_id": 8520856929
 }
