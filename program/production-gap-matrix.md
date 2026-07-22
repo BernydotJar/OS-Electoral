@@ -57,7 +57,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | SAST | Pinned CodeQL succeeds at recorded heads and is a required protected-main check | PARTIAL | Define alert ownership/triage SLA and independent security acceptance |
 | Dependency scan | Hash lock, production-only `pip-audit`, npm audit, Dependabot updates, vulnerability alerts and automated security fixes are active; the locked audit is required on protected main | PARTIAL | Define alert/update ownership, SLA and production artifact scanning |
 | Secret scan | GitHub scanning/push protection was observed previously; full-range CI scans and local Gitleaks `8.30.1` snapshot/stack scans pass | PARTIAL | Reverify repository settings with authenticated access, require the check and complete the response runbook |
-| SBOM and image signing | Deterministic CycloneDX 1.6 SBOM, tracked-source manifest, in-toto/SLSA provenance, checksums and SHA-pinned GitHub OIDC attestation job pass locally; exact-head attestation pending | PARTIAL | Observe signed exact-head evidence, add published-image SBOM/signature/scan and define production retention/verification policy |
+| SBOM and image signing | Deterministic CycloneDX 1.6 SBOM, tracked-source manifest, in-toto/SLSA provenance, checksums and exact-source-head GitHub OIDC/Sigstore attestations pass | PARTIAL | Add published-image SBOM/signature/scan and define production retention/verification policy |
 
 ## Platform and delivery gates
 
@@ -70,9 +70,9 @@ No row marked `PARTIAL` is counted as production-ready.
 | AWS dev | AWS session expired; no IaC evidence | NOT_VERIFIED | Reviewed plan/apply and smoke evidence |
 | AWS staging | None | NOT_IMPLEMENTED | Migration, security, load, restore and agent-eval evidence |
 | AWS production | No approved deployment | BLOCKED | All gates plus explicit human approval |
-| PR CI | PRs `#72`, `#73`, `#83` are merged; draft stack through `#98` is based correctly and exact-head CI-green; protected main requires eight universal checks | PARTIAL | Obtain human review/merge across the stack and observe the new supply-chain attestation check on the published CI head |
+| PR CI | PRs `#72`, `#73`, `#83` are merged; draft stack through `#99` is based correctly and exact-head CI-green; protected main requires eight universal checks including signed supply-chain evidence | PARTIAL | Obtain human review/merge across the stack |
 | Main CI | CampaignOS CI push run `29803405277` succeeded at `main@d0719c9`; no controlled environment deployment follows it | PARTIAL | Required-check enforcement, immutable artifact evidence, controlled dev deployment and post-deploy verification |
-| Branch protection | Authenticated API verifies strict eight-check main protection, one approval, stale-review dismissal, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions and mandatory SHA pinning | PARTIAL | Preserve settings through exact-head CI, human review and periodic drift verification |
+| Branch protection | Authenticated API and exact-head CI verify strict eight-check main protection, one approval, stale-review dismissal, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions and mandatory SHA pinning | PASS | Preserve settings through periodic drift verification and human review |
 | Staging promotion | None | NOT_IMPLEMENTED | Controlled candidate promotion and manual acceptance |
 | Production rollout/rollback | None | NOT_IMPLEMENTED | Backup, migration, progressive rollout, health and rollback criteria |
 | Deployment runbook | Narrow operator guide | PARTIAL | Environment-specific deploy procedure and evidence capture |

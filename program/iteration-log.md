@@ -383,3 +383,15 @@
 - Applied and authenticated strict main protection, one review, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions, mandatory SHA pins, vulnerability alerts and automated security fixes.
 - Seventeen live-setting comparisons pass. Exact-head CI/attestation, human review and merge remain pending.
 - Production remains `BLOCKED`; no merge, deployment or paid resource was created.
+
+
+## C3-CI-001 exact-source-head signed checkpoint — 2026-07-21
+
+- Corrected supply-chain checkout and evidence generation to bind explicitly to PR source head `0501c4bd4bfac4a6e762c65aa191cf7290a5d448`.
+- CI `29880153335`, visual `29880153340` and supply-chain job `88799003125` concluded `SUCCESS`; PR #99 is `CLEAN`.
+- Downloaded artifact `8514429538` records `0501c4bd4bfac4a6e762c65aa191cf7290a5d448` in report, source manifest and SLSA external parameters; checksums pass.
+- Four GitHub OIDC/Sigstore attestations were uploaded to Rekor/repository; the SBOM digest REST lookup returns one bundle.
+- Initial run `29879794354` remains recorded as successful but scope-insufficient and is superseded by `29880153335`.
+- Resolved `FND-CI-001`, `FND-DEPLOY-001`, `FND-SUPPLY-001` and `RISK-CI-001`.
+- `C3-CI-001` is `CI_GREEN`; `C3-INFRA-001` is plan-only `READY`.
+- Production remains `BLOCKED`; no merge, deployment, Terraform apply or paid resource occurred.
