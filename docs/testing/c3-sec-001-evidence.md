@@ -66,3 +66,14 @@ Seven adversarial tests demonstrate fail-closed behavior when a required record 
 - Axe WCAG 2.2 A/AA: zero violations. Browser storage, console/page errors and unexpected outbound hosts: empty.
 - Local Compose stack: environment-blocked before service start because the nested Docker daemon cannot register a pulled layer (`lchown /var/empty: permission denied`). This is the existing local namespace limitation, not a product PASS or FAIL.
 - The universal CI `Constrained local stack E2E` remains required on the exact published head.
+
+## Exact-head CI evidence
+
+- Draft PR: `#105`.
+- Head: `ab63e19079ac0828fe3555dbbeb9493e94d02829`.
+- CampaignOS CI: `29943367172`.
+- Runtime visual review: `29943367823`.
+- PostgreSQL job: `89002561460`.
+- Constrained stack E2E job: `89002561484`.
+- Dynamic frontend/browser job: `89002561435`.
+- Supply-chain artifact `8539119822` and frontend artifact `8539168996` are bound to the exact implementation head.

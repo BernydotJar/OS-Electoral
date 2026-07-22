@@ -415,3 +415,11 @@
 - Supply-chain artifact `8515178689` records the exact source head and its SBOM digest has one repository attestation.
 - Recorded `C3-INFRA-001` as `CI_GREEN` and `C3-SEC-001` as `EXECUTABLE_NEXT`.
 - Protected-main ninth-check enforcement remains a human policy gate; no apply, AWS resource, spending or deployment occurred.
+
+
+## 2026-07-22 — C3-SEC-001 CI-green checkpoint
+
+- Recovered the failed Cloud Sandbox executor by migrating the exact worktree to a clean workspace with SHA-256 parity.
+- Added PostgreSQL append-only role denial and executable data policy controls.
+- Passed 652 tests, PostgreSQL twice, browser E2E twice and exact-head CI `29943367172`/visual `29943367823` on PR `#105`.
+- Kept production `BLOCKED`, live processors disabled and external effects `NONE`; selected `C3-OBS-001` next.

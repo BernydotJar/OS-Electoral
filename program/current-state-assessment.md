@@ -116,7 +116,7 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Begin `C3-SEC-001` now that the plan-only infrastructure checkpoint is exact-head CI-green; retain independent review and zero-open-high gates.
+1. Begin `C3-OBS-001` now that Security is exact-head CI-green; retain independent review, backup/restore and zero-open-high gates.
 2. Preserve AWS account selection, credentials, apply, spending and the protected-main ninth-check update as separate human policy gates.
 3. Keep observability/release blocked until Security is CI-green and no environment claim is made.
 
@@ -181,3 +181,12 @@ Production deployment remains prohibited until every production gate passes and 
 - Desired repository policy now has nine checks; protected `main` still has eight. Changing it is a human policy gate and was not performed.
 - Status is `CI_GREEN`; PR `#100` is `CLEAN`, CI `29882176565`, visual `29882176651`, Terraform and final E2E checks passed on `ede3881ee25c61d4a1106a0c2823e944ed7b081d`.
 - `C3-SEC-001` is executable next; no remote state, AWS environment, apply, paid resource, deployment or external effect occurred. Production remains `BLOCKED`.
+
+
+## C3-SEC-001 exact-head CI checkpoint — 2026-07-22
+
+- Revision `20260721_0011` denies non-owner mutation on six append-only evidence journals while preserving explicit owner break-glass.
+- Executable data policy covers 12 record types, seven political/sensitive-data prohibitions and disabled live processors.
+- Local regression passed 652 tests, 10 skips and 90.95% coverage; PostgreSQL passed 10 slices twice; browser E2E passed twice.
+- Draft PR `#105` is `CLEAN`/mergeable at `ab63e19079ac0828fe3555dbbeb9493e94d02829`; CampaignOS CI `29943367172` and visual `29943367823` passed, including remote constrained stack E2E.
+- `C3-OBS-001` is executable next. Production remains `BLOCKED`; no apply, deployment or external effect occurred.
