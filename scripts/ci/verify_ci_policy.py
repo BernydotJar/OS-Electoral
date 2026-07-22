@@ -90,6 +90,8 @@ def verify(root: Path) -> dict[str, object]:
         "name: Software bill of materials and source provenance",
         "python scripts/ci/verify_ci_policy.py",
         "python scripts/ci/generate_supply_chain_evidence.py",
+        "ref: ${{ github.event.pull_request.head.sha || github.sha }}",
+        '--revision "${{ github.event.pull_request.head.sha || github.sha }}"',
         "actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373",
         "attestations: write",
         "id-token: write",

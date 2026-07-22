@@ -23,13 +23,14 @@ Verified on 2026-07-21 from `agent/c3-ci-001-supply-chain-policy`, based on the 
 
 ```yaml
 ci_policy_tests:
-  passed: 10
+  passed: 11
   adversarial_mutations:
     - unpinned action
     - pull_request_target
     - persisted checkout credentials
     - missing required supply-chain job
     - automatic Pages trigger
+    - missing exact PR source-head checkout
 workflow_policy:
   result: PASS
   workflow_count: 3
@@ -63,3 +64,10 @@ program:
 ## Current checkpoint boundary
 
 The repository and administrative controls are verified. `C3-CI-001` remains `IN_PROGRESS` until the published exact head proves that the new universal job generates artifacts and completes GitHub OIDC attestation. Findings `FND-CI-001`, `FND-SUPPLY-001` and `FND-DEPLOY-001` remain remediation-in-progress until that evidence exists.
+
+
+## Initial attestation scope defect and correction
+
+CampaignOS CI run `29879794354` and supply-chain job `88797869680` completed successfully for implementation head `26b8e24f03e16c309ad20976bd8632627ecd734f`. The official GitHub OIDC/Sigstore step created four attestations and uploaded them to Rekor and the repository. However, the generated artifact recorded revision `e4346e591352584a45ef310c564974578998dd3a`, the temporary `refs/pull/99/merge` commit, rather than the PR source head. This evidence is cryptographically valid for the merge ref but insufficient for an exact-source-head claim.
+
+The workflow now checks out `${{ github.event.pull_request.head.sha || github.sha }}` and passes the same expression explicitly to the evidence generator. A sixth mutation test removes that binding and proves the policy verifier fails. The initial run remains recorded as scope-insufficient evidence and does not close the CI or supply-chain findings. A corrected exact-head run is required.

@@ -33,7 +33,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - `make verify`: PASS.
 - Ruff lint and format: PASS.
 - strict mypy: PASS across 63 source files.
-- Full locked suite: `638 passed`, `9 skipped`.
+- Full locked suite: `639 passed`, `9 skipped`.
 - Enforced coverage: `90.95%` with `fail_under=90`.
 - Isolated PostgreSQL gate reaches revision `20260721_0010` and is reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
 - PostgreSQL evidence covers forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, campaign/candidate/team/roadmap concurrency, exact replay, optimistic versions and immutable daily snapshots.
