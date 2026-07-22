@@ -405,3 +405,13 @@
 - Added the desired universal CI check `Terraform plan-only policy`; protected-main enforcement remains a human-gated policy change.
 - Full regression passes 645 tests, 9 skips, 90.95% coverage, 48 frontend tests and nine PostgreSQL slices twice.
 - Status is `TESTED_LOCAL`; no apply, AWS resource, cost, deployment or external effect occurred, and production remains `BLOCKED`.
+
+
+## C3-INFRA-001 published plan-only checkpoint — 2026-07-21
+
+- Published `ede3881ee25c61d4a1106a0c2823e944ed7b081d` in draft PR #100 against the signed C3-CI checkpoint.
+- PR #100 is `CLEAN`; CI `29882176565` and visual `29882176651` concluded `SUCCESS`.
+- Terraform job `88805186841`, constrained stack E2E `88805187008`, dynamic browser review, CodeQL, PostgreSQL, secrets and dependency gates passed.
+- Supply-chain artifact `8515178689` records the exact source head and its SBOM digest has one repository attestation.
+- Recorded `C3-INFRA-001` as `CI_GREEN` and `C3-SEC-001` as `EXECUTABLE_NEXT`.
+- Protected-main ninth-check enforcement remains a human policy gate; no apply, AWS resource, spending or deployment occurred.

@@ -51,3 +51,25 @@ aws_api_calls: NONE_BY_TERRAFORM_TESTS
 - No dev/staging/production runtime, smoke test, backup restore, observability, load, rollback or disaster-recovery evidence exists.
 - No cost estimate is approval to spend.
 - Production remains `BLOCKED` by the platform/environment finding, six historical failed runs and independent human gates.
+
+
+## Published checkpoint receipt
+
+```yaml
+implementation_commit: ede3881ee25c61d4a1106a0c2823e944ed7b081d
+draft_pr: 100
+merge_state: CLEAN
+campaignos_ci_run: 29882176565
+runtime_visual_run: 29882176651
+terraform_job: 88805186841
+constrained_stack_e2e_job: 88805187008
+supply_chain_job: 88805186814
+supply_chain_artifact: 8515178689
+sbom_sha256: deab051c4622170ee1627133cb2c24055a717b5b6bea6d5b9b0d16657262f901
+sbom_attestation_count: 1
+status: CI_GREEN
+execution_mode: PLAN_ONLY_NO_APPLY
+production_status: BLOCKED
+external_effects: NONE
+next_increment: C3-SEC-001
+```

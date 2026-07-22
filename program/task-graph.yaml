@@ -189,7 +189,7 @@
       "id": "C3-INFRA-001",
       "workstream": "WS-12",
       "title": "Terraform AWS dev baseline with remote state and least privilege",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-CI-001",
         "C3-API-001"
@@ -199,7 +199,7 @@
       "id": "C3-SEC-001",
       "workstream": "WS-13",
       "title": "Threat model, privacy controls and security verification gates",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "depends_on": [
         "C3-IAM-001",
         "C3-DATA-001",
