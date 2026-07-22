@@ -222,17 +222,17 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 638,
+    "tests_passed": 639,
     "tests_skipped": 9,
     "coverage_percent": 90.95,
     "coverage_gate": "PASS",
-    "postgresql_integration": "PASS_TWICE_REVISION_20260721_0008_OPERATIONS_RLS_DAG_CONCURRENCY_SNAPSHOTS",
+    "postgresql_integration": "PASS_TWICE_REVISION_20260721_0010_AGENT_RLS_CONCURRENCY",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
-    "frontend_unit_tests": 39,
+    "frontend_unit_tests": 48,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
-    "eval_catalog": "PASS_5_PARTIAL_12_NOT_RUN_16",
+    "eval_catalog": "PASS_5_PARTIAL_15_NOT_RUN_13",
     "gitleaks": "PASS_EFFECTIVE_WORKTREE_AND_ORIGIN_MAIN_TO_HEAD",
     "compose": "LOCAL_NAMESPACE_LIMITATION_REMOTE_CI_GREEN",
     "frontend_image_buildah": "PASS_DOCKER_FORMAT_NONROOT_HEALTHCHECK_SMOKE",
@@ -266,13 +266,13 @@
     "agent_runtime_adversarial_tests": 18,
     "agent_postgresql": "PASS_9_SLICES_TWICE",
     "agent_provider_mode": "UNAVAILABLE_NO_NETWORK",
-    "supply_chain_policy_tests": 10,
+    "supply_chain_policy_tests": 11,
     "workflow_action_refs": 32,
     "required_status_checks": 8,
     "github_security_comparisons": "PASS_17",
     "sbom": "CYCLONEDX_1_6_DETERMINISTIC",
     "provenance": "IN_TOTO_SLSA_V1_DETERMINISTIC",
-    "attestation": "PENDING_EXACT_HEAD_CI"
+    "attestation": "INITIAL_SUCCESS_SCOPE_INSUFFICIENT_CORRECTED_EXACT_HEAD_PENDING"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -319,7 +319,7 @@
     "branch": "agent/c3-ci-001-supply-chain-policy",
     "base": "agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb",
     "github_enforcement": "VERIFIED_LIVE",
-    "attestation": "PENDING_EXACT_HEAD_CI",
+    "attestation": "CORRECTED_EXACT_HEAD_CI_PENDING",
     "production_status": "BLOCKED",
     "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY"
   },

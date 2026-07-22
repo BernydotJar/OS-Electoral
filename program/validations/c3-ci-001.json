@@ -8,7 +8,7 @@
   "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY",
   "results": {
     "ci_policy_tests": {
-      "passed": 10
+      "passed": 11
     },
     "workflow_policy": {
       "result": "PASS",
@@ -56,7 +56,7 @@
       "schema_version": 1
     },
     "pytest": {
-      "passed": 638,
+      "passed": 639,
       "skipped": 9
     },
     "coverage": {
@@ -77,13 +77,31 @@
     "action": "actions/attest-build-provenance",
     "action_commit": "0f67c3f4856b2e3261c31976d6725780e5e4c373",
     "release": "v4.1.1",
-    "status": "PENDING_EXACT_HEAD_CI"
+    "status": "CORRECTED_EXACT_HEAD_CI_PENDING",
+    "initial_run_id": 29879794354,
+    "initial_job_id": 88797869680,
+    "initial_implementation_head": "26b8e24f03e16c309ad20976bd8632627ecd734f",
+    "initial_artifact_revision": "e4346e591352584a45ef310c564974578998dd3a",
+    "initial_scope_result": "SUCCESS_SCOPE_INSUFFICIENT_MERGE_REF",
+    "correction": "CHECKOUT_AND_GENERATOR_BOUND_TO_PR_SOURCE_HEAD"
   },
   "limitations": [
-    "Exact-head GitHub OIDC attestation is pending",
+    "Corrected exact-source-head GitHub OIDC attestation is pending",
     "Human review and merge remain pending",
     "Historical failed runs remain production-blocking",
     "No AWS environment, production image publication, deployment or rollback evidence exists"
   ],
-  "remote_state": "LOCAL_AND_GITHUB_SETTINGS_VERIFIED_PR_PENDING"
+  "remote_state": "INITIAL_ATTESTATION_SCOPE_INSUFFICIENT_CORRECTED_HEAD_PENDING",
+  "superseded_scope_insufficient_evidence": [
+    {
+      "run_id": 29879794354,
+      "job_id": 88797869680,
+      "conclusion": "SUCCESS",
+      "implementation_head": "26b8e24f03e16c309ad20976bd8632627ecd734f",
+      "artifact_revision": "e4346e591352584a45ef310c564974578998dd3a",
+      "scope": "GitHub OIDC attestations were created for artifacts generated from refs/pull/99/merge",
+      "reason": "Artifact revision did not equal the PR source head; exact-head signing claim is not satisfied",
+      "superseded_by": null
+    }
+  ]
 }

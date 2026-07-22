@@ -179,6 +179,12 @@ def test_current_ci_policy_passes() -> None:
             "missing required status check",
         ),
         (
+            "campaignos-ci.yml",
+            "          ref: ${{ github.event.pull_request.head.sha || github.sha }}\n",
+            "",
+            "missing supply-chain control",
+        ),
+        (
             "deploy-pages.yml",
             "  workflow_dispatch:\n",
             "  workflow_dispatch:\n  push:\n",
