@@ -3,7 +3,7 @@
   "verified_at": "2026-07-21",
   "branch": "agent/c3-sec-001-security-privacy-baseline",
   "base": "agent/c3-infra-001-plan-only-baseline@c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-  "status": "TESTED_LOCAL",
+  "status": "CI_GREEN",
   "production_status": "BLOCKED",
   "external_effects": "NONE",
   "results": {
@@ -62,6 +62,29 @@
       "actionlint": "PASS_1_7_12",
       "gitleaks_effective_worktree": "PASS_8_30_1",
       "production_dependency_audit": "PASS_HASH_LOCKED_ZERO_KNOWN_VULNERABILITIES"
+    },
+    "ci": {
+      "result": "PASS_EXACT_HEAD",
+      "head_sha": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+      "campaignos_ci_run_id": 29943367172,
+      "visual_run_id": 29943367823,
+      "jobs": {
+        "supply_chain": 89002561411,
+        "quality": 89002561424,
+        "frontend": 89002561435,
+        "dependency": 89002561445,
+        "terraform": 89002561451,
+        "codeql": 89002561456,
+        "postgresql": 89002561460,
+        "e2e": 89002561484,
+        "secret_scan": 89002561503,
+        "runtime_visual": 89002562606
+      },
+      "artifacts": {
+        "frontend": 8539168996,
+        "supply_chain": 8539119822,
+        "gitleaks": 8539114316
+      }
     }
   },
   "limitations": [
@@ -70,5 +93,10 @@
     "No export, attachment, live processor, rate-limit, incident exercise or production environment evidence",
     "Independent security, privacy, legal and human production approvals are not recorded"
   ],
-  "remote_state": "LOCAL_TESTED_PENDING_COMMIT_PR_EXACT_HEAD_CI"
+  "remote_state": "DRAFT_PR_CI_GREEN_EXACT_HEAD",
+  "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+  "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+  "draft_pr": 105,
+  "ci_run_id": 29943367172,
+  "visual_run_id": 29943367823
 }

@@ -790,13 +790,13 @@
     {
       "id": "WS-13",
       "name": "Security, Privacy and Compliance",
-      "status": "SECURITY_TESTED_LOCAL_CI_PENDING",
+      "status": "SECURITY_CI_GREEN",
       "next_increment": "C3-SEC-001"
     },
     {
       "id": "WS-14",
       "name": "Testing, Observability and Operations",
-      "status": "LOCAL_TEST_AND_CI_FOUNDATION",
+      "status": "OBSERVABILITY_EXECUTABLE_NEXT",
       "next_increment": "C3-OBS-001"
     },
     {
@@ -961,7 +961,7 @@
     },
     {
       "id": "C3-SEC-001",
-      "status": "ACTIVE",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-IAM-001",
         "C3-DATA-001",
@@ -971,7 +971,7 @@
     },
     {
       "id": "C3-OBS-001",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "EXECUTABLE_NEXT",
       "depends_on": [
         "C3-API-001",
         "C3-INFRA-001",
@@ -1102,7 +1102,8 @@
       95,
       96,
       97,
-      98
+      98,
+      105
     ],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
@@ -1220,6 +1221,15 @@
         "head_sha": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
         "campaignos_ci_run_id": 29882414899,
         "conclusion": "SUCCESS"
+      },
+      {
+        "pr": 105,
+        "state": "OPEN_DRAFT",
+        "base": "agent/c3-infra-001-plan-only-baseline",
+        "head": "agent/c3-sec-001-security-privacy-baseline",
+        "head_sha": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+        "campaignos_ci_run_id": 29943367172,
+        "conclusion": "SUCCESS"
       }
     ],
     "git_push_incident": {
@@ -1237,31 +1247,34 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-SEC-001",
-      "state": "TESTED_LOCAL",
+      "state": "CI_GREEN",
       "branch": "agent/c3-sec-001-security-privacy-baseline",
       "base": "agent/c3-infra-001-plan-only-baseline@c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
+      "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+      "draft_pr": 105,
+      "ci_run_id": 29943367172,
+      "visual_run_id": 29943367823,
       "production_status": "BLOCKED",
       "external_effects": "NONE"
     },
     "latest_checkpoint": {
-      "id": "C3-INFRA-001",
-      "branch": "agent/c3-infra-001-plan-only-baseline",
-      "base": "agent/c3-ci-001-supply-chain-policy",
-      "base_commit": "e4c590389cf7cd8207c5e61eddef9a540767c929",
-      "implementation_commit": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
-      "receipt_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-      "head_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-      "draft_pr": 100,
-      "ci_run_id": 29882414899,
-      "visual_run_id": 29882414917,
-      "terraform_job_id": 88805896206,
-      "e2e_job_id": 88805896150,
+      "id": "C3-SEC-001",
+      "branch": "agent/c3-sec-001-security-privacy-baseline",
+      "base": "agent/c3-infra-001-plan-only-baseline",
+      "base_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
+      "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+      "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+      "draft_pr": 105,
+      "ci_run_id": 29943367172,
+      "visual_run_id": 29943367823,
+      "postgresql_job_id": 89002561460,
+      "e2e_job_id": 89002561484,
+      "frontend_job_id": 89002561435,
+      "supply_chain_job_id": 89002561411,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
-      "execution_mode": "PLAN_ONLY_NO_APPLY",
-      "cost_authorization": "PROHIBITED",
       "external_effects": "NONE",
-      "next_increment": "C3-SEC-001"
+      "next_increment": "C3-OBS-001"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",

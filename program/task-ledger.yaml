@@ -488,15 +488,15 @@
     {
       "task_id": "C3-SEC-001",
       "owner": "WS-13",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/migrations/versions/20260721_0011_append_only_security.py",
         "backend/tests/test_security_policy.py",
         "backend/tests/test_security_postgres.py",
         "docs/security/data-policy.json",
-        "docs/security/privacy.md",
-        "docs/security/threat-model.md",
         "scripts/security/verify_security_policy.py",
+        "docs/security/threat-model.md",
+        "docs/security/privacy.md",
         "docs/testing/c3-sec-001-evidence.md",
         "program/iterations/c3-sec-001.md",
         "program/validations/c3-sec-001.json"
@@ -506,19 +506,21 @@
         "Independent security, privacy and jurisdictional legal review is not recorded",
         "No live environment, attachment/export path, backup restore, rate limiting or production processor evidence",
         "Privileged database owner remains a break-glass mutation boundary and external integrity anchoring is absent"
-      ]
+      ],
+      "publication_state": "DRAFT_PR_CI_GREEN",
+      "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+      "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+      "draft_pr": 105,
+      "ci_run_id": 29943367172,
+      "visual_run_id": 29943367823
     },
     {
       "task_id": "C3-OBS-001",
       "owner": "WS-14",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "evidence": [],
       "external_effects": "NONE",
-      "blockers": [
-        "C3-API-001",
-        "C3-INFRA-001",
-        "C3-SEC-001"
-      ]
+      "blockers": []
     },
     {
       "task_id": "C3-RELEASE-001",

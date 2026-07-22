@@ -5,7 +5,7 @@
   "updated_at": "2026-07-21",
   "branch": "agent/c3-sec-001-security-privacy-baseline",
   "current_increment": "C3-SEC-001",
-  "iteration_status": "TESTED_LOCAL",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
   "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. A plan-only Terraform baseline, mocked plans and repository policy checks are tested locally, but no AWS account, remote state, live plan/apply, dev/staging/production environment, backup/restore, production observability, historical-run supersession or independent human production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -93,13 +93,13 @@
     {
       "id": "WS-13",
       "name": "Security, Privacy and Compliance",
-      "status": "SECURITY_TESTED_LOCAL_CI_PENDING",
-      "next_increment": "C3-SEC-001"
+      "status": "SECURITY_CI_GREEN",
+      "next_increment": "C3-OBS-001"
     },
     {
       "id": "WS-14",
       "name": "Testing, Observability and Operations",
-      "status": "LOCAL_TEST_AND_CI_FOUNDATION",
+      "status": "OBSERVABILITY_EXECUTABLE_NEXT",
       "next_increment": "C3-OBS-001"
     },
     {
@@ -109,7 +109,9 @@
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [],
+  "ready_tasks": [
+    "C3-OBS-001"
+  ],
   "published_unreviewed_increment": {
     "id": "C3-OPS-001",
     "state": "DRAFT_PR_CI_GREEN",
@@ -312,7 +314,13 @@
     "security_actionlint": "PASS_1_7_12",
     "security_gitleaks_worktree": "PASS_8_30_1_EFFECTIVE_WORKTREE",
     "security_browser_e2e": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
-    "security_local_stack_e2e": "BLOCKED_LOCAL_DOCKER_LAYER_LCHOWN_REMOTE_CI_REQUIRED"
+    "security_local_stack_e2e": "BLOCKED_LOCAL_DOCKER_LAYER_LCHOWN_REMOTE_CI_REQUIRED",
+    "security_pr_ci": "PASS_PR_105_HEAD_AB63E19_RUN_29943367172",
+    "security_runtime_visual": "PASS_RUN_29943367823",
+    "security_postgresql_ci": "PASS_JOB_89002561460",
+    "security_stack_e2e_ci": "PASS_JOB_89002561484",
+    "security_frontend_ci": "PASS_JOB_89002561435",
+    "security_supply_chain_ci": "PASS_JOB_89002561411"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -355,9 +363,13 @@
   },
   "active_local_increment": {
     "id": "C3-SEC-001",
-    "state": "TESTED_LOCAL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-sec-001-security-privacy-baseline",
     "base": "agent/c3-infra-001-plan-only-baseline@c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
+    "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+    "draft_pr": 105,
+    "ci_run_id": 29943367172,
+    "visual_run_id": 29943367823,
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -372,24 +384,23 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-INFRA-001",
-    "branch": "agent/c3-infra-001-plan-only-baseline",
-    "base": "agent/c3-ci-001-supply-chain-policy",
-    "base_commit": "e4c590389cf7cd8207c5e61eddef9a540767c929",
-    "implementation_commit": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
-    "receipt_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-    "head_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-    "draft_pr": 100,
-    "ci_run_id": 29882414899,
-    "visual_run_id": 29882414917,
-    "terraform_job_id": 88805896206,
-    "e2e_job_id": 88805896150,
+    "id": "C3-SEC-001",
+    "branch": "agent/c3-sec-001-security-privacy-baseline",
+    "base": "agent/c3-infra-001-plan-only-baseline",
+    "base_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
+    "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+    "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
+    "draft_pr": 105,
+    "ci_run_id": 29943367172,
+    "visual_run_id": 29943367823,
+    "postgresql_job_id": 89002561460,
+    "e2e_job_id": 89002561484,
+    "frontend_job_id": 89002561435,
+    "supply_chain_job_id": 89002561411,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
-    "execution_mode": "PLAN_ONLY_NO_APPLY",
-    "cost_authorization": "PROHIBITED",
     "external_effects": "NONE",
-    "next_increment": "C3-SEC-001"
+    "next_increment": "C3-OBS-001"
   },
   "production_blockers": []
 }
