@@ -373,3 +373,13 @@
 - Recorded `C3-AGENT-001` as `CI_GREEN`; the configured provider remains unavailable and performs no network request.
 - Production remains `BLOCKED`; no merge, deployment, tool call or external campaign effect occurred.
 - Next safe program target is `C3-CI-001` reconciliation.
+
+## C3-CI-001 local and GitHub-enforcement checkpoint — 2026-07-21
+
+- Added a versioned repository security policy and offline verifier that rejects mutable Actions, `pull_request_target`, credential persistence, missing required jobs and automatic Pages publication.
+- Added deterministic CycloneDX 1.6 SBOM, tracked-source manifest, in-toto/SLSA provenance, explicit signature semantics and SHA256SUMS.
+- Added a universal supply-chain job with the official SHA-pinned GitHub OIDC attestation action and 30-day review artifact.
+- Added ten tests, including five adversarial workflow mutations; full locked verification passes 638 tests, 9 controlled skips and 90.95% coverage.
+- Applied and authenticated strict main protection, one review, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions, mandatory SHA pins, vulnerability alerts and automated security fixes.
+- Seventeen live-setting comparisons pass. Exact-head CI/attestation, human review and merge remain pending.
+- Production remains `BLOCKED`; no merge, deployment or paid resource was created.

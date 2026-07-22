@@ -140,6 +140,52 @@ jobs:
           --disable-pip
           --requirement /tmp/campaignos-requirements.txt
 
+  supply-chain-evidence:
+    name: Software bill of materials and source provenance
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout exact revision
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Verify versioned CI security policy
+        run: >-
+          python scripts/ci/verify_ci_policy.py
+          --report artifacts/supply-chain/ci-policy-report.json
+      - name: Generate deterministic SBOM and unsigned source provenance
+        run: >-
+          python scripts/ci/generate_supply_chain_evidence.py
+          --output-dir artifacts/supply-chain
+      - name: Attest SBOM and source provenance with GitHub OIDC
+        if: >-
+          github.event_name != 'pull_request' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: |
+            artifacts/supply-chain/cyclonedx-sbom.json
+            artifacts/supply-chain/source-manifest.json
+            artifacts/supply-chain/provenance.intoto.json
+            artifacts/supply-chain/SHA256SUMS
+          show-summary: true
+      - name: Upload supply-chain evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: campaignos-supply-chain-evidence
+          path: artifacts/supply-chain/
+          if-no-files-found: error
+          retention-days: 30
+
   frontend:
     name: Dynamic frontend contracts and browser review
     runs-on: ubuntu-latest

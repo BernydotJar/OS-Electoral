@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "default_branch": "main",
+  "required_status_checks": [
+    "Locked quality and contract suite",
+    "PostgreSQL migrations and tenant isolation",
+    "Locked production dependency audit",
+    "Software bill of materials and source provenance",
+    "Dynamic frontend contracts and browser review",
+    "Repository secret scan",
+    "CodeQL Python and JavaScript analysis",
+    "Constrained local stack E2E"
+  ],
+  "allowed_action_patterns": [
+    "astral-sh/setup-uv@*",
+    "gitleaks/gitleaks-action@*"
+  ],
+  "github_owned_actions_allowed": true,
+  "verified_creator_actions_allowed": false,
+  "sha_pinning_required": true,
+  "pull_request_reviews_required": 1,
+  "dismiss_stale_reviews": true,
+  "require_code_owner_reviews": false,
+  "require_conversation_resolution": true,
+  "enforce_admins": true,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "vulnerability_alerts_required": true,
+  "production_status": "BLOCKED"
+}

@@ -6,7 +6,7 @@ COMPOSE = docker compose --env-file $(ENV_FILE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-image-verify secret-scan-worktree
+.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify
 
 help: ## Show the available developer commands.
 	@awk 'BEGIN {FS = ":.*## "; printf "CampaignOS developer commands:\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -52,6 +52,22 @@ frontend-image-verify: ## Build and smoke-test the frontend image with daemonles
 secret-scan-worktree: ## Scan tracked and non-ignored worktree files for secrets.
 	./scripts/security/scan_effective_worktree.sh
 
+supply-chain-verify: ## Enforce pinned CI policy and generate deterministic evidence in a temporary directory.
+	@tmp_dir=$$(mktemp -d); trap 'rm -rf "$$tmp_dir"' EXIT; \
+		python3 scripts/ci/verify_ci_policy.py --report "$$tmp_dir/ci-policy-report.json"; \
+		python3 scripts/ci/generate_supply_chain_evidence.py --output-dir "$$tmp_dir"; \
+		test -s "$$tmp_dir/cyclonedx-sbom.json"; \
+		test -s "$$tmp_dir/provenance.intoto.json"; \
+		test -s "$$tmp_dir/SHA256SUMS"
+
+supply-chain-evidence: ## Generate reviewable unsigned SBOM and provenance artifacts.
+	rm -rf artifacts/supply-chain
+	python3 scripts/ci/verify_ci_policy.py --report artifacts/supply-chain/ci-policy-report.json
+	python3 scripts/ci/generate_supply_chain_evidence.py --output-dir artifacts/supply-chain
+
+github-security-verify: ## Compare live GitHub controls with the versioned repository policy.
+	python3 scripts/ci/verify_github_security_settings.py --report artifacts/supply-chain/github-security-report.json
+
 migrate: ## Upgrade an explicitly configured database to the reviewed Alembic head.
 	@test -n "$(CAMPAIGNOS_DATABASE_URL)" || { echo "CAMPAIGNOS_DATABASE_URL is required" >&2; exit 1; }
 	CAMPAIGNOS_DATABASE_URL="$(CAMPAIGNOS_DATABASE_URL)" $(UV) run --locked alembic upgrade head
@@ -64,7 +80,7 @@ program-verify: ## Validate machine-readable program truth, required evals and s
 	$(UV) run --locked python scripts/architecture/validate_eval_catalog.py
 	$(UV) run --locked python scripts/campaign/scan_c2_safety.py
 
-verify: compose-config lint format-check typecheck test frontend-verify program-verify ## Validate all local quality gates.
+verify: compose-config supply-chain-verify lint format-check typecheck test frontend-verify program-verify ## Validate all local quality gates.
 
 compose-config: ## Validate the fully interpolated Compose model.
 	@test -f "$(ENV_FILE)" || { echo "Missing ENV_FILE: $(ENV_FILE)" >&2; exit 1; }

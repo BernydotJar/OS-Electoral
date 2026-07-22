@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "source_branch": "agent/c3-agent-001-governed-runtime",
+  "source_branch": "agent/c3-ci-001-supply-chain-policy",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
@@ -12,7 +12,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the governed identity lifecycle is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main reviews/checks, restricted SHA-pinned Actions, vulnerability alerts, deterministic SBOM/provenance and a keyless attestation job are now configured, but the exact-head attestation has not yet run. No verified AWS environments, backup/restore, production observability or independent human production approval exists.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -724,7 +724,7 @@
     {
       "id": "WS-02",
       "name": "Monorepo and Developer Experience",
-      "status": "PR_CI_GREEN_ENFORCEMENT_PENDING",
+      "status": "GITHUB_ENFORCEMENT_ACTIVE_ATTESTATION_CI_PENDING",
       "next_increment": "C3-CI-001"
     },
     {
@@ -1012,8 +1012,8 @@
       "id": "FND-CI-001",
       "severity": "HIGH",
       "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "Authenticated repository-settings inspection confirms main is unprotected, rulesets are empty, all Actions are allowed and repository SHA pinning is not required. The draft review stack through PR 89 is CI-green, but required-check enforcement remains absent.",
-      "evidence": "program/current-state-assessment.md"
+      "summary": "Protected main, strict required checks, one review, admin enforcement and restricted SHA-pinned Actions are active; exact-head supply-chain attestation is pending.",
+      "evidence": "program/validations/c3-ci-001.json"
     },
     {
       "id": "FND-CI-002",
@@ -1026,7 +1026,7 @@
       "id": "FND-DEPLOY-001",
       "severity": "HIGH",
       "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "The Pages demo previously auto-deployed on push and was not represented truthfully in the program state.",
+      "summary": "Pages is manual DEMO_NON_PRODUCTION only and the policy verifier rejects automatic triggers; exact-head CI enforcement is pending.",
       "evidence": ".github/workflows/deploy-pages.yml"
     },
     {
@@ -1054,8 +1054,8 @@
       "id": "FND-SUPPLY-001",
       "severity": "HIGH",
       "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "Locks, vulnerability audits, immutable workflow references in source and secret scans pass at recorded heads, but repository policy allows all Actions, does not require SHA pinning and vulnerability alerts are disabled; SBOM, provenance, signing and protected-main enforcement remain absent.",
-      "evidence": "program/production-gap-matrix.md"
+      "summary": "Locks, audits, SHA-pinned allow-listed Actions, vulnerability alerts, deterministic SBOM/provenance and keyless attestation source are present; exact-head attestation is pending.",
+      "evidence": "docs/testing/c3-ci-001-evidence.md"
     }
   ],
   "open_findings_summary": {
@@ -1065,7 +1065,7 @@
   },
   "github_state": {
     "verified_at": "2026-07-21",
-    "open_issue_count": 23,
+    "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
       43,
@@ -1080,7 +1080,8 @@
       61,
       63,
       65,
-      67
+      67,
+      91
     ],
     "merged_pull_requests": [
       72,
@@ -1094,21 +1095,30 @@
       87,
       88,
       89,
-      90
+      90,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98
     ],
-    "main_branch_protection": "ABSENT_CONFIRMED_AUTHENTICATED_2026_07_21",
-    "rulesets": "NONE_CONFIRMED_AUTHENTICATED_2026_07_21",
-    "actions_allowed": "ALL_ACTIONS_AND_WORKFLOWS_ALLOWED",
-    "action_sha_pinning_required": false,
-    "local_ci_workflow": "REVIEW_STACK_THROUGH_PR_89_GREEN_AT_RECORDED_HEADS",
-    "local_workflow_action_refs": "FULL_SHA_PINNED",
+    "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
+    "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
+    "actions_allowed": "SELECTED_GITHUB_OWNED_PLUS_TWO_PATTERNS",
+    "action_sha_pinning_required": true,
+    "local_ci_workflow": "SUPPLY_CHAIN_JOB_ADDED_EXACT_HEAD_CI_PENDING",
+    "local_workflow_action_refs": "32_FULL_SHA_PINNED",
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {
       "run_id": 29803405277,
       "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
       "conclusion": "SUCCESS",
-      "required_check_enforcement": false
+      "required_check_enforcement": true,
+      "required_check_count": 8,
+      "new_supply_chain_check": "PENDING_FIRST_RUN"
     },
     "published_unreviewed_increment": null,
     "review_stack": [
@@ -1198,8 +1208,8 @@
         "state": "OPEN_DRAFT",
         "base": "agent/c3-api-001-reconciliation",
         "head": "agent/c3-agent-001-governed-runtime",
-        "head_sha": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
-        "campaignos_ci_run_id": 29878699324,
+        "head_sha": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
+        "campaignos_ci_run_id": 29878876280,
         "conclusion": "SUCCESS"
       }
     ],
@@ -1215,19 +1225,16 @@
       "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
       "frontend_target_verified": true
     },
-    "vulnerability_alerts": "DISABLED_CONFIRMED_AUTHENTICATED_2026_07_21",
+    "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-AGENT-001",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-agent-001-governed-runtime",
-      "base": "agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-      "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
-      "draft_pr": 98,
-      "ci_run_id": 29878699324,
-      "visual_run_id": 29878699317,
+      "id": "C3-CI-001",
+      "state": "IN_PROGRESS",
+      "branch": "agent/c3-ci-001-supply-chain-policy",
+      "base": "agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb",
+      "github_enforcement": "VERIFIED_LIVE",
+      "attestation": "PENDING_EXACT_HEAD_CI",
       "production_status": "BLOCKED",
-      "provider_mode": "UNAVAILABLE_NO_NETWORK",
-      "external_effects": "NONE"
+      "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY"
     },
     "latest_checkpoint": {
       "id": "C3-AGENT-001",
@@ -1235,16 +1242,18 @@
       "base": "agent/c3-api-001-reconciliation",
       "base_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
       "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
-      "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+      "receipt_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
+      "head_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
       "draft_pr": 98,
-      "ci_run_id": 29878699324,
-      "visual_run_id": 29878699317,
+      "ci_run_id": 29878876280,
+      "visual_run_id": 29878876285,
       "ci": "SUCCESS",
       "status": "CI_GREEN",
       "provider_mode": "UNAVAILABLE_NO_NETWORK",
       "external_effects": "NONE",
       "next_increment": "C3-CI-001"
-    }
+    },
+    "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21"
   },
   "deployment_state": {
     "github_pages": {

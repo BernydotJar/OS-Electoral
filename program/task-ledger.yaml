@@ -52,16 +52,25 @@
       "owner": "WS-02",
       "status": "IN_PROGRESS",
       "evidence": [
+        ".github/campaignos-security-policy.json",
         ".github/workflows/campaignos-ci.yml",
-        ".github/dependabot.yml",
         ".github/workflows/deploy-pages.yml",
-        ".gitleaks.toml",
-        "program/iteration-log.md"
+        ".github/dependabot.yml",
+        "scripts/ci/generate_supply_chain_evidence.py",
+        "scripts/ci/verify_ci_policy.py",
+        "scripts/ci/verify_github_security_settings.py",
+        "backend/tests/test_supply_chain_evidence.py",
+        "docs/operations/supply-chain-evidence.md",
+        "docs/testing/c3-ci-001-evidence.md",
+        "program/iterations/c3-ci-001.md",
+        "program/validations/c3-ci-001.json"
       ],
       "external_effects": "REVIEW_BRANCH_AND_DRAFT_PR",
       "blockers": [
-        "No observed branch protection, ruleset or required-check enforcement",
-        "No SBOM, provenance or signing gate"
+        "Exact-head GitHub OIDC artifact attestation is pending",
+        "Human review and merge remain pending",
+        "Six historical failed runs remain production-blocking",
+        "No AWS environment, deployment, rollback or production approval evidence exists"
       ]
     },
     {
@@ -430,7 +439,10 @@
       "publication_state": "DRAFT_PR_CI_GREEN",
       "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
       "draft_pr": 98,
-      "ci_run_id": 29878699324
+      "ci_run_id": 29878876280,
+      "receipt_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
+      "head_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
+      "visual_run_id": 29878876285
     },
     {
       "task_id": "C3-INFRA-001",

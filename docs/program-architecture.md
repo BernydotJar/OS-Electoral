@@ -17,15 +17,15 @@ The repository and verified external state override stale prose. A run ID is not
 
 ## Current baseline
 
-The C2 increments are merged into `main`. They implement deterministic prototype contracts for campaign workspaces, candidate-brand assessment, approvals, daily operations, authorization decisions, in-memory persistence coordination, audit-event hash chaining, read-only service projections and evidence citation.
+The C2 increments are merged into `main`. A stacked C3 review chain through draft PR `#98` adds a versioned FastAPI application, forced-RLS PostgreSQL adapters and migrations through `20260721_0010`, a dynamic read-only ES/EN frontend, governed identity and campaign workspaces, Strategy/War Room projections, and a provider-neutral no-tool Agent Runtime. Those C3 changes are exact-head CI-green but remain unmerged and undeployed.
 
 Important limits:
 
-- repositories and transactions are in-memory test doubles, not PostgreSQL;
-- the service facade is not a network API;
-- audit hashes are unkeyed SHA-256 links, not digital signatures or an immutable external ledger;
-- frontend data is static and read-only;
-- GitHub Pages is a non-production demo;
+- the C3 review stack still requires human review and merge;
+- no dev, staging, production, RDS, object-storage or telemetry environment is verified;
+- audit hashes remain unkeyed SHA-256 links, not an immutable external ledger;
+- the browser remains read-only for several bounded contexts and lacks complete authenticated mutation journeys;
+- GitHub Pages remains a manual non-production demo;
 - production status remains `BLOCKED`.
 
 ## Workstreams
@@ -33,7 +33,7 @@ Important limits:
 | ID | Workstream | Current state | Next increment |
 |---|---|---|---|
 | WS-01 | Product Definition and Architecture | Active foundation reconciliation | C3-ARCH-001 |
-| WS-02 | Monorepo and Developer Experience | Ready | C3-DEVEX-001 |
+| WS-02 | Monorepo and Developer Experience | Protected main, restricted SHA-pinned Actions, vulnerability governance and deterministic SBOM/provenance are active; exact-head OIDC attestation pending | C3-CI-001 |
 | WS-03 | Identity, Tenancy and RBAC | Local OIDC and membership authorization; lifecycle pending | C3-IAM-001 |
 | WS-04 | Campaign Domain and Persistence | In-memory prototype only | C3-DATA-001 |
 | WS-05 | API and Background Jobs | Cumulative API/worker baseline PR #97 is exact-head CI-green; observability and external transport remain separate | C3-AGENT-001 |

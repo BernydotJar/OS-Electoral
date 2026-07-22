@@ -1,0 +1,89 @@
+{
+  "increment": "C3-CI-001",
+  "verified_at": "2026-07-21",
+  "branch": "agent/c3-ci-001-supply-chain-policy",
+  "base": "agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb",
+  "status": "IN_PROGRESS_EXACT_HEAD_ATTESTATION_PENDING",
+  "production_status": "BLOCKED",
+  "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY",
+  "results": {
+    "ci_policy_tests": {
+      "passed": 10
+    },
+    "workflow_policy": {
+      "result": "PASS",
+      "workflow_count": 3,
+      "action_references": 32,
+      "required_checks": 8
+    },
+    "live_github_settings": {
+      "allowed_action_patterns": [
+        "astral-sh/setup-uv@*",
+        "gitleaks/gitleaks-action@*"
+      ],
+      "comparisons": {
+        "actions_enabled": true,
+        "actions_selected_only": true,
+        "actions_sha_pinning": true,
+        "automated_security_fixes": true,
+        "conversation_resolution": true,
+        "deletions_disabled": true,
+        "dismiss_stale_reviews": true,
+        "enforce_admins": true,
+        "force_pushes_disabled": true,
+        "github_owned_actions": true,
+        "linear_history": true,
+        "required_approvals": true,
+        "required_status_checks": true,
+        "selected_action_patterns": true,
+        "strict_status_checks": true,
+        "verified_creator_actions": true,
+        "vulnerability_alerts": true
+      },
+      "errors": [],
+      "production_status": "BLOCKED",
+      "required_status_checks": [
+        "CodeQL Python and JavaScript analysis",
+        "Constrained local stack E2E",
+        "Dynamic frontend contracts and browser review",
+        "Locked production dependency audit",
+        "Locked quality and contract suite",
+        "PostgreSQL migrations and tenant isolation",
+        "Repository secret scan",
+        "Software bill of materials and source provenance"
+      ],
+      "result": "PASS",
+      "schema_version": 1
+    },
+    "pytest": {
+      "passed": 638,
+      "skipped": 9
+    },
+    "coverage": {
+      "percent": 90.95,
+      "floor": 90,
+      "result": "PASS"
+    },
+    "frontend": {
+      "tests": 48,
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "vulnerabilities": 0
+    },
+    "program_truth": "PASS_PRODUCTION_BLOCKED"
+  },
+  "attestation": {
+    "action": "actions/attest-build-provenance",
+    "action_commit": "0f67c3f4856b2e3261c31976d6725780e5e4c373",
+    "release": "v4.1.1",
+    "status": "PENDING_EXACT_HEAD_CI"
+  },
+  "limitations": [
+    "Exact-head GitHub OIDC attestation is pending",
+    "Human review and merge remain pending",
+    "Historical failed runs remain production-blocking",
+    "No AWS environment, production image publication, deployment or rollback evidence exists"
+  ],
+  "remote_state": "LOCAL_AND_GITHUB_SETTINGS_VERIFIED_PR_PENDING"
+}

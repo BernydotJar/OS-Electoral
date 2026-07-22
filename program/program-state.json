@@ -3,11 +3,11 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-agent-001-governed-runtime",
-  "current_increment": "C3-AGENT-001",
-  "iteration_status": "CI_GREEN",
+  "branch": "agent/c3-ci-001-supply-chain-policy",
+  "current_increment": "C3-CI-001",
+  "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings, six unsuperseded historical failed validation runs, confirmed absence of main branch protection/rulesets, permissive repository Actions policy, no verified AWS environments and incomplete product, operations and human gates remain. The review stack through the evidence-governed candidate workspace is draft and CI-green. Tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles are verified locally, against isolated PostgreSQL and at the exact PR head, but no live OIDC login/recovery/MFA, email delivery, provider revocation, RDS/staging or production approval exists.",
+  "production_status_reason": "Five open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main reviews/checks, restricted SHA-pinned Actions, vulnerability alerts, deterministic SBOM/provenance and a keyless attestation job are now configured, but the exact-head attestation has not yet run. No verified AWS environments, backup/restore, production observability or independent human production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -27,7 +27,7 @@
     {
       "id": "WS-02",
       "name": "Monorepo and Developer Experience",
-      "status": "PR_CI_GREEN_ENFORCEMENT_PENDING",
+      "status": "GITHUB_ENFORCEMENT_ACTIVE_ATTESTATION_CI_PENDING",
       "next_increment": "C3-CI-001"
     },
     {
@@ -217,12 +217,12 @@
       "pr": 98,
       "base": "agent/c3-api-001-reconciliation",
       "head": "agent/c3-agent-001-governed-runtime",
-      "head_sha": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+      "head_sha": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
       "ci": "SUCCESS"
     }
   ],
   "local_verification": {
-    "tests_passed": 628,
+    "tests_passed": 638,
     "tests_skipped": 9,
     "coverage_percent": 90.95,
     "coverage_gate": "PASS",
@@ -265,7 +265,14 @@
     "agent_focused_local": "PASS_60_SKIPPED_2",
     "agent_runtime_adversarial_tests": 18,
     "agent_postgresql": "PASS_9_SLICES_TWICE",
-    "agent_provider_mode": "UNAVAILABLE_NO_NETWORK"
+    "agent_provider_mode": "UNAVAILABLE_NO_NETWORK",
+    "supply_chain_policy_tests": 10,
+    "workflow_action_refs": 32,
+    "required_status_checks": 8,
+    "github_security_comparisons": "PASS_17",
+    "sbom": "CYCLONEDX_1_6_DETERMINISTIC",
+    "provenance": "IN_TOTO_SLSA_V1_DETERMINISTIC",
+    "attestation": "PENDING_EXACT_HEAD_CI"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -287,7 +294,7 @@
   "blockers": [
     "Five open CRITICAL/HIGH production findings",
     "Six historical validation runs retain FAILURE without scope-equivalent supersession records",
-    "Main has no branch protection or rulesets; repository Actions allow all actions and do not require SHA pinning",
+    "Exact-head supply-chain OIDC attestation, human review and merge remain pending despite active protected-main and SHA-pinned Actions enforcement",
     "No live OIDC login, recovery, MFA, provider invitation delivery or provider session revocation",
     "Identity lifecycle proof is local/PostgreSQL only; no RDS, dev, staging or production verification",
     "Authenticated guided-intake/candidate mutation journeys, team, roadmap and broader product journeys remain absent or prototype-only",
@@ -307,17 +314,14 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-AGENT-001",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-agent-001-governed-runtime",
-    "base": "agent/c3-api-001-reconciliation@837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-    "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
-    "draft_pr": 98,
-    "ci_run_id": 29878699324,
-    "visual_run_id": 29878699317,
+    "id": "C3-CI-001",
+    "state": "IN_PROGRESS",
+    "branch": "agent/c3-ci-001-supply-chain-policy",
+    "base": "agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb",
+    "github_enforcement": "VERIFIED_LIVE",
+    "attestation": "PENDING_EXACT_HEAD_CI",
     "production_status": "BLOCKED",
-    "provider_mode": "UNAVAILABLE_NO_NETWORK",
-    "external_effects": "NONE"
+    "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -335,14 +339,16 @@
     "base": "agent/c3-api-001-reconciliation",
     "base_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
     "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
-    "head_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
+    "receipt_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
+    "head_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
     "draft_pr": 98,
-    "ci_run_id": 29878699324,
-    "visual_run_id": 29878699317,
+    "ci_run_id": 29878876280,
+    "visual_run_id": 29878876285,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
     "provider_mode": "UNAVAILABLE_NO_NETWORK",
     "external_effects": "NONE",
     "next_increment": "C3-CI-001"
-  }
+  },
+  "production_blockers": []
 }
