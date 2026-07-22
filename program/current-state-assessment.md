@@ -111,9 +111,9 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Publish `C3-INFRA-001`, require exact-head Terraform/quality/E2E success, and preserve the branch-protection update as a separate human policy gate.
-2. Continue `C3-SEC-001` only after the plan-only infrastructure checkpoint is CI-green; keep AWS apply and spending prohibited.
-3. Add live-provider/privacy or human-disposition work only in separate reviewed increments; keep tools and external effects disabled.
+1. Begin `C3-SEC-001` now that the plan-only infrastructure checkpoint is exact-head CI-green; retain independent review and zero-open-high gates.
+2. Preserve AWS account selection, credentials, apply, spending and the protected-main ninth-check update as separate human policy gates.
+3. Keep observability/release blocked until Security is CI-green and no environment claim is made.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
 
@@ -174,4 +174,5 @@ Production deployment remains prohibited until every production gate passes and 
 - Corrected ECS HCL schema defects found by real Terraform validation and made IAM/ECR/task policy evidence deterministic under mocks.
 - Added six adversarial policy tests and a universal CI job that rejects apply/state mutation, public RDS, mutable providers, ECS Exec and local state artifacts.
 - Desired repository policy now has nine checks; protected `main` still has eight. Changing it is a human policy gate and was not performed.
-- Status is `TESTED_LOCAL`; no remote state, AWS environment, apply, paid resource, deployment or external effect occurred. Production remains `BLOCKED`.
+- Status is `CI_GREEN`; PR `#100` is `CLEAN`, CI `29882176565`, visual `29882176651`, Terraform and final E2E checks passed on `ede3881ee25c61d4a1106a0c2823e944ed7b081d`.
+- `C3-SEC-001` is executable next; no remote state, AWS environment, apply, paid resource, deployment or external effect occurred. Production remains `BLOCKED`.

@@ -2,7 +2,7 @@
 
 - `branch`: `agent/c3-infra-001-plan-only-baseline`
 - `base`: `agent/c3-ci-001-supply-chain-policy@e4c590389cf7cd8207c5e61eddef9a540767c929`
-- `status`: `TESTED_LOCAL`
+- `status`: `CI_GREEN`
 - `production_status`: `BLOCKED`
 - `external_effects`: `NONE`
 - `cost_authorization`: `PROHIBITED`
@@ -48,3 +48,16 @@ Create a reproducible Terraform baseline for the target AWS architecture and ver
 - Full repository regression passes 645 tests, 9 controlled skips, 90.95% coverage, 48 frontend tests and zero frontend vulnerabilities.
 - PostgreSQL passes nine migration/RLS/concurrency slices twice through revision `20260721_0010`.
 - No AWS credential, API call, remote state, apply, billable resource, deployment or external effect occurred.
+
+
+## Published plan-only checkpoint — 2026-07-21
+
+- implementation/head `ede3881ee25c61d4a1106a0c2823e944ed7b081d`;
+- draft PR `#100`, merge state `CLEAN`;
+- CampaignOS CI `29882176565` and runtime visual review `29882176651`: `SUCCESS`;
+- Terraform plan-only job `88805186841`: `SUCCESS`;
+- constrained stack E2E job `88805187008`: `SUCCESS`;
+- exact-head supply-chain artifact `8515178689` and SBOM attestation: `PASS`;
+- `C3-SEC-001` is `EXECUTABLE_NEXT`;
+- protected-main ninth check remains a human policy gate;
+- no apply, AWS resource, spending, deployment or external effect occurred.
