@@ -77,15 +77,16 @@
     "Protected-main Terraform required check change is human-gated",
     "Human review, merge and independent platform acceptance remain pending"
   ],
-  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR_PLAN_ONLY",
+  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR_FINAL_RECEIPT_PLAN_ONLY",
   "implementation_commit": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
-  "head_commit": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
+  "head_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
   "draft_pr": 100,
-  "ci_run_id": 29882176565,
-  "visual_run_id": 29882176651,
+  "ci_run_id": 29882414899,
+  "visual_run_id": 29882414917,
   "terraform_job_id": 88805186841,
   "e2e_job_id": 88805187008,
   "supply_chain_job_id": 88805186814,
   "supply_chain_artifact_id": 8515178689,
-  "frontend_artifact_id": 8515208682
+  "frontend_artifact_id": 8515208682,
+  "receipt_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2"
 }

@@ -1,7 +1,7 @@
 # CampaignOS threat model
 
 Status: **DRAFT — technical controls are partial; independent security/privacy review required**
-Version: `0.1`
+Version: `0.2`
 Last updated: `2026-07-21`
 
 ## Scope and safety objective
@@ -46,13 +46,13 @@ See `docs/architecture/system-context.md`. The security-critical transitions are
 | TM-04 | Session theft/replay | HTTPS, secure same-site cookies or bounded bearer handling, short lifetime, rotation/revocation, device/session view, no token logging | Verified token expiry plus local digest-only application-session expiry/revocation pass; live rotation, recovery, device view and provider revocation remain absent |
 | TM-05 | Confused deputy in worker/integration | signed/versioned envelope, server-derived principal/scope, action allow-list, idempotency, fresh authorization, delivery receipt | Not implemented |
 | TM-06 | Prompt injection or malicious evidence causes disclosure/action | treat evidence as data, minimize scoped context, provider isolation, output schema plus policy checks, no tool authority, adversarial evals | Bounded provider-neutral runtime, untrusted-evidence envelope, pre/post guards, no tools, hard local evals and PostgreSQL journal/RLS pass; no live provider or independent review |
-| TM-07 | Model/provider data leakage | data classification, approved processors/regions, minimization, no-training setting where contractually available, retention controls, redacted logs | Not implemented |
+| TM-07 | Model/provider data leakage | data classification, approved processors/regions, minimization, no-training setting where contractually available, retention controls, redacted logs | Executable record classification and processor-disable policy pass locally; live provider, processor contract, region, retention and leakage exercise remain absent |
 | TM-08 | Malicious attachment, decompression bomb, or unsafe signed URL | type/size/content validation, quarantine, malware strategy, opaque key, short-lived operation, disposition audit | Not implemented |
 | TM-09 | SSRF through URL import, JWKS, webhook, or preview | fixed/configured HTTPS origins, DNS/IP egress policy, redirect/timeout/size limits, no user-selected JWKS, metadata endpoint block | OIDC URLs are configured HTTPS; network/egress controls absent |
 | TM-10 | XSS, CSRF, clickjacking, or unsafe redirect | output encoding, CSP, secure headers, CSRF design matched to session mechanism, origin checks, dependency review, browser tests | Basic API headers partial; production frontend absent |
 | TM-11 | SQL injection or unsafe migration | parameterized SQL/ORM, no raw user fragments, least-privilege DB roles, migration review/rehearsal, SAST | SQLAlchemy/Alembic, isolated role rehearsal and draft-PR CodeQL pass; required enforcement and staging policy absent |
-| TM-12 | Audit tampering or false integrity claims | append-only durable records, restricted role, canonical hash/MAC or external anchor, correction events, restore verification | Prototype hash checks only; no signature/immutability proof |
-| TM-13 | Export or backup leaks data across scope | fresh authorization, scoped query, encryption, short-lived location, watermark/receipt, retention/deletion, restore isolation | Not implemented |
+| TM-12 | Audit tampering or false integrity claims | append-only durable records, restricted role, canonical hash/MAC or external anchor, correction events, restore verification | Hash-linked append plus PostgreSQL non-owner UPDATE/DELETE denial on six journals pass; owner break-glass, external anchor, retention and restore verification remain absent |
+| TM-13 | Export or backup leaks data across scope | fresh authorization, scoped query, encryption, short-lived location, watermark/receipt, retention/deletion, restore isolation | Data inventory and disabled export/attachment processors are policy-enforced; export, backup, deletion jobs and restore isolation remain unimplemented |
 | TM-14 | Over-privileged support access | explicit request, reason, approver, exact tenant/scope, short expiry, customer-visible audit, no hidden standing role | Local/PostgreSQL request, separation of duty, exact expiring grant/role, expiry/revoke and unrelated-access preservation pass; customer UI, staging and independent review remain absent |
 | TM-15 | Secret exposure | no committed/static cloud keys, mounted secret store, redaction, rotation, push protection, CI scanning, least-privilege OIDC | GitHub scanning, SecretStr config and draft-PR Gitleaks pass exist; required enforcement and runtime/cloud rotation pipeline incomplete |
 | TM-16 | Supply-chain compromise | locked hashes, immutable Action SHAs, provenance/SBOM, dependency and image scan, reviewed updates, minimal images | Protected main, restricted SHA-pinned Actions, vulnerability alerts, deterministic CycloneDX/in-toto evidence and keyless attestation source are active; exact-head attestation, published-image scan/signature and independent review remain pending |

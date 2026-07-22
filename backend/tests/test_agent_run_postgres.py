@@ -291,7 +291,7 @@ def test_postgresql_agent_run_replay_and_rls(monkeypatch: pytest.MonkeyPatch) ->
     _drop_role(admin_engine, role_name)
     with admin_engine.begin() as connection:
         revision = connection.scalar(text("SELECT version_num FROM alembic_version"))
-        assert revision == "20260721_0010"
+        assert revision == "20260721_0011"
         connection.execute(
             text(
                 f"CREATE ROLE \"{role_name}\" LOGIN PASSWORD '{role_password}' "

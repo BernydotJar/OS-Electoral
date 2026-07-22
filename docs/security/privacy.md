@@ -1,7 +1,7 @@
 # CampaignOS privacy principles and control plan
 
 Status: **DRAFT — qualified privacy and jurisdictional legal review required**
-Last updated: `2026-07-19`
+Last updated: `2026-07-21`
 
 CampaignOS applies purpose limitation, minimization, provenance, accuracy, access control, retention, deletion, transparency, and human accountability to all personal or political information.
 
@@ -18,7 +18,7 @@ Before a data category or field is enabled, record:
 - retention/expiry, withdrawal, export, correction, deletion, and legal-hold behavior;
 - incident severity and notification owner.
 
-Unknown purpose or basis fails closed. Free text cannot be used to bypass a structured prohibition.
+Unknown purpose or basis fails closed. Free text cannot be used to bypass a structured prohibition. The executable inventory and current non-legal retention postures are versioned in `docs/security/data-policy.json` and validated by `scripts/security/verify_security_policy.py`.
 
 ## Political and sensitive data
 

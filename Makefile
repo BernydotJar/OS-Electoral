@@ -7,7 +7,7 @@ COMPOSE = docker compose --env-file $(ENV_FILE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify
+.PHONY: help bootstrap dev test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify
 
 help: ## Show the available developer commands.
 	@awk 'BEGIN {FS = ":.*## "; printf "CampaignOS developer commands:\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -26,7 +26,7 @@ test: ## Run the complete locked pytest suite with the enforced coverage floor.
 
 test-postgres: ## Run isolated PostgreSQL migration and RLS tests (requires *_test URL).
 	@test -n "$(CAMPAIGNOS_TEST_DATABASE_URL)" || { echo "CAMPAIGNOS_TEST_DATABASE_URL is required" >&2; exit 1; }
-	CAMPAIGNOS_TEST_DATABASE_URL="$(CAMPAIGNOS_TEST_DATABASE_URL)" $(UV) run --locked pytest -W error -m postgres backend/tests/test_database.py backend/tests/test_campaign_create_postgres.py backend/tests/test_identity_lifecycle_postgres.py backend/tests/test_guided_intake_postgres.py backend/tests/test_candidate_workspace_postgres.py backend/tests/test_team_workspace_postgres.py backend/tests/test_campaign_operations_postgres.py backend/tests/test_strategy_workspace_postgres.py backend/tests/test_agent_run_postgres.py
+	CAMPAIGNOS_TEST_DATABASE_URL="$(CAMPAIGNOS_TEST_DATABASE_URL)" $(UV) run --locked pytest -W error -m postgres backend/tests/test_database.py backend/tests/test_campaign_create_postgres.py backend/tests/test_identity_lifecycle_postgres.py backend/tests/test_guided_intake_postgres.py backend/tests/test_candidate_workspace_postgres.py backend/tests/test_team_workspace_postgres.py backend/tests/test_campaign_operations_postgres.py backend/tests/test_strategy_workspace_postgres.py backend/tests/test_agent_run_postgres.py backend/tests/test_security_postgres.py
 
 lint: ## Run Ruff against the maintained backend, migrations and tests.
 	$(UV) run --locked ruff check backend
@@ -69,6 +69,9 @@ supply-chain-evidence: ## Generate reviewable unsigned SBOM and provenance artif
 github-security-verify: ## Compare live GitHub controls with the versioned repository policy.
 	python3 scripts/ci/verify_github_security_settings.py --report artifacts/supply-chain/github-security-report.json
 
+security-verify: ## Validate data policy and append-only security declarations.
+	python3 scripts/security/verify_security_policy.py
+
 terraform-verify: ## Validate the exact plan-only Terraform baseline without AWS credentials or remote state.
 	@command -v $(TERRAFORM) >/dev/null 2>&1 || { echo "Terraform is required" >&2; exit 1; }
 	@$(TERRAFORM) version | head -n 1 | grep -Fx "Terraform v$$(cat .terraform-version)"
@@ -88,7 +91,7 @@ migrate: ## Upgrade an explicitly configured database to the reviewed Alembic he
 e2e: compose-config ## Build an isolated stack and exercise every local service.
 	ENV_FILE="$(ENV_FILE)" ./scripts/dev/e2e.sh
 
-program-verify: ## Validate machine-readable program truth, required evals and safety.
+program-verify: security-verify ## Validate machine-readable program truth, required evals and safety.
 	$(UV) run --locked python scripts/architecture/validate_program_state.py
 	$(UV) run --locked python scripts/architecture/validate_eval_catalog.py
 	$(UV) run --locked python scripts/campaign/scan_c2_safety.py

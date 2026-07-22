@@ -1,0 +1,74 @@
+{
+  "increment": "C3-SEC-001",
+  "verified_at": "2026-07-21",
+  "branch": "agent/c3-sec-001-security-privacy-baseline",
+  "base": "agent/c3-infra-001-plan-only-baseline@c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
+  "status": "TESTED_LOCAL",
+  "production_status": "BLOCKED",
+  "external_effects": "NONE",
+  "results": {
+    "append_only_security": {
+      "migration_head": "20260721_0011",
+      "protected_tables": 6,
+      "constrained_role_update_denied": "PASS_SQLSTATE_42501",
+      "constrained_role_delete_denied": "PASS_SQLSTATE_42501",
+      "fake_guc_bypass_denied": "PASS",
+      "owner_break_glass": "EXPLICIT_REMAINING_BOUNDARY",
+      "postgresql_consecutive_runs": 2,
+      "postgresql_selected_slices": 10
+    },
+    "data_policy": {
+      "record_types": 12,
+      "prohibited_fields": 7,
+      "live_processors": "DISABLED",
+      "adversarial_tests": 7,
+      "independent_privacy_approval": "NOT_RECORDED",
+      "jurisdictional_legal_review": "REQUIRED"
+    },
+    "full_repository": {
+      "result": "PASS",
+      "pytest_passed": 652,
+      "pytest_skipped": 10,
+      "coverage_percent": 90.95,
+      "coverage_floor": 90,
+      "mypy_source_files": 63,
+      "ruff": "PASS",
+      "format": "PASS",
+      "frontend_tests": 48,
+      "frontend_build": "PASS",
+      "frontend_vulnerabilities": 0,
+      "terraform": "PASS_PLAN_ONLY_NO_APPLY",
+      "program_truth": "PASS_PRODUCTION_BLOCKED_2_OPEN_CRITICAL_HIGH_6_FAILED_RUNS"
+    },
+    "e2e": {
+      "browser": {
+        "result": "PASS",
+        "desktop_spanish": "PASS",
+        "desktop_english": "PASS",
+        "mobile_spanish": "PASS",
+        "keyboard_skip_link": "PASS",
+        "reduced_motion": "PASS",
+        "horizontal_overflow": "NONE",
+        "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+        "browser_storage": "EMPTY",
+        "unexpected_outbound_hosts": [],
+        "console_errors": [],
+        "page_errors": []
+      },
+      "local_compose_stack": "BLOCKED_ENVIRONMENT_DOCKER_APPLYLAYER_LCHOWN_PERMISSION_DENIED",
+      "exact_head_ci_stack": "PENDING"
+    },
+    "security_scanners": {
+      "actionlint": "PASS_1_7_12",
+      "gitleaks_effective_worktree": "PASS_8_30_1",
+      "production_dependency_audit": "PASS_HASH_LOCKED_ZERO_KNOWN_VULNERABILITIES"
+    }
+  },
+  "limitations": [
+    "Database owner and owner-member roles remain an explicit break-glass mutation boundary",
+    "No cryptographic signature, external integrity anchor, legal retention period or restore verification",
+    "No export, attachment, live processor, rate-limit, incident exercise or production environment evidence",
+    "Independent security, privacy, legal and human production approvals are not recorded"
+  ],
+  "remote_state": "LOCAL_TESTED_PENDING_COMMIT_PR_EXACT_HEAD_CI"
+}

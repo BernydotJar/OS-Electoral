@@ -17,7 +17,7 @@ The repository and verified external state override stale prose. A run ID is not
 
 ## Current baseline
 
-The C2 increments are merged into `main`. A stacked C3 review chain through draft PR `#98` adds a versioned FastAPI application, forced-RLS PostgreSQL adapters and migrations through `20260721_0010`, a dynamic read-only ES/EN frontend, governed identity and campaign workspaces, Strategy/War Room projections, and a provider-neutral no-tool Agent Runtime. Those C3 changes are exact-head CI-green but remain unmerged and undeployed.
+The C2 increments are merged into `main`. A stacked C3 review chain through draft PR `#98` adds a versioned FastAPI application, forced-RLS PostgreSQL adapters and migrations through `20260721_0011`, a dynamic read-only ES/EN frontend, governed identity and campaign workspaces, Strategy/War Room projections, and a provider-neutral no-tool Agent Runtime. Those C3 changes are exact-head CI-green but remain unmerged and undeployed.
 
 Important limits:
 

@@ -126,14 +126,19 @@
         "backend/tests/test_campaign_readiness.py",
         "backend/tests/test_database.py",
         "backend/tests/test_campaign_create_model.py",
-        "backend/tests/test_campaign_create_postgres.py"
+        "backend/tests/test_campaign_create_postgres.py",
+        "backend/migrations/versions/20260721_0011_append_only_security.py",
+        "backend/tests/test_security_postgres.py",
+        "docs/security/data-policy.json",
+        "scripts/security/verify_security_policy.py",
+        "docs/testing/c3-sec-001-evidence.md"
       ],
       "commands": [
-        "make test",
+        "make verify",
         "make test-postgres"
       ],
       "last_verified_at": "2026-07-21",
-      "limitations": "Hash-linked append, read receipts and atomic campaign-create evidence are tested; database-level mutation prohibition and production retention remain absent."
+      "limitations": "Hash-linked append and constrained-role database mutation denial are tested on six journals; database owner break-glass, external anchoring, legal retention and restore verification remain absent."
     },
     {
       "id": "EVAL-OUTBOX-001",

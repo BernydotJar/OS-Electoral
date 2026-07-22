@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "status": "DRAFT_TECHNICAL_CONTROLS",
+  "production_status": "BLOCKED",
+  "independent_privacy_approval": "NOT_RECORDED",
+  "jurisdictional_legal_review": "REQUIRED",
+  "live_processors": {
+    "ai_provider": "DISABLED",
+    "external_integrations": "DISABLED",
+    "attachment_processing": "DISABLED",
+    "export_delivery": "DISABLED"
+  },
+  "classifications": [
+    "PUBLIC",
+    "INTERNAL",
+    "CONFIDENTIAL",
+    "RESTRICTED",
+    "PROHIBITED"
+  ],
+  "retention_postures": [
+    "EPHEMERAL",
+    "TENANT_LIFECYCLE_REVIEW_REQUIRED",
+    "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
+    "SECURITY_EVIDENCE_REVIEW_REQUIRED",
+    "PROHIBITED"
+  ],
+  "prohibited_fields": [
+    "INDIVIDUAL_VOTE_INTENTION",
+    "PERSUADABILITY_SCORE",
+    "PSYCHOLOGICAL_VULNERABILITY_TARGETING",
+    "BIOMETRIC_PERSUASION",
+    "COVERT_LOCATION_OR_LOYALTY_TRACKING",
+    "NONCONSENSUAL_POLITICAL_CONTACT_DATABASE",
+    "SECRET_OR_TOKEN_IN_APPLICATION_RECORD"
+  ],
+  "required_record_types": [
+    "identity_principal",
+    "membership_authority",
+    "identity_lifecycle",
+    "campaign_workspace",
+    "candidate_evidence",
+    "team_operations",
+    "strategy_decision",
+    "agent_run",
+    "audit_evidence",
+    "object_attachment",
+    "terraform_state",
+    "secret_or_token"
+  ],
+  "record_types": [
+    {
+      "id": "identity_principal",
+      "classification": "RESTRICTED",
+      "owner": "Identity and Access",
+      "purposes": ["Authenticate a human principal", "Attribute authorized actions"],
+      "retention_posture": "TENANT_LIFECYCLE_REVIEW_REQUIRED",
+      "deletion_mode": "CONTROLLED_ANONYMIZATION_OR_LEGAL_HOLD",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "membership_authority",
+      "classification": "RESTRICTED",
+      "owner": "Identity and Access",
+      "purposes": ["Enforce tenant and campaign authorization", "Preserve approval provenance"],
+      "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
+      "deletion_mode": "REVOKE_AND_PRESERVE_ATTRIBUTABLE_RECEIPT",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "identity_lifecycle",
+      "classification": "RESTRICTED",
+      "owner": "Identity and Access",
+      "purposes": ["Invite, session, support and revocation lifecycle"],
+      "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
+      "deletion_mode": "REVOKE_AND_PRESERVE_ATTRIBUTABLE_RECEIPT",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "campaign_workspace",
+      "classification": "CONFIDENTIAL",
+      "owner": "Campaign Operations",
+      "purposes": ["Operate an authorized tenant campaign workspace"],
+      "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
+      "deletion_mode": "ARCHIVE_THEN_REVIEW_DELETE_OR_LEGAL_HOLD",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "candidate_evidence",
+      "classification": "RESTRICTED",
+      "owner": "Candidate Governance",
+      "purposes": ["Document sourced candidate evidence for internal human review"],
+      "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
+      "deletion_mode": "CORRECT_OR_RESTRICT_WITH_RECEIPT",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "team_operations",
+      "classification": "CONFIDENTIAL",
+      "owner": "Team Governance",
+      "purposes": ["Assign accountable roles and bounded operational work"],
+      "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
+      "deletion_mode": "ARCHIVE_THEN_REVIEW_DELETE_OR_LEGAL_HOLD",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "strategy_decision",
+      "classification": "CONFIDENTIAL",
+      "owner": "Strategy Governance",
+      "purposes": ["Preserve evidence-bound internal human decisions"],
+      "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
+      "deletion_mode": "APPEND_CORRECTION_AND_LEGAL_HOLD_REVIEW",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "agent_run",
+      "classification": "CONFIDENTIAL",
+      "owner": "AI Governance",
+      "purposes": ["Preserve bounded internal recommendation or refusal evidence"],
+      "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
+      "deletion_mode": "APPEND_CORRECTION_AND_LEGAL_HOLD_REVIEW",
+      "processor_boundary": "NO_LIVE_AI_PROVIDER",
+      "feature_state": "NO_NETWORK_PROVIDER_ONLY",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "audit_evidence",
+      "classification": "RESTRICTED",
+      "owner": "Security and Compliance",
+      "purposes": ["Attribute security-sensitive reads, writes and approvals"],
+      "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
+      "deletion_mode": "APPEND_CORRECTION_OWNER_BREAK_GLASS_ONLY",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "object_attachment",
+      "classification": "RESTRICTED",
+      "owner": "Data Protection",
+      "purposes": ["Future evidence attachment under quarantine and disposition controls"],
+      "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
+      "deletion_mode": "FEATURE_DISABLED_NO_OBJECT_ADMISSION",
+      "processor_boundary": "OBJECT_STORAGE_DISABLED",
+      "feature_state": "DISABLED",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "terraform_state",
+      "classification": "RESTRICTED",
+      "owner": "Platform Security",
+      "purposes": ["Future encrypted infrastructure state and lock coordination"],
+      "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
+      "deletion_mode": "OWNER_BREAK_GLASS_AND_ENVIRONMENT_RETIREMENT_REVIEW",
+      "processor_boundary": "REMOTE_STATE_NOT_CREATED",
+      "feature_state": "PLAN_ONLY",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "secret_or_token",
+      "classification": "PROHIBITED",
+      "owner": "Platform Security",
+      "purposes": ["Application records must never persist credentials or bearer material"],
+      "retention_posture": "PROHIBITED",
+      "deletion_mode": "PROHIBITED_STORAGE_ROTATE_IF_DETECTED",
+      "processor_boundary": "SECRET_STORE_REFERENCE_ONLY",
+      "feature_state": "PROHIBITED",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    }
+  ]
+}

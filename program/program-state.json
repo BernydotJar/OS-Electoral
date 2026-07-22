@@ -3,9 +3,9 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-21",
-  "branch": "agent/c3-infra-001-plan-only-baseline",
-  "current_increment": "C3-INFRA-001",
-  "iteration_status": "CI_GREEN",
+  "branch": "agent/c3-sec-001-security-privacy-baseline",
+  "current_increment": "C3-SEC-001",
+  "iteration_status": "TESTED_LOCAL",
   "production_status": "BLOCKED",
   "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. A plan-only Terraform baseline, mocked plans and repository policy checks are tested locally, but no AWS account, remote state, live plan/apply, dev/staging/production environment, backup/restore, production observability, historical-run supersession or independent human production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -93,7 +93,7 @@
     {
       "id": "WS-13",
       "name": "Security, Privacy and Compliance",
-      "status": "SECURITY_EXECUTABLE_NEXT",
+      "status": "SECURITY_TESTED_LOCAL_CI_PENDING",
       "next_increment": "C3-SEC-001"
     },
     {
@@ -109,9 +109,7 @@
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [
-    "C3-SEC-001"
-  ],
+  "ready_tasks": [],
   "published_unreviewed_increment": {
     "id": "C3-OPS-001",
     "state": "DRAFT_PR_CI_GREEN",
@@ -233,16 +231,16 @@
       "pr": 100,
       "base": "agent/c3-ci-001-supply-chain-policy",
       "head": "agent/c3-infra-001-plan-only-baseline",
-      "head_sha": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
+      "head_sha": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
       "ci": "SUCCESS"
     }
   ],
   "local_verification": {
-    "tests_passed": 645,
-    "tests_skipped": 9,
+    "tests_passed": 652,
+    "tests_skipped": 10,
     "coverage_percent": 90.95,
     "coverage_gate": "PASS",
-    "postgresql_integration": "PASS_TWICE_9_SLICES_REVISION_20260721_0010",
+    "postgresql_integration": "PASS_TWICE_10_SLICES_REVISION_20260721_0011",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
     "frontend_unit_tests": 48,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
@@ -307,7 +305,14 @@
     "infra_stack_e2e": "PASS_JOB_88805187008",
     "infra_supply_chain_exact_head": "PASS_JOB_88805186814_ARTIFACT_8515178689",
     "infra_sbom_sha256": "deab051c4622170ee1627133cb2c24055a717b5b6bea6d5b9b0d16657262f901",
-    "infra_sbom_attestation_count": 1
+    "infra_sbom_attestation_count": 1,
+    "security_focused_tests": "PASS_11_SKIPPED_1",
+    "security_policy": "PASS_12_RECORD_TYPES_7_PROHIBITIONS_6_APPEND_ONLY_TABLES",
+    "security_dependency_audit": "PASS_HASH_LOCKED_ZERO_KNOWN_VULNERABILITIES",
+    "security_actionlint": "PASS_1_7_12",
+    "security_gitleaks_worktree": "PASS_8_30_1_EFFECTIVE_WORKTREE",
+    "security_browser_e2e": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
+    "security_local_stack_e2e": "BLOCKED_LOCAL_DOCKER_LAYER_LCHOWN_REMOTE_CI_REQUIRED"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -327,7 +332,7 @@
     "production": "NOT_DEPLOYED_OR_PROVEN"
   },
   "blockers": [
-    "Five open CRITICAL/HIGH production findings",
+    "Two open CRITICAL/HIGH production findings",
     "Six historical validation runs retain FAILURE without scope-equivalent supersession records",
     "Exact-head supply-chain OIDC attestation, human review and merge remain pending despite active protected-main and SHA-pinned Actions enforcement",
     "No live OIDC login, recovery, MFA, provider invitation delivery or provider session revocation",
@@ -349,21 +354,10 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-INFRA-001",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-infra-001-plan-only-baseline",
-    "base": "agent/c3-ci-001-supply-chain-policy@e4c590389cf7cd8207c5e61eddef9a540767c929",
-    "head_commit": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
-    "draft_pr": 100,
-    "ci_run_id": 29882176565,
-    "visual_run_id": 29882176651,
-    "terraform_job_id": 88805186841,
-    "e2e_job_id": 88805187008,
-    "execution_mode": "PLAN_ONLY_NO_APPLY",
-    "cost_authorization": "PROHIBITED",
-    "desired_required_checks": 9,
-    "live_required_checks": 8,
-    "branch_protection_change": "HUMAN_POLICY_GATE",
+    "id": "C3-SEC-001",
+    "state": "TESTED_LOCAL",
+    "branch": "agent/c3-sec-001-security-privacy-baseline",
+    "base": "agent/c3-infra-001-plan-only-baseline@c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -383,15 +377,13 @@
     "base": "agent/c3-ci-001-supply-chain-policy",
     "base_commit": "e4c590389cf7cd8207c5e61eddef9a540767c929",
     "implementation_commit": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
-    "head_commit": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
+    "receipt_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
+    "head_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
     "draft_pr": 100,
-    "ci_run_id": 29882176565,
-    "visual_run_id": 29882176651,
-    "terraform_job_id": 88805186841,
-    "e2e_job_id": 88805187008,
-    "supply_chain_job_id": 88805186814,
-    "supply_chain_artifact_id": 8515178689,
-    "frontend_artifact_id": 8515208682,
+    "ci_run_id": 29882414899,
+    "visual_run_id": 29882414917,
+    "terraform_job_id": 88805896206,
+    "e2e_job_id": 88805896150,
     "ci": "SUCCESS",
     "status": "CI_GREEN",
     "execution_mode": "PLAN_ONLY_NO_APPLY",

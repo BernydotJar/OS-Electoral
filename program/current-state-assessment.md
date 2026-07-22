@@ -33,13 +33,15 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - `make verify`: PASS.
 - Ruff lint and format: PASS.
 - strict mypy: PASS across 63 source files.
-- Full locked suite: `645 passed`, `9 skipped`.
+- Full locked suite: `652 passed`, `10 skipped`.
 - Enforced coverage: `90.95%` with `fail_under=90`.
-- Isolated PostgreSQL gate reaches revision `20260721_0010` and is reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
-- PostgreSQL evidence covers forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, campaign/candidate/team/roadmap concurrency, exact replay, optimistic versions and immutable daily snapshots.
+- Isolated PostgreSQL gate reaches revision `20260721_0011` and is reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
+- PostgreSQL evidence covers forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, campaign/candidate/team/roadmap concurrency, exact replay, optimistic versions, append-only daily snapshots and non-owner mutation denial on six journals.
 - Frontend regression: ESLint, strict TypeScript, 48 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
 - Frontend exact-head PR CI and automated browser/WCAG review: PASS.
-- Program truth: PASS with five open CRITICAL/HIGH findings and six retained historical failed runs.
+- C3-SEC local browser E2E: PASS with ES/EN desktop, mobile, keyboard, reduced motion, zero overflow and zero axe violations; exact-head CI remains pending.
+- Local Compose E2E remains environment-blocked at Docker layer registration (`lchown /var/empty`); the CI stack E2E is the authoritative final proof.
+- Program truth: PASS with two open CRITICAL/HIGH findings and six retained historical failed runs.
 - Required eval inventory: `5 PASS`, `15 PARTIAL`, `13 NOT_RUN`; production remains blocked.
 - Terraform `1.15.8` and AWS provider `6.55.0` are exact-pinned; bootstrap/platform format, backend-disabled init, validation, mocked plans and six adversarial policy tests PASS without AWS credentials.
 - Campaign safety scan: PASS.
@@ -72,8 +74,10 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - Production object storage, attachment safety, external transport, production observability, rate controls and operational administration remain incomplete.
 - A plan-only Terraform baseline is tested locally, but no verified AWS account, remote state, live plan/apply, dev/staging/production runtime, backup/restore, load, rollback or disaster-recovery evidence exists.
 - Main protection, restricted SHA-pinned Actions, vulnerability governance and exact-source-head supply-chain attestation are active; human review/merge and production environment gates remain pending.
-- Six historical failures and five CRITICAL/HIGH findings remain explicit production blockers.
+- Six historical failures and two CRITICAL/HIGH findings remain explicit production blockers.
 - No independent security, privacy, accessibility, domain, legal or human production approval is recorded.
+- Revision `20260721_0011` denies non-owner UPDATE/DELETE on six append-only journals; database owner break-glass, external anchoring, retention and restore remain open.
+- Executable data policy covers 12 record types and seven political-data prohibitions while all live processors remain disabled.
 
 ## Delivery table
 
@@ -89,6 +93,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, PR `#95`, CI `29871930387` and visual `29871930366` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
 | Evidence-first Strategy Decision Room | revision `20260721_0009`, exact API, append-only decisions, PR `#96`, CI `29876152098` and visual `29876152083` | `CI_GREEN`; authenticated editing, independent human acceptance, merge and live environments pending |
 | Governed Agent Runtime | revision `20260721_0010`, strict no-tool contracts, exact API, append-only journal, PR `#98`, final receipt `8d6c491`, CI `29878876280` and visual `29878876285` | `CI_GREEN`; live provider/privacy review, human disposition UI, merge and environments pending |
+| Security/privacy baseline | revision `20260721_0011`, six database append-only guards, 12 record types and seven mandatory prohibitions | `VERIFIED_POSTGRESQL`; E2E, PR/CI, independent review, owner break-glass governance and live environments pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 15 PARTIAL / 13 NOT_RUN` |
 | Repository protection and supply chain | strict protected main, selected SHA-pinned Actions, vulnerability governance, deterministic SBOM/provenance and exact-head Sigstore/Rekor attestations | `CI_GREEN`; human review/merge and production image/environment evidence pending |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
