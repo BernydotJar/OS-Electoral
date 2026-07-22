@@ -25,7 +25,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - PR `#89` at `437b469` passed CampaignOS CI `29856835515` and visual review `29856835522`.
 - Twenty-four non-PR issues remain open.
 - Authenticated settings now verify strict protected-main checks, one approval, admin enforcement, linear history, no force push/deletion, selected Actions with mandatory SHA pinning, vulnerability alerts and automated security fixes.
-- Deterministic SBOM/provenance and keyless attestation source are implemented; exact-head OIDC attestation remains pending before the CI finding can close.
+- Deterministic SBOM/provenance and keyless GitHub OIDC/Sigstore attestations pass for exact source head `0501c4b`; protected-main and Action policy match versioned desired state.
 - No force-push, merge or deployment occurred.
 
 ## Current verification
@@ -70,7 +70,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - Guided intake, Candidate Workspace and Team Builder are draft-PR CI-green; campaign roadmap and Daily War Room are locally/PostgreSQL/browser verified. Authenticated editing/approval, strategy approval, dedicated reviewer separation, durable cross-domain approvals and broader product journeys remain incomplete.
 - Production object storage, attachment safety, external transport, production observability, rate controls and operational administration remain incomplete.
 - No Terraform baseline, verified AWS environment, backup/restore, load, rollback or disaster-recovery evidence.
-- Main protection, restricted SHA-pinned Actions and vulnerability governance are active; exact-head supply-chain attestation and human review/merge remain pending.
+- Main protection, restricted SHA-pinned Actions, vulnerability governance and exact-source-head supply-chain attestation are active; human review/merge and production environment gates remain pending.
 - Six historical failures and five CRITICAL/HIGH findings remain explicit production blockers.
 - No independent security, privacy, accessibility, domain, legal or human production approval is recorded.
 
@@ -89,7 +89,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Evidence-first Strategy Decision Room | revision `20260721_0009`, exact API, append-only decisions, PR `#96`, CI `29876152098` and visual `29876152083` | `CI_GREEN`; authenticated editing, independent human acceptance, merge and live environments pending |
 | Governed Agent Runtime | revision `20260721_0010`, strict no-tool contracts, exact API, append-only journal, PR `#98`, final receipt `8d6c491`, CI `29878876280` and visual `29878876285` | `CI_GREEN`; live provider/privacy review, human disposition UI, merge and environments pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 15 PARTIAL / 13 NOT_RUN` |
-| Repository protection and supply chain | strict protected main, selected SHA-pinned Actions, vulnerability governance, deterministic SBOM/provenance and OIDC attestation job | `IN_PROGRESS`; exact-head signed job and human review/merge pending |
+| Repository protection and supply chain | strict protected main, selected SHA-pinned Actions, vulnerability governance, deterministic SBOM/provenance and exact-head Sigstore/Rekor attestations | `CI_GREEN`; human review/merge and production image/environment evidence pending |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
 | AWS/operations | no verified environment, backup/restore or observability | `NOT_VERIFIED` / `NOT_IMPLEMENTED` |
 
@@ -110,7 +110,7 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Publish `C3-CI-001` and require the exact-head SBOM/provenance/attestation job to pass before closing CI/supply findings.
+1. Begin `C3-INFRA-001` as Terraform validation/plan-only work; do not apply or create paid resources.
 2. Add live-provider/privacy work only under a separate reviewed increment after processor, residency, retention and leakage controls are accepted.
 3. Add human disposition UI separately; keep tools and external effects disabled.
 
@@ -152,3 +152,14 @@ Production deployment remains prohibited until every production gate passes and 
 - Prompt-injection eval is `PARTIAL_TESTED_LOCAL`; provider privacy/leakage approval remains `NOT_IMPLEMENTED`.
 - Status is `CI_GREEN`; PR `#98` is `CLEAN`, final CI `29878876280` and visual `29878876285` passed on receipt `8d6c491a6681ea2395e2f81800dda294e41b69bb`.
 - Production remains `BLOCKED`; default provider is unavailable/no-network and external effects remain `NONE`.
+
+
+## C3-CI-001 exact-head signed checkpoint — 2026-07-21
+
+- PR `#99` is `CLEAN` at `0501c4bd4bfac4a6e762c65aa191cf7290a5d448`; CI `29880153335` and visual `29880153340` succeeded.
+- Supply-chain job `88799003125` generated artifact `8514429538` with exact source revision in report, manifest and SLSA parameters.
+- Four GitHub OIDC/Sigstore attestations were uploaded to Rekor/repository; the SBOM digest API lookup returns one attestation bundle.
+- Strict main protection, one review, admin enforcement, selected SHA-pinned Actions, vulnerability alerts and automated security fixes match versioned policy.
+- `FND-CI-001`, `FND-DEPLOY-001` and `FND-SUPPLY-001` are resolved.
+- Two CRITICAL/HIGH findings and six historical failed runs remain; production stays `BLOCKED`.
+- `C3-INFRA-001` is executable next only for plan/validation work. No Terraform apply or paid resource is authorized.

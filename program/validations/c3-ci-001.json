@@ -3,7 +3,7 @@
   "verified_at": "2026-07-21",
   "branch": "agent/c3-ci-001-supply-chain-policy",
   "base": "agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb",
-  "status": "IN_PROGRESS_EXACT_HEAD_ATTESTATION_PENDING",
+  "status": "CI_GREEN",
   "production_status": "BLOCKED",
   "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY",
   "results": {
@@ -77,21 +77,30 @@
     "action": "actions/attest-build-provenance",
     "action_commit": "0f67c3f4856b2e3261c31976d6725780e5e4c373",
     "release": "v4.1.1",
-    "status": "CORRECTED_EXACT_HEAD_CI_PENDING",
+    "status": "PASS_EXACT_SOURCE_HEAD",
     "initial_run_id": 29879794354,
     "initial_job_id": 88797869680,
     "initial_implementation_head": "26b8e24f03e16c309ad20976bd8632627ecd734f",
     "initial_artifact_revision": "e4346e591352584a45ef310c564974578998dd3a",
     "initial_scope_result": "SUCCESS_SCOPE_INSUFFICIENT_MERGE_REF",
-    "correction": "CHECKOUT_AND_GENERATOR_BOUND_TO_PR_SOURCE_HEAD"
+    "correction": "CHECKOUT_AND_GENERATOR_BOUND_TO_PR_SOURCE_HEAD",
+    "corrected_run_id": 29880153335,
+    "corrected_job_id": 88799003125,
+    "artifact_id": 8514429538,
+    "artifact_revision": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+    "expected_head": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+    "attestation_step": "SUCCESS",
+    "attestations_created": 4,
+    "sigstore_rekor": "UPLOADED",
+    "attestation_api_count_for_sbom_digest": 1,
+    "sbom_sha256": "68cd72f616ef5853bb59cfd7d8ecce49980c9b2d5213ec73013ec0bef58693d0"
   },
   "limitations": [
-    "Corrected exact-source-head GitHub OIDC attestation is pending",
     "Human review and merge remain pending",
-    "Historical failed runs remain production-blocking",
-    "No AWS environment, production image publication, deployment or rollback evidence exists"
+    "Six historical failed runs remain production-blocking",
+    "No published production image scan/signature, AWS environment, deployment or rollback evidence exists"
   ],
-  "remote_state": "INITIAL_ATTESTATION_SCOPE_INSUFFICIENT_CORRECTED_HEAD_PENDING",
+  "remote_state": "CI_GREEN_CLEAN_DRAFT_PR_EXACT_SOURCE_HEAD_ATTESTED",
   "superseded_scope_insufficient_evidence": [
     {
       "run_id": 29879794354,
@@ -101,7 +110,13 @@
       "artifact_revision": "e4346e591352584a45ef310c564974578998dd3a",
       "scope": "GitHub OIDC attestations were created for artifacts generated from refs/pull/99/merge",
       "reason": "Artifact revision did not equal the PR source head; exact-head signing claim is not satisfied",
-      "superseded_by": null
+      "superseded_by": 29880153335
     }
-  ]
+  ],
+  "implementation_commit": "26b8e24f03e16c309ad20976bd8632627ecd734f",
+  "exact_head_fix_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+  "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+  "draft_pr": 99,
+  "ci_run_id": 29880153335,
+  "visual_run_id": 29880153340
 }

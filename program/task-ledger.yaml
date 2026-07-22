@@ -50,7 +50,7 @@
     {
       "task_id": "C3-CI-001",
       "owner": "WS-02",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         ".github/campaignos-security-policy.json",
         ".github/workflows/campaignos-ci.yml",
@@ -67,11 +67,17 @@
       ],
       "external_effects": "REVIEW_BRANCH_AND_DRAFT_PR",
       "blockers": [
-        "Exact-head GitHub OIDC artifact attestation is pending",
         "Human review and merge remain pending",
         "Six historical failed runs remain production-blocking",
         "No AWS environment, deployment, rollback or production approval evidence exists"
-      ]
+      ],
+      "publication_state": "DRAFT_PR_CI_GREEN_EXACT_HEAD_ATTESTED",
+      "implementation_commit": "26b8e24f03e16c309ad20976bd8632627ecd734f",
+      "exact_head_fix_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "draft_pr": 99,
+      "ci_run_id": 29880153335,
+      "visual_run_id": 29880153340
     },
     {
       "task_id": "C3-IAM-001",
@@ -447,13 +453,10 @@
     {
       "task_id": "C3-INFRA-001",
       "owner": "WS-12",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "evidence": [],
       "external_effects": "NONE",
-      "blockers": [
-        "C3-CI-001",
-        "C3-API-001"
-      ]
+      "blockers": []
     },
     {
       "task_id": "C3-SEC-001",

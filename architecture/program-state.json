@@ -12,7 +12,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main reviews/checks, restricted SHA-pinned Actions, vulnerability alerts, deterministic SBOM/provenance and a keyless attestation job are now configured, but the exact-head attestation has not yet run. No verified AWS environments, backup/restore, production observability or independent human production approval exists.",
+  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main enforcement, restricted SHA-pinned Actions, vulnerability governance, deterministic SBOM/provenance and exact-source-head keyless attestations are verified. No Terraform/AWS environment, backup/restore, production observability, historical-run supersession or independent human production approval exists.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -724,8 +724,8 @@
     {
       "id": "WS-02",
       "name": "Monorepo and Developer Experience",
-      "status": "GITHUB_ENFORCEMENT_ACTIVE_ATTESTATION_CI_PENDING",
-      "next_increment": "C3-CI-001"
+      "status": "PROTECTED_SUPPLY_CHAIN_CI_GREEN",
+      "next_increment": "C3-INFRA-001"
     },
     {
       "id": "WS-03",
@@ -784,7 +784,7 @@
     {
       "id": "WS-12",
       "name": "AWS Platform and Terraform",
-      "status": "NOT_STARTED",
+      "status": "PLAN_ONLY_EXECUTABLE_NEXT",
       "next_increment": "C3-INFRA-001"
     },
     {
@@ -831,7 +831,7 @@
     },
     {
       "id": "C3-CI-001",
-      "status": "ACTIVE",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FOUND-001A",
         "C3-DEVEX-001"
@@ -952,7 +952,7 @@
     },
     {
       "id": "C3-INFRA-001",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "EXECUTABLE_NEXT",
       "depends_on": [
         "C3-CI-001",
         "C3-API-001"
@@ -1011,8 +1011,8 @@
     {
       "id": "FND-CI-001",
       "severity": "HIGH",
-      "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "Protected main, strict required checks, one review, admin enforcement and restricted SHA-pinned Actions are active; exact-head supply-chain attestation is pending.",
+      "status": "RESOLVED",
+      "summary": "Main is strictly protected with required checks/review/admin enforcement; Actions are selected and SHA-pinned; exact-source-head CI and attestation passed.",
       "evidence": "program/validations/c3-ci-001.json"
     },
     {
@@ -1025,8 +1025,8 @@
     {
       "id": "FND-DEPLOY-001",
       "severity": "HIGH",
-      "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "Pages is manual DEMO_NON_PRODUCTION only and the policy verifier rejects automatic triggers; exact-head CI enforcement is pending.",
+      "status": "RESOLVED",
+      "summary": "Pages publication is manual, main-only and requires explicit DEMO_NON_PRODUCTION confirmation; policy tests reject automatic triggers.",
       "evidence": ".github/workflows/deploy-pages.yml"
     },
     {
@@ -1053,15 +1053,15 @@
     {
       "id": "FND-SUPPLY-001",
       "severity": "HIGH",
-      "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "Locks, audits, SHA-pinned allow-listed Actions, vulnerability alerts, deterministic SBOM/provenance and keyless attestation source are present; exact-head attestation is pending.",
+      "status": "RESOLVED",
+      "summary": "Locks/audits, restricted SHA-pinned Actions, alerts, deterministic SBOM/provenance/checksums and exact-source-head GitHub OIDC attestations are verified.",
       "evidence": "docs/testing/c3-ci-001-evidence.md"
     }
   ],
   "open_findings_summary": {
     "critical": 1,
-    "high": 4,
-    "total_critical_or_high": 5
+    "high": 1,
+    "total_critical_or_high": 2
   },
   "github_state": {
     "verified_at": "2026-07-21",
@@ -1108,7 +1108,7 @@
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
     "actions_allowed": "SELECTED_GITHUB_OWNED_PLUS_TWO_PATTERNS",
     "action_sha_pinning_required": true,
-    "local_ci_workflow": "INITIAL_ATTESTATION_SCOPE_INSUFFICIENT_CORRECTED_EXACT_HEAD_PENDING",
+    "local_ci_workflow": "EXACT_SOURCE_HEAD_SUPPLY_CHAIN_ATTESTATION_SUCCESS",
     "local_workflow_action_refs": "32_FULL_SHA_PINNED",
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
@@ -1228,32 +1228,52 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-CI-001",
-      "state": "IN_PROGRESS",
+      "state": "CI_GREEN",
       "branch": "agent/c3-ci-001-supply-chain-policy",
       "base": "agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb",
-      "github_enforcement": "VERIFIED_LIVE",
-      "attestation": "CORRECTED_EXACT_HEAD_CI_PENDING",
+      "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "draft_pr": 99,
+      "ci_run_id": 29880153335,
+      "visual_run_id": 29880153340,
+      "supply_chain_job_id": 88799003125,
+      "attestation": "EXACT_SOURCE_HEAD_VERIFIED",
       "production_status": "BLOCKED",
       "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY"
     },
     "latest_checkpoint": {
-      "id": "C3-AGENT-001",
-      "branch": "agent/c3-agent-001-governed-runtime",
-      "base": "agent/c3-api-001-reconciliation",
-      "base_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-      "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
-      "receipt_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
-      "head_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
-      "draft_pr": 98,
-      "ci_run_id": 29878876280,
-      "visual_run_id": 29878876285,
+      "id": "C3-CI-001",
+      "branch": "agent/c3-ci-001-supply-chain-policy",
+      "base": "agent/c3-agent-001-governed-runtime",
+      "base_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
+      "implementation_commit": "26b8e24f03e16c309ad20976bd8632627ecd734f",
+      "exact_head_fix_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "draft_pr": 99,
+      "ci_run_id": 29880153335,
+      "visual_run_id": 29880153340,
+      "supply_chain_job_id": 88799003125,
+      "supply_chain_artifact_id": 8514429538,
+      "attested_subject_sha256": "68cd72f616ef5853bb59cfd7d8ecce49980c9b2d5213ec73013ec0bef58693d0",
       "ci": "SUCCESS",
       "status": "CI_GREEN",
-      "provider_mode": "UNAVAILABLE_NO_NETWORK",
-      "external_effects": "NONE",
-      "next_increment": "C3-CI-001"
+      "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY",
+      "next_increment": "C3-INFRA-001"
     },
-    "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21"
+    "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
+    "required_check_enforcement": "ACTIVE_VERIFIED",
+    "supply_chain_attestation": {
+      "run_id": 29880153335,
+      "job_id": 88799003125,
+      "artifact_id": 8514429538,
+      "head_sha": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "artifact_revision": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "attestation_step": "SUCCESS",
+      "attestations_created": 4,
+      "attestation_api_count_for_sbom_digest": 1,
+      "sbom_sha256": "68cd72f616ef5853bb59cfd7d8ecce49980c9b2d5213ec73013ec0bef58693d0",
+      "sigstore_rekor": "UPLOADED",
+      "scope": "EXACT_PR_SOURCE_HEAD"
+    }
   },
   "deployment_state": {
     "github_pages": {
@@ -1524,11 +1544,11 @@
       "head_sha": "26b8e24f03e16c309ad20976bd8632627ecd734f",
       "scope": "Supply-chain job and four GitHub OIDC/Sigstore attestations succeeded, but artifacts recorded the PR merge revision",
       "artifact_revision": "e4346e591352584a45ef310c564974578998dd3a",
-      "superseded_by": null,
+      "superseded_by": 29880153335,
       "verification_evidence": "docs/testing/c3-ci-001-evidence.md",
       "reviewer": "independent release verification",
       "date": "2026-07-21",
-      "reason": "Cryptographic evidence is valid for refs/pull/99/merge but insufficient for the required exact PR source-head claim."
+      "reason": "Initial attestations were valid for the PR merge ref; corrected run binds checkout, generated evidence and attested subjects to the exact PR source head."
     }
   ]
 }

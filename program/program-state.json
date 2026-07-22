@@ -5,9 +5,9 @@
   "updated_at": "2026-07-21",
   "branch": "agent/c3-ci-001-supply-chain-policy",
   "current_increment": "C3-CI-001",
-  "iteration_status": "IN_PROGRESS",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
-  "production_status_reason": "Five open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main reviews/checks, restricted SHA-pinned Actions, vulnerability alerts, deterministic SBOM/provenance and a keyless attestation job are now configured, but the exact-head attestation has not yet run. No verified AWS environments, backup/restore, production observability or independent human production approval exists.",
+  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main enforcement, restricted SHA-pinned Actions, vulnerability governance, deterministic SBOM/provenance and exact-source-head keyless attestations are verified. No Terraform/AWS environment, backup/restore, production observability, historical-run supersession or independent human production approval exists.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -27,8 +27,8 @@
     {
       "id": "WS-02",
       "name": "Monorepo and Developer Experience",
-      "status": "GITHUB_ENFORCEMENT_ACTIVE_ATTESTATION_CI_PENDING",
-      "next_increment": "C3-CI-001"
+      "status": "PROTECTED_SUPPLY_CHAIN_CI_GREEN",
+      "next_increment": "C3-INFRA-001"
     },
     {
       "id": "WS-03",
@@ -87,7 +87,7 @@
     {
       "id": "WS-12",
       "name": "AWS Platform and Terraform",
-      "status": "NOT_STARTED",
+      "status": "PLAN_ONLY_EXECUTABLE_NEXT",
       "next_increment": "C3-INFRA-001"
     },
     {
@@ -109,7 +109,9 @@
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [],
+  "ready_tasks": [
+    "C3-INFRA-001"
+  ],
   "published_unreviewed_increment": {
     "id": "C3-OPS-001",
     "state": "DRAFT_PR_CI_GREEN",
@@ -219,6 +221,13 @@
       "head": "agent/c3-agent-001-governed-runtime",
       "head_sha": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
       "ci": "SUCCESS"
+    },
+    {
+      "pr": 99,
+      "base": "agent/c3-agent-001-governed-runtime",
+      "head": "agent/c3-ci-001-supply-chain-policy",
+      "head_sha": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+      "ci": "SUCCESS"
     }
   ],
   "local_verification": {
@@ -272,7 +281,10 @@
     "github_security_comparisons": "PASS_17",
     "sbom": "CYCLONEDX_1_6_DETERMINISTIC",
     "provenance": "IN_TOTO_SLSA_V1_DETERMINISTIC",
-    "attestation": "INITIAL_SUCCESS_SCOPE_INSUFFICIENT_CORRECTED_EXACT_HEAD_PENDING"
+    "attestation": "PASS_EXACT_SOURCE_HEAD_SIGSTORE_REKOR",
+    "attested_head": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+    "supply_chain_ci_run": 29880153335,
+    "supply_chain_job": 88799003125
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -315,11 +327,15 @@
   },
   "active_local_increment": {
     "id": "C3-CI-001",
-    "state": "IN_PROGRESS",
+    "state": "CI_GREEN",
     "branch": "agent/c3-ci-001-supply-chain-policy",
     "base": "agent/c3-agent-001-governed-runtime@8d6c491a6681ea2395e2f81800dda294e41b69bb",
-    "github_enforcement": "VERIFIED_LIVE",
-    "attestation": "CORRECTED_EXACT_HEAD_CI_PENDING",
+    "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+    "draft_pr": 99,
+    "ci_run_id": 29880153335,
+    "visual_run_id": 29880153340,
+    "supply_chain_job_id": 88799003125,
+    "attestation": "EXACT_SOURCE_HEAD_VERIFIED",
     "production_status": "BLOCKED",
     "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY"
   },
@@ -334,21 +350,23 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-AGENT-001",
-    "branch": "agent/c3-agent-001-governed-runtime",
-    "base": "agent/c3-api-001-reconciliation",
-    "base_commit": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-    "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
-    "receipt_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
-    "head_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
-    "draft_pr": 98,
-    "ci_run_id": 29878876280,
-    "visual_run_id": 29878876285,
+    "id": "C3-CI-001",
+    "branch": "agent/c3-ci-001-supply-chain-policy",
+    "base": "agent/c3-agent-001-governed-runtime",
+    "base_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
+    "implementation_commit": "26b8e24f03e16c309ad20976bd8632627ecd734f",
+    "exact_head_fix_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+    "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
+    "draft_pr": 99,
+    "ci_run_id": 29880153335,
+    "visual_run_id": 29880153340,
+    "supply_chain_job_id": 88799003125,
+    "supply_chain_artifact_id": 8514429538,
+    "attested_subject_sha256": "68cd72f616ef5853bb59cfd7d8ecce49980c9b2d5213ec73013ec0bef58693d0",
     "ci": "SUCCESS",
     "status": "CI_GREEN",
-    "provider_mode": "UNAVAILABLE_NO_NETWORK",
-    "external_effects": "NONE",
-    "next_increment": "C3-CI-001"
+    "external_effects": "REPOSITORY_SECURITY_SETTINGS_ONLY",
+    "next_increment": "C3-INFRA-001"
   },
   "production_blockers": []
 }
