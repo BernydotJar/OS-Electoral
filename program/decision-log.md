@@ -278,3 +278,15 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** The first Agent Runtime accepts only three internal review purposes, an exact persisted Strategy snapshot, no tools, explicit budgets and strict structured output. Completed and refused runs both remain `PENDING` human review with no authority or external effect.
 - **Evidence:** contracts, runtime guards, SQL journal, exact API, worker validation, 18 adversarial tests and PostgreSQL concurrency/RLS proof.
 - **Consequence:** no provider SDK, network adapter, fallback, publication, contact, targeting, spending, permission change, deployment or mobilization path exists. Future provider or disposition work requires separate privacy/security/human gates.
+
+## 2026-07-21 — Protected delivery and supply-chain evidence are repository policy, not deployment authority
+
+- **Decision:** Protect `main` with strict universal checks, one approval, conversation resolution, linear history and admin enforcement; restrict Actions to GitHub-owned plus two explicit third-party patterns with mandatory SHA pins; enable vulnerability alerts/security fixes; require deterministic SBOM/source/provenance evidence and a keyless GitHub OIDC attestation job.
+- **Evidence:** `.github/campaignos-security-policy.json`, offline mutation tests, authenticated live-settings verifier and `program/validations/c3-ci-001.json`.
+- **Consequence:** CI drift fails closed and unreviewed changes cannot enter `main`; these controls do not authorize merge, environment creation or deployment. Findings remain open until the exact published head completes the attestation job.
+
+## 2026-07-21 — Generated provenance is not self-signing evidence
+
+- **Decision:** `provenance.intoto.json` is a deterministic in-toto/SLSA statement and is explicitly marked unsigned as an embedded document. Signature evidence exists only when GitHub's SHA-pinned attestation action completes through OIDC for the exact subjects.
+- **Evidence:** supply-chain generator, evidence report, workflow attestation step and deterministic tests.
+- **Consequence:** Local generation cannot be cited as a signature; failed or skipped attestation prevents the signing gate from becoming green.

@@ -28,3 +28,13 @@ The target PR pipeline blocks on locked installation, lint/format/type checks, u
 Do not place undisclosed exploit details in public issues. Record severity, affected versions/environments/tenants, containment, owner, due date, verification, disclosure decision, and residual risk in a restricted process. Security fixes require regression tests and independent verification. Rotate exposed secrets and preserve incident evidence.
 
 The CI definition covers locked quality/tests, PostgreSQL/RLS, actionlint, CodeQL, dependency/secret checks and a disposable constrained-role Compose E2E; draft PR `#72` runs `29706162737` and `29706162740` passed at their recorded head. Branch enforcement, complete frontend coverage, SBOM/provenance, Terraform, staging and operational gates remain incomplete. This standard is therefore an implementation requirement rather than production proof.
+
+
+## CI and supply-chain controls
+
+- Treat `.github/campaignos-security-policy.json` as reviewed desired state; run `make supply-chain-verify` for every workflow or dependency change.
+- Every Action and service image must use an immutable SHA/digest. `pull_request_target` and persisted checkout credentials are forbidden.
+- Generate CycloneDX SBOM, source manifest, in-toto/SLSA provenance and checksums from the exact revision. Never describe the generated provenance JSON as signed by itself.
+- Require the GitHub OIDC attestation job to succeed for the exact SBOM/provenance subjects before claiming a signing gate.
+- Live repository controls must match `scripts/ci/verify_github_security_settings.py`; drift in protection, reviews, checks, allowed Actions, SHA pinning or vulnerability alerts is a release blocker.
+- Protected-main success is not deployment approval. AWS environments and production promotion remain separate explicit-human gates.
