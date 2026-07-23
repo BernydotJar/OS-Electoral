@@ -433,3 +433,13 @@
 - Passed the live PostgreSQL/FastAPI/Next/Chromium start-update-reload journey in ES/EN and mobile with zero axe violations and no browser token/storage leakage.
 - Passed 658 full tests, 10 skips, 90.92% coverage, 60 frontend tests, PostgreSQL twice, scanners, dependency audits, Terraform mocks and non-root image verification.
 - Recorded `VERIFIED_POSTGRESQL`; exact-head draft PR/CI remain pending. Production remains `BLOCKED`; external effects remain `NONE`.
+
+
+## 2026-07-23 — C3-OBS-001 local observability/recovery checkpoint
+
+- Confirmed remote `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`, cumulative PR `#106` merged and zero open PRs before work.
+- Added sanitized JSON logs, correlation/W3C trace propagation, bearer-protected low-cardinality metrics, worker/recovery textfiles, alerts and runbooks.
+- Added a native PostgreSQL backup/isolated-restore verifier and a real PostgreSQL 18 CI job with migration, seed, archive, restore, comparison, cleanup and retained evidence.
+- Passed `686` tests, `10` controlled skips and `90.40%` coverage; Ruff, format, mypy, YAML parsing and CI policy verification pass.
+- Local PostgreSQL 18 execution is not claimed because the sandbox Docker layer registration failed at `lchown /var/empty`; no database or external resource was modified. Exact-head CI recovery evidence remains pending.
+- Recorded `C3-OBS-001` as active, kept production `BLOCKED`, and preserved `external_effects=NONE`.

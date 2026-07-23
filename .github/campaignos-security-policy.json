@@ -4,6 +4,7 @@
   "required_status_checks": [
     "Locked quality and contract suite",
     "PostgreSQL migrations and tenant isolation",
+    "PostgreSQL backup and isolated restore",
     "Locked production dependency audit",
     "Software bill of materials and source provenance",
     "Dynamic frontend contracts and browser review",

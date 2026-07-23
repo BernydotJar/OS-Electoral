@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import cast
@@ -72,6 +71,7 @@ from campaignos.identity.oidc import (
     TokenVerifier,
     UnavailableTokenVerifier,
 )
+from campaignos.observability import MetricsRegistry, configure_json_logger
 from campaignos.onboarding import (
     GuidedIntakeService,
     SqlAlchemyGuidedIntakeService,
@@ -118,8 +118,11 @@ def create_app(
     campaign_readiness_reader: CampaignReadinessReader | None = None,
     campaign_writer: CampaignWriter | None = None,
     workspace_writer: WorkspaceWriter | None = None,
+    metrics_registry: MetricsRegistry | None = None,
 ) -> FastAPI:
     runtime_settings = settings or get_settings()
+    logger = configure_json_logger(runtime_settings, runtime_settings.service_name)
+    metrics = metrics_registry or MetricsRegistry()
     verifier = token_verifier
     if verifier is None and runtime_settings.oidc_configured:
         verifier = OidcTokenVerifier(runtime_settings)
@@ -200,13 +203,13 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-        app.state.logger.info(
+        logger.info(
             "campaignos_api_started",
             extra={"environment": runtime_settings.environment.value},
         )
         yield
         database_runtime.dispose()
-        app.state.logger.info("campaignos_api_stopped")
+        logger.info("campaignos_api_stopped")
 
     docs_url = "/docs" if runtime_settings.expose_api_docs else None
     redoc_url = "/redoc" if runtime_settings.expose_api_docs else None
@@ -235,7 +238,8 @@ def create_app(
     app.state.campaign_readiness_reader = campaign_readiness_boundary
     app.state.campaign_writer = campaign_write_boundary
     app.state.workspace_writer = workspace_write_boundary
-    app.state.logger = logging.getLogger(runtime_settings.service_name)
+    app.state.metrics = metrics
+    app.state.logger = logger
 
     app.middleware("http")(request_controls)
     install_exception_handlers(app)

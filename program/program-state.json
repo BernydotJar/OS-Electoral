@@ -2,12 +2,12 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-22",
-  "branch": "agent/c3-front-002-functional-onboarding",
-  "current_increment": "C3-FRONT-002",
-  "iteration_status": "VERIFIED_POSTGRESQL",
+  "updated_at": "2026-07-23",
+  "branch": "agent/c3-obs-001-operational-evidence",
+  "current_increment": "C3-OBS-001",
+  "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
-  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. A plan-only Terraform baseline, mocked plans and repository policy checks are tested locally, but no AWS account, remote state, live plan/apply, dev/staging/production environment, backup/restore, production observability, historical-run supersession or independent human production approval exists.",
+  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Local observability and a PostgreSQL recovery verifier are implemented, but exact-head PostgreSQL 18 restore evidence, managed backups, deployed telemetry, staging failure exercises, RPO/RTO acceptance, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -99,7 +99,7 @@
     {
       "id": "WS-14",
       "name": "Testing, Observability and Operations",
-      "status": "OBSERVABILITY_EXECUTABLE_NEXT",
+      "status": "OBSERVABILITY_LOCAL_ACTIVE_CI_RECOVERY_PENDING",
       "next_increment": "C3-OBS-001"
     },
     {
@@ -109,138 +109,13 @@
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [
-    "C3-OBS-001"
-  ],
-  "published_unreviewed_increment": {
-    "id": "C3-OPS-001",
-    "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-ops-001-roadmap-war-room",
-    "base": "agent/c3-team-001-accountability-review",
-    "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
-    "head_commit": "c81e4282813c0add0c3207f97066f127280e410e",
-    "draft_pr": 95,
-    "ci_run_id": 29871930387,
-    "visual_run_id": 29871930366
-  },
-  "review_stack": [
-    {
-      "pr": 84,
-      "base": "main",
-      "head": "agent/c3-api-002-idempotency",
-      "head_sha": "e938930eb1088f82603415c11182ab730994cb53",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 85,
-      "base": "agent/c3-api-002-idempotency",
-      "head": "agent/c3-api-003-outbox-worker",
-      "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 86,
-      "base": "agent/c3-api-003-outbox-worker",
-      "head": "agent/c3-api-004-workspace-write",
-      "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 87,
-      "base": "agent/c3-api-004-workspace-write",
-      "head": "agent/c3-api-005-campaign-readiness",
-      "head_sha": "3b4bc9b14834fa8c50a10904d942e03db45b8318",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 88,
-      "base": "agent/c3-api-005-campaign-readiness",
-      "head": "agent/c3-api-006-campaign-create",
-      "head_sha": "a21e7353f0a91f8c50a10904d942e03db45b8318",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 89,
-      "base": "agent/c3-api-006-campaign-create",
-      "head": "agent/c3-front-001-dynamic-shell",
-      "head_sha": "437b46930c68d6ed3a8233c139b0eaa03724b068",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 90,
-      "base": "agent/c3-front-001-dynamic-shell",
-      "head": "agent/c3-iam-002-identity-lifecycle",
-      "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 92,
-      "base": "agent/c3-iam-002-identity-lifecycle",
-      "head": "agent/c3-onboard-001-guided-intake",
-      "head_sha": "aa6fe239887173f3fb83366b640ad7b3121f361c",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 93,
-      "base": "agent/c3-onboard-001-guided-intake",
-      "head": "agent/c3-candidate-001-evidence-workspace",
-      "head_sha": "f3c899497d6b6c894b63b44aa6b85c80b1d2a3ee",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 94,
-      "base": "agent/c3-candidate-001-evidence-workspace",
-      "head": "agent/c3-team-001-accountability-review",
-      "head_sha": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 95,
-      "base": "agent/c3-team-001-accountability-review",
-      "head": "agent/c3-ops-001-roadmap-war-room",
-      "head_sha": "c81e4282813c0add0c3207f97066f127280e410e",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 96,
-      "base": "agent/c3-ops-001-roadmap-war-room",
-      "head": "agent/c3-strategy-001-evidence-decision-room",
-      "head_sha": "427ed62cc8272efe9515d908d590187cfee94ae8",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 97,
-      "base": "agent/c3-strategy-001-evidence-decision-room",
-      "head": "agent/c3-api-001-reconciliation",
-      "head_sha": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 98,
-      "base": "agent/c3-api-001-reconciliation",
-      "head": "agent/c3-agent-001-governed-runtime",
-      "head_sha": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 99,
-      "base": "agent/c3-agent-001-governed-runtime",
-      "head": "agent/c3-ci-001-supply-chain-policy",
-      "head_sha": "e4c590389cf7cd8207c5e61eddef9a540767c929",
-      "ci": "SUCCESS"
-    },
-    {
-      "pr": 100,
-      "base": "agent/c3-ci-001-supply-chain-policy",
-      "head": "agent/c3-infra-001-plan-only-baseline",
-      "head_sha": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-      "ci": "SUCCESS"
-    }
-  ],
+  "ready_tasks": [],
+  "published_unreviewed_increment": null,
+  "review_stack": [],
   "local_verification": {
-    "tests_passed": 658,
+    "tests_passed": 686,
     "tests_skipped": 10,
-    "coverage_percent": 90.92,
+    "coverage_percent": 90.4,
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_10_SLICES_REVISION_20260721_0011",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
@@ -248,7 +123,7 @@
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
-    "eval_catalog": "PASS_5_PARTIAL_15_NOT_RUN_13",
+    "eval_catalog": "PASS_5_PARTIAL_17_NOT_RUN_11",
     "gitleaks": "PASS_EFFECTIVE_WORKTREE_AND_ORIGIN_MAIN_TO_HEAD",
     "compose": "LOCAL_NAMESPACE_LIMITATION_REMOTE_CI_GREEN",
     "frontend_image_buildah": "PASS_DOCKER_FORMAT_NONROOT_HEALTHCHECK_SMOKE",
@@ -283,7 +158,7 @@
     "agent_postgresql": "PASS_9_SLICES_TWICE",
     "agent_provider_mode": "UNAVAILABLE_NO_NETWORK",
     "supply_chain_policy_tests": 11,
-    "workflow_action_refs": 33,
+    "workflow_action_refs": 39,
     "required_status_checks": 8,
     "github_security_comparisons": "PASS_17",
     "sbom": "CYCLONEDX_1_6_DETERMINISTIC",
@@ -298,7 +173,7 @@
     "terraform_platform": "PASS_INIT_BACKEND_FALSE_VALIDATE_MOCK_PLAN",
     "terraform_policy_tests": 6,
     "terraform_policy": "PASS_PLAN_ONLY_NO_APPLY",
-    "required_status_checks_desired": 9,
+    "required_status_checks_desired": 10,
     "required_status_checks_live": 8,
     "terraform_required_check_live": "HUMAN_POLICY_GATE_PENDING",
     "infra_pr_ci": "PASS_PR_100_HEAD_ede3881_RUN_29882176565",
@@ -326,7 +201,20 @@
     "front_002_demo_browser": "PASS_READ_ONLY",
     "front_002_functional_browser": "PASS_START_UPDATE_RELOAD_ES_EN_MOBILE_ZERO_AXE",
     "front_002_frontend_image": "PASS_UID_10001",
-    "front_002_dependency_audit": "PASS_ZERO_VULNERABILITIES"
+    "front_002_dependency_audit": "PASS_ZERO_VULNERABILITIES",
+    "observability": "PASS_STRUCTURED_LOGS_TRACE_CONTEXT_METRICS_ALERTS",
+    "observability_focused_tests": "PASS_51_PLUS_7_RECOVERY_RUNTIME",
+    "recovery_safety_contract": "PASS_TEST_SOURCE_DISTINCT_TARGET_IMMUTABLE_CLIENT_CLEANUP",
+    "recovery_postgresql_18_local": "BLOCKED_SANDBOX_DOCKER_LAYER_LCHOWN",
+    "recovery_postgresql_18_ci": "PENDING_EXACT_HEAD",
+    "workflow_yaml": "PASS",
+    "alert_rules_yaml": "PASS",
+    "recovery_required_check_live": "HUMAN_POLICY_GATE_PENDING",
+    "compose_current_workspace": "BLOCKED_DOCKER_COMPOSE_V2_UNAVAILABLE_V1_INCOMPATIBLE",
+    "terraform_current_workspace": "BLOCKED_TERRAFORM_CLI_UNAVAILABLE_NO_INFRA_CHANGE",
+    "supply_chain_current_worktree": "PASS",
+    "frontend_current_worktree": "PASS_60_TESTS_BUILD_ZERO_VULNERABILITIES",
+    "gitleaks_current_worktree": "PASS_8_30_1_VERIFIED_CHECKSUM"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -348,12 +236,12 @@
   "blockers": [
     "Two open CRITICAL/HIGH production findings",
     "Six historical validation runs retain FAILURE without scope-equivalent supersession records",
-    "Exact-head supply-chain OIDC attestation, human review and merge remain pending despite active protected-main and SHA-pinned Actions enforcement",
     "No live OIDC login, recovery, MFA, provider invitation delivery or provider session revocation",
-    "Identity lifecycle proof is local/PostgreSQL only; no RDS, dev, staging or production verification",
-    "Authenticated guided-intake/candidate mutation journeys, team, roadmap and broader product journeys remain absent or prototype-only",
-    "No deployable AWS Terraform baseline, backup/restore evidence or production observability",
-    "No independent security, privacy, domain, legal or explicit human production approval"
+    "No approved AWS dev/staging/production environment or managed PostgreSQL runtime exists",
+    "Exact-head PostgreSQL 18 recovery CI evidence is pending",
+    "No managed encrypted backup schedule, PITR, retention, deployed telemetry, alert routing or accepted RPO/RTO exists",
+    "Broader authenticated product journeys, rate limiting, load tests and rollback proof remain incomplete",
+    "No independent operational, security, privacy, domain, legal or explicit human production approval"
   ],
   "git_push_incident": {
     "classification": "TECHNICAL_DEFECT_REPAIRED",
@@ -368,10 +256,10 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-FRONT-002",
-    "state": "VERIFIED_POSTGRESQL",
-    "branch": "agent/c3-front-002-functional-onboarding",
-    "base": "agent/c3-sec-001-security-privacy-baseline@e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
+    "id": "C3-OBS-001",
+    "state": "ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING",
+    "branch": "agent/c3-obs-001-operational-evidence",
+    "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -386,20 +274,22 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-SEC-001",
-    "branch": "agent/c3-sec-001-security-privacy-baseline",
-    "base": "agent/c3-infra-001-plan-only-baseline",
-    "base_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-    "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
-    "receipt_commit": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
-    "head_commit": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
-    "draft_pr": 105,
-    "ci_run_id": 29943743735,
-    "visual_run_id": 29943743794,
-    "ci": "SUCCESS",
-    "status": "CI_GREEN",
+    "id": "C3-FRONT-002",
+    "branch": "main",
+    "head_commit": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
+    "cumulative_pr": 106,
+    "status": "MERGED_TO_MAIN",
+    "checks_before_merge": "SUCCESS",
     "external_effects": "NONE",
-    "next_increment": "C3-FRONT-002"
+    "next_increment": "C3-OBS-001"
   },
-  "production_blockers": []
+  "production_blockers": [],
+  "cumulative_merge": {
+    "pr": 106,
+    "status": "MERGED_TO_MAIN_REBASE",
+    "main_sha": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
+    "checks_before_merge": "SUCCESS",
+    "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED",
+    "open_pull_requests_observed": 0
+  }
 }

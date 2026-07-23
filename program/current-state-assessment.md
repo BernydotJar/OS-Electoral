@@ -42,7 +42,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - C3-SEC local browser E2E: PASS with ES/EN desktop, mobile, keyboard, reduced motion, zero overflow and zero axe violations; exact-head CI remains pending.
 - Local Compose E2E remains environment-blocked at Docker layer registration (`lchown /var/empty`); the CI stack E2E is the authoritative final proof.
 - Program truth: PASS with two open CRITICAL/HIGH findings and six retained historical failed runs.
-- Required eval inventory: `5 PASS`, `15 PARTIAL`, `13 NOT_RUN`; production remains blocked.
+- Required eval inventory: `5 PASS`, `17 PARTIAL`, `11 NOT_RUN`; production remains blocked.
 - Terraform `1.15.8` and AWS provider `6.55.0` are exact-pinned; bootstrap/platform format, backend-disabled init, validation, mocked plans and six adversarial policy tests PASS without AWS credentials.
 - Campaign safety scan: PASS.
 
@@ -71,9 +71,9 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - No trusted tenant portfolio selector or customer-facing identity-administration UI.
 - No RDS, dev, staging or production verification of identity lifecycle.
 - Guided intake now has a real local PostgreSQL/API/browser start-update-reload journey under exact grants. Live OIDC, campaign creation/access lifecycle, broader mutation journeys, independent user acceptance and deployed environments remain incomplete.
-- Production object storage, attachment safety, external transport, production observability, rate controls and operational administration remain incomplete.
-- A plan-only Terraform baseline is tested locally, but no verified AWS account, remote state, live plan/apply, dev/staging/production runtime, backup/restore, load, rollback or disaster-recovery evidence exists.
-- Main protection, restricted SHA-pinned Actions, vulnerability governance and exact-source-head supply-chain attestation are active; human review/merge and production environment gates remain pending.
+- Production object storage, attachment safety, external transport, deployed telemetry, rate controls and operational administration remain incomplete. Local structured logs, trace context, authenticated metrics and alert rules now pass.
+- A plan-only Terraform baseline and test-only PostgreSQL recovery verifier exist, but no verified AWS account, remote state, live plan/apply, dev/staging/production runtime, managed backup/PITR, accepted RPO/RTO, load, rollback or disaster-recovery exercise exists.
+- Cumulative PR `#106` was rebased into `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` after green checks; zero PRs were open when this increment began. Production environment and human approval gates remain pending.
 - Six historical failures and two CRITICAL/HIGH findings remain explicit production blockers.
 - No independent security, privacy, accessibility, domain, legal or human production approval is recorded.
 - Revision `20260721_0011` denies non-owner UPDATE/DELETE on six append-only journals; database owner break-glass, external anchoring, retention and restore remain open.
@@ -83,9 +83,10 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 
 | Area | Evidence | Determination |
 |---|---|---|
-| Foundation/IAM/first campaign API | PRs `#72`, `#73`, `#83` merged | `MERGED`; not deployed |
-| Review stack | PRs `#84`–`#90`, correct bases and green exact-head checks | `CI_GREEN`; human review/merge pending |
+| Integrated product baseline | cumulative PR `#106` rebased into `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` after green checks | `MERGED_TO_MAIN`; not deployed |
+| Review stack | historical branches reconciled or closed as superseded; open PRs observed: `0` | `RECONCILED` |
 | Dynamic frontend | original shell PR `#89` plus `C3-FRONT-002` live PostgreSQL/API/browser journey with 60 frontend tests and zero axe violations | `VERIFIED_POSTGRESQL`; exact-head PR/CI, human acceptance and deployment pending |
+| Operational observability and recovery | JSON logs, trace context, authenticated metrics, alerts and native recovery verifier; 686 tests and 90.40% coverage | `ACTIVE_LOCAL_VERIFIED`; exact-head PostgreSQL 18 CI restore and staging/managed evidence pending |
 | Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice, PR `#90` CI `29857981975` | `CI_GREEN`; human review/merge and live provider pending |
 | Guided intake | revision `20260721_0005`, exact API, PostgreSQL twice, plus live ES/EN browser start/update/reload under exact grants | `VERIFIED_POSTGRESQL`; live OIDC, exact-head PR/CI, human acceptance and deployment pending |
 | Candidate workspace | revision `20260721_0006`, evidence contracts, exact API, PR `#93` at final head `f3c8994` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |

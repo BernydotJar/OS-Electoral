@@ -106,6 +106,12 @@ def verify(root: Path) -> dict[str, object]:
             '"d25ce7b6902013ad905db3d2eab0be4cd905887fe88b81a6171b8d5503c31f3d"'
         ),
         "make terraform-verify",
+        "operational-recovery:",
+        "name: PostgreSQL backup and isolated restore",
+        "make recovery-verify",
+        "name: campaignos-postgresql-recovery-evidence",
+        "path: artifacts/c3-obs-001/",
+        "campaignos_ci_restore_test",
     )
     for fragment in required_fragments:
         if fragment not in ci_text:
