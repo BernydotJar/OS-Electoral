@@ -5,6 +5,10 @@ ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 FRONTEND_DIR="$ROOT/frontend"
 BASE_ENV_FILE=${CAMPAIGNOS_FUNCTIONAL_ENV_FILE:-"$ROOT/.env.functional.example"}
 ARTIFACT_DIR=${CAMPAIGNOS_FRONTEND_ARTIFACT_DIR:-"$ROOT/artifacts/c3-front-002"}
+case "$ARTIFACT_DIR" in
+  /*) ;;
+  *) ARTIFACT_DIR="$ROOT/$ARTIFACT_DIR" ;;
+esac
 [ -f "$BASE_ENV_FILE" ] || { echo "Missing functional environment file" >&2; exit 1; }
 [ -f "$FRONTEND_DIR/.next/BUILD_ID" ] || {
   echo "Missing production frontend build; run make frontend-verify first" >&2

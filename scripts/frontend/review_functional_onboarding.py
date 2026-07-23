@@ -88,23 +88,27 @@ async def review() -> dict[str, object]:
             viewport={"width": 1440, "height": 1000},
             locale="es-GT",
         )
+
+        def attach_page_guards(target: Page) -> None:
+            target.on(
+                "console",
+                lambda message: (
+                    console_errors.append(message.text) if message.type == "error" else None
+                ),
+            )
+            target.on("pageerror", lambda error: page_errors.append(str(error)))
+            target.on(
+                "request",
+                lambda request: (
+                    unexpected_hosts.add(urlparse(request.url).netloc)
+                    if urlparse(request.url).netloc
+                    and urlparse(request.url).netloc not in ALLOWED_HOSTS
+                    else None
+                ),
+            )
+
         page = await context.new_page()
-        page.on(
-            "console",
-            lambda message: (
-                console_errors.append(message.text) if message.type == "error" else None
-            ),
-        )
-        page.on("pageerror", lambda error: page_errors.append(str(error)))
-        page.on(
-            "request",
-            lambda request: (
-                unexpected_hosts.add(urlparse(request.url).netloc)
-                if urlparse(request.url).netloc
-                and urlparse(request.url).netloc not in ALLOWED_HOSTS
-                else None
-            ),
-        )
+        attach_page_guards(page)
 
         response = await page.goto(f"{BASE_URL}/es", wait_until="networkidle")
         require(response is not None and response.ok, "live shell did not load")
@@ -204,6 +208,7 @@ async def review() -> dict[str, object]:
             viewport={"width": 1280, "height": 900},
             locale="en-US",
         )
+        attach_page_guards(english)
         await english.goto(f"{BASE_URL}/en", wait_until="networkidle")
         require(
             await english.get_by_role("button", name="Save changes").count() == 1,
@@ -225,6 +230,7 @@ async def review() -> dict[str, object]:
             viewport={"width": 390, "height": 844},
             reduced_motion="reduce",
         )
+        attach_page_guards(mobile)
         await mobile.goto(f"{BASE_URL}/es", wait_until="networkidle")
         await assert_no_overflow(mobile, "functional-mobile-es")
         await assert_accessible(mobile, "functional-mobile-es")
