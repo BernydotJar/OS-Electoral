@@ -32,6 +32,7 @@ artifacts/campaignos-runtime/
 artifacts/c3-front-001/
 artifacts/c3-front-002-local/
 artifacts/c3-front-002/
+artifacts/c3-obs-001/
 
 # Local Terraform runtime and state; lock files remain versioned.
 **/.terraform/

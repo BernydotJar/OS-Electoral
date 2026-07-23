@@ -24,6 +24,9 @@ class DatabaseRuntime(Protocol):
     def dispose(self) -> None:
         """Release local connection-pool resources."""
 
+    def pool_snapshot(self) -> dict[str, int]:
+        """Return bounded operational pool gauges without connection details."""
+
 
 class UnavailableDatabase:
     def readiness(self) -> tuple[bool, str]:
@@ -31,6 +34,9 @@ class UnavailableDatabase:
 
     def dispose(self) -> None:
         return None
+
+    def pool_snapshot(self) -> dict[str, int]:
+        return {}
 
 
 class TenantSession(Session):
@@ -102,6 +108,22 @@ class Database:
         except Exception:  # Dependency health must be safe and fail closed.
             return False, "Database connection is unavailable"
         return True, "Database connection is available"
+
+    def pool_snapshot(self) -> dict[str, int]:
+        pool = self.engine.pool
+        snapshot: dict[str, int] = {}
+        for state, attribute in (
+            ("size", "size"),
+            ("checked_in", "checkedin"),
+            ("checked_out", "checkedout"),
+            ("overflow", "overflow"),
+        ):
+            value = getattr(pool, attribute, None)
+            if callable(value):
+                measured = value()
+                if isinstance(measured, int):
+                    snapshot[state] = max(measured, 0)
+        return snapshot
 
     def dispose(self) -> None:
         self.engine.dispose()

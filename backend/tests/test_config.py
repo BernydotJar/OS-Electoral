@@ -125,3 +125,24 @@ def test_development_identity_is_local_only_and_mutually_exclusive_with_oidc() -
 def test_development_identity_rejects_short_token() -> None:
     with pytest.raises(ValidationError, match="at least 24 characters"):
         Settings(development_access_token="too-short")  # noqa: S106 - invalid fixture.
+
+
+def test_metrics_token_is_required_in_shared_environments_when_enabled() -> None:
+    with pytest.raises(ValidationError, match="Metrics bearer token is required"):
+        Settings(
+            environment=Environment.STAGING,
+            expose_api_docs=False,
+            database_url="postgresql+psycopg://campaignos:secret@postgres/campaignos",
+            oidc_issuer="https://identity.example.test/",
+            oidc_audience="campaignos",
+            oidc_jwks_url="https://identity.example.test/.well-known/jwks.json",
+        )
+
+
+def test_metrics_token_is_redacted_and_has_a_minimum_length() -> None:
+    token = "campaignos-metrics-test-token"  # noqa: S105 - deterministic test fixture.
+    configured = Settings(metrics_bearer_token=token)
+    assert str(configured.metrics_bearer_token) == "**********"
+
+    with pytest.raises(ValidationError, match="at least 24 characters"):
+        Settings(metrics_bearer_token="too-short")  # noqa: S106 - invalid fixture.

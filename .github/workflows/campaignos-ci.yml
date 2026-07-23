@@ -109,6 +109,96 @@ jobs:
           CAMPAIGNOS_TEST_DATABASE_URL: postgresql+psycopg://campaignos:campaignos_ci_only@127.0.0.1:5432/campaignos_ci_test
         run: make test-postgres
 
+  operational-recovery:
+    name: PostgreSQL backup and isolated restore
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18.3-alpine3.23@sha256:54451ecb8ab38c24c3ec123f2fd501303a3a1856a5c66e98cecf2460d5e1e9d7
+        env:
+          POSTGRES_DB: campaignos_recovery_test
+          POSTGRES_USER: campaignos_admin
+          POSTGRES_PASSWORD: campaignos_recovery_ci_only
+        options: >-
+          --health-cmd "pg_isready -U campaignos_admin -d campaignos_recovery_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+        ports:
+          - 5432:5432
+    env:
+      CAMPAIGNOS_RECOVERY_DATABASE_URL: postgresql+psycopg://campaignos_admin:campaignos_recovery_ci_only@127.0.0.1:5432/campaignos_recovery_test
+      RECOVERY_CLIENT_IMAGE: postgres:18.3-alpine3.23@sha256:54451ecb8ab38c24c3ec123f2fd501303a3a1856a5c66e98cecf2460d5e1e9d7
+      RECOVERY_OUTPUT_DIR: artifacts/c3-obs-001
+      RECOVERY_TARGET_DATABASE: campaignos_ci_restore_test
+    steps:
+      - name: Checkout exact revision
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Install locked dependencies
+        run: uv sync --all-groups --locked
+      - name: Migrate and seed representative source data
+        run: |
+          CAMPAIGNOS_DATABASE_URL="$CAMPAIGNOS_RECOVERY_DATABASE_URL" uv run --locked alembic upgrade head
+          uv run --locked python scripts/dev/seed_local_operator.py --database-url "$CAMPAIGNOS_RECOVERY_DATABASE_URL"
+      - name: Prove native backup and isolated restore
+        run: make recovery-verify
+      - name: Validate retained recovery evidence
+        run: |
+          uv run --locked python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          import psycopg
+          from sqlalchemy.engine import make_url
+
+          root = Path("artifacts/c3-obs-001")
+          manifests = list(root.glob("*.manifest.json"))
+          backups = list(root.glob("*.dump"))
+          assert len(manifests) == 1, manifests
+          assert len(backups) == 1, backups
+          payload = json.loads(manifests[0].read_text(encoding="utf-8"))
+          assert payload["status"] == "PASS"
+          assert payload["source_mutation"] == "NONE"
+          assert payload["external_effects"] == "NONE_TEST_RESTORE_ONLY"
+          assert payload["table_counts"]["tenants"] == 1
+          assert payload["table_counts"]["campaigns"] == 1
+          assert hashlib.sha256(backups[0].read_bytes()).hexdigest() == payload["backup_sha256"]
+          url = make_url(os.environ["CAMPAIGNOS_RECOVERY_DATABASE_URL"]).set(
+              drivername="postgresql", database="postgres"
+          )
+          with psycopg.connect(url.render_as_string(hide_password=False)) as connection:
+              with connection.cursor() as cursor:
+                  cursor.execute(
+                      "SELECT 1 FROM pg_database WHERE datname = %s",
+                      ("campaignos_ci_restore_test",),
+                  )
+                  assert cursor.fetchone() is None
+          PY
+          test -s artifacts/c3-obs-001/campaignos-recovery.prom
+      - name: Upload recovery evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: campaignos-postgresql-recovery-evidence
+          path: artifacts/c3-obs-001/
+          if-no-files-found: error
+          retention-days: 30
+
   dependency-audit:
     name: Locked production dependency audit
     runs-on: ubuntu-latest

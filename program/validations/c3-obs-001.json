@@ -1,0 +1,79 @@
+{
+  "increment": "C3-OBS-001",
+  "verified_at": "2026-07-23",
+  "branch": "agent/c3-obs-001-operational-evidence",
+  "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
+  "status": "ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING",
+  "production_status": "BLOCKED",
+  "external_effects": "NONE",
+  "results": {
+    "full_repository": {
+      "pytest_passed": 686,
+      "pytest_skipped": 10,
+      "coverage_percent": 90.4,
+      "coverage_floor": 90,
+      "ruff": "PASS",
+      "format": "PASS",
+      "mypy": "PASS_66_SOURCE_FILES"
+    },
+    "observability": {
+      "structured_json_logs": "PASS_ALLOWLIST_NO_SECRETS_OR_PAYLOADS",
+      "correlation_ids": "PASS_BOUNDED_OR_SERVER_GENERATED",
+      "w3c_trace_context": "PASS_VALIDATED_CONTINUATION_NEW_SERVER_SPAN",
+      "prometheus_metrics": "PASS_LOW_CARDINALITY_NO_POLITICAL_IDENTIFIERS",
+      "metrics_authentication": "PASS_FAIL_CLOSED_SHARED_ENVIRONMENTS",
+      "worker_textfile_metrics": "PASS_ATOMIC",
+      "alert_rules": "PASS_READINESS_ERRORS_LATENCY_DEAD_LETTER_BACKUP_RESTORE"
+    },
+    "recovery": {
+      "source_guard": "PASS_TEST_DATABASE_ONLY",
+      "target_guard": "PASS_DISTINCT_RESTORE_TEST_ONLY",
+      "client_image": "PASS_IMMUTABLE_SHA256_REQUIRED",
+      "archive_contract": "PASS_NATIVE_CUSTOM_FORMAT_AND_CATALOG",
+      "comparison_contract": "PASS_ALEMBIC_AND_ALL_PUBLIC_TABLE_COUNTS",
+      "cleanup_contract": "PASS_FINALLY",
+      "manifest": "PASS_SHA256_OWNER_ONLY_NO_CREDENTIALS",
+      "postgresql_18_local_execution": "BLOCKED_SANDBOX_DOCKER_LAYER_LCHOWN",
+      "postgresql_18_exact_head_ci": "PENDING"
+    },
+    "workflow": {
+      "yaml": "PASS",
+      "ci_policy": "PASS_3_WORKFLOWS_39_ACTIONS_10_DESIRED_CHECKS",
+      "recovery_job": "DEFINED_POSTGRESQL_18_REAL_DUMP_RESTORE_ARTIFACT",
+      "required_check_live": "HUMAN_POLICY_GATE_PENDING"
+    },
+    "program_truth": "PASS_PRODUCTION_BLOCKED",
+    "tooling_limits": {
+      "compose_config": "BLOCKED_DOCKER_COMPOSE_V2_UNAVAILABLE_V1_INCOMPATIBLE",
+      "terraform_verify": "BLOCKED_TERRAFORM_CLI_UNAVAILABLE_NO_INFRA_CHANGE",
+      "gitleaks": "PASS_8_30_1_VERIFIED_CHECKSUM",
+      "supply_chain": "PASS",
+      "frontend": "PASS_60_TESTS_BUILD_ZERO_VULNERABILITIES"
+    }
+  },
+  "evidence": [
+    "backend/src/campaignos/observability.py",
+    "backend/src/campaignos/operability/recovery.py",
+    "backend/src/campaignos/api/middleware.py",
+    "backend/src/campaignos/api/routes/health.py",
+    "backend/src/campaignos/worker_main.py",
+    "backend/tests/test_observability.py",
+    "backend/tests/test_recovery.py",
+    "backend/tests/test_recovery_runtime.py",
+    "backend/tests/test_operational_policy.py",
+    "scripts/operations/verify_postgres_recovery.py",
+    "operations/alerts/campaignos.rules.yml",
+    "docs/operations/observability-and-recovery.md",
+    "docs/testing/c3-obs-001-evidence.md",
+    ".github/workflows/campaignos-ci.yml"
+  ],
+  "limitations": [
+    "Exact-head PostgreSQL 18 backup/restore CI evidence is pending",
+    "The persistent sandbox cannot register the pinned PostgreSQL image layer",
+    "No managed backup schedule, PITR, encrypted destination or accepted retention exists",
+    "No deployed telemetry exporter, collector, dashboard or alert receiver exists",
+    "No staging failure exercise or human-approved RPO/RTO exists",
+    "No independent operational, security, privacy, legal or production approval exists"
+  ],
+  "remote_state": "LOCAL_BRANCH_UNPUBLISHED"
+}

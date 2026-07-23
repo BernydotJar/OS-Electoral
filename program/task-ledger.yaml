@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-22",
-  "branch": "agent/c3-ops-001-roadmap-war-room",
+  "updated_at": "2026-07-23",
+  "branch": "agent/c3-obs-001-operational-evidence",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -556,10 +556,28 @@
     {
       "task_id": "C3-OBS-001",
       "owner": "WS-14",
-      "status": "READY",
-      "evidence": [],
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "backend/src/campaignos/observability.py",
+        "backend/src/campaignos/operability/recovery.py",
+        "backend/tests/test_observability.py",
+        "backend/tests/test_recovery.py",
+        "backend/tests/test_recovery_runtime.py",
+        "backend/tests/test_operational_policy.py",
+        "scripts/operations/verify_postgres_recovery.py",
+        "operations/alerts/campaignos.rules.yml",
+        "docs/operations/observability-and-recovery.md",
+        "docs/testing/c3-obs-001-evidence.md",
+        "program/iterations/c3-obs-001.md",
+        "program/validations/c3-obs-001.json"
+      ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [
+        "Exact-head PostgreSQL 18 backup/restore CI evidence is pending",
+        "The persistent sandbox cannot register the pinned PostgreSQL image layer",
+        "No managed backup schedule, PITR, telemetry transport, staging failure exercise or accepted RPO/RTO exists",
+        "Independent operational, security, privacy, legal and human production approvals remain pending"
+      ]
     },
     {
       "task_id": "C3-RELEASE-001",

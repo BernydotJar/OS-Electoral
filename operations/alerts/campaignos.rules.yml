@@ -1,0 +1,75 @@
+groups:
+  - name: campaignos-api
+    interval: 30s
+    rules:
+      - alert: CampaignOSDependencyNotReady
+        expr: campaignos_readiness == 0 or absent(campaignos_readiness)
+        for: 5m
+        labels:
+          severity: critical
+          owner: platform
+        annotations:
+          summary: CampaignOS dependency is not ready
+          runbook: docs/operations/observability-and-recovery.md#dependency-readiness
+
+      - alert: CampaignOSHighHttpErrorRate
+        expr: |
+          (
+            sum(rate(campaignos_http_requests_total{status=~"5.."}[10m]))
+            /
+            clamp_min(sum(rate(campaignos_http_requests_total[10m])), 0.001)
+          ) > 0.02
+        for: 10m
+        labels:
+          severity: critical
+          owner: platform
+        annotations:
+          summary: CampaignOS HTTP 5xx rate exceeds two percent
+          runbook: docs/operations/observability-and-recovery.md#http-errors
+
+      - alert: CampaignOSHighRequestLatency
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum by (le) (rate(campaignos_http_request_duration_milliseconds_bucket[10m]))
+          ) > 1000
+        for: 10m
+        labels:
+          severity: warning
+          owner: platform
+        annotations:
+          summary: CampaignOS p95 request latency exceeds one second
+          runbook: docs/operations/observability-and-recovery.md#latency
+
+  - name: campaignos-worker-and-recovery
+    interval: 1m
+    rules:
+      - alert: CampaignOSOutboxDeadLetterDetected
+        expr: increase(campaignos_outbox_events_total{outcome="dead_lettered"}[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+          owner: platform
+        annotations:
+          summary: CampaignOS outbox moved an event to dead letter
+          runbook: docs/operations/observability-and-recovery.md#outbox-dead-letter
+
+      - alert: CampaignOSBackupStale
+        expr: absent(campaignos_backup_last_success_timestamp_seconds) or (time() - campaignos_backup_last_success_timestamp_seconds > 93600)
+        for: 30m
+        labels:
+          severity: critical
+          owner: platform
+        annotations:
+          summary: No verified CampaignOS backup has completed within 26 hours
+          runbook: docs/operations/observability-and-recovery.md#backup-staleness
+
+      - alert: CampaignOSRestoreVerificationStale
+        expr: absent(campaignos_restore_verification_last_success_timestamp_seconds) or (time() - campaignos_restore_verification_last_success_timestamp_seconds > 691200)
+        for: 1h
+        labels:
+          severity: critical
+          owner: platform
+        annotations:
+          summary: No isolated CampaignOS restore proof has completed within eight days
+          runbook: docs/operations/observability-and-recovery.md#restore-staleness

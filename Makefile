@@ -2,12 +2,15 @@ SHELL := /bin/sh
 
 UV ?= uv
 TERRAFORM ?= terraform
+RECOVERY_CLIENT_IMAGE ?= postgres:18.3-alpine3.23@sha256:54451ecb8ab38c24c3ec123f2fd501303a3a1856a5c66e98cecf2460d5e1e9d7
+RECOVERY_OUTPUT_DIR ?= artifacts/c3-obs-001
+RECOVERY_TARGET_DATABASE ?= campaignos_recovery_restore_test
 ENV_FILE ?= $(if $(wildcard .env),.env,.env.example)
 COMPOSE = docker compose --env-file $(ENV_FILE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap dev functional-dev functional-down dev-seed test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-functional-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify
+.PHONY: help bootstrap dev functional-dev functional-down dev-seed test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-functional-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify recovery-verify
 
 help: ## Show the available developer commands.
 	@awk 'BEGIN {FS = ":.*## "; printf "CampaignOS developer commands:\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -83,6 +86,14 @@ github-security-verify: ## Compare live GitHub controls with the versioned repos
 
 security-verify: ## Validate data policy and append-only security declarations.
 	$(UV) run --locked python scripts/security/verify_security_policy.py
+
+recovery-verify: ## Back up PostgreSQL and prove an isolated exact restore.
+	@test -n "$$CAMPAIGNOS_RECOVERY_DATABASE_URL" || { echo "CAMPAIGNOS_RECOVERY_DATABASE_URL is required" >&2; exit 1; }
+	$(UV) run --locked python scripts/operations/verify_postgres_recovery.py \
+		--database-url "$$CAMPAIGNOS_RECOVERY_DATABASE_URL" \
+		--output-dir "$(RECOVERY_OUTPUT_DIR)" \
+		--target-database "$(RECOVERY_TARGET_DATABASE)" \
+		--client-image "$(RECOVERY_CLIENT_IMAGE)"
 
 terraform-verify: ## Validate the exact plan-only Terraform baseline without AWS credentials or remote state.
 	@command -v $(TERRAFORM) >/dev/null 2>&1 || { echo "Terraform is required" >&2; exit 1; }

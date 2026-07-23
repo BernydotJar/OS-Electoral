@@ -540,12 +540,22 @@
     {
       "id": "EVAL-RECOVERY-001",
       "category": "operations",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "No backup/restore or disaster-recovery rehearsal."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "backend/src/campaignos/operability/recovery.py",
+        "backend/tests/test_recovery.py",
+        "backend/tests/test_recovery_runtime.py",
+        "scripts/operations/verify_postgres_recovery.py",
+        "docs/testing/c3-obs-001-evidence.md",
+        "program/validations/c3-obs-001.json"
+      ],
+      "commands": [
+        "make test",
+        "make recovery-verify"
+      ],
+      "last_verified_at": "2026-07-23",
+      "limitations": "Native backup and isolated restore verification is implemented and locally tested, but the sandbox cannot execute the pinned PostgreSQL 18 image; exact-head CI, managed backup/PITR, staging RPO/RTO and disaster-recovery rehearsal remain pending."
     },
     {
       "id": "EVAL-ACCESSIBILITY-001",
@@ -592,12 +602,23 @@
     {
       "id": "EVAL-OBSERVABILITY-001",
       "category": "operations",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "Prototype audit read model does not constitute production observability."
+      "status": "PARTIAL_TESTED_LOCAL",
+      "gate_result": "PARTIAL",
+      "evidence": [
+        "backend/src/campaignos/observability.py",
+        "backend/src/campaignos/api/middleware.py",
+        "backend/src/campaignos/api/routes/health.py",
+        "backend/tests/test_observability.py",
+        "operations/alerts/campaignos.rules.yml",
+        "docs/operations/observability-and-recovery.md",
+        "docs/testing/c3-obs-001-evidence.md"
+      ],
+      "commands": [
+        "make test",
+        "make program-verify"
+      ],
+      "last_verified_at": "2026-07-23",
+      "limitations": "Structured logs, trace context, authenticated low-cardinality metrics and alert rules pass locally; deployed collection/export, dashboards, routing, retention, SLOs and staging exercises remain absent."
     }
   ]
 }

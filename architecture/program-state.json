@@ -2,17 +2,18 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-22",
-  "source_branch": "agent/c3-front-002-functional-onboarding",
+  "updated_at": "2026-07-23",
+  "source_branch": "agent/c3-obs-001-operational-evidence",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
-    "main_sha_observed": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
+    "main_sha_observed": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
     "c2_integration_state": "MERGED_TO_MAIN",
-    "c3_foundation_iam_api_state": "MERGED_TO_MAIN"
+    "c3_foundation_iam_api_state": "MERGED_TO_MAIN",
+    "c3_program_state": "CUMULATIVE_PR_106_MERGED_TO_MAIN"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main enforcement, restricted SHA-pinned Actions, vulnerability governance, deterministic SBOM/provenance and exact-source-head keyless attestations are verified. No Terraform/AWS environment, backup/restore, production observability, historical-run supersession or independent human production approval exists.",
+  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main and supply-chain controls are verified, and local observability plus a recovery verifier now exist. Exact-head PostgreSQL 18 restore evidence, managed backups, deployed telemetry, staging failure/RPO/RTO evidence, live environments and independent human production approval remain absent.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -712,6 +713,24 @@
         "scripts/architecture/validate_eval_catalog.py",
         "backend/tests/test_eval_catalog_validator.py"
       ]
+    },
+    {
+      "id": "context:operational-observability-recovery",
+      "owner": "Campaign Platform Operations",
+      "maturity": "ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING",
+      "code": [
+        "backend/src/campaignos/observability.py",
+        "backend/src/campaignos/operability/recovery.py",
+        "operations/alerts/campaignos.rules.yml",
+        "scripts/operations/verify_postgres_recovery.py"
+      ],
+      "validators": [
+        "backend/tests/test_observability.py",
+        "backend/tests/test_recovery.py",
+        "backend/tests/test_recovery_runtime.py",
+        "backend/tests/test_operational_policy.py",
+        "docs/testing/c3-obs-001-evidence.md"
+      ]
     }
   ],
   "workstreams": [
@@ -796,7 +815,7 @@
     {
       "id": "WS-14",
       "name": "Testing, Observability and Operations",
-      "status": "OBSERVABILITY_EXECUTABLE_NEXT",
+      "status": "OBSERVABILITY_LOCAL_ACTIVE_CI_RECOVERY_PENDING",
       "next_increment": "C3-OBS-001"
     },
     {
@@ -981,7 +1000,7 @@
     },
     {
       "id": "C3-OBS-001",
-      "status": "EXECUTABLE_NEXT",
+      "status": "ACTIVE",
       "depends_on": [
         "C3-API-001",
         "C3-INFRA-001",
@@ -1015,8 +1034,8 @@
       "id": "FND-PLATFORM-001",
       "severity": "CRITICAL",
       "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "A plan-only Terraform baseline is tested with mocks and policy checks, but no independently verified AWS environment, backup/restore or production runtime exists.",
-      "evidence": "docs/testing/c3-infra-001-evidence.md"
+      "summary": "A plan-only Terraform baseline and local observability/recovery verifier exist, but no independently verified AWS environment, managed backup/PITR, exact-head recovery run, deployed telemetry or production runtime exists.",
+      "evidence": "docs/testing/c3-obs-001-evidence.md"
     },
     {
       "id": "FND-CI-001",
@@ -1074,7 +1093,7 @@
     "total_critical_or_high": 2
   },
   "github_state": {
-    "verified_at": "2026-07-21",
+    "verified_at": "2026-07-23",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1098,23 +1117,7 @@
       73,
       83
     ],
-    "open_pull_requests": [
-      84,
-      85,
-      86,
-      87,
-      88,
-      89,
-      90,
-      92,
-      93,
-      94,
-      95,
-      96,
-      97,
-      98,
-      105
-    ],
+    "open_pull_requests": [],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
     "actions_allowed": "SELECTED_GITHUB_OWNED_PLUS_TWO_PATTERNS",
@@ -1132,116 +1135,7 @@
       "new_supply_chain_check": "PENDING_FIRST_RUN"
     },
     "published_unreviewed_increment": null,
-    "review_stack": [
-      {
-        "pr": 84,
-        "state": "OPEN_DRAFT",
-        "base": "main",
-        "head": "agent/c3-api-002-idempotency",
-        "head_sha": "e938930eb1088f82603415c11182ab730994cb53",
-        "campaignos_ci_run_id": 29804446308,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 85,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-api-002-idempotency",
-        "head": "agent/c3-api-003-outbox-worker",
-        "head_sha": "0f38361fd3c8f4a5929f226fdd24c19450160e6e",
-        "campaignos_ci_run_id": 29807485042,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 86,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-api-003-outbox-worker",
-        "head": "agent/c3-api-004-workspace-write",
-        "head_sha": "236a0d04c5b2c061948261a5c60852e0d4736b0f",
-        "campaignos_ci_run_id": 29807878943,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 87,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-api-004-workspace-write",
-        "head": "agent/c3-api-005-campaign-readiness",
-        "head_sha": "3b4bc9b14834fa8c50a10904d942e03db45b8318",
-        "campaignos_ci_run_id": 29854461414,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 88,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-api-005-campaign-readiness",
-        "head": "agent/c3-api-006-campaign-create",
-        "head_sha": "a21e7353f0a91f8c50a10904d942e03db45b8318",
-        "campaignos_ci_run_id": 29854464519,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 89,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-api-006-campaign-create",
-        "head": "agent/c3-front-001-dynamic-shell",
-        "head_sha": "437b46930c68d6ed3a8233c139b0eaa03724b068",
-        "campaignos_ci_run_id": 29856835515,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 90,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-front-001-dynamic-shell",
-        "head": "agent/c3-iam-002-identity-lifecycle",
-        "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe",
-        "campaignos_ci_run_id": 29857981975,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 96,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-ops-001-roadmap-war-room",
-        "head": "agent/c3-strategy-001-evidence-decision-room",
-        "head_sha": "427ed62cc8272efe9515d908d590187cfee94ae8",
-        "campaignos_ci_run_id": 29876488499,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 97,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-strategy-001-evidence-decision-room",
-        "head": "agent/c3-api-001-reconciliation",
-        "head_sha": "837f383e215bdd54c0b4ad2a9bd73ba5c366d76c",
-        "campaignos_ci_run_id": 29877182395,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 98,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-api-001-reconciliation",
-        "head": "agent/c3-agent-001-governed-runtime",
-        "head_sha": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
-        "campaignos_ci_run_id": 29878876280,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 100,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-ci-001-supply-chain-policy",
-        "head": "agent/c3-infra-001-plan-only-baseline",
-        "head_sha": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-        "campaignos_ci_run_id": 29882414899,
-        "conclusion": "SUCCESS"
-      },
-      {
-        "pr": 105,
-        "state": "OPEN_DRAFT",
-        "base": "agent/c3-infra-001-plan-only-baseline",
-        "head": "agent/c3-sec-001-security-privacy-baseline",
-        "head_sha": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
-        "campaignos_ci_run_id": 29943743735,
-        "conclusion": "SUCCESS"
-      }
-    ],
+    "review_stack": [],
     "git_push_incident": {
       "classification": "TECHNICAL_DEFECT_REPAIRED",
       "component": "Cloud_Sandbox_MCP.git_push branch targeting",
@@ -1256,28 +1150,22 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-FRONT-002",
-      "state": "VERIFIED_POSTGRESQL",
-      "branch": "agent/c3-front-002-functional-onboarding",
-      "base": "agent/c3-sec-001-security-privacy-baseline@e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
+      "id": "C3-OBS-001",
+      "state": "ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING",
+      "branch": "agent/c3-obs-001-operational-evidence",
+      "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
       "production_status": "BLOCKED",
       "external_effects": "NONE"
     },
     "latest_checkpoint": {
-      "id": "C3-SEC-001",
-      "branch": "agent/c3-sec-001-security-privacy-baseline",
-      "base": "agent/c3-infra-001-plan-only-baseline",
-      "base_commit": "c4945db9ae0516f40fa8b8940ee0c0e450c665d2",
-      "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
-      "receipt_commit": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
-      "head_commit": "e0b4b5df711f671e8f6a1f711a0a3beff39cf173",
-      "draft_pr": 105,
-      "ci_run_id": 29943743735,
-      "visual_run_id": 29943743794,
-      "ci": "SUCCESS",
-      "status": "CI_GREEN",
+      "id": "C3-FRONT-002",
+      "branch": "main",
+      "head_commit": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
+      "cumulative_pr": 106,
+      "status": "MERGED_TO_MAIN",
+      "checks_before_merge": "SUCCESS",
       "external_effects": "NONE",
-      "next_increment": "C3-FRONT-002"
+      "next_increment": "C3-OBS-001"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",
@@ -1293,7 +1181,17 @@
       "sbom_sha256": "68cd72f616ef5853bb59cfd7d8ecce49980c9b2d5213ec73013ec0bef58693d0",
       "sigstore_rekor": "UPLOADED",
       "scope": "EXACT_PR_SOURCE_HEAD"
-    }
+    },
+    "cumulative_merge": {
+      "pr": 106,
+      "status": "MERGED_TO_MAIN_REBASE",
+      "main_sha": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
+      "checks_before_merge": "SUCCESS",
+      "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED"
+    },
+    "desired_required_check_count": 10,
+    "live_required_check_count": 8,
+    "observability_recovery_required_check": "HUMAN_POLICY_GATE_PENDING"
   },
   "deployment_state": {
     "github_pages": {
@@ -1425,15 +1323,33 @@
     },
     {
       "id": "observability",
-      "status": "PARTIAL"
+      "status": "PARTIAL",
+      "evidence": [
+        "backend/src/campaignos/observability.py",
+        "operations/alerts/campaignos.rules.yml",
+        "docs/operations/observability-and-recovery.md"
+      ],
+      "reason": "Structured logs, trace context, authenticated low-cardinality metrics and alert rules pass locally; deployed collectors, dashboards, routing, retention and staging SLO evidence are absent."
     },
     {
       "id": "backups",
-      "status": "NOT_IMPLEMENTED"
+      "status": "PARTIAL",
+      "evidence": [
+        "backend/src/campaignos/operability/recovery.py",
+        "scripts/operations/verify_postgres_recovery.py",
+        "docs/testing/c3-obs-001-evidence.md"
+      ],
+      "reason": "Native backup/isolated-restore verification is implemented and locally tested, but exact-head CI, managed backup/PITR and staging RPO/RTO evidence are pending."
     },
     {
       "id": "restore-test",
-      "status": "NOT_IMPLEMENTED"
+      "status": "PARTIAL",
+      "evidence": [
+        "backend/src/campaignos/operability/recovery.py",
+        "scripts/operations/verify_postgres_recovery.py",
+        "docs/testing/c3-obs-001-evidence.md"
+      ],
+      "reason": "Native backup/isolated-restore verification is implemented and locally tested, but exact-head CI, managed backup/PITR and staging RPO/RTO evidence are pending."
     },
     {
       "id": "terraform",

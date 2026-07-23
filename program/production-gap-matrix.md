@@ -47,11 +47,11 @@ No row marked `PARTIAL` is counted as production-ready.
 | Threat model | Canonical v0.2 covers 23 threats and links executable privacy/audit controls; no independent acceptance | PARTIAL | Reviewed model, owners, residual risks and independent verification |
 | Rate limiting and abuse protection | Network API exists but has no principal/tenant limiter | NOT_IMPLEMENTED | Per-principal/tenant controls and abuse tests |
 | Structured operational errors | RFC 9457-style API errors, correlation IDs and sanitized auth failures | PARTIAL | Domain error taxonomy, observability linkage and staging verification |
-| Observability | Offline audit read model | PARTIAL | Logs, metrics, traces, dashboards, alerts and SLOs |
+| Observability | Sanitized JSON logs, validated correlation/W3C trace context, bearer-protected low-cardinality metrics, worker/recovery textfiles and alert rules pass locally | PARTIAL | Exact-head CI, deployed scraping/OTLP, dashboards, routing, retention, SLOs and staging exercises |
 | Audit immutability | Tenant-serialized hash chain plus revision `20260721_0011` deny non-owner UPDATE/DELETE on six append-only journals under constrained PostgreSQL roles | PARTIAL | Owner break-glass governance, external integrity anchor, legal retention and restore verification |
-| Backups | None | NOT_IMPLEMENTED | Automated encrypted backups and retention evidence |
-| Restore test | None | NOT_IMPLEMENTED | Successful measured restore with RPO/RTO and audit verification |
-| Incident response | Narrow corruption runbook | PARTIAL | Full incident roles, escalation, communications and exercises |
+| Backups | Native custom-format backup verifier, immutable client pin, checksum manifest and PostgreSQL 18 CI job are implemented; local real execution is blocked by sandbox Docker layers | PARTIAL | Exact-head CI artifact, managed encrypted schedule, PITR, retention/deletion protection and operator evidence |
+| Restore test | Isolated `*_restore_test` orchestration compares Alembic revision and every public-table row count and cleans up in `finally` | PARTIAL | Exact-head PostgreSQL 18 CI pass, staging application/RLS smoke, measured and human-approved RPO/RTO |
+| Incident response | Versioned observability/recovery runbook covers readiness, errors, latency, dead letters, backup and restore staleness | PARTIAL | Named on-call ownership, escalation/communications integration and staged exercises |
 | Disaster recovery | None | NOT_IMPLEMENTED | Reviewed assumptions, dependencies, RPO/RTO and exercise |
 | Load test | None | NOT_IMPLEMENTED | Representative workload, thresholds and results |
 | SAST | Pinned CodeQL succeeds at recorded heads and is a required protected-main check | PARTIAL | Define alert ownership/triage SLA and independent security acceptance |
@@ -70,8 +70,8 @@ No row marked `PARTIAL` is counted as production-ready.
 | AWS dev | Plan-only IaC and mocks exist; no AWS account, credential, live provider plan, apply or runtime exists | NOT_VERIFIED | Authorized account/OIDC role, reviewed live plan/apply, smoke/security and cost evidence |
 | AWS staging | None | NOT_IMPLEMENTED | Migration, security, load, restore and agent-eval evidence |
 | AWS production | No approved deployment | BLOCKED | All gates plus explicit human approval |
-| PR CI | PRs `#72`, `#73`, `#83` are merged; draft stack through `#99` is exact-head CI-green; the C3-INFRA branch defines a ninth plan-only Terraform check | PARTIAL | Publish C3-INFRA, pass exact-head CI/E2E, human-review the stack and separately authorize the protected-main check change |
-| Main CI | CampaignOS CI push run `29803405277` succeeded at `main@d0719c9`; no controlled environment deployment follows it | PARTIAL | Required-check enforcement, immutable artifact evidence, controlled dev deployment and post-deploy verification |
+| PR CI | Cumulative PR `#106` was rebased into `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` after green checks; historical PRs were reconciled/closed and zero PRs were open at C3-OBS start | PARTIAL | Pass the new exact-head recovery job, human-review C3-OBS and separately authorize desired protected-main check changes |
+| Main CI | Integrated baseline is `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`; cumulative checks passed before rebase merge and no controlled environment deployment follows it | PARTIAL | New recovery check evidence, immutable artifact evidence, controlled dev deployment and post-deploy verification |
 | Branch protection | Authenticated API verifies strict eight-check main protection, one approval, stale-review dismissal, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions and mandatory SHA pinning; desired policy now includes a ninth Terraform check | PARTIAL | Human-authorized update to require the Terraform check after its exact-head CI context exists, then verify drift |
 | Staging promotion | None | NOT_IMPLEMENTED | Controlled candidate promotion and manual acceptance |
 | Production rollout/rollback | None | NOT_IMPLEMENTED | Backup, migration, progressive rollout, health and rollback criteria |

@@ -48,6 +48,8 @@ class Settings(BaseSettings):
     service_version: str = __version__
     log_level: str = "INFO"
     expose_api_docs: bool = True
+    metrics_enabled: bool = True
+    metrics_bearer_token: SecretStr | None = None
 
     database_url: str | None = None
     database_pool_size: int = Field(default=5, ge=1, le=50)
@@ -81,9 +83,9 @@ class Settings(BaseSettings):
     development_principal_display_name: str | None = Field(default="Operador local", max_length=255)
     development_principal_email: str | None = Field(default="operator@localhost", max_length=320)
 
-    @field_validator("development_access_token", mode="before")
+    @field_validator("development_access_token", "metrics_bearer_token", mode="before")
     @classmethod
-    def normalize_development_access_token(cls, value: object) -> object:
+    def normalize_optional_secret(cls, value: object) -> object:
         if isinstance(value, str) and not value.strip():
             return None
         return value
@@ -96,6 +98,12 @@ class Settings(BaseSettings):
         configured = (self.oidc_issuer, self.oidc_audience, self.oidc_jwks_url)
         if any(configured) and not all(configured):
             raise ValueError("OIDC issuer, audience and JWKS URL must be configured together")
+
+        if (
+            self.metrics_bearer_token is not None
+            and len(self.metrics_bearer_token.get_secret_value()) < 24
+        ):
+            raise ValueError("Metrics bearer token must contain at least 24 characters")
 
         if self.development_access_token is not None:
             if self.environment is not Environment.DEVELOPMENT:
@@ -179,6 +187,11 @@ class Settings(BaseSettings):
             if not self.database_url:
                 raise ValueError(
                     "PostgreSQL configuration is required outside development and test"
+                )
+            if self.metrics_enabled and self.metrics_bearer_token is None:
+                raise ValueError(
+                    "Metrics bearer token is required when metrics are enabled "
+                    "outside development and test"
                 )
 
         return self

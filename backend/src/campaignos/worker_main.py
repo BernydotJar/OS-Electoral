@@ -3,18 +3,17 @@
 from __future__ import annotations
 
 import argparse
-import logging
 import signal
 import socket
 import threading
 from collections.abc import Sequence
+from pathlib import Path
 from uuid import UUID
 
 from campaignos.config import get_settings
 from campaignos.data import Database
+from campaignos.observability import configure_json_logger, write_worker_metrics
 from campaignos.workers import InternalCampaignUpdatedHandler, OutboxWorker
-
-LOGGER = logging.getLogger("campaignos.worker")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -31,6 +30,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--batch-size", type=int, default=25)
     parser.add_argument("--poll-seconds", type=float, default=5.0)
     parser.add_argument("--worker-id", default=f"{socket.gethostname()}-outbox")
+    parser.add_argument(
+        "--metrics-file",
+        type=Path,
+        help="Optional Prometheus textfile path updated atomically after each pass",
+    )
     return parser
 
 
@@ -46,27 +50,30 @@ def run(argv: Sequence[str] | None = None) -> int:
     settings = get_settings()
     if not settings.database_url:
         raise SystemExit("CAMPAIGNOS_DATABASE_URL is required for the outbox worker")
-    logging.basicConfig(level=settings.log_level)
+    logger = configure_json_logger(settings, "campaignos.worker")
     database = Database.from_url(
         settings.database_url,
         pool_size=settings.database_pool_size,
         max_overflow=settings.database_max_overflow,
         pool_timeout_seconds=settings.database_pool_timeout_seconds,
     )
+    worker_id = args.worker_id.strip()
     worker = OutboxWorker(
         database=database,
-        worker_id=args.worker_id.strip(),
+        worker_id=worker_id,
         handler=InternalCampaignUpdatedHandler(),
     )
     stop = threading.Event()
 
     def request_stop(signum: int, frame: object) -> None:
         del frame
-        LOGGER.info("worker_stop_requested", extra={"signal": signum})
+        logger.info("worker_stop_requested", extra={"signal": signum, "worker_id": worker_id})
         stop.set()
 
     signal.signal(signal.SIGTERM, request_stop)
     signal.signal(signal.SIGINT, request_stop)
+    logger.info("outbox_worker_started", extra={"worker_id": worker_id})
+    cumulative_totals = {"claimed": 0, "delivered": 0, "retried": 0, "dead_lettered": 0}
     try:
         while not stop.is_set():
             totals = {"claimed": 0, "delivered": 0, "retried": 0, "dead_lettered": 0}
@@ -76,13 +83,18 @@ def run(argv: Sequence[str] | None = None) -> int:
                 totals["delivered"] += result.delivered
                 totals["retried"] += result.retried
                 totals["dead_lettered"] += result.dead_lettered
-            LOGGER.info("outbox_pass_complete", extra=totals)
+            logger.info("outbox_pass_complete", extra={**totals, "worker_id": worker_id})
+            for outcome, value in totals.items():
+                cumulative_totals[outcome] += value
+            if args.metrics_file is not None:
+                write_worker_metrics(args.metrics_file, totals=cumulative_totals)
             if args.once:
                 return 0
             stop.wait(args.poll_seconds)
         return 0
     finally:
         database.dispose()
+        logger.info("outbox_worker_stopped", extra={"worker_id": worker_id})
 
 
 def main() -> None:
