@@ -1,7 +1,7 @@
 # C3-OBS-001 local evidence — observability and recovery control plane
 
-Date: 2026-07-23  
-Branch: `agent/c3-obs-001-operational-evidence`  
+Date: 2026-07-23
+Branch: `agent/c3-obs-001-operational-evidence`
 Base: `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`
 
 ## Result classification
