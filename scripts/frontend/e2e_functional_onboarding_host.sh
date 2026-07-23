@@ -47,12 +47,18 @@ uv run --locked python - <<'PY'
 import os
 import psycopg
 from psycopg import sql
+from sqlalchemy.engine import make_url
 
-url = os.environ["CAMPAIGNOS_FUNCTIONAL_ADMIN_DATABASE_URL"]
+sqlalchemy_url = make_url(os.environ["CAMPAIGNOS_FUNCTIONAL_ADMIN_DATABASE_URL"])
+if sqlalchemy_url.drivername != "postgresql+psycopg":
+    raise RuntimeError("Functional database URL must use postgresql+psycopg")
+conninfo = sqlalchemy_url.set(drivername="postgresql").render_as_string(
+    hide_password=False
+)
 user = os.environ["CAMPAIGNOS_FUNCTIONAL_APP_DATABASE_USER"]
 password = os.environ["CAMPAIGNOS_FUNCTIONAL_APP_DATABASE_PASSWORD"]
 database = os.environ["CAMPAIGNOS_FUNCTIONAL_DATABASE_NAME"]
-with psycopg.connect(url, autocommit=True) as conn:
+with psycopg.connect(conninfo, autocommit=True) as conn:
     with conn.cursor() as cur:
         cur.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (user,))
         if cur.fetchone() is None:
