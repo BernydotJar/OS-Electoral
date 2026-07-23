@@ -214,12 +214,36 @@ jobs:
           unzip -q "$archive" -d /tmp/campaignos-terraform
           echo "/tmp/campaignos-terraform" >> "$GITHUB_PATH"
       - name: Verify Terraform version and plan-only policy
-        run: make terraform-verify
+        run: |
+          set -euo pipefail
+          rm -rf infra/terraform/bootstrap/.terraform infra/terraform/stacks/platform/.terraform
+          for attempt in 1 2; do
+            if TERRAFORM=/tmp/campaignos-terraform/terraform make terraform-verify; then
+              exit 0
+            fi
+            [ "$attempt" -lt 2 ] || exit 1
+            rm -rf infra/terraform/bootstrap/.terraform infra/terraform/stacks/platform/.terraform
+            sleep 5
+          done
 
   frontend:
     name: Dynamic frontend contracts and browser review
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:18.3-alpine3.23@sha256:54451ecb8ab38c24c3ec123f2fd501303a3a1856a5c66e98cecf2460d5e1e9d7
+        env:
+          POSTGRES_DB: campaignos_functional_test
+          POSTGRES_USER: campaignos_admin
+          POSTGRES_PASSWORD: campaignos_admin_ci_only
+        options: >-
+          --health-cmd "pg_isready -U campaignos_admin -d campaignos_functional_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+        ports:
+          - 5432:5432
     env:
       CAMPAIGNOS_FRONTEND_MODE: demo_read_only
       CAMPAIGNOS_FRONTEND_ENVIRONMENT: test
@@ -257,7 +281,13 @@ jobs:
       - name: Exercise the API-backed functional onboarding journey
         env:
           CAMPAIGNOS_FRONTEND_ARTIFACT_DIR: artifacts/c3-front-002
-        run: make frontend-functional-e2e
+          CAMPAIGNOS_FUNCTIONAL_ADMIN_DATABASE_URL: postgresql+psycopg://campaignos_admin:campaignos_admin_ci_only@127.0.0.1:5432/campaignos_functional_test
+          CAMPAIGNOS_FUNCTIONAL_APP_DATABASE_URL: postgresql+psycopg://campaignos_app:campaignos_app_ci_only@127.0.0.1:5432/campaignos_functional_test
+          CAMPAIGNOS_FUNCTIONAL_APP_DATABASE_USER: campaignos_app
+          CAMPAIGNOS_FUNCTIONAL_APP_DATABASE_PASSWORD: campaignos_app_ci_only
+          CAMPAIGNOS_FUNCTIONAL_DATABASE_NAME: campaignos_functional_test
+          CAMPAIGNOS_DEVELOPMENT_ACCESS_TOKEN: campaignos-local-development-token
+        run: ./scripts/frontend/e2e_functional_onboarding_host.sh
       - name: Build the non-root frontend container
         run: docker build --file frontend/Dockerfile --tag campaignos-frontend:${{ github.sha }} frontend
       - name: Upload dynamic frontend review evidence
