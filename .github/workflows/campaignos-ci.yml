@@ -202,6 +202,16 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Set up uv
+        uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
       - name: Install exact Terraform CLI from verified checksum
         run: |
           set -euo pipefail
@@ -287,7 +297,13 @@ jobs:
           CAMPAIGNOS_FUNCTIONAL_APP_DATABASE_PASSWORD: campaignos_app_ci_only
           CAMPAIGNOS_FUNCTIONAL_DATABASE_NAME: campaignos_functional_test
           CAMPAIGNOS_DEVELOPMENT_ACCESS_TOKEN: campaignos-local-development-token
-        run: ./scripts/frontend/e2e_functional_onboarding_host.sh
+        run: |
+          mkdir -p artifacts/c3-front-002
+          if ! ./scripts/frontend/e2e_functional_onboarding_host.sh >artifacts/c3-front-002/harness.log 2>&1; then
+            tail -n 160 artifacts/c3-front-002/harness.log
+            exit 1
+          fi
+          tail -n 40 artifacts/c3-front-002/harness.log
       - name: Build the non-root frontend container
         run: docker build --file frontend/Dockerfile --tag campaignos-frontend:${{ github.sha }} frontend
       - name: Upload dynamic frontend review evidence
