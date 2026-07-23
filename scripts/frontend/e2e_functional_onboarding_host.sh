@@ -57,8 +57,10 @@ with psycopg.connect(url, autocommit=True) as conn:
         cur.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (user,))
         if cur.fetchone() is None:
             cur.execute(
-                sql.SQL("CREATE ROLE {} LOGIN PASSWORD %s NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOREPLICATION NOBYPASSRLS").format(sql.Identifier(user)),
-                (password,),
+                sql.SQL(
+                    "CREATE ROLE {} LOGIN PASSWORD {} NOSUPERUSER NOCREATEDB "
+                    "NOCREATEROLE NOINHERIT NOREPLICATION NOBYPASSRLS"
+                ).format(sql.Identifier(user), sql.Literal(password))
             )
         cur.execute(sql.SQL("GRANT CONNECT ON DATABASE {} TO {}").format(sql.Identifier(database), sql.Identifier(user)))
         cur.execute(sql.SQL("GRANT USAGE ON SCHEMA public TO {}").format(sql.Identifier(user)))
