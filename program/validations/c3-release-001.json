@@ -3,7 +3,7 @@
   "verified_at": "2026-07-24",
   "branch": "agent/c3-release-001-readiness-audit",
   "base": "agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6",
-  "status": "IN_PROGRESS_LOCAL_VERIFIED",
+  "status": "CI_GREEN",
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
@@ -18,10 +18,10 @@
     },
     "program_state_contract": "PASS_FAIL_CLOSED_SUPERSESSION",
     "release_record": "PASS_DENY_RELEASE_8_GATES",
-    "focused_tests": "PASS_10_PROGRAM_AND_RELEASE_VALIDATOR_TESTS",
+    "focused_tests": "PASS_12_PROGRAM_AND_RELEASE_VALIDATOR_TESTS",
     "program_truth": "PASS_PRODUCTION_BLOCKED_RELEASE_DENIED",
-    "remote_state": "DRAFT_PR_115_IN_PROGRESS",
-    "aggregate_validator_tests": "PASS_14_INCLUDING_EVAL_CATALOG",
+    "remote_state": "DRAFT_PR_115_CI_GREEN",
+    "aggregate_validator_tests": "PASS_16_INCLUDING_EVAL_CATALOG",
     "secret_scan": "PASS_GITLEAKS_8_30_1_EFFECTIVE_WORKTREE",
     "full_repository": {
       "result": "PASS",
@@ -29,6 +29,32 @@
       "pytest_skipped": 10,
       "coverage_percent": 90.4,
       "coverage_floor": 90
+    },
+    "hosted_checkpoint": {
+      "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
+      "ci_run_id": 30129061387,
+      "visual_run_id": 30129061437,
+      "quality_job_id": 89599276723,
+      "recovery_job_id": 89599276837,
+      "required_checks": "PASS_ALL_12_DISPLAYED_CHECKS",
+      "artifacts": {
+        "recovery": {
+          "id": 8610382604,
+          "digest": "sha256:e6f9c0bc73add06fec5accb774cf551dd16f1045459444b15c6109bbc670aa2b"
+        },
+        "supply_chain": {
+          "id": 8610372647,
+          "digest": "sha256:e650672d705fb35c58716e37a78c60a1e0a599a830d039f8f225653e3dcfc3c4"
+        },
+        "frontend": {
+          "id": 8610429479,
+          "digest": "sha256:8ea7e5ec6c210ed1ea88741faba3f252032781614cd3e425b0aeb34aff9be93f"
+        },
+        "visual": {
+          "id": 8610391734,
+          "digest": "sha256:1d22f7b39ce93be28dea0130cbd76650b5442da4d044594388517d7b7f5752cb"
+        }
+      }
     }
   },
   "evidence": [

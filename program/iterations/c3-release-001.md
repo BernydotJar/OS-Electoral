@@ -1,7 +1,7 @@
 # C3-RELEASE-001 — Release readiness and evidence reconciliation
 
 - `workstream`: `WS-15`
-- `status`: `IN_PROGRESS`
+- `status`: `CI_GREEN`
 - `branch`: `agent/c3-release-001-readiness-audit`
 - `base`: `agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6`
 - `production_status`: `BLOCKED`
@@ -42,3 +42,12 @@ Create an executable release-readiness decision and reconcile historical validat
 - load, rollback and incident exercises;
 - independent security, privacy, legal, operational and domain acceptance;
 - explicit authorized production approval.
+
+## Hosted exact-head checkpoint
+
+- validated implementation head: `d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd`;
+- CampaignOS CI `30129061387`: PASS;
+- runtime visual review `30129061437`: PASS;
+- quality job `89599276723` and recovery job `89599276837`: PASS;
+- recovery artifact `8610382604`, supply-chain artifact `8610372647`, frontend artifact `8610429479` and visual artifact `8610391734` are retained;
+- release decision remains `DENY_RELEASE`; production remains `BLOCKED`.

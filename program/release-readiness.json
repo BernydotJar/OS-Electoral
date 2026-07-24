@@ -85,5 +85,16 @@
     "Authorize a cost-bounded non-production environment before any Terraform apply.",
     "Run staging migration, recovery, telemetry, load, rollback and security exercises.",
     "Obtain independent security, privacy, legal, operational and final production approvals."
-  ]
+  ],
+  "repository_checkpoint": {
+    "status": "CI_GREEN",
+    "draft_pr": 115,
+    "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
+    "ci_run_id": 30129061387,
+    "visual_run_id": 30129061437,
+    "recovery_artifact_id": 8610382604,
+    "supply_chain_artifact_id": 8610372647,
+    "frontend_artifact_id": 8610429479,
+    "visual_artifact_id": 8610391734
+  }
 }

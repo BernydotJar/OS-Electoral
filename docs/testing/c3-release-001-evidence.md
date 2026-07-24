@@ -44,7 +44,7 @@ The failures are not deleted, rewritten or represented as successful. Their stac
 ## Verification
 
 - full locked repository suite: `696 passed, 10 skipped`; coverage `90.40%` with enforced `90%` floor;
-- program-state supersession tests: `5 passed`;
+- program-state and delivery-closure tests: `7 passed`;
 - release-readiness tests: `5 passed`;
 - eval-catalog validator tests: `4 passed`;
 - full program verification: PASS with one open CRITICAL/HIGH finding and zero blocking failed runs;
@@ -53,7 +53,28 @@ The failures are not deleted, rewritten or represented as successful. Their stac
 - exact-head C3-OBS CI `30128291931`: PASS;
 - exact-head runtime visual review `30128291969`: PASS;
 - Gitleaks `8.30.1` effective-worktree scan: PASS;
-- exact-head CI: required after branch publication.
+- exact-head CampaignOS CI `30129061387`: PASS;
+- exact-head runtime visual review `30129061437`: PASS;
+- quality job `89599276723`, recovery job `89599276837` and all displayed PR checks: PASS;
+- retained artifacts: recovery `8610382604`, supply-chain `8610372647`, frontend `8610429479`, visual `8610391734`.
+
+
+## Exact-head repository checkpoint
+
+Validated implementation head: `d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd`.
+
+| Evidence | Receipt | Result |
+|---|---:|---|
+| CampaignOS CI | `30129061387` | PASS |
+| Runtime visual review | `30129061437` | PASS |
+| Quality and contract job | `89599276723` | PASS |
+| PostgreSQL recovery job | `89599276837` | PASS |
+| Recovery artifact | `8610382604` / `sha256:e6f9c0bc73add06fec5accb774cf551dd16f1045459444b15c6109bbc670aa2b` | retained |
+| Supply-chain artifact | `8610372647` / `sha256:e650672d705fb35c58716e37a78c60a1e0a599a830d039f8f225653e3dcfc3c4` | retained |
+| Frontend artifact | `8610429479` / `sha256:8ea7e5ec6c210ed1ea88741faba3f252032781614cd3e425b0aeb34aff9be93f` | retained |
+| Visual artifact | `8610391734` / `sha256:1d22f7b39ce93be28dea0130cbd76650b5442da4d044594388517d7b7f5752cb` | retained |
+
+This proves the repository release-audit increment. It does not prove a managed staging environment, production recovery, operational acceptance or production authorization.
 
 ## Remaining release blockers
 

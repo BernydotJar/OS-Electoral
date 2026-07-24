@@ -46,7 +46,7 @@ Important limits:
 | WS-12 | AWS Platform and Terraform | Plan-only Terraform PR #100 is exact-head CI/E2E-green; no AWS account, apply or environment evidence | C3-SEC-001 |
 | WS-13 | Security, Privacy and Compliance | IAM, data and plan-only infrastructure dependencies satisfied; executable next | C3-SEC-001 |
 | WS-14 | Testing, Observability and Operations | Structured logs, metrics, alerts and exact-head PostgreSQL recovery evidence are CI-green; managed staging operations remain absent | C3-RELEASE-001 |
-| WS-15 | Documentation, Migration and Release | Release audit active with fail-closed `DENY_RELEASE` record and explicit historical-run supersession | C3-RELEASE-001 |
+| WS-15 | Documentation, Migration and Release | Release audit CI-green with fail-closed `DENY_RELEASE`, explicit historical-run supersession and retained exact-head evidence | Human review and authorized staging evidence |
 
 The exact dependency graph lives in `program/task-graph.yaml`. It preserves research-before-strategy, identity/data prerequisites for API work, and security/observability prerequisites for release.
 

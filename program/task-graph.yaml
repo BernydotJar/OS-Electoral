@@ -232,7 +232,7 @@
       "id": "C3-RELEASE-001",
       "workstream": "WS-15",
       "title": "Staging evidence, release record and explicit production approval gate",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-ONBOARD-001",
         "C3-TEAM-001",
