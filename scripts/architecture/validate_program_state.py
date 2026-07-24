@@ -9,7 +9,6 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "architecture/program-state.json"
 PROGRAM_STATE = ROOT / "program/program-state.json"
@@ -140,6 +139,7 @@ REQUIRED_PROGRAM_ARTIFACTS = {
     "program/iteration-log.md",
     "program/production-gap-matrix.md",
     "program/program-state.json",
+    "program/release-readiness.json",
     "program/skill-usage-register.md",
     "program/task-graph.yaml",
     "program/task-ledger.yaml",
@@ -175,7 +175,51 @@ def require_unique(values: list[Any], message: str) -> None:
     require(len(values) == len(set(values)), message)
 
 
-def validate_stack(data: dict[str, Any]) -> set[int]:
+def validate_superseded_runs(data: dict[str, Any]) -> dict[int, dict[str, Any]]:
+    records = data["superseded_validation_runs"]
+    require(isinstance(records, list), "superseded validation runs must be a list")
+    by_run: dict[int, dict[str, Any]] = {}
+    for record in records:
+        run_id = record["run_id"]
+        require(isinstance(run_id, int) and run_id > 0, "invalid superseded validation run")
+        require(run_id not in by_run, f"duplicate superseded validation run: {run_id}")
+        require(
+            record["conclusion"] in STACK_CONCLUSIONS,
+            f"invalid superseded conclusion: {run_id}",
+        )
+        require(
+            bool(SHA_PATTERN.fullmatch(record["head_sha"])),
+            f"invalid superseded SHA: {run_id}",
+        )
+        successor = record["superseded_by"]
+        require(isinstance(successor, int) and successor > 0, f"invalid successor run: {run_id}")
+        require(
+            successor != run_id,
+            f"superseded run must reference a distinct successor: {run_id}",
+        )
+        require(bool(record["scope"].strip()), f"missing superseded scope: {run_id}")
+        require(
+            bool(record["verification_evidence"].strip()),
+            f"missing superseded evidence: {run_id}",
+        )
+        require(bool(record["reviewer"].strip()), f"missing superseded reviewer: {run_id}")
+        require_iso_date(record["date"], f"superseded_validation_runs[{run_id}].date")
+        require(bool(record["reason"].strip()), f"missing superseded reason: {run_id}")
+        artifact_revision = record.get("artifact_revision")
+        if artifact_revision is not None:
+            require(
+                bool(SHA_PATTERN.fullmatch(artifact_revision)),
+                f"invalid artifact revision: {run_id}",
+            )
+        by_run[run_id] = record
+    return by_run
+
+
+def validate_stack(
+    data: dict[str, Any],
+    superseded_runs: dict[int, dict[str, Any]],
+    integration_runs: dict[int, dict[str, Any]],
+) -> set[int]:
     stack = data["stack"]
     require(isinstance(stack, list) and stack, "stack must be a non-empty list")
     stack_ids = [item["id"] for item in stack]
@@ -188,9 +232,18 @@ def validate_stack(data: dict[str, Any]) -> set[int]:
     for item in stack:
         increment_id = item["id"]
         require(item["status"] == "MERGED_TO_MAIN", f"invalid stack status: {increment_id}")
-        require(item["base"] == previous, f"stack base mismatch: {increment_id}; expected {previous}")
-        require(item["external_effects"] == "NONE_IN_INCREMENT", f"external effects drift: {increment_id}")
-        require(isinstance(item["issue"], int) and item["issue"] > 0, f"invalid issue: {increment_id}")
+        require(
+            item["base"] == previous,
+            f"stack base mismatch: {increment_id}; expected {previous}",
+        )
+        require(
+            item["external_effects"] == "NONE_IN_INCREMENT",
+            f"external effects drift: {increment_id}",
+        )
+        require(
+            isinstance(item["issue"], int) and item["issue"] > 0,
+            f"invalid issue: {increment_id}",
+        )
         require(isinstance(item["pr"], int) and item["pr"] > 0, f"invalid PR: {increment_id}")
         require(item["pr_state"] == "MERGED", f"stack PR is not merged: {increment_id}")
 
@@ -199,32 +252,84 @@ def validate_stack(data: dict[str, Any]) -> set[int]:
         conclusion = validation["conclusion"]
         require(isinstance(run_id, int) and run_id > 0, f"invalid validation run: {increment_id}")
         require(conclusion in STACK_CONCLUSIONS, f"invalid validation conclusion: {increment_id}")
-        require(bool(SHA_PATTERN.fullmatch(validation["head_sha"])), f"invalid validation SHA: {increment_id}")
+        require(
+            bool(SHA_PATTERN.fullmatch(validation["head_sha"])),
+            f"invalid validation SHA: {increment_id}",
+        )
         if conclusion == "FAILURE":
-            failed_runs.add(run_id)
-            require(validation["claim"] == "HISTORICAL_FAILURE_RECORDED", f"failure claim drift: {increment_id}")
-            require(validation["blocking_for_production"] is True, f"failed run must remain blocking: {increment_id}")
+            claim = validation["claim"]
+            if claim == "HISTORICAL_FAILURE_SUPERSEDED":
+                require(run_id in superseded_runs, f"missing supersession record: {increment_id}")
+                require(
+                    validation["blocking_for_production"] is False,
+                    f"superseded failure cannot block production: {increment_id}",
+                )
+                successor = validation.get("superseded_by")
+                require(
+                    successor == superseded_runs[run_id]["superseded_by"],
+                    f"superseded successor drift: {increment_id}",
+                )
+                require(
+                    successor in integration_runs,
+                    f"superseded successor lacks integration evidence: {increment_id}",
+                )
+                require(
+                    integration_runs[successor]["conclusion"] == "SUCCESS",
+                    f"superseded successor did not pass: {increment_id}",
+                )
+            else:
+                require(
+                    claim == "HISTORICAL_FAILURE_RECORDED",
+                    f"failure claim drift: {increment_id}",
+                )
+                require(
+                    run_id not in superseded_runs,
+                    f"unresolved failure has supersession record: {increment_id}",
+                )
+                require(
+                    validation["blocking_for_production"] is True,
+                    f"failed run must remain blocking: {increment_id}",
+                )
+                failed_runs.add(run_id)
         else:
-            require(validation["claim"] == "SUCCESS_AT_RECORDED_SHA", f"success claim drift: {increment_id}")
-            require(validation["blocking_for_production"] is False, f"successful run cannot block production: {increment_id}")
+            require(
+                validation["claim"] == "SUCCESS_AT_RECORDED_SHA",
+                f"success claim drift: {increment_id}",
+            )
+            require(
+                validation["blocking_for_production"] is False,
+                f"successful run cannot block production: {increment_id}",
+            )
         previous = item["branch"]
 
     known_failed = data["known_failed_validation_runs"]
     require_unique(known_failed, "duplicate known failed validation run")
-    require(set(known_failed) == failed_runs, "known failed validation runs do not match stack evidence")
+    require(
+        set(known_failed) == failed_runs,
+        "known failed validation runs do not match stack evidence",
+    )
     return failed_runs
 
 
-def validate_integration_runs(data: dict[str, Any]) -> None:
+def validate_integration_runs(data: dict[str, Any]) -> dict[int, dict[str, Any]]:
     run_ids: list[int] = []
+    by_run: dict[int, dict[str, Any]] = {}
     for validation in data["integration_validation"]:
         run_id = validation["run_id"]
         run_ids.append(run_id)
         require(isinstance(run_id, int) and run_id > 0, "invalid integration validation run")
-        require(validation["conclusion"] in STACK_CONCLUSIONS, f"invalid integration run conclusion: {run_id}")
-        require(bool(SHA_PATTERN.fullmatch(validation["head_sha"])), f"invalid integration SHA: {run_id}")
+        require(
+            validation["conclusion"] in STACK_CONCLUSIONS,
+            f"invalid integration run conclusion: {run_id}",
+        )
+        require(
+            bool(SHA_PATTERN.fullmatch(validation["head_sha"])),
+            f"invalid integration SHA: {run_id}",
+        )
         require(bool(validation["scope"].strip()), f"missing integration run scope: {run_id}")
+        by_run[run_id] = validation
     require_unique(run_ids, "duplicate integration validation run")
+    return by_run
 
 
 def validate_contexts(data: dict[str, Any]) -> None:
@@ -234,7 +339,10 @@ def validate_contexts(data: dict[str, Any]) -> None:
         context_ids.append(context_id)
         require(bool(context["owner"].strip()), f"context lacks owner: {context_id}")
         require(bool(context["maturity"].strip()), f"context lacks maturity: {context_id}")
-        require(context["code"] and context["validators"], f"context lacks code or validators: {context_id}")
+        require(
+            context["code"] and context["validators"],
+            f"context lacks code or validators: {context_id}",
+        )
         for relative in [*context["code"], *context["validators"]]:
             require((ROOT / relative).is_file(), f"missing architecture artifact: {relative}")
     require_unique(context_ids, "duplicate bounded context")
@@ -244,7 +352,10 @@ def validate_workstreams_and_roadmap(data: dict[str, Any]) -> dict[str, dict[str
     workstreams = data["workstreams"]
     workstream_ids = [item["id"] for item in workstreams]
     require_unique(workstream_ids, "duplicate workstream")
-    require(set(workstream_ids) == WORKSTREAM_IDS, "workstream set must be exactly WS-01 through WS-15")
+    require(
+        set(workstream_ids) == WORKSTREAM_IDS,
+        "workstream set must be exactly WS-01 through WS-15",
+    )
 
     roadmap = data["roadmap"]
     roadmap_ids = [item["id"] for item in roadmap]
@@ -280,7 +391,10 @@ def validate_workstreams_and_roadmap(data: dict[str, Any]) -> dict[str, dict[str
 
     production_action = roadmap_by_id.get("action:production-deployment")
     require(production_action is not None, "production deployment action is missing")
-    require(production_action["status"] == "HUMAN_BLOCKED", "production deployment action must be HUMAN_BLOCKED")
+    require(
+        production_action["status"] == "HUMAN_BLOCKED",
+        "production deployment action must be HUMAN_BLOCKED",
+    )
     require(
         any(item["status"] in {"ACTIVE", "EXECUTABLE_NEXT"} for item in roadmap),
         "program lacks an active or executable next increment",
@@ -294,7 +408,10 @@ def validate_findings(data: dict[str, Any]) -> int:
     for finding in data["findings"]:
         finding_id = finding["id"]
         finding_ids.append(finding_id)
-        require(finding["severity"] in FINDING_SEVERITIES, f"invalid finding severity: {finding_id}")
+        require(
+            finding["severity"] in FINDING_SEVERITIES,
+            f"invalid finding severity: {finding_id}",
+        )
         require(finding["status"] in FINDING_STATUSES, f"invalid finding status: {finding_id}")
         require(bool(finding["summary"].strip()), f"finding lacks summary: {finding_id}")
         evidence_path = finding["evidence"].split("#", maxsplit=1)[0]
@@ -308,7 +425,10 @@ def validate_findings(data: dict[str, Any]) -> int:
         "high": open_counts["HIGH"],
         "total_critical_or_high": open_counts["CRITICAL"] + open_counts["HIGH"],
     }
-    require(data["open_findings_summary"] == expected_summary, "open CRITICAL/HIGH finding summary drift")
+    require(
+        data["open_findings_summary"] == expected_summary,
+        "open CRITICAL/HIGH finding summary drift",
+    )
     return expected_summary["total_critical_or_high"]
 
 
@@ -319,7 +439,10 @@ def validate_deployment_and_gates(
     require(pages["classification"] == "DEMO_NON_PRODUCTION", "Pages must be classified as a demo")
     require(pages["workflow_mode"] == "MANUAL_ONLY", "Pages workflow must be manual-only")
     require(pages["required_confirmation"] == "DEMO_NON_PRODUCTION", "Pages confirmation drift")
-    require(pages["counts_as_production_evidence"] is False, "Pages cannot count as production evidence")
+    require(
+        pages["counts_as_production_evidence"] is False,
+        "Pages cannot count as production evidence",
+    )
     require(pages["live_url"].startswith("https://"), "Pages URL must use HTTPS")
 
     gates = data["production_gates"]
@@ -331,14 +454,23 @@ def validate_deployment_and_gates(
 
     production_status = data["production_status"]
     production_deployment = data["deployment_state"]["production"]
-    require(production_deployment["state"] == production_status, "production status drift between records")
+    require(
+        production_deployment["state"] == production_status,
+        "production status drift between records",
+    )
     incomplete_gates = [gate["id"] for gate in gates if gate["status"] != "PASS"]
     if production_status == "READY":
         require(not failed_runs, "READY is forbidden while failed validation evidence is blocking")
         require(open_critical_high == 0, "READY is forbidden with open CRITICAL/HIGH findings")
         require(not incomplete_gates, "READY is forbidden with incomplete production gates")
-        require(production_deployment["human_approval_recorded"] is True, "READY requires human approval")
-        require(bool(production_deployment["approval_receipt"]), "READY requires an approval receipt")
+        require(
+            production_deployment["human_approval_recorded"] is True,
+            "READY requires human approval",
+        )
+        require(
+            bool(production_deployment["approval_receipt"]),
+            "READY requires an approval receipt",
+        )
     else:
         require(production_status == "BLOCKED", "production status must be READY or BLOCKED")
         require(bool(data["production_status_reason"].strip()), "BLOCKED status requires a reason")
@@ -346,8 +478,14 @@ def validate_deployment_and_gates(
             bool(failed_runs or open_critical_high or incomplete_gates),
             "BLOCKED status requires at least one recorded blocker",
         )
-        require(production_deployment["human_approval_recorded"] is False, "blocked production cannot record approval")
-        require(production_deployment["approval_receipt"] is None, "blocked production cannot have an approval receipt")
+        require(
+            production_deployment["human_approval_recorded"] is False,
+            "blocked production cannot record approval",
+        )
+        require(
+            production_deployment["approval_receipt"] is None,
+            "blocked production cannot have an approval receipt",
+        )
 
 
 def validate_policy_boundaries(data: dict[str, Any]) -> None:
@@ -389,18 +527,33 @@ def validate_fallback_records(
         require(record["program_id"] == data["program_id"], f"{label} program ID drift")
         require_iso_date(record["updated_at"], f"{label}.updated_at")
         require(record["updated_at"] == data["updated_at"], f"{label} update date drift")
-    require(program_state["authoritative_manifest"] == "architecture/program-state.json", "authoritative manifest drift")
-    require(program_state["production_status"] == data["production_status"], "fallback production status drift")
+    require(
+        program_state["authoritative_manifest"] == "architecture/program-state.json",
+        "authoritative manifest drift",
+    )
+    require(
+        program_state["production_status"] == data["production_status"],
+        "fallback production status drift",
+    )
 
     graph_tasks = task_graph["tasks"]
     graph_ids = [task["id"] for task in graph_tasks]
     require_unique(graph_ids, "duplicate fallback task graph ID")
     expected_task_ids = set(roadmap_by_id) - {"action:production-deployment"}
-    require(set(graph_ids) == expected_task_ids, "fallback task graph does not match architecture roadmap")
+    require(
+        set(graph_ids) == expected_task_ids,
+        "fallback task graph does not match architecture roadmap",
+    )
     for task in graph_tasks:
         roadmap_item = roadmap_by_id[task["id"]]
-        require(task["workstream"] == roadmap_item["workstream"], f"task workstream drift: {task['id']}")
-        require(task["depends_on"] == roadmap_item["depends_on"], f"task dependency drift: {task['id']}")
+        require(
+            task["workstream"] == roadmap_item["workstream"],
+            f"task workstream drift: {task['id']}",
+        )
+        require(
+            task["depends_on"] == roadmap_item["depends_on"],
+            f"task dependency drift: {task['id']}",
+        )
         expected_status = TASK_STATUS_BY_ROADMAP_STATUS[roadmap_item["status"]]
         require(task["status"] == expected_status, f"task status drift: {task['id']}")
 
@@ -411,7 +564,10 @@ def validate_fallback_records(
     graph_by_id = {task["id"]: task for task in graph_tasks}
     for entry in ledger_entries:
         task_id = entry["task_id"]
-        require(entry["status"] == graph_by_id[task_id]["status"], f"ledger status drift: {task_id}")
+        require(
+            entry["status"] == graph_by_id[task_id]["status"],
+            f"ledger status drift: {task_id}",
+        )
         require(
             entry["external_effects"] in {"NONE", "REVIEW_BRANCH_AND_DRAFT_PR"},
             f"unsupported fallback task external effect: {task_id}",
@@ -426,7 +582,10 @@ def validate_fallback_records(
 
     ready_ids = {task["id"] for task in graph_tasks if task["status"] == "READY"}
     require(set(program_state["ready_tasks"]) == ready_ids, "fallback ready task list drift")
-    require(program_state["current_increment"] in set(graph_ids), "current increment is absent from task graph")
+    require(
+        program_state["current_increment"] in set(graph_ids),
+        "current increment is absent from task graph",
+    )
 
 
 def main() -> int:
@@ -435,10 +594,15 @@ def main() -> int:
     require(data["program_id"] == "program:campaignos-production-readiness", "program ID drift")
     require(data["product_name"] == "CampaignOS", "product name drift")
     require_iso_date(data["updated_at"], "architecture.updated_at")
-    require(data["operating_principle"] == "AI recommends; evidence supports; authorized humans decide.", "operating principle drift")
+    require(
+        data["operating_principle"]
+        == "AI recommends; evidence supports; authorized humans decide.",
+        "operating principle drift",
+    )
 
-    failed_runs = validate_stack(data)
-    validate_integration_runs(data)
+    superseded_runs = validate_superseded_runs(data)
+    integration_runs = validate_integration_runs(data)
+    failed_runs = validate_stack(data, superseded_runs, integration_runs)
     validate_contexts(data)
     roadmap_by_id = validate_workstreams_and_roadmap(data)
     open_critical_high = validate_findings(data)

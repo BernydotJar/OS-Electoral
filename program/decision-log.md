@@ -324,3 +324,21 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `docs/testing/c3-obs-001-evidence.md`, CI run `30041495912`, artifact `8577394363`
 - `rationale`: The local failure occurred before database startup and was environmental; hosted CI executed the same immutable recovery contract successfully and retained checksum-bound evidence.
 - `consequences`: C3-OBS may be `CI_GREEN`, but no managed-environment or production recovery claim is permitted and production remains `BLOCKED`.
+
+## DEC-2026-07-24-002 — Historical failures may stop blocking only through explicit scope-equivalent supersession
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-RELEASE-001`
+- `decision`: Preserve each historical run and its `FAILURE` conclusion. A stack failure may set `blocking_for_production=false` only when it uses `HISTORICAL_FAILURE_SUPERSEDED` and references a complete, distinct, equal-or-broader successful successor record.
+- `evidence`: six GitHub job records, ancestry checks, cumulative C2 runtime visual run `29660653755`, `scripts/architecture/validate_program_state.py`, `docs/testing/c3-release-001-evidence.md`
+- `rationale`: Adverse evidence must not be deleted, while a repaired defect with broader exact-head proof must not remain a false permanent blocker.
+- `consequences`: Missing, duplicate, malformed or inconsistent supersession metadata fails closed. Separate platform, product, review and production gates remain unaffected.
+
+## DEC-2026-07-24-003 — Release automation records DENY_RELEASE but cannot grant production authority
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-RELEASE-001`
+- `decision`: Maintain a machine-readable eight-gate release record whose only valid current decision is `DENY_RELEASE`; human production approval must remain absent until every required gate passes.
+- `evidence`: `program/release-readiness.json`, `scripts/release/validate_release_readiness.py`, `docs/operations/release-readiness.md`
+- `rationale`: A green repository checkpoint is not a staging environment, managed recovery proof or production approval.
+- `consequences`: Any READY claim, incomplete gate inventory, invented approval or missing evidence fails validation. Merge, apply and deployment remain separate human-gated actions.

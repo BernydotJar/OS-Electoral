@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-RELEASE-001",
+  "assessed_at": "2026-07-24",
+  "source_branch": "agent/c3-release-001-readiness-audit",
+  "base_checkpoint": "agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6",
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "historical_validation": {
+    "unresolved_failed_runs": [],
+    "superseding_visual_run": 29660653755,
+    "superseding_head": "30e2473f6eac2a554bc7e51b18f7b25746e42475",
+    "superseded_run_ids": [
+      29659355550,
+      29659451027,
+      29659542083,
+      29659623156,
+      29659692005,
+      29659733648
+    ]
+  },
+  "gates": [
+    {
+      "id": "open-critical-high-findings",
+      "status": "BLOCKED",
+      "evidence": [
+        "architecture/program-state.json"
+      ],
+      "reason": "One CRITICAL platform finding remains open."
+    },
+    {
+      "id": "staging-environment",
+      "status": "NOT_VERIFIED",
+      "evidence": [],
+      "reason": "No approved staging account, runtime, remote state or controlled deployment exists."
+    },
+    {
+      "id": "managed-backup-pitr",
+      "status": "NOT_VERIFIED",
+      "evidence": [
+        "docs/testing/c3-obs-001-evidence.md"
+      ],
+      "reason": "Test recovery is green, but managed encrypted backup, retention and PITR are unproven."
+    },
+    {
+      "id": "telemetry-alert-routing",
+      "status": "PARTIAL",
+      "evidence": [
+        "docs/operations/observability-and-recovery.md"
+      ],
+      "reason": "Instrumentation and rules exist; deployed collectors, dashboards and alert receivers do not."
+    },
+    {
+      "id": "rpo-rto-exercise",
+      "status": "NOT_VERIFIED",
+      "evidence": [],
+      "reason": "No staging recovery exercise or approved RPO/RTO exists."
+    },
+    {
+      "id": "load-and-rollback",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": [],
+      "reason": "Representative load evidence and production rollback proof are absent."
+    },
+    {
+      "id": "independent-security-privacy-legal-review",
+      "status": "BLOCKED",
+      "evidence": [],
+      "reason": "Independent scoped approvals are not recorded."
+    },
+    {
+      "id": "human-production-approval",
+      "status": "BLOCKED",
+      "evidence": [],
+      "reason": "No authorized, scoped production approval receipt exists."
+    }
+  ],
+  "required_human_approval": {
+    "recorded": false,
+    "receipt": null
+  },
+  "next_safe_actions": [
+    "Human-review and merge the stacked C3-OBS and C3-RELEASE pull requests.",
+    "Authorize a cost-bounded non-production environment before any Terraform apply.",
+    "Run staging migration, recovery, telemetry, load, rollback and security exercises.",
+    "Obtain independent security, privacy, legal, operational and final production approvals."
+  ]
+}

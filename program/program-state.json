@@ -3,11 +3,11 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-24",
-  "branch": "agent/c3-obs-001-operational-evidence",
-  "current_increment": "C3-OBS-001",
-  "iteration_status": "CI_GREEN",
+  "branch": "agent/c3-release-001-readiness-audit",
+  "current_increment": "C3-RELEASE-001",
+  "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
-  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Exact-head PostgreSQL 18 backup/restore evidence is green and retained, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
+  "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -105,13 +105,11 @@
     {
       "id": "WS-15",
       "name": "Documentation, Migration and Release",
-      "status": "RELEASE_EXECUTABLE_NEXT",
+      "status": "RELEASE_AUDIT_ACTIVE",
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [
-    "C3-RELEASE-001"
-  ],
+  "ready_tasks": [],
   "published_unreviewed_increment": {
     "id": "C3-OBS-001",
     "state": "DRAFT_PR_CI_GREEN",
@@ -125,9 +123,25 @@
     "recovery_artifact_id": 8577394363,
     "external_effects": "NONE"
   },
-  "review_stack": [],
+  "review_stack": [
+    {
+      "increment": "C3-OBS-001",
+      "pr": 114,
+      "branch": "agent/c3-obs-001-operational-evidence",
+      "base": "main",
+      "state": "DRAFT_PR_CI_GREEN",
+      "delivered_head": "a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6"
+    },
+    {
+      "increment": "C3-RELEASE-001",
+      "pr": 115,
+      "branch": "agent/c3-release-001-readiness-audit",
+      "base": "agent/c3-obs-001-operational-evidence",
+      "state": "DRAFT_PR_IN_PROGRESS"
+    }
+  ],
   "local_verification": {
-    "tests_passed": 686,
+    "tests_passed": 696,
     "tests_skipped": 10,
     "coverage_percent": 90.4,
     "coverage_gate": "PASS",
@@ -235,7 +249,13 @@
     "recovery_artifact_id": 8577394363,
     "recovery_artifact_name": "campaignos-postgresql-recovery-evidence",
     "recovery_artifact_digest": "sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469",
-    "recovery_artifact_expires_at": "2026-08-22T20:18:20Z"
+    "recovery_artifact_expires_at": "2026-08-22T20:18:20Z",
+    "release_supersession_contract": "PASS_6_PRESERVED_0_UNRESOLVED",
+    "release_readiness": "PASS_DENY_RELEASE_8_GATES",
+    "release_focused_tests": 10,
+    "release_program_verify": "PASS_OPEN_CRITICAL_HIGH_1_BLOCKING_FAILED_RUNS_0",
+    "release_program_eval_tests": 14,
+    "release_full_suite": "PASS_696_SKIPPED_10_COVERAGE_90_40"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -255,8 +275,7 @@
     "production": "NOT_DEPLOYED_OR_PROVEN"
   },
   "blockers": [
-    "Two open CRITICAL/HIGH production findings",
-    "Six historical validation runs retain FAILURE without scope-equivalent supersession records",
+    "One open CRITICAL platform finding remains",
     "No live OIDC login, recovery, MFA, provider invitation delivery or provider session revocation",
     "No approved AWS dev/staging/production environment or managed PostgreSQL runtime exists",
     "No managed encrypted backup schedule, PITR, retention, deployed telemetry, alert routing or accepted RPO/RTO exists",
@@ -276,14 +295,13 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-OBS-001",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-obs-001-operational-evidence",
-    "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
-    "validated_implementation_head": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
-    "draft_pr": 114,
+    "id": "C3-RELEASE-001",
+    "state": "IN_PROGRESS",
+    "branch": "agent/c3-release-001-readiness-audit",
+    "base": "agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6",
     "production_status": "BLOCKED",
-    "external_effects": "NONE"
+    "external_effects": "NONE",
+    "draft_pr": 115
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
