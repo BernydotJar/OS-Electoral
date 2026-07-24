@@ -2,7 +2,7 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-23",
+  "updated_at": "2026-07-24",
   "source_branch": "agent/c3-obs-001-operational-evidence",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
@@ -13,7 +13,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Protected-main and supply-chain controls are verified, and local observability plus a recovery verifier now exist. Exact-head PostgreSQL 18 restore evidence, managed backups, deployed telemetry, staging failure/RPO/RTO evidence, live environments and independent human production approval remain absent.",
+  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Exact-head PostgreSQL 18 backup/restore evidence is green and retained, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -717,7 +717,7 @@
     {
       "id": "context:operational-observability-recovery",
       "owner": "Campaign Platform Operations",
-      "maturity": "ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING",
+      "maturity": "CI_GREEN_EXACT_HEAD_RECOVERY_VERIFIED",
       "code": [
         "backend/src/campaignos/observability.py",
         "backend/src/campaignos/operability/recovery.py",
@@ -815,13 +815,13 @@
     {
       "id": "WS-14",
       "name": "Testing, Observability and Operations",
-      "status": "OBSERVABILITY_LOCAL_ACTIVE_CI_RECOVERY_PENDING",
-      "next_increment": "C3-OBS-001"
+      "status": "OBSERVABILITY_CI_GREEN_RECOVERY_VERIFIED",
+      "next_increment": "C3-RELEASE-001"
     },
     {
       "id": "WS-15",
       "name": "Documentation, Migration and Release",
-      "status": "ACTIVE",
+      "status": "RELEASE_EXECUTABLE_NEXT",
       "next_increment": "C3-RELEASE-001"
     }
   ],
@@ -1000,7 +1000,7 @@
     },
     {
       "id": "C3-OBS-001",
-      "status": "ACTIVE",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-001",
         "C3-INFRA-001",
@@ -1010,7 +1010,7 @@
     },
     {
       "id": "C3-RELEASE-001",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "EXECUTABLE_NEXT",
       "depends_on": [
         "C3-ONBOARD-001",
         "C3-TEAM-001",
@@ -1034,7 +1034,7 @@
       "id": "FND-PLATFORM-001",
       "severity": "CRITICAL",
       "status": "REMEDIATION_IN_PROGRESS",
-      "summary": "A plan-only Terraform baseline and local observability/recovery verifier exist, but no independently verified AWS environment, managed backup/PITR, exact-head recovery run, deployed telemetry or production runtime exists.",
+      "summary": "A plan-only Terraform baseline and exact-head test recovery evidence exist, but no independently verified AWS environment, managed backup/PITR, deployed telemetry or production runtime exists.",
       "evidence": "docs/testing/c3-obs-001-evidence.md"
     },
     {
@@ -1093,7 +1093,7 @@
     "total_critical_or_high": 2
   },
   "github_state": {
-    "verified_at": "2026-07-23",
+    "verified_at": "2026-07-24",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1117,7 +1117,9 @@
       73,
       83
     ],
-    "open_pull_requests": [],
+    "open_pull_requests": [
+      114
+    ],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
     "actions_allowed": "SELECTED_GITHUB_OWNED_PLUS_TWO_PATTERNS",
@@ -1134,7 +1136,19 @@
       "required_check_count": 8,
       "new_supply_chain_check": "PENDING_FIRST_RUN"
     },
-    "published_unreviewed_increment": null,
+    "published_unreviewed_increment": {
+      "id": "C3-OBS-001",
+      "state": "DRAFT_PR_CI_GREEN",
+      "branch": "agent/c3-obs-001-operational-evidence",
+      "base": "main",
+      "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+      "draft_pr": 114,
+      "ci_run_id": 30041495912,
+      "visual_run_id": 30041495919,
+      "recovery_job_id": 89322226244,
+      "recovery_artifact_id": 8577394363,
+      "external_effects": "NONE"
+    },
     "review_stack": [],
     "git_push_incident": {
       "classification": "TECHNICAL_DEFECT_REPAIRED",
@@ -1151,21 +1165,27 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-OBS-001",
-      "state": "ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING",
+      "state": "CI_GREEN",
       "branch": "agent/c3-obs-001-operational-evidence",
       "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
+      "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+      "draft_pr": 114,
       "production_status": "BLOCKED",
       "external_effects": "NONE"
     },
     "latest_checkpoint": {
-      "id": "C3-FRONT-002",
-      "branch": "main",
-      "head_commit": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
-      "cumulative_pr": 106,
-      "status": "MERGED_TO_MAIN",
-      "checks_before_merge": "SUCCESS",
+      "id": "C3-OBS-001",
+      "branch": "agent/c3-obs-001-operational-evidence",
+      "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+      "draft_pr": 114,
+      "status": "CI_GREEN",
+      "ci_run_id": 30041495912,
+      "visual_run_id": 30041495919,
+      "recovery_job_id": 89322226244,
+      "recovery_artifact_id": 8577394363,
+      "recovery_artifact_digest": "sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469",
       "external_effects": "NONE",
-      "next_increment": "C3-OBS-001"
+      "next_increment": "C3-RELEASE-001"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",
@@ -1187,11 +1207,12 @@
       "status": "MERGED_TO_MAIN_REBASE",
       "main_sha": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
       "checks_before_merge": "SUCCESS",
-      "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED"
+      "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED",
+      "open_pull_requests_observed": 1
     },
     "desired_required_check_count": 10,
     "live_required_check_count": 8,
-    "observability_recovery_required_check": "HUMAN_POLICY_GATE_PENDING"
+    "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN"
   },
   "deployment_state": {
     "github_pages": {
@@ -1329,7 +1350,7 @@
         "operations/alerts/campaignos.rules.yml",
         "docs/operations/observability-and-recovery.md"
       ],
-      "reason": "Structured logs, trace context, authenticated low-cardinality metrics and alert rules pass locally; deployed collectors, dashboards, routing, retention and staging SLO evidence are absent."
+      "reason": "Structured logs, trace context, authenticated low-cardinality metrics and alert rules pass locally and at the exact PR head; deployed collectors, dashboards, routing, retention and staging SLO evidence are absent."
     },
     {
       "id": "backups",
@@ -1339,7 +1360,7 @@
         "scripts/operations/verify_postgres_recovery.py",
         "docs/testing/c3-obs-001-evidence.md"
       ],
-      "reason": "Native backup/isolated-restore verification is implemented and locally tested, but exact-head CI, managed backup/PITR and staging RPO/RTO evidence are pending."
+      "reason": "Native PostgreSQL 18 backup and isolated restore passed at the exact PR head with a retained checksum artifact; managed encrypted backups, PITR, retention and operator evidence are absent."
     },
     {
       "id": "restore-test",
@@ -1349,7 +1370,7 @@
         "scripts/operations/verify_postgres_recovery.py",
         "docs/testing/c3-obs-001-evidence.md"
       ],
-      "reason": "Native backup/isolated-restore verification is implemented and locally tested, but exact-head CI, managed backup/PITR and staging RPO/RTO evidence are pending."
+      "reason": "Exact-head PostgreSQL 18 isolated restore passed with Alembic and all-public-table count validation; managed staging application/RLS smoke and measured, human-approved RPO/RTO remain absent."
     },
     {
       "id": "terraform",

@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-23",
+  "updated_at": "2026-07-24",
   "branch": "agent/c3-obs-001-operational-evidence",
   "entries": [
     {
@@ -556,7 +556,7 @@
     {
       "task_id": "C3-OBS-001",
       "owner": "WS-14",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/src/campaignos/observability.py",
         "backend/src/campaignos/operability/recovery.py",
@@ -573,8 +573,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head PostgreSQL 18 backup/restore CI evidence is pending",
-        "The persistent sandbox cannot register the pinned PostgreSQL image layer",
         "No managed backup schedule, PITR, telemetry transport, staging failure exercise or accepted RPO/RTO exists",
         "Independent operational, security, privacy, legal and human production approvals remain pending"
       ]
@@ -582,16 +580,10 @@
     {
       "task_id": "C3-RELEASE-001",
       "owner": "WS-15",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "evidence": [],
       "external_effects": "NONE",
-      "blockers": [
-        "C3-ONBOARD-001",
-        "C3-TEAM-001",
-        "C3-OPS-001",
-        "C3-AGENT-001",
-        "C3-OBS-001"
-      ]
+      "blockers": []
     }
   ]
 }

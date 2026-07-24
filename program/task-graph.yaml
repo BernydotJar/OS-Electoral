@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-23",
+  "updated_at": "2026-07-24",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -221,7 +221,7 @@
       "id": "C3-OBS-001",
       "workstream": "WS-14",
       "title": "Operational observability, backup/restore and failure-mode testing",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-001",
         "C3-INFRA-001",
@@ -232,7 +232,7 @@
       "id": "C3-RELEASE-001",
       "workstream": "WS-15",
       "title": "Staging evidence, release record and explicit production approval gate",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "READY",
       "depends_on": [
         "C3-ONBOARD-001",
         "C3-TEAM-001",

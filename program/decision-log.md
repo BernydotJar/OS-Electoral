@@ -314,3 +314,13 @@ This log records scoped implementation decisions. It does not grant political, l
 - **Decision:** Do not expose campaign creation merely because the backend endpoint exists. A separate lifecycle must define who receives or requests access to the new campaign.
 - **Evidence:** campaign creation does not automatically create membership or an exact campaign grant.
 - **Consequence:** the first functional journey selects an existing authorized campaign and edits guided intake without inferring authority from creator identity.
+
+
+## DEC-2026-07-24-001 — Accept exact-head hosted recovery as the local environment alternative
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-OBS-001`
+- `decision`: Treat hosted PostgreSQL 18 recovery job `89322226244` at exact head `bf722ee8e672a9e89a7e74a47465a8e6287602c8` as the validated alternative for the sandbox image-layer limitation, while keeping managed backup, PITR, staging recovery and RPO/RTO gates open.
+- `evidence`: `docs/testing/c3-obs-001-evidence.md`, CI run `30041495912`, artifact `8577394363`
+- `rationale`: The local failure occurred before database startup and was environmental; hosted CI executed the same immutable recovery contract successfully and retained checksum-bound evidence.
+- `consequences`: C3-OBS may be `CI_GREEN`, but no managed-environment or production recovery claim is permitted and production remains `BLOCKED`.

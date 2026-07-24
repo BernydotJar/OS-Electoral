@@ -1,9 +1,9 @@
 {
   "increment": "C3-OBS-001",
-  "verified_at": "2026-07-23",
+  "verified_at": "2026-07-24",
   "branch": "agent/c3-obs-001-operational-evidence",
   "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
-  "status": "ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING",
+  "status": "CI_GREEN",
   "production_status": "BLOCKED",
   "external_effects": "NONE",
   "results": {
@@ -33,13 +33,19 @@
       "comparison_contract": "PASS_ALEMBIC_AND_ALL_PUBLIC_TABLE_COUNTS",
       "cleanup_contract": "PASS_FINALLY",
       "manifest": "PASS_SHA256_OWNER_ONLY_NO_CREDENTIALS",
-      "postgresql_18_local_execution": "BLOCKED_SANDBOX_DOCKER_LAYER_LCHOWN",
-      "postgresql_18_exact_head_ci": "PENDING"
+      "postgresql_18_local_execution": "BLOCKED_ENVIRONMENT_WITH_VALIDATED_CI_ALTERNATIVE",
+      "postgresql_18_exact_head_ci": "PASS_RUN_30041495912_JOB_89322226244",
+      "retained_artifact": {
+        "id": 8577394363,
+        "name": "campaignos-postgresql-recovery-evidence",
+        "digest": "sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469",
+        "expires_at": "2026-08-22T20:18:20Z"
+      }
     },
     "workflow": {
       "yaml": "PASS",
       "ci_policy": "PASS_3_WORKFLOWS_39_ACTIONS_10_DESIRED_CHECKS",
-      "recovery_job": "DEFINED_POSTGRESQL_18_REAL_DUMP_RESTORE_ARTIFACT",
+      "recovery_job": "PASS_PR_114_HEAD_BF722EE8E672A9E89A7E74A47465A8E6287602C8",
       "required_check_live": "HUMAN_POLICY_GATE_PENDING"
     },
     "program_truth": "PASS_PRODUCTION_BLOCKED",
@@ -49,6 +55,15 @@
       "gitleaks": "PASS_8_30_1_VERIFIED_CHECKSUM",
       "supply_chain": "PASS",
       "frontend": "PASS_60_TESTS_BUILD_ZERO_VULNERABILITIES"
+    },
+    "exact_head_ci": {
+      "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+      "campaignos_ci_run": 30041495912,
+      "runtime_visual_review_run": 30041495919,
+      "campaignos_ci_conclusion": "SUCCESS",
+      "runtime_visual_review_conclusion": "SUCCESS",
+      "recovery_job_id": 89322226244,
+      "recovery_artifact_id": 8577394363
     }
   },
   "evidence": [
@@ -68,12 +83,10 @@
     ".github/workflows/campaignos-ci.yml"
   ],
   "limitations": [
-    "Exact-head PostgreSQL 18 backup/restore CI evidence is pending",
-    "The persistent sandbox cannot register the pinned PostgreSQL image layer",
     "No managed backup schedule, PITR, encrypted destination or accepted retention exists",
     "No deployed telemetry exporter, collector, dashboard or alert receiver exists",
     "No staging failure exercise or human-approved RPO/RTO exists",
     "No independent operational, security, privacy, legal or production approval exists"
   ],
-  "remote_state": "LOCAL_BRANCH_UNPUBLISHED"
+  "remote_state": "DRAFT_PR_114_CI_GREEN"
 }

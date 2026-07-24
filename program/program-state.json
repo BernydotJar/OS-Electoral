@@ -2,12 +2,12 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-23",
+  "updated_at": "2026-07-24",
   "branch": "agent/c3-obs-001-operational-evidence",
   "current_increment": "C3-OBS-001",
-  "iteration_status": "IN_PROGRESS",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
-  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Local observability and a PostgreSQL recovery verifier are implemented, but exact-head PostgreSQL 18 restore evidence, managed backups, deployed telemetry, staging failure exercises, RPO/RTO acceptance, live environments and independent human production approval remain absent.",
+  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Exact-head PostgreSQL 18 backup/restore evidence is green and retained, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -99,18 +99,32 @@
     {
       "id": "WS-14",
       "name": "Testing, Observability and Operations",
-      "status": "OBSERVABILITY_LOCAL_ACTIVE_CI_RECOVERY_PENDING",
-      "next_increment": "C3-OBS-001"
+      "status": "OBSERVABILITY_CI_GREEN_RECOVERY_VERIFIED",
+      "next_increment": "C3-RELEASE-001"
     },
     {
       "id": "WS-15",
       "name": "Documentation, Migration and Release",
-      "status": "ACTIVE",
+      "status": "RELEASE_EXECUTABLE_NEXT",
       "next_increment": "C3-RELEASE-001"
     }
   ],
-  "ready_tasks": [],
-  "published_unreviewed_increment": null,
+  "ready_tasks": [
+    "C3-RELEASE-001"
+  ],
+  "published_unreviewed_increment": {
+    "id": "C3-OBS-001",
+    "state": "DRAFT_PR_CI_GREEN",
+    "branch": "agent/c3-obs-001-operational-evidence",
+    "base": "main",
+    "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+    "draft_pr": 114,
+    "ci_run_id": 30041495912,
+    "visual_run_id": 30041495919,
+    "recovery_job_id": 89322226244,
+    "recovery_artifact_id": 8577394363,
+    "external_effects": "NONE"
+  },
   "review_stack": [],
   "local_verification": {
     "tests_passed": 686,
@@ -205,8 +219,8 @@
     "observability": "PASS_STRUCTURED_LOGS_TRACE_CONTEXT_METRICS_ALERTS",
     "observability_focused_tests": "PASS_51_PLUS_7_RECOVERY_RUNTIME",
     "recovery_safety_contract": "PASS_TEST_SOURCE_DISTINCT_TARGET_IMMUTABLE_CLIENT_CLEANUP",
-    "recovery_postgresql_18_local": "BLOCKED_SANDBOX_DOCKER_LAYER_LCHOWN",
-    "recovery_postgresql_18_ci": "PENDING_EXACT_HEAD",
+    "recovery_postgresql_18_local": "BLOCKED_ENVIRONMENT_WITH_VALIDATED_CI_ALTERNATIVE",
+    "recovery_postgresql_18_ci": "PASS_PR_114_HEAD_BF722EE8E672A9E89A7E74A47465A8E6287602C8_RUN_30041495912",
     "workflow_yaml": "PASS",
     "alert_rules_yaml": "PASS",
     "recovery_required_check_live": "HUMAN_POLICY_GATE_PENDING",
@@ -214,7 +228,14 @@
     "terraform_current_workspace": "BLOCKED_TERRAFORM_CLI_UNAVAILABLE_NO_INFRA_CHANGE",
     "supply_chain_current_worktree": "PASS",
     "frontend_current_worktree": "PASS_60_TESTS_BUILD_ZERO_VULNERABILITIES",
-    "gitleaks_current_worktree": "PASS_8_30_1_VERIFIED_CHECKSUM"
+    "gitleaks_current_worktree": "PASS_8_30_1_VERIFIED_CHECKSUM",
+    "observability_pr_ci": "PASS_PR_114_HEAD_BF722EE8E672A9E89A7E74A47465A8E6287602C8_RUN_30041495912",
+    "observability_runtime_visual": "PASS_RUN_30041495919",
+    "recovery_job": "PASS_JOB_89322226244",
+    "recovery_artifact_id": 8577394363,
+    "recovery_artifact_name": "campaignos-postgresql-recovery-evidence",
+    "recovery_artifact_digest": "sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469",
+    "recovery_artifact_expires_at": "2026-08-22T20:18:20Z"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -238,7 +259,6 @@
     "Six historical validation runs retain FAILURE without scope-equivalent supersession records",
     "No live OIDC login, recovery, MFA, provider invitation delivery or provider session revocation",
     "No approved AWS dev/staging/production environment or managed PostgreSQL runtime exists",
-    "Exact-head PostgreSQL 18 recovery CI evidence is pending",
     "No managed encrypted backup schedule, PITR, retention, deployed telemetry, alert routing or accepted RPO/RTO exists",
     "Broader authenticated product journeys, rate limiting, load tests and rollback proof remain incomplete",
     "No independent operational, security, privacy, domain, legal or explicit human production approval"
@@ -257,9 +277,11 @@
   },
   "active_local_increment": {
     "id": "C3-OBS-001",
-    "state": "ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING",
+    "state": "CI_GREEN",
     "branch": "agent/c3-obs-001-operational-evidence",
     "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
+    "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+    "draft_pr": 114,
     "production_status": "BLOCKED",
     "external_effects": "NONE"
   },
@@ -274,14 +296,18 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-FRONT-002",
-    "branch": "main",
-    "head_commit": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
-    "cumulative_pr": 106,
-    "status": "MERGED_TO_MAIN",
-    "checks_before_merge": "SUCCESS",
+    "id": "C3-OBS-001",
+    "branch": "agent/c3-obs-001-operational-evidence",
+    "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+    "draft_pr": 114,
+    "status": "CI_GREEN",
+    "ci_run_id": 30041495912,
+    "visual_run_id": 30041495919,
+    "recovery_job_id": 89322226244,
+    "recovery_artifact_id": 8577394363,
+    "recovery_artifact_digest": "sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469",
     "external_effects": "NONE",
-    "next_increment": "C3-OBS-001"
+    "next_increment": "C3-RELEASE-001"
   },
   "production_blockers": [],
   "cumulative_merge": {
@@ -290,6 +316,6 @@
     "main_sha": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
     "checks_before_merge": "SUCCESS",
     "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED",
-    "open_pull_requests_observed": 0
+    "open_pull_requests_observed": 1
   }
 }
