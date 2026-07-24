@@ -1,8 +1,8 @@
 {
   "increment": "C3-RELEASE-001",
   "verified_at": "2026-07-24",
-  "branch": "agent/c3-release-001-readiness-audit",
-  "base": "agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6",
+  "branch": "agent/c3-release-001-readiness-audit-main",
+  "base": "main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5",
   "status": "CI_GREEN",
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
@@ -20,7 +20,7 @@
     "release_record": "PASS_DENY_RELEASE_8_GATES",
     "focused_tests": "PASS_12_PROGRAM_AND_RELEASE_VALIDATOR_TESTS",
     "program_truth": "PASS_PRODUCTION_BLOCKED_RELEASE_DENIED",
-    "remote_state": "DRAFT_PR_115_CI_GREEN",
+    "remote_state": "DRAFT_PR_116_CI_GREEN",
     "aggregate_validator_tests": "PASS_16_INCLUDING_EVAL_CATALOG",
     "secret_scan": "PASS_GITLEAKS_8_30_1_EFFECTIVE_WORKTREE",
     "full_repository": {
@@ -31,30 +31,38 @@
       "coverage_floor": 90
     },
     "hosted_checkpoint": {
-      "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
-      "ci_run_id": 30129061387,
-      "visual_run_id": 30129061437,
-      "quality_job_id": 89599276723,
-      "recovery_job_id": 89599276837,
+      "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
+      "ci_run_id": 30131521614,
+      "visual_run_id": 30131521581,
+      "quality_job_id": 89606840517,
+      "recovery_job_id": 89606840531,
       "required_checks": "PASS_ALL_12_DISPLAYED_CHECKS",
       "artifacts": {
         "recovery": {
-          "id": 8610382604,
-          "digest": "sha256:e6f9c0bc73add06fec5accb774cf551dd16f1045459444b15c6109bbc670aa2b"
+          "id": 8611275379,
+          "digest": "sha256:66f4cb1559a6b29b61ba1a29648e2c273d4638b9789012374c992c0463519aea"
         },
         "supply_chain": {
-          "id": 8610372647,
-          "digest": "sha256:e650672d705fb35c58716e37a78c60a1e0a599a830d039f8f225653e3dcfc3c4"
+          "id": 8611270971,
+          "digest": "sha256:84abef35b6ffefae214c11d00fe174cdfa6347874c618ccc8b6a976f13094b3d"
         },
         "frontend": {
-          "id": 8610429479,
-          "digest": "sha256:8ea7e5ec6c210ed1ea88741faba3f252032781614cd3e425b0aeb34aff9be93f"
+          "id": 8611309890,
+          "digest": "sha256:3a0d18430e3acbb8c0611da1a78b6d633bf8fad89fa1f481119bcf33b910b43a"
         },
         "visual": {
-          "id": 8610391734,
-          "digest": "sha256:1d22f7b39ce93be28dea0130cbd76650b5442da4d044594388517d7b7f5752cb"
+          "id": 8611287198,
+          "digest": "sha256:837fe457b5e24c813354b99a488b20ce0e10b24fa565ad50844f044e08d8ab20"
         }
       }
+    },
+    "frontend_dependency_audit": "PASS_ZERO_VULNERABILITIES_WITH_BRACE_EXPANSION_5_0_8_COMPAT_SHIM",
+    "superseded_main_reconstruction_run": {
+      "failed_run_id": 30131032815,
+      "failed_head": "8fef6ef3b9a3f6739347ed9200ea3e75baf23f53",
+      "failure": "FRONTEND_NPM_AUDIT_GHSA_MH99_V99M_4GVG",
+      "superseded_by": 30131521614,
+      "replacement_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76"
     }
   },
   "evidence": [
@@ -66,7 +74,7 @@
     "backend/tests/test_release_readiness_validator.py",
     "docs/testing/c3-release-001-evidence.md",
     "docs/operations/release-readiness.md",
-    "GitHub draft PR 115"
+    "GitHub draft PR 116"
   ],
   "limitations": [
     "One CRITICAL platform finding remains open",

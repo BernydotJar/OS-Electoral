@@ -556,7 +556,7 @@
     {
       "task_id": "C3-OBS-001",
       "owner": "WS-14",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/observability.py",
         "backend/src/campaignos/operability/recovery.py",

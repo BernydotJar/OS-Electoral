@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "increment": "C3-RELEASE-001",
   "assessed_at": "2026-07-24",
-  "source_branch": "agent/c3-release-001-readiness-audit",
-  "base_checkpoint": "agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6",
+  "source_branch": "agent/c3-release-001-readiness-audit-main",
+  "base_checkpoint": "main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5",
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
@@ -81,20 +81,20 @@
     "receipt": null
   },
   "next_safe_actions": [
-    "Human-review and merge the stacked C3-OBS and C3-RELEASE pull requests.",
+    "Human-review and merge C3-RELEASE pull request #116.",
     "Authorize a cost-bounded non-production environment before any Terraform apply.",
     "Run staging migration, recovery, telemetry, load, rollback and security exercises.",
     "Obtain independent security, privacy, legal, operational and final production approvals."
   ],
   "repository_checkpoint": {
     "status": "CI_GREEN",
-    "draft_pr": 115,
-    "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
-    "ci_run_id": 30129061387,
-    "visual_run_id": 30129061437,
-    "recovery_artifact_id": 8610382604,
-    "supply_chain_artifact_id": 8610372647,
-    "frontend_artifact_id": 8610429479,
-    "visual_artifact_id": 8610391734
+    "draft_pr": 116,
+    "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
+    "ci_run_id": 30131521614,
+    "visual_run_id": 30131521581,
+    "recovery_artifact_id": 8611275379,
+    "supply_chain_artifact_id": 8611270971,
+    "frontend_artifact_id": 8611309890,
+    "visual_artifact_id": 8611287198
   }
 }

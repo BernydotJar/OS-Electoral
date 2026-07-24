@@ -342,3 +342,12 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `program/release-readiness.json`, `scripts/release/validate_release_readiness.py`, `docs/operations/release-readiness.md`
 - `rationale`: A green repository checkpoint is not a staging environment, managed recovery proof or production approval.
 - `consequences`: Any READY claim, incomplete gate inventory, invented approval or missing evidence fails validation. Merge, apply and deployment remain separate human-gated actions.
+
+## DEC-2026-07-24-004 — Patch brace-expansion without breaking the supported ESLint toolchain
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-RELEASE-001 / frontend development supply chain`
+- `decision`: Keep the supported ESLint 9 and Next.js plugin graph, and use a private compatibility package that delegates to patched `brace-expansion@5.0.8` while exporting both the legacy callable CommonJS shape and `.expand`.
+- `evidence`: failed CI `30131032815`, successful replacement CI `30131521614`, `frontend/vendor/brace-expansion-compat`, `make frontend-verify`, npm audit with zero findings.
+- `rationale`: ESLint 10 was outside current plugin peer ranges, while direct use of brace-expansion 5 broke minimatch 3 because its CommonJS export shape changed. The shim remediates the advisory without suppressing audit or forcing an unsupported toolchain.
+- `consequences`: Remove the shim when all locked upstream consumers support a patched release directly; every change must preserve lint, typecheck, tests, build and zero-vulnerability audit evidence.
