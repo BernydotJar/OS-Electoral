@@ -68,7 +68,7 @@
       "external_effects": "REVIEW_BRANCH_AND_DRAFT_PR",
       "blockers": [
         "Human review and merge remain pending",
-        "Six historical failed runs remain production-blocking",
+        "Historical failed runs are preserved and explicitly superseded; periodic evidence audit remains required",
         "No AWS environment, deployment, rollback or production approval evidence exists"
       ],
       "publication_state": "DRAFT_PR_CI_GREEN_EXACT_HEAD_ATTESTED",
@@ -580,10 +580,18 @@
     {
       "task_id": "C3-RELEASE-001",
       "owner": "WS-15",
-      "status": "READY",
-      "evidence": [],
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "program/iterations/c3-release-001.md",
+        "program/validations/c3-release-001.json",
+        "docs/testing/c3-release-001-evidence.md",
+        "docs/operations/release-readiness.md"
+      ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [
+        "No approved staging environment or managed runtime exists",
+        "No independent security, privacy, legal, operational or explicit human production approval exists"
+      ]
     }
   ]
 }

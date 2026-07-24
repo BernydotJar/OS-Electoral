@@ -453,3 +453,14 @@
 - Reclassified the local PostgreSQL image-layer failure as an environment limitation with a validated hosted-CI alternative.
 - Marked `C3-OBS-001` `CI_GREEN` and selected `C3-RELEASE-001` as `EXECUTABLE_NEXT`.
 - Kept production `BLOCKED`; no merge, deployment, apply, spending or external political effect occurred.
+
+## 2026-07-24 — C3-RELEASE-001 local release-audit checkpoint
+
+- Audited six historical visual-review failures against GitHub job logs and exact commit ancestry.
+- Proved that each job completed its functional validators and failed only because `git diff --check` detected trailing whitespace.
+- Preserved every original `FAILURE` conclusion and added explicit cumulative successor run `29660653755`, reviewer, date, reason and evidence.
+- Added fail-closed supersession and release-readiness validators with 10 focused tests.
+- Passed the full locked suite: 696 tests, 10 controlled skips and 90.40% coverage.
+- Passed the full locked repository suite: `696 passed`, `10 skipped`, `90.40%` coverage; lint, format, mypy, supply-chain policy and secret scans pass.
+- Program verification reports one open CRITICAL/HIGH finding and zero blocking failed runs.
+- Release readiness remains `DENY_RELEASE` with eight non-production gates; no merge, environment, apply, deployment, spending or external political effect occurred.

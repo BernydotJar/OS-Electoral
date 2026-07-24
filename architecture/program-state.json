@@ -13,7 +13,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "Two open CRITICAL/HIGH findings and six unsuperseded historical failed validation runs remain. Exact-head PostgreSQL 18 backup/restore evidence is green and retained, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
+  "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by cumulative C2 visual run 29660653755, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -154,8 +154,9 @@
         "run_id": 29659355550,
         "conclusion": "FAILURE",
         "head_sha": "80b31f969c813a21c8a96ae76b7b0eb6ba392141",
-        "claim": "HISTORICAL_FAILURE_RECORDED",
-        "blocking_for_production": true
+        "claim": "HISTORICAL_FAILURE_SUPERSEDED",
+        "blocking_for_production": false,
+        "superseded_by": 29660653755
       },
       "external_effects": "NONE_IN_INCREMENT"
     },
@@ -172,8 +173,9 @@
         "run_id": 29659451027,
         "conclusion": "FAILURE",
         "head_sha": "5c82cdbe081d86e33c6c20e03ca51452576253c1",
-        "claim": "HISTORICAL_FAILURE_RECORDED",
-        "blocking_for_production": true
+        "claim": "HISTORICAL_FAILURE_SUPERSEDED",
+        "blocking_for_production": false,
+        "superseded_by": 29660653755
       },
       "external_effects": "NONE_IN_INCREMENT"
     },
@@ -190,8 +192,9 @@
         "run_id": 29659542083,
         "conclusion": "FAILURE",
         "head_sha": "65ba694c666eee0e13bdea7c82fe6493b758b3d0",
-        "claim": "HISTORICAL_FAILURE_RECORDED",
-        "blocking_for_production": true
+        "claim": "HISTORICAL_FAILURE_SUPERSEDED",
+        "blocking_for_production": false,
+        "superseded_by": 29660653755
       },
       "external_effects": "NONE_IN_INCREMENT"
     },
@@ -208,8 +211,9 @@
         "run_id": 29659623156,
         "conclusion": "FAILURE",
         "head_sha": "da0c79aa3c9e12fc6913012fc3bbe00ce8c6c624",
-        "claim": "HISTORICAL_FAILURE_RECORDED",
-        "blocking_for_production": true
+        "claim": "HISTORICAL_FAILURE_SUPERSEDED",
+        "blocking_for_production": false,
+        "superseded_by": 29660653755
       },
       "external_effects": "NONE_IN_INCREMENT"
     },
@@ -226,8 +230,9 @@
         "run_id": 29659692005,
         "conclusion": "FAILURE",
         "head_sha": "c3681c5f458946448fca94c0373c0899165f90f1",
-        "claim": "HISTORICAL_FAILURE_RECORDED",
-        "blocking_for_production": true
+        "claim": "HISTORICAL_FAILURE_SUPERSEDED",
+        "blocking_for_production": false,
+        "superseded_by": 29660653755
       },
       "external_effects": "NONE_IN_INCREMENT"
     },
@@ -244,8 +249,9 @@
         "run_id": 29659733648,
         "conclusion": "FAILURE",
         "head_sha": "295df06cd73067bdfec5fffc1ab712141c2355aa",
-        "claim": "HISTORICAL_FAILURE_RECORDED",
-        "blocking_for_production": true
+        "claim": "HISTORICAL_FAILURE_SUPERSEDED",
+        "blocking_for_production": false,
+        "superseded_by": 29660653755
       },
       "external_effects": "NONE_IN_INCREMENT"
     },
@@ -268,14 +274,7 @@
       "external_effects": "NONE_IN_INCREMENT"
     }
   ],
-  "known_failed_validation_runs": [
-    29659355550,
-    29659451027,
-    29659542083,
-    29659623156,
-    29659692005,
-    29659733648
-  ],
+  "known_failed_validation_runs": [],
   "integration_validation": [
     {
       "run_id": 29660653755,
@@ -821,7 +820,7 @@
     {
       "id": "WS-15",
       "name": "Documentation, Migration and Release",
-      "status": "RELEASE_EXECUTABLE_NEXT",
+      "status": "RELEASE_AUDIT_ACTIVE",
       "next_increment": "C3-RELEASE-001"
     }
   ],
@@ -1010,7 +1009,7 @@
     },
     {
       "id": "C3-RELEASE-001",
-      "status": "EXECUTABLE_NEXT",
+      "status": "ACTIVE",
       "depends_on": [
         "C3-ONBOARD-001",
         "C3-TEAM-001",
@@ -1047,9 +1046,9 @@
     {
       "id": "FND-CI-002",
       "severity": "HIGH",
-      "status": "OPEN",
-      "summary": "Six manifest-linked validation runs have FAILURE conclusions and are not superseded by scope-equivalent green evidence.",
-      "evidence": "architecture/program-state.json#known_failed_validation_runs"
+      "status": "RESOLVED",
+      "summary": "Six historical visual-review failures remain preserved and are explicitly superseded by cumulative C2 Runtime Visual Review run 29660653755 after the shared whitespace defect was removed.",
+      "evidence": "docs/testing/c3-release-001-evidence.md"
     },
     {
       "id": "FND-DEPLOY-001",
@@ -1089,8 +1088,8 @@
   ],
   "open_findings_summary": {
     "critical": 1,
-    "high": 1,
-    "total_critical_or_high": 2
+    "high": 0,
+    "total_critical_or_high": 1
   },
   "github_state": {
     "verified_at": "2026-07-24",
@@ -1118,7 +1117,8 @@
       83
     ],
     "open_pull_requests": [
-      114
+      114,
+      115
     ],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
@@ -1149,7 +1149,23 @@
       "recovery_artifact_id": 8577394363,
       "external_effects": "NONE"
     },
-    "review_stack": [],
+    "review_stack": [
+      {
+        "increment": "C3-OBS-001",
+        "pr": 114,
+        "branch": "agent/c3-obs-001-operational-evidence",
+        "base": "main",
+        "state": "DRAFT_PR_CI_GREEN",
+        "delivered_head": "a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6"
+      },
+      {
+        "increment": "C3-RELEASE-001",
+        "pr": 115,
+        "branch": "agent/c3-release-001-readiness-audit",
+        "base": "agent/c3-obs-001-operational-evidence",
+        "state": "DRAFT_PR_IN_PROGRESS"
+      }
+    ],
     "git_push_incident": {
       "classification": "TECHNICAL_DEFECT_REPAIRED",
       "component": "Cloud_Sandbox_MCP.git_push branch targeting",
@@ -1164,14 +1180,13 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-OBS-001",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-obs-001-operational-evidence",
-      "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
-      "validated_implementation_head": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
-      "draft_pr": 114,
+      "id": "C3-RELEASE-001",
+      "state": "IN_PROGRESS",
+      "branch": "agent/c3-release-001-readiness-audit",
+      "base": "agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6",
       "production_status": "BLOCKED",
-      "external_effects": "NONE"
+      "external_effects": "NONE",
+      "draft_pr": 115
     },
     "latest_checkpoint": {
       "id": "C3-OBS-001",
@@ -1506,6 +1521,72 @@
       "reviewer": "independent release verification",
       "date": "2026-07-21",
       "reason": "Initial attestations were valid for the PR merge ref; corrected run binds checkout, generated evidence and attested subjects to the exact PR source head."
+    },
+    {
+      "run_id": 29659355550,
+      "conclusion": "FAILURE",
+      "head_sha": "80b31f969c813a21c8a96ae76b7b0eb6ba392141",
+      "scope": "C1-FRONT-002-V1 visual review for append-only persistence and audit branch completed functional validators and failed only at git diff --check because the branch contained trailing whitespace",
+      "superseded_by": 29660653755,
+      "verification_evidence": "Cumulative C2 Runtime Visual Review run 29660653755 at head 30e2473f6eac2a554bc7e51b18f7b25746e42475; the original SHA is an ancestor of the cumulative head and the same Validate diff whitespace and evidence-upload steps passed.",
+      "reviewer": "independent release verification",
+      "date": "2026-07-24",
+      "reason": "The cumulative C2 successor contains the original branch, removes the observed whitespace defect, executes the same visual-review workflow over the complete integrated stack and completes successfully."
+    },
+    {
+      "run_id": 29659451027,
+      "conclusion": "FAILURE",
+      "head_sha": "5c82cdbe081d86e33c6c20e03ca51452576253c1",
+      "scope": "C1-FRONT-002-V1 visual review for repository transaction branch completed functional validators and failed only at git diff --check because the branch contained trailing whitespace",
+      "superseded_by": 29660653755,
+      "verification_evidence": "Cumulative C2 Runtime Visual Review run 29660653755 at head 30e2473f6eac2a554bc7e51b18f7b25746e42475; the original SHA is an ancestor of the cumulative head and the same Validate diff whitespace and evidence-upload steps passed.",
+      "reviewer": "independent release verification",
+      "date": "2026-07-24",
+      "reason": "The cumulative C2 successor contains the original branch, removes the observed whitespace defect, executes the same visual-review workflow over the complete integrated stack and completes successfully."
+    },
+    {
+      "run_id": 29659542083,
+      "conclusion": "FAILURE",
+      "head_sha": "65ba694c666eee0e13bdea7c82fe6493b758b3d0",
+      "scope": "C1-FRONT-002-V1 visual review for audit observability branch completed functional validators and failed only at git diff --check because the branch contained trailing whitespace",
+      "superseded_by": 29660653755,
+      "verification_evidence": "Cumulative C2 Runtime Visual Review run 29660653755 at head 30e2473f6eac2a554bc7e51b18f7b25746e42475; the original SHA is an ancestor of the cumulative head and the same Validate diff whitespace and evidence-upload steps passed.",
+      "reviewer": "independent release verification",
+      "date": "2026-07-24",
+      "reason": "The cumulative C2 successor contains the original branch, removes the observed whitespace defect, executes the same visual-review workflow over the complete integrated stack and completes successfully."
+    },
+    {
+      "run_id": 29659623156,
+      "conclusion": "FAILURE",
+      "head_sha": "da0c79aa3c9e12fc6913012fc3bbe00ce8c6c624",
+      "scope": "C1-FRONT-002-V1 visual review for read-only service contracts branch completed functional validators and failed only at git diff --check because the branch contained trailing whitespace",
+      "superseded_by": 29660653755,
+      "verification_evidence": "Cumulative C2 Runtime Visual Review run 29660653755 at head 30e2473f6eac2a554bc7e51b18f7b25746e42475; the original SHA is an ancestor of the cumulative head and the same Validate diff whitespace and evidence-upload steps passed.",
+      "reviewer": "independent release verification",
+      "date": "2026-07-24",
+      "reason": "The cumulative C2 successor contains the original branch, removes the observed whitespace defect, executes the same visual-review workflow over the complete integrated stack and completes successfully."
+    },
+    {
+      "run_id": 29659692005,
+      "conclusion": "FAILURE",
+      "head_sha": "c3681c5f458946448fca94c0373c0899165f90f1",
+      "scope": "C1-FRONT-002-V1 visual review for adversarial integration branch completed functional validators and failed only at git diff --check because the branch contained trailing whitespace",
+      "superseded_by": 29660653755,
+      "verification_evidence": "Cumulative C2 Runtime Visual Review run 29660653755 at head 30e2473f6eac2a554bc7e51b18f7b25746e42475; the original SHA is an ancestor of the cumulative head and the same Validate diff whitespace and evidence-upload steps passed.",
+      "reviewer": "independent release verification",
+      "date": "2026-07-24",
+      "reason": "The cumulative C2 successor contains the original branch, removes the observed whitespace defect, executes the same visual-review workflow over the complete integrated stack and completes successfully."
+    },
+    {
+      "run_id": 29659733648,
+      "conclusion": "FAILURE",
+      "head_sha": "295df06cd73067bdfec5fffc1ab712141c2355aa",
+      "scope": "C1-FRONT-002-V1 visual review for operator runbook branch completed functional validators and failed only at git diff --check because the branch contained trailing whitespace",
+      "superseded_by": 29660653755,
+      "verification_evidence": "Cumulative C2 Runtime Visual Review run 29660653755 at head 30e2473f6eac2a554bc7e51b18f7b25746e42475; the original SHA is an ancestor of the cumulative head and the same Validate diff whitespace and evidence-upload steps passed.",
+      "reviewer": "independent release verification",
+      "date": "2026-07-24",
+      "reason": "The cumulative C2 successor contains the original branch, removes the observed whitespace defect, executes the same visual-review workflow over the complete integrated stack and completes successfully."
     }
   ]
 }
