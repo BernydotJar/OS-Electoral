@@ -4,37 +4,37 @@ Assessment date: `2026-07-24 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`; cumulative PR `#106` is merged; `C3-OBS-001` implementation checkpoint `bf722ee8e672a9e89a7e74a47465a8e6287602c8` in draft PR `#114` is CI-green with retained PostgreSQL recovery evidence; `C3-RELEASE-001` is executable next.
+Repository evidence point: `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`; cumulative PR `#106` is merged; C3-OBS draft PR `#114` is exact-head green at `a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6`; `C3-RELEASE-001` is active on `agent/c3-release-001-readiness-audit`.
 
 ## Executive determination
 
 Production readiness is **BLOCKED**.
 
-The cumulative product baseline is integrated into `main`. C3-OBS-001 adds a repository-level observability and recovery control plane and is exact-head CI-green, but this is test evidence rather than a managed environment or production recovery claim. Draft PR `#114` remains unmerged and human-reviewed production approval is absent.
+The cumulative product baseline is integrated into `main`. C3-OBS-001 is exact-head CI-green, and C3-RELEASE-001 now preserves and supersedes six historical whitespace-only visual failures through a fail-closed contract. This remains repository evidence rather than a managed environment or production recovery claim. Draft PR `#114` remains unmerged and human production approval is absent.
 
 The only public deployed surface remains the static, read-only GitHub Pages demonstration classified `DEMO_NON_PRODUCTION`.
 
 ## Reconciled repository and GitHub state
 
 - Cumulative PR `#106` was rebased into `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` after green checks.
-- Draft PR `#114` is the only open PR and is mergeable at `bf722ee8e672a9e89a7e74a47465a8e6287602c8`.
-- CampaignOS CI `30041495912` and runtime visual review `30041495919` succeeded at that exact head.
-- PostgreSQL recovery job `89322226244` migrated, seeded, backed up, restored, compared and cleaned up PostgreSQL 18 successfully.
-- Artifact `campaignos-postgresql-recovery-evidence` (`8577394363`) is retained with digest `sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469` until `2026-08-22T20:18:20Z`.
+- Draft PR `#114` is open and exact-head green at `a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6`; C3-RELEASE is published as stacked draft PR `#115` on that head.
+- CampaignOS CI `30128291931` and runtime visual review `30128291969` succeeded at the final C3-OBS head.
+- PostgreSQL recovery job `89596869908` migrated, seeded, backed up, restored, compared and cleaned up PostgreSQL 18 successfully.
+- Artifact `campaignos-postgresql-recovery-evidence` (`8610100205`) is retained with digest `sha256:c6e804188922784c2f48f88d1545558bcbc226107d8c577f8ef394f8fdc7190c` until `2026-08-23T21:36:49Z`.
 - Strict protected-main controls, selected SHA-pinned Actions, vulnerability governance and exact-source-head supply-chain attestation remain active.
 - No force-push, merge of PR `#114`, infrastructure apply, deployment or external political effect occurred.
 
 ## Current verification
 
-- Full locked Python suite: `686 passed`, `10 skipped`.
+- Full locked Python suite: `696 passed`, `10 skipped`.
 - Coverage: `90.40%` with enforced `90%` floor.
 - Ruff, formatting and strict mypy across 66 source files: PASS.
 - Frontend: 60 tests, lint, strict TypeScript, production build and zero dependency vulnerabilities: PASS.
 - PostgreSQL migration/RLS/concurrency evidence reaches revision `20260721_0011`.
-- C3-OBS exact-head CI: PASS in runs `30041495912` and `30041495919`.
-- PostgreSQL recovery job `89322226244` and artifact `8577394363`: PASS and retained.
+- C3-OBS exact-head CI: PASS in runs `30128291931` and `30128291969`.
+- PostgreSQL recovery job `89596869908` and artifact `8610100205`: PASS and retained.
 - The local PostgreSQL image-layer limitation is superseded for this test contract by exact-head hosted CI; it is not a product failure.
-- Program truth: PASS with two open CRITICAL/HIGH findings and six retained historical failed runs.
+- Program truth: PASS with one open CRITICAL finding and zero unresolved historical failed runs; six failures remain preserved as superseded evidence.
 - Required eval inventory: `5 PASS`, `17 PARTIAL`, `11 NOT_RUN`; production remains blocked.
 - Campaign safety and program validators: PASS.
 
@@ -57,7 +57,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 - No deployed telemetry collector, dashboard, alert receiver, SLO/error-budget observation or incident drill.
 - No accepted RPO/RTO, representative load test, production rollback proof or capacity evidence.
 - Broader authenticated mutation journeys, rate limiting and independent user acceptance remain incomplete.
-- Six historical failures and two CRITICAL/HIGH findings remain explicit production blockers.
+- One CRITICAL platform finding remains an explicit production blocker; six historical failures are preserved but explicitly superseded.
 - No independent security, privacy, accessibility, domain, legal, operational or human production approval is recorded.
 
 ## Delivery table
@@ -65,37 +65,37 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Area | Evidence | Determination |
 |---|---|---|
 | Integrated product baseline | cumulative PR `#106`, `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` | `MERGED_TO_MAIN`; not deployed |
-| Active review | validated implementation checkpoint `bf722ee8e672a9e89a7e74a47465a8e6287602c8` in draft PR `#114` | `CI_GREEN`; human review/merge pending |
+| Active review | C3-OBS PR `#114` at `a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6`; stacked C3-RELEASE draft PR `#115` | `CI_GREEN` base / release audit `IN_PROGRESS`; human review/merge pending |
 | Functional frontend | PostgreSQL/API/browser guided-intake journey, 60 frontend tests, zero axe violations | `VERIFIED_POSTGRESQL`; live identity, broader journeys and human acceptance pending |
-| Observability and recovery | CI `30041495912`, visual `30041495919`, recovery job `89322226244`, artifact `8577394363` | `CI_GREEN`; managed/staging evidence pending |
+| Observability and recovery | CI `30128291931`, visual `30128291969`, recovery job `89596869908`, artifact `8610100205` | `CI_GREEN`; managed/staging evidence pending |
 | Identity lifecycle | invitation/session/revocation/support contracts and PostgreSQL evidence | `CI_GREEN` baseline; live provider pending |
 | Security/privacy baseline | revision `20260721_0011`, append-only role denial and executable data policy | `CI_GREEN` baseline; independent review and owner break-glass governance pending |
 | Required evals | exact 33-item fail-closed catalog | `5 PASS / 17 PARTIAL / 11 NOT_RUN` |
-| Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
+| Historical validation | six failures retained with original SHAs/logs and explicit cumulative successor run `29660653755` | `RESOLVED`; separate production gates remain blocking |
 | AWS/operations | exact-pinned plan-only Terraform plus test observability/recovery evidence | managed runtime `NOT_VERIFIED` |
 
-## Historical validation requiring explicit supersession
+## Historical validation reconciliation
 
-The following run IDs retain `FAILURE` and remain production-blocking:
+Six C2 visual-review runs retain their original `FAILURE` conclusions. Log review proved that their functional validators passed and the jobs failed at `git diff --check` because of trailing whitespace. Every failed SHA is an ancestor of cumulative C2 head `30e2473f6eac2a554bc7e51b18f7b25746e42475`; successor visual run `29660653755` executes the same workflow over the complete integrated C2 stack and passes the corrected whitespace and evidence-upload steps.
 
-```text
-29659355550
-29659451027
-29659542083
-29659623156
-29659692005
-29659733648
-```
-
-Frontend run `29854467576` is separately recorded as superseded by exact-scope run `29856835515`; it is not silently deleted.
+The manifest now records each run with `HISTORICAL_FAILURE_SUPERSEDED`, a distinct successor, exact evidence, reviewer, date and reason. Zero historical failures remain unresolved or production-blocking.
 
 ## Next executable increments
 
-1. Start `C3-RELEASE-001` with explicit historical-validation supersession, release audit and staging-readiness documentation.
+1. Complete C3-RELEASE exact-head CI on stacked draft PR `#115` and obtain human review.
 2. Keep managed environment creation, infrastructure apply, merge and production deployment as separate human gates.
-3. Preserve `production_status=BLOCKED` until every remaining technical, operational and human gate is proven.
+3. Preserve `release_decision=DENY_RELEASE` and `production_status=BLOCKED` until every remaining gate is proven.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
+
+
+## C3-RELEASE-001 local audit checkpoint — 2026-07-24
+
+- Preserved six historical visual failures and identified their shared trailing-whitespace root cause from GitHub job logs.
+- Verified every failed SHA is contained in cumulative C2 head `30e2473f6eac2a554bc7e51b18f7b25746e42475`, whose visual run `29660653755` is green.
+- Added fail-closed supersession validation, ten focused tests and a machine-readable eight-gate `DENY_RELEASE` record.
+- Resolved `FND-CI-002` and `RISK-HISTORICAL-CI-001`; one CRITICAL platform finding remains.
+- Production remains `BLOCKED`; no merge, apply, deployment, spending or external political effect occurred.
 
 ## C3-OBS-001 exact-head CI checkpoint — 2026-07-24
 

@@ -114,8 +114,9 @@ migrate: ## Upgrade an explicitly configured database to the reviewed Alembic he
 e2e: compose-config ## Build an isolated stack and exercise every local service.
 	ENV_FILE="$(ENV_FILE)" ./scripts/dev/e2e.sh
 
-program-verify: security-verify ## Validate machine-readable program truth, required evals and safety.
+program-verify: security-verify ## Validate machine-readable program truth, release readiness, required evals and safety.
 	$(UV) run --locked python scripts/architecture/validate_program_state.py
+	$(UV) run --locked python scripts/release/validate_release_readiness.py
 	$(UV) run --locked python scripts/architecture/validate_eval_catalog.py
 	$(UV) run --locked python scripts/campaign/scan_c2_safety.py
 

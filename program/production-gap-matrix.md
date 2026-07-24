@@ -84,11 +84,13 @@ No row marked `PARTIAL` is counted as production-ready.
 | Gate | Current evidence | Status | Required proof |
 |---|---|---:|---|
 | Program ledger | Manifest, graph, ledger and exact 33-item eval catalog reconcile fail closed under validators | PASS | Continue reconciliation with every GitHub/environment change |
+| Release readiness audit | Machine-readable eight-gate `DENY_RELEASE` record, explicit historical supersession and stacked draft PR `#115` | PARTIAL | Exact-head CI, human review, managed staging evidence and all independent approvals |
 | Required evals | Exact inventory records `5 PASS`, `17 PARTIAL`, `11 NOT_RUN`; session/invitation are partial local/PostgreSQL only and absent capabilities remain fail-closed | PARTIAL | Implement every underlying capability and obtain 33 reviewed PASS results with zero hard-gate failures |
 | AutoSkills review | `autoskills@0.3.6` npm integrity/license/manifest reviewed; pinned dry-run proposed eleven skills, installed none and made no repository mutation | PASS | Per-skill payload, license, path and prompt-safety review plus explicit approval before any install |
 | Context7 evidence | Foundation guidance, official cross-checks and installed pins are recorded | PASS | Repeat for new implementation dependencies |
 | Required documentation tree | Campaign create/readiness, identity lifecycle, guided intake, candidate workspace and frontend runtime API/product/testing docs exist; broader product and operations paths remain incomplete | PARTIAL | Complete all required docs, ownership and stale-content validation |
-| Obsolete-doc release gate | C2/main drift corrected in owned overview docs | PARTIAL | Repository-wide stale-doc scan and ownership policy |
+| Release readiness record | Machine-readable `DENY_RELEASE` record validates eight gates and zero unresolved historical failures | PARTIAL | Complete staging, managed recovery, load/rollback, independent review and human approval gates |
+| Obsolete-doc release gate | Current program, risk and architecture sources are reconciled; historical checkpoints remain intentionally immutable | PARTIAL | Repository-wide stale-doc ownership policy and automated current-vs-historical classification |
 | Political-science review | No approval record | NOT_IMPLEMENTED | Qualified human review |
 | Sociological/anthropological review | No approval record | NOT_IMPLEMENTED | Qualified human review |
 | Research-methodology review | Evidence methodology work exists, no production review | PARTIAL | Qualified human approval and limitations audit |
