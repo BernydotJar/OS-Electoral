@@ -580,7 +580,7 @@
     {
       "task_id": "C3-RELEASE-001",
       "owner": "WS-15",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "program/iterations/c3-release-001.md",
         "program/validations/c3-release-001.json",
