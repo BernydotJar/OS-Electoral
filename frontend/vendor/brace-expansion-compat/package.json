@@ -1,0 +1,14 @@
+{
+  "name": "brace-expansion",
+  "version": "5.0.8-campaignos.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.cjs",
+  "dependencies": {
+    "brace-expansion-safe": "npm:brace-expansion@5.0.8"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "20 || >=22"
+  }
+}
