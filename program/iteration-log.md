@@ -447,7 +447,7 @@
 
 ## 2026-07-24 — C3-OBS-001 exact-head CI-green checkpoint
 
-- Verified draft PR `#114` at `bf722ee8e672a9e89a7e74a47465a8e6287602c8` as mergeable and exact-head green.
+- Verified implementation checkpoint `bf722ee8e672a9e89a7e74a47465a8e6287602c8` in draft PR `#114` as mergeable and exact-head green.
 - Recorded CampaignOS CI `30041495912`, visual review `30041495919` and recovery job `89322226244` as successful.
 - Confirmed retained artifact `campaignos-postgresql-recovery-evidence` (`8577394363`) with digest `sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469`.
 - Reclassified the local PostgreSQL image-layer failure as an environment limitation with a validated hosted-CI alternative.

@@ -4,7 +4,7 @@ Assessment date: `2026-07-24 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`; cumulative PR `#106` is merged; draft PR `#114` at `bf722ee8e672a9e89a7e74a47465a8e6287602c8` is exact-head CI-green with retained PostgreSQL recovery evidence; `C3-RELEASE-001` is executable next.
+Repository evidence point: `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`; cumulative PR `#106` is merged; `C3-OBS-001` implementation checkpoint `bf722ee8e672a9e89a7e74a47465a8e6287602c8` in draft PR `#114` is CI-green with retained PostgreSQL recovery evidence; `C3-RELEASE-001` is executable next.
 
 ## Executive determination
 
@@ -65,7 +65,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Area | Evidence | Determination |
 |---|---|---|
 | Integrated product baseline | cumulative PR `#106`, `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` | `MERGED_TO_MAIN`; not deployed |
-| Active review | draft PR `#114` at `bf722ee8e672a9e89a7e74a47465a8e6287602c8` | `CI_GREEN`; human review/merge pending |
+| Active review | validated implementation checkpoint `bf722ee8e672a9e89a7e74a47465a8e6287602c8` in draft PR `#114` | `CI_GREEN`; human review/merge pending |
 | Functional frontend | PostgreSQL/API/browser guided-intake journey, 60 frontend tests, zero axe violations | `VERIFIED_POSTGRESQL`; live identity, broader journeys and human acceptance pending |
 | Observability and recovery | CI `30041495912`, visual `30041495919`, recovery job `89322226244`, artifact `8577394363` | `CI_GREEN`; managed/staging evidence pending |
 | Identity lifecycle | invitation/session/revocation/support contracts and PostgreSQL evidence | `CI_GREEN` baseline; live provider pending |
@@ -99,7 +99,7 @@ Production deployment remains prohibited until every production gate passes and 
 
 ## C3-OBS-001 exact-head CI checkpoint — 2026-07-24
 
-- Draft PR `#114` is mergeable at `bf722ee8e672a9e89a7e74a47465a8e6287602c8`.
+- Implementation checkpoint `bf722ee8e672a9e89a7e74a47465a8e6287602c8` in draft PR `#114` was mergeable and exact-head green.
 - CampaignOS CI `30041495912` and runtime visual review `30041495919` succeeded.
 - Recovery job `89322226244` proved native PostgreSQL 18 backup, isolated restore, Alembic/table-count comparison, cleanup and checksum validation.
 - Artifact `campaignos-postgresql-recovery-evidence` (`8577394363`) is retained with digest `sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469`.

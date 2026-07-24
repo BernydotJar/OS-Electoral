@@ -1141,7 +1141,7 @@
       "state": "DRAFT_PR_CI_GREEN",
       "branch": "agent/c3-obs-001-operational-evidence",
       "base": "main",
-      "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+      "validated_implementation_head": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
       "draft_pr": 114,
       "ci_run_id": 30041495912,
       "visual_run_id": 30041495919,
@@ -1168,7 +1168,7 @@
       "state": "CI_GREEN",
       "branch": "agent/c3-obs-001-operational-evidence",
       "base": "main@ff38e996ba05b2ea4b5c034b44d084776736dad0",
-      "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+      "validated_implementation_head": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
       "draft_pr": 114,
       "production_status": "BLOCKED",
       "external_effects": "NONE"
@@ -1176,7 +1176,7 @@
     "latest_checkpoint": {
       "id": "C3-OBS-001",
       "branch": "agent/c3-obs-001-operational-evidence",
-      "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+      "validated_implementation_head": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
       "draft_pr": 114,
       "status": "CI_GREEN",
       "ci_run_id": 30041495912,
