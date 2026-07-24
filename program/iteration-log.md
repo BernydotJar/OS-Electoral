@@ -473,3 +473,13 @@
 - Retained recovery artifact `8610382604`, supply-chain artifact `8610372647`, frontend artifact `8610429479` and visual artifact `8610391734`.
 - Marked `C3-RELEASE-001` `CI_GREEN` while preserving `DENY_RELEASE`, production `BLOCKED` and every human/environment gate.
 - No merge, infrastructure apply, deployment, spending or external political effect occurred.
+
+## 2026-07-24 — C3 release main-based delivery reconciliation
+
+- Temporarily set the protected-main approval count from one to zero under explicit owner approval, rebased and merged PR `#114`, then restored the approval count to one immediately.
+- Verified `main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5` and rebuilt only the three C3-RELEASE commits on `agent/c3-release-001-readiness-audit-main` without force-push.
+- Closed stacked PR `#115` as superseded and opened clean main-based draft PR `#116`.
+- Preserved failed CI `30131032815`, which exposed GHSA-mh99-v99m-4gvg in the ESLint dependency chain.
+- Added an auditable CommonJS compatibility shim delegating to patched `brace-expansion@5.0.8`; `make frontend-verify` reports 60 tests and zero npm vulnerabilities.
+- Exact-head CI `30131521614` and visual review `30131521581` passed at `2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76` with all 12 displayed checks green.
+- Production remains `BLOCKED`; no staging environment, infrastructure apply, deployment, spending or external political effect occurred.

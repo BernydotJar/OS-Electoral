@@ -70,9 +70,9 @@ No row marked `PARTIAL` is counted as production-ready.
 | AWS dev | Plan-only IaC and mocks exist; no AWS account, credential, live provider plan, apply or runtime exists | NOT_VERIFIED | Authorized account/OIDC role, reviewed live plan/apply, smoke/security and cost evidence |
 | AWS staging | None | NOT_IMPLEMENTED | Migration, security, load, restore and agent-eval evidence |
 | AWS production | No approved deployment | BLOCKED | All gates plus explicit human approval |
-| PR CI | C3-OBS PR `#114` and stacked C3-RELEASE PR `#115` have green exact-head repository evidence; release audit CI `30129061387` and visual `30129061437` passed at `d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd` | PARTIAL | Human-review/merge the stack and separately authorize any protected-main policy change |
-| Main CI | Integrated baseline is `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`; PRs `#114` and `#115` are green but unmerged | PARTIAL | Human review/merge, controlled dev deployment and post-deploy verification |
-| Branch protection | Authenticated API verifies strict eight-check main protection, one approval, stale-review dismissal, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions and mandatory SHA pinning; desired policy now includes a ninth Terraform check | PARTIAL | Human-authorized update to require the Terraform check after its exact-head CI context exists, then verify drift |
+| PR CI | C3-OBS PR `#114` is merged; clean main-based C3-RELEASE PR `#116` passed CI `30131521614` and visual review `30131521581` at `2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76`; PR `#115` is closed as superseded | PARTIAL | Merge PR `#116`, then preserve protected-main controls and collect post-merge evidence |
+| Main CI | C3-OBS is integrated at `main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5`; C3-RELEASE PR `#116` is exact-head green but not yet merged | PARTIAL | Merge PR `#116`, then run controlled staging deployment and post-deploy verification |
+| Branch protection | Strict main protection is active with one approval, stale-review dismissal, conversation resolution, linear history, admin enforcement, no force push/deletion, selected Actions and mandatory SHA pinning; the one-approval requirement was restored immediately after the explicitly authorized PR `#114` merge | PARTIAL | Preserve the restored policy, add a second trusted reviewer for normal operation, and verify protected-main drift periodically |
 | Staging promotion | None | NOT_IMPLEMENTED | Controlled candidate promotion and manual acceptance |
 | Production rollout/rollback | None | NOT_IMPLEMENTED | Backup, migration, progressive rollout, health and rollback criteria |
 | Deployment runbook | Narrow operator guide | PARTIAL | Environment-specific deploy procedure and evidence capture |
@@ -84,7 +84,7 @@ No row marked `PARTIAL` is counted as production-ready.
 | Gate | Current evidence | Status | Required proof |
 |---|---|---:|---|
 | Program ledger | Manifest, graph, ledger and exact 33-item eval catalog reconcile fail closed under validators | PASS | Continue reconciliation with every GitHub/environment change |
-| Release readiness audit | Machine-readable eight-gate `DENY_RELEASE` record, explicit historical supersession and stacked draft PR `#115` | PARTIAL | Exact-head CI, human review, managed staging evidence and all independent approvals |
+| Release readiness audit | Machine-readable eight-gate `DENY_RELEASE` record, explicit historical supersession and exact-head green main-based PR `#116` | PARTIAL | Merge PR `#116`, then obtain managed staging evidence and all independent approvals |
 | Required evals | Exact inventory records `5 PASS`, `17 PARTIAL`, `11 NOT_RUN`; session/invitation are partial local/PostgreSQL only and absent capabilities remain fail-closed | PARTIAL | Implement every underlying capability and obtain 33 reviewed PASS results with zero hard-gate failures |
 | AutoSkills review | `autoskills@0.3.6` npm integrity/license/manifest reviewed; pinned dry-run proposed eleven skills, installed none and made no repository mutation | PASS | Per-skill payload, license, path and prompt-safety review plus explicit approval before any install |
 | Context7 evidence | Foundation guidance, official cross-checks and installed pins are recorded | PASS | Repeat for new implementation dependencies |

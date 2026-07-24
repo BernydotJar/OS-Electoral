@@ -221,7 +221,7 @@
       "id": "C3-OBS-001",
       "workstream": "WS-14",
       "title": "Operational observability, backup/restore and failure-mode testing",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-001",
         "C3-INFRA-001",

@@ -407,6 +407,12 @@
       "conclusion": "SUCCESS",
       "head_sha": "5eb45e92f6f292ea673c572811031805cc89cabe",
       "scope": "draft PR 90 inherited frontend runtime visual review"
+    },
+    {
+      "run_id": 30131521614,
+      "conclusion": "SUCCESS",
+      "head_sha": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
+      "scope": "C3-RELEASE-001 main-based exact-head validation after remediation of the brace-expansion advisory; quality, PostgreSQL, recovery, frontend/browser, stack E2E, CodeQL, secret, dependency, Terraform and supply-chain jobs passed"
     }
   ],
   "bounded_contexts": [
@@ -814,7 +820,7 @@
     {
       "id": "WS-14",
       "name": "Testing, Observability and Operations",
-      "status": "OBSERVABILITY_CI_GREEN_RECOVERY_VERIFIED",
+      "status": "OBSERVABILITY_MERGED_TO_MAIN",
       "next_increment": "C3-RELEASE-001"
     },
     {
@@ -999,7 +1005,7 @@
     },
     {
       "id": "C3-OBS-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-001",
         "C3-INFRA-001",
@@ -1114,11 +1120,11 @@
     "merged_pull_requests": [
       72,
       73,
-      83
+      83,
+      114
     ],
     "open_pull_requests": [
-      114,
-      115
+      116
     ],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
@@ -1139,31 +1145,23 @@
     "published_unreviewed_increment": {
       "id": "C3-RELEASE-001",
       "state": "DRAFT_PR_CI_GREEN",
-      "branch": "agent/c3-release-001-readiness-audit",
-      "base": "agent/c3-obs-001-operational-evidence",
-      "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
-      "draft_pr": 115,
-      "ci_run_id": 30129061387,
-      "visual_run_id": 30129061437,
+      "branch": "agent/c3-release-001-readiness-audit-main",
+      "base": "main",
+      "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
+      "draft_pr": 116,
+      "ci_run_id": 30131521614,
+      "visual_run_id": 30131521581,
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE"
     },
     "review_stack": [
       {
-        "increment": "C3-OBS-001",
-        "pr": 114,
-        "branch": "agent/c3-obs-001-operational-evidence",
+        "increment": "C3-RELEASE-001",
+        "pr": 116,
+        "branch": "agent/c3-release-001-readiness-audit-main",
         "base": "main",
         "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6"
-      },
-      {
-        "increment": "C3-RELEASE-001",
-        "pr": 115,
-        "branch": "agent/c3-release-001-readiness-audit",
-        "base": "agent/c3-obs-001-operational-evidence",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd"
+        "delivered_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76"
       }
     ],
     "git_push_incident": {
@@ -1182,32 +1180,32 @@
     "active_local_increment": {
       "id": "C3-RELEASE-001",
       "state": "CI_GREEN",
-      "branch": "agent/c3-release-001-readiness-audit",
-      "base": "agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6",
-      "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
-      "draft_pr": 115,
+      "branch": "agent/c3-release-001-readiness-audit-main",
+      "base": "main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5",
+      "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
+      "draft_pr": 116,
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE"
     },
     "latest_checkpoint": {
       "id": "C3-RELEASE-001",
-      "branch": "agent/c3-release-001-readiness-audit",
-      "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
-      "draft_pr": 115,
+      "branch": "agent/c3-release-001-readiness-audit-main",
+      "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
+      "draft_pr": 116,
       "status": "CI_GREEN",
-      "ci_run_id": 30129061387,
-      "visual_run_id": 30129061437,
-      "quality_job_id": 89599276723,
-      "recovery_job_id": 89599276837,
-      "recovery_artifact_id": 8610382604,
-      "recovery_artifact_digest": "sha256:e6f9c0bc73add06fec5accb774cf551dd16f1045459444b15c6109bbc670aa2b",
-      "supply_chain_artifact_id": 8610372647,
-      "supply_chain_artifact_digest": "sha256:e650672d705fb35c58716e37a78c60a1e0a599a830d039f8f225653e3dcfc3c4",
-      "frontend_artifact_id": 8610429479,
-      "frontend_artifact_digest": "sha256:8ea7e5ec6c210ed1ea88741faba3f252032781614cd3e425b0aeb34aff9be93f",
-      "visual_artifact_id": 8610391734,
-      "visual_artifact_digest": "sha256:1d22f7b39ce93be28dea0130cbd76650b5442da4d044594388517d7b7f5752cb",
+      "ci_run_id": 30131521614,
+      "visual_run_id": 30131521581,
+      "quality_job_id": 89606840517,
+      "recovery_job_id": 89606840531,
+      "recovery_artifact_id": 8611275379,
+      "recovery_artifact_digest": "sha256:66f4cb1559a6b29b61ba1a29648e2c273d4638b9789012374c992c0463519aea",
+      "supply_chain_artifact_id": 8611270971,
+      "supply_chain_artifact_digest": "sha256:84abef35b6ffefae214c11d00fe174cdfa6347874c618ccc8b6a976f13094b3d",
+      "frontend_artifact_id": 8611309890,
+      "frontend_artifact_digest": "sha256:3a0d18430e3acbb8c0611da1a78b6d633bf8fad89fa1f481119bcf33b910b43a",
+      "visual_artifact_id": 8611287198,
+      "visual_artifact_digest": "sha256:837fe457b5e24c813354b99a488b20ce0e10b24fa565ad50844f044e08d8ab20",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
@@ -1598,6 +1596,17 @@
       "reviewer": "independent release verification",
       "date": "2026-07-24",
       "reason": "The cumulative C2 successor contains the original branch, removes the observed whitespace defect, executes the same visual-review workflow over the complete integrated stack and completes successfully."
+    },
+    {
+      "run_id": 30131032815,
+      "conclusion": "FAILURE",
+      "head_sha": "8fef6ef3b9a3f6739347ed9200ea3e75baf23f53",
+      "scope": "C3-RELEASE-001 main-based reconstruction; all primary jobs passed except the dynamic frontend job, which failed when npm audit began reporting GHSA-mh99-v99m-4gvg in legacy ESLint tooling",
+      "superseded_by": 30131521614,
+      "verification_evidence": "CampaignOS CI run 30131521614 at 2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76; patched compatibility shim delegates to brace-expansion 5.0.8 and frontend lint, typecheck, 60 tests, build, browser review and npm audit all pass",
+      "reviewer": "independent release verification",
+      "date": "2026-07-24",
+      "reason": "The successor preserves the supported ESLint 9/Next.js toolchain, removes the vulnerable dependency result without suppressing audit, and passes equal-or-broader exact-head validation."
     }
   ]
 }

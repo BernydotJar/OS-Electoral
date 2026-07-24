@@ -1,8 +1,8 @@
 # C3-RELEASE-001 evidence — release readiness and historical validation audit
 
 Date: 2026-07-24
-Branch: `agent/c3-release-001-readiness-audit`
-Base checkpoint: `agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6`
+Branch: `agent/c3-release-001-readiness-audit-main`
+Base checkpoint: `main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5`
 
 ## Determination
 
