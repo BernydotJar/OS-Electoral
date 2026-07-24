@@ -5,7 +5,7 @@
   "updated_at": "2026-07-24",
   "branch": "agent/c3-release-001-readiness-audit",
   "current_increment": "C3-RELEASE-001",
-  "iteration_status": "IN_PROGRESS",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -105,22 +105,21 @@
     {
       "id": "WS-15",
       "name": "Documentation, Migration and Release",
-      "status": "RELEASE_AUDIT_ACTIVE",
+      "status": "RELEASE_AUDIT_CI_GREEN",
       "next_increment": "C3-RELEASE-001"
     }
   ],
   "ready_tasks": [],
   "published_unreviewed_increment": {
-    "id": "C3-OBS-001",
+    "id": "C3-RELEASE-001",
     "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-obs-001-operational-evidence",
-    "base": "main",
-    "validated_implementation_head": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
-    "draft_pr": 114,
-    "ci_run_id": 30041495912,
-    "visual_run_id": 30041495919,
-    "recovery_job_id": 89322226244,
-    "recovery_artifact_id": 8577394363,
+    "branch": "agent/c3-release-001-readiness-audit",
+    "base": "agent/c3-obs-001-operational-evidence",
+    "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
+    "draft_pr": 115,
+    "ci_run_id": 30129061387,
+    "visual_run_id": 30129061437,
+    "release_decision": "DENY_RELEASE",
     "external_effects": "NONE"
   },
   "review_stack": [
@@ -137,7 +136,8 @@
       "pr": 115,
       "branch": "agent/c3-release-001-readiness-audit",
       "base": "agent/c3-obs-001-operational-evidence",
-      "state": "DRAFT_PR_IN_PROGRESS"
+      "state": "DRAFT_PR_CI_GREEN",
+      "delivered_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd"
     }
   ],
   "local_verification": {
@@ -296,12 +296,14 @@
   },
   "active_local_increment": {
     "id": "C3-RELEASE-001",
-    "state": "IN_PROGRESS",
+    "state": "CI_GREEN",
     "branch": "agent/c3-release-001-readiness-audit",
     "base": "agent/c3-obs-001-operational-evidence@a0b0aa6c88ec8c2bfaf86eab1b871a83805866e6",
+    "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
+    "draft_pr": 115,
     "production_status": "BLOCKED",
-    "external_effects": "NONE",
-    "draft_pr": 115
+    "release_decision": "DENY_RELEASE",
+    "external_effects": "NONE"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -314,18 +316,27 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-OBS-001",
-    "branch": "agent/c3-obs-001-operational-evidence",
-    "validated_implementation_head": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
-    "draft_pr": 114,
+    "id": "C3-RELEASE-001",
+    "branch": "agent/c3-release-001-readiness-audit",
+    "validated_implementation_head": "d7a35934d88cd0b2d12006b7dc4dd91cdd2f37cd",
+    "draft_pr": 115,
     "status": "CI_GREEN",
-    "ci_run_id": 30041495912,
-    "visual_run_id": 30041495919,
-    "recovery_job_id": 89322226244,
-    "recovery_artifact_id": 8577394363,
-    "recovery_artifact_digest": "sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469",
+    "ci_run_id": 30129061387,
+    "visual_run_id": 30129061437,
+    "quality_job_id": 89599276723,
+    "recovery_job_id": 89599276837,
+    "recovery_artifact_id": 8610382604,
+    "recovery_artifact_digest": "sha256:e6f9c0bc73add06fec5accb774cf551dd16f1045459444b15c6109bbc670aa2b",
+    "supply_chain_artifact_id": 8610372647,
+    "supply_chain_artifact_digest": "sha256:e650672d705fb35c58716e37a78c60a1e0a599a830d039f8f225653e3dcfc3c4",
+    "frontend_artifact_id": 8610429479,
+    "frontend_artifact_digest": "sha256:8ea7e5ec6c210ed1ea88741faba3f252032781614cd3e425b0aeb34aff9be93f",
+    "visual_artifact_id": 8610391734,
+    "visual_artifact_digest": "sha256:1d22f7b39ce93be28dea0130cbd76650b5442da4d044594388517d7b7f5752cb",
+    "release_decision": "DENY_RELEASE",
+    "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_increment": "C3-RELEASE-001"
+    "next_action": "HUMAN_REVIEW_AND_STAGING_AUTHORIZATION"
   },
   "production_blockers": [],
   "cumulative_merge": {

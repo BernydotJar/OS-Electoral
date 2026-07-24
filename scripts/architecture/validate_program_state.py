@@ -33,6 +33,15 @@ ROADMAP_STATUSES = {
     "TESTED_LOCAL",
     "VERIFIED_POSTGRESQL",
 }
+TERMINAL_DELIVERY_STATUSES = {
+    "APPROVED_PRODUCTION",
+    "CI_GREEN",
+    "DEPLOYED_DEV",
+    "DEPLOYED_PRODUCTION",
+    "DEPLOYED_STAGING",
+    "MERGED_TO_MAIN",
+    "VERIFIED_POSTGRESQL",
+}
 TASK_STATUS_BY_ROADMAP_STATUS = {
     "ACTIVE": "IN_PROGRESS",
     "APPROVED_PRODUCTION": "APPROVED_PRODUCTION",
@@ -395,9 +404,18 @@ def validate_workstreams_and_roadmap(data: dict[str, Any]) -> dict[str, dict[str
         production_action["status"] == "HUMAN_BLOCKED",
         "production deployment action must be HUMAN_BLOCKED",
     )
+    has_active_increment = any(
+        item["status"] in {"ACTIVE", "EXECUTABLE_NEXT"}
+        for item in roadmap
+        if item["id"] != "action:production-deployment"
+    )
+    delivery_items = [item for item in roadmap if item["id"] != "action:production-deployment"]
+    delivery_program_closed = all(
+        item["status"] in TERMINAL_DELIVERY_STATUSES for item in delivery_items
+    )
     require(
-        any(item["status"] in {"ACTIVE", "EXECUTABLE_NEXT"} for item in roadmap),
-        "program lacks an active or executable next increment",
+        has_active_increment or delivery_program_closed,
+        "program lacks an active/executable increment or a fully verified delivery closure",
     )
     return roadmap_by_id
 

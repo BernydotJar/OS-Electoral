@@ -100,3 +100,23 @@ def test_superseded_stack_failure_requires_successful_integration_run() -> None:
     integrations = validator.validate_integration_runs(payload)
     with pytest.raises(AssertionError, match="lacks integration evidence"):
         validator.validate_stack(payload, superseded, integrations)
+
+
+def test_program_accepts_verified_delivery_closure() -> None:
+    validator = load_validator()
+    payload = manifest()
+
+    roadmap = validator.validate_workstreams_and_roadmap(payload)
+
+    assert roadmap["C3-RELEASE-001"]["status"] == "CI_GREEN"
+    assert roadmap["action:production-deployment"]["status"] == "HUMAN_BLOCKED"
+
+
+def test_program_rejects_incomplete_delivery_without_active_increment() -> None:
+    validator = load_validator()
+    payload = copy.deepcopy(manifest())
+    release = next(item for item in payload["roadmap"] if item["id"] == "C3-RELEASE-001")
+    release["status"] = "IMPLEMENTED_LOCAL"
+
+    with pytest.raises(AssertionError, match="fully verified delivery closure"):
+        validator.validate_workstreams_and_roadmap(payload)
