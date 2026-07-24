@@ -1,14 +1,16 @@
-# C3-OBS-001 local evidence — observability and recovery control plane
+# C3-OBS-001 exact-head evidence — observability and recovery control plane
 
-Date: 2026-07-23
+Date: 2026-07-24
 Branch: `agent/c3-obs-001-operational-evidence`
 Base: `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`
+Validated implementation head: `bf722ee8e672a9e89a7e74a47465a8e6287602c8`
+Draft PR: `#114`
 
 ## Result classification
 
-`ACTIVE_LOCAL_VERIFIED_CI_RECOVERY_PENDING`
+`CI_GREEN_EXACT_HEAD_RECOVERY_VERIFIED`
 
-This evidence proves repository implementation and local automated verification. It does not prove a managed backup, a deployed telemetry stack, a staging restore, an accepted RPO/RTO, production readiness or human approval.
+This evidence proves repository implementation, local automated verification and an exact-head PostgreSQL 18 native backup/isolated-restore run in hosted CI. It does not prove a managed backup, deployed telemetry, a staging disaster-recovery exercise, an accepted RPO/RTO, production readiness or human approval.
 
 ## Verified locally
 
@@ -29,18 +31,23 @@ This evidence proves repository implementation and local automated verification.
 | Recovery runtime orchestration tests | PASS |
 | Program production block | PRESERVED |
 
-## PostgreSQL recovery execution status
+## Exact-head hosted verification
 
-The exact pinned PostgreSQL 18.3 image could not start in the persistent sandbox. Docker failed while registering an image layer because the outer user namespace denied `lchown /var/empty`. The recovery command did not reach database startup, migration, dump or restore. Its cleanup trap removed temporary output and any test container reference.
+| Evidence | Result |
+|---|---|
+| CampaignOS CI | PASS, run `30041495912` |
+| Runtime visual review | PASS, run `30041495919` |
+| PostgreSQL backup and isolated restore | PASS, job `89322226244` |
+| Validated head | `bf722ee8e672a9e89a7e74a47465a8e6287602c8` |
+| Recovery artifact | `campaignos-postgresql-recovery-evidence` (`8577394363`) |
+| Artifact digest | `sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469` |
+| Artifact retention expiry | `2026-08-22T20:18:20Z` |
 
-Therefore:
+The hosted job migrated and seeded PostgreSQL 18, created a native custom-format archive, restored it into a distinct `*_restore_test` database, compared the Alembic revision and all public-table row counts, verified the archive checksum and manifest, removed the restore database and uploaded the retained evidence artifact.
 
-- local PostgreSQL 18 backup/restore: **not claimed**;
-- source database mutation: **none**;
-- external effects: **none**;
-- exact-head CI PostgreSQL 18 proof: **required and pending**.
+## Local environment limitation and validated alternative
 
-The new CI job uses a real PostgreSQL 18.3 service, native `pg_dump`/`pg_restore`, representative migrated and seeded data, isolated restore, Alembic and row-count comparison, cleanup verification, checksum validation and retained evidence.
+The persistent sandbox could not register the pinned PostgreSQL image layer because the outer user namespace denied `lchown /var/empty`. No database startup or mutation occurred locally. The exact same recovery contract was then executed successfully at the published PR head by hosted CI. The local limitation is therefore recorded as an environment limitation with a validated alternative, not as an open delivery defect for this test-only contract.
 
 ## Security review notes
 
@@ -55,10 +62,10 @@ The new CI job uses a real PostgreSQL 18.3 service, native `pg_dump`/`pg_restore
 
 ## Residual production blockers
 
-- no managed PostgreSQL backup schedule, encrypted destination, PITR or retention evidence;
+- no managed PostgreSQL encrypted backup schedule, PITR, retention or deletion-protection evidence;
 - no deployed scraper, OTLP collector, dashboard or alert receiver;
-- no staging failure exercise or measured RPO/RTO;
-- no production rollback proof;
+- no staging failure exercise or measured and approved RPO/RTO;
+- no production rollback proof or incident drill;
 - no independent operational, security, privacy, legal or human approval;
 - historical production blockers remain recorded.
 

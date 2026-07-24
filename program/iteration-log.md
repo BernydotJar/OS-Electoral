@@ -443,3 +443,13 @@
 - Passed `686` tests, `10` controlled skips and `90.40%` coverage; Ruff, format, mypy, YAML parsing and CI policy verification pass.
 - Local PostgreSQL 18 execution is not claimed because the sandbox Docker layer registration failed at `lchown /var/empty`; no database or external resource was modified. Exact-head CI recovery evidence remains pending.
 - Recorded `C3-OBS-001` as active, kept production `BLOCKED`, and preserved `external_effects=NONE`.
+
+
+## 2026-07-24 — C3-OBS-001 exact-head CI-green checkpoint
+
+- Verified draft PR `#114` at `bf722ee8e672a9e89a7e74a47465a8e6287602c8` as mergeable and exact-head green.
+- Recorded CampaignOS CI `30041495912`, visual review `30041495919` and recovery job `89322226244` as successful.
+- Confirmed retained artifact `campaignos-postgresql-recovery-evidence` (`8577394363`) with digest `sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469`.
+- Reclassified the local PostgreSQL image-layer failure as an environment limitation with a validated hosted-CI alternative.
+- Marked `C3-OBS-001` `CI_GREEN` and selected `C3-RELEASE-001` as `EXECUTABLE_NEXT`.
+- Kept production `BLOCKED`; no merge, deployment, apply, spending or external political effect occurred.

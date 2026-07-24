@@ -1,104 +1,78 @@
 # CampaignOS current-state assessment
 
-Assessment date: `2026-07-21 America/Guatemala`
+Assessment date: `2026-07-24 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
 
-Repository evidence point: `main@d0719c91dd6b0ac68e8499912c6c4eef983a0b1f`; draft review stack through Security PR `#105`; Security receipt `agent/c3-sec-001-security-privacy-baseline@e0b4b5df711f671e8f6a1f711a0a3beff39cf173` is exact-head CI-green; active increment is `agent/c3-front-002-functional-onboarding`.
+Repository evidence point: `main@ff38e996ba05b2ea4b5c034b44d084776736dad0`; cumulative PR `#106` is merged; draft PR `#114` at `bf722ee8e672a9e89a7e74a47465a8e6287602c8` is exact-head CI-green with retained PostgreSQL recovery evidence; `C3-RELEASE-001` is executable next.
 
 ## Executive determination
 
 Production readiness is **BLOCKED**.
 
-Foundation PR `#72`, IAM PR `#73` and the first protected campaign API PR `#83` are merged. Draft PRs `#84` through `#98` form a correctly based review chain and are green at their recorded heads. PR `#89` initially exposed a relative frontend artifact-path defect in run `29854467576`; commit `437b469` repaired the root cause and exact-head run `29856835515` plus visual run `29856835522` succeeded.
-
-Draft PR `#90` adds tenant-scoped invitation, application-session, membership-revocation and time-bound support lifecycles at `5eb45e9`. Those controls are local/PostgreSQL and exact-head CI-green, but no live provider operation exists. None of this evidence is a deployment or human production approval.
+The cumulative product baseline is integrated into `main`. C3-OBS-001 adds a repository-level observability and recovery control plane and is exact-head CI-green, but this is test evidence rather than a managed environment or production recovery claim. Draft PR `#114` remains unmerged and human-reviewed production approval is absent.
 
 The only public deployed surface remains the static, read-only GitHub Pages demonstration classified `DEMO_NON_PRODUCTION`.
 
 ## Reconciled repository and GitHub state
 
-- Merged PRs: `#72`, `#73`, `#83`.
-- Draft stack: `#84` → `#85` → `#86` → `#87` → `#88` → `#89` → `#90` → `#92` → `#93` → `#94` → `#95` → `#96` → `#97` → `#98`.
-- PR `#87` at `3b4bc9b` passed CampaignOS CI `29854461414` and visual review `29854461367`.
-- PR `#88` at `a21e735` passed CampaignOS CI `29854464519` and visual review `29854464523`.
-- PR `#89` at `437b469` passed CampaignOS CI `29856835515` and visual review `29856835522`.
-- Twenty-four non-PR issues remain open.
-- Authenticated settings now verify strict protected-main checks, one approval, admin enforcement, linear history, no force push/deletion, selected Actions with mandatory SHA pinning, vulnerability alerts and automated security fixes.
-- Deterministic SBOM/provenance and keyless GitHub OIDC/Sigstore attestations pass for C3-CI final receipt `e4c5903`. The C3-INFRA branch adds a desired ninth Terraform check; protected `main` still requires eight, so that setting remains a human policy gate.
-- No force-push, merge or deployment occurred.
+- Cumulative PR `#106` was rebased into `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` after green checks.
+- Draft PR `#114` is the only open PR and is mergeable at `bf722ee8e672a9e89a7e74a47465a8e6287602c8`.
+- CampaignOS CI `30041495912` and runtime visual review `30041495919` succeeded at that exact head.
+- PostgreSQL recovery job `89322226244` migrated, seeded, backed up, restored, compared and cleaned up PostgreSQL 18 successfully.
+- Artifact `campaignos-postgresql-recovery-evidence` (`8577394363`) is retained with digest `sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469` until `2026-08-22T20:18:20Z`.
+- Strict protected-main controls, selected SHA-pinned Actions, vulnerability governance and exact-source-head supply-chain attestation remain active.
+- No force-push, merge of PR `#114`, infrastructure apply, deployment or external political effect occurred.
 
 ## Current verification
 
-- `make verify`: PASS.
-- Ruff lint and format: PASS.
-- strict mypy: PASS across 63 source files.
-- Full locked suite: `658 passed`, `10 skipped`.
-- Enforced coverage: `90.92%` with `fail_under=90`.
-- Isolated PostgreSQL gate reaches revision `20260721_0011` and is reproduced twice on a disposable PostgreSQL 15 UTF8 cluster.
-- PostgreSQL evidence covers forced RLS, `NOSUPERUSER`/`NOBYPASSRLS` runtime roles, tenant isolation, campaign/candidate/team/roadmap concurrency, exact replay, optimistic versions, append-only daily snapshots and non-owner mutation denial on six journals.
-- Frontend regression: ESLint, strict TypeScript, 60 Vitest tests, Next production build and npm audit with zero vulnerabilities PASS.
-- Frontend exact-head PR CI and automated browser/WCAG review: PASS.
-- C3-SEC local browser E2E: PASS with ES/EN desktop, mobile, keyboard, reduced motion, zero overflow and zero axe violations; exact-head CI remains pending.
-- Local Compose E2E remains environment-blocked at Docker layer registration (`lchown /var/empty`); the CI stack E2E is the authoritative final proof.
+- Full locked Python suite: `686 passed`, `10 skipped`.
+- Coverage: `90.40%` with enforced `90%` floor.
+- Ruff, formatting and strict mypy across 66 source files: PASS.
+- Frontend: 60 tests, lint, strict TypeScript, production build and zero dependency vulnerabilities: PASS.
+- PostgreSQL migration/RLS/concurrency evidence reaches revision `20260721_0011`.
+- C3-OBS exact-head CI: PASS in runs `30041495912` and `30041495919`.
+- PostgreSQL recovery job `89322226244` and artifact `8577394363`: PASS and retained.
+- The local PostgreSQL image-layer limitation is superseded for this test contract by exact-head hosted CI; it is not a product failure.
 - Program truth: PASS with two open CRITICAL/HIGH findings and six retained historical failed runs.
 - Required eval inventory: `5 PASS`, `17 PARTIAL`, `11 NOT_RUN`; production remains blocked.
-- Terraform `1.15.8` and AWS provider `6.55.0` are exact-pinned; bootstrap/platform format, backend-disabled init, validation, mocked plans and six adversarial policy tests PASS without AWS credentials.
-- Campaign safety scan: PASS.
+- Campaign safety and program validators: PASS.
 
 ## Implemented and preserved
 
-- Fixed-algorithm OIDC verification remains separate from application authorization. The principal now preserves validated `email_verified`, `iat` and `exp` evidence.
-- Active memberships and exact grants remain server-owned and tenant scoped.
-- Campaign create/read/update, workspace create and readiness boundaries retain exact action/resource/scope/purpose checks, concurrency controls, audit and internal outbox evidence.
-- The internal outbox worker draft retains leases, `SKIP LOCKED`, recovery, bounded retries and dead-letter behavior without external political delivery.
-- The dynamic Next.js shell remains server-rendered and fail-closed; live development mode now selects an authorized campaign and starts/updates guided intake through server-side boundaries, while demo mode remains read-only.
-- Identity invitations normalize email, require `email_verified=true` at acceptance, expire, accept once and create only an empty membership.
-- Application sessions persist only a digest of the provider session identifier and support audited expiry and local revocation.
-- Membership revocation disables current grants, roles and local sessions atomically.
-- Support access binds requester, target, approver, tenant/campaign/workspace, exact action/resource/purpose, reason, receipt and expiry. Separation of duty is enforced. Pre-existing membership and unrelated access are preserved.
-- Invitation, session and support expiry transitions are persisted and audited; active uniqueness slots are released only after terminal state.
-- Guided intake persists one tenant/campaign aggregate with exact-authorized start/resume/read/update, optimistic concurrency, authority-bound idempotency, audit and internal no-effect outbox evidence.
-- Candidate Workspace persists evidence, claims, contradictions, development, reputation risks and append-only current-version section approvals under exact authorization and forced RLS.
-- Candidate factual verification requires independent evidence; self-assessment, perception and contradiction references retain distinct semantics.
-- The dynamic shell now renders read-only ES/EN intake, candidate, team, campaign-roadmap and Daily War Room surfaces and fails closed on malformed, contradictory, stale-version or cross-campaign evidence.
-- Provider planning remains no-effect: a Cognito `AdminCreateUser` request can be described, but no SDK, email or external provider call is wired.
+- Exact server-side authorization, tenant binding, RLS, idempotency, optimistic concurrency, audit and internal no-effect outbox contracts remain intact.
+- Guided intake, Candidate Workspace, Team Builder, roadmap, Daily War Room, Strategy and governed Agent Run evidence remain integrated in `main`.
+- The dynamic ES/EN shell remains server-rendered and fail-closed; the functional local journey persists guided intake through PostgreSQL/API/browser boundaries.
+- Identity lifecycle controls remain provider-neutral; no live login, recovery, MFA, invitation delivery or provider revocation is claimed.
+- C3-OBS adds sanitized structured logs, validated W3C trace context, authenticated low-cardinality metrics, worker/recovery textfiles, alert rules and native test recovery verification.
+- Live AI providers, external publication, citizen contact, targeting, spending, mobilization, infrastructure apply and production deployment remain disabled or human-gated.
 - `RTK.md` and `web/` remain unchanged.
 
 ## What remains absent or unproven
 
 - No live OIDC/Cognito login, recovery, MFA, invitation email, provider token rotation or external provider revocation.
-- No trusted tenant portfolio selector or customer-facing identity-administration UI.
-- No RDS, dev, staging or production verification of identity lifecycle.
-- Guided intake now has a real local PostgreSQL/API/browser start-update-reload journey under exact grants. Live OIDC, campaign creation/access lifecycle, broader mutation journeys, independent user acceptance and deployed environments remain incomplete.
-- Production object storage, attachment safety, external transport, deployed telemetry, rate controls and operational administration remain incomplete. Local structured logs, trace context, authenticated metrics and alert rules now pass.
-- A plan-only Terraform baseline and test-only PostgreSQL recovery verifier exist, but no verified AWS account, remote state, live plan/apply, dev/staging/production runtime, managed backup/PITR, accepted RPO/RTO, load, rollback or disaster-recovery exercise exists.
-- Cumulative PR `#106` was rebased into `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` after green checks; zero PRs were open when this increment began. Production environment and human approval gates remain pending.
+- No trusted customer identity-administration or tenant-portfolio workflow.
+- No approved AWS dev/staging/production environment, remote state, live plan/apply or production runtime.
+- No managed encrypted backup schedule, PITR, retention/deletion protection or managed staging restore.
+- No deployed telemetry collector, dashboard, alert receiver, SLO/error-budget observation or incident drill.
+- No accepted RPO/RTO, representative load test, production rollback proof or capacity evidence.
+- Broader authenticated mutation journeys, rate limiting and independent user acceptance remain incomplete.
 - Six historical failures and two CRITICAL/HIGH findings remain explicit production blockers.
-- No independent security, privacy, accessibility, domain, legal or human production approval is recorded.
-- Revision `20260721_0011` denies non-owner UPDATE/DELETE on six append-only journals; database owner break-glass, external anchoring, retention and restore remain open.
-- Executable data policy covers 12 record types and seven political-data prohibitions while all live processors remain disabled.
+- No independent security, privacy, accessibility, domain, legal, operational or human production approval is recorded.
 
 ## Delivery table
 
 | Area | Evidence | Determination |
 |---|---|---|
-| Integrated product baseline | cumulative PR `#106` rebased into `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` after green checks | `MERGED_TO_MAIN`; not deployed |
-| Review stack | historical branches reconciled or closed as superseded; open PRs observed: `0` | `RECONCILED` |
-| Dynamic frontend | original shell PR `#89` plus `C3-FRONT-002` live PostgreSQL/API/browser journey with 60 frontend tests and zero axe violations | `VERIFIED_POSTGRESQL`; exact-head PR/CI, human acceptance and deployment pending |
-| Operational observability and recovery | JSON logs, trace context, authenticated metrics, alerts and native recovery verifier; 686 tests and 90.40% coverage | `ACTIVE_LOCAL_VERIFIED`; exact-head PostgreSQL 18 CI restore and staging/managed evidence pending |
-| Identity lifecycle | migration, API, contracts, 381-test suite, PostgreSQL twice, PR `#90` CI `29857981975` | `CI_GREEN`; human review/merge and live provider pending |
-| Guided intake | revision `20260721_0005`, exact API, PostgreSQL twice, plus live ES/EN browser start/update/reload under exact grants | `VERIFIED_POSTGRESQL`; live OIDC, exact-head PR/CI, human acceptance and deployment pending |
-| Candidate workspace | revision `20260721_0006`, evidence contracts, exact API, PR `#93` at final head `f3c8994` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
-| Team Builder | revision `20260721_0007`, exact RACI/capacity/access-recommendation contracts, PR `#94`, CI `29870461743` and visual `29870461745` | `CI_GREEN`; human staffing acceptance, authenticated editing and live environments pending |
-| Roadmap and Daily War Room | revision `20260721_0008`, DAG, exact API, immutable snapshots, PR `#95`, CI `29871930387` and visual `29871930366` | `CI_GREEN`; human review/merge, authenticated editing and live environments pending |
-| Evidence-first Strategy Decision Room | revision `20260721_0009`, exact API, append-only decisions, PR `#96`, CI `29876152098` and visual `29876152083` | `CI_GREEN`; authenticated editing, independent human acceptance, merge and live environments pending |
-| Governed Agent Runtime | revision `20260721_0010`, strict no-tool contracts, exact API, append-only journal, PR `#98`, final receipt `8d6c491`, CI `29878876280` and visual `29878876285` | `CI_GREEN`; live provider/privacy review, human disposition UI, merge and environments pending |
-| Security/privacy baseline | revision `20260721_0011`, six database append-only guards, 12 record types and seven mandatory prohibitions | `VERIFIED_POSTGRESQL`; E2E, PR/CI, independent review, owner break-glass governance and live environments pending |
-| Required evals | exact 33-item fail-closed catalog | `5 PASS / 15 PARTIAL / 13 NOT_RUN` |
-| Repository protection and supply chain | strict protected main, selected SHA-pinned Actions, vulnerability governance, deterministic SBOM/provenance and exact-head Sigstore/Rekor attestations | `CI_GREEN`; human review/merge and production image/environment evidence pending |
+| Integrated product baseline | cumulative PR `#106`, `main@ff38e996ba05b2ea4b5c034b44d084776736dad0` | `MERGED_TO_MAIN`; not deployed |
+| Active review | draft PR `#114` at `bf722ee8e672a9e89a7e74a47465a8e6287602c8` | `CI_GREEN`; human review/merge pending |
+| Functional frontend | PostgreSQL/API/browser guided-intake journey, 60 frontend tests, zero axe violations | `VERIFIED_POSTGRESQL`; live identity, broader journeys and human acceptance pending |
+| Observability and recovery | CI `30041495912`, visual `30041495919`, recovery job `89322226244`, artifact `8577394363` | `CI_GREEN`; managed/staging evidence pending |
+| Identity lifecycle | invitation/session/revocation/support contracts and PostgreSQL evidence | `CI_GREEN` baseline; live provider pending |
+| Security/privacy baseline | revision `20260721_0011`, append-only role denial and executable data policy | `CI_GREEN` baseline; independent review and owner break-glass governance pending |
+| Required evals | exact 33-item fail-closed catalog | `5 PASS / 17 PARTIAL / 11 NOT_RUN` |
 | Historical validation | six manifest-linked failures retained | production-blocking until explicit supersession |
-| AWS/operations | exact-pinned plan-only Terraform, two mocked plans and policy tests; no live environment, backup restore or observability | `TESTED_LOCAL` design / runtime `NOT_VERIFIED` |
+| AWS/operations | exact-pinned plan-only Terraform plus test observability/recovery evidence | managed runtime `NOT_VERIFIED` |
 
 ## Historical validation requiring explicit supersession
 
@@ -117,11 +91,20 @@ Frontend run `29854467576` is separately recorded as superseded by exact-scope r
 
 ## Next executable increments
 
-1. Publish `C3-FRONT-002` and require hosted functional Compose E2E on the exact head.
-2. Continue `C3-OBS-001` independently after the functional onboarding checkpoint.
-3. Preserve infrastructure apply, merge and production deployment as separate human gates.
+1. Start `C3-RELEASE-001` with explicit historical-validation supersession, release audit and staging-readiness documentation.
+2. Keep managed environment creation, infrastructure apply, merge and production deployment as separate human gates.
+3. Preserve `production_status=BLOCKED` until every remaining technical, operational and human gate is proven.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
+
+## C3-OBS-001 exact-head CI checkpoint — 2026-07-24
+
+- Draft PR `#114` is mergeable at `bf722ee8e672a9e89a7e74a47465a8e6287602c8`.
+- CampaignOS CI `30041495912` and runtime visual review `30041495919` succeeded.
+- Recovery job `89322226244` proved native PostgreSQL 18 backup, isolated restore, Alembic/table-count comparison, cleanup and checksum validation.
+- Artifact `campaignos-postgresql-recovery-evidence` (`8577394363`) is retained with digest `sha256:7495d52dd030b430c90a51e388838d46e5c7b7a3589ecce41117e6e9783c0469`.
+- `C3-OBS-001` is `CI_GREEN`; `C3-RELEASE-001` is executable next.
+- Production remains `BLOCKED`; no merge, infrastructure apply, deployment or external effect occurred.
 
 ## C3-STRATEGY-001 CI-green checkpoint — 2026-07-21
 
