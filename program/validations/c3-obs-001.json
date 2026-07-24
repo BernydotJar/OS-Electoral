@@ -57,7 +57,7 @@
       "frontend": "PASS_60_TESTS_BUILD_ZERO_VULNERABILITIES"
     },
     "exact_head_ci": {
-      "head_commit": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
+      "validated_implementation_head": "bf722ee8e672a9e89a7e74a47465a8e6287602c8",
       "campaignos_ci_run": 30041495912,
       "runtime_visual_review_run": 30041495919,
       "campaignos_ci_conclusion": "SUCCESS",
