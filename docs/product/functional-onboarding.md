@@ -64,7 +64,7 @@ Every downstream political or external action remains absent or separately human
 
 ## Local functional mode
 
-`make functional-dev` starts the real local PostgreSQL/API stack, applies migrations, seeds a bounded development identity plus five exact grants, and starts Next.js in live mode. The browser never receives the development bearer token; it is used only by Next server code. The backend accepts it only when `CAMPAIGNOS_ENVIRONMENT=development` and refuses combining it with OIDC.
+`make functional-dev` starts the real local PostgreSQL/API stack, applies migrations, seeds a bounded development identity plus five exact grants, and starts Next.js in live mode. It validates the configured loopback ports first. A free configured port is preserved; an occupied PostgreSQL, API, S3Mock, Mailpit or frontend port is replaced with a unique ephemeral port and the effective endpoint is printed. The browser never receives the development bearer token; it is used only by Next server code. The backend accepts it only when `CAMPAIGNOS_ENVIRONMENT=development` and refuses combining it with OIDC.
 
 The versioned `.env.functional.example` values are local fixtures, not deployable credentials. Shared and production configurations reject the development identity.
 
