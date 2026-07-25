@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-25",
-  "source_branch": "agent/c3-front-004-candidate-evidence-workflow",
+  "source_branch": "agent/c3-front-005-team-organization-workflow",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
@@ -772,13 +772,13 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CANDIDATE_EVIDENCE_WORKFLOW_CI_GREEN",
+      "status": "PARALLEL_TEAM_ORGANIZATION_ACTIVE",
       "next_increment": "C3-FRONT-005"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CANDIDATE_EVIDENCE_FRONTEND_CI_GREEN",
+      "status": "TEAM_ORGANIZATION_FRONTEND_ACTIVE",
       "next_increment": "C3-FRONT-005"
     },
     {
@@ -1049,6 +1049,16 @@
       ]
     },
     {
+      "id": "C3-FRONT-005",
+      "workstream": "WS-06",
+      "title": "Parallel campaign team organization workflow",
+      "status": "ACTIVE",
+      "depends_on": [
+        "C3-FRONT-004",
+        "C3-TEAM-001"
+      ]
+    },
+    {
       "id": "action:production-deployment",
       "status": "HUMAN_BLOCKED",
       "depends_on": [
@@ -1212,16 +1222,14 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-FRONT-004",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-front-004-candidate-evidence-workflow",
-      "base": "agent/c3-front-003-campaign-launch-roadmap@ff7b10fed951f176609c43ad83b501f83d92b810",
-      "validated_implementation_head": "d22d9fac7ce9d59430edff927f5343f8391719f5",
-      "draft_pr": 119,
+      "id": "C3-FRONT-005",
+      "state": "TESTED_LOCAL",
+      "branch": "agent/c3-front-005-team-organization-workflow",
+      "base": "agent/c3-front-004-candidate-evidence-workflow@2a1aecaf08aa7c568dfc9b6fd3ab82852c141513",
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "HUMAN_PRODUCT_REVIEW"
+      "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
     },
     "latest_checkpoint": {
       "id": "C3-FRONT-004",

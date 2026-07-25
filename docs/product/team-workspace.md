@@ -14,12 +14,12 @@ Primary users are candidates, campaign directors and authorized operations revie
 - what access may be appropriate for human authorization review.
 
 ```yaml
-design_variance: 4
-motion_intensity: 2
-visual_density: 8
+design_variance: 6
+motion_intensity: 4
+visual_density: 6
 ```
 
-The current dynamic shell is bilingual, responsive and read-only. It presents an ordered organizational route rather than a generic people directory.
+The shell is bilingual and responsive. In an exactly authorized live session, team preparation becomes available in parallel after the candidate dossier exists. A user can choose an organizational template and document vacant functions one at a time. Demo mode remains read-only, and candidate evidence remains the primary gate.
 
 ## Core invariants
 
@@ -73,6 +73,11 @@ The team workspace does not:
 - replace human hiring, legal, security or access review;
 - infer authority from job titles or organization templates.
 
-## Current limitation
+## Current implemented write path
 
-The backend supports exact-authorized create, read and update. The current shell displays a verified read-only projection. Authenticated editing, personnel invitation workflows, dedicated approvers and human user-acceptance testing remain future work.
+The backend supports exact-authorized create, read and update. The live shell now supports two bounded operations:
+
+1. create a campaign team workspace from a lean, full or custom template;
+2. append a vacant function with area, purpose, responsibilities and a human vacancy plan.
+
+The UI deliberately creates no principal assignment, weekly capacity, onboarding completion, membership or permission. Personnel invitations, governed identity assignment, RACI, capacity assessment, training, access recommendation review, dedicated approvers and independent human acceptance remain future work.

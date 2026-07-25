@@ -48,6 +48,9 @@ export type CampaignJourneyInput = Readonly<{
     strategy: boolean;
     operations: boolean;
   }>;
+  parallelPreparation?: Partial<
+    Readonly<Record<CampaignJourneyPhaseKey, boolean>>
+  >;
 }>;
 
 const phaseDefinitions = [
@@ -88,7 +91,18 @@ export function deriveCampaignJourney(
 
   let gateOpen = true;
   const phases = phaseDefinitions.map((phase, index): CampaignJourneyPhase => {
-    if (!gateOpen) return { ...phase, state: "LOCKED" };
+    if (!gateOpen) {
+      if (
+        input.parallelPreparation?.[phase.key] === true &&
+        availability[index]
+      ) {
+        return {
+          ...phase,
+          state: started[index] ? "ACTIVE" : "AVAILABLE",
+        };
+      }
+      return { ...phase, state: "LOCKED" };
+    }
     if (complete[index]) return { ...phase, state: "COMPLETE" };
 
     gateOpen = false;

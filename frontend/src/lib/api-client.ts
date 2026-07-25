@@ -16,7 +16,9 @@ import {
 } from "@/lib/strategy-contract-parser";
 import type { FrontendConfig } from "@/lib/config";
 import {
+  parseTeamWorkspaceCreateEvidence,
   parseTeamWorkspaceReadEvidence,
+  parseTeamWorkspaceUpdateEvidence,
   TeamContractValidationError,
 } from "@/lib/team-contract-parser";
 import {
@@ -46,7 +48,11 @@ import type {
   MeResponse,
   ProblemDetail,
   StrategyWorkspaceReadEvidence,
+  TeamWorkspaceCreateEvidence,
+  TeamWorkspaceCreateInput,
   TeamWorkspaceReadEvidence,
+  TeamWorkspaceUpdateEvidence,
+  TeamWorkspaceUpdateInput,
   WarRoomSnapshotReadEvidence,
   TenantMeResponse,
   UUID,
@@ -305,6 +311,46 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/team-workspace`,
       "Team workspace",
       parseTeamWorkspaceReadEvidence,
+    );
+  }
+
+  startTeamWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+    idempotencyKey: string,
+    create: TeamWorkspaceCreateInput,
+  ): Promise<TeamWorkspaceCreateEvidence> {
+    return this.request<TeamWorkspaceCreateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/team-workspace`,
+      "Team workspace create",
+      parseTeamWorkspaceCreateEvidence,
+      {
+        method: "POST",
+        body: create,
+        headers: { "idempotency-key": idempotencyKey },
+      },
+    );
+  }
+
+  updateTeamWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    update: TeamWorkspaceUpdateInput,
+  ): Promise<TeamWorkspaceUpdateEvidence> {
+    return this.request<TeamWorkspaceUpdateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/team-workspace`,
+      "Team workspace update",
+      parseTeamWorkspaceUpdateEvidence,
+      {
+        method: "PATCH",
+        body: update,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
     );
   }
 

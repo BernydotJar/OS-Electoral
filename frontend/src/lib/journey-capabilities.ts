@@ -78,3 +78,30 @@ export function deriveCandidateWorkspaceCapabilities(
     canUpdate: exact("update", "Maintain candidate evidence workspace"),
   };
 }
+
+
+export type TeamWorkspaceCapabilities = Readonly<{
+  canStart: boolean;
+  canRead: boolean;
+  canUpdate: boolean;
+}>;
+
+export function deriveTeamWorkspaceCapabilities(
+  memberships: readonly EffectiveMembership[],
+  campaignId: string,
+): TeamWorkspaceCapabilities {
+  const exact = (action: string, purpose: string) =>
+    hasExactGrant(memberships, {
+      action,
+      resourceType: "team_workspace",
+      resourceId: campaignId,
+      purpose,
+      campaignId,
+      workspaceId: null,
+    });
+  return {
+    canStart: exact("create", "Create campaign team workspace"),
+    canRead: exact("read", "Review campaign team workspace"),
+    canUpdate: exact("update", "Maintain campaign team workspace"),
+  };
+}

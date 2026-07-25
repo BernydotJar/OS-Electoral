@@ -8,12 +8,14 @@ import {
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
+import { TeamWorkspaceEditor } from "@/components/team-workspace-editor";
 import { deriveCampaignExperienceMode } from "@/lib/campaign-experience";
 import { deriveCampaignJourney } from "@/lib/campaign-journey";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import {
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
+  deriveTeamWorkspaceCapabilities,
 } from "@/lib/journey-capabilities";
 import { deriveNavigation } from "@/lib/navigation";
 import type { ShellViewModel } from "@/lib/shell-view-model";
@@ -129,6 +131,10 @@ export function CampaignShell({
     model.memberships,
     model.campaign.id,
   );
+  const teamCapabilities = deriveTeamWorkspaceCapabilities(
+    model.memberships,
+    model.campaign.id,
+  );
   const readiness = model.readiness?.readiness ?? null;
   const guidedIntake = model.guidedIntake?.intake ?? null;
   const guidedIntakeStateMessage = {
@@ -149,9 +155,17 @@ export function CampaignShell({
     DEPENDENCY_UNAVAILABLE: dictionary.candidate.unavailable,
   }[model.candidateWorkspaceAvailability];
   const teamWorkspace = model.teamWorkspace?.workspace ?? null;
+  const teamPrerequisiteReady = candidateWorkspace !== null;
+  const teamPreparationAvailable =
+    model.teamWorkspaceAvailability === "AVAILABLE" ||
+    (model.teamWorkspaceAvailability === "NOT_STARTED" &&
+      teamCapabilities.canStart &&
+      teamPrerequisiteReady);
   const teamWorkspaceStateMessage = {
     AVAILABLE: "",
-    NOT_STARTED: dictionary.teamWorkspace.notStarted,
+    NOT_STARTED: teamPrerequisiteReady
+      ? dictionary.teamWorkspace.notStarted
+      : dictionary.teamWorkspace.prerequisitePending,
     NOT_AUTHORIZED: dictionary.teamWorkspace.notAuthorized,
     DEPENDENCY_UNAVAILABLE: dictionary.teamWorkspace.unavailable,
   }[model.teamWorkspaceAvailability];
@@ -171,9 +185,12 @@ export function CampaignShell({
         (model.candidateWorkspaceAvailability === "NOT_STARTED" &&
           candidateCapabilities.canStart &&
           candidatePrerequisiteReady),
-      team: model.teamWorkspaceAvailability === "AVAILABLE",
+      team: teamPreparationAvailable,
       strategy: model.strategyWorkspaceAvailability === "AVAILABLE",
       operations: model.campaignRoadmapAvailability === "AVAILABLE",
+    },
+    parallelPreparation: {
+      team: teamPreparationAvailable && teamPrerequisiteReady,
     },
   });
   const experienceMode = deriveCampaignExperienceMode({
@@ -840,6 +857,16 @@ export function CampaignShell({
               ) : null}
             </div>
 
+            <TeamWorkspaceEditor
+              locale={locale}
+              dictionary={dictionary}
+              demo={model.demo}
+              availability={model.teamWorkspaceAvailability}
+              workspace={teamWorkspace}
+              capabilities={teamCapabilities}
+              prerequisiteReady={teamPrerequisiteReady}
+            />
+
             {teamWorkspace ? (
               <>
                 <div className="intake-status-row">
@@ -868,7 +895,7 @@ export function CampaignShell({
                 <div className="team-authority-boundary" role="note">
                   <strong>{dictionary.teamWorkspace.authorityBoundary}</strong>
                   <p>{dictionary.teamWorkspace.authorityBody}</p>
-                  <code>{teamWorkspace.authority_effect}</code>
+                  <small>{dictionary.common.notApproval}</small>
                 </div>
 
                 <div className="team-metrics">
@@ -904,7 +931,11 @@ export function CampaignShell({
                             <strong>
                               {dictionary.teamWorkspace.checkLabels[check.key]}
                             </strong>
-                            <code>{check.reason_code}</code>
+                            <small className="intake-check-state">
+                              {check.complete
+                                ? dictionary.intake.checkComplete
+                                : dictionary.intake.checkPending}
+                            </small>
                           </div>
                           <span
                             className="intake-check-mark"
@@ -949,7 +980,9 @@ export function CampaignShell({
                               </div>
                               <div>
                                 <dt>{dictionary.teamWorkspace.status}</dt>
-                                <dd>{role.status}</dd>
+                                <dd>
+                                  {dictionary.teamWorkspace.roleStatusLabels[role.status]}
+                                </dd>
                               </div>
                             </dl>
                             {role.vacancy_plan ? (
@@ -1063,7 +1096,9 @@ export function CampaignShell({
                   </div>
                 </dl>
               </>
-            ) : (
+            ) : model.teamWorkspaceAvailability === "NOT_STARTED" &&
+              teamCapabilities.canStart &&
+              teamPrerequisiteReady ? null : (
               <p className="intake-state" role="status">
                 {teamWorkspaceStateMessage}
               </p>

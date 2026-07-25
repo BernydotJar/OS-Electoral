@@ -4,6 +4,7 @@ import type { EffectiveMembership } from "@/lib/contracts";
 import {
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
+  deriveTeamWorkspaceCapabilities,
 } from "@/lib/journey-capabilities";
 
 const CAMPAIGN = "22222222-2222-4222-8222-222222222222";
@@ -104,6 +105,51 @@ describe("deriveCandidateWorkspaceCapabilities", () => {
             "Create candidate evidence workspace",
             null,
             "candidate_workspace",
+          ),
+        ],
+        CAMPAIGN,
+      ).canStart,
+    ).toBe(false);
+  });
+});
+
+
+describe("deriveTeamWorkspaceCapabilities", () => {
+  it("requires exact team-workspace grants and never trusts role labels", () => {
+    expect(
+      deriveTeamWorkspaceCapabilities(
+        [
+          membership(
+            "create",
+            "Create campaign team workspace",
+            CAMPAIGN,
+            "team_workspace",
+          ),
+          membership(
+            "read",
+            "Review campaign team workspace",
+            CAMPAIGN,
+            "team_workspace",
+          ),
+          membership(
+            "update",
+            "Maintain campaign team workspace",
+            CAMPAIGN,
+            "team_workspace",
+          ),
+        ],
+        CAMPAIGN,
+      ),
+    ).toEqual({ canStart: true, canRead: true, canUpdate: true });
+
+    expect(
+      deriveTeamWorkspaceCapabilities(
+        [
+          membership(
+            "create",
+            "Create campaign team workspace",
+            null,
+            "team_workspace",
           ),
         ],
         CAMPAIGN,

@@ -3,9 +3,9 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-25",
-  "branch": "agent/c3-front-004-candidate-evidence-workflow",
-  "current_increment": "C3-FRONT-004",
-  "iteration_status": "CI_GREEN",
+  "branch": "agent/c3-front-005-team-organization-workflow",
+  "current_increment": "C3-FRONT-005",
+  "iteration_status": "ACTIVE",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,13 +51,13 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CANDIDATE_EVIDENCE_WORKFLOW_CI_GREEN",
+      "status": "PARALLEL_TEAM_ORGANIZATION_ACTIVE",
       "next_increment": "C3-FRONT-005"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CANDIDATE_EVIDENCE_FRONTEND_CI_GREEN",
+      "status": "TEAM_ORGANIZATION_FRONTEND_ACTIVE",
       "next_increment": "C3-FRONT-005"
     },
     {
@@ -267,7 +267,12 @@
     "front_004_functional_browser": "PASS_POSTGRESQL_15_FOUNDATION_CANDIDATE_EVIDENCE_RELOAD_ES_EN_MOBILE_ZERO_AXE",
     "front_004_dependency_audit": "PASS_ZERO_VULNERABILITIES",
     "front_004_pr_ci": "PASS_PR_119_HEAD_D22D9FAC7CE9D59430EDFF927F5343F8391719F5_RUN_30166352329",
-    "front_004_runtime_visual": "PASS_RUN_30166352316"
+    "front_004_runtime_visual": "PASS_RUN_30166352316",
+    "front_005_frontend_tests": 83,
+    "front_005_seed_tests": "PASS_2_EXACT_GRANTS_11",
+    "front_005_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
+    "front_005_functional_browser": "PASS_POSTGRESQL_15_FOUNDATION_CANDIDATE_EVIDENCE_TEAM_MAP_RELOAD_ES_EN_MOBILE_ZERO_AXE",
+    "front_005_dependency_audit": "PASS_ZERO_VULNERABILITIES"
   },
   "critical_path": [
     "C3-FOUND-001A",

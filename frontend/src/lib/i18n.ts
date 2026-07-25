@@ -213,6 +213,8 @@ const es = {
     intake_saved: "Cambios guardados con nueva versión.",
     candidate_started: "Expediente de candidatura creado y listo para documentar.",
     candidate_evidence_saved: "Fuente incorporada al expediente con una nueva versión.",
+    team_started: "Mapa de equipo creado y listo para definir funciones.",
+    team_role_saved: "Función incorporada al mapa de equipo con una nueva versión.",
     authorization_denied: "La sesión no tiene autorización exacta para esta acción.",
     conflict: "El registro cambió o la solicitud ya fue utilizada. Recarga y revisa la versión.",
     validation_error: "Revisa los campos señalados y vuelve a intentar.",
@@ -445,6 +447,54 @@ const es = {
     eyebrow: "EQUIPO · RESPONSABILIDAD Y CAPACIDAD",
     title: "Mapa de equipo y responsabilidades",
     body: "Hace visibles roles, vacantes, capacidad, RACI, incorporación, formación y recomendaciones de acceso sin convertir etiquetas en permisos.",
+    prerequisitePending:
+      "Abre primero el expediente de candidatura. La preparación del equipo se habilita en paralelo con la investigación.",
+    startEyebrow: "PREPARACIÓN PARALELA",
+    startTitle: "Elige una estructura para empezar a organizar la campaña",
+    startBody:
+      "Comienza con una estructura proporcional al tamaño real de la campaña. Después documenta funciones, vacantes, responsables y capacidad sin confundir cargos con permisos.",
+    organizationTemplate: "Modelo organizativo",
+    organizationTemplateHelp:
+      "Puedes ampliarlo después. Elegir una estructura no crea personas, cargos formales ni accesos.",
+    templateLabels: {
+      LEAN_CAMPAIGN: "Campaña compacta",
+      FULL_CAMPAIGN: "Campaña completa",
+      CUSTOM: "Estructura personalizada",
+    },
+    startAction: "Crear mapa de equipo",
+    roleEditorEyebrow: "FUNCIÓN Y RESULTADO",
+    roleEditorTitle: "Documenta la siguiente función que necesita la campaña",
+    roleEditorBody:
+      "Define qué debe lograr esta función y cómo sabremos que está cubierta. La persona responsable se asignará después mediante identidad gobernada.",
+    roleTitle: "Nombre de la función",
+    roleTitlePlaceholder: "Ej. Coordinación territorial",
+    roleArea: "Área",
+    roleAreaPlaceholder: "Ej. Territorio",
+    areaOptions: {
+      direction: "Dirección de campaña",
+      communication: "Comunicación",
+      territory: "Territorio",
+      legalFinance: "Legal y finanzas",
+      support: "Logística y apoyo",
+      warRoom: "War Room",
+    },
+    rolePurpose: "Resultado que debe producir",
+    rolePurposePlaceholder:
+      "Ej. Convertir el objetivo territorial en cobertura organizada y verificable.",
+    roleResponsibilities: "Responsabilidades principales",
+    roleResponsibilitiesPlaceholder:
+      "Diseñar coordinaciones\nDar seguimiento a cobertura\nEscalar bloqueos",
+    oneResponsibilityPerLine: "Una responsabilidad por línea. Máximo 20.",
+    vacancyPlan: "Plan para cubrir la función",
+    vacancyPlanPlaceholder:
+      "Define el perfil, el proceso de selección y la aprobación humana requerida.",
+    roleBoundary:
+      "Registrar una función no asigna a una persona, no crea membresías y no concede permisos. La vacante permanece visible hasta una asignación gobernada.",
+    addRoleAction: "Agregar función",
+    roleStatusLabels: {
+      FILLED: "Cubierta",
+      VACANT: "Vacante",
+    },
     status: "Estado organizacional",
     progress: "pasos completos",
     nextAction: "Siguiente acción humana",
@@ -828,6 +878,8 @@ const en: Dictionary = {
     intake_saved: "Changes saved with a new version.",
     candidate_started: "Candidate dossier created and ready for evidence.",
     candidate_evidence_saved: "Source added to the dossier with a new version.",
+    team_started: "Team map created and ready for role design.",
+    team_role_saved: "Function added to the team map with a new version.",
     authorization_denied: "This session lacks exact authorization for the action.",
     conflict: "The record changed or the request key was reused. Reload and review the version.",
     validation_error: "Review the fields and try again.",
@@ -1059,6 +1111,54 @@ const en: Dictionary = {
     eyebrow: "TEAM · ACCOUNTABILITY AND CAPACITY",
     title: "Team and accountability map",
     body: "Makes roles, vacancies, capacity, RACI, onboarding, training, and access recommendations visible without turning labels into permissions.",
+    prerequisitePending:
+      "Open the candidate dossier first. Team preparation then becomes available in parallel with research.",
+    startEyebrow: "PARALLEL PREPARATION",
+    startTitle: "Choose a structure to begin organizing the campaign",
+    startBody:
+      "Start with a structure proportional to the real campaign. Then document functions, vacancies, accountability, and capacity without confusing titles with permissions.",
+    organizationTemplate: "Organization model",
+    organizationTemplateHelp:
+      "You can expand it later. Selecting a structure creates no people, formal positions, or access.",
+    templateLabels: {
+      LEAN_CAMPAIGN: "Lean campaign",
+      FULL_CAMPAIGN: "Full campaign",
+      CUSTOM: "Custom structure",
+    },
+    startAction: "Create team map",
+    roleEditorEyebrow: "FUNCTION AND OUTCOME",
+    roleEditorTitle: "Document the next function the campaign needs",
+    roleEditorBody:
+      "Define what this function must achieve and how coverage will be recognized. A person is assigned later through governed identity.",
+    roleTitle: "Function name",
+    roleTitlePlaceholder: "Example: Field coordination",
+    roleArea: "Area",
+    roleAreaPlaceholder: "Example: Field",
+    areaOptions: {
+      direction: "Campaign leadership",
+      communication: "Communications",
+      territory: "Field",
+      legalFinance: "Legal and finance",
+      support: "Logistics and support",
+      warRoom: "War Room",
+    },
+    rolePurpose: "Outcome this function must produce",
+    rolePurposePlaceholder:
+      "Example: Turn the field objective into organized, verifiable coverage.",
+    roleResponsibilities: "Core responsibilities",
+    roleResponsibilitiesPlaceholder:
+      "Design coordination layers\nTrack coverage\nEscalate blockers",
+    oneResponsibilityPerLine: "One responsibility per line. Maximum 20.",
+    vacancyPlan: "Plan to fill the function",
+    vacancyPlanPlaceholder:
+      "Define the profile, selection process, and required human approval.",
+    roleBoundary:
+      "Registering a function assigns no person, creates no membership, and grants no permission. The vacancy remains visible until governed assignment.",
+    addRoleAction: "Add function",
+    roleStatusLabels: {
+      FILLED: "Filled",
+      VACANT: "Vacant",
+    },
     status: "Organizational status",
     progress: "checks complete",
     nextAction: "Next human action",

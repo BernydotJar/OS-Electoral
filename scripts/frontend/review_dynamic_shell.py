@@ -156,6 +156,8 @@ async def review() -> dict[str, object]:
             "CAMPAIGN_NAME_PRESENT",
             "IDENTITY_NOT_VERIFIED",
             "BIOGRAPHY_NOT_VERIFIED",
+            "ROLE_CARDS_MISSING",
+            "VACANCIES_UNASSESSED",
         ):
             require(internal_code not in visible_text, f"internal code leaked: {internal_code}")
 
