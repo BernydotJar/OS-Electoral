@@ -245,6 +245,7 @@ class TeamWorkspaceCreate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     organization_template: OrganizationTemplate
+    blueprint_locale: Literal["es", "en"] = "es"
 
 
 class TeamWorkspaceUpdate(BaseModel):

@@ -3,8 +3,8 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-25",
-  "branch": "agent/c3-front-006-cinematic-adaptive-journey",
-  "current_increment": "C3-FRONT-006",
+  "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
+  "current_increment": "C3-TEAM-002",
   "iteration_status": "ACTIVE",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CINEMATIC_ADAPTIVE_JOURNEY_CI_GREEN",
-      "next_increment": "C3-FRONT-006"
+      "status": "PROGRESSIVE_CINEMATIC_MISSION_TESTED_LOCAL",
+      "next_increment": "C3-TEAM-002"
     },
     {
       "id": "WS-07",
@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "TEAM_BUILDER_CI_GREEN",
-      "next_increment": "C3-TRAINING-001"
+      "status": "ROLE_BLUEPRINTS_TESTED_LOCAL",
+      "next_increment": "C3-TEAM-002"
     },
     {
       "id": "WS-09",
@@ -157,13 +157,13 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 708,
+    "tests_passed": 712,
     "tests_skipped": 10,
-    "coverage_percent": 90.4,
+    "coverage_percent": 90.42,
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_10_SLICES_REVISION_20260721_0011",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
-    "frontend_unit_tests": 48,
+    "frontend_unit_tests": 88,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
@@ -178,7 +178,7 @@
     "candidate_workspace_focused_tests": "PASS_42",
     "candidate_pr_ci": "PASS_PR_93_HEAD_A94AA0D_RUN_29868426699",
     "candidate_runtime_visual": "PASS_RUN_29868426740",
-    "team_workspace_focused_tests": "PASS_47",
+    "team_workspace_focused_tests": "PASS_50",
     "team_frontend_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_OVERFLOW",
     "team_frontend_image": "PASS_UID_10001_HEALTH_SMOKE",
     "operations_focused_tests": "PASS_34",
@@ -257,7 +257,7 @@
     "compose_current_workspace": "BLOCKED_DOCKER_COMPOSE_V2_UNAVAILABLE_V1_INCOMPATIBLE",
     "terraform_current_workspace": "BLOCKED_TERRAFORM_CLI_UNAVAILABLE_NO_INFRA_CHANGE",
     "supply_chain_current_worktree": "PASS",
-    "frontend_current_worktree": "PASS_60_TESTS_BUILD_ZERO_VULNERABILITIES",
+    "frontend_current_worktree": "PASS_88_TESTS_BUILD_ZERO_VULNERABILITIES",
     "gitleaks_current_worktree": "PASS_8_30_1_VERIFIED_CHECKSUM",
     "observability_pr_ci": "PASS_PR_114_HEAD_BF722EE8E672A9E89A7E74A47465A8E6287602C8_RUN_30041495912",
     "observability_runtime_visual": "PASS_RUN_30041495919",
@@ -300,7 +300,12 @@
     "front_006_runtime_visual": "PASS_RUN_30171986166",
     "front_006_compose_stack": "PASS_HOSTED_CI",
     "front_006_postgresql_runtime": "PASS_HOSTED_CI_POSTGRESQL_18_RLS_BACKUP_RESTORE",
-    "front_006_api_browser_journey": "PASS_HOSTED_CI"
+    "front_006_api_browser_journey": "PASS_HOSTED_CI",
+    "team_002_blueprints": "PASS_LEAN_5_FULL_8_CUSTOM_EMPTY_ES_EN",
+    "team_002_authority_boundary": "PASS_ALL_SEEDED_ROLES_VACANT_NO_PRINCIPAL_CAPACITY_PERMISSION",
+    "team_002_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_HINT_REDUCED_MOTION_WCAG_ZERO_AXE_NO_EXTERNAL_HOSTS",
+    "team_002_functional_browser": "BLOCKED_ENVIRONMENT_DOCKER_LAYER_LCHOWN_HOSTED_CI_REQUIRED",
+    "team_002_mobile_layout": "PASS_DEMO_SINGLE_COLUMN_FUNCTIONAL_HOSTED_CI_REQUIRED"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -340,16 +345,14 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-FRONT-006",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-front-006-cinematic-adaptive-journey",
-    "base": "agent/c3-front-005-team-organization-workflow@ecf1168c4ee9c6257596cccf4babbb7c040e6146",
-    "validated_implementation_head": "9d98f754924a94a1bfc5be190e8604d51673f99c",
-    "draft_pr": 121,
+    "id": "C3-TEAM-002",
+    "state": "TESTED_LOCAL",
+    "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
+    "base": "agent/c3-front-006-cinematic-adaptive-journey@427033c69cf8220821713a13a698232c3e033000",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "HUMAN_PRODUCT_REVIEW"
+    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",

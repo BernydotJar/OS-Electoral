@@ -18,7 +18,10 @@ describe("team workspace forms", () => {
     expect(parseTeamWorkspaceStartForm(form)).toEqual({
       locale: "es",
       idempotencyKey: "team-start-1234",
-      create: { organization_template: "LEAN_CAMPAIGN" },
+      create: {
+        organization_template: "LEAN_CAMPAIGN",
+        blueprint_locale: "es",
+      },
     });
   });
 

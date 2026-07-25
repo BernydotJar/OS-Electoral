@@ -52,6 +52,10 @@ export function CampaignExperienceHero({
     journey.phases.length === 0
       ? 0
       : (journey.completedPhaseCount / journey.phases.length) * 100;
+  const currentChapter = Math.max(
+    1,
+    journey.phases.findIndex((phase) => phase.key === currentPhase.key) + 1,
+  );
 
   return (
     <section
@@ -65,12 +69,28 @@ export function CampaignExperienceHero({
         <span className="experience-orbit experience-orbit-two" />
         <span className="experience-beacon" />
         <span className="experience-grid" />
+        <span className="experience-horizon-light" />
+        <span className="experience-aurora" />
+        <span className="experience-signal" />
       </div>
+
+      {!firstUse ? (
+        <span className="experience-chapter-mark" aria-hidden="true">
+          {String(currentChapter).padStart(2, "0")}
+        </span>
+      ) : null}
 
       <div className="experience-copy">
         <p className="eyebrow">{eyebrow}</p>
         <h1 id="experience-title">{title}</h1>
-        <p>{body}</p>
+        {firstUse ? (
+          <p>{body}</p>
+        ) : (
+          <details className="experience-hint">
+            <summary>{dictionary.journey.contextHintLabel}</summary>
+            <p>{body}</p>
+          </details>
+        )}
         <a href={actionHref}>
           <span>{action}</span>
           <span className="experience-arrow" aria-hidden="true">

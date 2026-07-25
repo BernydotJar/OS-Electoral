@@ -81,3 +81,18 @@ The backend supports exact-authorized create, read and update. The live shell no
 2. append a vacant function with area, purpose, responsibilities and a human vacancy plan.
 
 The UI deliberately creates no principal assignment, weekly capacity, onboarding completion, membership or permission. Personnel invitations, governed identity assignment, RACI, capacity assessment, training, access recommendation review, dedicated approvers and independent human acceptance remain future work.
+## Role blueprints
+
+`C3-TEAM-002` adds versioned, bilingual role blueprints at workspace creation time. They reduce blank-page setup without creating employment, identity, capacity, membership, permission, spending, publishing, contact or production authority.
+
+- `LEAN_CAMPAIGN` creates five editable vacant job descriptions: campaign direction, research and evidence, territory and organization, communication and narrative, and administration/legal/finance.
+- `FULL_CAMPAIGN` creates the eight CampaignOS operating stations: campaign leadership, electoral research, digital strategy, territory and mobilization, political content, paid media and distribution, storytelling/speech/media training, and tracking/risks/learning.
+- `CUSTOM` remains empty and imposes no structure.
+
+Every generated function contains a purpose, at least three responsibilities and a human coverage plan. Every generated function starts as `VACANT`, with no principal, no weekly capacity and no onboarding completion. The blueprint version and seeded role count are included in audit and internal outbox evidence.
+
+The visible role cards now render the job description, responsibilities and human coverage plan. A user may add another non-duplicate vacant function afterward through the existing optimistic-concurrency workflow.
+
+## Progressive campaign guidance
+
+Returning users see the active mission and primary action first. The explanatory paragraph is available through the keyboard-operable `Why this matters` / `Por qué importa` disclosure rather than repeating as open onboarding copy on every visit. The additional cinematic atmosphere is CSS-owned, loads no third-party media and is disabled under reduced-motion preference.

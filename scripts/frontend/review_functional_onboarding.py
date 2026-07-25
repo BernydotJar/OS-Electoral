@@ -243,9 +243,7 @@ async def review() -> dict[str, object]:
         )
 
         await page.get_by_label("Tipo de fuente").select_option("OFFICIAL_SOURCE")
-        await page.get_by_label("Título de la fuente").fill(
-            "Acuerdo de convocatoria electoral"
-        )
+        await page.get_by_label("Título de la fuente").fill("Acuerdo de convocatoria electoral")
         await page.get_by_label("Enlace verificable").fill(
             "https://example.test/convocatoria-electoral"
         )
@@ -266,13 +264,30 @@ async def review() -> dict[str, object]:
             "candidate evidence success notice missing",
         )
         require(
-            await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count()
-            >= 1,
+            await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence was not projected",
         )
         require(
             await page.get_by_role("button", name="Crear mapa de equipo").count() == 1,
             "parallel team preparation did not unlock",
+        )
+        template_guide = page.locator(".team-template-guide")
+        template_summary = template_guide.locator("summary")
+        await template_summary.focus()
+        require(
+            await page.evaluate(
+                "document.activeElement?.matches('.team-template-guide > summary')"
+            ),
+            "team template guide is not keyboard focusable",
+        )
+        await page.keyboard.press("Enter")
+        require(
+            await template_guide.evaluate("element => element.open"), "template guide did not open"
+        )
+        await page.keyboard.press("Enter")
+        require(
+            not await template_guide.evaluate("element => element.open"),
+            "template guide did not close",
         )
 
         await page.get_by_label("Modelo organizativo").select_option("LEAN_CAMPAIGN")
@@ -281,25 +296,49 @@ async def review() -> dict[str, object]:
         await page.wait_for_load_state("networkidle")
         require(
             await page.get_by_text(
-                "Mapa de equipo creado y listo para definir funciones.", exact=True
+                "Mapa de equipo creado con funciones iniciales listas para revisión.",
+                exact=True,
             ).count()
             == 1,
             "team start success notice missing",
+        )
+        require(
+            await page.locator(".team-role-grid article").count() == 5,
+            "lean campaign did not seed five role blueprints",
+        )
+        for seeded_title in (
+            "Dirección de campaña",
+            "Investigación y evidencia",
+            "Territorio y organización",
+            "Comunicación y narrativa",
+            "Administración, legal y finanzas",
+        ):
+            require(
+                await page.get_by_role("heading", name=seeded_title, exact=True).count() == 1,
+                f"seeded job description missing: {seeded_title}",
+            )
+        require(
+            await page.get_by_text("Responsabilidades del puesto", exact=True).count() == 5,
+            "seeded job responsibilities are not visible",
+        )
+        require(
+            await page.get_by_text("Plan humano de cobertura", exact=True).count() == 5,
+            "seeded human vacancy plans are not visible",
         )
         require(
             await page.get_by_role("button", name="Agregar función").count() == 1,
             "team role editor missing after map creation",
         )
 
-        await page.get_by_label("Nombre de la función").fill(
-            "Coordinación territorial"
-        )
-        await page.get_by_label("Área").fill("Territorio")
+        await page.get_by_label("Nombre de la función").fill("Coordinación de voluntariado")
+        await page.get_by_label("Área").fill("Logística y apoyo")
         await page.get_by_label("Resultado que debe producir").fill(
-            "Convertir el objetivo territorial en cobertura organizada y verificable."
+            "Convertir necesidades operativas aprobadas en turnos y cobertura verificables."
         )
         await page.get_by_label("Responsabilidades principales").fill(
-            "Diseñar coordinaciones\nDar seguimiento a cobertura\nEscalar bloqueos"
+            "Mantener necesidades de voluntariado\n"
+            "Coordinar turnos autorizados\n"
+            "Escalar brechas de cobertura"
         )
         await page.get_by_label("Plan para cubrir la función").fill(
             "Definir perfil, entrevistar responsables y aprobar la asignación humana."
@@ -316,8 +355,7 @@ async def review() -> dict[str, object]:
             "team role success notice missing",
         )
         require(
-            await page.get_by_text("Coordinación territorial", exact=True).count()
-            >= 1,
+            await page.get_by_text("Coordinación de voluntariado", exact=True).count() >= 1,
             "team role was not projected",
         )
         require(
@@ -335,13 +373,11 @@ async def review() -> dict[str, object]:
             "persisted value is absent from read projection",
         )
         require(
-            await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count()
-            >= 1,
+            await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence did not persist after reload",
         )
         require(
-            await page.get_by_text("Coordinación territorial", exact=True).count()
-            >= 1,
+            await page.get_by_text("Coordinación de voluntariado", exact=True).count() >= 1,
             "team role did not persist after reload",
         )
         await assert_no_overflow(page, "functional-desktop-es")
@@ -398,6 +434,13 @@ async def review() -> dict[str, object]:
             await mobile.get_by_role("button", name="Agregar función").count() == 1,
             "mobile team function editor is not functional",
         )
+        mobile_role_columns = await mobile.locator(".team-role-grid").evaluate(
+            "element => getComputedStyle(element).gridTemplateColumns.split(' ').length"
+        )
+        require(
+            mobile_role_columns == 1,
+            f"mobile role blueprints are not a single responsive column: {mobile_role_columns}",
+        )
         await mobile.screenshot(path=ARTIFACT_DIR / "functional-mobile-es.png", full_page=True)
         await browser.close()
 
@@ -407,6 +450,9 @@ async def review() -> dict[str, object]:
     result: dict[str, object] = {
         "status": "PASS",
         "journey": "campaign_foundation_candidate_evidence_and_team_map",
+        "role_blueprints": "PASS_LEAN_5_PLUS_CUSTOM_ROLE",
+        "keyboard_progressive_disclosure": "PASS",
+        "mobile_role_layout": "PASS_SINGLE_COLUMN",
         "persistence_after_reload": "PASS",
         "exact_authorization_controls": "PASS",
         "administration_placeholder": "ABSENT",

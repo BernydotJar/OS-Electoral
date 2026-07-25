@@ -88,10 +88,14 @@ export function parseTeamWorkspaceStartForm(
   if (!TEMPLATES.has(organizationTemplate)) {
     throw new TeamWorkspaceFormError("Organization template is invalid");
   }
+  const selectedLocale = locale(form);
   return {
-    locale: locale(form),
+    locale: selectedLocale,
     idempotencyKey: idempotencyKey(form),
-    create: { organization_template: organizationTemplate },
+    create: {
+      organization_template: organizationTemplate,
+      blueprint_locale: selectedLocale,
+    },
   };
 }
 

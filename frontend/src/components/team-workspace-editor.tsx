@@ -58,6 +58,25 @@ export function TeamWorkspaceEditor({
           </select>
           <small>{dictionary.teamWorkspace.organizationTemplateHelp}</small>
         </label>
+        <details className="team-template-guide">
+          <summary>{dictionary.teamWorkspace.templateGuideTitle}</summary>
+          <ul>
+            {Object.entries(dictionary.teamWorkspace.templateDescriptions).map(
+              ([template, description]) => (
+                <li key={template}>
+                  <strong>
+                    {
+                      dictionary.teamWorkspace.templateLabels[
+                        template as keyof typeof dictionary.teamWorkspace.templateLabels
+                      ]
+                    }
+                  </strong>
+                  <span>{description}</span>
+                </li>
+              ),
+            )}
+          </ul>
+        </details>
         <button type="submit">{dictionary.teamWorkspace.startAction}</button>
       </form>
     );

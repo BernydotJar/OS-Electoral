@@ -151,6 +151,7 @@ const es = {
     commandCenterLabel: "CENTRO DE MANDO",
     commandCenterAction: "Abrir operación diaria",
     progressLabel: "Progreso de la ruta de campaña",
+    contextHintLabel: "Por qué importa",
     stageLabel: "Etapa actual",
     completedLabel: "etapas completadas",
     missionLabel: "Tu misión ahora",
@@ -226,7 +227,7 @@ const es = {
     intake_saved: "Cambios guardados con nueva versión.",
     candidate_started: "Expediente de candidatura creado y listo para documentar.",
     candidate_evidence_saved: "Fuente incorporada al expediente con una nueva versión.",
-    team_started: "Mapa de equipo creado y listo para definir funciones.",
+    team_started: "Mapa de equipo creado con funciones iniciales listas para revisión.",
     team_role_saved: "Función incorporada al mapa de equipo con una nueva versión.",
     authorization_denied: "La sesión no tiene autorización exacta para esta acción.",
     conflict: "El registro cambió o la solicitud ya fue utilizada. Recarga y revisa la versión.",
@@ -469,6 +470,15 @@ const es = {
     organizationTemplate: "Modelo organizativo",
     organizationTemplateHelp:
       "Puedes ampliarlo después. Elegir una estructura no crea personas, cargos formales ni accesos.",
+    templateGuideTitle: "Qué incluye cada estructura",
+    templateDescriptions: {
+      LEAN_CAMPAIGN:
+        "Incluye 5 funciones esenciales con propósito, responsabilidades y plan humano para cubrir cada vacante.",
+      FULL_CAMPAIGN:
+        "Incluye las 8 estaciones operativas de CampaignOS como descripciones de puesto vacantes y editables.",
+      CUSTOM:
+        "Inicia sin funciones predeterminadas para que la organización sea definida completamente por el equipo.",
+    },
     templateLabels: {
       LEAN_CAMPAIGN: "Campaña compacta",
       FULL_CAMPAIGN: "Campaña completa",
@@ -514,7 +524,9 @@ const es = {
     authorityBoundary: "Las etiquetas de rol no son permisos",
     authorityBody:
       "Las recomendaciones de acceso requieren una autorización humana exacta y separada. Este espacio de trabajo no crea membresías, roles ni permisos.",
-    roles: "Roles",
+    roles: "Funciones y descripciones de puesto",
+    roleResponsibilitiesLabel: "Responsabilidades del puesto",
+    vacancyPlanLabel: "Plan humano de cobertura",
     filledRoles: "Roles cubiertos",
     vacantRoles: "Vacantes",
     capacity: "Capacidad semanal",
@@ -829,6 +841,7 @@ const en: Dictionary = {
     commandCenterLabel: "COMMAND CENTER",
     commandCenterAction: "Open daily operations",
     progressLabel: "Campaign path progress",
+    contextHintLabel: "Why this matters",
     stageLabel: "Current stage",
     completedLabel: "stages complete",
     missionLabel: "Your mission now",
@@ -904,7 +917,7 @@ const en: Dictionary = {
     intake_saved: "Changes saved with a new version.",
     candidate_started: "Candidate dossier created and ready for evidence.",
     candidate_evidence_saved: "Source added to the dossier with a new version.",
-    team_started: "Team map created and ready for role design.",
+    team_started: "Team map created with initial functions ready for review.",
     team_role_saved: "Function added to the team map with a new version.",
     authorization_denied: "This session lacks exact authorization for the action.",
     conflict: "The record changed or the request key was reused. Reload and review the version.",
@@ -1146,6 +1159,15 @@ const en: Dictionary = {
     organizationTemplate: "Organization model",
     organizationTemplateHelp:
       "You can expand it later. Selecting a structure creates no people, formal positions, or access.",
+    templateGuideTitle: "What each structure includes",
+    templateDescriptions: {
+      LEAN_CAMPAIGN:
+        "Includes 5 essential functions with purpose, responsibilities, and a human plan for each vacancy.",
+      FULL_CAMPAIGN:
+        "Includes the 8 CampaignOS operating stations as vacant, editable job descriptions.",
+      CUSTOM:
+        "Starts without predefined functions so the team can define the organization completely.",
+    },
     templateLabels: {
       LEAN_CAMPAIGN: "Lean campaign",
       FULL_CAMPAIGN: "Full campaign",
@@ -1191,7 +1213,9 @@ const en: Dictionary = {
     authorityBoundary: "Role labels are not permissions",
     authorityBody:
       "Access recommendations require a separate exact human authorization. This workspace creates no memberships, roles, or grants.",
-    roles: "Roles",
+    roles: "Functions and job descriptions",
+    roleResponsibilitiesLabel: "Job responsibilities",
+    vacancyPlanLabel: "Human coverage plan",
     filledRoles: "Filled roles",
     vacantRoles: "Vacancies",
     capacity: "Weekly capacity",

@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-25",
-  "branch": "agent/c3-front-006-cinematic-adaptive-journey",
+  "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -700,6 +700,36 @@
         "Human product review and merge remain required",
         "Full consultant portfolio mode and remaining campaign modules remain separate increments",
         "Staging and production remain separate costed human gates"
+      ]
+    },
+    {
+      "task_id": "C3-TEAM-002",
+      "owner": "WS-08/WS-06",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "backend/src/campaignos/teams/blueprints.py",
+        "backend/src/campaignos/teams/contracts.py",
+        "backend/src/campaignos/teams/service.py",
+        "backend/tests/test_team_role_blueprints.py",
+        "backend/tests/test_team_workspace_model.py",
+        "frontend/src/components/campaign-experience-hero.tsx",
+        "frontend/src/components/team-workspace-editor.tsx",
+        "frontend/src/components/campaign-journey-experience.test.ts",
+        "frontend/src/lib/team-workspace-form.ts",
+        "frontend/src/lib/team-workspace-form.test.ts",
+        "frontend/src/app/globals.css",
+        "scripts/frontend/review_dynamic_shell.py",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/product/team-workspace.md",
+        "docs/api/team-workspace.md",
+        "docs/testing/c3-team-002-evidence.md",
+        "program/iterations/c3-team-002.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted PostgreSQL/browser CI and human product review remain required",
+        "Personnel assignment, RACI, capacity, training and access review remain separate increments",
+        "Staging, deployment and production approval remain separate human gates"
       ]
     }
   ]
