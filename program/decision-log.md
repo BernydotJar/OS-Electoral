@@ -351,3 +351,12 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: failed CI `30131032815`, successful replacement CI `30131521614`, `frontend/vendor/brace-expansion-compat`, `make frontend-verify`, npm audit with zero findings.
 - `rationale`: ESLint 10 was outside current plugin peer ranges, while direct use of brace-expansion 5 broke minimatch 3 because its CommonJS export shape changed. The shim remediates the advisory without suppressing audit or forcing an unsupported toolchain.
 - `consequences`: Remove the shim when all locked upstream consumers support a patched release directly; every change must preserve lint, typecheck, tests, build and zero-vulnerability audit evidence.
+
+## DEC-2026-07-24-005 — Local functional ports adapt without weakening service boundaries
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-DEVEX-001 / local functional journey`
+- `decision`: Preserve each configured loopback port when available, but replace any occupied or duplicate PostgreSQL, API, S3Mock, Mailpit or Next.js port with a unique ephemeral loopback port before starting the local functional stack.
+- `evidence`: `scripts/dev/resolve_local_ports.py`, `backend/tests/test_resolve_local_ports.py`, `docs/testing/c3-devex-port-collision-evidence.md`.
+- `rationale`: A developer may already run PostgreSQL or another service on a conventional port. The one-command product journey must remain reproducible without requiring the user to stop unrelated local software or manually coordinate five port overrides.
+- `consequences`: Effective ports are printed and propagated to every dependent process. Named volumes are preserved, shared/production configuration is unchanged, and this local convenience grants no deployment or political execution authority.

@@ -483,3 +483,12 @@
 - Added an auditable CommonJS compatibility shim delegating to patched `brace-expansion@5.0.8`; `make frontend-verify` reports 60 tests and zero npm vulnerabilities.
 - Exact-head CI `30131521614` and visual review `30131521581` passed at `2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76` with all 12 displayed checks green.
 - Production remains `BLOCKED`; no staging environment, infrastructure apply, deployment, spending or external political effect occurred.
+
+## 2026-07-24 — C3-DEVEX-001 local port-collision hardening
+
+- Reproduced the user-reported functional startup failure caused by an occupied loopback PostgreSQL port `5432`.
+- Added a tested resolver that preserves available configured ports and replaces occupied or duplicate API, PostgreSQL, S3Mock, Mailpit and frontend ports with unique ephemeral loopback ports.
+- Propagated the effective ports through Docker Compose, the PostgreSQL seed URL, the API base URL and the Next.js CLI; the command now prints every effective endpoint.
+- Passed 10 focused tests, 708 full-suite tests, 10 controlled skips, 90.40% coverage, strict mypy, Ruff, 60 frontend tests, production build, zero-vulnerability npm audit, supply-chain policy and all program validators.
+- Docker Compose and Terraform CLIs are absent from the implementation sandbox; exact-head CI remains required for those integration gates.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, named volumes remain preserved and external effects remain `NONE`.
