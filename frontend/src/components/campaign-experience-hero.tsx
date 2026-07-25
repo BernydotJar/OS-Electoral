@@ -1,5 +1,10 @@
+import type { CSSProperties } from "react";
+
 import type { CampaignExperienceMode } from "@/lib/campaign-experience";
-import type { CampaignJourneyPhase } from "@/lib/campaign-journey";
+import type {
+  CampaignJourney,
+  CampaignJourneyPhase,
+} from "@/lib/campaign-journey";
 import type { Dictionary } from "@/lib/i18n";
 
 export function CampaignExperienceHero({
@@ -7,14 +12,17 @@ export function CampaignExperienceHero({
   mode,
   campaignName,
   currentPhase,
+  journey,
 }: Readonly<{
   dictionary: Dictionary;
   mode: CampaignExperienceMode;
   campaignName: string;
   currentPhase: CampaignJourneyPhase;
+  journey: CampaignJourney;
 }>) {
   const firstUse = mode === "FIRST_USE";
   const complete = mode === "COMPLETE";
+  const layout = firstUse ? "opening" : complete ? "command" : "mission";
   const title = firstUse
     ? dictionary.journey.firstUseTitle
     : complete
@@ -32,30 +40,86 @@ export function CampaignExperienceHero({
       : dictionary.journey.activeEyebrow;
   const action = firstUse
     ? dictionary.journey.firstUseAction
-    : dictionary.journey.resumeAction;
+    : complete
+      ? dictionary.journey.commandCenterAction
+      : dictionary.journey.resumeAction;
+  const actionHref = firstUse
+    ? "#guided-intake"
+    : complete
+      ? "#war-room"
+      : currentPhase.href;
+  const progress =
+    journey.phases.length === 0
+      ? 0
+      : (journey.completedPhaseCount / journey.phases.length) * 100;
 
   return (
-    <section className="campaign-experience" data-mode={mode} aria-labelledby="experience-title">
+    <section
+      className="campaign-experience"
+      data-mode={mode}
+      data-layout={layout}
+      aria-labelledby="experience-title"
+    >
       <div className="experience-atmosphere" aria-hidden="true">
-        <span />
-        <span />
-        <span />
+        <span className="experience-orbit experience-orbit-one" />
+        <span className="experience-orbit experience-orbit-two" />
+        <span className="experience-beacon" />
+        <span className="experience-grid" />
       </div>
+
       <div className="experience-copy">
         <p className="eyebrow">{eyebrow}</p>
         <h1 id="experience-title">{title}</h1>
         <p>{body}</p>
-        <a href={firstUse ? "#guided-intake" : currentPhase.href}>
+        <a href={actionHref}>
           <span>{action}</span>
-          <span className="experience-arrow" aria-hidden="true">→</span>
+          <span className="experience-arrow" aria-hidden="true">
+            →
+          </span>
         </a>
       </div>
-      <div className="experience-context" aria-label={dictionary.journey.progressLabel}>
-        <span>{dictionary.shell.campaign}</span>
+
+      {firstUse ? (
+        <div className="experience-storyboard" aria-hidden="true">
+          {journey.phases.map((phase, index) => (
+            <span
+              key={phase.key}
+              data-scene={phase.key}
+              style={{ "--scene-index": index } as CSSProperties}
+            >
+              <i />
+              {dictionary.journey.sceneLabels[phase.key]}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
+      <div
+        className="experience-context"
+        aria-label={dictionary.journey.progressLabel}
+      >
+        <span>
+          {complete
+            ? dictionary.journey.commandCenterLabel
+            : dictionary.shell.campaign}
+        </span>
         <strong>{campaignName}</strong>
         <small>
-          {dictionary.journey.phaseLabels[currentPhase.key]} · {dictionary.journey.statusLabels[currentPhase.state]}
+          {dictionary.journey.phaseLabels[currentPhase.key]} ·{" "}
+          {dictionary.journey.statusLabels[currentPhase.state]}
         </small>
+        <div
+          className="experience-progress"
+          role="progressbar"
+          aria-label={dictionary.journey.progressLabel}
+          aria-valuemin={0}
+          aria-valuemax={journey.phases.length}
+          aria-valuenow={journey.completedPhaseCount}
+        >
+          <span
+            style={{ "--journey-progress": `${progress}%` } as CSSProperties}
+          />
+        </div>
       </div>
     </section>
   );

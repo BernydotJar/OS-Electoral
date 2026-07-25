@@ -148,12 +148,18 @@ const es = {
     completeTitle: "La campaña ya tiene un sistema de trabajo verificable",
     completeBody:
       "La ruta está completa, pero las decisiones, revisiones y efectos externos continúan bajo autoridad humana.",
+    commandCenterLabel: "CENTRO DE MANDO",
+    commandCenterAction: "Abrir operación diaria",
     progressLabel: "Progreso de la ruta de campaña",
     stageLabel: "Etapa actual",
     completedLabel: "etapas completadas",
     missionLabel: "Tu misión ahora",
+    chapterLabel: "CAPÍTULO",
     openPhase: "Ver etapa",
     blockedAction: "Requiere habilitación o acceso adicional",
+    blockedTitle: "Esta etapa todavía no está disponible",
+    blockedBody:
+      "Completa el paso anterior o solicita a tu consultor el permiso exacto para continuar.",
     boundary:
       "La ruta orienta y organiza. No autoriza publicaciones, contacto ciudadano, gasto, movilización ni producción.",
     statusLabels: {
@@ -195,6 +201,13 @@ const es = {
       team: "Revisar equipo y responsabilidades",
       strategy: "Abrir sala de estrategia",
       operations: "Abrir operación diaria",
+    },
+    sceneLabels: {
+      foundation: "Territorio",
+      evidence: "Evidencia",
+      team: "Equipo",
+      strategy: "Estrategia",
+      operations: "Operación",
     },
   },
   campaigns: {
@@ -813,12 +826,18 @@ const en: Dictionary = {
     completeTitle: "The campaign now has a verifiable operating system",
     completeBody:
       "The path is complete, while decisions, reviews, and external effects remain under human authority.",
+    commandCenterLabel: "COMMAND CENTER",
+    commandCenterAction: "Open daily operations",
     progressLabel: "Campaign path progress",
     stageLabel: "Current stage",
     completedLabel: "stages complete",
     missionLabel: "Your mission now",
+    chapterLabel: "CHAPTER",
     openPhase: "View stage",
     blockedAction: "Requires additional access or enablement",
+    blockedTitle: "This stage is not available yet",
+    blockedBody:
+      "Complete the previous step or ask your consultant for the exact permission required to continue.",
     boundary:
       "The path guides and organizes. It does not authorize publication, citizen contact, spending, mobilization, or production.",
     statusLabels: {
@@ -860,6 +879,13 @@ const en: Dictionary = {
       team: "Review team and responsibilities",
       strategy: "Open the strategy room",
       operations: "Open daily operations",
+    },
+    sceneLabels: {
+      foundation: "Territory",
+      evidence: "Evidence",
+      team: "Team",
+      strategy: "Strategy",
+      operations: "Operations",
     },
   },
   campaigns: {
