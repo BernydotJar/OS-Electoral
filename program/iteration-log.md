@@ -558,3 +558,13 @@
 - Passed five focused rendering tests, 88 frontend tests, lint, strict TypeScript, production build, zero-vulnerability npm audit and ES/EN/mobile browser review with zero axe violations and no external hosts.
 - Local Docker functional execution remains an environment limitation at image-layer `lchown /var/empty`; exact-head hosted CI is required.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+
+## 2026-07-25 — C3-FRONT-006 exact-head CI-green checkpoint
+
+- Published implementation head `9d98f754924a94a1bfc5be190e8604d51673f99c` in stacked draft PR `#121`.
+- CampaignOS CI `30171986190` and Runtime Visual Review `30171986166` passed all 12 displayed checks.
+- Hosted CI proved Compose, PostgreSQL 18 migrations/RLS, backup/restore, the API-backed browser journey, CodeQL, Terraform, secret/dependency scans and supply-chain evidence.
+- Retained frontend, recovery, supply-chain, visual and Gitleaks artifacts with recorded SHA-256 digests.
+- Marked `C3-FRONT-006` `CI_GREEN`; review order remains PR `#118`, PR `#119`, PR `#120`, then PR `#121`.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

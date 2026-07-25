@@ -51,13 +51,13 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CINEMATIC_ADAPTIVE_JOURNEY_ACTIVE",
+      "status": "CINEMATIC_ADAPTIVE_JOURNEY_CI_GREEN",
       "next_increment": "C3-FRONT-006"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CAMPAIGN_CHAPTER_EXPERIENCE_ACTIVE",
+      "status": "CAMPAIGN_CHAPTER_EXPERIENCE_CI_GREEN",
       "next_increment": "C3-FRONT-006"
     },
     {
@@ -111,14 +111,14 @@
   ],
   "ready_tasks": [],
   "published_unreviewed_increment": {
-    "id": "C3-FRONT-005",
+    "id": "C3-FRONT-006",
     "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-front-005-team-organization-workflow",
-    "base": "agent/c3-front-004-candidate-evidence-workflow",
-    "validated_implementation_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146",
-    "draft_pr": 120,
-    "ci_run_id": 30167135593,
-    "visual_run_id": 30167135592,
+    "branch": "agent/c3-front-006-cinematic-adaptive-journey",
+    "base": "agent/c3-front-005-team-organization-workflow",
+    "validated_implementation_head": "9d98f754924a94a1bfc5be190e8604d51673f99c",
+    "draft_pr": 121,
+    "ci_run_id": 30171986190,
+    "visual_run_id": 30171986166,
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE"
   },
@@ -146,6 +146,14 @@
       "base": "agent/c3-front-004-candidate-evidence-workflow",
       "state": "DRAFT_PR_CI_GREEN",
       "delivered_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146"
+    },
+    {
+      "increment": "C3-FRONT-006",
+      "pr": 121,
+      "branch": "agent/c3-front-006-cinematic-adaptive-journey",
+      "base": "agent/c3-front-005-team-organization-workflow",
+      "state": "DRAFT_PR_CI_GREEN",
+      "delivered_head": "9d98f754924a94a1bfc5be190e8604d51673f99c"
     }
   ],
   "local_verification": {
@@ -287,7 +295,12 @@
     "front_006_frontend_tests": 88,
     "front_006_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE_NO_EXTERNAL_HOSTS",
     "front_006_dependency_audit": "PASS_ZERO_VULNERABILITIES",
-    "front_006_functional_browser": "BLOCKED_ENVIRONMENT_DOCKER_LAYER_LCHOWN_HOSTED_CI_REQUIRED"
+    "front_006_functional_browser": "BLOCKED_ENVIRONMENT_DOCKER_LAYER_LCHOWN_HOSTED_CI_REQUIRED",
+    "front_006_pr_ci": "PASS_PR_121_HEAD_9D98F754924A94A1BFC5BE190E8604D51673F99C_RUN_30171986190",
+    "front_006_runtime_visual": "PASS_RUN_30171986166",
+    "front_006_compose_stack": "PASS_HOSTED_CI",
+    "front_006_postgresql_runtime": "PASS_HOSTED_CI_POSTGRESQL_18_RLS_BACKUP_RESTORE",
+    "front_006_api_browser_journey": "PASS_HOSTED_CI"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -328,13 +341,15 @@
   },
   "active_local_increment": {
     "id": "C3-FRONT-006",
-    "state": "TESTED_LOCAL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-front-006-cinematic-adaptive-journey",
     "base": "agent/c3-front-005-team-organization-workflow@ecf1168c4ee9c6257596cccf4babbb7c040e6146",
+    "validated_implementation_head": "9d98f754924a94a1bfc5be190e8604d51673f99c",
+    "draft_pr": 121,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
+    "next_action": "HUMAN_PRODUCT_REVIEW"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -347,25 +362,27 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-FRONT-005",
-    "branch": "agent/c3-front-005-team-organization-workflow",
-    "validated_implementation_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146",
-    "draft_pr": 120,
+    "id": "C3-FRONT-006",
+    "branch": "agent/c3-front-006-cinematic-adaptive-journey",
+    "validated_implementation_head": "9d98f754924a94a1bfc5be190e8604d51673f99c",
+    "draft_pr": 121,
     "status": "CI_GREEN",
-    "ci_run_id": 30167135593,
-    "visual_run_id": 30167135592,
-    "quality_job_id": 89701975377,
-    "recovery_job_id": 89701975364,
-    "recovery_artifact_id": 8621892887,
-    "recovery_artifact_digest": "sha256:90a21611ce4285b8b426d724be93ef5d412adc6ec777f03a4e3f186b9932989c",
-    "supply_chain_artifact_id": 8621889767,
-    "supply_chain_artifact_digest": "sha256:d756bbdd53c0c3eb79754ef5472e5195cc3c1b004c5b0881a4fc6888c58ff534",
-    "frontend_artifact_id": 8621911493,
-    "frontend_artifact_digest": "sha256:8824514e50157cfdb97d04bac350b1b1714fe2e704a743a3d325075d89e75c01",
-    "visual_artifact_id": 8621898516,
-    "visual_artifact_digest": "sha256:dfcdf2633734e36825142e5035774307adc95eca78453775f445c222527acbf3",
-    "gitleaks_artifact_id": 8621890021,
-    "gitleaks_artifact_digest": "sha256:f58cfee4390d28a03a13813a10f79036b6ca7bb6c7557cb8abaeac84b1b89135",
+    "ci_run_id": 30171986190,
+    "visual_run_id": 30171986166,
+    "quality_job_id": 89714555601,
+    "frontend_job_id": 89714555597,
+    "visual_job_id": 89714555392,
+    "recovery_job_id": 89714555628,
+    "recovery_artifact_id": 8623170114,
+    "recovery_artifact_digest": "sha256:d59653d8afaf0f050135e9d609b4979c34cbeea4f6c009087492a5b2c6d96d61",
+    "supply_chain_artifact_id": 8623166403,
+    "supply_chain_artifact_digest": "sha256:54780ffd3f86566189667d0d3b5088caceacac55efcb55e3fd0e16c303fdaa4b",
+    "frontend_artifact_id": 8623189216,
+    "frontend_artifact_digest": "sha256:aa7767d6e71af1c2cddb638c6d932490368508546df18b301734d2574426ff9d",
+    "visual_artifact_id": 8623173264,
+    "visual_artifact_digest": "sha256:cbf3c05fd5db4e9f713bcfd3976f21c07f299c5758bf4e63df7883f93d847d3f",
+    "gitleaks_artifact_id": 8623165429,
+    "gitleaks_artifact_digest": "sha256:bc124487f37b49f3462a6f7bce4b011eb1fe3ee1e9d3d6193b0dd9cb9888ab0a",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",

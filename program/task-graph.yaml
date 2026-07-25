@@ -278,7 +278,7 @@
       "id": "C3-FRONT-006",
       "workstream": "WS-06",
       "title": "Cinematic adaptive campaign journey and chapter navigation",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-005"
       ]
