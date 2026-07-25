@@ -11,8 +11,10 @@ import type {
   CandidateReputationRisk,
   CandidateSection,
   CandidateWorkspaceCheck,
+  CandidateWorkspaceCreateEvidence,
   CandidateWorkspaceProjection,
   CandidateWorkspaceReadEvidence,
+  CandidateWorkspaceUpdateEvidence,
 } from "@/lib/contracts";
 
 const UUID_PATTERN =
@@ -946,4 +948,36 @@ export function parseCandidateWorkspaceReadEvidence(
       "candidate workspace evidence.audit_event_id",
     ),
   };
+}
+
+
+function parseCandidateWorkspaceMutationEvidence(
+  value: unknown,
+  label: string,
+): CandidateWorkspaceCreateEvidence {
+  const source = record(value, label);
+  exactKeys(source, ["workspace", "audit_event_id", "outbox_event_id"], label);
+  return {
+    workspace: parseProjection(source.workspace),
+    audit_event_id: uuid(source.audit_event_id, `${label}.audit_event_id`),
+    outbox_event_id: uuid(source.outbox_event_id, `${label}.outbox_event_id`),
+  };
+}
+
+export function parseCandidateWorkspaceCreateEvidence(
+  value: unknown,
+): CandidateWorkspaceCreateEvidence {
+  return parseCandidateWorkspaceMutationEvidence(
+    value,
+    "candidate workspace create evidence",
+  );
+}
+
+export function parseCandidateWorkspaceUpdateEvidence(
+  value: unknown,
+): CandidateWorkspaceUpdateEvidence {
+  return parseCandidateWorkspaceMutationEvidence(
+    value,
+    "candidate workspace update evidence",
+  );
 }

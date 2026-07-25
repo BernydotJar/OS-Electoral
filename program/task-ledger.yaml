@@ -618,6 +618,36 @@
         "No approved staging environment or managed runtime exists",
         "No independent security, privacy, legal, operational or explicit human production approval exists"
       ]
+    },
+    {
+      "task_id": "C3-FRONT-004",
+      "owner": "WS-06",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "frontend/src/lib/campaign-experience.ts",
+        "frontend/src/lib/campaign-experience.test.ts",
+        "frontend/src/components/campaign-experience-hero.tsx",
+        "frontend/src/components/candidate-workspace-editor.tsx",
+        "frontend/src/lib/candidate-workspace-form.ts",
+        "frontend/src/lib/candidate-workspace-form.test.ts",
+        "frontend/src/app/api/ui/candidate-workspace/start/route.ts",
+        "frontend/src/app/api/ui/candidate-workspace/evidence/route.ts",
+        "scripts/dev/seed_local_operator.py",
+        "backend/tests/test_local_operator_seed.py",
+        "scripts/frontend/review_dynamic_shell.py",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/product/candidate-workspace.md",
+        "docs/product/campaign-launch-roadmap.md",
+        "docs/testing/c3-front-004-evidence.md",
+        "program/iterations/c3-front-004.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted CI and visual review remain pending",
+        "Human product review and merge remain required",
+        "Claim approval, team, strategy and operations mutation journeys remain incomplete",
+        "Staging and production remain separate costed human gates"
+      ]
     }
   ]
 }

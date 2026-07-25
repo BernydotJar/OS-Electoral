@@ -125,8 +125,17 @@ async def review() -> dict[str, object]:
             "non-functional Administration navigation is still visible",
         )
         require(
-            await page.get_by_role("link", name="Candidatura").count() == 0,
-            "ungranted candidate module is visible",
+            await page.get_by_role("link", name="Candidatura").count() == 1,
+            "granted candidate module is not visible",
+        )
+        require(
+            await page.get_by_role("heading", level=1).inner_text()
+            == "Convierte una idea política en una campaña que sabe avanzar",
+            "first-use campaign welcome is missing",
+        )
+        require(
+            await page.get_by_role("button", name="Crear expediente").count() == 0,
+            "candidate dossier was exposed before the foundation gate",
         )
         require(
             await page.get_by_role("heading", name="Tu campaña, paso a paso").count() == 1,
@@ -137,6 +146,8 @@ async def review() -> dict[str, object]:
             "OPERATIONAL SETUP ONLY",
             "BEGIN_GUIDED_INTAKE",
             "CAMPAIGN_NAME_PRESENT",
+            "IDENTITY_NOT_VERIFIED",
+            "BIOGRAPHY_NOT_VERIFIED",
         ):
             require(internal_code not in visible_text, f"internal code leaked: {internal_code}")
         require(
@@ -203,6 +214,60 @@ async def review() -> dict[str, object]:
             await page.get_by_label("Estado del presupuesto").input_value() == "ROUGH_RANGE",
             "saved budget was not projected",
         )
+        require(
+            await page.get_by_role("heading", level=1).inner_text()
+            == "Conocer la candidatura y el territorio",
+            "active mission did not advance to candidate evidence",
+        )
+        require(
+            await page.get_by_role("button", name="Crear expediente").count() == 1,
+            "candidate dossier start control did not unlock",
+        )
+
+        await page.get_by_label("Nombre público de la candidatura").fill("Ana Pérez")
+        await page.get_by_role("button", name="Crear expediente").click()
+        await page.wait_for_url("**notice=candidate_started**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Expediente de candidatura creado y listo para documentar.", exact=True
+            ).count()
+            == 1,
+            "candidate start success notice missing",
+        )
+        require(
+            await page.get_by_role("button", name="Agregar fuente").count() == 1,
+            "candidate evidence editor missing after dossier creation",
+        )
+
+        await page.get_by_label("Tipo de fuente").select_option("OFFICIAL_SOURCE")
+        await page.get_by_label("Título de la fuente").fill(
+            "Acuerdo de convocatoria electoral"
+        )
+        await page.get_by_label("Enlace verificable").fill(
+            "https://example.test/convocatoria-electoral"
+        )
+        await page.get_by_label("Autoridad o institución").fill("Tribunal Electoral")
+        await page.get_by_label("Jurisdicción").fill("Guatemala")
+        await page.get_by_label("Fecha observada").fill("2026-07-24")
+        await page.get_by_label("Nota de relevancia").fill(
+            "Confirma el calendario oficial; todavía requiere contraste jurídico."
+        )
+        await page.get_by_role("button", name="Agregar fuente").click()
+        await page.wait_for_url("**notice=candidate_evidence_saved**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Fuente incorporada al expediente con una nueva versión.", exact=True
+            ).count()
+            == 1,
+            "candidate evidence success notice missing",
+        )
+        require(
+            await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count()
+            >= 1,
+            "candidate evidence was not projected",
+        )
 
         await page.reload(wait_until="networkidle")
         require(
@@ -212,6 +277,11 @@ async def review() -> dict[str, object]:
         require(
             await page.get_by_text("Alcaldía Municipal", exact=True).count() >= 1,
             "persisted value is absent from read projection",
+        )
+        require(
+            await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count()
+            >= 1,
+            "candidate evidence did not persist after reload",
         )
         await assert_no_overflow(page, "functional-desktop-es")
         await assert_accessible(page, "functional-desktop-es")
@@ -235,6 +305,10 @@ async def review() -> dict[str, object]:
             await english.get_by_role("link", name="Administration").count() == 0,
             "Administration placeholder is visible in English",
         )
+        require(
+            await english.get_by_role("button", name="Add source").count() == 1,
+            "English candidate evidence editor is unavailable",
+        )
         await assert_no_overflow(english, "functional-desktop-en")
         await assert_accessible(english, "functional-desktop-en")
         await english.screenshot(path=ARTIFACT_DIR / "functional-desktop-en.png", full_page=True)
@@ -249,7 +323,11 @@ async def review() -> dict[str, object]:
         await assert_accessible(mobile, "functional-mobile-es")
         require(
             await mobile.get_by_role("button", name="Guardar cambios").count() == 1,
-            "mobile editor is not functional",
+            "mobile intake editor is not functional",
+        )
+        require(
+            await mobile.get_by_role("button", name="Agregar fuente").count() == 1,
+            "mobile candidate evidence editor is not functional",
         )
         await mobile.screenshot(path=ARTIFACT_DIR / "functional-mobile-es.png", full_page=True)
         await browser.close()
@@ -259,7 +337,7 @@ async def review() -> dict[str, object]:
     require(not unexpected_hosts, f"unexpected outbound hosts: {unexpected_hosts}")
     result: dict[str, object] = {
         "status": "PASS",
-        "journey": "campaign_select_start_and_update_guided_intake",
+        "journey": "campaign_foundation_candidate_dossier_and_evidence",
         "persistence_after_reload": "PASS",
         "exact_authorization_controls": "PASS",
         "administration_placeholder": "ABSENT",

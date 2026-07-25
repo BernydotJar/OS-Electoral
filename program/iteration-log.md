@@ -510,3 +510,13 @@
 - Retained exact-head recovery, supply-chain, frontend and visual artifacts with recorded SHA-256 digests.
 - Marked `C3-FRONT-003` `CI_GREEN` while preserving human product review, merge, staging, deployment and production approval as separate gates.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-25 — C3-FRONT-004 adaptive entry and candidate evidence local checkpoint
+
+- Replaced the repeating generic hero with persisted `FIRST_USE`, `ACTIVE` and `COMPLETE` campaign-entry modes.
+- Added an owned cinematic atmosphere without third-party media, browser storage or outbound requests.
+- Made the candidate-evidence stage actionable only after guided intake reaches `READY_FOR_RESEARCH` and exact create/read/update grants are present.
+- Added candidate dossier creation and provenance-preserving source registration with HTTPS validation, idempotency, optimistic concurrency and duplicate rejection.
+- Extended only the deterministic local-development operator seed from five to eight exact bounded grants; production permissions remain unchanged.
+- Passed 76 frontend tests, two seed tests, lint, strict TypeScript, production build, zero-vulnerability npm audit, ES/EN/mobile demo review and the real PostgreSQL foundation-to-candidate evidence journey with zero axe violations.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`; exact-head CI, human review and merge remain pending.

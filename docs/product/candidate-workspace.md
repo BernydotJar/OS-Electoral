@@ -7,12 +7,12 @@ The candidate workspace is an internal, evidence-governed surface for understand
 Primary users are candidates, campaign directors, political advisers and authorized reviewers. Their job is to build a verifiable internal record and decide what still requires evidence or development. The workspace is designed for non-technical users and presents an ordered executive route rather than a generic profile or score.
 
 ```yaml
-design_variance: 4
-motion_intensity: 2
-visual_density: 7
+design_variance: 7
+motion_intensity: 5
+visual_density: 5
 ```
 
-The current dynamic shell is read-only, responsive and bilingual. It preserves technical reason codes and audit receipts as secondary evidence while using plain-language labels for the primary journey.
+The shell is responsive and bilingual. In an exactly authorized live session it can create the dossier and append one provenance-preserving source at a time. Demo mode remains read-only. Technical reason codes stay in contracts and tests rather than the primary user journey; audit receipts remain secondary evidence.
 
 ## Canonical sections
 
@@ -88,6 +88,11 @@ The workspace does not:
 - call an external AI, research provider or publication system;
 - replace legal, political, security or communications review.
 
-## Current limitation
+## Current implemented write path
 
-The backend supports exact-authorized create/read/update and current-version section approval. The current shell displays a verified read-only executive projection. Authenticated editing, dedicated reviewer assignment, human user-acceptance testing and live identity/environment evidence remain future work.
+The backend supports exact-authorized create/read/update and current-version section approval. The live shell now supports two bounded operations:
+
+1. create the candidate dossier after guided intake is ready for research;
+2. append a source classified as official, campaign research, perception, hypothesis or unknown, preserving HTTPS reference, authority, jurisdiction, date, note, version and idempotency.
+
+These operations do not verify a claim or approve a section. Editing claims, biography, purpose, values, attributes, contradictions, development goals, reputation risks, reviewer assignment and approval disposition remain future governed work. Live identity/environment evidence and independent human acceptance also remain pending.

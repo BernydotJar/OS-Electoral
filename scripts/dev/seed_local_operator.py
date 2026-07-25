@@ -31,6 +31,9 @@ PRINCIPAL_ID = UUID("77777777-7777-4777-8777-777777777777")
 INTAKE_CREATE_GRANT_ID = UUID("88888888-8888-4888-8888-888888888888")
 INTAKE_READ_GRANT_ID = UUID("99999999-9999-4999-8999-999999999999")
 INTAKE_UPDATE_GRANT_ID = UUID("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
+CANDIDATE_CREATE_GRANT_ID = UUID("cccccccc-cccc-4ccc-8ccc-cccccccccccc")
+CANDIDATE_READ_GRANT_ID = UUID("dddddddd-dddd-4ddd-8ddd-dddddddddddd")
+CANDIDATE_UPDATE_GRANT_ID = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee")
 WORKSPACE_ID = UUID("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
 
 DEVELOPMENT_ISSUER = "urn:campaignos:development"
@@ -81,6 +84,27 @@ GRANTS = (
         "guided_intake",
         str(CAMPAIGN_ID),
         "Maintain guided campaign intake",
+    ),
+    GrantSpec(
+        CANDIDATE_CREATE_GRANT_ID,
+        "create",
+        "candidate_workspace",
+        str(CAMPAIGN_ID),
+        "Create candidate evidence workspace",
+    ),
+    GrantSpec(
+        CANDIDATE_READ_GRANT_ID,
+        "read",
+        "candidate_workspace",
+        str(CAMPAIGN_ID),
+        "Review candidate evidence workspace",
+    ),
+    GrantSpec(
+        CANDIDATE_UPDATE_GRANT_ID,
+        "update",
+        "candidate_workspace",
+        str(CAMPAIGN_ID),
+        "Maintain candidate evidence workspace",
     ),
 )
 
@@ -259,7 +283,7 @@ def main() -> int:
         engine.dispose()
     print(
         "[OK] Local operator seeded; tenant=11111111-1111-4111-8111-111111111111; "
-        "campaign=22222222-2222-4222-8222-222222222222; exact_grants=5"
+        "campaign=22222222-2222-4222-8222-222222222222; exact_grants=8"
     )
     return 0
 

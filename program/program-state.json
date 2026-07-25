@@ -3,9 +3,9 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-25",
-  "branch": "agent/c3-front-003-campaign-launch-roadmap",
-  "current_increment": "C3-FRONT-003",
-  "iteration_status": "CI_GREEN",
+  "branch": "agent/c3-front-004-candidate-evidence-workflow",
+  "current_increment": "C3-FRONT-004",
+  "iteration_status": "ACTIVE",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,14 +51,14 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CAMPAIGN_LAUNCH_ROADMAP_CI_GREEN",
-      "next_increment": "C3-FRONT-003"
+      "status": "ADAPTIVE_CANDIDATE_WORKFLOW_ACTIVE",
+      "next_increment": "C3-FRONT-004"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "TEAM_BUILDER_ACTIVE",
-      "next_increment": "C3-TEAM-001"
+      "status": "CANDIDATE_EVIDENCE_FRONTEND_ACTIVE",
+      "next_increment": "C3-FRONT-004"
     },
     {
       "id": "WS-08",
@@ -252,7 +252,12 @@
     "front_003_frontend_tests": 67,
     "front_003_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
     "front_003_functional_browser": "PASS_POSTGRESQL_15_START_UPDATE_RELOAD_ES_EN_MOBILE_ZERO_AXE",
-    "front_003_compose": "BLOCKED_SANDBOX_LAYER_LCHOWN_EXACT_HEAD_CI_REQUIRED"
+    "front_003_compose": "BLOCKED_SANDBOX_LAYER_LCHOWN_EXACT_HEAD_CI_REQUIRED",
+    "front_004_frontend_tests": 76,
+    "front_004_seed_tests": "PASS_2_EXACT_GRANTS_8",
+    "front_004_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
+    "front_004_functional_browser": "PASS_POSTGRESQL_15_FOUNDATION_CANDIDATE_EVIDENCE_RELOAD_ES_EN_MOBILE_ZERO_AXE",
+    "front_004_dependency_audit": "PASS_ZERO_VULNERABILITIES"
   },
   "critical_path": [
     "C3-FOUND-001A",

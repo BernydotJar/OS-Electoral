@@ -2259,3 +2259,413 @@ button[type="submit"]:hover {
 .journey-track li[data-state="BLOCKED"] .journey-status {
   color: var(--warning);
 }
+
+/* C3-FRONT-004: adaptive campaign entry and governed candidate evidence workflow. */
+.campaign-experience {
+  position: relative;
+  min-height: clamp(24rem, 61vh, 44rem);
+  margin-bottom: 1.25rem;
+  padding: clamp(1.5rem, 5vw, 4.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.55fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+  overflow: hidden;
+  border: 1px solid rgba(164, 200, 255, 0.24);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 74% 32%, rgba(123, 98, 255, 0.22), transparent 22rem),
+    radial-gradient(circle at 22% 16%, rgba(245, 168, 115, 0.16), transparent 25rem),
+    linear-gradient(145deg, #161f32, #0a0f19 62%, #07120f);
+  box-shadow: 0 32px 110px rgba(0, 0, 0, 0.46);
+  isolation: isolate;
+}
+
+.campaign-experience[data-mode="ACTIVE"] {
+  min-height: 24rem;
+  background:
+    radial-gradient(circle at 78% 10%, rgba(113, 214, 162, 0.14), transparent 19rem),
+    linear-gradient(145deg, #111a2b, #090e17 66%, #07120f);
+}
+
+.campaign-experience[data-mode="COMPLETE"] {
+  min-height: 22rem;
+  background:
+    radial-gradient(circle at 75% 15%, rgba(113, 214, 162, 0.2), transparent 20rem),
+    linear-gradient(145deg, #12261f, #080f0d 72%);
+}
+
+.experience-atmosphere,
+.experience-atmosphere span {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.experience-atmosphere {
+  z-index: -1;
+  opacity: 0.85;
+}
+
+.experience-atmosphere span {
+  width: clamp(16rem, 32vw, 34rem);
+  height: clamp(16rem, 32vw, 34rem);
+  margin: auto;
+  border: 1px solid rgba(211, 229, 255, 0.1);
+  border-radius: 44% 56% 58% 42% / 46% 38% 62% 54%;
+  filter: blur(0.2px);
+  animation: experience-orbit 14s linear infinite;
+}
+
+.experience-atmosphere span:nth-child(2) {
+  width: clamp(12rem, 24vw, 26rem);
+  height: clamp(12rem, 24vw, 26rem);
+  border-color: rgba(113, 214, 162, 0.13);
+  animation-duration: 10s;
+  animation-direction: reverse;
+}
+
+.experience-atmosphere span:nth-child(3) {
+  width: clamp(8rem, 17vw, 18rem);
+  height: clamp(8rem, 17vw, 18rem);
+  border-color: rgba(245, 195, 106, 0.16);
+  animation-duration: 7s;
+}
+
+.experience-copy,
+.experience-context {
+  position: relative;
+  animation: experience-rise var(--motion-duration-slow) var(--motion-easing-enter) both;
+}
+
+.experience-copy h1 {
+  max-width: 13ch;
+  margin: 0.65rem 0 1.25rem;
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 0.88;
+  letter-spacing: -0.065em;
+  text-wrap: balance;
+}
+
+.campaign-experience[data-mode="ACTIVE"] .experience-copy h1,
+.campaign-experience[data-mode="COMPLETE"] .experience-copy h1 {
+  font-size: clamp(2.5rem, 5vw, 5rem);
+}
+
+.experience-copy > p:not(.eyebrow) {
+  max-width: 64ch;
+  margin: 0;
+  color: var(--text-2);
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+  line-height: 1.7;
+}
+
+.experience-copy > a {
+  width: fit-content;
+  min-height: 3.25rem;
+  margin-top: 2rem;
+  padding: 0.45rem 0.5rem 0.45rem 1.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 999px;
+  color: #08111f;
+  background: var(--accent-strong);
+  font-weight: 850;
+  text-decoration: none;
+  box-shadow: 0 16px 48px rgba(164, 200, 255, 0.18);
+  transition:
+    transform var(--motion-duration-fast) var(--motion-easing-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.experience-copy > a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 58px rgba(164, 200, 255, 0.28);
+}
+
+.experience-arrow {
+  width: 2.35rem;
+  height: 2.35rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--accent-strong);
+  background: #07101d;
+  transition: transform var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.experience-copy > a:hover .experience-arrow {
+  transform: translateX(3px);
+}
+
+.experience-context {
+  padding: 1.25rem;
+  border: 1px solid rgba(211, 229, 255, 0.18);
+  border-radius: 18px;
+  background: rgba(5, 9, 16, 0.5);
+  backdrop-filter: blur(18px);
+}
+
+.experience-context span,
+.experience-context small {
+  display: block;
+  color: var(--text-3);
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.experience-context strong {
+  display: block;
+  margin: 0.55rem 0 1rem;
+  font-size: clamp(1.3rem, 2vw, 2rem);
+  line-height: 1.15;
+}
+
+.experience-context small {
+  color: var(--approval);
+  line-height: 1.55;
+}
+
+.candidate-start-card,
+.candidate-evidence-editor {
+  margin: 1.25rem 0;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border: 1px solid rgba(164, 200, 255, 0.22);
+  border-radius: 18px;
+  background: rgba(7, 12, 21, 0.66);
+  animation: experience-rise var(--motion-duration-slow) var(--motion-easing-enter) both;
+}
+
+.candidate-start-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.7fr) auto;
+  gap: 1.25rem;
+  align-items: end;
+}
+
+.candidate-start-card h3,
+.candidate-evidence-editor h3 {
+  margin: 0.35rem 0 0.6rem;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+}
+
+.candidate-start-card p,
+.candidate-evidence-editor p {
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.candidate-start-card label,
+.candidate-evidence-grid label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-2);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.candidate-start-card label small,
+.candidate-evidence-grid label small {
+  color: var(--text-3);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.candidate-start-card input,
+.candidate-evidence-grid input,
+.candidate-evidence-grid select,
+.candidate-evidence-grid textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 11px;
+  color: var(--text-1);
+  background: rgba(4, 7, 13, 0.82);
+  font: inherit;
+}
+
+.candidate-evidence-grid textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.candidate-start-card input:focus-visible,
+.candidate-evidence-grid input:focus-visible,
+.candidate-evidence-grid select:focus-visible,
+.candidate-evidence-grid textarea:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.candidate-start-card button,
+.candidate-evidence-editor button {
+  min-height: 3rem;
+  padding: 0.75rem 1.15rem;
+  border: 0;
+  border-radius: 999px;
+  color: #07101d;
+  background: var(--accent-strong);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.editor-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.version-chip {
+  flex: 0 0 auto;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  color: var(--accent-strong);
+  background: rgba(164, 200, 255, 0.1);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.candidate-evidence-grid {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.candidate-evidence-grid .field-wide {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-top: 1px solid var(--surface-border);
+}
+
+.form-actions p {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--text-3);
+  font-size: 0.78rem;
+}
+
+.candidate-source-register {
+  margin-top: 1.5rem;
+}
+
+.candidate-source-register h4 {
+  margin: 0 0 0.8rem;
+}
+
+.candidate-source-register ol {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+  list-style: none;
+}
+
+.candidate-source-register li {
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.candidate-source-register span,
+.candidate-source-register small {
+  display: block;
+  color: var(--text-3);
+  font-size: 0.7rem;
+}
+
+.candidate-source-register strong {
+  display: block;
+  margin: 0.2rem 0;
+}
+
+.candidate-source-register a {
+  flex: 0 0 auto;
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+@keyframes experience-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-distance-medium));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes experience-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 980px) {
+  .campaign-experience,
+  .candidate-start-card {
+    grid-template-columns: 1fr;
+  }
+
+  .campaign-experience {
+    min-height: 36rem;
+  }
+
+  .experience-context {
+    max-width: 34rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .campaign-experience {
+    min-height: 32rem;
+    padding: 1.25rem;
+    border-radius: 22px;
+  }
+
+  .experience-copy h1 {
+    font-size: clamp(3rem, 17vw, 4.8rem);
+  }
+
+  .experience-copy > a,
+  .candidate-start-card button,
+  .candidate-evidence-editor button {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .candidate-evidence-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-evidence-grid .field-wide {
+    grid-column: auto;
+  }
+
+  .editor-heading,
+  .form-actions,
+  .candidate-source-register li {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

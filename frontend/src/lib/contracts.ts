@@ -369,6 +369,31 @@ export type CandidateWorkspaceReadEvidence = Readonly<{
   audit_event_id: UUID;
 }>;
 
+export type CandidateWorkspaceCreateInput = Readonly<{
+  display_name: string;
+}>;
+
+export type CandidateWorkspaceUpdateInput = Readonly<{
+  display_name?: string;
+  evidence?: readonly CandidateEvidence[];
+  identity?: CandidateClaim | null;
+  biography?: CandidateClaim | null;
+  purpose?: CandidateClaim | null;
+  values?: readonly CandidateClaim[] | null;
+  attributes?: readonly CandidateAttribute[] | null;
+  contradictions?: readonly CandidateContradiction[] | null;
+  development_goals?: readonly CandidateDevelopmentGoal[] | null;
+  reputation_risks?: readonly CandidateReputationRisk[] | null;
+}>;
+
+export type CandidateWorkspaceCreateEvidence = Readonly<{
+  workspace: CandidateWorkspaceProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
+export type CandidateWorkspaceUpdateEvidence = CandidateWorkspaceCreateEvidence;
+
 export type TeamOrganizationTemplate =
   "LEAN_CAMPAIGN" | "FULL_CAMPAIGN" | "CUSTOM";
 export type TeamRoleStatus = "FILLED" | "VACANT";

@@ -39,7 +39,7 @@ def test_local_seed_is_idempotent_and_grants_only_the_bounded_journey() -> None:
             assert session.scalar(select(func.count()).select_from(RoleAssignment)) == 1
             grants = tuple(session.scalars(select(PermissionGrant).order_by(PermissionGrant.id)))
 
-        assert len(grants) == len(GRANTS) == 5
+        assert len(grants) == len(GRANTS) == 8
         assert {(grant.action, grant.resource_type, grant.purpose) for grant in grants} == {
             (spec.action, spec.resource_type, spec.purpose) for spec in GRANTS
         }
@@ -47,6 +47,15 @@ def test_local_seed_is_idempotent_and_grants_only_the_bounded_journey() -> None:
         assert all(grant.campaign_id == CAMPAIGN_ID for grant in grants)
         assert all(grant.workspace_id is None for grant in grants)
         assert all(grant.resource_type != "campaign_collection" for grant in grants)
+        assert {
+            (grant.action, grant.purpose)
+            for grant in grants
+            if grant.resource_type == "candidate_workspace"
+        } == {
+            ("create", "Create candidate evidence workspace"),
+            ("read", "Review candidate evidence workspace"),
+            ("update", "Maintain candidate evidence workspace"),
+        }
         assert session is not None
         with Session(engine) as session:
             principal = session.scalar(

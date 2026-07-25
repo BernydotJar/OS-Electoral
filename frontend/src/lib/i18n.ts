@@ -135,6 +135,19 @@ const es = {
     title: "Tu campaña, paso a paso",
     body:
       "Desde la idea inicial hasta la operación diaria, CampaignOS ordena decisiones, evidencia, equipo y seguimiento sin saltarse los controles humanos.",
+    firstUseEyebrow: "TU CAMPAÑA EMPIEZA AQUÍ",
+    firstUseTitle: "Convierte una idea política en una campaña que sabe avanzar",
+    firstUseBody:
+      "Define la base una vez. Después CampaignOS conservará el contexto y te mostrará la misión, la evidencia y la decisión que siguen.",
+    firstUseAction: "Comenzar la ruta",
+    activeEyebrow: "MISIÓN ACTIVA",
+    activeBody:
+      "No vuelves a empezar. Continúa desde el punto exacto donde quedó la campaña y cierra el siguiente gate con evidencia.",
+    resumeAction: "Continuar misión",
+    completeEyebrow: "RUTA OPERATIVA COMPLETA",
+    completeTitle: "La campaña ya tiene un sistema de trabajo verificable",
+    completeBody:
+      "La ruta está completa, pero las decisiones, revisiones y efectos externos continúan bajo autoridad humana.",
     progressLabel: "Progreso de la ruta de campaña",
     stageLabel: "Etapa actual",
     completedLabel: "etapas completadas",
@@ -198,6 +211,8 @@ const es = {
     campaign_selected: "Contexto de campaña actualizado.",
     intake_started: "Ruta guiada creada y guardada en PostgreSQL.",
     intake_saved: "Cambios guardados con nueva versión.",
+    candidate_started: "Expediente de candidatura creado y listo para documentar.",
+    candidate_evidence_saved: "Fuente incorporada al expediente con una nueva versión.",
     authorization_denied: "La sesión no tiene autorización exacta para esta acción.",
     conflict: "El registro cambió o la solicitud ya fue utilizada. Recarga y revisa la versión.",
     validation_error: "Revisa los campos señalados y vuelve a intentar.",
@@ -318,6 +333,43 @@ const es = {
     eyebrow: "CANDIDATURA · EVIDENCIA Y REVISIÓN HUMANA",
     title: "Workspace ejecutivo de candidatura",
     body: "Separa declaraciones, evidencia independiente, contradicciones, desarrollo y riesgos antes de cualquier decisión pública.",
+    startEyebrow: "ABRIR EXPEDIENTE",
+    startTitle: "Crea el expediente verificable de la candidatura",
+    startBody:
+      "Este espacio organiza identidad, trayectoria, propósito, fuentes, contradicciones y riesgos. Crear el expediente no aprueba posicionamiento público.",
+    displayName: "Nombre público de la candidatura",
+    displayNamePlaceholder: "Ej. Ana Pérez",
+    displayNameHelp: "Usa el nombre que permita identificar el expediente; todavía no constituye una marca aprobada.",
+    startAction: "Crear expediente",
+    evidenceEditorEyebrow: "INVESTIGACIÓN CON PROCEDENCIA",
+    evidenceEditorTitle: "Incorpora una fuente verificable",
+    evidenceEditorBody:
+      "Agrega una fuente por vez. CampaignOS conserva su clasificación, procedencia, jurisdicción y versión para que el equipo pueda revisarla.",
+    evidenceClassification: "Tipo de fuente",
+    evidenceClassificationLabels: {
+      OFFICIAL_SOURCE: "Fuente oficial",
+      CAMPAIGN_RESEARCH: "Investigación de campaña",
+      PERCEPTION: "Percepción",
+      HYPOTHESIS: "Hipótesis",
+      UNKNOWN: "Clasificación pendiente",
+    },
+    evidenceTitle: "Título de la fuente",
+    evidenceTitlePlaceholder: "Ej. Acuerdo de convocatoria electoral",
+    sourceReference: "Enlace verificable",
+    sourceReferenceHelp: "Debe usar HTTPS y apuntar a la fuente original cuando exista.",
+    sourceAuthority: "Autoridad o institución",
+    sourceAuthorityPlaceholder: "Ej. Tribunal Electoral",
+    sourceAuthorityUnknown: "Autoridad pendiente",
+    evidenceJurisdiction: "Jurisdicción",
+    evidenceJurisdictionPlaceholder: "Ej. Municipio, departamento o país",
+    observedAt: "Fecha observada",
+    evidenceExcerpt: "Nota de relevancia",
+    evidenceExcerptPlaceholder: "Explica qué confirma esta fuente y qué todavía no demuestra.",
+    evidenceBoundary:
+      "Registrar una fuente no la convierte en verdad ni autoriza estrategia. El equipo debe contrastarla y resolver contradicciones.",
+    addEvidenceAction: "Agregar fuente",
+    sourceRegister: "Fuentes registradas",
+    openSource: "Abrir fuente",
     status: "Estado interno",
     progress: "pasos completos",
     nextAction: "Siguiente acción humana",
@@ -339,6 +391,8 @@ const es = {
       "La aprobación interna no autoriza posicionamiento público, estrategia, contenido, contacto, gasto ni movilización.",
     notStarted:
       "El espacio de trabajo de candidatura todavía no ha sido creado por una persona autorizada.",
+    prerequisitePending:
+      "Completa primero la base de campaña. El expediente se habilita cuando la ruta queda lista para investigación.",
     notAuthorized:
       "La sesión no tiene autorización exacta para revisar esta candidatura.",
     unavailable:
@@ -696,6 +750,19 @@ const en: Dictionary = {
     title: "Your campaign, step by step",
     body:
       "From the initial idea to daily operations, CampaignOS orders decisions, evidence, team, and follow-up without bypassing human controls.",
+    firstUseEyebrow: "YOUR CAMPAIGN STARTS HERE",
+    firstUseTitle: "Turn a political idea into a campaign that knows how to move",
+    firstUseBody:
+      "Define the foundation once. CampaignOS will then preserve context and show the next mission, evidence, and decision.",
+    firstUseAction: "Start the path",
+    activeEyebrow: "ACTIVE MISSION",
+    activeBody:
+      "You do not start over. Continue from the campaign's exact position and close the next gate with evidence.",
+    resumeAction: "Continue mission",
+    completeEyebrow: "OPERATING PATH COMPLETE",
+    completeTitle: "The campaign now has a verifiable operating system",
+    completeBody:
+      "The path is complete, while decisions, reviews, and external effects remain under human authority.",
     progressLabel: "Campaign path progress",
     stageLabel: "Current stage",
     completedLabel: "stages complete",
@@ -759,6 +826,8 @@ const en: Dictionary = {
     campaign_selected: "Campaign context updated.",
     intake_started: "Intake started and persisted in PostgreSQL.",
     intake_saved: "Changes saved with a new version.",
+    candidate_started: "Candidate dossier created and ready for evidence.",
+    candidate_evidence_saved: "Source added to the dossier with a new version.",
     authorization_denied: "This session lacks exact authorization for the action.",
     conflict: "The record changed or the request key was reused. Reload and review the version.",
     validation_error: "Review the fields and try again.",
@@ -878,6 +947,43 @@ const en: Dictionary = {
     eyebrow: "CANDIDATE · EVIDENCE AND HUMAN REVIEW",
     title: "Candidate executive workspace",
     body: "Separates claims, independent evidence, contradictions, development, and risk before any public decision.",
+    startEyebrow: "OPEN DOSSIER",
+    startTitle: "Create the candidate's verifiable dossier",
+    startBody:
+      "This workspace organizes identity, history, purpose, sources, contradictions, and risks. Creating it does not approve public positioning.",
+    displayName: "Candidate public name",
+    displayNamePlaceholder: "Example: Ana Perez",
+    displayNameHelp: "Use a name that identifies the dossier; it is not yet an approved brand.",
+    startAction: "Create dossier",
+    evidenceEditorEyebrow: "RESEARCH WITH PROVENANCE",
+    evidenceEditorTitle: "Add a verifiable source",
+    evidenceEditorBody:
+      "Add one source at a time. CampaignOS preserves classification, provenance, jurisdiction, and version for team review.",
+    evidenceClassification: "Source type",
+    evidenceClassificationLabels: {
+      OFFICIAL_SOURCE: "Official source",
+      CAMPAIGN_RESEARCH: "Campaign research",
+      PERCEPTION: "Perception",
+      HYPOTHESIS: "Hypothesis",
+      UNKNOWN: "Pending classification",
+    },
+    evidenceTitle: "Source title",
+    evidenceTitlePlaceholder: "Example: Electoral call resolution",
+    sourceReference: "Verifiable link",
+    sourceReferenceHelp: "Must use HTTPS and point to the original source when available.",
+    sourceAuthority: "Authority or institution",
+    sourceAuthorityPlaceholder: "Example: Electoral Tribunal",
+    sourceAuthorityUnknown: "Authority pending",
+    evidenceJurisdiction: "Jurisdiction",
+    evidenceJurisdictionPlaceholder: "Example: Municipality, region, or country",
+    observedAt: "Observed date",
+    evidenceExcerpt: "Relevance note",
+    evidenceExcerptPlaceholder: "Explain what this source confirms and what it still does not prove.",
+    evidenceBoundary:
+      "Registering a source does not make it true or authorize strategy. The team must contrast it and resolve contradictions.",
+    addEvidenceAction: "Add source",
+    sourceRegister: "Registered sources",
+    openSource: "Open source",
     status: "Internal status",
     progress: "checks complete",
     nextAction: "Next human action",
@@ -899,6 +1005,8 @@ const en: Dictionary = {
       "Internal approval does not authorize public positioning, strategy, content, contact, spending, or mobilization.",
     notStarted:
       "The candidate workspace has not yet been created by an authorized person.",
+    prerequisitePending:
+      "Complete the campaign foundation first. The dossier unlocks when the path is ready for research.",
     notAuthorized:
       "This session lacks the exact authorization required to review this candidate.",
     unavailable:

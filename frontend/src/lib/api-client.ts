@@ -1,6 +1,10 @@
 import "server-only";
 
-import { CandidateContractValidationError } from "@/lib/candidate-contract-parser";
+import {
+  CandidateContractValidationError,
+  parseCandidateWorkspaceCreateEvidence,
+  parseCandidateWorkspaceUpdateEvidence,
+} from "@/lib/candidate-contract-parser";
 import {
   OperationsContractValidationError,
   parseCampaignRoadmapReadEvidence,
@@ -30,7 +34,11 @@ import type {
   CampaignPage,
   CampaignReadinessEvidence,
   CampaignRoadmapReadEvidence,
+  CandidateWorkspaceCreateEvidence,
+  CandidateWorkspaceCreateInput,
   CandidateWorkspaceReadEvidence,
+  CandidateWorkspaceUpdateEvidence,
+  CandidateWorkspaceUpdateInput,
   GuidedIntakeReadEvidence,
   GuidedIntakeStartEvidence,
   GuidedIntakeUpdateEvidence,
@@ -246,6 +254,46 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/candidate-workspace`,
       "Candidate workspace",
       parseCandidateWorkspaceReadEvidence,
+    );
+  }
+
+  startCandidateWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+    idempotencyKey: string,
+    create: CandidateWorkspaceCreateInput,
+  ): Promise<CandidateWorkspaceCreateEvidence> {
+    return this.request<CandidateWorkspaceCreateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/candidate-workspace`,
+      "Candidate workspace create",
+      parseCandidateWorkspaceCreateEvidence,
+      {
+        method: "POST",
+        body: create,
+        headers: { "idempotency-key": idempotencyKey },
+      },
+    );
+  }
+
+  updateCandidateWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    update: CandidateWorkspaceUpdateInput,
+  ): Promise<CandidateWorkspaceUpdateEvidence> {
+    return this.request<CandidateWorkspaceUpdateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/candidate-workspace`,
+      "Candidate workspace update",
+      parseCandidateWorkspaceUpdateEvidence,
+      {
+        method: "PATCH",
+        body: update,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
     );
   }
 
