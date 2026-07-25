@@ -76,7 +76,7 @@ Later persisted data never allows the route to skip an incomplete earlier gate.
 ## Taste controls
 
 - `design_variance: 7/10` — asymmetric campaign narrative and a strong route hierarchy rather than a symmetric card grid.
-- `motion_intensity: 5/10` — one entrance transition for the current mission, short hover confirmation, and no continuous decorative movement.
+- `motion_intensity: 6/10` — a restrained first-use atmosphere, one mission entrance, short hover confirmation and substantially reduced motion when requested.
 - `visual_density: 5/10` — one dominant route surface, concise phase summaries, and detailed forms only when the user enters the active phase.
 
 The visual direction should communicate consequence, discipline, and ambition without becoming theatrical noise.
@@ -111,6 +111,8 @@ A reviewer should complete the following without reading source code:
 9. Confirm that blocked phases explain the missing access or configuration instead of pretending to work.
 10. Confirm that no copy claims strategy approval, public authority, citizen contact, spending, mobilization, deployment, or production readiness.
 
-## Deferred product work
+## Current operability and deferred product work
 
-This slice establishes navigation and comprehension. It does not complete the creation/edit workflows for candidate evidence, team design, strategy decisions, territorial data ingestion, community profiles, vote-goal tracking, or Daily War Room operations. Those remain separate API-backed increments with exact authorization, provenance, privacy, legal, accessibility, and human-review gates.
+The foundation and the first candidate-evidence operation are now usable: a live authorized user can complete guided intake, create a candidate dossier and register traceable sources. The full welcome appears only before work starts; returning users receive the current mission instead.
+
+Claim editing and approval, team design, strategy decisions, territorial data ingestion, community profiles, vote-goal tracking and Daily War Room mutations remain separate API-backed increments with exact authorization, provenance, privacy, legal, accessibility and human-review gates.

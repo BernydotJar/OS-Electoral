@@ -2,6 +2,8 @@ export const UI_NOTICES = [
   "campaign_selected",
   "intake_started",
   "intake_saved",
+  "candidate_started",
+  "candidate_evidence_saved",
   "authorization_denied",
   "conflict",
   "validation_error",

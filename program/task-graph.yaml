@@ -253,6 +253,16 @@
         "C3-AGENT-001",
         "C3-OBS-001"
       ]
+    },
+    {
+      "id": "C3-FRONT-004",
+      "workstream": "WS-06",
+      "title": "Adaptive campaign entry and governed candidate evidence workflow",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "C3-FRONT-003",
+        "C3-CANDIDATE-001"
+      ]
     }
   ]
 }

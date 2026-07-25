@@ -71,7 +71,7 @@ describe("CampaignOsApiClient contract failures", () => {
   );
 });
 
-import { demoGuidedIntake } from "@/lib/demo-data";
+import { demoCandidateWorkspace, demoGuidedIntake } from "@/lib/demo-data";
 
 describe("CampaignOsApiClient guided intake mutations", () => {
   it("sends exact start headers and validates the committed evidence", async () => {
@@ -142,5 +142,82 @@ describe("CampaignOsApiClient guided intake mutations", () => {
 
     expect(result.intake.version).toBe(3);
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+
+describe("CampaignOsApiClient candidate workspace mutations", () => {
+  it("creates the candidate workspace with an exact idempotency header", async () => {
+    const fetchMock = vi.fn(async (_input: URL | RequestInfo, init?: RequestInit) => {
+      expect(init?.method).toBe("POST");
+      const headers = new Headers(init?.headers);
+      expect(headers.get("idempotency-key")).toBe("candidate-start-1");
+      expect(JSON.parse(String(init?.body))).toEqual({ display_name: "Ana Pérez" });
+      return new Response(
+        JSON.stringify({
+          ...demoCandidateWorkspace,
+          outbox_event_id: "abababab-abab-4bab-8bab-abababababab",
+        }),
+        { status: 201, headers: { "content-type": "application/json" } },
+      );
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    const result = await client.startCandidateWorkspace(
+      TENANT,
+      CAMPAIGN,
+      "candidate-start-1",
+      { display_name: "Ana Pérez" },
+    );
+
+    expect(result.workspace.campaign_id).toBe(CAMPAIGN);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("updates candidate evidence with optimistic concurrency", async () => {
+    const evidence = {
+      id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      classification: "OFFICIAL_SOURCE" as const,
+      status: "ACCEPTED" as const,
+      title: "Convocatoria",
+      source_reference: "https://example.test/convocatoria",
+      source_authority: "Tribunal Electoral",
+      jurisdiction: "Municipio de ejemplo",
+      excerpt: null,
+      observed_at: null,
+    };
+    const fetchMock = vi.fn(async (_input: URL | RequestInfo, init?: RequestInit) => {
+      expect(init?.method).toBe("PATCH");
+      const headers = new Headers(init?.headers);
+      expect(headers.get("idempotency-key")).toBe("candidate-update-1");
+      expect(headers.get("if-match")).toBe('"1"');
+      expect(JSON.parse(String(init?.body))).toEqual({ evidence: [evidence] });
+      return new Response(
+        JSON.stringify({
+          ...demoCandidateWorkspace,
+          workspace: {
+            ...demoCandidateWorkspace.workspace,
+            evidence: [evidence],
+            version: 2,
+          },
+          outbox_event_id: "cdcdcdcd-cdcd-4dcd-8dcd-cdcdcdcdcdcd",
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      );
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    const result = await client.updateCandidateWorkspace(
+      TENANT,
+      CAMPAIGN,
+      1,
+      "candidate-update-1",
+      { evidence: [evidence] },
+    );
+
+    expect(result.workspace.version).toBe(2);
+    expect(result.workspace.evidence).toEqual([evidence]);
   });
 });

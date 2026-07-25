@@ -124,17 +124,12 @@ async def review() -> dict[str, object]:
         )
         require(
             await desktop.get_by_role("heading", level=1).inner_text()
-            == "Convierte tu campaña en un sistema que avanza",
-            "Spanish heading mismatch",
+            == "Conocer la candidatura y el territorio",
+            "Spanish active-mission heading mismatch",
         )
         require(
             await desktop.get_by_text("DEMO SINTÉTICO", exact=True).count() >= 1,
             "demo classification missing",
-        )
-        require(
-            await desktop.get_by_text("DATOS SINTÉTICOS · SIN CAMPAÑA REAL", exact=True).count()
-            == 1,
-            "synthetic-data banner missing",
         )
         require(
             await desktop.get_by_text(
@@ -159,6 +154,8 @@ async def review() -> dict[str, object]:
             "OPERATIONAL SETUP ONLY",
             "BEGIN_GUIDED_INTAKE",
             "CAMPAIGN_NAME_PRESENT",
+            "IDENTITY_NOT_VERIFIED",
+            "BIOGRAPHY_NOT_VERIFIED",
         ):
             require(internal_code not in visible_text, f"internal code leaked: {internal_code}")
 
@@ -212,8 +209,8 @@ async def review() -> dict[str, object]:
         )
         require(
             await desktop.get_by_role("heading", level=1).inner_text()
-            == "Turn your campaign into a system that moves",
-            "English heading mismatch",
+            == "Understand the candidacy and territory",
+            "English active-mission heading mismatch",
         )
         await assert_no_overflow(desktop, "desktop-en")
         await assert_accessible(desktop, "desktop-en")

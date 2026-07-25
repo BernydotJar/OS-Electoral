@@ -1,4 +1,6 @@
+import { CampaignExperienceHero } from "@/components/campaign-experience-hero";
 import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
+import { CandidateWorkspaceEditor } from "@/components/candidate-workspace-editor";
 import {
   CampaignContextForm,
   GuidedIntakeEditor,
@@ -6,9 +8,13 @@ import {
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
+import { deriveCampaignExperienceMode } from "@/lib/campaign-experience";
 import { deriveCampaignJourney } from "@/lib/campaign-journey";
 import type { Dictionary, Locale } from "@/lib/i18n";
-import { deriveGuidedIntakeCapabilities } from "@/lib/journey-capabilities";
+import {
+  deriveCandidateWorkspaceCapabilities,
+  deriveGuidedIntakeCapabilities,
+} from "@/lib/journey-capabilities";
 import { deriveNavigation } from "@/lib/navigation";
 import type { ShellViewModel } from "@/lib/shell-view-model";
 import type { UiNotice } from "@/lib/ui-notices";
@@ -119,6 +125,10 @@ export function CampaignShell({
     model.memberships,
     model.campaign.id,
   );
+  const candidateCapabilities = deriveCandidateWorkspaceCapabilities(
+    model.memberships,
+    model.campaign.id,
+  );
   const readiness = model.readiness?.readiness ?? null;
   const guidedIntake = model.guidedIntake?.intake ?? null;
   const guidedIntakeStateMessage = {
@@ -128,9 +138,13 @@ export function CampaignShell({
     DEPENDENCY_UNAVAILABLE: dictionary.intake.unavailable,
   }[model.guidedIntakeAvailability];
   const candidateWorkspace = model.candidateWorkspace?.workspace ?? null;
+  const candidatePrerequisiteReady =
+    guidedIntake?.status === "READY_FOR_RESEARCH";
   const candidateWorkspaceStateMessage = {
     AVAILABLE: "",
-    NOT_STARTED: dictionary.candidate.notStarted,
+    NOT_STARTED: candidatePrerequisiteReady
+      ? dictionary.candidate.notStarted
+      : dictionary.candidate.prerequisitePending,
     NOT_AUTHORIZED: dictionary.candidate.notAuthorized,
     DEPENDENCY_UNAVAILABLE: dictionary.candidate.unavailable,
   }[model.candidateWorkspaceAvailability];
@@ -152,12 +166,26 @@ export function CampaignShell({
       foundation:
         model.guidedIntakeAvailability === "AVAILABLE" ||
         model.guidedIntakeAvailability === "NOT_STARTED",
-      evidence: model.candidateWorkspaceAvailability === "AVAILABLE",
+      evidence:
+        model.candidateWorkspaceAvailability === "AVAILABLE" ||
+        (model.candidateWorkspaceAvailability === "NOT_STARTED" &&
+          candidateCapabilities.canStart &&
+          candidatePrerequisiteReady),
       team: model.teamWorkspaceAvailability === "AVAILABLE",
       strategy: model.strategyWorkspaceAvailability === "AVAILABLE",
       operations: model.campaignRoadmapAvailability === "AVAILABLE",
     },
   });
+  const experienceMode = deriveCampaignExperienceMode({
+    guidedIntakeAvailability: model.guidedIntakeAvailability,
+    journey: campaignJourney,
+  });
+  const currentJourneyPhase =
+    campaignJourney.phases.find(
+      (phase) => phase.key === campaignJourney.currentPhase,
+    ) ?? campaignJourney.phases[0];
+  if (!currentJourneyPhase) return null;
+
   const roles = [
     ...new Set(model.memberships.flatMap((membership) => membership.roles)),
   ];
@@ -251,22 +279,12 @@ export function CampaignShell({
               {dictionary.notices[notice]}
             </div>
           ) : null}
-          <section className="hero-panel">
-            <div>
-              <p className="eyebrow">
-                {model.demo
-                  ? dictionary.shell.syntheticContext
-                  : dictionary.shell.verifiedContext}
-              </p>
-              <h1>{dictionary.shell.title}</h1>
-              <p>{dictionary.shell.subtitle}</p>
-            </div>
-            <div className="authority-card">
-              <span>{dictionary.shell.humanAuthority}</span>
-              <strong>{dictionary.shell.authority}</strong>
-              <small>{dictionary.common.notApproval}</small>
-            </div>
-          </section>
+          <CampaignExperienceHero
+            dictionary={dictionary}
+            mode={experienceMode}
+            campaignName={model.campaign.name}
+            currentPhase={currentJourneyPhase}
+          />
 
           <CampaignLaunchRoadmap
             dictionary={dictionary}
@@ -545,6 +563,16 @@ export function CampaignShell({
               ) : null}
             </div>
 
+            <CandidateWorkspaceEditor
+              locale={locale}
+              dictionary={dictionary}
+              demo={model.demo}
+              availability={model.candidateWorkspaceAvailability}
+              workspace={candidateWorkspace}
+              capabilities={candidateCapabilities}
+              prerequisiteReady={candidatePrerequisiteReady}
+            />
+
             {candidateWorkspace ? (
               <>
                 <div className="intake-status-row">
@@ -591,7 +619,11 @@ export function CampaignShell({
                             <strong>
                               {dictionary.candidate.checkLabels[check.key]}
                             </strong>
-                            <code>{check.reason_code}</code>
+                            <small className="intake-check-state">
+                              {check.complete
+                                ? dictionary.intake.checkComplete
+                                : dictionary.intake.checkPending}
+                            </small>
                           </div>
                           <span
                             className="intake-check-mark"
@@ -765,7 +797,9 @@ export function CampaignShell({
                   </div>
                 </dl>
               </>
-            ) : (
+            ) : model.candidateWorkspaceAvailability === "NOT_STARTED" &&
+              candidateCapabilities.canStart &&
+              candidatePrerequisiteReady ? null : (
               <p className="intake-state" role="status">
                 {candidateWorkspaceStateMessage}
               </p>

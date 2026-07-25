@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import type { EffectiveMembership } from "@/lib/contracts";
-import { deriveGuidedIntakeCapabilities } from "@/lib/journey-capabilities";
+import {
+  deriveCandidateWorkspaceCapabilities,
+  deriveGuidedIntakeCapabilities,
+} from "@/lib/journey-capabilities";
 
 const CAMPAIGN = "22222222-2222-4222-8222-222222222222";
 
@@ -9,6 +12,7 @@ function membership(
   action: string,
   purpose: string,
   campaignId: string | null = CAMPAIGN,
+  resourceType = "guided_intake",
 ): EffectiveMembership {
   return {
     membership_id: "33333333-3333-4333-8333-333333333333",
@@ -20,7 +24,7 @@ function membership(
         campaign_id: campaignId,
         workspace_id: null,
         action,
-        resource_type: "guided_intake",
+        resource_type: resourceType,
         resource_id: CAMPAIGN,
         purpose,
         approval_receipt_id: "approval",
@@ -59,6 +63,51 @@ describe("deriveGuidedIntakeCapabilities", () => {
         [membership("update", "Maintain guided campaign intake")],
         "55555555-5555-4555-8555-555555555555",
       ).canUpdate,
+    ).toBe(false);
+  });
+});
+
+
+describe("deriveCandidateWorkspaceCapabilities", () => {
+  it("requires exact candidate-workspace mutation grants", () => {
+    expect(
+      deriveCandidateWorkspaceCapabilities(
+        [
+          membership(
+            "create",
+            "Create candidate evidence workspace",
+            CAMPAIGN,
+            "candidate_workspace",
+          ),
+          membership(
+            "read",
+            "Review candidate evidence workspace",
+            CAMPAIGN,
+            "candidate_workspace",
+          ),
+          membership(
+            "update",
+            "Maintain candidate evidence workspace",
+            CAMPAIGN,
+            "candidate_workspace",
+          ),
+        ],
+        CAMPAIGN,
+      ),
+    ).toEqual({ canStart: true, canRead: true, canUpdate: true });
+
+    expect(
+      deriveCandidateWorkspaceCapabilities(
+        [
+          membership(
+            "create",
+            "Create candidate evidence workspace",
+            null,
+            "candidate_workspace",
+          ),
+        ],
+        CAMPAIGN,
+      ).canStart,
     ).toBe(false);
   });
 });

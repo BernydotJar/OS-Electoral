@@ -51,3 +51,30 @@ export function deriveGuidedIntakeCapabilities(
     canUpdate: exact("update", "Maintain guided campaign intake"),
   };
 }
+
+
+export type CandidateWorkspaceCapabilities = Readonly<{
+  canStart: boolean;
+  canRead: boolean;
+  canUpdate: boolean;
+}>;
+
+export function deriveCandidateWorkspaceCapabilities(
+  memberships: readonly EffectiveMembership[],
+  campaignId: string,
+): CandidateWorkspaceCapabilities {
+  const exact = (action: string, purpose: string) =>
+    hasExactGrant(memberships, {
+      action,
+      resourceType: "candidate_workspace",
+      resourceId: campaignId,
+      purpose,
+      campaignId,
+      workspaceId: null,
+    });
+  return {
+    canStart: exact("create", "Create candidate evidence workspace"),
+    canRead: exact("read", "Review candidate evidence workspace"),
+    canUpdate: exact("update", "Maintain candidate evidence workspace"),
+  };
+}
