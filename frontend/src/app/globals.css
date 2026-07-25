@@ -2671,3 +2671,475 @@ button[type="submit"]:hover {
     flex-direction: column;
   }
 }
+
+/* C3-FRONT-006: cinematic adaptive entry and chapter-based journey. */
+.campaign-experience[data-layout] {
+  min-height: clamp(31rem, 72vh, 52rem);
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+  grid-template-areas:
+    "copy story"
+    "copy context";
+  align-content: end;
+  background:
+    radial-gradient(circle at 72% 42%, rgba(88, 134, 255, 0.22), transparent 20rem),
+    radial-gradient(circle at 28% 20%, rgba(241, 155, 112, 0.15), transparent 24rem),
+    linear-gradient(152deg, #111a2c 0%, #08111f 52%, #050b11 100%);
+}
+
+.campaign-experience[data-layout="mission"],
+.campaign-experience[data-layout="command"] {
+  min-height: clamp(25rem, 54vh, 36rem);
+  grid-template-areas: "copy context";
+}
+
+.campaign-experience[data-layout="command"] {
+  background:
+    radial-gradient(circle at 76% 35%, rgba(113, 214, 162, 0.22), transparent 19rem),
+    radial-gradient(circle at 24% 10%, rgba(164, 200, 255, 0.12), transparent 23rem),
+    linear-gradient(150deg, #10261f 0%, #081410 55%, #050a09 100%);
+}
+
+.experience-copy {
+  grid-area: copy;
+  z-index: 3;
+}
+
+.experience-storyboard {
+  grid-area: story;
+  z-index: 2;
+  align-self: center;
+  min-height: 19rem;
+  padding: 1.2rem;
+  display: grid;
+  align-content: center;
+  gap: 0.65rem;
+  border: 1px solid rgba(210, 228, 255, 0.16);
+  border-radius: 24px;
+  background: rgba(4, 9, 17, 0.44);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(18px);
+}
+
+.experience-storyboard > span {
+  --scene-offset: calc(var(--scene-index) * 0.35rem);
+  min-height: 3rem;
+  padding: 0.65rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(164, 200, 255, 0.11);
+  border-radius: 14px;
+  color: var(--text-2);
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translateX(var(--scene-offset));
+  animation: scene-arrive 720ms var(--motion-easing-enter) both;
+  animation-delay: calc(180ms + var(--scene-index) * 95ms);
+}
+
+.experience-storyboard > span:nth-child(2),
+.experience-storyboard > span:nth-child(4) {
+  color: var(--accent-strong);
+}
+
+.experience-storyboard > span:last-child {
+  color: var(--approval);
+}
+
+.experience-storyboard i {
+  width: 0.7rem;
+  height: 0.7rem;
+  flex: 0 0 auto;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  box-shadow: 0 0 18px currentColor;
+}
+
+.experience-context {
+  grid-area: context;
+  z-index: 3;
+}
+
+.experience-progress {
+  height: 0.35rem;
+  margin-top: 1rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.experience-progress > span {
+  width: var(--journey-progress);
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-strong), var(--approval));
+  transform-origin: left center;
+  animation: progress-reveal 760ms var(--motion-easing-enter) both;
+}
+
+.experience-atmosphere .experience-orbit {
+  inset: 8% 4% auto auto;
+  margin: 0;
+  border-radius: 50%;
+}
+
+.experience-atmosphere .experience-orbit-one {
+  width: clamp(22rem, 44vw, 42rem);
+  height: clamp(22rem, 44vw, 42rem);
+  border-color: rgba(164, 200, 255, 0.11);
+  animation: experience-orbit 28s linear infinite;
+}
+
+.experience-atmosphere .experience-orbit-two {
+  inset: 18% 12% auto auto;
+  width: clamp(14rem, 28vw, 28rem);
+  height: clamp(14rem, 28vw, 28rem);
+  border-color: rgba(113, 214, 162, 0.11);
+  animation: experience-orbit 20s linear infinite reverse;
+}
+
+.experience-atmosphere .experience-beacon {
+  inset: auto 8% 8% auto;
+  width: 7rem;
+  height: 7rem;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(245, 195, 106, 0.2);
+  filter: blur(42px);
+  animation: beacon-breathe 4.8s var(--motion-easing-standard) infinite alternate;
+}
+
+.experience-atmosphere .experience-grid {
+  width: auto;
+  height: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background-image:
+    linear-gradient(rgba(164, 200, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(164, 200, 255, 0.045) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  mask-image: linear-gradient(to bottom, transparent, black 28%, black 76%, transparent);
+  animation: none;
+}
+
+.campaign-experience[data-layout="opening"] .experience-copy h1 {
+  max-width: 11ch;
+  font-size: clamp(3.5rem, 7.4vw, 7.5rem);
+}
+
+.campaign-experience[data-layout="mission"] .experience-copy h1,
+.campaign-experience[data-layout="command"] .experience-copy h1 {
+  max-width: 15ch;
+}
+
+.campaign-experience[data-layout] .experience-copy > a:focus-visible,
+.journey-chapter > a:focus-visible,
+.journey-open:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.journey-chapter {
+  position: relative;
+  min-height: clamp(20rem, 48vh, 32rem);
+  margin: 1.75rem 0;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, auto);
+  gap: clamp(1.5rem, 6vw, 6rem);
+  align-items: end;
+  overflow: hidden;
+  border: 1px solid rgba(113, 214, 162, 0.26);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 76% 24%, rgba(113, 214, 162, 0.16), transparent 18rem),
+    linear-gradient(145deg, rgba(8, 28, 22, 0.78), rgba(6, 12, 19, 0.9));
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.3);
+  animation: journey-enter var(--motion-duration-slow) var(--motion-easing-enter) both;
+}
+
+.journey-chapter::after {
+  content: "";
+  position: absolute;
+  inset: auto -8% -36% auto;
+  width: 24rem;
+  height: 24rem;
+  border: 1px solid rgba(164, 200, 255, 0.11);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.journey-chapter-kicker,
+.journey-chapter > div > span:not(.journey-chapter-kicker) {
+  display: block;
+  color: var(--approval);
+  font-size: 0.69rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.journey-chapter-kicker {
+  margin-bottom: 2.6rem;
+  color: var(--accent-strong);
+}
+
+.journey-chapter h3 {
+  max-width: 14ch;
+  margin: 0.55rem 0 1rem;
+  font-size: clamp(2.4rem, 6vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.journey-chapter p {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--text-2);
+  font-size: clamp(1rem, 1.7vw, 1.22rem);
+  line-height: 1.65;
+}
+
+.journey-chapter small {
+  max-width: 58ch;
+  margin-top: 1rem;
+  display: block;
+  color: var(--text-3);
+  line-height: 1.55;
+}
+
+.journey-chapter > a {
+  position: relative;
+  z-index: 1;
+  min-height: 3.1rem;
+  padding: 0.8rem 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #07101d;
+  background: var(--accent-strong);
+  font-weight: 850;
+  text-decoration: none;
+  transition:
+    transform var(--motion-duration-fast) var(--motion-easing-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.journey-chapter > a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 42px rgba(164, 200, 255, 0.24);
+}
+
+.journey-blocked-action {
+  display: grid;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.journey-blocked-action strong,
+.journey-blocked-explanation strong {
+  color: var(--warning);
+}
+
+.journey-blocked-action span,
+.journey-blocked-explanation {
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.journey-horizon {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(12rem, 1fr));
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  list-style: none;
+}
+
+.journey-horizon > li {
+  min-width: 0;
+  min-height: 15rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0.75rem;
+  scroll-snap-align: start;
+  border: 1px solid var(--surface-border);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.025);
+  transition:
+    transform var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    opacity var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.journey-horizon > li[data-current="true"] {
+  border-color: rgba(113, 214, 162, 0.55);
+  background: rgba(113, 214, 162, 0.075);
+  transform: translateY(-0.35rem);
+}
+
+.journey-horizon > li[data-state="LOCKED"] {
+  opacity: 0.5;
+}
+
+.journey-horizon > li[data-state="BLOCKED"] {
+  border-color: rgba(245, 195, 106, 0.3);
+}
+
+.journey-horizon h3 {
+  margin: 0.45rem 0 0.6rem;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.journey-horizon p,
+.journey-horizon small,
+.journey-blocked-explanation {
+  display: block;
+  color: var(--text-3);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.journey-blocked-explanation {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(245, 195, 106, 0.22);
+}
+
+.journey-blocked-explanation strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.journey-horizon .journey-index {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.journey-horizon .journey-open {
+  width: fit-content;
+}
+
+@keyframes scene-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--scene-offset) + 1.5rem));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(var(--scene-offset));
+  }
+}
+
+@keyframes progress-reveal {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes beacon-breathe {
+  from {
+    opacity: 0.48;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 0.95;
+    transform: scale(1.12);
+  }
+}
+
+@media (max-width: 980px) {
+  .campaign-experience[data-layout],
+  .campaign-experience[data-layout="mission"],
+  .campaign-experience[data-layout="command"] {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "story"
+      "context";
+  }
+
+  .campaign-experience[data-layout="mission"],
+  .campaign-experience[data-layout="command"] {
+    grid-template-areas:
+      "copy"
+      "context";
+  }
+
+  .experience-storyboard {
+    min-height: auto;
+  }
+
+  .journey-chapter {
+    min-height: 24rem;
+    grid-template-columns: 1fr;
+  }
+
+  .journey-chapter > a,
+  .journey-blocked-action {
+    width: fit-content;
+  }
+}
+
+@media (max-width: 620px) {
+  .campaign-experience[data-layout] {
+    min-height: auto;
+    padding: 1.3rem;
+  }
+
+  .campaign-experience[data-layout="opening"] .experience-copy h1 {
+    font-size: clamp(3rem, 16vw, 4.6rem);
+  }
+
+  .experience-storyboard > span {
+    transform: none;
+  }
+
+  .journey-chapter {
+    min-height: 28rem;
+    padding: 1.25rem;
+  }
+
+  .journey-chapter h3 {
+    font-size: clamp(2.5rem, 13vw, 4.2rem);
+  }
+
+  .journey-chapter > a,
+  .journey-blocked-action {
+    width: 100%;
+  }
+
+  .journey-horizon {
+    grid-template-columns: repeat(5, minmax(80vw, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-storyboard > span,
+  .experience-progress > span,
+  .experience-atmosphere .experience-orbit,
+  .experience-atmosphere .experience-beacon,
+  .journey-chapter {
+    animation: none !important;
+  }
+
+  .journey-horizon > li[data-current="true"] {
+    transform: none;
+  }
+}

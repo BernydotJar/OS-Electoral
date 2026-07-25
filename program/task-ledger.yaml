@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-25",
-  "branch": "agent/c3-front-003-campaign-launch-roadmap",
+  "branch": "agent/c3-front-006-cinematic-adaptive-journey",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -651,7 +651,7 @@
     {
       "task_id": "C3-FRONT-005",
       "owner": "WS-06",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "frontend/src/lib/campaign-journey.ts",
         "frontend/src/lib/campaign-journey.test.ts",
@@ -673,10 +673,34 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted CI and visual review remain pending",
         "Human product review and merge remain required",
         "Identity assignment, RACI, capacity, training and access review remain incomplete",
         "Strategy, staging and production remain separate human gates"
+      ]
+    },
+    {
+      "task_id": "C3-FRONT-006",
+      "owner": "WS-06",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "frontend/src/components/campaign-experience-hero.tsx",
+        "frontend/src/components/campaign-launch-roadmap.tsx",
+        "frontend/src/components/campaign-journey-experience.test.ts",
+        "frontend/src/components/shell.tsx",
+        "frontend/src/lib/i18n.ts",
+        "frontend/src/app/globals.css",
+        "scripts/frontend/review_dynamic_shell.py",
+        "docs/design/cinematic-campaign-journey.md",
+        "docs/product/campaign-launch-roadmap.md",
+        "docs/testing/c3-front-006-evidence.md",
+        "program/iterations/c3-front-006.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted CI and visual review remain pending",
+        "Human product review and merge remain required",
+        "Full consultant portfolio mode and remaining campaign modules remain separate increments",
+        "Staging and production remain separate costed human gates"
       ]
     }
   ]

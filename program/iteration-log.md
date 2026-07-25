@@ -539,3 +539,22 @@
 - Passed 83 frontend tests, two seed tests, lint, strict TypeScript, production build, zero-vulnerability npm audit, ES/EN/mobile demo review and the real PostgreSQL foundation-to-candidate-to-team journey with zero axe violations.
 - No person was assigned, no membership or permission was created, and strategy/external execution remain blocked.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`; exact-head CI, human review and merge remain pending.
+
+
+## 2026-07-25 — C3-FRONT-005 exact-head CI-green checkpoint
+
+- Published implementation head `ecf1168c4ee9c6257596cccf4babbb7c040e6146` in stacked draft PR `#120`.
+- CampaignOS CI `30167135593` and Runtime Visual Review `30167135592` passed all 12 displayed checks.
+- Verified the foundation-to-candidate-to-team journey, PostgreSQL/RLS, backup/restore, Compose, CodeQL, secret/dependency scans, Terraform plan-only and supply-chain evidence.
+- Retained frontend, recovery, supply-chain, visual and Gitleaks artifacts with recorded SHA-256 digests.
+- Marked `C3-FRONT-005` `CI_GREEN`; review order remains PR `#118`, PR `#119`, then PR `#120`.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-25 — C3-FRONT-006 cinematic adaptive journey local checkpoint
+
+- Added state-adaptive `opening`, `mission` and `command` entry layouts without third-party media or tracking.
+- Replaced the flat launch path with one dominant chapter, exact progress semantics and a summarized chapter horizon.
+- Added explicit blocked-stage remediation, `aria-current=step`, visible focus and reduced-motion cancellation.
+- Passed five focused rendering tests, 88 frontend tests, lint, strict TypeScript, production build, zero-vulnerability npm audit and ES/EN/mobile browser review with zero axe violations and no external hosts.
+- Local Docker functional execution remains an environment limitation at image-layer `lchown /var/empty`; exact-head hosted CI is required.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

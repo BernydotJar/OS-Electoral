@@ -75,15 +75,17 @@ Later persisted data never allows the route to skip an incomplete earlier gate.
 
 ## Taste controls
 
-- `design_variance: 7/10` — asymmetric campaign narrative and a strong route hierarchy rather than a symmetric card grid.
-- `motion_intensity: 6/10` — a restrained first-use atmosphere, one mission entrance, short hover confirmation and substantially reduced motion when requested.
-- `visual_density: 5/10` — one dominant route surface, concise phase summaries, and detailed forms only when the user enters the active phase.
+- `design_variance: 8/10` — asymmetric editorial composition, one dominant chapter and an owned five-act first-use narrative rather than a symmetric card grid.
+- `motion_intensity: 7/10` — sequential first-use orientation, persisted-progress confirmation and short interaction feedback, with non-essential motion removed when requested.
+- `visual_density: 4/10` — one idea dominates each viewport; the remaining chapters form a compact horizon and detailed forms appear only inside the selected stage.
 
 The visual direction should communicate consequence, discipline, and ambition without becoming theatrical noise.
 
 ## Motion contract
 
 The roadmap uses shared duration, easing, and distance tokens. Motion is limited to opacity and transform, never blocks interaction, preserves focus, and is removed or substantially reduced under `prefers-reduced-motion: reduce`.
+
+The first-use atmosphere is rendered entirely by CampaignOS CSS and semantic content. SceneAI and other landing-page references informed scale and depth only; CampaignOS loads no third-party video, logo, tracking script or visual asset for this experience. Returning users do not replay the welcome: they receive the current mission and exact persisted progress. A completed route opens the command-center context instead of onboarding.
 
 ## Accessibility contract
 
@@ -109,7 +111,10 @@ A reviewer should complete the following without reading source code:
 7. Navigate with keyboard only and observe visible focus.
 8. Test mobile reflow and reduced motion.
 9. Confirm that blocked phases explain the missing access or configuration instead of pretending to work.
-10. Confirm that no copy claims strategy approval, public authority, citizen contact, spending, mobilization, deployment, or production readiness.
+10. Confirm that the current chapter is visually dominant and announced as the current step by assistive technology.
+11. Confirm that first use, active work and completed work produce different entry experiences.
+12. Confirm that no video, visual asset or tracking request is sent to an external host.
+13. Confirm that no copy claims strategy approval, public authority, citizen contact, spending, mobilization, deployment, or production readiness.
 
 ## Current operability and deferred product work
 

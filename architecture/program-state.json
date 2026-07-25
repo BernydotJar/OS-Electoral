@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-25",
-  "source_branch": "agent/c3-front-005-team-organization-workflow",
+  "source_branch": "agent/c3-front-006-cinematic-adaptive-journey",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
@@ -772,14 +772,14 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "PARALLEL_TEAM_ORGANIZATION_ACTIVE",
-      "next_increment": "C3-FRONT-005"
+      "status": "CINEMATIC_ADAPTIVE_JOURNEY_ACTIVE",
+      "next_increment": "C3-FRONT-006"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "TEAM_ORGANIZATION_FRONTEND_ACTIVE",
-      "next_increment": "C3-FRONT-005"
+      "status": "CAMPAIGN_CHAPTER_EXPERIENCE_ACTIVE",
+      "next_increment": "C3-FRONT-006"
     },
     {
       "id": "WS-08",
@@ -1052,10 +1052,19 @@
       "id": "C3-FRONT-005",
       "workstream": "WS-06",
       "title": "Parallel campaign team organization workflow",
-      "status": "ACTIVE",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-004",
         "C3-TEAM-001"
+      ]
+    },
+    {
+      "id": "C3-FRONT-006",
+      "workstream": "WS-06",
+      "title": "Cinematic adaptive campaign journey and chapter navigation",
+      "status": "ACTIVE",
+      "depends_on": [
+        "C3-FRONT-005"
       ]
     },
     {
@@ -1160,7 +1169,8 @@
     ],
     "open_pull_requests": [
       118,
-      119
+      119,
+      120
     ],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
@@ -1179,14 +1189,14 @@
       "new_supply_chain_check": "PASS"
     },
     "published_unreviewed_increment": {
-      "id": "C3-FRONT-004",
+      "id": "C3-FRONT-005",
       "state": "DRAFT_PR_CI_GREEN",
-      "branch": "agent/c3-front-004-candidate-evidence-workflow",
-      "base": "agent/c3-front-003-campaign-launch-roadmap",
-      "validated_implementation_head": "d22d9fac7ce9d59430edff927f5343f8391719f5",
-      "draft_pr": 119,
-      "ci_run_id": 30166352329,
-      "visual_run_id": 30166352316,
+      "branch": "agent/c3-front-005-team-organization-workflow",
+      "base": "agent/c3-front-004-candidate-evidence-workflow",
+      "validated_implementation_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146",
+      "draft_pr": 120,
+      "ci_run_id": 30167135593,
+      "visual_run_id": 30167135592,
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE"
     },
@@ -1206,6 +1216,14 @@
         "base": "agent/c3-front-003-campaign-launch-roadmap",
         "state": "DRAFT_PR_CI_GREEN",
         "delivered_head": "d22d9fac7ce9d59430edff927f5343f8391719f5"
+      },
+      {
+        "increment": "C3-FRONT-005",
+        "pr": 120,
+        "branch": "agent/c3-front-005-team-organization-workflow",
+        "base": "agent/c3-front-004-candidate-evidence-workflow",
+        "state": "DRAFT_PR_CI_GREEN",
+        "delivered_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146"
       }
     ],
     "git_push_incident": {
@@ -1222,35 +1240,35 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-FRONT-005",
+      "id": "C3-FRONT-006",
       "state": "TESTED_LOCAL",
-      "branch": "agent/c3-front-005-team-organization-workflow",
-      "base": "agent/c3-front-004-candidate-evidence-workflow@2a1aecaf08aa7c568dfc9b6fd3ab82852c141513",
+      "branch": "agent/c3-front-006-cinematic-adaptive-journey",
+      "base": "agent/c3-front-005-team-organization-workflow@ecf1168c4ee9c6257596cccf4babbb7c040e6146",
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
       "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
     },
     "latest_checkpoint": {
-      "id": "C3-FRONT-004",
-      "branch": "agent/c3-front-004-candidate-evidence-workflow",
-      "validated_implementation_head": "d22d9fac7ce9d59430edff927f5343f8391719f5",
-      "draft_pr": 119,
+      "id": "C3-FRONT-005",
+      "branch": "agent/c3-front-005-team-organization-workflow",
+      "validated_implementation_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146",
+      "draft_pr": 120,
       "status": "CI_GREEN",
-      "ci_run_id": 30166352329,
-      "visual_run_id": 30166352316,
-      "quality_job_id": 89699945447,
-      "recovery_job_id": 89699943812,
-      "recovery_artifact_id": 8621683108,
-      "recovery_artifact_digest": "sha256:2bd00f5d0fafd23a14e4d9d39a5c4fed1052ef45ddcde35b94a8034b39d6b359",
-      "supply_chain_artifact_id": 8621679234,
-      "supply_chain_artifact_digest": "sha256:aa9c53da4592c9d487a63369bc0d3d54b156da5c6a9ba4709c64cae998e5fb1e",
-      "frontend_artifact_id": 8621707850,
-      "frontend_artifact_digest": "sha256:65bd4e1acd0cea215215d4005cefae895e5b4f6e23a2303fe067f9c16baa2a62",
-      "visual_artifact_id": 8621689050,
-      "visual_artifact_digest": "sha256:2ac20eb9e608c0ca149b7b324ddfd691a7776fa7d25fee8c4015b85522aa059d",
-      "gitleaks_artifact_id": 8621678726,
-      "gitleaks_artifact_digest": "sha256:21b74b5151958baa941646d7cad362a4bd62babb8cc61ba8dea7cdce8582a703",
+      "ci_run_id": 30167135593,
+      "visual_run_id": 30167135592,
+      "quality_job_id": 89701975377,
+      "recovery_job_id": 89701975364,
+      "recovery_artifact_id": 8621892887,
+      "recovery_artifact_digest": "sha256:90a21611ce4285b8b426d724be93ef5d412adc6ec777f03a4e3f186b9932989c",
+      "supply_chain_artifact_id": 8621889767,
+      "supply_chain_artifact_digest": "sha256:d756bbdd53c0c3eb79754ef5472e5195cc3c1b004c5b0881a4fc6888c58ff534",
+      "frontend_artifact_id": 8621911493,
+      "frontend_artifact_digest": "sha256:8824514e50157cfdb97d04bac350b1b1714fe2e704a743a3d325075d89e75c01",
+      "visual_artifact_id": 8621898516,
+      "visual_artifact_digest": "sha256:dfcdf2633734e36825142e5035774307adc95eca78453775f445c222527acbf3",
+      "gitleaks_artifact_id": 8621890021,
+      "gitleaks_artifact_digest": "sha256:f58cfee4390d28a03a13813a10f79036b6ca7bb6c7557cb8abaeac84b1b89135",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",

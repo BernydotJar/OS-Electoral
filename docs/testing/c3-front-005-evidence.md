@@ -73,3 +73,29 @@ Generated screenshots and logs were inspected by the browser gates and then remo
 - Organization labels remain separate from application grants.
 - Team preparation does not advance the candidate evidence gate or unlock strategy.
 - Production remains `BLOCKED`; release remains `DENY_RELEASE`.
+
+
+## Exact-head hosted CI
+
+```text
+implementation head: ecf1168c4ee9c6257596cccf4babbb7c040e6146
+draft PR: 120 (stacked on PR 119 branch)
+CampaignOS CI: 30167135593 SUCCESS
+Runtime Visual Review: 30167135592 SUCCESS
+displayed checks: 12/12 PASS
+Compose stack E2E: PASS
+PostgreSQL migrations/RLS: PASS
+PostgreSQL backup/restore: PASS
+API-backed browser journey: PASS
+CodeQL/secrets/dependencies/Terraform/SBOM: PASS
+```
+
+Retained artifacts:
+
+- frontend review `8621911493`, `sha256:8824514e50157cfdb97d04bac350b1b1714fe2e704a743a3d325075d89e75c01`;
+- PostgreSQL recovery `8621892887`, `sha256:90a21611ce4285b8b426d724be93ef5d412adc6ec777f03a4e3f186b9932989c`;
+- supply chain `8621889767`, `sha256:d756bbdd53c0c3eb79754ef5472e5195cc3c1b004c5b0881a4fc6888c58ff534`;
+- visual review `8621898516`, `sha256:dfcdf2633734e36825142e5035774307adc95eca78453775f445c222527acbf3`;
+- Gitleaks SARIF `8621890021`, `sha256:f58cfee4390d28a03a13813a10f79036b6ca7bb6c7557cb8abaeac84b1b89135`.
+
+The implementation is CI-green and reviewable. It is not merged, deployed or production-ready.

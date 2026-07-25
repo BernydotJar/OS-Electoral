@@ -301,6 +301,7 @@ export function CampaignShell({
             mode={experienceMode}
             campaignName={model.campaign.name}
             currentPhase={currentJourneyPhase}
+            journey={campaignJourney}
           />
 
           <CampaignLaunchRoadmap

@@ -149,6 +149,26 @@ async def review() -> dict[str, object]:
             await desktop.get_by_role("heading", name="Tu campaña, paso a paso").count() == 1,
             "campaign master path missing",
         )
+        require(
+            await desktop.locator('.campaign-experience[data-layout="mission"]').count() == 1,
+            "adaptive active-mission hero missing",
+        )
+        require(
+            await desktop.get_by_role("progressbar", name="Progreso de la ruta de campaña").count() == 1,
+            "campaign progress semantics missing",
+        )
+        require(
+            await desktop.locator('.journey-chapter').count() == 1,
+            "dominant campaign chapter missing",
+        )
+        require(
+            await desktop.locator('.journey-horizon [aria-current="step"]').count() == 1,
+            "current chapter semantics missing",
+        )
+        require(
+            await desktop.locator("video, source[src*='sceneai.art']").count() == 0,
+            "third-party cinematic media leaked into the product",
+        )
         visible_text = await desktop.locator("body").inner_text()
         for internal_code in (
             "OPERATIONAL SETUP ONLY",

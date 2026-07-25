@@ -268,10 +268,19 @@
       "id": "C3-FRONT-005",
       "workstream": "WS-06",
       "title": "Parallel campaign team organization workflow",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-004",
         "C3-TEAM-001"
+      ]
+    },
+    {
+      "id": "C3-FRONT-006",
+      "workstream": "WS-06",
+      "title": "Cinematic adaptive campaign journey and chapter navigation",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "C3-FRONT-005"
       ]
     }
   ]
