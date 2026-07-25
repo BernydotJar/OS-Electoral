@@ -2,8 +2,8 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-24",
-  "source_branch": "agent/c3-obs-001-operational-evidence",
+  "updated_at": "2026-07-25",
+  "source_branch": "agent/c3-front-003-campaign-launch-roadmap",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
@@ -772,8 +772,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "FUNCTIONAL_ONBOARDING_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-FRONT-002"
+      "status": "CAMPAIGN_LAUNCH_ROADMAP_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-FRONT-003"
     },
     {
       "id": "WS-07",
@@ -1004,6 +1004,19 @@
       "workstream": "WS-06"
     },
     {
+      "id": "C3-FRONT-003",
+      "workstream": "WS-06",
+      "title": "Campaign launch roadmap and guided campaign foundation UX",
+      "status": "VERIFIED_POSTGRESQL",
+      "depends_on": [
+        "C3-FRONT-002",
+        "C3-CANDIDATE-001",
+        "C3-TEAM-001",
+        "C3-STRATEGY-001",
+        "C3-OPS-001"
+      ]
+    },
+    {
       "id": "C3-OBS-001",
       "status": "MERGED_TO_MAIN",
       "depends_on": [
@@ -1098,7 +1111,7 @@
     "total_critical_or_high": 1
   },
   "github_state": {
-    "verified_at": "2026-07-24",
+    "verified_at": "2026-07-25",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1121,49 +1134,29 @@
       72,
       73,
       83,
-      114
+      114,
+      116,
+      117
     ],
-    "open_pull_requests": [
-      116
-    ],
+    "open_pull_requests": [],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
     "actions_allowed": "SELECTED_GITHUB_OWNED_PLUS_TWO_PATTERNS",
     "action_sha_pinning_required": true,
-    "local_ci_workflow": "EXACT_SOURCE_HEAD_SUPPLY_CHAIN_ATTESTATION_SUCCESS",
-    "local_workflow_action_refs": "32_FULL_SHA_PINNED",
+    "local_ci_workflow": "MAIN_POST_MERGE_CI_SUCCESS",
+    "local_workflow_action_refs": "39_FULL_SHA_PINNED",
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {
-      "run_id": 29803405277,
-      "head_sha": "d0719c91dd6b0ac68e8499912c6c4eef983a0b1f",
+      "run_id": 30147774389,
+      "head_sha": "38c4cf059acd9690f1f378a340797811ec8dbf12",
       "conclusion": "SUCCESS",
       "required_check_enforcement": true,
       "required_check_count": 8,
-      "new_supply_chain_check": "PENDING_FIRST_RUN"
+      "new_supply_chain_check": "PASS"
     },
-    "published_unreviewed_increment": {
-      "id": "C3-RELEASE-001",
-      "state": "DRAFT_PR_CI_GREEN",
-      "branch": "agent/c3-release-001-readiness-audit-main",
-      "base": "main",
-      "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
-      "draft_pr": 116,
-      "ci_run_id": 30131521614,
-      "visual_run_id": 30131521581,
-      "release_decision": "DENY_RELEASE",
-      "external_effects": "NONE"
-    },
-    "review_stack": [
-      {
-        "increment": "C3-RELEASE-001",
-        "pr": 116,
-        "branch": "agent/c3-release-001-readiness-audit-main",
-        "base": "main",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76"
-      }
-    ],
+    "published_unreviewed_increment": null,
+    "review_stack": [],
     "git_push_incident": {
       "classification": "TECHNICAL_DEFECT_REPAIRED",
       "component": "Cloud_Sandbox_MCP.git_push branch targeting",
@@ -1178,38 +1171,28 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-RELEASE-001",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-release-001-readiness-audit-main",
-      "base": "main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5",
-      "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
-      "draft_pr": 116,
+      "id": "C3-FRONT-003",
+      "state": "VERIFIED_POSTGRESQL",
+      "branch": "agent/c3-front-003-campaign-launch-roadmap",
+      "base": "main@38c4cf059acd9690f1f378a340797811ec8dbf12",
+      "validated_implementation_head": null,
+      "draft_pr": null,
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE"
     },
     "latest_checkpoint": {
-      "id": "C3-RELEASE-001",
-      "branch": "agent/c3-release-001-readiness-audit-main",
-      "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
-      "draft_pr": 116,
-      "status": "CI_GREEN",
-      "ci_run_id": 30131521614,
-      "visual_run_id": 30131521581,
-      "quality_job_id": 89606840517,
-      "recovery_job_id": 89606840531,
-      "recovery_artifact_id": 8611275379,
-      "recovery_artifact_digest": "sha256:66f4cb1559a6b29b61ba1a29648e2c273d4638b9789012374c992c0463519aea",
-      "supply_chain_artifact_id": 8611270971,
-      "supply_chain_artifact_digest": "sha256:84abef35b6ffefae214c11d00fe174cdfa6347874c618ccc8b6a976f13094b3d",
-      "frontend_artifact_id": 8611309890,
-      "frontend_artifact_digest": "sha256:3a0d18430e3acbb8c0611da1a78b6d633bf8fad89fa1f481119bcf33b910b43a",
-      "visual_artifact_id": 8611287198,
-      "visual_artifact_digest": "sha256:837fe457b5e24c813354b99a488b20ce0e10b24fa565ad50844f044e08d8ab20",
+      "id": "C3-DEVEX-001",
+      "branch": "main",
+      "validated_implementation_head": "38c4cf059acd9690f1f378a340797811ec8dbf12",
+      "draft_pr": 117,
+      "status": "MERGED_TO_MAIN",
+      "ci_run_id": 30147774389,
+      "visual_run_id": 30147666840,
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
-      "next_action": "HUMAN_REVIEW_AND_STAGING_AUTHORIZATION"
+      "next_action": "C3_FRONT_003_HUMAN_REVIEW_AFTER_EXACT_HEAD_CI"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",
@@ -1227,12 +1210,12 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 106,
+      "pr": 117,
       "status": "MERGED_TO_MAIN_REBASE",
-      "main_sha": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
+      "main_sha": "38c4cf059acd9690f1f378a340797811ec8dbf12",
       "checks_before_merge": "SUCCESS",
       "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED",
-      "open_pull_requests_observed": 1
+      "open_pull_requests_observed": 0
     },
     "desired_required_check_count": 10,
     "live_required_check_count": 8,

@@ -24,18 +24,22 @@ const es = {
     english: "EN",
   },
   shell: {
-    eyebrow: "CAMPAIGN OPERATING SYSTEM",
-    title: "Centro de mando gobernado",
+    eyebrow: "SISTEMA OPERATIVO DE CAMPAÑA",
+    title: "Convierte tu campaña en un sistema que avanza",
     subtitle:
-      "Contexto, evidencia y próximos pasos internos sin sustituir a la autoridad humana.",
+      "CampaignOS te muestra qué decidir, qué evidencia falta y cuál es el siguiente movimiento seguro.",
     authority:
       "La IA recomienda; la evidencia sustenta; la persona autorizada decide.",
+    syntheticContext: "DATOS SINTÉTICOS · SIN CAMPAÑA REAL",
+    verifiedContext: "CONTEXTO VERIFICADO POR EL SERVIDOR",
+    humanAuthority: "DECISIÓN HUMANA",
+    authorizationContext: "CONTEXTO DE AUTORIZACIÓN",
     currentContext: "Contexto actual",
-    tenant: "Tenant",
+    tenant: "Organización",
     campaign: "Campaña",
     principal: "Sesión",
-    roles: "Roles informativos",
-    authorizationFresh: "Autorización evaluada",
+    roles: "Responsabilidades visibles",
+    authorizationFresh: "Permisos verificados",
     modules: "Módulos",
     reference:
       "Referencia visual estática preservada hasta revisión de paridad.",
@@ -46,40 +50,145 @@ const es = {
       "El shell no expone un login simulado. La integración OIDC y el ciclo de sesión permanecen detrás de C3-IAM-002.",
     contextTitle: "Selecciona un contexto autorizado",
     contextBody:
-      "El selector de tenant no crea autoridad. CampaignOS requiere un tenant preseleccionado y vuelve a validar permisos en el backend.",
+      "El selector de tenant no crea autoridad. CampaignOS requiere un tenant preseleccionado y vuelve a validar permisos en el servidor.",
     unavailableTitle: "Dependencia temporalmente no disponible",
     unavailableBody:
       "No se muestran datos parciales ni cachés cruzados. Conserva el correlation ID para soporte.",
     emptyTitle: "No hay campañas autorizadas",
     emptyBody:
-      "La sesión es válida, pero no existe una campaña visible bajo grants exactos vigentes.",
+      "La sesión es válida, pero no existe una campaña visible bajo permisos exactos vigentes.",
   },
   dashboard: {
-    readinessTitle: "Readiness operativo",
-    readinessBody: "Mide únicamente setup mínimo para iniciar intake guiado.",
-    checks: "checks completos",
-    nextAction: "Siguiente acción interna",
-    authorityTitle: "Límite de autoridad",
+    readinessEyebrow: "BASE OPERATIVA",
+    readinessTitle: "Preparación operativa",
+    readinessBody:
+      "Confirma que la campaña tiene el contexto mínimo para comenzar una ruta guiada.",
+    checks: "pasos básicos completos",
+    nextAction: "Siguiente paso del sistema",
+    authorityEyebrow: "PERMISOS EXACTOS",
+    authorityTitle: "Permisos y responsabilidades",
     authorityBody:
-      "Roles ayudan a orientar la navegación; nunca conceden permisos. Cada operación debe coincidir exactamente con grant, recurso, propósito y scope.",
+      "Las responsabilidades orientan el trabajo, pero cada acción vuelve a validar el permiso, el recurso y el propósito exactos.",
+    grantCountLabel: "permisos exactos administrados por el servidor",
+    evidenceEyebrow: "TRAZABILIDAD",
     evidenceTitle: "Evidencia y auditoría",
     evidenceBody:
-      "Las lecturas sensibles y escrituras exitosas producen receipts trazables en el backend.",
-    auditReceipt: "Receipt de lectura",
+      "Las lecturas sensibles y los cambios guardados producen comprobantes trazables.",
+    auditReceipt: "Comprobante de lectura",
     noExternal: "Sin efectos externos",
-    operationsTitle: "Ruta operativa",
+    confirmed: "Confirmado",
+    operationsEyebrow: "SECUENCIA GUIADA",
+    operationsTitle: "Cómo avanza CampaignOS",
     operationsBody:
-      "Completa metadatos, configura workspace y comienza intake antes de estrategia o comunicación.",
+      "Primero ordena la base; después habilita evidencia, equipo, estrategia y operación diaria.",
     campaignStatus: "Estado de campaña",
     version: "Versión",
-    workspaceCount: "Workspaces activos",
-    limitations: "Limitaciones obligatorias",
+    workspaceCount: "Espacios de trabajo activos",
+    limitationsEyebrow: "LÍMITES OBLIGATORIOS",
+    limitations: "Controles que siguen vigentes",
+    readinessCheckLabels: {
+      campaign_name: "Nombre de campaña definido",
+      jurisdiction: "Territorio definido",
+      campaign_stage: "Etapa de campaña definida",
+      active_workspace: "Espacio de trabajo activo",
+    },
+    readinessNextActionLabels: {
+      COMPLETE_CAMPAIGN_METADATA: "Completar nombre, territorio y etapa",
+      CREATE_CAMPAIGN_WORKSPACE: "Crear el espacio de trabajo inicial",
+      BEGIN_GUIDED_INTAKE: "Comenzar la ruta guiada",
+    },
+    sequence: {
+      context: "Definir contexto y propósito",
+      workspace: "Organizar el espacio de trabajo",
+      intake: "Completar la información de arranque",
+      evidence: "Construir evidencia antes de decidir estrategia",
+    },
+    limitationLabels: {
+      NOT_A_HUMAN_APPROVAL: "Requiere decisión de una persona autorizada",
+      NO_STRATEGY_EVIDENCE_OR_CITIZEN_ASSESSMENT:
+        "Aún no existe evidencia suficiente para decidir estrategia",
+      NOT_A_STRATEGY: "Esta etapa todavía no constituye una estrategia",
+      NO_CITIZEN_CONTACT_OR_PROFILING:
+        "No habilita contacto ciudadano ni perfiles individuales",
+      NO_EXTERNAL_EFFECTS: "No produce acciones fuera de CampaignOS",
+      NOT_PUBLIC_POSITIONING_APPROVAL:
+        "No autoriza posicionamiento ni mensajes públicos",
+      NO_VOTER_PROFILING: "No habilita perfiles individuales de electores",
+      HUMAN_REVIEW_REQUIRED: "Requiere revisión humana antes de avanzar",
+      ROLE_LABELS_ARE_NOT_PERMISSIONS:
+        "Los nombres de puesto no conceden permisos",
+      ACCESS_RECOMMENDATIONS_REQUIRE_HUMAN_AUTHORIZATION:
+        "Los accesos requieren autorización humana separada",
+      HUMAN_DECISIONS_REQUIRED: "Las decisiones críticas pertenecen al equipo humano",
+      NO_AUTONOMOUS_TASK_EXECUTION:
+        "CampaignOS no ejecuta tareas de campaña de forma autónoma",
+      NO_CITIZEN_CONTACT: "No habilita contacto ciudadano",
+      NOT_PUBLIC_POSITIONING: "No constituye posicionamiento público",
+      NO_VOTER_PROFILING_OR_INDIVIDUAL_TARGETING:
+        "No habilita perfiles ni segmentación individual",
+      NO_CITIZEN_CONTACT_OR_EXTERNAL_EFFECTS:
+        "No contacta personas ni produce efectos externos",
+    },
+  },
+  journey: {
+    eyebrow: "RUTA MAESTRA DE CAMPAÑA",
+    title: "Tu campaña, paso a paso",
+    body:
+      "Desde la idea inicial hasta la operación diaria, CampaignOS ordena decisiones, evidencia, equipo y seguimiento sin saltarse los controles humanos.",
+    progressLabel: "Progreso de la ruta de campaña",
+    stageLabel: "Etapa actual",
+    completedLabel: "etapas completadas",
+    missionLabel: "Tu misión ahora",
+    openPhase: "Ver etapa",
+    blockedAction: "Requiere habilitación o acceso adicional",
+    boundary:
+      "La ruta orienta y organiza. No autoriza publicaciones, contacto ciudadano, gasto, movilización ni producción.",
+    statusLabels: {
+      COMPLETE: "Completada",
+      ACTIVE: "En curso",
+      AVAILABLE: "Siguiente",
+      BLOCKED: "Bloqueada por acceso o configuración",
+      LOCKED: "Se habilita después",
+    },
+    phaseLabels: {
+      foundation: "Aterrizar la campaña",
+      evidence: "Conocer la candidatura y el territorio",
+      team: "Organizar el equipo",
+      strategy: "Decidir la estrategia",
+      operations: "Operar y aprender cada día",
+    },
+    phaseDescriptions: {
+      foundation:
+        "Define cargo, territorio, propósito, equipo, activos y capacidad presupuestaria.",
+      evidence:
+        "Reúne padrón, resultados históricos, fichas comunitarias, fuentes públicas y evidencia verificable.",
+      team:
+        "Diseña coordinaciones, secretarías, responsables, capacidad y vacíos que debes cubrir.",
+      strategy:
+        "Construye FODA, objetivos, hipótesis y el equilibrio entre trabajo territorial, comunicación y digital.",
+      operations:
+        "Da seguimiento a metas, comunidades, responsables, tareas, bloqueos y aprendizajes del War Room.",
+    },
+    phaseOutcomes: {
+      foundation: "Resultado: una campaña entendible y lista para investigar.",
+      evidence: "Resultado: decisiones basadas en evidencia, no intuición.",
+      team: "Resultado: cada función tiene responsable y capacidad visible.",
+      strategy: "Resultado: una dirección humana, medible y revisable.",
+      operations: "Resultado: seguimiento diario con trazabilidad y aprendizaje.",
+    },
+    phaseActions: {
+      foundation: "Continuar información de arranque",
+      evidence: "Revisar candidatura y evidencia",
+      team: "Revisar equipo y responsabilidades",
+      strategy: "Abrir sala de estrategia",
+      operations: "Abrir operación diaria",
+    },
   },
   campaigns: {
     eyebrow: "CONTEXTO DE CAMPAÑA",
     title: "Elige la campaña de trabajo",
     body:
-      "La selección cambia únicamente el contexto visible. El backend vuelve a validar cada grant y alcance.",
+      "La selección cambia únicamente el contexto visible. El servidor vuelve a validar cada permiso y alcance.",
     current: "Campaña actual",
     selectLabel: "Campaña autorizada",
     apply: "Usar esta campaña",
@@ -87,7 +196,7 @@ const es = {
   },
   notices: {
     campaign_selected: "Contexto de campaña actualizado.",
-    intake_started: "Intake iniciado y guardado en PostgreSQL.",
+    intake_started: "Ruta guiada creada y guardada en PostgreSQL.",
     intake_saved: "Cambios guardados con nueva versión.",
     authorization_denied: "La sesión no tiene autorización exacta para esta acción.",
     conflict: "El registro cambió o la solicitud ya fue utilizada. Recarga y revisa la versión.",
@@ -98,22 +207,48 @@ const es = {
     request_failed: "La solicitud no pudo completarse de forma segura.",
   },
   intake: {
-    eyebrow: "INTAKE GUIADO · INVESTIGACIÓN PRIMERO",
-    title: "Hoja de ruta para comenzar la campaña",
-    body: "Ordena la información mínima antes de investigar, decidir estrategia o activar trabajo externo.",
-    startTitle: "Iniciar el intake verificable",
+    eyebrow: "INICIO GUIADO · EVIDENCIA PRIMERO",
+    title: "Construye la base de tu campaña",
+    body:
+      "Responde preguntas claras para que CampaignOS pueda indicarte qué sigue, qué evidencia falta y qué trabajo debe organizarse.",
+    startTitle: "Comenzar la ruta guiada",
     startBody:
       "Crea el registro interno y su evidencia de auditoría. No inicia estrategia, contacto ni ejecución externa.",
-    startAction: "Iniciar intake",
+    startAction: "Comenzar ruta",
     editEyebrow: "EDICIÓN AUTORIZADA",
-    editTitle: "Actualizar información de arranque",
+    editTitle: "Cuéntanos con qué estás comenzando",
     editBody:
-      "Cada guardado usa la versión actual y una clave idempotente. Un conflicto nunca sobrescribe silenciosamente.",
+      "Puedes completar esta información por etapas. CampaignOS conserva la versión correcta y nunca reemplaza cambios en silencio.",
     onePerLine: "Un elemento por línea. Máximo 30.",
+    officeHelp: "Indica el cargo que buscas y confirma que corresponde al territorio de la campaña.",
+    officePlaceholder: "Ej. Alcaldía Municipal",
+    budgetHelp: "Selecciona el nivel de evidencia disponible; no necesitas tener el presupuesto cerrado para comenzar.",
+    candidateProjectHelp:
+      "Explica por qué nace la candidatura, qué cambio busca y a quién desea servir.",
+    candidateProjectPlaceholder:
+      "Ej. Queremos construir una candidatura municipal basada en evidencia, organización comunitaria y resultados medibles.",
+    currentTeamHelp:
+      "Una persona o función por línea. Incluye coordinaciones, secretarías y roles todavía vacantes.",
+    currentTeamPlaceholder:
+      "Coordinación general — confirmada\nTerritorio — por definir",
+    currentAssetsHelp:
+      "Registra recursos existentes: archivos, redes, herramientas, oficina, vehículos, voluntariado o alianzas autorizadas.",
+    currentAssetsPlaceholder:
+      "Archivo documental\nCanales digitales\nHerramienta de datos territoriales",
+    knownUnknownsHelp:
+      "Anota preguntas que deben resolverse antes de decidir estrategia o ejecutar trabajo.",
+    knownUnknownsPlaceholder:
+      "¿Cuántos votos se requieren?\n¿Qué comunidades necesitan mayor investigación?",
+    evidenceRequirementsHelp:
+      "Lista los datos y documentos que harán falta para responder esas preguntas.",
+    evidenceRequirementsPlaceholder:
+      "Padrón electoral\nResultados históricos\nFichas comunitarias\nPresupuesto preliminar",
+    checkComplete: "Completado",
+    checkPending: "Pendiente",
     saveBoundary:
-      "Guardar actualiza sólo el intake interno; no aprueba estrategia ni activa trabajo externo.",
+      "Guardar actualiza sólo esta preparación interna; no aprueba estrategia ni activa trabajo externo.",
     saveAction: "Guardar cambios",
-    status: "Estado del intake",
+    status: "Estado de la preparación",
     statusLabels: {
       BLOCKED_BY_CAMPAIGN_SETUP: "Bloqueado por configuración de campaña",
       IN_PROGRESS: "Preparación en progreso",
@@ -121,24 +256,24 @@ const es = {
     },
     progress: "pasos completos",
     nextAction: "Siguiente paso",
-    checks: "Ruta de preparación",
-    researchActions: "Investigación habilitada",
+    checks: "Pasos de esta etapa",
+    researchActions: "Lo que se desbloquea después",
     notStarted:
-      "El intake todavía no ha sido iniciado por una persona autorizada.",
+      "La ruta guiada todavía no ha sido iniciada por una persona autorizada.",
     notAuthorized:
-      "La sesión no tiene autorización exacta para revisar este intake.",
+      "La sesión no tiene el permiso exacto para revisar esta ruta guiada.",
     unavailable:
-      "El intake no está disponible temporalmente. No se muestran datos parciales.",
+      "La ruta guiada no está disponible temporalmente. No se muestran datos parciales.",
     noItems: "Evaluado: no se registraron elementos.",
     notAssessed: "Pendiente de evaluación",
     office: "Cargo objetivo",
     candidateProject: "Proyecto de candidatura",
     currentTeam: "Equipo actual",
     currentAssets: "Activos actuales",
-    budgetStatus: "Evidencia presupuestaria",
-    knownUnknowns: "Preguntas conocidas",
-    evidenceRequirements: "Evidencia requerida",
-    readReceipt: "Receipt de lectura",
+    budgetStatus: "Estado del presupuesto",
+    knownUnknowns: "Preguntas que debemos resolver",
+    evidenceRequirements: "Datos y documentos necesarios",
+    readReceipt: "Comprobante de lectura",
     updatedAt: "Actualizado",
     budgetStatusLabels: {
       NOT_ASSESSED: "No evaluado",
@@ -184,7 +319,7 @@ const es = {
     title: "Workspace ejecutivo de candidatura",
     body: "Separa declaraciones, evidencia independiente, contradicciones, desarrollo y riesgos antes de cualquier decisión pública.",
     status: "Estado interno",
-    progress: "checks completos",
+    progress: "pasos completos",
     nextAction: "Siguiente acción humana",
     sections: "Secciones de evidencia",
     identity: "Identidad",
@@ -203,14 +338,14 @@ const es = {
     publicBoundaryBody:
       "La aprobación interna no autoriza posicionamiento público, estrategia, contenido, contacto, gasto ni movilización.",
     notStarted:
-      "El workspace de candidatura todavía no ha sido creado por una persona autorizada.",
+      "El espacio de trabajo de candidatura todavía no ha sido creado por una persona autorizada.",
     notAuthorized:
       "La sesión no tiene autorización exacta para revisar esta candidatura.",
     unavailable:
-      "El workspace de candidatura no está disponible temporalmente. No se muestran datos parciales.",
+      "El espacio de trabajo de candidatura no está disponible temporalmente. No se muestran datos parciales.",
     notAssessed: "Pendiente de evidencia y revisión",
     noItems: "Revisado: no se registraron elementos.",
-    readReceipt: "Receipt de lectura",
+    readReceipt: "Comprobante de lectura",
     updatedAt: "Actualizado",
     statusLabels: {
       SETUP_REQUIRED: "Configuración y evidencia inicial requeridas",
@@ -254,14 +389,14 @@ const es = {
   },
   teamWorkspace: {
     eyebrow: "EQUIPO · RESPONSABILIDAD Y CAPACIDAD",
-    title: "Mapa de equipo y accountability",
-    body: "Hace visibles roles, vacantes, capacidad, RACI, onboarding, formación y recomendaciones de acceso sin convertir etiquetas en permisos.",
+    title: "Mapa de equipo y responsabilidades",
+    body: "Hace visibles roles, vacantes, capacidad, RACI, incorporación, formación y recomendaciones de acceso sin convertir etiquetas en permisos.",
     status: "Estado organizacional",
-    progress: "checks completos",
+    progress: "pasos completos",
     nextAction: "Siguiente acción humana",
     authorityBoundary: "Las etiquetas de rol no son permisos",
     authorityBody:
-      "Las recomendaciones de acceso requieren una autorización humana exacta y separada. Este workspace no crea memberships, roles ni grants.",
+      "Las recomendaciones de acceso requieren una autorización humana exacta y separada. Este espacio de trabajo no crea membresías, roles ni permisos.",
     roles: "Roles",
     filledRoles: "Roles cubiertos",
     vacantRoles: "Vacantes",
@@ -270,14 +405,14 @@ const es = {
     training: "Formación",
     accessRecommendations: "Recomendaciones de acceso",
     notStarted:
-      "El workspace de equipo todavía no ha sido creado por una persona autorizada.",
+      "El espacio de trabajo de equipo todavía no ha sido creado por una persona autorizada.",
     notAuthorized:
       "La sesión no tiene autorización exacta para revisar este equipo.",
     unavailable:
-      "El workspace de equipo no está disponible temporalmente. No se muestran datos parciales.",
+      "El espacio de trabajo de equipo no está disponible temporalmente. No se muestran datos parciales.",
     noItems: "Evaluado: no se registraron elementos.",
     notAssessed: "Pendiente de evaluación",
-    readReceipt: "Receipt de lectura",
+    readReceipt: "Comprobante de lectura",
     updatedAt: "Actualizado",
     hours: "horas",
     statusLabels: {
@@ -288,10 +423,10 @@ const es = {
     checkLabels: {
       organization_template: "Seleccionar estructura",
       role_cards: "Definir tarjetas de rol",
-      accountability: "Asignar accountability RACI",
+      accountability: "Asignar responsabilidad RACI",
       availability: "Evaluar disponibilidad",
       vacancies: "Identificar vacantes",
-      onboarding: "Completar onboarding",
+      onboarding: "Completar incorporación",
       training: "Completar formación",
       access_review: "Revisar recomendaciones de acceso",
     },
@@ -301,7 +436,7 @@ const es = {
       ASSIGN_ACCOUNTABILITY: "Asignar accountable y responsables",
       ASSESS_AVAILABILITY: "Evaluar disponibilidad y capacidad",
       PLAN_VACANCIES: "Crear planes para vacantes",
-      COMPLETE_ONBOARDING: "Completar onboarding",
+      COMPLETE_ONBOARDING: "Completar incorporación",
       COMPLETE_TRAINING: "Completar formación",
       REVIEW_ACCESS_RECOMMENDATIONS: "Revisar recomendaciones de acceso",
       CONTINUE_HUMAN_GOVERNANCE: "Continuar gobierno humano del equipo",
@@ -344,7 +479,7 @@ const es = {
     metric: "Métrica",
     target: "Meta",
     deadline: "Fecha objetivo",
-    readReceipt: "Receipt de lectura",
+    readReceipt: "Comprobante de lectura",
     version: "Versión",
     statusLabels: {
       EVIDENCE_REQUIRED: "Se requiere evidencia verificada",
@@ -381,7 +516,7 @@ const es = {
     snapshot: "Último War Room",
     roadmapVersion: "Versión del roadmap",
     snapshotDate: "Fecha del snapshot",
-    readReceipt: "Receipt de lectura",
+    readReceipt: "Comprobante de lectura",
     authorityBoundary: "El roadmap coordina; no autoriza ni ejecuta",
     authorityBody:
       "Cada tarea sigue bajo responsabilidad humana. El snapshot es evidencia interna inmutable y no produce efectos externos.",
@@ -414,8 +549,8 @@ const es = {
   nav: {
     overview: "Resumen",
     campaigns: "Campañas",
-    readiness: "Readiness",
-    intake: "Comenzar campaña",
+    readiness: "Preparación",
+    intake: "Ruta de inicio",
     candidate: "Candidatura",
     team: "Equipo",
     strategy: "Estrategia",
@@ -453,17 +588,21 @@ const en: Dictionary = {
   },
   shell: {
     eyebrow: "CAMPAIGN OPERATING SYSTEM",
-    title: "Governed command center",
+    title: "Turn your campaign into a system that moves",
     subtitle:
-      "Context, evidence, and internal next steps without replacing human authority.",
+      "CampaignOS shows what to decide, what evidence is missing, and the next safe move.",
     authority:
       "AI recommends; evidence supports; the authorized person decides.",
+    syntheticContext: "SYNTHETIC DATA · NO REAL CAMPAIGN",
+    verifiedContext: "SERVER-VERIFIED CONTEXT",
+    humanAuthority: "HUMAN DECISION",
+    authorizationContext: "AUTHORIZATION CONTEXT",
     currentContext: "Current context",
-    tenant: "Tenant",
+    tenant: "Organization",
     campaign: "Campaign",
     principal: "Session",
-    roles: "Informational roles",
-    authorizationFresh: "Authorization evaluated",
+    roles: "Visible responsibilities",
+    authorizationFresh: "Permissions verified",
     modules: "Modules",
     reference: "Static visual reference preserved until parity review.",
   },
@@ -482,26 +621,129 @@ const en: Dictionary = {
       "The session is valid, but no campaign is visible under current exact grants.",
   },
   dashboard: {
-    readinessTitle: "Operational readiness",
+    readinessEyebrow: "OPERATING FOUNDATION",
+    readinessTitle: "Operational preparation",
     readinessBody:
-      "Measures only the minimum setup required to begin guided intake.",
-    checks: "checks complete",
-    nextAction: "Next internal action",
-    authorityTitle: "Authority boundary",
+      "Confirms that the campaign has the minimum context required to begin a guided path.",
+    checks: "foundation steps complete",
+    nextAction: "Next system step",
+    authorityEyebrow: "EXACT PERMISSIONS",
+    authorityTitle: "Permissions and responsibilities",
     authorityBody:
-      "Roles orient navigation but never grant permission. Every operation must match the exact grant, resource, purpose, and scope.",
+      "Responsibilities guide the work, but every action revalidates the exact permission, resource, and purpose.",
+    grantCountLabel: "server-managed exact permissions",
+    evidenceEyebrow: "TRACEABILITY",
     evidenceTitle: "Evidence and audit",
     evidenceBody:
-      "Sensitive reads and successful writes produce traceable backend receipts.",
+      "Sensitive reads and saved changes produce traceable receipts.",
     auditReceipt: "Read receipt",
     noExternal: "No external effects",
-    operationsTitle: "Operating path",
+    confirmed: "Confirmed",
+    operationsEyebrow: "GUIDED SEQUENCE",
+    operationsTitle: "How CampaignOS advances",
     operationsBody:
-      "Complete metadata, configure a workspace, and begin intake before strategy or communications.",
+      "First establish the foundation; then enable evidence, team, strategy, and daily operations.",
     campaignStatus: "Campaign status",
     version: "Version",
     workspaceCount: "Active workspaces",
-    limitations: "Mandatory limitations",
+    limitationsEyebrow: "MANDATORY LIMITS",
+    limitations: "Controls that remain in force",
+    readinessCheckLabels: {
+      campaign_name: "Campaign name defined",
+      jurisdiction: "Territory defined",
+      campaign_stage: "Campaign stage defined",
+      active_workspace: "Active workspace",
+    },
+    readinessNextActionLabels: {
+      COMPLETE_CAMPAIGN_METADATA: "Complete name, territory, and stage",
+      CREATE_CAMPAIGN_WORKSPACE: "Create the initial workspace",
+      BEGIN_GUIDED_INTAKE: "Begin the guided path",
+    },
+    sequence: {
+      context: "Define context and purpose",
+      workspace: "Organize the workspace",
+      intake: "Complete campaign starting information",
+      evidence: "Build evidence before strategy decisions",
+    },
+    limitationLabels: {
+      NOT_A_HUMAN_APPROVAL: "Requires a decision by an authorized person",
+      NO_STRATEGY_EVIDENCE_OR_CITIZEN_ASSESSMENT:
+        "There is not yet enough evidence for a strategy decision",
+      NOT_A_STRATEGY: "This stage does not yet constitute a strategy",
+      NO_CITIZEN_CONTACT_OR_PROFILING:
+        "Does not enable citizen contact or individual profiles",
+      NO_EXTERNAL_EFFECTS: "Produces no actions outside CampaignOS",
+      NOT_PUBLIC_POSITIONING_APPROVAL:
+        "Does not authorize public positioning or messages",
+      NO_VOTER_PROFILING: "Does not enable individual voter profiles",
+      HUMAN_REVIEW_REQUIRED: "Requires human review before advancing",
+      ROLE_LABELS_ARE_NOT_PERMISSIONS: "Job labels do not grant permissions",
+      ACCESS_RECOMMENDATIONS_REQUIRE_HUMAN_AUTHORIZATION:
+        "Access requires separate human authorization",
+      HUMAN_DECISIONS_REQUIRED: "Critical decisions belong to the human team",
+      NO_AUTONOMOUS_TASK_EXECUTION:
+        "CampaignOS does not autonomously execute campaign tasks",
+      NO_CITIZEN_CONTACT: "Does not enable citizen contact",
+      NOT_PUBLIC_POSITIONING: "Does not constitute public positioning",
+      NO_VOTER_PROFILING_OR_INDIVIDUAL_TARGETING:
+        "Does not enable individual profiling or targeting",
+      NO_CITIZEN_CONTACT_OR_EXTERNAL_EFFECTS:
+        "Does not contact people or produce external effects",
+    },
+  },
+  journey: {
+    eyebrow: "CAMPAIGN MASTER PATH",
+    title: "Your campaign, step by step",
+    body:
+      "From the initial idea to daily operations, CampaignOS orders decisions, evidence, team, and follow-up without bypassing human controls.",
+    progressLabel: "Campaign path progress",
+    stageLabel: "Current stage",
+    completedLabel: "stages complete",
+    missionLabel: "Your mission now",
+    openPhase: "View stage",
+    blockedAction: "Requires additional access or enablement",
+    boundary:
+      "The path guides and organizes. It does not authorize publication, citizen contact, spending, mobilization, or production.",
+    statusLabels: {
+      COMPLETE: "Complete",
+      ACTIVE: "In progress",
+      AVAILABLE: "Next",
+      BLOCKED: "Blocked by access or configuration",
+      LOCKED: "Unlocks later",
+    },
+    phaseLabels: {
+      foundation: "Ground the campaign",
+      evidence: "Understand the candidacy and territory",
+      team: "Organize the team",
+      strategy: "Decide the strategy",
+      operations: "Operate and learn every day",
+    },
+    phaseDescriptions: {
+      foundation:
+        "Define office, territory, purpose, team, assets, and budget capacity.",
+      evidence:
+        "Gather the electoral roll, historical results, community profiles, public sources, and verifiable evidence.",
+      team:
+        "Design coordinations, departments, owners, capacity, and the gaps that must be filled.",
+      strategy:
+        "Build a SWOT, objectives, hypotheses, and the balance between field, communications, and digital work.",
+      operations:
+        "Track goals, communities, owners, tasks, blockers, and War Room learning.",
+    },
+    phaseOutcomes: {
+      foundation: "Outcome: a campaign that is understood and ready for research.",
+      evidence: "Outcome: decisions based on evidence rather than intuition.",
+      team: "Outcome: every function has an owner and visible capacity.",
+      strategy: "Outcome: a human, measurable, reviewable direction.",
+      operations: "Outcome: traceable daily follow-up and learning.",
+    },
+    phaseActions: {
+      foundation: "Continue starting information",
+      evidence: "Review candidacy and evidence",
+      team: "Review team and responsibilities",
+      strategy: "Open the strategy room",
+      operations: "Open daily operations",
+    },
   },
   campaigns: {
     eyebrow: "CAMPAIGN CONTEXT",
@@ -526,18 +768,44 @@ const en: Dictionary = {
     request_failed: "The request could not be completed safely.",
   },
   intake: {
-    eyebrow: "GUIDED INTAKE · RESEARCH FIRST",
-    title: "Campaign starting roadmap",
-    body: "Structures the minimum information before research, strategy decisions, or external work begins.",
+    eyebrow: "GUIDED START · EVIDENCE FIRST",
+    title: "Build your campaign foundation",
+    body:
+      "Answer clear questions so CampaignOS can show what comes next, what evidence is missing, and what work must be organized.",
     startTitle: "Start the verifiable intake",
     startBody:
       "Creates the internal record and audit evidence. It does not start strategy, contact, or external execution.",
     startAction: "Start intake",
     editEyebrow: "AUTHORIZED EDITING",
-    editTitle: "Update campaign starting information",
+    editTitle: "Tell us what you are starting with",
     editBody:
-      "Every save uses the current version and an idempotency key. Conflicts never overwrite silently.",
+      "You can complete this information in stages. CampaignOS preserves the correct version and never overwrites changes silently.",
     onePerLine: "One item per line. Maximum 30.",
+    officeHelp: "State the office you seek and confirm that it matches the campaign territory.",
+    officePlaceholder: "Example: Municipal Mayor",
+    budgetHelp: "Choose the evidence level currently available; the budget does not need to be final to begin.",
+    candidateProjectHelp:
+      "Explain why the candidacy exists, what change it seeks, and whom it intends to serve.",
+    candidateProjectPlaceholder:
+      "Example: Build a municipal candidacy based on evidence, community organization, and measurable results.",
+    currentTeamHelp:
+      "One person or function per line. Include coordinations, departments, and roles that remain vacant.",
+    currentTeamPlaceholder:
+      "General coordination — confirmed\nTerritory — to be defined",
+    currentAssetsHelp:
+      "Record current resources: files, channels, tools, office, vehicles, volunteers, or authorized alliances.",
+    currentAssetsPlaceholder:
+      "Document archive\nDigital channels\nTerritorial data tool",
+    knownUnknownsHelp:
+      "Record questions that must be answered before strategy decisions or execution.",
+    knownUnknownsPlaceholder:
+      "How many votes are required?\nWhich communities need more research?",
+    evidenceRequirementsHelp:
+      "List the data and documents required to answer those questions.",
+    evidenceRequirementsPlaceholder:
+      "Electoral roll\nHistorical results\nCommunity profiles\nPreliminary budget",
+    checkComplete: "Complete",
+    checkPending: "Pending",
     saveBoundary:
       "Saving updates only the internal intake; it does not approve strategy or activate external work.",
     saveAction: "Save changes",
@@ -549,8 +817,8 @@ const en: Dictionary = {
     },
     progress: "steps complete",
     nextAction: "Next step",
-    checks: "Preparation path",
-    researchActions: "Enabled research",
+    checks: "Steps in this stage",
+    researchActions: "What unlocks next",
     notStarted: "The intake has not yet been started by an authorized person.",
     notAuthorized:
       "This session lacks the exact authorization required to review this intake.",
@@ -562,9 +830,9 @@ const en: Dictionary = {
     candidateProject: "Candidate project",
     currentTeam: "Current team",
     currentAssets: "Current assets",
-    budgetStatus: "Budget evidence",
-    knownUnknowns: "Known questions",
-    evidenceRequirements: "Required evidence",
+    budgetStatus: "Budget status",
+    knownUnknowns: "Questions we must answer",
+    evidenceRequirements: "Required data and documents",
     readReceipt: "Read receipt",
     updatedAt: "Updated",
     budgetStatusLabels: {
@@ -841,8 +1109,8 @@ const en: Dictionary = {
   nav: {
     overview: "Overview",
     campaigns: "Campaigns",
-    readiness: "Readiness",
-    intake: "Start campaign",
+    readiness: "Preparation",
+    intake: "Starting path",
     candidate: "Candidate",
     team: "Team",
     strategy: "Strategy",

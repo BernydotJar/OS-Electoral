@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-24",
-  "branch": "agent/c3-release-001-readiness-audit-main",
-  "current_increment": "C3-RELEASE-001",
-  "iteration_status": "CI_GREEN",
+  "updated_at": "2026-07-25",
+  "branch": "agent/c3-front-003-campaign-launch-roadmap",
+  "current_increment": "C3-FRONT-003",
+  "iteration_status": "VERIFIED_POSTGRESQL",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "FUNCTIONAL_ONBOARDING_VERIFIED_POSTGRESQL",
-      "next_increment": "C3-FRONT-002"
+      "status": "CAMPAIGN_LAUNCH_ROADMAP_VERIFIED_POSTGRESQL",
+      "next_increment": "C3-FRONT-003"
     },
     {
       "id": "WS-07",
@@ -110,30 +110,10 @@
     }
   ],
   "ready_tasks": [],
-  "published_unreviewed_increment": {
-    "id": "C3-RELEASE-001",
-    "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-release-001-readiness-audit-main",
-    "base": "main",
-    "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
-    "draft_pr": 116,
-    "ci_run_id": 30131521614,
-    "visual_run_id": 30131521581,
-    "release_decision": "DENY_RELEASE",
-    "external_effects": "NONE"
-  },
-  "review_stack": [
-    {
-      "increment": "C3-RELEASE-001",
-      "pr": 116,
-      "branch": "agent/c3-release-001-readiness-audit-main",
-      "base": "main",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76"
-    }
-  ],
+  "published_unreviewed_increment": null,
+  "review_stack": [],
   "local_verification": {
-    "tests_passed": 696,
+    "tests_passed": 708,
     "tests_skipped": 10,
     "coverage_percent": 90.4,
     "coverage_gate": "PASS",
@@ -216,7 +196,7 @@
     "security_stack_e2e_ci": "PASS_JOB_89002561484",
     "security_frontend_ci": "PASS_JOB_89002561435",
     "security_supply_chain_ci": "PASS_JOB_89002561411",
-    "frontend_tests": 60,
+    "frontend_tests": 67,
     "front_002_postgresql": "PASS_10_SLICES_TWICE",
     "front_002_demo_browser": "PASS_READ_ONLY",
     "front_002_functional_browser": "PASS_START_UPDATE_RELOAD_ES_EN_MOBILE_ZERO_AXE",
@@ -247,7 +227,12 @@
     "release_focused_tests": 10,
     "release_program_verify": "PASS_OPEN_CRITICAL_HIGH_1_BLOCKING_FAILED_RUNS_0",
     "release_program_eval_tests": 14,
-    "release_full_suite": "PASS_696_SKIPPED_10_COVERAGE_90_40"
+    "release_full_suite": "PASS_696_SKIPPED_10_COVERAGE_90_40",
+    "front_003_journey_tests": "PASS_6",
+    "front_003_frontend_tests": 67,
+    "front_003_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
+    "front_003_functional_browser": "PASS_POSTGRESQL_15_START_UPDATE_RELOAD_ES_EN_MOBILE_ZERO_AXE",
+    "front_003_compose": "BLOCKED_SANDBOX_LAYER_LCHOWN_EXACT_HEAD_CI_REQUIRED"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -287,12 +272,12 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-RELEASE-001",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-release-001-readiness-audit-main",
-    "base": "main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5",
-    "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
-    "draft_pr": 116,
+    "id": "C3-FRONT-003",
+    "state": "VERIFIED_POSTGRESQL",
+    "branch": "agent/c3-front-003-campaign-launch-roadmap",
+    "base": "main@38c4cf059acd9690f1f378a340797811ec8dbf12",
+    "validated_implementation_head": null,
+    "draft_pr": null,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE"
@@ -308,35 +293,25 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-RELEASE-001",
-    "branch": "agent/c3-release-001-readiness-audit-main",
-    "validated_implementation_head": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
-    "draft_pr": 116,
-    "status": "CI_GREEN",
-    "ci_run_id": 30131521614,
-    "visual_run_id": 30131521581,
-    "quality_job_id": 89606840517,
-    "recovery_job_id": 89606840531,
-    "recovery_artifact_id": 8611275379,
-    "recovery_artifact_digest": "sha256:66f4cb1559a6b29b61ba1a29648e2c273d4638b9789012374c992c0463519aea",
-    "supply_chain_artifact_id": 8611270971,
-    "supply_chain_artifact_digest": "sha256:84abef35b6ffefae214c11d00fe174cdfa6347874c618ccc8b6a976f13094b3d",
-    "frontend_artifact_id": 8611309890,
-    "frontend_artifact_digest": "sha256:3a0d18430e3acbb8c0611da1a78b6d633bf8fad89fa1f481119bcf33b910b43a",
-    "visual_artifact_id": 8611287198,
-    "visual_artifact_digest": "sha256:837fe457b5e24c813354b99a488b20ce0e10b24fa565ad50844f044e08d8ab20",
+    "id": "C3-DEVEX-001",
+    "branch": "main",
+    "validated_implementation_head": "38c4cf059acd9690f1f378a340797811ec8dbf12",
+    "draft_pr": 117,
+    "status": "MERGED_TO_MAIN",
+    "ci_run_id": 30147774389,
+    "visual_run_id": 30147666840,
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_action": "HUMAN_REVIEW_AND_STAGING_AUTHORIZATION"
+    "next_action": "C3_FRONT_003_HUMAN_REVIEW_AFTER_EXACT_HEAD_CI"
   },
   "production_blockers": [],
   "cumulative_merge": {
-    "pr": 106,
+    "pr": 117,
     "status": "MERGED_TO_MAIN_REBASE",
-    "main_sha": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
+    "main_sha": "38c4cf059acd9690f1f378a340797811ec8dbf12",
     "checks_before_merge": "SUCCESS",
     "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED",
-    "open_pull_requests_observed": 1
+    "open_pull_requests_observed": 0
   }
 }

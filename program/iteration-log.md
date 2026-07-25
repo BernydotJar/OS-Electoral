@@ -492,3 +492,13 @@
 - Passed 10 focused tests, 708 full-suite tests, 10 controlled skips, 90.40% coverage, strict mypy, Ruff, 60 frontend tests, production build, zero-vulnerability npm audit, supply-chain policy and all program validators.
 - Docker Compose and Terraform CLIs are absent from the implementation sandbox; exact-head CI remains required for those integration gates.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, named volumes remain preserved and external effects remain `NONE`.
+
+## 2026-07-25 — C3-FRONT-003 campaign launch roadmap local checkpoint
+
+- Converted the shell from a compliance-oriented dashboard into a five-stage campaign operating path: foundation, evidence, team, strategy and daily operations.
+- Added deterministic `COMPLETE`, `ACTIVE`, `AVAILABLE`, `BLOCKED` and `LOCKED` phase semantics; later data cannot bypass an incomplete earlier gate and unavailable modules are not presented as working links.
+- Removed primary Spanglish and raw readiness/intake codes from Spanish user surfaces; completed ES/EN dictionary parity and added campaign-relevant help and examples to guided intake.
+- Added restrained motion tokens, reduced-motion behavior, responsive reflow and a human-review protocol for non-technical candidates and representatives.
+- Passed 67 frontend tests, lint, strict TypeScript, production build, zero-vulnerability npm audit, ES/EN/mobile demo browser review and a real local PostgreSQL migration/seed/API/start-update-reload journey with zero axe violations.
+- Nested Docker image extraction remains blocked by the sandbox namespace at `lchown /var/empty`; exact-head hosted Compose/PostgreSQL 18 CI remains required.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

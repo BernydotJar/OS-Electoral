@@ -129,12 +129,23 @@ async def review() -> dict[str, object]:
             "ungranted candidate module is visible",
         )
         require(
+            await page.get_by_role("heading", name="Tu campaña, paso a paso").count() == 1,
+            "campaign master path missing from live journey",
+        )
+        visible_text = await page.locator("body").inner_text()
+        for internal_code in (
+            "OPERATIONAL SETUP ONLY",
+            "BEGIN_GUIDED_INTAKE",
+            "CAMPAIGN_NAME_PRESENT",
+        ):
+            require(internal_code not in visible_text, f"internal code leaked: {internal_code}")
+        require(
             await page.get_by_label("Campaña autorizada").input_value()
             == "22222222-2222-4222-8222-222222222222",
             "seeded campaign was not selected",
         )
         require(
-            await page.get_by_role("button", name="Iniciar intake").count() == 1,
+            await page.get_by_role("button", name="Comenzar ruta").count() == 1,
             "authorized intake start control missing",
         )
         html = await page.content()
@@ -147,11 +158,13 @@ async def review() -> dict[str, object]:
         )
         require(storage == {"local": [], "session": []}, f"browser storage used: {storage}")
 
-        await page.get_by_role("button", name="Iniciar intake").click()
+        await page.get_by_role("button", name="Comenzar ruta").click()
         await page.wait_for_url("**notice=intake_started**")
         await page.wait_for_load_state("networkidle")
         require(
-            await page.get_by_text("Intake iniciado y guardado en PostgreSQL.", exact=True).count()
+            await page.get_by_text(
+                "Ruta guiada creada y guardada en PostgreSQL.", exact=True
+            ).count()
             == 1,
             "start success notice missing",
         )
@@ -161,7 +174,7 @@ async def review() -> dict[str, object]:
         )
 
         await page.get_by_label("Cargo objetivo").fill("Alcaldía Municipal")
-        await page.get_by_label("Evidencia presupuestaria").select_option("ROUGH_RANGE")
+        await page.get_by_label("Estado del presupuesto").select_option("ROUGH_RANGE")
         await page.get_by_label("Proyecto de candidatura").fill(
             "Proyecto municipal interno sujeto a evidencia y revisión humana."
         )
@@ -169,10 +182,10 @@ async def review() -> dict[str, object]:
             "Dirección de campaña\nCoordinación financiera"
         )
         await page.get_by_label("Activos actuales").fill("Archivo documental\nAgenda operativa")
-        await page.get_by_label("Preguntas conocidas").fill(
+        await page.get_by_label("Preguntas que debemos resolver").fill(
             "Calendario electoral\nRequisitos de inscripción"
         )
-        await page.get_by_label("Evidencia requerida").fill(
+        await page.get_by_label("Datos y documentos necesarios").fill(
             "Resolución oficial\nDocumento de identidad"
         )
         await page.get_by_role("button", name="Guardar cambios").click()
@@ -187,7 +200,7 @@ async def review() -> dict[str, object]:
             "saved office was not projected",
         )
         require(
-            await page.get_by_label("Evidencia presupuestaria").input_value() == "ROUGH_RANGE",
+            await page.get_by_label("Estado del presupuesto").input_value() == "ROUGH_RANGE",
             "saved budget was not projected",
         )
 

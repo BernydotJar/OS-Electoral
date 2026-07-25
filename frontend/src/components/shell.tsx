@@ -1,3 +1,4 @@
+import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
 import {
   CampaignContextForm,
   GuidedIntakeEditor,
@@ -5,6 +6,7 @@ import {
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
+import { deriveCampaignJourney } from "@/lib/campaign-journey";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import { deriveGuidedIntakeCapabilities } from "@/lib/journey-capabilities";
 import { deriveNavigation } from "@/lib/navigation";
@@ -139,6 +141,23 @@ export function CampaignShell({
     NOT_AUTHORIZED: dictionary.teamWorkspace.notAuthorized,
     DEPENDENCY_UNAVAILABLE: dictionary.teamWorkspace.unavailable,
   }[model.teamWorkspaceAvailability];
+  const campaignJourney = deriveCampaignJourney({
+    readinessStatus: readiness?.status ?? null,
+    intakeStatus: guidedIntake?.status ?? null,
+    candidateStatus: candidateWorkspace?.status ?? null,
+    teamStatus: teamWorkspace?.status ?? null,
+    strategyStatus: model.strategyWorkspace?.workspace.status ?? null,
+    operationsStatus: model.campaignRoadmap?.roadmap.status ?? null,
+    availablePhases: {
+      foundation:
+        model.guidedIntakeAvailability === "AVAILABLE" ||
+        model.guidedIntakeAvailability === "NOT_STARTED",
+      evidence: model.candidateWorkspaceAvailability === "AVAILABLE",
+      team: model.teamWorkspaceAvailability === "AVAILABLE",
+      strategy: model.strategyWorkspaceAvailability === "AVAILABLE",
+      operations: model.campaignRoadmapAvailability === "AVAILABLE",
+    },
+  });
   const roles = [
     ...new Set(model.memberships.flatMap((membership) => membership.roles)),
   ];
@@ -236,18 +255,23 @@ export function CampaignShell({
             <div>
               <p className="eyebrow">
                 {model.demo
-                  ? "SYNTHETIC DATA · NO REAL CAMPAIGN"
-                  : "SERVER-VERIFIED CONTEXT"}
+                  ? dictionary.shell.syntheticContext
+                  : dictionary.shell.verifiedContext}
               </p>
               <h1>{dictionary.shell.title}</h1>
               <p>{dictionary.shell.subtitle}</p>
             </div>
             <div className="authority-card">
-              <span>HUMAN AUTHORITY</span>
+              <span>{dictionary.shell.humanAuthority}</span>
               <strong>{dictionary.shell.authority}</strong>
               <small>{dictionary.common.notApproval}</small>
             </div>
           </section>
+
+          <CampaignLaunchRoadmap
+            dictionary={dictionary}
+            journey={campaignJourney}
+          />
 
           <CampaignContextForm
             locale={locale}
@@ -259,7 +283,7 @@ export function CampaignShell({
 
           <section className="context-details" aria-labelledby="context-title">
             <div>
-              <p className="eyebrow">AUTHORIZATION CONTEXT</p>
+              <p className="eyebrow">{dictionary.shell.authorizationContext}</p>
               <h2 id="context-title">{dictionary.shell.currentContext}</h2>
             </div>
             <dl>
@@ -355,7 +379,11 @@ export function CampaignShell({
                             <strong>
                               {dictionary.intake.checkLabels[check.key]}
                             </strong>
-                            <code>{check.reason_code}</code>
+                            <small className="intake-check-state">
+                              {check.complete
+                                ? dictionary.intake.checkComplete
+                                : dictionary.intake.checkPending}
+                            </small>
                           </div>
                           <span
                             className="intake-check-mark"
@@ -1024,7 +1052,7 @@ export function CampaignShell({
 
           <section className="dashboard-grid">
             <article id="readiness" className="panel readiness-panel">
-              <p className="eyebrow">OPERATIONAL SETUP ONLY</p>
+              <p className="eyebrow">{dictionary.dashboard.readinessEyebrow}</p>
               <h2>{dictionary.dashboard.readinessTitle}</h2>
               <p>{dictionary.dashboard.readinessBody}</p>
               {readiness ? (
@@ -1041,7 +1069,7 @@ export function CampaignShell({
                         <span aria-hidden="true">
                           {check.complete ? "✓" : "·"}
                         </span>
-                        {check.reason_code}
+                        {dictionary.dashboard.readinessCheckLabels[check.key]}
                       </li>
                     ))}
                   </ul>
@@ -1052,31 +1080,37 @@ export function CampaignShell({
                     </div>
                     <div>
                       <dt>{dictionary.dashboard.nextAction}</dt>
-                      <dd>{readiness.next_action}</dd>
+                      <dd>
+                        {
+                          dictionary.dashboard.readinessNextActionLabels[
+                            readiness.next_action
+                          ]
+                        }
+                      </dd>
                     </div>
                   </dl>
                 </>
               ) : (
                 <p className="muted">
                   {model.readinessUnavailable
-                    ? "DEPENDENCY_UNAVAILABLE"
-                    : "NOT_AUTHORIZED"}
+                    ? dictionary.states.unavailableTitle
+                    : dictionary.intake.notAuthorized}
                 </p>
               )}
             </article>
 
             <article className="panel">
-              <p className="eyebrow">EXACT GRANTS</p>
+              <p className="eyebrow">{dictionary.dashboard.authorityEyebrow}</p>
               <h2>{dictionary.dashboard.authorityTitle}</h2>
               <p>{dictionary.dashboard.authorityBody}</p>
               <div className="grant-count">
                 <strong>{grantCount}</strong>
-                <span>server-owned grants</span>
+                <span>{dictionary.dashboard.grantCountLabel}</span>
               </div>
             </article>
 
             <article id="evidence" className="panel">
-              <p className="eyebrow">TRACEABILITY</p>
+              <p className="eyebrow">{dictionary.dashboard.evidenceEyebrow}</p>
               <h2>{dictionary.dashboard.evidenceTitle}</h2>
               <p>{dictionary.dashboard.evidenceBody}</p>
               <dl className="compact-data">
@@ -1086,27 +1120,27 @@ export function CampaignShell({
                 </div>
                 <div>
                   <dt>{dictionary.dashboard.noExternal}</dt>
-                  <dd>CONFIRMED</dd>
+                  <dd>{dictionary.dashboard.confirmed}</dd>
                 </div>
               </dl>
             </article>
 
             <article className="panel operations-panel">
-              <p className="eyebrow">GUIDED SEQUENCE</p>
+              <p className="eyebrow">{dictionary.dashboard.operationsEyebrow}</p>
               <h2>{dictionary.dashboard.operationsTitle}</h2>
               <p>{dictionary.dashboard.operationsBody}</p>
               <ol className="sequence-list">
                 <li>
-                  <span>01</span> Campaign metadata
+                  <span>01</span> {dictionary.dashboard.sequence.context}
                 </li>
                 <li>
-                  <span>02</span> Governed workspace
+                  <span>02</span> {dictionary.dashboard.sequence.workspace}
                 </li>
                 <li>
-                  <span>03</span> Guided intake
+                  <span>03</span> {dictionary.dashboard.sequence.intake}
                 </li>
                 <li>
-                  <span>04</span> Evidence before strategy
+                  <span>04</span> {dictionary.dashboard.sequence.evidence}
                 </li>
               </ol>
             </article>
@@ -1117,12 +1151,12 @@ export function CampaignShell({
             aria-labelledby="limitations-title"
           >
             <div>
-              <p className="eyebrow">MANDATORY LIMITS</p>
+              <p className="eyebrow">{dictionary.dashboard.limitationsEyebrow}</p>
               <h2 id="limitations-title">{dictionary.dashboard.limitations}</h2>
             </div>
             <ul>
               {limitationCodes.map((code) => (
-                <li key={code}>{code}</li>
+                <li key={code}>{dictionary.dashboard.limitationLabels[code]}</li>
               ))}
             </ul>
           </section>

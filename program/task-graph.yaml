@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-24",
+  "updated_at": "2026-07-25",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -215,6 +215,19 @@
         "C3-FRONT-001",
         "C3-ONBOARD-001",
         "C3-SEC-001"
+      ]
+    },
+    {
+      "id": "C3-FRONT-003",
+      "workstream": "WS-06",
+      "title": "Campaign launch roadmap and guided campaign foundation UX",
+      "status": "VERIFIED_POSTGRESQL",
+      "depends_on": [
+        "C3-FRONT-002",
+        "C3-CANDIDATE-001",
+        "C3-TEAM-001",
+        "C3-STRATEGY-001",
+        "C3-OPS-001"
       ]
     },
     {
