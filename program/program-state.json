@@ -5,7 +5,7 @@
   "updated_at": "2026-07-25",
   "branch": "agent/c3-front-003-campaign-launch-roadmap",
   "current_increment": "C3-FRONT-003",
-  "iteration_status": "VERIFIED_POSTGRESQL",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,7 +51,7 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CAMPAIGN_LAUNCH_ROADMAP_VERIFIED_POSTGRESQL",
+      "status": "CAMPAIGN_LAUNCH_ROADMAP_CI_GREEN",
       "next_increment": "C3-FRONT-003"
     },
     {
@@ -110,8 +110,28 @@
     }
   ],
   "ready_tasks": [],
-  "published_unreviewed_increment": null,
-  "review_stack": [],
+  "published_unreviewed_increment": {
+    "id": "C3-FRONT-003",
+    "state": "DRAFT_PR_CI_GREEN",
+    "branch": "agent/c3-front-003-campaign-launch-roadmap",
+    "base": "main",
+    "validated_implementation_head": "55cd6ba81928e3c7d9977803f41c3431b384ab6d",
+    "draft_pr": 118,
+    "ci_run_id": 30150408085,
+    "visual_run_id": 30150408086,
+    "release_decision": "DENY_RELEASE",
+    "external_effects": "NONE"
+  },
+  "review_stack": [
+    {
+      "increment": "C3-FRONT-003",
+      "pr": 118,
+      "branch": "agent/c3-front-003-campaign-launch-roadmap",
+      "base": "main",
+      "state": "DRAFT_PR_CI_GREEN",
+      "delivered_head": "55cd6ba81928e3c7d9977803f41c3431b384ab6d"
+    }
+  ],
   "local_verification": {
     "tests_passed": 708,
     "tests_skipped": 10,
@@ -273,11 +293,11 @@
   },
   "active_local_increment": {
     "id": "C3-FRONT-003",
-    "state": "VERIFIED_POSTGRESQL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-front-003-campaign-launch-roadmap",
     "base": "main@38c4cf059acd9690f1f378a340797811ec8dbf12",
-    "validated_implementation_head": null,
-    "draft_pr": null,
+    "validated_implementation_head": "55cd6ba81928e3c7d9977803f41c3431b384ab6d",
+    "draft_pr": 118,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE"
@@ -293,17 +313,27 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-DEVEX-001",
-    "branch": "main",
-    "validated_implementation_head": "38c4cf059acd9690f1f378a340797811ec8dbf12",
-    "draft_pr": 117,
-    "status": "MERGED_TO_MAIN",
-    "ci_run_id": 30147774389,
-    "visual_run_id": 30147666840,
+    "id": "C3-FRONT-003",
+    "branch": "agent/c3-front-003-campaign-launch-roadmap",
+    "validated_implementation_head": "55cd6ba81928e3c7d9977803f41c3431b384ab6d",
+    "draft_pr": 118,
+    "status": "CI_GREEN",
+    "ci_run_id": 30150408085,
+    "visual_run_id": 30150408086,
+    "quality_job_id": 89659711500,
+    "recovery_job_id": 89659711497,
+    "recovery_artifact_id": 8617439188,
+    "recovery_artifact_digest": "sha256:f1b089fe141278cf4d2cec6f392e36e1a6072ab91ed22aebb8a0771f9134f997",
+    "supply_chain_artifact_id": 8617435703,
+    "supply_chain_artifact_digest": "sha256:e12ec6de31ebee77990db4bed49e30abf78b87f97a19bf698a13eca6ed760268",
+    "frontend_artifact_id": 8617457524,
+    "frontend_artifact_digest": "sha256:fd62cf8c425fb3a27672f38d04018bcaf58a55ebaf39197e45426f645690f839",
+    "visual_artifact_id": 8617446289,
+    "visual_artifact_digest": "sha256:86a7dfa699c4fe1d11c568a183f5bdcafc11a4e0ac08528efa2ae15d6a950e0e",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_action": "C3_FRONT_003_HUMAN_REVIEW_AFTER_EXACT_HEAD_CI"
+    "next_action": "HUMAN_PRODUCT_REVIEW"
   },
   "production_blockers": [],
   "cumulative_merge": {

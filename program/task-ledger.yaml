@@ -556,7 +556,7 @@
     {
       "task_id": "C3-FRONT-003",
       "owner": "WS-06",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "evidence": [
         "frontend/src/lib/campaign-journey.ts",
         "frontend/src/lib/campaign-journey.test.ts",
@@ -574,9 +574,9 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head GitHub CI and visual review remain pending",
+        "Human product review and merge remain required",
         "Candidate, team, strategy, territorial-data and War Room mutation journeys remain incomplete",
-        "Human review, merge, staging and production deployment remain separate gates"
+        "Staging and production deployment remain separate costed human gates"
       ]
     },
     {

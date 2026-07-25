@@ -2,7 +2,7 @@
 
 - `branch`: `agent/c3-front-003-campaign-launch-roadmap`
 - `base`: `main@38c4cf059acd9690f1f378a340797811ec8dbf12`
-- `status`: `VERIFIED_LOCAL`
+- `status`: `CI_GREEN`
 - `production_status`: `BLOCKED`
 - `external_effects`: `NONE`
 
@@ -63,3 +63,16 @@ Deliver the first product-level campaign launch path:
 The route describes the desired campaign operating sequence but does not claim that every downstream editing workflow is complete. Candidate evidence, team design, strategy decisions, territorial data ingestion, community profiles, vote-goal tracking, and Daily War Room mutation remain separate increments.
 
 No publication, citizen contact, targeting, spending, mobilization, permission mutation, deployment, infrastructure apply, or production approval is introduced.
+
+## Exact-head CI checkpoint
+
+- implementation head: `55cd6ba81928e3c7d9977803f41c3431b384ab6d`
+- draft PR: `#118`
+- CampaignOS CI: `30150408085` — success
+- runtime visual review: `30150408086` — success
+- displayed checks: 12/12 pass
+- recovery artifact: `8617439188`, digest `sha256:f1b089fe141278cf4d2cec6f392e36e1a6072ab91ed22aebb8a0771f9134f997`
+- supply-chain artifact: `8617435703`, digest `sha256:e12ec6de31ebee77990db4bed49e30abf78b87f97a19bf698a13eca6ed760268`
+- frontend review artifact: `8617457524`, digest `sha256:fd62cf8c425fb3a27672f38d04018bcaf58a55ebaf39197e45426f645690f839`
+- visual review artifact: `8617446289`, digest `sha256:86a7dfa699c4fe1d11c568a183f5bdcafc11a4e0ac08528efa2ae15d6a950e0e`
+- production remains `BLOCKED`; release remains `DENY_RELEASE`; external effects remain `NONE`.
