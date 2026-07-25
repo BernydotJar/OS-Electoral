@@ -520,3 +520,13 @@
 - Extended only the deterministic local-development operator seed from five to eight exact bounded grants; production permissions remain unchanged.
 - Passed 76 frontend tests, two seed tests, lint, strict TypeScript, production build, zero-vulnerability npm audit, ES/EN/mobile demo review and the real PostgreSQL foundation-to-candidate evidence journey with zero axe violations.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`; exact-head CI, human review and merge remain pending.
+
+
+## 2026-07-25 — C3-FRONT-004 exact-head CI-green checkpoint
+
+- Published implementation head `d22d9fac7ce9d59430edff927f5343f8391719f5` in stacked draft PR `#119`.
+- CampaignOS CI `30166352329` and Runtime Visual Review `30166352316` passed all 12 displayed checks.
+- Verified the API-backed foundation-to-candidate-evidence journey, PostgreSQL/RLS, backup/restore, Compose, CodeQL, secret/dependency scans, Terraform plan-only and supply-chain evidence.
+- Retained frontend, recovery, supply-chain, visual and Gitleaks artifacts with recorded SHA-256 digests.
+- Marked `C3-FRONT-004` `CI_GREEN`; review order remains PR `#118` then PR `#119`.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

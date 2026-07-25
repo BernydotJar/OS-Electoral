@@ -622,7 +622,7 @@
     {
       "task_id": "C3-FRONT-004",
       "owner": "WS-06",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "frontend/src/lib/campaign-experience.ts",
         "frontend/src/lib/campaign-experience.test.ts",
@@ -643,7 +643,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted CI and visual review remain pending",
         "Human product review and merge remain required",
         "Claim approval, team, strategy and operations mutation journeys remain incomplete",
         "Staging and production remain separate costed human gates"

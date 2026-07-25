@@ -2,7 +2,7 @@
 
 - `branch`: `agent/c3-front-004-candidate-evidence-workflow`
 - `base`: `agent/c3-front-003-campaign-launch-roadmap@ff7b10fed951f176609c43ad83b501f83d92b810`
-- `status`: `TESTED_LOCAL`
+- `status`: `CI_GREEN`
 - `production_status`: `BLOCKED`
 - `external_effects`: `NONE`
 
@@ -53,3 +53,19 @@ The campaign path is understandable but still behaves like a static roadmap. The
 ## Product boundaries
 
 This increment makes the first evidence operation real. It does not yet edit claims, biography, purpose, values, contradictions, development goals, reputation risks or section approvals. Team, strategy and operations remain separate governed mutation increments. The UI does not ingest electoral data automatically, profile voters, recommend targeting or authorize public action.
+
+
+## Exact-head hosted verification
+
+- implementation head: `d22d9fac7ce9d59430edff927f5343f8391719f5`;
+- stacked draft PR: `#119` over `agent/c3-front-003-campaign-launch-roadmap`;
+- CampaignOS CI `30166352329`: `SUCCESS`;
+- Runtime Visual Review `30166352316`: `SUCCESS`;
+- all 12 displayed checks passed;
+- recovery artifact `8621683108`, digest `sha256:2bd00f5d0fafd23a14e4d9d39a5c4fed1052ef45ddcde35b94a8034b39d6b359`;
+- supply-chain artifact `8621679234`, digest `sha256:aa9c53da4592c9d487a63369bc0d3d54b156da5c6a9ba4709c64cae998e5fb1e`;
+- frontend artifact `8621707850`, digest `sha256:65bd4e1acd0cea215215d4005cefae895e5b4f6e23a2303fe067f9c16baa2a62`;
+- visual artifact `8621689050`, digest `sha256:2ac20eb9e608c0ca149b7b324ddfd691a7776fa7d25fee8c4015b85522aa059d`;
+- Gitleaks SARIF `8621678726`, digest `sha256:21b74b5151958baa941646d7cad362a4bd62babb8cc61ba8dea7cdce8582a703`.
+
+This verifies the repository increment only. Production remains blocked and release remains denied.

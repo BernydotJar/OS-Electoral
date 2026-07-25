@@ -772,14 +772,14 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "ADAPTIVE_CANDIDATE_WORKFLOW_ACTIVE",
-      "next_increment": "C3-FRONT-004"
+      "status": "CANDIDATE_EVIDENCE_WORKFLOW_CI_GREEN",
+      "next_increment": "C3-FRONT-005"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CANDIDATE_EVIDENCE_FRONTEND_ACTIVE",
-      "next_increment": "C3-FRONT-004"
+      "status": "CANDIDATE_EVIDENCE_FRONTEND_CI_GREEN",
+      "next_increment": "C3-FRONT-005"
     },
     {
       "id": "WS-08",
@@ -1042,7 +1042,7 @@
       "id": "C3-FRONT-004",
       "workstream": "WS-06",
       "title": "Adaptive campaign entry and governed candidate evidence workflow",
-      "status": "ACTIVE",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-003",
         "C3-CANDIDATE-001"
@@ -1149,7 +1149,8 @@
       117
     ],
     "open_pull_requests": [
-      118
+      118,
+      119
     ],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
@@ -1168,14 +1169,14 @@
       "new_supply_chain_check": "PASS"
     },
     "published_unreviewed_increment": {
-      "id": "C3-FRONT-003",
+      "id": "C3-FRONT-004",
       "state": "DRAFT_PR_CI_GREEN",
-      "branch": "agent/c3-front-003-campaign-launch-roadmap",
-      "base": "main",
-      "validated_implementation_head": "55cd6ba81928e3c7d9977803f41c3431b384ab6d",
-      "draft_pr": 118,
-      "ci_run_id": 30150408085,
-      "visual_run_id": 30150408086,
+      "branch": "agent/c3-front-004-candidate-evidence-workflow",
+      "base": "agent/c3-front-003-campaign-launch-roadmap",
+      "validated_implementation_head": "d22d9fac7ce9d59430edff927f5343f8391719f5",
+      "draft_pr": 119,
+      "ci_run_id": 30166352329,
+      "visual_run_id": 30166352316,
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE"
     },
@@ -1186,7 +1187,15 @@
         "branch": "agent/c3-front-003-campaign-launch-roadmap",
         "base": "main",
         "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "55cd6ba81928e3c7d9977803f41c3431b384ab6d"
+        "delivered_head": "ff7b10fed951f176609c43ad83b501f83d92b810"
+      },
+      {
+        "increment": "C3-FRONT-004",
+        "pr": 119,
+        "branch": "agent/c3-front-004-candidate-evidence-workflow",
+        "base": "agent/c3-front-003-campaign-launch-roadmap",
+        "state": "DRAFT_PR_CI_GREEN",
+        "delivered_head": "d22d9fac7ce9d59430edff927f5343f8391719f5"
       }
     ],
     "git_push_incident": {
@@ -1204,32 +1213,36 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-FRONT-004",
-      "state": "TESTED_LOCAL",
+      "state": "CI_GREEN",
       "branch": "agent/c3-front-004-candidate-evidence-workflow",
       "base": "agent/c3-front-003-campaign-launch-roadmap@ff7b10fed951f176609c43ad83b501f83d92b810",
+      "validated_implementation_head": "d22d9fac7ce9d59430edff927f5343f8391719f5",
+      "draft_pr": 119,
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
+      "next_action": "HUMAN_PRODUCT_REVIEW"
     },
     "latest_checkpoint": {
-      "id": "C3-FRONT-003",
-      "branch": "agent/c3-front-003-campaign-launch-roadmap",
-      "validated_implementation_head": "55cd6ba81928e3c7d9977803f41c3431b384ab6d",
-      "draft_pr": 118,
+      "id": "C3-FRONT-004",
+      "branch": "agent/c3-front-004-candidate-evidence-workflow",
+      "validated_implementation_head": "d22d9fac7ce9d59430edff927f5343f8391719f5",
+      "draft_pr": 119,
       "status": "CI_GREEN",
-      "ci_run_id": 30150408085,
-      "visual_run_id": 30150408086,
-      "quality_job_id": 89659711500,
-      "recovery_job_id": 89659711497,
-      "recovery_artifact_id": 8617439188,
-      "recovery_artifact_digest": "sha256:f1b089fe141278cf4d2cec6f392e36e1a6072ab91ed22aebb8a0771f9134f997",
-      "supply_chain_artifact_id": 8617435703,
-      "supply_chain_artifact_digest": "sha256:e12ec6de31ebee77990db4bed49e30abf78b87f97a19bf698a13eca6ed760268",
-      "frontend_artifact_id": 8617457524,
-      "frontend_artifact_digest": "sha256:fd62cf8c425fb3a27672f38d04018bcaf58a55ebaf39197e45426f645690f839",
-      "visual_artifact_id": 8617446289,
-      "visual_artifact_digest": "sha256:86a7dfa699c4fe1d11c568a183f5bdcafc11a4e0ac08528efa2ae15d6a950e0e",
+      "ci_run_id": 30166352329,
+      "visual_run_id": 30166352316,
+      "quality_job_id": 89699945447,
+      "recovery_job_id": 89699943812,
+      "recovery_artifact_id": 8621683108,
+      "recovery_artifact_digest": "sha256:2bd00f5d0fafd23a14e4d9d39a5c4fed1052ef45ddcde35b94a8034b39d6b359",
+      "supply_chain_artifact_id": 8621679234,
+      "supply_chain_artifact_digest": "sha256:aa9c53da4592c9d487a63369bc0d3d54b156da5c6a9ba4709c64cae998e5fb1e",
+      "frontend_artifact_id": 8621707850,
+      "frontend_artifact_digest": "sha256:65bd4e1acd0cea215215d4005cefae895e5b4f6e23a2303fe067f9c16baa2a62",
+      "visual_artifact_id": 8621689050,
+      "visual_artifact_digest": "sha256:2ac20eb9e608c0ca149b7b324ddfd691a7776fa7d25fee8c4015b85522aa059d",
+      "gitleaks_artifact_id": 8621678726,
+      "gitleaks_artifact_digest": "sha256:21b74b5151958baa941646d7cad362a4bd62babb8cc61ba8dea7cdce8582a703",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",

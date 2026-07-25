@@ -258,7 +258,7 @@
       "id": "C3-FRONT-004",
       "workstream": "WS-06",
       "title": "Adaptive campaign entry and governed candidate evidence workflow",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-003",
         "C3-CANDIDATE-001"

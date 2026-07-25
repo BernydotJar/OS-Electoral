@@ -74,3 +74,29 @@ Generated screenshots and logs were inspected by the browser gates and then remo
 - Evidence status is accepted into the internal dossier, not declared verified.
 - Source registration does not authorize strategy, public claims, publication, citizen contact, targeting, spending or mobilization.
 - Production remains `BLOCKED`; release remains `DENY_RELEASE`.
+
+
+## Exact-head hosted CI
+
+```text
+implementation head: d22d9fac7ce9d59430edff927f5343f8391719f5
+draft PR: 119 (stacked on PR 118 branch)
+CampaignOS CI: 30166352329 SUCCESS
+Runtime Visual Review: 30166352316 SUCCESS
+displayed checks: 12/12 PASS
+Compose stack E2E: PASS
+PostgreSQL migrations/RLS: PASS
+PostgreSQL backup/restore: PASS
+API-backed browser journey: PASS
+CodeQL/secrets/dependencies/Terraform/SBOM: PASS
+```
+
+Retained artifacts:
+
+- frontend review `8621707850`, `sha256:65bd4e1acd0cea215215d4005cefae895e5b4f6e23a2303fe067f9c16baa2a62`;
+- PostgreSQL recovery `8621683108`, `sha256:2bd00f5d0fafd23a14e4d9d39a5c4fed1052ef45ddcde35b94a8034b39d6b359`;
+- supply chain `8621679234`, `sha256:aa9c53da4592c9d487a63369bc0d3d54b156da5c6a9ba4709c64cae998e5fb1e`;
+- visual review `8621689050`, `sha256:2ac20eb9e608c0ca149b7b324ddfd691a7776fa7d25fee8c4015b85522aa059d`;
+- Gitleaks SARIF `8621678726`, `sha256:21b74b5151958baa941646d7cad362a4bd62babb8cc61ba8dea7cdce8582a703`.
+
+The implementation is CI-green and reviewable. It is not merged, deployed or production-ready.
