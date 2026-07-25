@@ -29,6 +29,7 @@ from campaignos.data.models import (
     TeamWorkspace,
     Workspace,
 )
+from campaignos.teams.blueprints import ROLE_BLUEPRINT_VERSION, build_role_blueprints
 from campaignos.teams.contracts import (
     TeamAccessRecommendation,
     TeamWorkspaceAssessmentInput,
@@ -383,12 +384,19 @@ class SqlAlchemyTeamWorkspaceService:
             )
             if existing is not None:
                 raise TeamWorkspaceConflict("Team workspace already exists")
+            blueprint_roles = build_role_blueprints(
+                request.organization_template, request.blueprint_locale
+            )
             row = TeamWorkspace(
                 id=uuid4(),
                 tenant_id=tenant_id,
                 campaign_id=campaign_id,
                 organization_template=request.organization_template,
-                roles=None,
+                roles=(
+                    None
+                    if blueprint_roles is None
+                    else [role.model_dump(mode="json") for role in blueprint_roles]
+                ),
                 work_items=None,
                 training_requirements=None,
                 access_recommendations=None,
@@ -412,6 +420,9 @@ class SqlAlchemyTeamWorkspaceService:
                     "workspace_version": row.version,
                     "workspace_status": projection.status,
                     "organization_template": row.organization_template,
+                    "blueprint_locale": request.blueprint_locale,
+                    "blueprint_version": ROLE_BLUEPRINT_VERSION,
+                    "seeded_role_count": len(blueprint_roles or ()),
                     "authorization_grant_id": str(authorization_grant_id),
                     "approval_receipt_id": approval_receipt_id,
                     "authorization_purpose": authorization_purpose,
@@ -431,6 +442,8 @@ class SqlAlchemyTeamWorkspaceService:
                         "team_workspace_id": str(row.id),
                         "audit_event_id": str(audit.event_id),
                         "version": row.version,
+                        "blueprint_version": ROLE_BLUEPRINT_VERSION,
+                        "seeded_role_count": len(blueprint_roles or ()),
                         "authority_effect": "NONE",
                         "external_effects": "NONE",
                     },

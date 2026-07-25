@@ -3143,3 +3143,302 @@ button[type="submit"]:hover {
     transform: none;
   }
 }
+
+/* C3-TEAM-002: role blueprints and progressive cinematic mission context. */
+.campaign-experience[data-layout="mission"] {
+  min-height: clamp(28rem, 62vh, 42rem);
+  background:
+    radial-gradient(circle at 74% 30%, rgba(96, 141, 255, 0.28), transparent 21rem),
+    radial-gradient(circle at 12% 92%, rgba(242, 164, 104, 0.13), transparent 24rem),
+    linear-gradient(150deg, #111d35 0%, #07111f 55%, #04090f 100%);
+}
+
+.experience-chapter-mark {
+  position: absolute;
+  z-index: 1;
+  top: clamp(1rem, 5vw, 3.5rem);
+  right: clamp(1rem, 6vw, 5rem);
+  color: rgba(213, 229, 255, 0.075);
+  font-size: clamp(8rem, 24vw, 22rem);
+  font-weight: 900;
+  line-height: 0.72;
+  letter-spacing: -0.08em;
+  pointer-events: none;
+  user-select: none;
+  animation: chapter-mark-arrive 1100ms var(--motion-easing-enter) both;
+}
+
+.experience-hint {
+  width: min(42rem, 100%);
+  margin-top: 1rem;
+  color: var(--text-2);
+}
+
+.experience-hint summary {
+  width: fit-content;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(211, 229, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(5, 10, 18, 0.45);
+  color: var(--text-2);
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+  backdrop-filter: blur(14px);
+}
+
+.experience-hint summary::-webkit-details-marker {
+  display: none;
+}
+
+.experience-hint summary::before {
+  content: "+";
+  color: var(--accent-strong);
+  font-size: 1rem;
+}
+
+.experience-hint[open] summary::before {
+  content: "−";
+}
+
+.experience-hint summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.experience-hint p {
+  max-width: 60ch;
+  margin: 0.8rem 0 0;
+  padding-left: 0.25rem;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+.experience-atmosphere .experience-horizon-light {
+  inset: auto -12% -9% -12%;
+  width: auto;
+  height: 44%;
+  margin: 0;
+  border: 0;
+  border-radius: 50% 50% 0 0;
+  background:
+    radial-gradient(ellipse at center, rgba(130, 170, 255, 0.34), transparent 58%),
+    linear-gradient(to top, rgba(245, 181, 111, 0.14), transparent 70%);
+  filter: blur(18px);
+  opacity: 0.72;
+  animation: horizon-breathe 5.6s var(--motion-easing-standard) infinite alternate;
+}
+
+.experience-atmosphere .experience-aurora {
+  inset: -20% auto auto 32%;
+  width: 52%;
+  height: 120%;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(115deg, transparent 8%, rgba(101, 146, 255, 0.14), rgba(113, 214, 162, 0.08), transparent 70%);
+  filter: blur(28px);
+  transform: rotate(-18deg) translate3d(0, 0, 0);
+  animation: aurora-drift 8s var(--motion-easing-standard) infinite alternate;
+}
+
+.experience-atmosphere .experience-signal {
+  inset: auto 7% 14% auto;
+  width: 1px;
+  height: 45%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(to top, transparent, rgba(211, 229, 255, 0.52), transparent);
+  box-shadow: 0 0 24px rgba(164, 200, 255, 0.34);
+  transform-origin: bottom center;
+  animation: signal-rise 4.2s var(--motion-easing-standard) infinite;
+}
+
+.team-start-card {
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.8fr);
+}
+
+.team-start-card > div:first-child {
+  grid-column: 1 / -1;
+}
+
+.team-template-guide {
+  min-width: 0;
+  align-self: stretch;
+  border: 1px solid var(--surface-border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.team-template-guide summary {
+  min-height: 3rem;
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+  color: var(--accent-strong);
+  font-size: 0.8rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.team-template-guide summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.team-template-guide ul {
+  margin: 0;
+  padding: 0 1rem 1rem;
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+}
+
+.team-template-guide li {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.team-template-guide li strong {
+  color: var(--text-1);
+  font-size: 0.8rem;
+}
+
+.team-template-guide li span {
+  color: var(--text-3);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.team-start-card > button {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.team-role-responsibilities {
+  margin: 1rem 0;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--surface-border);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.team-role-responsibilities > strong,
+.team-vacancy-plan > strong {
+  color: var(--text-2);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.team-role-responsibilities ul {
+  margin: 0.65rem 0 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.4rem;
+  color: var(--text-2);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.team-vacancy-plan p {
+  margin: 0.45rem 0 0;
+}
+
+@keyframes chapter-mark-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(2rem, -1rem, 0) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes horizon-breathe {
+  from {
+    opacity: 0.42;
+    transform: scaleX(0.92) translateY(1rem);
+  }
+  to {
+    opacity: 0.82;
+    transform: scaleX(1.06) translateY(0);
+  }
+}
+
+@keyframes aurora-drift {
+  from {
+    opacity: 0.34;
+    transform: rotate(-18deg) translate3d(-1.5rem, 1rem, 0);
+  }
+  to {
+    opacity: 0.72;
+    transform: rotate(-13deg) translate3d(2rem, -1rem, 0);
+  }
+}
+
+@keyframes signal-rise {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scaleY(0.35);
+  }
+  45% {
+    opacity: 0.8;
+    transform: scaleY(1);
+  }
+}
+
+@media (max-width: 980px) {
+  .team-start-card {
+    grid-template-columns: 1fr;
+  }
+
+  .team-start-card > div:first-child,
+  .team-start-card > button {
+    grid-column: auto;
+  }
+
+  .experience-chapter-mark {
+    top: 2rem;
+    right: 1.5rem;
+    font-size: clamp(7rem, 28vw, 13rem);
+  }
+}
+
+@media (max-width: 620px) {
+  .campaign-experience[data-layout="mission"] {
+    min-height: auto;
+  }
+
+  .experience-chapter-mark {
+    top: 1rem;
+    right: 0.8rem;
+    font-size: 8rem;
+  }
+
+  .experience-hint,
+  .experience-hint summary,
+  .team-start-card > button {
+    width: 100%;
+  }
+
+  .team-role-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-chapter-mark,
+  .experience-atmosphere .experience-horizon-light,
+  .experience-atmosphere .experience-aurora,
+  .experience-atmosphere .experience-signal {
+    animation: none !important;
+  }
+}

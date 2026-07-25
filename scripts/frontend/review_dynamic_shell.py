@@ -154,11 +154,12 @@ async def review() -> dict[str, object]:
             "adaptive active-mission hero missing",
         )
         require(
-            await desktop.get_by_role("progressbar", name="Progreso de la ruta de campaña").count() == 1,
+            await desktop.get_by_role("progressbar", name="Progreso de la ruta de campaña").count()
+            == 1,
             "campaign progress semantics missing",
         )
         require(
-            await desktop.locator('.journey-chapter').count() == 1,
+            await desktop.locator(".journey-chapter").count() == 1,
             "dominant campaign chapter missing",
         )
         require(
@@ -168,6 +169,22 @@ async def review() -> dict[str, object]:
         require(
             await desktop.locator("video, source[src*='sceneai.art']").count() == 0,
             "third-party cinematic media leaked into the product",
+        )
+        require(
+            await desktop.locator(".experience-chapter-mark").count() == 1,
+            "cinematic chapter mark missing",
+        )
+        require(
+            await desktop.locator(
+                ".experience-horizon-light, .experience-aurora, .experience-signal"
+            ).count()
+            == 3,
+            "owned cinematic atmosphere is incomplete",
+        )
+        hint = desktop.locator(".experience-hint")
+        require(await hint.count() == 1, "progressive mission hint missing")
+        require(
+            not await hint.evaluate("element => element.open"), "mission hint must start closed"
         )
         visible_text = await desktop.locator("body").inner_text()
         for internal_code in (
@@ -201,6 +218,19 @@ async def review() -> dict[str, object]:
         await desktop.keyboard.press("Enter")
         active_id = await desktop.evaluate("document.activeElement?.id")
         require(active_id == "main", f"skip link did not focus main content: {active_id}")
+
+        hint_summary = desktop.locator(".experience-hint > summary")
+        await hint_summary.focus()
+        require(
+            await desktop.evaluate("document.activeElement?.matches('.experience-hint > summary')"),
+            "mission hint summary is not keyboard focusable",
+        )
+        await desktop.keyboard.press("Enter")
+        require(await hint.evaluate("element => element.open"), "Enter did not open mission hint")
+        await desktop.keyboard.press("Enter")
+        require(
+            not await hint.evaluate("element => element.open"), "Enter did not close mission hint"
+        )
 
         html = await desktop.content()
         require(

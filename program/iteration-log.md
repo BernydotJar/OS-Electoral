@@ -568,3 +568,13 @@
 - Retained frontend, recovery, supply-chain, visual and Gitleaks artifacts with recorded SHA-256 digests.
 - Marked `C3-FRONT-006` `CI_GREEN`; review order remains PR `#118`, PR `#119`, PR `#120`, then PR `#121`.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-25 — C3-TEAM-002 role blueprints and progressive cinematic mission local checkpoint
+
+- Converted lean and full team templates from empty shells into bilingual, versioned vacant job descriptions with purpose, responsibilities and human coverage plans; custom remains empty.
+- Preserved authority separation: no principal, capacity, membership, permission, access recommendation or external effect is generated.
+- Bound blueprint locale/version/count to idempotent create, audit and internal outbox evidence.
+- Moved returning-user mission rationale into a native keyboard disclosure and added owned horizon, aurora, signal and chapter-mark layers with reduced-motion cancellation.
+- Passed 712 tests, 10 controlled skips, 90.42% coverage, Ruff, format, mypy, 88 frontend tests, production build, zero-vulnerability audit and ES/EN/mobile browser review with zero axe violations and overflow.
+- Local persistent browser execution remains blocked before product startup by the sandbox Docker `lchown /var/empty` limitation; exact-head hosted CI is required.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

@@ -243,7 +243,11 @@ def test_create_replays_exactly_without_creating_authority(database: Database) -
     created = _create(database)
     replay = _create(database)
     assert replay == created
-    assert created.workspace.status == "SETUP_REQUIRED"
+    assert created.workspace.status == "STRUCTURE_IN_PROGRESS"
+    assert created.workspace.roles is not None
+    assert len(created.workspace.roles) == 5
+    assert created.workspace.vacant_role_count == 5
+    assert created.workspace.next_action == "ASSIGN_ACCOUNTABILITY"
     assert created.workspace.authority_effect == "NONE"
     assert created.workspace.external_effects == "NONE"
 
@@ -254,6 +258,17 @@ def test_create_replays_exactly_without_creating_authority(database: Database) -
         assert session.scalar(select(func.count()).select_from(AuditEvent)) == 1
         assert session.scalar(select(func.count()).select_from(OutboxEvent)) == 1
         assert session.scalar(select(func.count()).select_from(IdempotencyRecord)) == 1
+        audit = session.scalar(select(AuditEvent))
+        outbox = session.scalar(select(OutboxEvent))
+        assert audit is not None
+        assert audit.payload["blueprint_locale"] == "es"
+        assert audit.payload["blueprint_version"] == "2026-07-25.1"
+        assert audit.payload["seeded_role_count"] == 5
+        assert outbox is not None
+        assert outbox.payload["blueprint_version"] == "2026-07-25.1"
+        assert outbox.payload["seeded_role_count"] == 5
+        assert outbox.payload["authority_effect"] == "NONE"
+        assert outbox.payload["external_effects"] == "NONE"
 
 
 def test_update_is_versioned_and_replay_is_authority_bound(database: Database) -> None:

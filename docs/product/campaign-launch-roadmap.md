@@ -121,3 +121,11 @@ A reviewer should complete the following without reading source code:
 The foundation, first candidate-evidence operation and first team-organization operation are now usable: a live authorized user can complete guided intake, create a candidate dossier, register traceable sources, choose a team structure and document vacant functions. Team preparation may proceed in parallel while candidate evidence remains the primary gate. The full welcome appears only before work starts; returning users receive the current mission instead.
 
 Claim editing and approval, personnel assignment, RACI and capacity assessment, strategy decisions, territorial data ingestion, community profiles, vote-goal tracking and Daily War Room mutations remain separate API-backed increments with exact authorization, provenance, privacy, legal, accessibility and human-review gates.
+
+## Returning-user progressive disclosure
+
+Human review confirmed that the active chapter, next action and expected result are understandable without replaying the complete explanatory paragraph. Returning and completed modes therefore keep the mission/action visible and move the longer rationale into a native, keyboard-operable disclosure labeled `Por qué importa` / `Why this matters`. First use retains the full orientation copy.
+
+The active hero adds an owned horizon light, aurora layer, signal line and oversized chapter mark. These effects use only opacity and transform, introduce no external asset or request, remain non-interactive, and are fully cancelled under reduced motion.
+
+The team chapter now starts from useful job descriptions instead of a blank organization map. Compact and full templates seed safe vacant functions with purpose, responsibilities and a human coverage plan; the custom template remains empty. This does not advance the candidate-evidence gate or confer authority.

@@ -970,6 +970,16 @@ export function CampaignShell({
                               <h4>{role.title}</h4>
                             </div>
                             <p>{role.purpose}</p>
+                            <div className="team-role-responsibilities">
+                              <strong>
+                                {dictionary.teamWorkspace.roleResponsibilitiesLabel}
+                              </strong>
+                              <ul>
+                                {role.responsibilities.map((responsibility) => (
+                                  <li key={responsibility}>{responsibility}</li>
+                                ))}
+                              </ul>
+                            </div>
                             <dl>
                               <div>
                                 <dt>{dictionary.teamWorkspace.capacity}</dt>
@@ -987,9 +997,10 @@ export function CampaignShell({
                               </div>
                             </dl>
                             {role.vacancy_plan ? (
-                              <p className="team-vacancy-plan">
-                                {role.vacancy_plan}
-                              </p>
+                              <div className="team-vacancy-plan">
+                                <strong>{dictionary.teamWorkspace.vacancyPlanLabel}</strong>
+                                <p>{role.vacancy_plan}</p>
+                              </div>
                             ) : null}
                           </article>
                         ))}

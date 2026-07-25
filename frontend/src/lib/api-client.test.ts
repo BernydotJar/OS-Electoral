@@ -231,6 +231,7 @@ describe("CampaignOsApiClient team workspace mutations", () => {
       expect(headers.get("idempotency-key")).toBe("team-start-1");
       expect(JSON.parse(String(init?.body))).toEqual({
         organization_template: "LEAN_CAMPAIGN",
+        blueprint_locale: "es",
       });
       return new Response(
         JSON.stringify({
@@ -247,7 +248,7 @@ describe("CampaignOsApiClient team workspace mutations", () => {
       TENANT,
       CAMPAIGN,
       "team-start-1",
-      { organization_template: "LEAN_CAMPAIGN" },
+      { organization_template: "LEAN_CAMPAIGN", blueprint_locale: "es" },
     );
 
     expect(result.workspace.organization_template).toBe("LEAN_CAMPAIGN");

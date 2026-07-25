@@ -59,3 +59,19 @@ The service stores organizational role cards only inside the team document. It n
 ## Error behavior
 
 Authorization mismatches fail before adapter invocation. Conflicts, missing prerequisites, stale versions, missing resources and dependency failures use stable sanitized problem codes. Adapter scope drift and corrupt persisted recommendation scope fail closed.
+## Versioned role-blueprint creation
+
+Creation accepts the locale used to materialize the initial job descriptions:
+
+```json
+{
+  "organization_template": "LEAN_CAMPAIGN",
+  "blueprint_locale": "es"
+}
+```
+
+`blueprint_locale` is restricted to `es` or `en` and defaults to `es` for backward-compatible API clients. It is included in the idempotency digest, so one idempotency key cannot replay with a different language or template.
+
+For `LEAN_CAMPAIGN` and `FULL_CAMPAIGN`, the service builds the role cards before the transaction and commits the workspace, generated roles, audit event, internal outbox event and idempotency receipt atomically. `CUSTOM` stores no generated role cards.
+
+Audit and internal outbox evidence record the immutable blueprint version and seeded-role count. Generated role cards are organizational data only: they create no principal assignment, application membership, permission grant, access recommendation, capacity, onboarding completion or external effect.

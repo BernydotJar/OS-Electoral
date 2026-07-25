@@ -59,6 +59,10 @@ describe("CampaignExperienceHero", () => {
     expect(html).toContain('aria-valuenow="1"');
     expect(html).toContain('aria-valuemax="5"');
     expect(html).toContain("Conocer la candidatura y el territorio");
+    expect(html).toContain('class="experience-hint"');
+    expect(html).toContain("Por qué importa");
+    expect(html).toContain('class="experience-chapter-mark"');
+    expect(html).toContain('class="experience-horizon-light"');
     expect(html).not.toContain("Tu campaña empieza aquí");
   });
 

@@ -282,6 +282,22 @@
       "depends_on": [
         "C3-FRONT-005"
       ]
+    },
+    {
+      "id": "C3-TEAM-002",
+      "workstream": "WS-08",
+      "title": "Bilingual campaign role blueprints and progressive cinematic mission",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "C3-FRONT-006",
+        "C3-TEAM-001"
+      ],
+      "acceptance": [
+        "Lean creates five safe vacant job descriptions and full creates eight",
+        "Custom remains empty and no generated role creates principal, capacity or authority",
+        "Returning rationale is keyboard-operable progressive disclosure",
+        "Desktop, mobile, reduced motion, WCAG and hosted PostgreSQL journey pass"
+      ]
     }
   ]
 }

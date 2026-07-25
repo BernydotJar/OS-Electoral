@@ -520,6 +520,7 @@ export type TeamWorkspaceReadEvidence = Readonly<{
 
 export type TeamWorkspaceCreateInput = Readonly<{
   organization_template: TeamOrganizationTemplate;
+  blueprint_locale: "es" | "en";
 }>;
 
 export type TeamWorkspaceUpdateInput = Readonly<{
