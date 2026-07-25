@@ -75,9 +75,35 @@ PASS with residual scope. Motion uses opacity/transform, has reduced-motion canc
 ## Current decision
 
 ```yaml
-increment_status: TESTED_LOCAL
+increment_status: CI_GREEN
 production_status: BLOCKED
 release_decision: DENY_RELEASE
 external_effects: NONE
-next_gate: exact-head hosted CI and human product review
+next_gate: human product review and merge
 ```
+
+
+## Exact-head hosted CI
+
+```text
+implementation head: 9d98f754924a94a1bfc5be190e8604d51673f99c
+draft PR: 121 (stacked on PR 120 branch)
+CampaignOS CI: 30171986190 SUCCESS
+Runtime Visual Review: 30171986166 SUCCESS
+displayed checks: 12/12 PASS
+Compose stack E2E: PASS
+PostgreSQL 18 migrations/RLS: PASS
+PostgreSQL backup/restore: PASS
+API-backed browser journey: PASS
+CodeQL/secrets/dependencies/Terraform/SBOM: PASS
+```
+
+Retained artifacts:
+
+- frontend review `8623189216`, `sha256:aa7767d6e71af1c2cddb638c6d932490368508546df18b301734d2574426ff9d`;
+- PostgreSQL recovery `8623170114`, `sha256:d59653d8afaf0f050135e9d609b4979c34cbeea4f6c009087492a5b2c6d96d61`;
+- supply chain `8623166403`, `sha256:54780ffd3f86566189667d0d3b5088caceacac55efcb55e3fd0e16c303fdaa4b`;
+- visual review `8623173264`, `sha256:cbf3c05fd5db4e9f713bcfd3976f21c07f299c5758bf4e63df7883f93d847d3f`;
+- Gitleaks SARIF `8623165429`, `sha256:bc124487f37b49f3462a6f7bce4b011eb1fe3ee1e9d3d6193b0dd9cb9888ab0a`.
+
+The hosted journey closed the local nested-Docker limitation by proving the exact implementation with Compose, PostgreSQL 18 and the API-backed browser workflow. The increment is CI-green and reviewable; it is not merged, deployed or production-ready.

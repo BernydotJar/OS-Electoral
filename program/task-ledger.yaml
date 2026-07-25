@@ -681,7 +681,7 @@
     {
       "task_id": "C3-FRONT-006",
       "owner": "WS-06",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "frontend/src/components/campaign-experience-hero.tsx",
         "frontend/src/components/campaign-launch-roadmap.tsx",
@@ -697,7 +697,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted CI and visual review remain pending",
         "Human product review and merge remain required",
         "Full consultant portfolio mode and remaining campaign modules remain separate increments",
         "Staging and production remain separate costed human gates"
