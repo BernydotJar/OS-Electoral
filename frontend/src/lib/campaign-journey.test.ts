@@ -72,6 +72,27 @@ describe("deriveCampaignJourney", () => {
     ]);
   });
 
+  it("keeps evidence primary while team preparation is available in parallel", () => {
+    const journey = deriveCampaignJourney({
+      readinessStatus: "READY_FOR_GUIDED_INTAKE",
+      intakeStatus: "READY_FOR_RESEARCH",
+      candidateStatus: "SETUP_REQUIRED",
+      teamStatus: null,
+      strategyStatus: null,
+      operationsStatus: null,
+      parallelPreparation: { team: true },
+    });
+
+    expect(journey.currentPhase).toBe("evidence");
+    expect(journey.phases.map((phase) => phase.state)).toEqual([
+      "COMPLETE",
+      "ACTIVE",
+      "AVAILABLE",
+      "LOCKED",
+      "LOCKED",
+    ]);
+  });
+
   it("advances through candidate, team, strategy, and daily operations without claiming production readiness", () => {
     const journey = deriveCampaignJourney({
       readinessStatus: "READY_FOR_GUIDED_INTAKE",

@@ -148,6 +148,8 @@ async def review() -> dict[str, object]:
             "CAMPAIGN_NAME_PRESENT",
             "IDENTITY_NOT_VERIFIED",
             "BIOGRAPHY_NOT_VERIFIED",
+            "ROLE_CARDS_MISSING",
+            "VACANCIES_UNASSESSED",
         ):
             require(internal_code not in visible_text, f"internal code leaked: {internal_code}")
         require(
@@ -268,6 +270,60 @@ async def review() -> dict[str, object]:
             >= 1,
             "candidate evidence was not projected",
         )
+        require(
+            await page.get_by_role("button", name="Crear mapa de equipo").count() == 1,
+            "parallel team preparation did not unlock",
+        )
+
+        await page.get_by_label("Modelo organizativo").select_option("LEAN_CAMPAIGN")
+        await page.get_by_role("button", name="Crear mapa de equipo").click()
+        await page.wait_for_url("**notice=team_started**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Mapa de equipo creado y listo para definir funciones.", exact=True
+            ).count()
+            == 1,
+            "team start success notice missing",
+        )
+        require(
+            await page.get_by_role("button", name="Agregar función").count() == 1,
+            "team role editor missing after map creation",
+        )
+
+        await page.get_by_label("Nombre de la función").fill(
+            "Coordinación territorial"
+        )
+        await page.get_by_label("Área").fill("Territorio")
+        await page.get_by_label("Resultado que debe producir").fill(
+            "Convertir el objetivo territorial en cobertura organizada y verificable."
+        )
+        await page.get_by_label("Responsabilidades principales").fill(
+            "Diseñar coordinaciones\nDar seguimiento a cobertura\nEscalar bloqueos"
+        )
+        await page.get_by_label("Plan para cubrir la función").fill(
+            "Definir perfil, entrevistar responsables y aprobar la asignación humana."
+        )
+        await page.get_by_role("button", name="Agregar función").click()
+        await page.wait_for_url("**notice=team_role_saved**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Función incorporada al mapa de equipo con una nueva versión.",
+                exact=True,
+            ).count()
+            == 1,
+            "team role success notice missing",
+        )
+        require(
+            await page.get_by_text("Coordinación territorial", exact=True).count()
+            >= 1,
+            "team role was not projected",
+        )
+        require(
+            await page.get_by_text("Vacante", exact=True).count() >= 1,
+            "team role vacancy state is missing",
+        )
 
         await page.reload(wait_until="networkidle")
         require(
@@ -282,6 +338,11 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count()
             >= 1,
             "candidate evidence did not persist after reload",
+        )
+        require(
+            await page.get_by_text("Coordinación territorial", exact=True).count()
+            >= 1,
+            "team role did not persist after reload",
         )
         await assert_no_overflow(page, "functional-desktop-es")
         await assert_accessible(page, "functional-desktop-es")
@@ -309,6 +370,10 @@ async def review() -> dict[str, object]:
             await english.get_by_role("button", name="Add source").count() == 1,
             "English candidate evidence editor is unavailable",
         )
+        require(
+            await english.get_by_role("button", name="Add function").count() == 1,
+            "English team function editor is unavailable",
+        )
         await assert_no_overflow(english, "functional-desktop-en")
         await assert_accessible(english, "functional-desktop-en")
         await english.screenshot(path=ARTIFACT_DIR / "functional-desktop-en.png", full_page=True)
@@ -329,6 +394,10 @@ async def review() -> dict[str, object]:
             await mobile.get_by_role("button", name="Agregar fuente").count() == 1,
             "mobile candidate evidence editor is not functional",
         )
+        require(
+            await mobile.get_by_role("button", name="Agregar función").count() == 1,
+            "mobile team function editor is not functional",
+        )
         await mobile.screenshot(path=ARTIFACT_DIR / "functional-mobile-es.png", full_page=True)
         await browser.close()
 
@@ -337,7 +406,7 @@ async def review() -> dict[str, object]:
     require(not unexpected_hosts, f"unexpected outbound hosts: {unexpected_hosts}")
     result: dict[str, object] = {
         "status": "PASS",
-        "journey": "campaign_foundation_candidate_dossier_and_evidence",
+        "journey": "campaign_foundation_candidate_evidence_and_team_map",
         "persistence_after_reload": "PASS",
         "exact_authorization_controls": "PASS",
         "administration_placeholder": "ABSENT",

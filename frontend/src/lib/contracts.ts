@@ -518,6 +518,26 @@ export type TeamWorkspaceReadEvidence = Readonly<{
   audit_event_id: UUID;
 }>;
 
+export type TeamWorkspaceCreateInput = Readonly<{
+  organization_template: TeamOrganizationTemplate;
+}>;
+
+export type TeamWorkspaceUpdateInput = Readonly<{
+  organization_template?: TeamOrganizationTemplate;
+  roles?: readonly TeamRoleCard[];
+  work_items?: readonly TeamWorkItem[];
+  training_requirements?: readonly TeamTrainingRequirement[];
+  access_recommendations?: readonly TeamAccessRecommendation[];
+}>;
+
+export type TeamWorkspaceCreateEvidence = Readonly<{
+  workspace: TeamWorkspaceProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
+export type TeamWorkspaceUpdateEvidence = TeamWorkspaceCreateEvidence;
+
 export type CampaignPhaseStatus = "PLANNED" | "ACTIVE" | "COMPLETE";
 export type CampaignWorkstreamStatus =
   "PLANNED" | "ACTIVE" | "PAUSED" | "COMPLETE";

@@ -647,6 +647,37 @@
         "Claim approval, team, strategy and operations mutation journeys remain incomplete",
         "Staging and production remain separate costed human gates"
       ]
+    },
+    {
+      "task_id": "C3-FRONT-005",
+      "owner": "WS-06",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "frontend/src/lib/campaign-journey.ts",
+        "frontend/src/lib/campaign-journey.test.ts",
+        "frontend/src/lib/team-workspace-form.ts",
+        "frontend/src/lib/team-workspace-form.test.ts",
+        "frontend/src/components/team-workspace-editor.tsx",
+        "frontend/src/app/api/ui/team-workspace/start/route.ts",
+        "frontend/src/app/api/ui/team-workspace/role/route.ts",
+        "frontend/src/lib/journey-capabilities.ts",
+        "frontend/src/lib/api-client.ts",
+        "scripts/dev/seed_local_operator.py",
+        "backend/tests/test_local_operator_seed.py",
+        "scripts/frontend/review_dynamic_shell.py",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/product/team-workspace.md",
+        "docs/product/campaign-launch-roadmap.md",
+        "docs/testing/c3-front-005-evidence.md",
+        "program/iterations/c3-front-005.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted CI and visual review remain pending",
+        "Human product review and merge remain required",
+        "Identity assignment, RACI, capacity, training and access review remain incomplete",
+        "Strategy, staging and production remain separate human gates"
+      ]
     }
   ]
 }

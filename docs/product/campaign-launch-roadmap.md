@@ -113,6 +113,6 @@ A reviewer should complete the following without reading source code:
 
 ## Current operability and deferred product work
 
-The foundation and the first candidate-evidence operation are now usable: a live authorized user can complete guided intake, create a candidate dossier and register traceable sources. The full welcome appears only before work starts; returning users receive the current mission instead.
+The foundation, first candidate-evidence operation and first team-organization operation are now usable: a live authorized user can complete guided intake, create a candidate dossier, register traceable sources, choose a team structure and document vacant functions. Team preparation may proceed in parallel while candidate evidence remains the primary gate. The full welcome appears only before work starts; returning users receive the current mission instead.
 
-Claim editing and approval, team design, strategy decisions, territorial data ingestion, community profiles, vote-goal tracking and Daily War Room mutations remain separate API-backed increments with exact authorization, provenance, privacy, legal, accessibility and human-review gates.
+Claim editing and approval, personnel assignment, RACI and capacity assessment, strategy decisions, territorial data ingestion, community profiles, vote-goal tracking and Daily War Room mutations remain separate API-backed increments with exact authorization, provenance, privacy, legal, accessibility and human-review gates.

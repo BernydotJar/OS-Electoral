@@ -8,8 +8,10 @@ import type {
   TeamTrainingRequirement,
   TeamWorkItem,
   TeamWorkspaceCheck,
+  TeamWorkspaceCreateEvidence,
   TeamWorkspaceProjection,
   TeamWorkspaceReadEvidence,
+  TeamWorkspaceUpdateEvidence,
 } from "@/lib/contracts";
 
 const UUID_PATTERN =
@@ -675,4 +677,36 @@ export function parseTeamWorkspaceReadEvidence(
       "team workspace evidence.audit_event_id",
     ),
   };
+}
+
+
+function parseTeamWorkspaceMutationEvidence(
+  value: unknown,
+  label: string,
+): TeamWorkspaceCreateEvidence {
+  const source = record(value, label);
+  exactKeys(source, ["workspace", "audit_event_id", "outbox_event_id"], label);
+  return {
+    workspace: parseProjection(source.workspace),
+    audit_event_id: uuid(source.audit_event_id, `${label}.audit_event_id`),
+    outbox_event_id: uuid(source.outbox_event_id, `${label}.outbox_event_id`),
+  };
+}
+
+export function parseTeamWorkspaceCreateEvidence(
+  value: unknown,
+): TeamWorkspaceCreateEvidence {
+  return parseTeamWorkspaceMutationEvidence(
+    value,
+    "team workspace create evidence",
+  );
+}
+
+export function parseTeamWorkspaceUpdateEvidence(
+  value: unknown,
+): TeamWorkspaceUpdateEvidence {
+  return parseTeamWorkspaceMutationEvidence(
+    value,
+    "team workspace update evidence",
+  );
 }

@@ -2474,6 +2474,7 @@ button[type="submit"]:hover {
 }
 
 .candidate-start-card input,
+.candidate-start-card select,
 .candidate-evidence-grid input,
 .candidate-evidence-grid select,
 .candidate-evidence-grid textarea {
@@ -2493,6 +2494,7 @@ button[type="submit"]:hover {
 }
 
 .candidate-start-card input:focus-visible,
+.candidate-start-card select:focus-visible,
 .candidate-evidence-grid input:focus-visible,
 .candidate-evidence-grid select:focus-visible,
 .candidate-evidence-grid textarea:focus-visible {

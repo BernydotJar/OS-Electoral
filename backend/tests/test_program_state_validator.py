@@ -119,6 +119,8 @@ def test_program_rejects_incomplete_delivery_without_active_increment() -> None:
     release["status"] = "IMPLEMENTED_LOCAL"
     active = next(item for item in payload["roadmap"] if item["id"] == "C3-FRONT-004")
     active["status"] = "TESTED_LOCAL"
+    team_active = next(item for item in payload["roadmap"] if item["id"] == "C3-FRONT-005")
+    team_active["status"] = "TESTED_LOCAL"
 
     with pytest.raises(AssertionError, match="fully verified delivery closure"):
         validator.validate_workstreams_and_roadmap(payload)

@@ -71,7 +71,7 @@ describe("CampaignOsApiClient contract failures", () => {
   );
 });
 
-import { demoCandidateWorkspace, demoGuidedIntake } from "@/lib/demo-data";
+import { demoCandidateWorkspace, demoGuidedIntake, demoTeamWorkspace } from "@/lib/demo-data";
 
 describe("CampaignOsApiClient guided intake mutations", () => {
   it("sends exact start headers and validates the committed evidence", async () => {
@@ -219,5 +219,105 @@ describe("CampaignOsApiClient candidate workspace mutations", () => {
 
     expect(result.workspace.version).toBe(2);
     expect(result.workspace.evidence).toEqual([evidence]);
+  });
+});
+
+
+describe("CampaignOsApiClient team workspace mutations", () => {
+  it("creates the team workspace with an exact idempotency header", async () => {
+    const fetchMock = vi.fn(async (_input: URL | RequestInfo, init?: RequestInit) => {
+      expect(init?.method).toBe("POST");
+      const headers = new Headers(init?.headers);
+      expect(headers.get("idempotency-key")).toBe("team-start-1");
+      expect(JSON.parse(String(init?.body))).toEqual({
+        organization_template: "LEAN_CAMPAIGN",
+      });
+      return new Response(
+        JSON.stringify({
+          ...demoTeamWorkspace,
+          outbox_event_id: "edededed-eded-4ded-8ded-edededededed",
+        }),
+        { status: 201, headers: { "content-type": "application/json" } },
+      );
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    const result = await client.startTeamWorkspace(
+      TENANT,
+      CAMPAIGN,
+      "team-start-1",
+      { organization_template: "LEAN_CAMPAIGN" },
+    );
+
+    expect(result.workspace.organization_template).toBe("LEAN_CAMPAIGN");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("appends role cards with optimistic concurrency", async () => {
+    const role = {
+      id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      title: "Coordinación territorial",
+      area: "Territorio",
+      purpose: "Organizar cobertura territorial verificable.",
+      responsibilities: ["Diseñar coordinaciones", "Escalar bloqueos"],
+      status: "VACANT" as const,
+      principal_id: null,
+      availability_status: "UNASSESSED" as const,
+      weekly_capacity_hours: null,
+      onboarding_status: "NOT_STARTED" as const,
+      vacancy_plan: "Definir perfil y aprobar asignación humana.",
+    };
+    const fetchMock = vi.fn(async (_input: URL | RequestInfo, init?: RequestInit) => {
+      expect(init?.method).toBe("PATCH");
+      const headers = new Headers(init?.headers);
+      expect(headers.get("idempotency-key")).toBe("team-role-1");
+      expect(headers.get("if-match")).toBe('"1"');
+      expect(JSON.parse(String(init?.body))).toEqual({ roles: [role] });
+      return new Response(
+        JSON.stringify({
+          ...demoTeamWorkspace,
+          workspace: {
+            ...demoTeamWorkspace.workspace,
+            roles: [role],
+            vacant_role_count: 1,
+            completed_checks: 5,
+            status: "STRUCTURE_IN_PROGRESS",
+            next_action: "ASSIGN_ACCOUNTABILITY",
+            checks: demoTeamWorkspace.workspace.checks.map((check) => {
+              if (check.key === "role_cards") {
+                return { ...check, complete: true, reason_code: "ROLE_CARDS_DEFINED" };
+              }
+              if (check.key === "availability") {
+                return { ...check, complete: true, reason_code: "AVAILABILITY_ASSESSED" };
+              }
+              if (check.key === "vacancies") {
+                return { ...check, complete: true, reason_code: "VACANCIES_IDENTIFIED" };
+              }
+              if (check.key === "onboarding") {
+                return { ...check, complete: true, reason_code: "FILLED_ROLES_ONBOARDED" };
+              }
+              return check;
+            }),
+            version: 2,
+          },
+          outbox_event_id: "fdfdfdfd-fdfd-4dfd-8dfd-fdfdfdfdfdfd",
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      );
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    const result = await client.updateTeamWorkspace(
+      TENANT,
+      CAMPAIGN,
+      1,
+      "team-role-1",
+      { roles: [role] },
+    );
+
+    expect(result.workspace.version).toBe(2);
+    expect(result.workspace.roles).toEqual([role]);
   });
 });

@@ -34,6 +34,9 @@ INTAKE_UPDATE_GRANT_ID = UUID("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
 CANDIDATE_CREATE_GRANT_ID = UUID("cccccccc-cccc-4ccc-8ccc-cccccccccccc")
 CANDIDATE_READ_GRANT_ID = UUID("dddddddd-dddd-4ddd-8ddd-dddddddddddd")
 CANDIDATE_UPDATE_GRANT_ID = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee")
+TEAM_CREATE_GRANT_ID = UUID("f1111111-1111-4111-8111-111111111111")
+TEAM_READ_GRANT_ID = UUID("f2222222-2222-4222-8222-222222222222")
+TEAM_UPDATE_GRANT_ID = UUID("f3333333-3333-4333-8333-333333333333")
 WORKSPACE_ID = UUID("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
 
 DEVELOPMENT_ISSUER = "urn:campaignos:development"
@@ -105,6 +108,27 @@ GRANTS = (
         "candidate_workspace",
         str(CAMPAIGN_ID),
         "Maintain candidate evidence workspace",
+    ),
+    GrantSpec(
+        TEAM_CREATE_GRANT_ID,
+        "create",
+        "team_workspace",
+        str(CAMPAIGN_ID),
+        "Create campaign team workspace",
+    ),
+    GrantSpec(
+        TEAM_READ_GRANT_ID,
+        "read",
+        "team_workspace",
+        str(CAMPAIGN_ID),
+        "Review campaign team workspace",
+    ),
+    GrantSpec(
+        TEAM_UPDATE_GRANT_ID,
+        "update",
+        "team_workspace",
+        str(CAMPAIGN_ID),
+        "Maintain campaign team workspace",
     ),
 )
 
@@ -283,7 +307,7 @@ def main() -> int:
         engine.dispose()
     print(
         "[OK] Local operator seeded; tenant=11111111-1111-4111-8111-111111111111; "
-        "campaign=22222222-2222-4222-8222-222222222222; exact_grants=8"
+        "campaign=22222222-2222-4222-8222-222222222222; exact_grants=11"
     )
     return 0
 

@@ -530,3 +530,12 @@
 - Retained frontend, recovery, supply-chain, visual and Gitleaks artifacts with recorded SHA-256 digests.
 - Marked `C3-FRONT-004` `CI_GREEN`; review order remains PR `#118` then PR `#119`.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-25 — C3-FRONT-005 parallel team organization local checkpoint
+
+- Added explicit parallel team preparation while candidate evidence remains the primary campaign gate.
+- Added exact-authorized team workspace creation and vacant-function registration with same-origin, idempotency, optimistic concurrency, scope reconciliation and duplicate-role rejection.
+- Extended only the deterministic local-development operator seed from eight to eleven exact bounded grants; production authorization remains unchanged.
+- Passed 83 frontend tests, two seed tests, lint, strict TypeScript, production build, zero-vulnerability npm audit, ES/EN/mobile demo review and the real PostgreSQL foundation-to-candidate-to-team journey with zero axe violations.
+- No person was assigned, no membership or permission was created, and strategy/external execution remain blocked.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`; exact-head CI, human review and merge remain pending.
