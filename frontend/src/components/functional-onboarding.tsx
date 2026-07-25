@@ -137,7 +137,13 @@ export function GuidedIntakeEditor({
       <div className="form-grid">
         <label>
           <span>{dictionary.intake.office}</span>
-          <input name="office" defaultValue={intake.office ?? ""} maxLength={255} />
+          <input
+            name="office"
+            defaultValue={intake.office ?? ""}
+            maxLength={255}
+            placeholder={dictionary.intake.officePlaceholder}
+          />
+          <small>{dictionary.intake.officeHelp}</small>
         </label>
         <label>
           <span>{dictionary.intake.budgetStatus}</span>
@@ -150,6 +156,7 @@ export function GuidedIntakeEditor({
               ),
             )}
           </select>
+          <small>{dictionary.intake.budgetHelp}</small>
         </label>
         <label className="field-wide">
           <span>{dictionary.intake.candidateProject}</span>
@@ -158,23 +165,51 @@ export function GuidedIntakeEditor({
             defaultValue={intake.candidate_project ?? ""}
             maxLength={2000}
             rows={4}
+            placeholder={dictionary.intake.candidateProjectPlaceholder}
           />
+          <small>{dictionary.intake.candidateProjectHelp}</small>
         </label>
         {(
           [
-            ["current_team", dictionary.intake.currentTeam, intake.current_team],
-            ["current_assets", dictionary.intake.currentAssets, intake.current_assets],
-            ["known_unknowns", dictionary.intake.knownUnknowns, intake.known_unknowns],
+            [
+              "current_team",
+              dictionary.intake.currentTeam,
+              intake.current_team,
+              dictionary.intake.currentTeamHelp,
+              dictionary.intake.currentTeamPlaceholder,
+            ],
+            [
+              "current_assets",
+              dictionary.intake.currentAssets,
+              intake.current_assets,
+              dictionary.intake.currentAssetsHelp,
+              dictionary.intake.currentAssetsPlaceholder,
+            ],
+            [
+              "known_unknowns",
+              dictionary.intake.knownUnknowns,
+              intake.known_unknowns,
+              dictionary.intake.knownUnknownsHelp,
+              dictionary.intake.knownUnknownsPlaceholder,
+            ],
             [
               "evidence_requirements",
               dictionary.intake.evidenceRequirements,
               intake.evidence_requirements,
+              dictionary.intake.evidenceRequirementsHelp,
+              dictionary.intake.evidenceRequirementsPlaceholder,
             ],
           ] as const
-        ).map(([name, label, items]) => (
+        ).map(([name, label, items, help, placeholder]) => (
           <label key={name}>
             <span>{label}</span>
-            <textarea name={name} defaultValue={lines(items)} rows={4} />
+            <textarea
+              name={name}
+              defaultValue={lines(items)}
+              rows={4}
+              placeholder={placeholder}
+            />
+            <small>{help}</small>
             <small>{dictionary.intake.onePerLine}</small>
           </label>
         ))}

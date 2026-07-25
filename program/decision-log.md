@@ -360,3 +360,12 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `scripts/dev/resolve_local_ports.py`, `backend/tests/test_resolve_local_ports.py`, `docs/testing/c3-devex-port-collision-evidence.md`.
 - `rationale`: A developer may already run PostgreSQL or another service on a conventional port. The one-command product journey must remain reproducible without requiring the user to stop unrelated local software or manually coordinate five port overrides.
 - `consequences`: Effective ports are printed and propagated to every dependent process. Named volumes are preserved, shared/production configuration is unchanged, and this local convenience grants no deployment or political execution authority.
+
+## DEC-2026-07-25-006 — CampaignOS starts with a governed campaign path, not an internal dashboard
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-FRONT-003 / frontend product orientation`
+- `decision`: Present persisted product state as a sequential five-stage campaign path with one current mission, explicit outcomes, plain ES/EN language and an honest blocked state for unavailable workflows. Keep raw enums and reason codes in contracts and evidence rather than primary task copy.
+- `evidence`: `frontend/src/lib/campaign-journey.ts`, `frontend/src/components/campaign-launch-roadmap.tsx`, `docs/product/campaign-launch-roadmap.md`, `docs/testing/c3-front-003-evidence.md`.
+- `rationale`: Non-technical candidates and representatives need orientation, causality and next actions. A dense implementation dashboard and unexplained English reduce trust and can misrepresent incomplete modules as usable.
+- `consequences`: Candidate evidence, team design, strategy, territorial data and War Room mutation remain visibly blocked until exact authorized workflows exist. The roadmap grants no publication, contact, profiling, spending, mobilization, deployment or production authority.

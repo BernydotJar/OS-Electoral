@@ -18,4 +18,13 @@ describe("i18n", () => {
   it("keeps Spanish and English dictionary structure in parity", () => {
     expect(shape(dictionaries.en)).toEqual(shape(dictionaries.es));
   });
+
+  it("keeps the Spanish launch journey free of operational Spanglish", () => {
+    expect(dictionaries.es.nav.readiness).toBe("Preparación");
+    expect(dictionaries.es.dashboard.readinessTitle).toBe("Preparación operativa");
+    expect(dictionaries.es.journey.title).toBe("Tu campaña, paso a paso");
+    expect(dictionaries.es.journey.phaseLabels.operations).toBe(
+      "Operar y aprender cada día",
+    );
+  });
 });

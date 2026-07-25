@@ -124,7 +124,7 @@ async def review() -> dict[str, object]:
         )
         require(
             await desktop.get_by_role("heading", level=1).inner_text()
-            == "Centro de mando gobernado",
+            == "Convierte tu campaña en un sistema que avanza",
             "Spanish heading mismatch",
         )
         require(
@@ -132,20 +132,36 @@ async def review() -> dict[str, object]:
             "demo classification missing",
         )
         require(
-            await desktop.get_by_text("SYNTHETIC DATA · NO REAL CAMPAIGN", exact=True).count() == 1,
+            await desktop.get_by_text("DATOS SINTÉTICOS · SIN CAMPAÑA REAL", exact=True).count()
+            == 1,
             "synthetic-data banner missing",
         )
         require(
-            await desktop.get_by_text("NOT_A_HUMAN_APPROVAL", exact=True).count() == 1,
-            "approval limitation missing",
+            await desktop.get_by_text(
+                "Requiere decisión de una persona autorizada", exact=True
+            ).count()
+            == 1,
+            "human-decision boundary missing",
         )
         require(
             await desktop.get_by_text(
-                "NO_STRATEGY_EVIDENCE_OR_CITIZEN_ASSESSMENT", exact=True
+                "Aún no existe evidencia suficiente para decidir estrategia", exact=True
             ).count()
             == 1,
-            "strategy/evidence limitation missing",
+            "strategy/evidence boundary missing",
         )
+        require(
+            await desktop.get_by_role("heading", name="Tu campaña, paso a paso").count() == 1,
+            "campaign master path missing",
+        )
+        visible_text = await desktop.locator("body").inner_text()
+        for internal_code in (
+            "OPERATIONAL SETUP ONLY",
+            "BEGIN_GUIDED_INTAKE",
+            "CAMPAIGN_NAME_PRESENT",
+        ):
+            require(internal_code not in visible_text, f"internal code leaked: {internal_code}")
+
         require(
             await desktop.locator("form").count() == 0,
             "read-only shell unexpectedly contains a form",
@@ -195,7 +211,8 @@ async def review() -> dict[str, object]:
             "English document lang missing",
         )
         require(
-            await desktop.get_by_role("heading", level=1).inner_text() == "Governed command center",
+            await desktop.get_by_role("heading", level=1).inner_text()
+            == "Turn your campaign into a system that moves",
             "English heading mismatch",
         )
         await assert_no_overflow(desktop, "desktop-en")

@@ -86,7 +86,7 @@ buildah run \
       sleep 1
     done
     test "$ready" = 1
-    grep -q "Centro de mando gobernado" /tmp/campaignos-page
+    grep -q "Convierte tu campaña en un sistema que avanza" /tmp/campaignos-page
     grep -q "DEMO SINT" /tmp/campaignos-page
     kill "$pid"
     wait "$pid" 2>/dev/null || true

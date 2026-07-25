@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-24",
-  "branch": "agent/c3-obs-001-operational-evidence",
+  "updated_at": "2026-07-25",
+  "branch": "agent/c3-front-003-campaign-launch-roadmap",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -551,6 +551,32 @@
         "Development identity is not live OIDC authentication",
         "Independent human user acceptance and deployed dev/staging environments remain pending",
         "Campaign creation and post-create access lifecycle remain intentionally absent"
+      ]
+    },
+    {
+      "task_id": "C3-FRONT-003",
+      "owner": "WS-06",
+      "status": "VERIFIED_POSTGRESQL",
+      "evidence": [
+        "frontend/src/lib/campaign-journey.ts",
+        "frontend/src/lib/campaign-journey.test.ts",
+        "frontend/src/components/campaign-launch-roadmap.tsx",
+        "frontend/src/components/shell.tsx",
+        "frontend/src/components/functional-onboarding.tsx",
+        "frontend/src/lib/i18n.ts",
+        "frontend/src/lib/i18n.test.ts",
+        "frontend/src/app/globals.css",
+        "scripts/frontend/review_dynamic_shell.py",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/product/campaign-launch-roadmap.md",
+        "docs/testing/c3-front-003-evidence.md",
+        "program/iterations/c3-front-003.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head GitHub CI and visual review remain pending",
+        "Candidate, team, strategy, territorial-data and War Room mutation journeys remain incomplete",
+        "Human review, merge, staging and production deployment remain separate gates"
       ]
     },
     {
