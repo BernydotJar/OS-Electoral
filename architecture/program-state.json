@@ -772,7 +772,7 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "PROGRESSIVE_CINEMATIC_MISSION_ACTIVE",
+      "status": "PROGRESSIVE_CINEMATIC_MISSION_CI_GREEN",
       "next_increment": "C3-TEAM-002"
     },
     {
@@ -784,7 +784,7 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "CAMPAIGN_ROLE_BLUEPRINTS_ACTIVE",
+      "status": "CAMPAIGN_ROLE_BLUEPRINTS_CI_GREEN",
       "next_increment": "C3-TEAM-002"
     },
     {
@@ -1071,7 +1071,7 @@
       "id": "C3-TEAM-002",
       "workstream": "WS-08",
       "title": "Bilingual campaign role blueprints and progressive cinematic mission",
-      "status": "ACTIVE",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-006",
         "C3-TEAM-001"
@@ -1181,7 +1181,8 @@
       118,
       119,
       120,
-      121
+      121,
+      122
     ],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
@@ -1200,14 +1201,14 @@
       "new_supply_chain_check": "PASS"
     },
     "published_unreviewed_increment": {
-      "id": "C3-FRONT-006",
+      "id": "C3-TEAM-002",
       "state": "DRAFT_PR_CI_GREEN",
-      "branch": "agent/c3-front-006-cinematic-adaptive-journey",
-      "base": "agent/c3-front-005-team-organization-workflow",
-      "validated_implementation_head": "9d98f754924a94a1bfc5be190e8604d51673f99c",
-      "draft_pr": 121,
-      "ci_run_id": 30171986190,
-      "visual_run_id": 30171986166,
+      "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
+      "base": "agent/c3-front-006-cinematic-adaptive-journey",
+      "validated_implementation_head": "7735b533b5ebc43d829d881090798fe1b1605295",
+      "draft_pr": 122,
+      "ci_run_id": 30176654019,
+      "visual_run_id": 30176653983,
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE"
     },
@@ -1243,6 +1244,14 @@
         "base": "agent/c3-front-005-team-organization-workflow",
         "state": "DRAFT_PR_CI_GREEN",
         "delivered_head": "9d98f754924a94a1bfc5be190e8604d51673f99c"
+      },
+      {
+        "increment": "C3-TEAM-002",
+        "pr": 122,
+        "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
+        "base": "agent/c3-front-006-cinematic-adaptive-journey",
+        "state": "DRAFT_PR_CI_GREEN",
+        "delivered_head": "7735b533b5ebc43d829d881090798fe1b1605295"
       }
     ],
     "git_push_incident": {
@@ -1260,36 +1269,38 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-TEAM-002",
-      "state": "TESTED_LOCAL",
+      "state": "CI_GREEN",
       "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
       "base": "agent/c3-front-006-cinematic-adaptive-journey@427033c69cf8220821713a13a698232c3e033000",
+      "validated_implementation_head": "7735b533b5ebc43d829d881090798fe1b1605295",
+      "draft_pr": 122,
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
+      "next_action": "HUMAN_PRODUCT_REVIEW"
     },
     "latest_checkpoint": {
-      "id": "C3-FRONT-006",
-      "branch": "agent/c3-front-006-cinematic-adaptive-journey",
-      "validated_implementation_head": "9d98f754924a94a1bfc5be190e8604d51673f99c",
-      "draft_pr": 121,
+      "id": "C3-TEAM-002",
+      "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
+      "validated_implementation_head": "7735b533b5ebc43d829d881090798fe1b1605295",
+      "draft_pr": 122,
       "status": "CI_GREEN",
-      "ci_run_id": 30171986190,
-      "visual_run_id": 30171986166,
-      "quality_job_id": 89714555601,
-      "frontend_job_id": 89714555597,
-      "visual_job_id": 89714555392,
-      "recovery_job_id": 89714555628,
-      "recovery_artifact_id": 8623170114,
-      "recovery_artifact_digest": "sha256:d59653d8afaf0f050135e9d609b4979c34cbeea4f6c009087492a5b2c6d96d61",
-      "supply_chain_artifact_id": 8623166403,
-      "supply_chain_artifact_digest": "sha256:54780ffd3f86566189667d0d3b5088caceacac55efcb55e3fd0e16c303fdaa4b",
-      "frontend_artifact_id": 8623189216,
-      "frontend_artifact_digest": "sha256:aa7767d6e71af1c2cddb638c6d932490368508546df18b301734d2574426ff9d",
-      "visual_artifact_id": 8623173264,
-      "visual_artifact_digest": "sha256:cbf3c05fd5db4e9f713bcfd3976f21c07f299c5758bf4e63df7883f93d847d3f",
-      "gitleaks_artifact_id": 8623165429,
-      "gitleaks_artifact_digest": "sha256:bc124487f37b49f3462a6f7bce4b011eb1fe3ee1e9d3d6193b0dd9cb9888ab0a",
+      "ci_run_id": 30176654019,
+      "visual_run_id": 30176653983,
+      "quality_job_id": 89726416944,
+      "frontend_job_id": 89726416949,
+      "visual_job_id": 89726416707,
+      "recovery_job_id": 89726416935,
+      "recovery_artifact_id": 8624400644,
+      "recovery_artifact_digest": "sha256:7e2090cd09ad992490450efd105f1515fabbbd2363518231992c7f94bde97934",
+      "supply_chain_artifact_id": 8624398004,
+      "supply_chain_artifact_digest": "sha256:cdadd98387b05ae802ba896fccdc9751c9d4d2fc67022e11e19147a28bd14890",
+      "frontend_artifact_id": 8624422291,
+      "frontend_artifact_digest": "sha256:2cd287e74b1ccad095edccf264faf194202629c0260fff56ab09190637d86b23",
+      "visual_artifact_id": 8624406463,
+      "visual_artifact_digest": "sha256:cb070dca535e4e2eac18f468b22c432c41b04172eec16964e7a8b6e59b64d967",
+      "gitleaks_artifact_id": 8624397523,
+      "gitleaks_artifact_digest": "sha256:795df7efb042b02bc723384929c62de2c8fd4a7d1eea99a4d26acc9c4d1c7f89",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",

@@ -76,9 +76,32 @@ This is the already documented sandbox limitation. Exact-head hosted CI must pro
 ## Current decision
 
 ```yaml
-increment_status: TESTED_LOCAL
+increment_status: CI_GREEN
 production_status: BLOCKED
 release_decision: DENY_RELEASE
 external_effects: NONE
-next_gate: exact-head hosted CI and human product review
+next_gate: human product review and stacked merge review
 ```
+
+
+## Hosted exact-head closure
+
+```yaml
+implementation_head: 7735b533b5ebc43d829d881090798fe1b1605295
+pull_request: 122
+campaignos_ci: 30176654019
+runtime_visual_review: 30176653983
+quality_job: 89726416944
+frontend_api_postgresql_job: 89726416949
+visual_job: 89726416707
+recovery_job: 89726416935
+status: SUCCESS
+```
+
+Artifacts retained from the implementation head:
+
+- frontend review `8624422291`, digest `sha256:2cd287e74b1ccad095edccf264faf194202629c0260fff56ab09190637d86b23`;
+- PostgreSQL recovery `8624400644`, digest `sha256:7e2090cd09ad992490450efd105f1515fabbbd2363518231992c7f94bde97934`;
+- supply chain `8624398004`, digest `sha256:cdadd98387b05ae802ba896fccdc9751c9d4d2fc67022e11e19147a28bd14890`;
+- visual review `8624406463`, digest `sha256:cb070dca535e4e2eac18f468b22c432c41b04172eec16964e7a8b6e59b64d967`;
+- Gitleaks SARIF `8624397523`, digest `sha256:795df7efb042b02bc723384929c62de2c8fd4a7d1eea99a4d26acc9c4d1c7f89`.
