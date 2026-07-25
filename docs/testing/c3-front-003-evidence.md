@@ -122,3 +122,27 @@ The workstation tools used for the final local gate were obtained from their off
 - verify remote SHA and create a draft PR;
 - require exact-head Docker Compose/PostgreSQL 18 CI and visual review;
 - keep merge, staging, deployment, spending and production approval human-gated.
+
+## Exact-head hosted verification
+
+```text
+implementation head: 55cd6ba81928e3c7d9977803f41c3431b384ab6d
+draft PR: 118
+CampaignOS CI 30150408085: SUCCESS
+Runtime Visual Review 30150408086: SUCCESS
+displayed checks: 12/12 PASS
+Docker Compose stack E2E: PASS
+PostgreSQL 18 migrations/RLS: PASS
+PostgreSQL backup/isolated restore: PASS
+frontend API-backed journey: PASS
+CodeQL/secret/dependency/Terraform/SBOM: PASS
+```
+
+Retained artifacts:
+
+- recovery `8617439188`, `sha256:f1b089fe141278cf4d2cec6f392e36e1a6072ab91ed22aebb8a0771f9134f997`;
+- supply chain `8617435703`, `sha256:e12ec6de31ebee77990db4bed49e30abf78b87f97a19bf698a13eca6ed760268`;
+- frontend review `8617457524`, `sha256:fd62cf8c425fb3a27672f38d04018bcaf58a55ebaf39197e45426f645690f839`;
+- visual review `8617446289`, `sha256:86a7dfa699c4fe1d11c568a183f5bdcafc11a4e0ac08528efa2ae15d6a950e0e`.
+
+This checkpoint proves the repository increment, not staging or production readiness.

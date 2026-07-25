@@ -221,7 +221,7 @@
       "id": "C3-FRONT-003",
       "workstream": "WS-06",
       "title": "Campaign launch roadmap and guided campaign foundation UX",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-002",
         "C3-CANDIDATE-001",

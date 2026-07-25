@@ -502,3 +502,11 @@
 - Passed 67 frontend tests, lint, strict TypeScript, production build, zero-vulnerability npm audit, ES/EN/mobile demo browser review and a real local PostgreSQL migration/seed/API/start-update-reload journey with zero axe violations.
 - Nested Docker image extraction remains blocked by the sandbox namespace at `lchown /var/empty`; exact-head hosted Compose/PostgreSQL 18 CI remains required.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-25 — C3-FRONT-003 exact-head CI closure
+
+- Published draft PR `#118` at implementation head `55cd6ba81928e3c7d9977803f41c3431b384ab6d`.
+- CampaignOS CI `30150408085` and runtime visual review `30150408086` passed all 12 displayed checks, including Compose, PostgreSQL 18, recovery, functional browser review, CodeQL, Terraform, secret, dependency and supply-chain gates.
+- Retained exact-head recovery, supply-chain, frontend and visual artifacts with recorded SHA-256 digests.
+- Marked `C3-FRONT-003` `CI_GREEN` while preserving human product review, merge, staging, deployment and production approval as separate gates.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
