@@ -18,6 +18,10 @@ from campaignos.teams import (
     TeamWorkspaceCreateEvidence,
     TeamWorkspaceReadEvidence,
     TeamWorkspaceService,
+    TeamWorkspaceTemplateApplyEvidence,
+    TeamWorkspaceTemplateApplyRequest,
+    TeamWorkspaceTemplatePreview,
+    TeamWorkspaceTemplatePreviewRequest,
     TeamWorkspaceUpdate,
     TeamWorkspaceUpdateEvidence,
 )
@@ -27,6 +31,8 @@ from campaignos.teams.service import (
     TeamWorkspaceIdempotencyConflict,
     TeamWorkspaceNotFound,
     TeamWorkspacePrerequisiteConflict,
+    TeamWorkspaceTemplateNoChanges,
+    TeamWorkspaceTemplatePreviewConflict,
     TeamWorkspaceUnavailable,
     TeamWorkspaceVersionConflict,
 )
@@ -122,6 +128,20 @@ def _raise_team_error(exc: Exception) -> NoReturn:
             detail="A team workspace already exists for this campaign",
             code="RESOURCE_CONFLICT",
         ) from exc
+    if isinstance(exc, TeamWorkspaceTemplatePreviewConflict):
+        raise ProblemException(
+            status=status.HTTP_409_CONFLICT,
+            title="Team template preview conflict",
+            detail="The confirmed template preview no longer matches the team workspace",
+            code="TEAM_TEMPLATE_PREVIEW_CONFLICT",
+        ) from exc
+    if isinstance(exc, TeamWorkspaceTemplateNoChanges):
+        raise ProblemException(
+            status=status.HTTP_409_CONFLICT,
+            title="Team template has no changes",
+            detail="The selected template has no new roles to add",
+            code="TEAM_TEMPLATE_NO_CHANGES",
+        ) from exc
     if isinstance(exc, TeamWorkspaceEvidenceConflict):
         raise ProblemException(
             status=status.HTTP_409_CONFLICT,
@@ -151,7 +171,12 @@ def _verify_scope(
     *,
     tenant_id: UUID,
     campaign_id: UUID,
-    evidence: TeamWorkspaceCreateEvidence | TeamWorkspaceReadEvidence | TeamWorkspaceUpdateEvidence,
+    evidence: (
+        TeamWorkspaceCreateEvidence
+        | TeamWorkspaceReadEvidence
+        | TeamWorkspaceTemplateApplyEvidence
+        | TeamWorkspaceUpdateEvidence
+    ),
 ) -> None:
     workspace = evidence.workspace
     if workspace.tenant_id != tenant_id or workspace.campaign_id != campaign_id:
@@ -160,6 +185,21 @@ def _verify_scope(
             detail="Team workspace is temporarily unavailable",
         )
     if workspace.authority_effect != "NONE" or workspace.external_effects != "NONE":
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Team workspace is temporarily unavailable",
+        )
+
+
+def _verify_template_preview_scope(
+    *, tenant_id: UUID, campaign_id: UUID, preview: TeamWorkspaceTemplatePreview
+) -> None:
+    if preview.tenant_id != tenant_id or preview.campaign_id != campaign_id:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Team workspace is temporarily unavailable",
+        )
+    if preview.authority_effect != "NONE" or preview.external_effects != "NONE":
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Team workspace is temporarily unavailable",
@@ -276,6 +316,120 @@ def get_team_workspace(
     except (TeamWorkspaceNotFound, TeamWorkspaceUnavailable) as exc:
         _raise_team_error(exc)
     _verify_scope(tenant_id=tenant_id, campaign_id=campaign_id, evidence=evidence)
+    response.headers["ETag"] = f'"{evidence.workspace.version}"'
+    return evidence
+
+
+@router.post(
+    "/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace/template-preview",
+    response_model=TeamWorkspaceTemplatePreview,
+    summary="Preview append-only campaign role template changes",
+)
+def preview_team_workspace_template(
+    request: Request,
+    tenant_id: UUID,
+    campaign_id: UUID,
+    payload: TeamWorkspaceTemplatePreviewRequest,
+    authorization: CurrentTenantAuthorization,
+    service: TeamWorkspaceServiceDependency,
+    if_match: Annotated[str | None, Header(alias="If-Match")] = None,
+) -> TeamWorkspaceTemplatePreview:
+    grant = _exact_grant(
+        authorization,
+        campaign_id=campaign_id,
+        action="update",
+        purpose=UPDATE_TEAM_WORKSPACE_PURPOSE,
+    )
+    if grant is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Team workspace template preview is not authorized",
+        )
+    expected_version = _expected_version(request, if_match)
+    try:
+        preview = service.preview_template(
+            tenant_id,
+            campaign_id,
+            expected_version=expected_version,
+            request=payload,
+            principal_id=authorization.principal_id,
+            authorization_grant_id=grant.grant_id,
+            approval_receipt_id=grant.approval_receipt_id,
+            authorization_purpose=grant.purpose,
+            correlation_id=getattr(request.state, "correlation_id", "unknown"),
+        )
+    except (
+        TeamWorkspaceNotFound,
+        TeamWorkspaceUnavailable,
+        TeamWorkspaceVersionConflict,
+    ) as exc:
+        _raise_team_error(exc)
+    _verify_template_preview_scope(tenant_id=tenant_id, campaign_id=campaign_id, preview=preview)
+    if preview.audit_event_id is None or preview.workspace_version != expected_version:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Team workspace is temporarily unavailable",
+        )
+    return preview
+
+
+@router.post(
+    "/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace/template-apply",
+    response_model=TeamWorkspaceTemplateApplyEvidence,
+    summary="Apply confirmed campaign role template additions",
+)
+def apply_team_workspace_template(
+    request: Request,
+    response: Response,
+    tenant_id: UUID,
+    campaign_id: UUID,
+    payload: TeamWorkspaceTemplateApplyRequest,
+    authorization: CurrentTenantAuthorization,
+    service: TeamWorkspaceServiceDependency,
+    if_match: Annotated[str | None, Header(alias="If-Match")] = None,
+    idempotency_key: Annotated[str | None, Header(alias="Idempotency-Key")] = None,
+) -> TeamWorkspaceTemplateApplyEvidence:
+    grant = _exact_grant(
+        authorization,
+        campaign_id=campaign_id,
+        action="update",
+        purpose=UPDATE_TEAM_WORKSPACE_PURPOSE,
+    )
+    if grant is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Team workspace template application is not authorized",
+        )
+    expected_version = _expected_version(request, if_match)
+    try:
+        evidence = service.apply_template(
+            tenant_id,
+            campaign_id,
+            expected_version=expected_version,
+            request=payload,
+            principal_id=authorization.principal_id,
+            authorization_grant_id=grant.grant_id,
+            approval_receipt_id=grant.approval_receipt_id,
+            authorization_purpose=grant.purpose,
+            correlation_id=getattr(request.state, "correlation_id", "unknown"),
+            idempotency_key=_required_idempotency_key(request, idempotency_key),
+        )
+    except (
+        TeamWorkspaceEvidenceConflict,
+        TeamWorkspaceIdempotencyConflict,
+        TeamWorkspaceNotFound,
+        TeamWorkspaceTemplateNoChanges,
+        TeamWorkspaceTemplatePreviewConflict,
+        TeamWorkspaceUnavailable,
+        TeamWorkspaceVersionConflict,
+    ) as exc:
+        _raise_team_error(exc)
+    _verify_scope(tenant_id=tenant_id, campaign_id=campaign_id, evidence=evidence)
+    if evidence.workspace.version != expected_version + 1:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Team workspace is temporarily unavailable",
+        )
     response.headers["ETag"] = f'"{evidence.workspace.version}"'
     return evidence
 

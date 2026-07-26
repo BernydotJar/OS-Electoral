@@ -8,6 +8,8 @@
 POST  /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace
 GET   /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace
 PATCH /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace
+POST  /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace/template-preview
+POST  /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace/template-apply
 ```
 
 | Operation | Action | Resource type | Resource ID | Purpose |
@@ -15,6 +17,8 @@ PATCH /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace
 | create | `create` | `team_workspace` | campaign UUID | `Create campaign team workspace` |
 | read | `read` | `team_workspace` | campaign UUID | `Review campaign team workspace` |
 | update | `update` | `team_workspace` | campaign UUID | `Maintain campaign team workspace` |
+| template preview | `update` | `team_workspace` | campaign UUID | `Maintain campaign team workspace` |
+| template apply | `update` | `team_workspace` | campaign UUID | `Maintain campaign team workspace` |
 
 Every grant must also contain the same campaign UUID, null workspace scope, current validity and no revocation. Roles are informational labels and never satisfy authorization.
 
@@ -75,3 +79,39 @@ Creation accepts the locale used to materialize the initial job descriptions:
 For `LEAN_CAMPAIGN` and `FULL_CAMPAIGN`, the service builds the role cards before the transaction and commits the workspace, generated roles, audit event, internal outbox event and idempotency receipt atomically. `CUSTOM` stores no generated role cards.
 
 Audit and internal outbox evidence record the immutable blueprint version and seeded-role count. Generated role cards are organizational data only: they create no principal assignment, application membership, permission grant, access recommendation, capacity, onboarding completion or external effect.
+
+## Preview and append-only template application
+
+`C3-TEAM-003` adds two exact-authorized operations for evolving an existing team map without replacing current organization data:
+
+```text
+POST /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace/template-preview
+POST /api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/team-workspace/template-apply
+```
+
+Both operations require the exact `update` grant for `team_workspace`, the campaign UUID as resource ID, null workspace scope and purpose `Maintain campaign team workspace`.
+
+### Preview
+
+Preview requires a quoted positive `If-Match` version and accepts only `LEAN_CAMPAIGN` or `FULL_CAMPAIGN` plus `es` or `en`. It:
+
+- reads the current version under tenant scope;
+- recognizes equivalent built-in functions across Spanish and English;
+- falls back to normalized exact title-and-area matching for historical role cards;
+- proposes deterministic UUIDv5 role IDs for missing functions;
+- returns additions, preserved matches, the blueprint version and a SHA-256 preview digest;
+- appends an audit receipt bound to the principal, grant, approval receipt, purpose and correlation ID;
+- creates no outbox event, role assignment, capacity, membership, permission or external effect.
+
+### Apply
+
+Apply requires the same `If-Match`, a non-empty `Idempotency-Key` and the exact preview digest. Inside one transaction it locks the workspace, recalculates the preview and fails closed when the version or digest changed. A successful application:
+
+- appends only missing vacant role cards;
+- preserves every existing role card and its identity, lifecycle and responsibilities;
+- increments the workspace version;
+- records counts for added and preserved functions;
+- commits audit, internal outbox and idempotency evidence atomically;
+- keeps `authority_effect=NONE` and `external_effects=NONE`.
+
+A preview with no additions cannot be applied. Digest drift returns `TEAM_TEMPLATE_PREVIEW_CONFLICT`; an already-complete template returns `TEAM_TEMPLATE_NO_CHANGES`.

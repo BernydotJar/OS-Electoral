@@ -539,6 +539,49 @@ export type TeamWorkspaceCreateEvidence = Readonly<{
 
 export type TeamWorkspaceUpdateEvidence = TeamWorkspaceCreateEvidence;
 
+export type TeamBlueprintTemplate = Exclude<TeamOrganizationTemplate, "CUSTOM">;
+
+export type TeamWorkspaceTemplatePreviewInput = Readonly<{
+  organization_template: TeamBlueprintTemplate;
+  blueprint_locale: "es" | "en";
+}>;
+
+export type TeamWorkspaceTemplateApplyInput =
+  TeamWorkspaceTemplatePreviewInput & Readonly<{ preview_digest: string }>;
+
+export type TeamWorkspaceTemplateSkip = Readonly<{
+  blueprint_key: string;
+  title: string;
+  area: string;
+  matched_role_id: UUID;
+  reason: "CANONICAL_BLUEPRINT_MATCH" | "EXACT_TITLE_AREA_MATCH";
+}>;
+
+export type TeamWorkspaceTemplatePreview = Readonly<{
+  audit_event_id: UUID;
+  workspace_id: UUID;
+  tenant_id: UUID;
+  campaign_id: UUID;
+  workspace_version: number;
+  organization_template: TeamBlueprintTemplate;
+  blueprint_locale: "es" | "en";
+  blueprint_version: string;
+  additions: readonly TeamRoleCard[];
+  skipped: readonly TeamWorkspaceTemplateSkip[];
+  preview_digest: string;
+  authority_effect: "NONE";
+  external_effects: "NONE";
+}>;
+
+export type TeamWorkspaceTemplateApplyEvidence = Readonly<{
+  workspace: TeamWorkspaceProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+  preview_digest: string;
+  added_role_count: number;
+  skipped_role_count: number;
+}>;
+
 export type CampaignPhaseStatus = "PLANNED" | "ACTIVE" | "COMPLETE";
 export type CampaignWorkstreamStatus =
   "PLANNED" | "ACTIVE" | "PAUSED" | "COMPLETE";

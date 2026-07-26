@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { parseTeamWorkspaceReadEvidence } from "@/lib/team-contract-parser";
+import {
+  parseTeamWorkspaceReadEvidence,
+  parseTeamWorkspaceTemplateApplyEvidence,
+  parseTeamWorkspaceTemplatePreview,
+} from "@/lib/team-contract-parser";
 
 const TENANT_ID = "11111111-1111-4111-8111-111111111111";
 const CAMPAIGN_ID = "22222222-2222-4222-8222-222222222222";
@@ -248,6 +252,85 @@ describe("team workspace parser", () => {
     wrongStatus.workspace.status = "STRUCTURE_IN_PROGRESS";
     expect(() => parseTeamWorkspaceReadEvidence(wrongStatus)).toThrow(
       "status is inconsistent",
+    );
+  });
+});
+
+describe("team workspace template parsers", () => {
+  it("accepts a bounded no-authority preview and apply receipt", () => {
+    const role = structuredClone(fixture().workspace.roles![2]!);
+    role.id = "abababab-abab-4bab-8bab-abababababab";
+    role.title = "Digital Strategy";
+    role.area = "Digital";
+    const preview = {
+      audit_event_id: fixture().audit_event_id,
+      workspace_id: TEAM_ID,
+      tenant_id: TENANT_ID,
+      campaign_id: CAMPAIGN_ID,
+      workspace_version: 2,
+      organization_template: "FULL_CAMPAIGN",
+      blueprint_locale: "en",
+      blueprint_version: "2026-07-25.1",
+      additions: [role],
+      skipped: [
+        {
+          blueprint_key: "campaign_direction",
+          title: "Campaign Chief",
+          area: "Campaign leadership",
+          matched_role_id: DIRECTOR_ID,
+          reason: "CANONICAL_BLUEPRINT_MATCH",
+        },
+      ],
+      preview_digest: "a".repeat(64),
+      authority_effect: "NONE",
+      external_effects: "NONE",
+    };
+
+    const parsed = parseTeamWorkspaceTemplatePreview(preview);
+    expect(parsed.additions[0]?.principal_id).toBeNull();
+    expect(parsed.skipped[0]?.matched_role_id).toBe(DIRECTOR_ID);
+    expect(parsed.authority_effect).toBe("NONE");
+
+    const apply = parseTeamWorkspaceTemplateApplyEvidence({
+      workspace: fixture().workspace,
+      audit_event_id: fixture().audit_event_id,
+      outbox_event_id: "cdcdcdcd-cdcd-4dcd-8dcd-cdcdcdcdcdcd",
+      preview_digest: preview.preview_digest,
+      added_role_count: 1,
+      skipped_role_count: 1,
+    });
+    expect(apply.preview_digest).toBe(preview.preview_digest);
+    expect(apply.added_role_count).toBe(1);
+  });
+
+  it("rejects malformed digests, authority promotion, and unexpected fields", () => {
+    const role = structuredClone(fixture().workspace.roles![2]!);
+    const preview = {
+      audit_event_id: fixture().audit_event_id,
+      workspace_id: TEAM_ID,
+      tenant_id: TENANT_ID,
+      campaign_id: CAMPAIGN_ID,
+      workspace_version: 2,
+      organization_template: "FULL_CAMPAIGN",
+      blueprint_locale: "es",
+      blueprint_version: "2026-07-25.1",
+      additions: [role],
+      skipped: [],
+      preview_digest: "bad",
+      authority_effect: "NONE",
+      external_effects: "NONE",
+    };
+    expect(() => parseTeamWorkspaceTemplatePreview(preview)).toThrow(
+      "SHA-256 digest",
+    );
+
+    preview.preview_digest = "b".repeat(64);
+    preview.authority_effect = "GRANT";
+    expect(() => parseTeamWorkspaceTemplatePreview(preview)).toThrow();
+
+    const unexpected = { ...preview, authority_effect: "NONE", extra: true };
+    expect(() => parseTeamWorkspaceTemplatePreview(unexpected)).toThrow(
+      "unexpected fields",
     );
   });
 });

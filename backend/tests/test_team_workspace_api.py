@@ -19,6 +19,8 @@ from campaignos.teams import (
     TeamWorkspaceAssessmentInput,
     TeamWorkspaceCreateEvidence,
     TeamWorkspaceReadEvidence,
+    TeamWorkspaceTemplateApplyEvidence,
+    TeamWorkspaceTemplatePreviewRequest,
     TeamWorkspaceUpdate,
     TeamWorkspaceUpdateEvidence,
     assess_team_workspace,
@@ -29,9 +31,12 @@ from campaignos.teams.service import (
     TeamWorkspaceIdempotencyConflict,
     TeamWorkspaceNotFound,
     TeamWorkspacePrerequisiteConflict,
+    TeamWorkspaceTemplateNoChanges,
+    TeamWorkspaceTemplatePreviewConflict,
     TeamWorkspaceUnavailable,
     TeamWorkspaceVersionConflict,
 )
+from campaignos.teams.template_application import build_team_template_preview
 
 TENANT_ID = UUID("11111111-1111-4111-8111-111111111111")
 CAMPAIGN_ID = UUID("22222222-2222-4222-8222-222222222222")
@@ -184,6 +189,42 @@ class Service:
         return TeamWorkspaceReadEvidence(
             workspace=projection(tenant_id=self.tenant_id, campaign_id=self.campaign_id),
             audit_event_id=AUDIT_ID,
+        )
+
+    def preview_template(self, tenant_id: UUID, campaign_id: UUID, **kwargs: Any):
+        self.calls.append(("preview_template", (tenant_id, campaign_id), kwargs))
+        if self.failure is not None:
+            raise self.failure
+        request = kwargs["request"]
+        assert isinstance(request, TeamWorkspaceTemplatePreviewRequest)
+        preview = build_team_template_preview(
+            projection(
+                version=int(kwargs["expected_version"]),
+                tenant_id=self.tenant_id,
+                campaign_id=self.campaign_id,
+            ),
+            request,
+        )
+        return preview.model_copy(update={"audit_event_id": AUDIT_ID})
+
+    def apply_template(
+        self, tenant_id: UUID, campaign_id: UUID, **kwargs: Any
+    ) -> TeamWorkspaceTemplateApplyEvidence:
+        self.calls.append(("apply_template", (tenant_id, campaign_id), kwargs))
+        if self.failure is not None:
+            raise self.failure
+        request = kwargs["request"]
+        return TeamWorkspaceTemplateApplyEvidence(
+            workspace=projection(
+                version=int(kwargs["expected_version"]) + 1,
+                tenant_id=self.tenant_id,
+                campaign_id=self.campaign_id,
+            ),
+            audit_event_id=AUDIT_ID,
+            outbox_event_id=OUTBOX_ID,
+            preview_digest=request.preview_digest,
+            added_role_count=1,
+            skipped_role_count=0,
         )
 
     def update(
@@ -447,3 +488,91 @@ def test_openapi_declares_security_and_precondition_headers() -> None:
     patch_headers = {item["name"] for item in operation["patch"]["parameters"]}
     assert "Idempotency-Key" in post_headers
     assert {"Idempotency-Key", "If-Match"} <= patch_headers
+
+
+def test_template_preview_requires_update_grant_and_current_version() -> None:
+    service = Service()
+    with client(Directory(action="update", purpose=UPDATE_PURPOSE), service) as api:
+        response = api.post(
+            f"{path()}/template-preview",
+            headers=headers(if_match='"3"'),
+            json={"organization_template": "FULL_CAMPAIGN", "blueprint_locale": "en"},
+        )
+    assert response.status_code == 200
+    assert response.json()["workspace_version"] == 3
+    assert response.json()["authority_effect"] == "NONE"
+    operation, scope, kwargs = service.calls[0]
+    assert operation == "preview_template" and scope == (TENANT_ID, CAMPAIGN_ID)
+    assert kwargs["expected_version"] == 3
+    assert kwargs["request"].organization_template == "FULL_CAMPAIGN"
+    assert kwargs["principal_id"] == PRINCIPAL_ID
+    assert kwargs["authorization_grant_id"] == GRANT_ID
+    assert kwargs["approval_receipt_id"] == "approval-team-workspace"
+    assert kwargs["authorization_purpose"] == UPDATE_PURPOSE
+
+
+def test_template_preview_rejects_missing_if_match_and_wrong_grant() -> None:
+    with client(Directory(action="update", purpose=UPDATE_PURPOSE), Service()) as api:
+        missing = api.post(
+            f"{path()}/template-preview",
+            headers=headers(),
+            json={"organization_template": "FULL_CAMPAIGN", "blueprint_locale": "es"},
+        )
+    assert missing.status_code == 428
+
+    with client(Directory(action="read", purpose=READ_PURPOSE), Service()) as api:
+        denied = api.post(
+            f"{path()}/template-preview",
+            headers=headers(if_match='"1"'),
+            json={"organization_template": "FULL_CAMPAIGN", "blueprint_locale": "es"},
+        )
+    assert denied.status_code == 403
+
+
+def test_template_apply_forwards_human_confirmation_and_authority() -> None:
+    service = Service()
+    digest = "a" * 64
+    with client(Directory(action="update", purpose=UPDATE_PURPOSE), service) as api:
+        response = api.post(
+            f"{path()}/template-apply",
+            headers=headers(idempotency_key=" team-template ", if_match='"1"'),
+            json={
+                "organization_template": "FULL_CAMPAIGN",
+                "blueprint_locale": "es",
+                "preview_digest": digest,
+            },
+        )
+    assert response.status_code == 200
+    assert response.headers["etag"] == '"2"'
+    assert response.json()["preview_digest"] == digest
+    operation, scope, kwargs = service.calls[0]
+    assert operation == "apply_template" and scope == (TENANT_ID, CAMPAIGN_ID)
+    assert kwargs["principal_id"] == PRINCIPAL_ID
+    assert kwargs["authorization_grant_id"] == GRANT_ID
+    assert kwargs["approval_receipt_id"] == "approval-team-workspace"
+    assert kwargs["authorization_purpose"] == UPDATE_PURPOSE
+    assert kwargs["idempotency_key"] == "team-template"
+
+
+@pytest.mark.parametrize(
+    ("failure", "code"),
+    [
+        (TeamWorkspaceTemplatePreviewConflict("drift"), "TEAM_TEMPLATE_PREVIEW_CONFLICT"),
+        (TeamWorkspaceTemplateNoChanges("noop"), "TEAM_TEMPLATE_NO_CHANGES"),
+    ],
+)
+def test_template_apply_maps_domain_conflicts(failure: Exception, code: str) -> None:
+    with client(
+        Directory(action="update", purpose=UPDATE_PURPOSE), Service(failure=failure)
+    ) as api:
+        response = api.post(
+            f"{path()}/template-apply",
+            headers=headers(idempotency_key="team-template", if_match='"1"'),
+            json={
+                "organization_template": "FULL_CAMPAIGN",
+                "blueprint_locale": "en",
+                "preview_digest": "b" * 64,
+            },
+        )
+    assert response.status_code == 409
+    assert response.json()["code"] == code

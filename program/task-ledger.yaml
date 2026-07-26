@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-25",
-  "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
+  "updated_at": "2026-07-26",
+  "branch": "agent/c3-team-003-template-application-preview",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -735,6 +735,38 @@
       "draft_pr": 122,
       "ci_run_id": 30176654019,
       "visual_run_id": 30176653983
+    },
+    {
+      "task_id": "C3-TEAM-003",
+      "owner": "WS-08/WS-06",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "backend/src/campaignos/teams/blueprints.py",
+        "backend/src/campaignos/teams/template_application.py",
+        "backend/src/campaignos/teams/contracts.py",
+        "backend/src/campaignos/teams/service.py",
+        "backend/src/campaignos/api/routes/team_workspace.py",
+        "backend/tests/test_team_template_application.py",
+        "backend/tests/test_team_workspace_model.py",
+        "backend/tests/test_team_workspace_api.py",
+        "frontend/src/components/team-workspace-editor.tsx",
+        "frontend/src/components/team-template-application.test.ts",
+        "frontend/src/lib/team-contract-parser.ts",
+        "frontend/src/lib/team-workspace-form.ts",
+        "frontend/src/app/api/ui/team-workspace/template-apply/route.ts",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/product/team-workspace.md",
+        "docs/api/team-workspace.md",
+        "docs/testing/c3-team-003-evidence.md",
+        "program/iterations/c3-team-003.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted PostgreSQL/browser CI remains required",
+        "Human product review and merge of the stacked PR chain remain required",
+        "Personnel assignment, RACI, capacity, training and access review remain separate increments",
+        "Staging, deployment and production approval remain separate human gates"
+      ]
     }
   ]
 }

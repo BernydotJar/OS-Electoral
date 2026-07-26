@@ -1929,7 +1929,11 @@ button[type="submit"]:hover {
   border: 1px solid rgba(164, 200, 255, 0.24);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 82% 5%, rgba(164, 200, 255, 0.13), transparent 22rem),
+    radial-gradient(
+      circle at 82% 5%,
+      rgba(164, 200, 255, 0.13),
+      transparent 22rem
+    ),
     linear-gradient(145deg, rgba(22, 31, 49, 0.96), rgba(9, 13, 21, 0.98));
   box-shadow: var(--shadow);
 }
@@ -1998,7 +2002,8 @@ button[type="submit"]:hover {
   border: 1px solid rgba(113, 214, 162, 0.28);
   border-radius: 16px;
   background: rgba(5, 25, 18, 0.55);
-  animation: journey-enter var(--motion-duration-slow) var(--motion-easing-enter) both;
+  animation: journey-enter var(--motion-duration-slow)
+    var(--motion-easing-enter) both;
 }
 
 .journey-mission span,
@@ -2087,7 +2092,11 @@ button[type="submit"]:hover {
   border-radius: 999px;
   color: var(--text-3);
   background: var(--surface-1);
-  font: 0.78rem ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    0.78rem ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
 }
 
 .journey-track h3 {
@@ -2126,7 +2135,8 @@ button[type="submit"]:hover {
 }
 
 .journey-track li[data-state="ACTIVE"] {
-  animation: journey-enter var(--motion-duration-slow) var(--motion-easing-enter) both;
+  animation: journey-enter var(--motion-duration-slow)
+    var(--motion-easing-enter) both;
 }
 
 .journey-track li[data-state="LOCKED"] {
@@ -2274,8 +2284,16 @@ button[type="submit"]:hover {
   border: 1px solid rgba(164, 200, 255, 0.24);
   border-radius: 32px;
   background:
-    radial-gradient(circle at 74% 32%, rgba(123, 98, 255, 0.22), transparent 22rem),
-    radial-gradient(circle at 22% 16%, rgba(245, 168, 115, 0.16), transparent 25rem),
+    radial-gradient(
+      circle at 74% 32%,
+      rgba(123, 98, 255, 0.22),
+      transparent 22rem
+    ),
+    radial-gradient(
+      circle at 22% 16%,
+      rgba(245, 168, 115, 0.16),
+      transparent 25rem
+    ),
     linear-gradient(145deg, #161f32, #0a0f19 62%, #07120f);
   box-shadow: 0 32px 110px rgba(0, 0, 0, 0.46);
   isolation: isolate;
@@ -2284,14 +2302,22 @@ button[type="submit"]:hover {
 .campaign-experience[data-mode="ACTIVE"] {
   min-height: 24rem;
   background:
-    radial-gradient(circle at 78% 10%, rgba(113, 214, 162, 0.14), transparent 19rem),
+    radial-gradient(
+      circle at 78% 10%,
+      rgba(113, 214, 162, 0.14),
+      transparent 19rem
+    ),
     linear-gradient(145deg, #111a2b, #090e17 66%, #07120f);
 }
 
 .campaign-experience[data-mode="COMPLETE"] {
   min-height: 22rem;
   background:
-    radial-gradient(circle at 75% 15%, rgba(113, 214, 162, 0.2), transparent 20rem),
+    radial-gradient(
+      circle at 75% 15%,
+      rgba(113, 214, 162, 0.2),
+      transparent 20rem
+    ),
     linear-gradient(145deg, #12261f, #080f0d 72%);
 }
 
@@ -2335,7 +2361,8 @@ button[type="submit"]:hover {
 .experience-copy,
 .experience-context {
   position: relative;
-  animation: experience-rise var(--motion-duration-slow) var(--motion-easing-enter) both;
+  animation: experience-rise var(--motion-duration-slow)
+    var(--motion-easing-enter) both;
 }
 
 .experience-copy h1 {
@@ -2392,7 +2419,8 @@ button[type="submit"]:hover {
   border-radius: 999px;
   color: var(--accent-strong);
   background: #07101d;
-  transition: transform var(--motion-duration-fast) var(--motion-easing-standard);
+  transition: transform var(--motion-duration-fast)
+    var(--motion-easing-standard);
 }
 
 .experience-copy > a:hover .experience-arrow {
@@ -2435,7 +2463,8 @@ button[type="submit"]:hover {
   border: 1px solid rgba(164, 200, 255, 0.22);
   border-radius: 18px;
   background: rgba(7, 12, 21, 0.66);
-  animation: experience-rise var(--motion-duration-slow) var(--motion-easing-enter) both;
+  animation: experience-rise var(--motion-duration-slow)
+    var(--motion-easing-enter) both;
 }
 
 .candidate-start-card {
@@ -2681,8 +2710,16 @@ button[type="submit"]:hover {
     "copy context";
   align-content: end;
   background:
-    radial-gradient(circle at 72% 42%, rgba(88, 134, 255, 0.22), transparent 20rem),
-    radial-gradient(circle at 28% 20%, rgba(241, 155, 112, 0.15), transparent 24rem),
+    radial-gradient(
+      circle at 72% 42%,
+      rgba(88, 134, 255, 0.22),
+      transparent 20rem
+    ),
+    radial-gradient(
+      circle at 28% 20%,
+      rgba(241, 155, 112, 0.15),
+      transparent 24rem
+    ),
     linear-gradient(152deg, #111a2c 0%, #08111f 52%, #050b11 100%);
 }
 
@@ -2694,8 +2731,16 @@ button[type="submit"]:hover {
 
 .campaign-experience[data-layout="command"] {
   background:
-    radial-gradient(circle at 76% 35%, rgba(113, 214, 162, 0.22), transparent 19rem),
-    radial-gradient(circle at 24% 10%, rgba(164, 200, 255, 0.12), transparent 23rem),
+    radial-gradient(
+      circle at 76% 35%,
+      rgba(113, 214, 162, 0.22),
+      transparent 19rem
+    ),
+    radial-gradient(
+      circle at 24% 10%,
+      rgba(164, 200, 255, 0.12),
+      transparent 23rem
+    ),
     linear-gradient(150deg, #10261f 0%, #081410 55%, #050a09 100%);
 }
 
@@ -2811,7 +2856,8 @@ button[type="submit"]:hover {
   border-radius: 50%;
   background: rgba(245, 195, 106, 0.2);
   filter: blur(42px);
-  animation: beacon-breathe 4.8s var(--motion-easing-standard) infinite alternate;
+  animation: beacon-breathe 4.8s var(--motion-easing-standard) infinite
+    alternate;
 }
 
 .experience-atmosphere .experience-grid {
@@ -2824,7 +2870,13 @@ button[type="submit"]:hover {
     linear-gradient(rgba(164, 200, 255, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(164, 200, 255, 0.045) 1px, transparent 1px);
   background-size: 4rem 4rem;
-  mask-image: linear-gradient(to bottom, transparent, black 28%, black 76%, transparent);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 28%,
+    black 76%,
+    transparent
+  );
   animation: none;
 }
 
@@ -2858,10 +2910,15 @@ button[type="submit"]:hover {
   border: 1px solid rgba(113, 214, 162, 0.26);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 76% 24%, rgba(113, 214, 162, 0.16), transparent 18rem),
+    radial-gradient(
+      circle at 76% 24%,
+      rgba(113, 214, 162, 0.16),
+      transparent 18rem
+    ),
     linear-gradient(145deg, rgba(8, 28, 22, 0.78), rgba(6, 12, 19, 0.9));
   box-shadow: 0 26px 70px rgba(0, 0, 0, 0.3);
-  animation: journey-enter var(--motion-duration-slow) var(--motion-easing-enter) both;
+  animation: journey-enter var(--motion-duration-slow)
+    var(--motion-easing-enter) both;
 }
 
 .journey-chapter::after {
@@ -3148,8 +3205,16 @@ button[type="submit"]:hover {
 .campaign-experience[data-layout="mission"] {
   min-height: clamp(28rem, 62vh, 42rem);
   background:
-    radial-gradient(circle at 74% 30%, rgba(96, 141, 255, 0.28), transparent 21rem),
-    radial-gradient(circle at 12% 92%, rgba(242, 164, 104, 0.13), transparent 24rem),
+    radial-gradient(
+      circle at 74% 30%,
+      rgba(96, 141, 255, 0.28),
+      transparent 21rem
+    ),
+    radial-gradient(
+      circle at 12% 92%,
+      rgba(242, 164, 104, 0.13),
+      transparent 24rem
+    ),
     linear-gradient(150deg, #111d35 0%, #07111f 55%, #04090f 100%);
 }
 
@@ -3227,11 +3292,16 @@ button[type="submit"]:hover {
   border: 0;
   border-radius: 50% 50% 0 0;
   background:
-    radial-gradient(ellipse at center, rgba(130, 170, 255, 0.34), transparent 58%),
+    radial-gradient(
+      ellipse at center,
+      rgba(130, 170, 255, 0.34),
+      transparent 58%
+    ),
     linear-gradient(to top, rgba(245, 181, 111, 0.14), transparent 70%);
   filter: blur(18px);
   opacity: 0.72;
-  animation: horizon-breathe 5.6s var(--motion-easing-standard) infinite alternate;
+  animation: horizon-breathe 5.6s var(--motion-easing-standard) infinite
+    alternate;
 }
 
 .experience-atmosphere .experience-aurora {
@@ -3241,7 +3311,13 @@ button[type="submit"]:hover {
   margin: 0;
   border: 0;
   border-radius: 50%;
-  background: linear-gradient(115deg, transparent 8%, rgba(101, 146, 255, 0.14), rgba(113, 214, 162, 0.08), transparent 70%);
+  background: linear-gradient(
+    115deg,
+    transparent 8%,
+    rgba(101, 146, 255, 0.14),
+    rgba(113, 214, 162, 0.08),
+    transparent 70%
+  );
   filter: blur(28px);
   transform: rotate(-18deg) translate3d(0, 0, 0);
   animation: aurora-drift 8s var(--motion-easing-standard) infinite alternate;
@@ -3254,7 +3330,12 @@ button[type="submit"]:hover {
   margin: 0;
   border: 0;
   border-radius: 0;
-  background: linear-gradient(to top, transparent, rgba(211, 229, 255, 0.52), transparent);
+  background: linear-gradient(
+    to top,
+    transparent,
+    rgba(211, 229, 255, 0.52),
+    transparent
+  );
   box-shadow: 0 0 24px rgba(164, 200, 255, 0.34);
   transform-origin: bottom center;
   animation: signal-rise 4.2s var(--motion-easing-standard) infinite;
@@ -3440,5 +3521,235 @@ button[type="submit"]:hover {
   .experience-atmosphere .experience-aurora,
   .experience-atmosphere .experience-signal {
     animation: none !important;
+  }
+}
+
+/* C3-TEAM-003: governed template preview and append-only application. */
+.team-template-application {
+  margin: 1.25rem 0;
+  padding: clamp(1.15rem, 2.5vw, 1.8rem);
+  overflow: hidden;
+  border: 1px solid rgba(164, 200, 255, 0.24);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      circle at 92% 8%,
+      rgba(164, 200, 255, 0.12),
+      transparent 18rem
+    ),
+    linear-gradient(145deg, rgba(15, 24, 40, 0.94), rgba(7, 12, 21, 0.98));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.24);
+}
+
+.team-template-preview-form {
+  margin-top: 1.2rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.85rem;
+  align-items: end;
+  border: 1px solid rgba(164, 200, 255, 0.16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.team-template-preview-form label {
+  min-width: 0;
+  display: grid;
+  gap: 0.42rem;
+}
+
+.team-template-preview-form label > span {
+  color: var(--text-2);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.team-template-preview-form select {
+  width: 100%;
+  min-width: 0;
+}
+
+.team-template-preview-form button,
+.team-template-confirm-form button {
+  min-height: 2.75rem;
+}
+
+.team-template-boundary,
+.team-template-confirm-form p {
+  color: var(--text-3);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.team-template-preview-result {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.team-template-preview-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.team-template-preview-summary > div {
+  min-width: 0;
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.2rem;
+  border: 1px solid rgba(113, 214, 162, 0.2);
+  border-radius: 14px;
+  background: rgba(5, 25, 18, 0.44);
+}
+
+.team-template-preview-summary strong {
+  overflow-wrap: anywhere;
+  color: var(--approval);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  line-height: 1;
+}
+
+.team-template-preview-summary span {
+  color: var(--text-3);
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.team-template-change-group {
+  min-width: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.team-template-change-group h4 {
+  margin: 0;
+  color: var(--text-1);
+  font-size: 0.9rem;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.team-template-role-grid {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.team-template-role-card {
+  min-width: 0;
+  padding: 1rem;
+  display: grid;
+  gap: 0.8rem;
+  border: 1px solid rgba(164, 200, 255, 0.17);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.team-template-role-card span {
+  color: var(--accent-strong);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.team-template-role-card h5 {
+  margin: 0.3rem 0 0.45rem;
+  color: var(--text-1);
+  font-size: 1.05rem;
+}
+
+.team-template-role-card p,
+.team-template-role-card li {
+  color: var(--text-2);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.team-template-role-card p {
+  margin: 0;
+}
+
+.team-template-role-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.team-template-skipped-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.team-template-skipped-list li {
+  min-width: 0;
+  padding: 0.72rem 0.8rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, auto);
+  gap: 0.75rem;
+  align-items: center;
+  border: 1px solid rgba(164, 200, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.team-template-skipped-list div {
+  min-width: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.team-template-skipped-list strong,
+.team-template-skipped-list span,
+.team-template-skipped-list small {
+  overflow-wrap: anywhere;
+}
+
+.team-template-skipped-list span,
+.team-template-skipped-list small {
+  color: var(--text-3);
+  font-size: 0.72rem;
+}
+
+.team-template-confirm-form {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  border: 1px solid rgba(113, 214, 162, 0.3);
+  border-radius: 16px;
+  background: rgba(5, 25, 18, 0.56);
+}
+
+.team-template-confirm-form p {
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .team-template-preview-form,
+  .team-template-confirm-form,
+  .team-template-skipped-list li {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .team-template-preview-summary,
+  .team-template-role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-template-preview-form button,
+  .team-template-confirm-form button {
+    width: 100%;
   }
 }

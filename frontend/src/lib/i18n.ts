@@ -119,7 +119,8 @@ const es = {
         "Los nombres de puesto no conceden permisos",
       ACCESS_RECOMMENDATIONS_REQUIRE_HUMAN_AUTHORIZATION:
         "Los accesos requieren autorización humana separada",
-      HUMAN_DECISIONS_REQUIRED: "Las decisiones críticas pertenecen al equipo humano",
+      HUMAN_DECISIONS_REQUIRED:
+        "Las decisiones críticas pertenecen al equipo humano",
       NO_AUTONOMOUS_TASK_EXECUTION:
         "CampaignOS no ejecuta tareas de campaña de forma autónoma",
       NO_CITIZEN_CONTACT: "No habilita contacto ciudadano",
@@ -133,10 +134,10 @@ const es = {
   journey: {
     eyebrow: "RUTA MAESTRA DE CAMPAÑA",
     title: "Tu campaña, paso a paso",
-    body:
-      "Desde la idea inicial hasta la operación diaria, CampaignOS ordena decisiones, evidencia, equipo y seguimiento sin saltarse los controles humanos.",
+    body: "Desde la idea inicial hasta la operación diaria, CampaignOS ordena decisiones, evidencia, equipo y seguimiento sin saltarse los controles humanos.",
     firstUseEyebrow: "TU CAMPAÑA EMPIEZA AQUÍ",
-    firstUseTitle: "Convierte una idea política en una campaña que sabe avanzar",
+    firstUseTitle:
+      "Convierte una idea política en una campaña que sabe avanzar",
     firstUseBody:
       "Define la base una vez. Después CampaignOS conservará el contexto y te mostrará la misión, la evidencia y la decisión que siguen.",
     firstUseAction: "Comenzar la ruta",
@@ -182,8 +183,7 @@ const es = {
         "Define cargo, territorio, propósito, equipo, activos y capacidad presupuestaria.",
       evidence:
         "Reúne padrón, resultados históricos, fichas comunitarias, fuentes públicas y evidencia verificable.",
-      team:
-        "Diseña coordinaciones, secretarías, responsables, capacidad y vacíos que debes cubrir.",
+      team: "Diseña coordinaciones, secretarías, responsables, capacidad y vacíos que debes cubrir.",
       strategy:
         "Construye FODA, objetivos, hipótesis y el equilibrio entre trabajo territorial, comunicación y digital.",
       operations:
@@ -194,7 +194,8 @@ const es = {
       evidence: "Resultado: decisiones basadas en evidencia, no intuición.",
       team: "Resultado: cada función tiene responsable y capacidad visible.",
       strategy: "Resultado: una dirección humana, medible y revisable.",
-      operations: "Resultado: seguimiento diario con trazabilidad y aprendizaje.",
+      operations:
+        "Resultado: seguimiento diario con trazabilidad y aprendizaje.",
     },
     phaseActions: {
       foundation: "Continuar información de arranque",
@@ -214,8 +215,7 @@ const es = {
   campaigns: {
     eyebrow: "CONTEXTO DE CAMPAÑA",
     title: "Elige la campaña de trabajo",
-    body:
-      "La selección cambia únicamente el contexto visible. El servidor vuelve a validar cada permiso y alcance.",
+    body: "La selección cambia únicamente el contexto visible. El servidor vuelve a validar cada permiso y alcance.",
     current: "Campaña actual",
     selectLabel: "Campaña autorizada",
     apply: "Usar esta campaña",
@@ -225,14 +225,23 @@ const es = {
     campaign_selected: "Contexto de campaña actualizado.",
     intake_started: "Ruta guiada creada y guardada en PostgreSQL.",
     intake_saved: "Cambios guardados con nueva versión.",
-    candidate_started: "Expediente de candidatura creado y listo para documentar.",
-    candidate_evidence_saved: "Fuente incorporada al expediente con una nueva versión.",
-    team_started: "Mapa de equipo creado con funciones iniciales listas para revisión.",
-    team_role_saved: "Función incorporada al mapa de equipo con una nueva versión.",
-    authorization_denied: "La sesión no tiene autorización exacta para esta acción.",
-    conflict: "El registro cambió o la solicitud ya fue utilizada. Recarga y revisa la versión.",
+    candidate_started:
+      "Expediente de candidatura creado y listo para documentar.",
+    candidate_evidence_saved:
+      "Fuente incorporada al expediente con una nueva versión.",
+    team_started:
+      "Mapa de equipo creado con funciones iniciales listas para revisión.",
+    team_role_saved:
+      "Función incorporada al mapa de equipo con una nueva versión.",
+    team_template_applied:
+      "Plantilla aplicada: se conservaron las funciones existentes y se agregaron sólo las ausentes.",
+    authorization_denied:
+      "La sesión no tiene autorización exacta para esta acción.",
+    conflict:
+      "El registro cambió o la solicitud ya fue utilizada. Recarga y revisa la versión.",
     validation_error: "Revisa los campos señalados y vuelve a intentar.",
-    dependency_failure: "Una dependencia no está disponible. No se guardaron cambios parciales.",
+    dependency_failure:
+      "Una dependencia no está disponible. No se guardaron cambios parciales.",
     unauthenticated: "La sesión ya no es válida.",
     not_found: "El recurso solicitado no está disponible en este contexto.",
     request_failed: "La solicitud no pudo completarse de forma segura.",
@@ -240,8 +249,7 @@ const es = {
   intake: {
     eyebrow: "INICIO GUIADO · EVIDENCIA PRIMERO",
     title: "Construye la base de tu campaña",
-    body:
-      "Responde preguntas claras para que CampaignOS pueda indicarte qué sigue, qué evidencia falta y qué trabajo debe organizarse.",
+    body: "Responde preguntas claras para que CampaignOS pueda indicarte qué sigue, qué evidencia falta y qué trabajo debe organizarse.",
     startTitle: "Comenzar la ruta guiada",
     startBody:
       "Crea el registro interno y su evidencia de auditoría. No inicia estrategia, contacto ni ejecución externa.",
@@ -251,9 +259,11 @@ const es = {
     editBody:
       "Puedes completar esta información por etapas. CampaignOS conserva la versión correcta y nunca reemplaza cambios en silencio.",
     onePerLine: "Un elemento por línea. Máximo 30.",
-    officeHelp: "Indica el cargo que buscas y confirma que corresponde al territorio de la campaña.",
+    officeHelp:
+      "Indica el cargo que buscas y confirma que corresponde al territorio de la campaña.",
     officePlaceholder: "Ej. Alcaldía Municipal",
-    budgetHelp: "Selecciona el nivel de evidencia disponible; no necesitas tener el presupuesto cerrado para comenzar.",
+    budgetHelp:
+      "Selecciona el nivel de evidencia disponible; no necesitas tener el presupuesto cerrado para comenzar.",
     candidateProjectHelp:
       "Explica por qué nace la candidatura, qué cambio busca y a quién desea servir.",
     candidateProjectPlaceholder:
@@ -355,7 +365,8 @@ const es = {
       "Este espacio organiza identidad, trayectoria, propósito, fuentes, contradicciones y riesgos. Crear el expediente no aprueba posicionamiento público.",
     displayName: "Nombre público de la candidatura",
     displayNamePlaceholder: "Ej. Ana Pérez",
-    displayNameHelp: "Usa el nombre que permita identificar el expediente; todavía no constituye una marca aprobada.",
+    displayNameHelp:
+      "Usa el nombre que permita identificar el expediente; todavía no constituye una marca aprobada.",
     startAction: "Crear expediente",
     evidenceEditorEyebrow: "INVESTIGACIÓN CON PROCEDENCIA",
     evidenceEditorTitle: "Incorpora una fuente verificable",
@@ -372,7 +383,8 @@ const es = {
     evidenceTitle: "Título de la fuente",
     evidenceTitlePlaceholder: "Ej. Acuerdo de convocatoria electoral",
     sourceReference: "Enlace verificable",
-    sourceReferenceHelp: "Debe usar HTTPS y apuntar a la fuente original cuando exista.",
+    sourceReferenceHelp:
+      "Debe usar HTTPS y apuntar a la fuente original cuando exista.",
     sourceAuthority: "Autoridad o institución",
     sourceAuthorityPlaceholder: "Ej. Tribunal Electoral",
     sourceAuthorityUnknown: "Autoridad pendiente",
@@ -380,7 +392,8 @@ const es = {
     evidenceJurisdictionPlaceholder: "Ej. Municipio, departamento o país",
     observedAt: "Fecha observada",
     evidenceExcerpt: "Nota de relevancia",
-    evidenceExcerptPlaceholder: "Explica qué confirma esta fuente y qué todavía no demuestra.",
+    evidenceExcerptPlaceholder:
+      "Explica qué confirma esta fuente y qué todavía no demuestra.",
     evidenceBoundary:
       "Registrar una fuente no la convierte en verdad ni autoriza estrategia. El equipo debe contrastarla y resolver contradicciones.",
     addEvidenceAction: "Agregar fuente",
@@ -485,6 +498,26 @@ const es = {
       CUSTOM: "Estructura personalizada",
     },
     startAction: "Crear mapa de equipo",
+    templateApplyEyebrow: "AMPLIAR SIN SOBRESCRIBIR",
+    templateApplyTitle: "Aplica una estructura al mapa existente",
+    templateApplyBody:
+      "Previsualiza qué funciones faltan. CampaignOS conservará las existentes y sólo agregará vacantes nuevas después de tu confirmación.",
+    templatePreviewAction: "Previsualizar cambios",
+    templatePreviewUnavailable:
+      "El preview no está disponible con la versión actual. Recarga antes de confirmar cambios.",
+    templateAdditionsTitle: "Funciones nuevas propuestas",
+    templateSkippedTitle: "Funciones existentes que se conservarán",
+    templateAddedCount: "funciones nuevas",
+    templateSkippedCount: "funciones conservadas",
+    templatePreviewVersion: "Versión del catálogo",
+    templateConfirmAction: "Aplicar funciones nuevas",
+    templateConfirmBoundary:
+      "Esta confirmación agrega únicamente funciones vacantes. No asigna personas, capacidad, membresías, permisos ni accesos.",
+    templateNoChanges:
+      "El mapa ya contiene todas las funciones reconocidas de esta plantilla. No hay cambios que aplicar.",
+    templateExactMatch: "Coincidencia exacta de nombre y área",
+    templateCanonicalMatch:
+      "La misma función ya existe en otra variante de idioma",
     roleEditorEyebrow: "FUNCIÓN Y RESULTADO",
     roleEditorTitle: "Documenta la siguiente función que necesita la campaña",
     roleEditorBody:
@@ -823,10 +856,10 @@ const en: Dictionary = {
   journey: {
     eyebrow: "CAMPAIGN MASTER PATH",
     title: "Your campaign, step by step",
-    body:
-      "From the initial idea to daily operations, CampaignOS orders decisions, evidence, team, and follow-up without bypassing human controls.",
+    body: "From the initial idea to daily operations, CampaignOS orders decisions, evidence, team, and follow-up without bypassing human controls.",
     firstUseEyebrow: "YOUR CAMPAIGN STARTS HERE",
-    firstUseTitle: "Turn a political idea into a campaign that knows how to move",
+    firstUseTitle:
+      "Turn a political idea into a campaign that knows how to move",
     firstUseBody:
       "Define the foundation once. CampaignOS will then preserve context and show the next mission, evidence, and decision.",
     firstUseAction: "Start the path",
@@ -872,15 +905,15 @@ const en: Dictionary = {
         "Define office, territory, purpose, team, assets, and budget capacity.",
       evidence:
         "Gather the electoral roll, historical results, community profiles, public sources, and verifiable evidence.",
-      team:
-        "Design coordinations, departments, owners, capacity, and the gaps that must be filled.",
+      team: "Design coordinations, departments, owners, capacity, and the gaps that must be filled.",
       strategy:
         "Build a SWOT, objectives, hypotheses, and the balance between field, communications, and digital work.",
       operations:
         "Track goals, communities, owners, tasks, blockers, and War Room learning.",
     },
     phaseOutcomes: {
-      foundation: "Outcome: a campaign that is understood and ready for research.",
+      foundation:
+        "Outcome: a campaign that is understood and ready for research.",
       evidence: "Outcome: decisions based on evidence rather than intuition.",
       team: "Outcome: every function has an owner and visible capacity.",
       strategy: "Outcome: a human, measurable, reviewable direction.",
@@ -904,8 +937,7 @@ const en: Dictionary = {
   campaigns: {
     eyebrow: "CAMPAIGN CONTEXT",
     title: "Choose the working campaign",
-    body:
-      "Selection changes only the visible context. The backend revalidates every grant and scope.",
+    body: "Selection changes only the visible context. The backend revalidates every grant and scope.",
     current: "Current campaign",
     selectLabel: "Authorized campaign",
     apply: "Use this campaign",
@@ -919,10 +951,15 @@ const en: Dictionary = {
     candidate_evidence_saved: "Source added to the dossier with a new version.",
     team_started: "Team map created with initial functions ready for review.",
     team_role_saved: "Function added to the team map with a new version.",
-    authorization_denied: "This session lacks exact authorization for the action.",
-    conflict: "The record changed or the request key was reused. Reload and review the version.",
+    team_template_applied:
+      "Template applied: existing functions were preserved and only missing roles were added.",
+    authorization_denied:
+      "This session lacks exact authorization for the action.",
+    conflict:
+      "The record changed or the request key was reused. Reload and review the version.",
     validation_error: "Review the fields and try again.",
-    dependency_failure: "A dependency is unavailable. No partial changes were saved.",
+    dependency_failure:
+      "A dependency is unavailable. No partial changes were saved.",
     unauthenticated: "The session is no longer valid.",
     not_found: "The requested resource is unavailable in this context.",
     request_failed: "The request could not be completed safely.",
@@ -930,8 +967,7 @@ const en: Dictionary = {
   intake: {
     eyebrow: "GUIDED START · EVIDENCE FIRST",
     title: "Build your campaign foundation",
-    body:
-      "Answer clear questions so CampaignOS can show what comes next, what evidence is missing, and what work must be organized.",
+    body: "Answer clear questions so CampaignOS can show what comes next, what evidence is missing, and what work must be organized.",
     startTitle: "Start the verifiable intake",
     startBody:
       "Creates the internal record and audit evidence. It does not start strategy, contact, or external execution.",
@@ -941,9 +977,11 @@ const en: Dictionary = {
     editBody:
       "You can complete this information in stages. CampaignOS preserves the correct version and never overwrites changes silently.",
     onePerLine: "One item per line. Maximum 30.",
-    officeHelp: "State the office you seek and confirm that it matches the campaign territory.",
+    officeHelp:
+      "State the office you seek and confirm that it matches the campaign territory.",
     officePlaceholder: "Example: Municipal Mayor",
-    budgetHelp: "Choose the evidence level currently available; the budget does not need to be final to begin.",
+    budgetHelp:
+      "Choose the evidence level currently available; the budget does not need to be final to begin.",
     candidateProjectHelp:
       "Explain why the candidacy exists, what change it seeks, and whom it intends to serve.",
     candidateProjectPlaceholder:
@@ -1044,7 +1082,8 @@ const en: Dictionary = {
       "This workspace organizes identity, history, purpose, sources, contradictions, and risks. Creating it does not approve public positioning.",
     displayName: "Candidate public name",
     displayNamePlaceholder: "Example: Ana Perez",
-    displayNameHelp: "Use a name that identifies the dossier; it is not yet an approved brand.",
+    displayNameHelp:
+      "Use a name that identifies the dossier; it is not yet an approved brand.",
     startAction: "Create dossier",
     evidenceEditorEyebrow: "RESEARCH WITH PROVENANCE",
     evidenceEditorTitle: "Add a verifiable source",
@@ -1061,15 +1100,18 @@ const en: Dictionary = {
     evidenceTitle: "Source title",
     evidenceTitlePlaceholder: "Example: Electoral call resolution",
     sourceReference: "Verifiable link",
-    sourceReferenceHelp: "Must use HTTPS and point to the original source when available.",
+    sourceReferenceHelp:
+      "Must use HTTPS and point to the original source when available.",
     sourceAuthority: "Authority or institution",
     sourceAuthorityPlaceholder: "Example: Electoral Tribunal",
     sourceAuthorityUnknown: "Authority pending",
     evidenceJurisdiction: "Jurisdiction",
-    evidenceJurisdictionPlaceholder: "Example: Municipality, region, or country",
+    evidenceJurisdictionPlaceholder:
+      "Example: Municipality, region, or country",
     observedAt: "Observed date",
     evidenceExcerpt: "Relevance note",
-    evidenceExcerptPlaceholder: "Explain what this source confirms and what it still does not prove.",
+    evidenceExcerptPlaceholder:
+      "Explain what this source confirms and what it still does not prove.",
     evidenceBoundary:
       "Registering a source does not make it true or authorize strategy. The team must contrast it and resolve contradictions.",
     addEvidenceAction: "Add source",
@@ -1174,6 +1216,26 @@ const en: Dictionary = {
       CUSTOM: "Custom structure",
     },
     startAction: "Create team map",
+    templateApplyEyebrow: "EXPAND WITHOUT OVERWRITING",
+    templateApplyTitle: "Apply a structure to the existing map",
+    templateApplyBody:
+      "Preview which functions are missing. CampaignOS preserves existing roles and adds only new vacancies after your confirmation.",
+    templatePreviewAction: "Preview changes",
+    templatePreviewUnavailable:
+      "The preview is unavailable for the current version. Reload before confirming changes.",
+    templateAdditionsTitle: "Proposed new functions",
+    templateSkippedTitle: "Existing functions that will be preserved",
+    templateAddedCount: "new functions",
+    templateSkippedCount: "preserved functions",
+    templatePreviewVersion: "Catalog version",
+    templateConfirmAction: "Apply new functions",
+    templateConfirmBoundary:
+      "This confirmation adds vacant functions only. It assigns no people, capacity, memberships, permissions, or access.",
+    templateNoChanges:
+      "The map already contains every recognized function in this template. There are no changes to apply.",
+    templateExactMatch: "Exact title and area match",
+    templateCanonicalMatch:
+      "The same function already exists in another language variant",
     roleEditorEyebrow: "FUNCTION AND OUTCOME",
     roleEditorTitle: "Document the next function the campaign needs",
     roleEditorBody:

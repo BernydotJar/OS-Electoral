@@ -1,6 +1,8 @@
 import type {
+  TeamBlueprintTemplate,
   TeamOrganizationTemplate,
   TeamRoleCard,
+  TeamWorkspaceTemplateApplyInput,
   TeamWorkspaceCreateInput,
 } from "@/lib/contracts";
 import { validIdempotencyKey } from "@/lib/guided-intake-form";
@@ -12,6 +14,11 @@ const TEMPLATES = new Set<TeamOrganizationTemplate>([
   "FULL_CAMPAIGN",
   "CUSTOM",
 ]);
+const BLUEPRINT_TEMPLATES = new Set<TeamBlueprintTemplate>([
+  "LEAN_CAMPAIGN",
+  "FULL_CAMPAIGN",
+]);
+const DIGEST_PATTERN = /^[0-9a-f]{64}$/;
 
 export class TeamWorkspaceFormError extends Error {}
 
@@ -66,7 +73,10 @@ function responsibilities(form: FormData): readonly string[] {
   if (values.some((value) => value.length > 500)) {
     throw new TeamWorkspaceFormError("Responsibility is too long");
   }
-  if (new Set(values.map((value) => value.toLocaleLowerCase())).size !== values.length) {
+  if (
+    new Set(values.map((value) => value.toLocaleLowerCase())).size !==
+    values.length
+  ) {
     throw new TeamWorkspaceFormError("Responsibilities contain duplicates");
   }
   return values;
@@ -129,6 +139,40 @@ export function parseTeamRoleForm(
       weekly_capacity_hours: null,
       onboarding_status: "NOT_STARTED",
       vacancy_plan: requiredText(form, "vacancy_plan", 1000),
+    },
+  };
+}
+
+export type ParsedTeamTemplateApplyForm = Readonly<{
+  locale: "es" | "en";
+  expectedVersion: number;
+  idempotencyKey: string;
+  apply: TeamWorkspaceTemplateApplyInput;
+}>;
+
+export function parseTeamTemplateApplyForm(
+  form: FormData,
+): ParsedTeamTemplateApplyForm {
+  const organizationTemplate = field(
+    form,
+    "organization_template",
+  ) as TeamBlueprintTemplate;
+  if (!BLUEPRINT_TEMPLATES.has(organizationTemplate)) {
+    throw new TeamWorkspaceFormError("Blueprint template is invalid");
+  }
+  const previewDigest = field(form, "preview_digest").trim();
+  if (!DIGEST_PATTERN.test(previewDigest)) {
+    throw new TeamWorkspaceFormError("Preview digest is invalid");
+  }
+  const selectedLocale = locale(form);
+  return {
+    locale: selectedLocale,
+    expectedVersion: expectedVersion(form),
+    idempotencyKey: idempotencyKey(form),
+    apply: {
+      organization_template: organizationTemplate,
+      blueprint_locale: selectedLocale,
+      preview_digest: previewDigest,
     },
   };
 }

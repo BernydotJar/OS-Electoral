@@ -18,6 +18,8 @@ import type { FrontendConfig } from "@/lib/config";
 import {
   parseTeamWorkspaceCreateEvidence,
   parseTeamWorkspaceReadEvidence,
+  parseTeamWorkspaceTemplateApplyEvidence,
+  parseTeamWorkspaceTemplatePreview,
   parseTeamWorkspaceUpdateEvidence,
   TeamContractValidationError,
 } from "@/lib/team-contract-parser";
@@ -51,6 +53,10 @@ import type {
   TeamWorkspaceCreateEvidence,
   TeamWorkspaceCreateInput,
   TeamWorkspaceReadEvidence,
+  TeamWorkspaceTemplateApplyEvidence,
+  TeamWorkspaceTemplateApplyInput,
+  TeamWorkspaceTemplatePreview,
+  TeamWorkspaceTemplatePreviewInput,
   TeamWorkspaceUpdateEvidence,
   TeamWorkspaceUpdateInput,
   WarRoomSnapshotReadEvidence,
@@ -346,6 +352,46 @@ export class CampaignOsApiClient {
       {
         method: "PATCH",
         body: update,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
+    );
+  }
+
+  previewTeamWorkspaceTemplate(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    preview: TeamWorkspaceTemplatePreviewInput,
+  ): Promise<TeamWorkspaceTemplatePreview> {
+    return this.request<TeamWorkspaceTemplatePreview>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/team-workspace/template-preview`,
+      "Team workspace template preview",
+      parseTeamWorkspaceTemplatePreview,
+      {
+        method: "POST",
+        body: preview,
+        headers: { "if-match": `"${expectedVersion}"` },
+      },
+    );
+  }
+
+  applyTeamWorkspaceTemplate(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    apply: TeamWorkspaceTemplateApplyInput,
+  ): Promise<TeamWorkspaceTemplateApplyEvidence> {
+    return this.request<TeamWorkspaceTemplateApplyEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/team-workspace/template-apply`,
+      "Team workspace template apply",
+      parseTeamWorkspaceTemplateApplyEvidence,
+      {
+        method: "POST",
+        body: apply,
         headers: {
           "idempotency-key": idempotencyKey,
           "if-match": `"${expectedVersion}"`,

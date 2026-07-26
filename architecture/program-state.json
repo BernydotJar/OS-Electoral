@@ -2,8 +2,8 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-25",
-  "source_branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
+  "updated_at": "2026-07-26",
+  "source_branch": "agent/c3-team-003-template-application-preview",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
@@ -772,8 +772,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "PROGRESSIVE_CINEMATIC_MISSION_CI_GREEN",
-      "next_increment": "C3-TEAM-002"
+      "status": "TEMPLATE_APPLICATION_TESTED_LOCAL",
+      "next_increment": "C3-TEAM-003"
     },
     {
       "id": "WS-07",
@@ -784,8 +784,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "CAMPAIGN_ROLE_BLUEPRINTS_CI_GREEN",
-      "next_increment": "C3-TEAM-002"
+      "status": "GOVERNED_TEMPLATE_APPLICATION_TESTED_LOCAL",
+      "next_increment": "C3-TEAM-003"
     },
     {
       "id": "WS-09",
@@ -1078,6 +1078,16 @@
       ]
     },
     {
+      "id": "C3-TEAM-003",
+      "workstream": "WS-08",
+      "title": "Governed preview and append-only application of campaign role templates",
+      "status": "ACTIVE",
+      "depends_on": [
+        "C3-TEAM-002",
+        "C3-TEAM-001"
+      ]
+    },
+    {
       "id": "action:production-deployment",
       "status": "HUMAN_BLOCKED",
       "depends_on": [
@@ -1268,16 +1278,14 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-TEAM-002",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
-      "base": "agent/c3-front-006-cinematic-adaptive-journey@427033c69cf8220821713a13a698232c3e033000",
-      "validated_implementation_head": "7735b533b5ebc43d829d881090798fe1b1605295",
-      "draft_pr": 122,
+      "id": "C3-TEAM-003",
+      "state": "TESTED_LOCAL",
+      "branch": "agent/c3-team-003-template-application-preview",
+      "base": "agent/c3-team-002-role-blueprints-cinematic-hero@e0ca30589f610361254e5348e9b9fd3c77e42b57",
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "HUMAN_PRODUCT_REVIEW"
+      "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
     },
     "latest_checkpoint": {
       "id": "C3-TEAM-002",

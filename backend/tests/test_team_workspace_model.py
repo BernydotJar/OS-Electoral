@@ -24,13 +24,20 @@ from campaignos.data.models import (
     Tenant,
     Workspace,
 )
-from campaignos.teams import TeamWorkspaceCreate, TeamWorkspaceUpdate
+from campaignos.teams import (
+    TeamWorkspaceCreate,
+    TeamWorkspaceTemplateApplyRequest,
+    TeamWorkspaceTemplatePreviewRequest,
+    TeamWorkspaceUpdate,
+)
 from campaignos.teams.service import (
     SqlAlchemyTeamWorkspaceService,
     TeamWorkspaceEvidenceConflict,
     TeamWorkspaceIdempotencyConflict,
     TeamWorkspaceNotFound,
     TeamWorkspacePrerequisiteConflict,
+    TeamWorkspaceTemplateNoChanges,
+    TeamWorkspaceTemplatePreviewConflict,
     TeamWorkspaceUnavailable,
     TeamWorkspaceVersionConflict,
     UnavailableTeamWorkspaceService,
@@ -426,3 +433,192 @@ def test_audit_failure_rolls_back_team_creation(
         assert session.scalar(select(func.count()).select_from(AuditEvent)) == 0
         assert session.scalar(select(func.count()).select_from(OutboxEvent)) == 0
         assert session.scalar(select(func.count()).select_from(IdempotencyRecord)) == 0
+
+
+def test_template_preview_and_apply_are_append_only_and_idempotent(database: Database) -> None:
+    created = _create(database)
+    original_ids = {role.id for role in created.workspace.roles or ()}
+    service = SqlAlchemyTeamWorkspaceService(database)
+    preview_request = TeamWorkspaceTemplatePreviewRequest(
+        organization_template="FULL_CAMPAIGN", blueprint_locale="en"
+    )
+    preview = service.preview_template(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        expected_version=1,
+        request=preview_request,
+        principal_id=PRINCIPAL_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-team-template-preview",
+        authorization_purpose=UPDATE_PURPOSE,
+        correlation_id="team-template-preview",
+    )
+
+    assert preview.added_role_count == 5
+    assert preview.skipped_role_count == 3
+    assert preview.authority_effect == preview.external_effects == "NONE"
+
+    apply_request = TeamWorkspaceTemplateApplyRequest(
+        organization_template="FULL_CAMPAIGN",
+        blueprint_locale="en",
+        preview_digest=preview.preview_digest,
+    )
+    applied = service.apply_template(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        expected_version=1,
+        request=apply_request,
+        principal_id=PRINCIPAL_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-team-template",
+        authorization_purpose=UPDATE_PURPOSE,
+        correlation_id="team-template",
+        idempotency_key="team-template-1",
+    )
+    replay = service.apply_template(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        expected_version=1,
+        request=apply_request,
+        principal_id=PRINCIPAL_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-team-template",
+        authorization_purpose=UPDATE_PURPOSE,
+        correlation_id="team-template",
+        idempotency_key="team-template-1",
+    )
+
+    assert replay == applied
+    assert applied.workspace.version == 2
+    assert applied.workspace.organization_template == "FULL_CAMPAIGN"
+    assert applied.added_role_count == 5
+    assert applied.skipped_role_count == 3
+    assert original_ids <= {role.id for role in applied.workspace.roles or ()}
+    assert len(applied.workspace.roles or ()) == 10
+    assert all(
+        role.principal_id is None
+        for role in (applied.workspace.roles or ())
+        if role.id not in original_ids
+    )
+
+    with database.tenant_transaction(TENANT_ID) as session:
+        assert session.scalar(select(func.count()).select_from(TeamWorkspace)) == 1
+        assert session.scalar(select(func.count()).select_from(RoleAssignment)) == 0
+        assert session.scalar(select(func.count()).select_from(PermissionGrant)) == 0
+        assert session.scalar(select(func.count()).select_from(AuditEvent)) == 3
+        assert session.scalar(select(func.count()).select_from(OutboxEvent)) == 2
+        assert session.scalar(select(func.count()).select_from(IdempotencyRecord)) == 2
+        preview_audit = session.scalar(
+            select(AuditEvent).where(AuditEvent.event_type == "team_workspace.template_previewed")
+        )
+        assert preview_audit is not None
+        assert preview_audit.principal_id == PRINCIPAL_ID
+        assert preview_audit.payload["authorization_grant_id"] == str(GRANT_ID)
+        assert preview_audit.payload["added_role_count"] == 5
+        audit = session.scalar(
+            select(AuditEvent).where(AuditEvent.event_type == "team_workspace.template_applied")
+        )
+        assert audit is not None
+        assert audit.payload["added_role_count"] == 5
+        assert audit.payload["skipped_role_count"] == 3
+        assert audit.payload["authority_effect"] == "NONE"
+
+
+def test_template_apply_rejects_digest_drift_and_rolls_back(database: Database) -> None:
+    _create(database)
+    service = SqlAlchemyTeamWorkspaceService(database)
+
+    with pytest.raises(TeamWorkspaceTemplatePreviewConflict):
+        service.apply_template(
+            TENANT_ID,
+            CAMPAIGN_ID,
+            expected_version=1,
+            request=TeamWorkspaceTemplateApplyRequest(
+                organization_template="FULL_CAMPAIGN",
+                blueprint_locale="en",
+                preview_digest="0" * 64,
+            ),
+            principal_id=PRINCIPAL_ID,
+            authorization_grant_id=GRANT_ID,
+            approval_receipt_id="approval-team-template",
+            authorization_purpose=UPDATE_PURPOSE,
+            correlation_id="team-template-drift",
+            idempotency_key="team-template-drift",
+        )
+
+    with database.tenant_transaction(TENANT_ID) as session:
+        row = session.scalar(select(TeamWorkspace))
+        assert row is not None and row.version == 1
+        assert len(row.roles or []) == 5
+        assert session.scalar(select(func.count()).select_from(AuditEvent)) == 1
+        assert session.scalar(select(func.count()).select_from(OutboxEvent)) == 1
+        assert session.scalar(select(func.count()).select_from(IdempotencyRecord)) == 1
+
+
+def test_template_apply_rejects_noop_without_version_change(database: Database) -> None:
+    _create(database)
+    service = SqlAlchemyTeamWorkspaceService(database)
+    preview = service.preview_template(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        expected_version=1,
+        request=TeamWorkspaceTemplatePreviewRequest(
+            organization_template="LEAN_CAMPAIGN", blueprint_locale="es"
+        ),
+        principal_id=PRINCIPAL_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-team-template-preview",
+        authorization_purpose=UPDATE_PURPOSE,
+        correlation_id="team-template-preview-noop",
+    )
+    assert preview.added_role_count == 0 and preview.skipped_role_count == 5
+
+    with pytest.raises(TeamWorkspaceTemplateNoChanges):
+        service.apply_template(
+            TENANT_ID,
+            CAMPAIGN_ID,
+            expected_version=1,
+            request=TeamWorkspaceTemplateApplyRequest(
+                organization_template="LEAN_CAMPAIGN",
+                blueprint_locale="es",
+                preview_digest=preview.preview_digest,
+            ),
+            principal_id=PRINCIPAL_ID,
+            authorization_grant_id=GRANT_ID,
+            approval_receipt_id="approval-team-template",
+            authorization_purpose=UPDATE_PURPOSE,
+            correlation_id="team-template-noop",
+            idempotency_key="team-template-noop",
+        )
+
+    with database.tenant_transaction(TENANT_ID) as session:
+        row = session.scalar(select(TeamWorkspace))
+        assert row is not None and row.version == 1
+
+
+def test_template_preview_rejects_stale_version_without_partial_audit(
+    database: Database,
+) -> None:
+    _create(database)
+    service = SqlAlchemyTeamWorkspaceService(database)
+
+    with pytest.raises(TeamWorkspaceVersionConflict):
+        service.preview_template(
+            TENANT_ID,
+            CAMPAIGN_ID,
+            expected_version=2,
+            request=TeamWorkspaceTemplatePreviewRequest(
+                organization_template="FULL_CAMPAIGN", blueprint_locale="es"
+            ),
+            principal_id=PRINCIPAL_ID,
+            authorization_grant_id=GRANT_ID,
+            approval_receipt_id="approval-team-template-preview",
+            authorization_purpose=UPDATE_PURPOSE,
+            correlation_id="team-template-preview-stale",
+        )
+
+    with database.tenant_transaction(TENANT_ID) as session:
+        row = session.scalar(select(TeamWorkspace))
+        assert row is not None and row.version == 1
+        assert session.scalar(select(func.count()).select_from(AuditEvent)) == 1
+        assert session.scalar(select(func.count()).select_from(OutboxEvent)) == 1

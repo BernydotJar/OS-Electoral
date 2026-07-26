@@ -587,3 +587,14 @@
 - Hosted PostgreSQL/browser evidence proved five initial lean job descriptions, a sixth non-duplicate vacant function, persistence after reload, responsive single-column mobile layout, keyboard disclosures and zero axe violations.
 - PostgreSQL 18 RLS, backup/restore, constrained Compose stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and runtime visual review all concluded `SUCCESS`.
 - C3-TEAM-002 is `CI_GREEN`; production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-26 — C3-TEAM-003 governed template application local checkpoint
+
+- Added an audited, version-bound preview for applying lean or full role blueprints to an existing team map.
+- Added bilingual canonical deduplication plus normalized exact title/area fallback for historical role cards.
+- Bound human confirmation to a deterministic SHA-256 digest and deterministic proposed role IDs.
+- Added idempotent append-only application that preserves every existing role and fails closed on stale version, digest drift or no-op templates.
+- Added a server-rendered live workflow with additions, preserved matches, impact counts and a separate explicit confirmation; manual role creation remains independent.
+- Passed 724 Python tests, 10 controlled skips, 90.37% coverage, Ruff, strict mypy, 97 frontend tests, production build and zero-vulnerability audit.
+- The hosted browser journey now proves lean 5 → full 10 → manual 11 with mobile preview, persistence, ES/EN and zero axe violations; local nested Docker remains blocked by `lchown /var/empty`.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

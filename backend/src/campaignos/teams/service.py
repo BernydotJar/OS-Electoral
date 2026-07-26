@@ -38,13 +38,19 @@ from campaignos.teams.contracts import (
     TeamWorkspaceCreateEvidence,
     TeamWorkspaceProjection,
     TeamWorkspaceReadEvidence,
+    TeamWorkspaceTemplateApplyEvidence,
+    TeamWorkspaceTemplateApplyRequest,
+    TeamWorkspaceTemplatePreview,
+    TeamWorkspaceTemplatePreviewRequest,
     TeamWorkspaceUpdate,
     TeamWorkspaceUpdateEvidence,
     assess_team_workspace,
 )
+from campaignos.teams.template_application import build_team_template_preview
 
 CREATE_OPERATION = "team_workspace.create"
 UPDATE_OPERATION = "team_workspace.update"
+TEMPLATE_APPLY_OPERATION = "team_workspace.template_apply"
 
 
 class TeamWorkspaceNotFound(LookupError):
@@ -69,6 +75,14 @@ class TeamWorkspaceIdempotencyConflict(RuntimeError):
 
 class TeamWorkspaceEvidenceConflict(RuntimeError):
     """The proposed team document violates an organizational invariant."""
+
+
+class TeamWorkspaceTemplatePreviewConflict(RuntimeError):
+    """The confirmed template preview no longer matches the workspace."""
+
+
+class TeamWorkspaceTemplateNoChanges(RuntimeError):
+    """The selected template has no append-only roles left to add."""
 
 
 class TeamWorkspaceUnavailable(RuntimeError):
@@ -102,6 +116,35 @@ class TeamWorkspaceService(Protocol):
         correlation_id: str,
     ) -> TeamWorkspaceReadEvidence: ...
 
+    def preview_template(
+        self,
+        tenant_id: UUID,
+        campaign_id: UUID,
+        *,
+        expected_version: int,
+        request: TeamWorkspaceTemplatePreviewRequest,
+        principal_id: UUID,
+        authorization_grant_id: UUID,
+        approval_receipt_id: str,
+        authorization_purpose: str,
+        correlation_id: str,
+    ) -> TeamWorkspaceTemplatePreview: ...
+
+    def apply_template(
+        self,
+        tenant_id: UUID,
+        campaign_id: UUID,
+        *,
+        expected_version: int,
+        request: TeamWorkspaceTemplateApplyRequest,
+        principal_id: UUID,
+        authorization_grant_id: UUID,
+        approval_receipt_id: str,
+        authorization_purpose: str,
+        correlation_id: str,
+        idempotency_key: str,
+    ) -> TeamWorkspaceTemplateApplyEvidence: ...
+
     def update(
         self,
         tenant_id: UUID,
@@ -128,6 +171,18 @@ class UnavailableTeamWorkspaceService:
     def get(
         self, tenant_id: UUID, campaign_id: UUID, **kwargs: object
     ) -> TeamWorkspaceReadEvidence:
+        del tenant_id, campaign_id, kwargs
+        raise TeamWorkspaceUnavailable("Team workspace is unavailable")
+
+    def preview_template(
+        self, tenant_id: UUID, campaign_id: UUID, **kwargs: object
+    ) -> TeamWorkspaceTemplatePreview:
+        del tenant_id, campaign_id, kwargs
+        raise TeamWorkspaceUnavailable("Team workspace is unavailable")
+
+    def apply_template(
+        self, tenant_id: UUID, campaign_id: UUID, **kwargs: object
+    ) -> TeamWorkspaceTemplateApplyEvidence:
         del tenant_id, campaign_id, kwargs
         raise TeamWorkspaceUnavailable("Team workspace is unavailable")
 
@@ -532,6 +587,243 @@ class SqlAlchemyTeamWorkspaceService:
             raise
         except (
             AuditScopeUnavailable,
+            SQLAlchemyError,
+            TeamWorkspaceContractError,
+            ValidationError,
+            ValueError,
+        ) as exc:
+            raise TeamWorkspaceUnavailable("Team workspace is unavailable") from exc
+
+    def preview_template(
+        self,
+        tenant_id: UUID,
+        campaign_id: UUID,
+        *,
+        expected_version: int,
+        request: TeamWorkspaceTemplatePreviewRequest,
+        principal_id: UUID,
+        authorization_grant_id: UUID,
+        approval_receipt_id: str,
+        authorization_purpose: str,
+        correlation_id: str,
+    ) -> TeamWorkspaceTemplatePreview:
+        try:
+            with self.database.tenant_transaction(tenant_id) as session:
+                audit_lock = lock_tenant_audit_stream(session, tenant_id)
+                campaign = _campaign(session, tenant_id, campaign_id)
+                row = session.scalar(
+                    select(TeamWorkspace).where(
+                        TeamWorkspace.tenant_id == tenant_id,
+                        TeamWorkspace.campaign_id == campaign_id,
+                    )
+                )
+                if row is None:
+                    raise TeamWorkspaceNotFound("Team workspace was not found")
+                if row.version != expected_version:
+                    raise TeamWorkspaceVersionConflict("Team workspace version is stale")
+                preview = build_team_template_preview(_projection(row, campaign), request)
+                audit = append_audit_event(
+                    session,
+                    audit_lock=audit_lock,
+                    campaign_id=campaign_id,
+                    workspace_id=None,
+                    principal_id=principal_id,
+                    event_type="team_workspace.template_previewed",
+                    resource_type="team_workspace",
+                    resource_id=str(row.id),
+                    payload={
+                        "workspace_version": row.version,
+                        "organization_template": request.organization_template,
+                        "blueprint_locale": request.blueprint_locale,
+                        "blueprint_version": preview.blueprint_version,
+                        "preview_digest": preview.preview_digest,
+                        "added_role_count": preview.added_role_count,
+                        "skipped_role_count": preview.skipped_role_count,
+                        "authorization_grant_id": str(authorization_grant_id),
+                        "approval_receipt_id": approval_receipt_id,
+                        "authorization_purpose": authorization_purpose,
+                        "correlation_id": correlation_id,
+                        "authority_effect": "NONE",
+                        "external_effects": "NONE",
+                    },
+                )
+                session.flush()
+                return preview.model_copy(update={"audit_event_id": audit.event_id})
+        except (TeamWorkspaceNotFound, TeamWorkspaceVersionConflict):
+            raise
+        except (
+            SQLAlchemyError,
+            TeamWorkspaceContractError,
+            ValidationError,
+            ValueError,
+        ) as exc:
+            raise TeamWorkspaceUnavailable("Team workspace is unavailable") from exc
+
+    def apply_template(
+        self,
+        tenant_id: UUID,
+        campaign_id: UUID,
+        *,
+        expected_version: int,
+        request: TeamWorkspaceTemplateApplyRequest,
+        principal_id: UUID,
+        authorization_grant_id: UUID,
+        approval_receipt_id: str,
+        authorization_purpose: str,
+        correlation_id: str,
+        idempotency_key: str,
+    ) -> TeamWorkspaceTemplateApplyEvidence:
+        digest = canonical_hash(
+            {
+                "tenant_id": str(tenant_id),
+                "campaign_id": str(campaign_id),
+                "expected_version": expected_version,
+                "request": request.model_dump(mode="json"),
+                "principal_id": str(principal_id),
+                "authorization_grant_id": str(authorization_grant_id),
+                "approval_receipt_id": approval_receipt_id,
+                "authorization_purpose": authorization_purpose,
+            }
+        )
+        try:
+            with self.database.tenant_transaction(tenant_id) as session:
+                lock_idempotency_key(
+                    session,
+                    tenant_id=tenant_id,
+                    operation=TEMPLATE_APPLY_OPERATION,
+                    idempotency_key=idempotency_key,
+                )
+                replay = _replay(
+                    session,
+                    tenant_id=tenant_id,
+                    operation=TEMPLATE_APPLY_OPERATION,
+                    idempotency_key=idempotency_key,
+                    digest=digest,
+                    evidence_type=TeamWorkspaceTemplateApplyEvidence,
+                )
+                if replay is not None:
+                    return replay
+                audit_lock = lock_tenant_audit_stream(session, tenant_id)
+                operation_at = audit_lock.acquired_at
+                campaign = _campaign(session, tenant_id, campaign_id)
+                row = session.scalar(
+                    select(TeamWorkspace)
+                    .where(
+                        TeamWorkspace.tenant_id == tenant_id,
+                        TeamWorkspace.campaign_id == campaign_id,
+                    )
+                    .with_for_update()
+                )
+                if row is None:
+                    raise TeamWorkspaceNotFound("Team workspace was not found")
+                if row.version != expected_version:
+                    raise TeamWorkspaceVersionConflict("Team workspace version is stale")
+                preview_request = TeamWorkspaceTemplatePreviewRequest(
+                    organization_template=request.organization_template,
+                    blueprint_locale=request.blueprint_locale,
+                )
+                preview = build_team_template_preview(_projection(row, campaign), preview_request)
+                if preview.preview_digest != request.preview_digest:
+                    raise TeamWorkspaceTemplatePreviewConflict(
+                        "Template preview digest does not match current workspace"
+                    )
+                if not preview.additions:
+                    raise TeamWorkspaceTemplateNoChanges("Template has no new roles to add")
+                existing_roles = list(row.roles or [])
+                existing_roles.extend(role.model_dump(mode="json") for role in preview.additions)
+                if len(existing_roles) > 100:
+                    raise TeamWorkspaceEvidenceConflict("Team role limit would be exceeded")
+                row.organization_template = request.organization_template
+                row.roles = existing_roles
+                row.version += 1
+                row.updated_at = operation_at
+                session.flush()
+                try:
+                    projection = _projection(row, campaign)
+                except TeamWorkspaceContractError as exc:
+                    raise TeamWorkspaceEvidenceConflict(
+                        "Team document conflicts with organizational invariants"
+                    ) from exc
+                audit = append_audit_event(
+                    session,
+                    audit_lock=audit_lock,
+                    campaign_id=campaign_id,
+                    workspace_id=None,
+                    principal_id=principal_id,
+                    event_type="team_workspace.template_applied",
+                    resource_type="team_workspace",
+                    resource_id=str(row.id),
+                    payload={
+                        "workspace_version": row.version,
+                        "organization_template": request.organization_template,
+                        "blueprint_locale": request.blueprint_locale,
+                        "blueprint_version": preview.blueprint_version,
+                        "preview_digest": preview.preview_digest,
+                        "added_role_count": preview.added_role_count,
+                        "skipped_role_count": preview.skipped_role_count,
+                        "authorization_grant_id": str(authorization_grant_id),
+                        "approval_receipt_id": approval_receipt_id,
+                        "authorization_purpose": authorization_purpose,
+                        "correlation_id": correlation_id,
+                        "authority_effect": "NONE",
+                        "external_effects": "NONE",
+                    },
+                )
+                outbox_id = uuid4()
+                session.add(
+                    OutboxEvent(
+                        id=outbox_id,
+                        tenant_id=tenant_id,
+                        campaign_id=campaign_id,
+                        topic="team_workspace.template_applied",
+                        payload={
+                            "team_workspace_id": str(row.id),
+                            "audit_event_id": str(audit.event_id),
+                            "version": row.version,
+                            "preview_digest": preview.preview_digest,
+                            "added_role_count": preview.added_role_count,
+                            "skipped_role_count": preview.skipped_role_count,
+                            "authority_effect": "NONE",
+                            "external_effects": "NONE",
+                        },
+                        status="PENDING",
+                        attempts=0,
+                        available_at=operation_at,
+                        created_at=operation_at,
+                    )
+                )
+                evidence = TeamWorkspaceTemplateApplyEvidence(
+                    workspace=projection,
+                    audit_event_id=audit.event_id,
+                    outbox_event_id=outbox_id,
+                    preview_digest=preview.preview_digest,
+                    added_role_count=preview.added_role_count,
+                    skipped_role_count=preview.skipped_role_count,
+                )
+                _store_replay(
+                    session,
+                    tenant_id=tenant_id,
+                    principal_id=principal_id,
+                    operation=TEMPLATE_APPLY_OPERATION,
+                    idempotency_key=idempotency_key,
+                    request_digest=digest,
+                    response=evidence,
+                    created_at=operation_at,
+                )
+                session.flush()
+            return evidence
+        except (
+            TeamWorkspaceEvidenceConflict,
+            TeamWorkspaceIdempotencyConflict,
+            TeamWorkspaceNotFound,
+            TeamWorkspaceTemplateNoChanges,
+            TeamWorkspaceTemplatePreviewConflict,
+            TeamWorkspaceVersionConflict,
+        ):
+            raise
+        except (
+            AuditScopeUnavailable,
+            IntegrityError,
             SQLAlchemyError,
             TeamWorkspaceContractError,
             ValidationError,
