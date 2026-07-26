@@ -330,6 +330,67 @@ async def review() -> dict[str, object]:
             "team role editor missing after map creation",
         )
 
+        await page.get_by_label("Modelo organizativo").select_option("FULL_CAMPAIGN")
+        await page.get_by_role("button", name="Previsualizar cambios").click()
+        await page.wait_for_url("**team_template=FULL_CAMPAIGN**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.locator(".team-template-role-card").count() == 5,
+            "full template preview did not propose exactly five missing functions",
+        )
+        require(
+            await page.locator(".team-template-skipped-list li").count() == 3,
+            "full template preview did not preserve the three equivalent functions",
+        )
+        for proposed_title in (
+            "Estrategia digital",
+            "Contenido político",
+            "Medios pagados y distribución",
+            "Narrativa, discurso y formación de medios",
+            "Seguimiento, riesgos y aprendizaje",
+        ):
+            require(
+                await page.get_by_role("heading", name=proposed_title, exact=True).count() == 1,
+                f"template preview missing proposed job description: {proposed_title}",
+            )
+        require(
+            await page.get_by_text(
+                "La misma función ya existe en otra variante de idioma", exact=True
+            ).count()
+            == 3,
+            "bilingual canonical deduplication is not explained",
+        )
+        await page.set_viewport_size({"width": 390, "height": 844})
+        preview_columns = await page.locator(".team-template-role-grid").evaluate(
+            "element => getComputedStyle(element).gridTemplateColumns.split(' ').length"
+        )
+        require(
+            preview_columns == 1,
+            f"mobile template preview is not a single column: {preview_columns}",
+        )
+        await assert_no_overflow(page, "team-template-preview-mobile")
+        await page.set_viewport_size({"width": 1440, "height": 1000})
+        await assert_accessible(page, "team-template-preview-desktop")
+
+        await page.get_by_role("button", name="Aplicar funciones nuevas").click()
+        await page.wait_for_url("**notice=team_template_applied**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                (
+                    "Plantilla aplicada: se conservaron las funciones existentes "
+                    "y se agregaron sólo las ausentes."
+                ),
+                exact=True,
+            ).count()
+            == 1,
+            "template application success notice missing",
+        )
+        require(
+            await page.locator(".team-role-grid article").count() == 10,
+            "confirmed full template did not persist ten total functions",
+        )
+
         await page.get_by_label("Nombre de la función").fill("Coordinación de voluntariado")
         await page.get_by_label("Área").fill("Logística y apoyo")
         await page.get_by_label("Resultado que debe producir").fill(
@@ -450,8 +511,10 @@ async def review() -> dict[str, object]:
     result: dict[str, object] = {
         "status": "PASS",
         "journey": "campaign_foundation_candidate_evidence_and_team_map",
-        "role_blueprints": "PASS_LEAN_5_PLUS_CUSTOM_ROLE",
+        "role_blueprints": "PASS_LEAN_5_TO_FULL_10_PLUS_CUSTOM_ROLE",
         "keyboard_progressive_disclosure": "PASS",
+        "template_application": "PASS_PREVIEW_DEDUP_CONFIRM",
+        "mobile_template_preview": "PASS_SINGLE_COLUMN",
         "mobile_role_layout": "PASS_SINGLE_COLUMN",
         "persistence_after_reload": "PASS",
         "exact_authorization_controls": "PASS",

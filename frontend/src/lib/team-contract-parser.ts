@@ -11,11 +11,15 @@ import type {
   TeamWorkspaceCreateEvidence,
   TeamWorkspaceProjection,
   TeamWorkspaceReadEvidence,
+  TeamWorkspaceTemplateApplyEvidence,
+  TeamWorkspaceTemplatePreview,
+  TeamWorkspaceTemplateSkip,
   TeamWorkspaceUpdateEvidence,
 } from "@/lib/contracts";
 
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const DIGEST_PATTERN = /^[0-9a-f]{64}$/;
 const CHECKS = [
   "organization_template",
   "role_cards",
@@ -679,7 +683,6 @@ export function parseTeamWorkspaceReadEvidence(
   };
 }
 
-
 function parseTeamWorkspaceMutationEvidence(
   value: unknown,
   label: string,
@@ -709,4 +712,136 @@ export function parseTeamWorkspaceUpdateEvidence(
     value,
     "team workspace update evidence",
   );
+}
+
+function digest(value: unknown, label: string): string {
+  const candidate = text(value, label);
+  if (!DIGEST_PATTERN.test(candidate))
+    throw new TeamContractValidationError(`${label} must be a SHA-256 digest`);
+  return candidate;
+}
+
+function parseTemplateSkip(
+  value: unknown,
+  label: string,
+): TeamWorkspaceTemplateSkip {
+  const source = record(value, label);
+  exactKeys(
+    source,
+    ["blueprint_key", "title", "area", "matched_role_id", "reason"],
+    label,
+  );
+  return {
+    blueprint_key: text(source.blueprint_key, `${label}.blueprint_key`),
+    title: text(source.title, `${label}.title`),
+    area: text(source.area, `${label}.area`),
+    matched_role_id: uuid(source.matched_role_id, `${label}.matched_role_id`),
+    reason: literal(
+      source.reason,
+      ["CANONICAL_BLUEPRINT_MATCH", "EXACT_TITLE_AREA_MATCH"] as const,
+      `${label}.reason`,
+    ),
+  };
+}
+
+export function parseTeamWorkspaceTemplatePreview(
+  value: unknown,
+): TeamWorkspaceTemplatePreview {
+  const label = "team workspace template preview";
+  const source = record(value, label);
+  exactKeys(
+    source,
+    [
+      "audit_event_id",
+      "workspace_id",
+      "tenant_id",
+      "campaign_id",
+      "workspace_version",
+      "organization_template",
+      "blueprint_locale",
+      "blueprint_version",
+      "additions",
+      "skipped",
+      "preview_digest",
+      "authority_effect",
+      "external_effects",
+    ],
+    label,
+  );
+  return {
+    audit_event_id: uuid(source.audit_event_id, `${label}.audit_event_id`),
+    workspace_id: uuid(source.workspace_id, `${label}.workspace_id`),
+    tenant_id: uuid(source.tenant_id, `${label}.tenant_id`),
+    campaign_id: uuid(source.campaign_id, `${label}.campaign_id`),
+    workspace_version: integer(
+      source.workspace_version,
+      `${label}.workspace_version`,
+      1,
+    ),
+    organization_template: literal(
+      source.organization_template,
+      ["LEAN_CAMPAIGN", "FULL_CAMPAIGN"] as const,
+      `${label}.organization_template`,
+    ),
+    blueprint_locale: literal(
+      source.blueprint_locale,
+      ["es", "en"] as const,
+      `${label}.blueprint_locale`,
+    ),
+    blueprint_version: text(
+      source.blueprint_version,
+      `${label}.blueprint_version`,
+    ),
+    additions: array(source.additions, `${label}.additions`).map(
+      (item, index) => parseRole(item, `${label}.additions[${index}]`),
+    ),
+    skipped: array(source.skipped, `${label}.skipped`).map((item, index) =>
+      parseTemplateSkip(item, `${label}.skipped[${index}]`),
+    ),
+    preview_digest: digest(source.preview_digest, `${label}.preview_digest`),
+    authority_effect: literal(
+      source.authority_effect,
+      ["NONE"] as const,
+      `${label}.authority_effect`,
+    ),
+    external_effects: literal(
+      source.external_effects,
+      ["NONE"] as const,
+      `${label}.external_effects`,
+    ),
+  };
+}
+
+export function parseTeamWorkspaceTemplateApplyEvidence(
+  value: unknown,
+): TeamWorkspaceTemplateApplyEvidence {
+  const label = "team workspace template apply evidence";
+  const source = record(value, label);
+  exactKeys(
+    source,
+    [
+      "workspace",
+      "audit_event_id",
+      "outbox_event_id",
+      "preview_digest",
+      "added_role_count",
+      "skipped_role_count",
+    ],
+    label,
+  );
+  return {
+    workspace: parseProjection(source.workspace),
+    audit_event_id: uuid(source.audit_event_id, `${label}.audit_event_id`),
+    outbox_event_id: uuid(source.outbox_event_id, `${label}.outbox_event_id`),
+    preview_digest: digest(source.preview_digest, `${label}.preview_digest`),
+    added_role_count: integer(
+      source.added_role_count,
+      `${label}.added_role_count`,
+      1,
+    ),
+    skipped_role_count: integer(
+      source.skipped_role_count,
+      `${label}.skipped_role_count`,
+    ),
+  };
 }

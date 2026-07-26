@@ -471,17 +471,58 @@ def _spanish_full() -> tuple[RoleBlueprint, ...]:
     )
 
 
+_LEAN_KEYS = (
+    "campaign_direction",
+    "research_evidence",
+    "territory_organization",
+    "communications_narrative",
+    "administration_legal_finance",
+)
+_FULL_KEYS = (
+    "campaign_direction",
+    "research_evidence",
+    "digital_strategy",
+    "territory_organization",
+    "political_content",
+    "paid_media_distribution",
+    "storytelling_media_training",
+    "tracking_risks_learning",
+)
+
+
+def blueprint_entries(
+    organization_template: OrganizationTemplate,
+    locale: BlueprintLocale,
+) -> tuple[tuple[str, RoleBlueprint], ...]:
+    if organization_template == "CUSTOM":
+        return ()
+    blueprints = (
+        (_ES_LEAN if locale == "es" else _EN_LEAN)
+        if organization_template == "LEAN_CAMPAIGN"
+        else (_spanish_full() if locale == "es" else _EN_FULL)
+    )
+    keys = _LEAN_KEYS if organization_template == "LEAN_CAMPAIGN" else _FULL_KEYS
+    return tuple(zip(keys, blueprints, strict=True))
+
+
+def canonical_blueprint_key(title: str, area: str) -> str | None:
+    identity = (" ".join(title.split()).casefold(), " ".join(area.split()).casefold())
+    for template in ("LEAN_CAMPAIGN", "FULL_CAMPAIGN"):
+        for locale in ("es", "en"):
+            for key, item in blueprint_entries(template, locale):
+                candidate = (item.title.casefold(), item.area.casefold())
+                if candidate == identity:
+                    return key
+    return None
+
+
 def build_role_blueprints(
     organization_template: OrganizationTemplate,
     locale: BlueprintLocale,
 ) -> tuple[TeamRoleCard, ...] | None:
     if organization_template == "CUSTOM":
         return None
-    blueprints = (
-        (_ES_LEAN if locale == "es" else _EN_LEAN)
-        if organization_template == "LEAN_CAMPAIGN"
-        else (_spanish_full() if locale == "es" else _EN_FULL)
-    )
+    entries = blueprint_entries(organization_template, locale)
     return tuple(
         TeamRoleCard(
             id=uuid4(),
@@ -496,5 +537,5 @@ def build_role_blueprints(
             onboarding_status="NOT_STARTED",
             vacancy_plan=item.vacancy_plan,
         )
-        for item in blueprints
+        for _, item in entries
     )

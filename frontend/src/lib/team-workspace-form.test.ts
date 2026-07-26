@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   TeamWorkspaceFormError,
   parseTeamRoleForm,
+  parseTeamTemplateApplyForm,
   parseTeamWorkspaceStartForm,
 } from "@/lib/team-workspace-form";
 
@@ -83,6 +84,39 @@ describe("team workspace forms", () => {
     form.set("vacancy_plan", "Cubrir la vacante.");
 
     expect(() => parseTeamRoleForm(form, ROLE_ID)).toThrow(
+      TeamWorkspaceFormError,
+    );
+  });
+
+  it("parses one version-bound human template confirmation", () => {
+    const form = new FormData();
+    form.set("locale", "en");
+    form.set("version", "7");
+    form.set("idempotency_key", "team-template-1234");
+    form.set("organization_template", "FULL_CAMPAIGN");
+    form.set("preview_digest", "a".repeat(64));
+
+    expect(parseTeamTemplateApplyForm(form)).toEqual({
+      locale: "en",
+      expectedVersion: 7,
+      idempotencyKey: "team-template-1234",
+      apply: {
+        organization_template: "FULL_CAMPAIGN",
+        blueprint_locale: "en",
+        preview_digest: "a".repeat(64),
+      },
+    });
+  });
+
+  it("rejects custom templates and malformed preview digests", () => {
+    const form = new FormData();
+    form.set("locale", "es");
+    form.set("version", "1");
+    form.set("idempotency_key", "team-template-1234");
+    form.set("organization_template", "CUSTOM");
+    form.set("preview_digest", "not-a-digest");
+
+    expect(() => parseTeamTemplateApplyForm(form)).toThrow(
       TeamWorkspaceFormError,
     );
   });

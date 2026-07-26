@@ -864,6 +864,8 @@ export function CampaignShell({
               demo={model.demo}
               availability={model.teamWorkspaceAvailability}
               workspace={teamWorkspace}
+              templatePreview={model.teamTemplatePreview}
+              templatePreviewUnavailable={model.teamTemplatePreviewUnavailable}
               capabilities={teamCapabilities}
               prerequisiteReady={teamPrerequisiteReady}
             />
@@ -972,7 +974,10 @@ export function CampaignShell({
                             <p>{role.purpose}</p>
                             <div className="team-role-responsibilities">
                               <strong>
-                                {dictionary.teamWorkspace.roleResponsibilitiesLabel}
+                                {
+                                  dictionary.teamWorkspace
+                                    .roleResponsibilitiesLabel
+                                }
                               </strong>
                               <ul>
                                 {role.responsibilities.map((responsibility) => (
@@ -992,13 +997,19 @@ export function CampaignShell({
                               <div>
                                 <dt>{dictionary.teamWorkspace.status}</dt>
                                 <dd>
-                                  {dictionary.teamWorkspace.roleStatusLabels[role.status]}
+                                  {
+                                    dictionary.teamWorkspace.roleStatusLabels[
+                                      role.status
+                                    ]
+                                  }
                                 </dd>
                               </div>
                             </dl>
                             {role.vacancy_plan ? (
                               <div className="team-vacancy-plan">
-                                <strong>{dictionary.teamWorkspace.vacancyPlanLabel}</strong>
+                                <strong>
+                                  {dictionary.teamWorkspace.vacancyPlanLabel}
+                                </strong>
                                 <p>{role.vacancy_plan}</p>
                               </div>
                             ) : null}
@@ -1207,7 +1218,9 @@ export function CampaignShell({
             </article>
 
             <article className="panel operations-panel">
-              <p className="eyebrow">{dictionary.dashboard.operationsEyebrow}</p>
+              <p className="eyebrow">
+                {dictionary.dashboard.operationsEyebrow}
+              </p>
               <h2>{dictionary.dashboard.operationsTitle}</h2>
               <p>{dictionary.dashboard.operationsBody}</p>
               <ol className="sequence-list">
@@ -1232,12 +1245,16 @@ export function CampaignShell({
             aria-labelledby="limitations-title"
           >
             <div>
-              <p className="eyebrow">{dictionary.dashboard.limitationsEyebrow}</p>
+              <p className="eyebrow">
+                {dictionary.dashboard.limitationsEyebrow}
+              </p>
               <h2 id="limitations-title">{dictionary.dashboard.limitations}</h2>
             </div>
             <ul>
               {limitationCodes.map((code) => (
-                <li key={code}>{dictionary.dashboard.limitationLabels[code]}</li>
+                <li key={code}>
+                  {dictionary.dashboard.limitationLabels[code]}
+                </li>
               ))}
             </ul>
           </section>

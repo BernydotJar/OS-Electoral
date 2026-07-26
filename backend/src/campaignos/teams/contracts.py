@@ -375,6 +375,68 @@ class TeamWorkspaceUpdateEvidence(BaseModel):
     outbox_event_id: UUID
 
 
+BlueprintTemplate = Literal["LEAN_CAMPAIGN", "FULL_CAMPAIGN"]
+BlueprintLocale = Literal["es", "en"]
+
+
+class TeamWorkspaceTemplatePreviewRequest(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    organization_template: BlueprintTemplate
+    blueprint_locale: BlueprintLocale = "es"
+
+
+class TeamWorkspaceTemplateApplyRequest(TeamWorkspaceTemplatePreviewRequest):
+    preview_digest: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class TeamWorkspaceTemplateSkip(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    blueprint_key: str = Field(min_length=1, max_length=100)
+    title: str = Field(min_length=1, max_length=160)
+    area: str = Field(min_length=1, max_length=160)
+    matched_role_id: UUID
+    reason: Literal["CANONICAL_BLUEPRINT_MATCH", "EXACT_TITLE_AREA_MATCH"]
+
+
+class TeamWorkspaceTemplatePreview(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    audit_event_id: UUID | None = None
+    workspace_id: UUID
+    tenant_id: UUID
+    campaign_id: UUID
+    workspace_version: int = Field(ge=1)
+    organization_template: BlueprintTemplate
+    blueprint_locale: BlueprintLocale
+    blueprint_version: str = Field(min_length=1, max_length=64)
+    additions: tuple[TeamRoleCard, ...] = Field(max_length=8)
+    skipped: tuple[TeamWorkspaceTemplateSkip, ...] = Field(max_length=8)
+    preview_digest: str = Field(pattern=r"^[0-9a-f]{64}$")
+    authority_effect: Literal["NONE"] = "NONE"
+    external_effects: Literal["NONE"] = "NONE"
+
+    @property
+    def added_role_count(self) -> int:
+        return len(self.additions)
+
+    @property
+    def skipped_role_count(self) -> int:
+        return len(self.skipped)
+
+
+class TeamWorkspaceTemplateApplyEvidence(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    workspace: TeamWorkspaceProjection
+    audit_event_id: UUID
+    outbox_event_id: UUID
+    preview_digest: str = Field(pattern=r"^[0-9a-f]{64}$")
+    added_role_count: int = Field(ge=1, le=8)
+    skipped_role_count: int = Field(ge=0, le=8)
+
+
 def _register_ids(value: TeamWorkspaceAssessmentInput) -> set[UUID]:
     ids: set[UUID] = {value.id}
     record_ids: list[UUID] = []

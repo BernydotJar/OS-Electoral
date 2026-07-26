@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-25",
+  "updated_at": "2026-07-26",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -297,6 +297,22 @@
         "Custom remains empty and no generated role creates principal, capacity or authority",
         "Returning rationale is keyboard-operable progressive disclosure",
         "Desktop, mobile, reduced motion, WCAG and hosted PostgreSQL journey pass"
+      ]
+    },
+    {
+      "id": "C3-TEAM-003",
+      "workstream": "WS-08",
+      "title": "Governed preview and append-only application of campaign role templates",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "C3-TEAM-002",
+        "C3-TEAM-001"
+      ],
+      "acceptance": [
+        "Preview is version-bound, bilingual, deterministic and audited",
+        "Apply preserves existing roles and appends only missing vacant functions",
+        "Stale version, digest drift and no-op templates fail closed with rollback",
+        "Responsive live workflow keeps authority and external effects at NONE"
       ]
     }
   ]

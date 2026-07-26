@@ -75,10 +75,11 @@ The team workspace does not:
 
 ## Current implemented write path
 
-The backend supports exact-authorized create, read and update. The live shell now supports two bounded operations:
+The backend supports exact-authorized create, read, update, template preview and template application. The live shell now supports three bounded operations:
 
 1. create a campaign team workspace from a lean, full or custom template;
-2. append a vacant function with area, purpose, responsibilities and a human vacancy plan.
+2. preview and append only missing functions from a lean or full template;
+3. append a vacant function manually with area, purpose, responsibilities and a human vacancy plan.
 
 The UI deliberately creates no principal assignment, weekly capacity, onboarding completion, membership or permission. Personnel invitations, governed identity assignment, RACI, capacity assessment, training, access recommendation review, dedicated approvers and independent human acceptance remain future work.
 ## Role blueprints
@@ -96,3 +97,16 @@ The visible role cards now render the job description, responsibilities and huma
 ## Progressive campaign guidance
 
 Returning users see the active mission and primary action first. The explanatory paragraph is available through the keyboard-operable `Why this matters` / `Por qué importa` disclosure rather than repeating as open onboarding copy on every visit. The additional cinematic atmosphere is CSS-owned, loads no third-party media and is disabled under reduced-motion preference.
+
+## Evolving an existing map safely
+
+`C3-TEAM-003` lets an authorized campaign operator apply a lean or full blueprint after a team map already exists. The workflow is deliberately two-step:
+
+1. preview missing and preserved functions against the current workspace version;
+2. confirm the exact preview digest before any mutation.
+
+The preview is bilingual and canonical: a Spanish role such as `Dirección de campaña` is recognized as the same built-in function as its English variant. Historical cards that exactly match normalized title and area are also preserved. The interface explains both the proposed additions and the functions that will remain untouched.
+
+Application is append-only. It never overwrites an existing role, changes a person, alters RACI, assigns capacity, completes onboarding, creates a membership or grants access. Proposed role IDs and the digest are deterministic for the observed workspace version, while the backend always recalculates the preview under lock before committing.
+
+The live interface keeps this workflow separate from manual function creation. A no-op preview has no confirmation button. On narrow screens the impact summary, proposed job descriptions and preserved-role list reflow to one column without horizontal overflow.

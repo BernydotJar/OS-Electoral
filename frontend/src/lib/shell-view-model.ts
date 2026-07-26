@@ -15,6 +15,8 @@ import type {
   EffectiveMembership,
   GuidedIntakeReadEvidence,
   TeamWorkspaceReadEvidence,
+  TeamWorkspaceTemplatePreview,
+  TeamWorkspaceTemplatePreviewInput,
   StrategyWorkspaceReadEvidence,
   TenantMeResponse,
   WarRoomSnapshotReadEvidence,
@@ -72,6 +74,8 @@ export type ShellViewModel =
       candidateWorkspaceAvailability: CandidateWorkspaceAvailability;
       teamWorkspace: TeamWorkspaceReadEvidence | null;
       teamWorkspaceAvailability: TeamWorkspaceAvailability;
+      teamTemplatePreview: TeamWorkspaceTemplatePreview | null;
+      teamTemplatePreviewUnavailable: boolean;
       campaignRoadmap: CampaignRoadmapReadEvidence | null;
       campaignRoadmapAvailability: CampaignRoadmapAvailability;
       warRoomSnapshot: WarRoomSnapshotReadEvidence | null;
@@ -90,7 +94,11 @@ function validUuid(value: string | undefined): value is string {
   return Boolean(value && UUID_PATTERN.test(value));
 }
 
-export async function loadShellViewModel(): Promise<ShellViewModel> {
+export async function loadShellViewModel(
+  options: Readonly<{
+    teamTemplatePreview?: TeamWorkspaceTemplatePreviewInput | null;
+  }> = {},
+): Promise<ShellViewModel> {
   let config;
   try {
     config = resolveFrontendConfig(process.env);
@@ -122,6 +130,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       candidateWorkspaceAvailability: "AVAILABLE",
       teamWorkspace: demoTeamWorkspace,
       teamWorkspaceAvailability: "AVAILABLE",
+      teamTemplatePreview: null,
+      teamTemplatePreviewUnavailable: false,
       campaignRoadmap: demoCampaignRoadmap,
       campaignRoadmapAvailability: "AVAILABLE",
       warRoomSnapshot: demoWarRoomSnapshot,
@@ -350,6 +360,61 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       }
     }
 
+    const hasTeamWorkspaceUpdateGrant =
+      tenantIdentity.application_memberships.some((membership) =>
+        membership.grants.some(
+          (grant) =>
+            grant.action === "update" &&
+            grant.resource_type === "team_workspace" &&
+            grant.resource_id === campaign.id &&
+            grant.campaign_id === campaign.id &&
+            grant.workspace_id === null &&
+            grant.purpose === "Maintain campaign team workspace",
+        ),
+      );
+    let teamTemplatePreview: TeamWorkspaceTemplatePreview | null = null;
+    let teamTemplatePreviewUnavailable = false;
+    if (
+      teamWorkspace !== null &&
+      options.teamTemplatePreview &&
+      hasTeamWorkspaceUpdateGrant
+    ) {
+      try {
+        teamTemplatePreview = await api.previewTeamWorkspaceTemplate(
+          tenantId,
+          campaign.id,
+          teamWorkspace.workspace.version,
+          options.teamTemplatePreview,
+        );
+        if (
+          !teamTemplatePreview.audit_event_id ||
+          teamTemplatePreview.tenant_id !== tenantId ||
+          teamTemplatePreview.campaign_id !== campaign.id ||
+          teamTemplatePreview.workspace_id !== teamWorkspace.workspace.id ||
+          teamTemplatePreview.workspace_version !==
+            teamWorkspace.workspace.version ||
+          teamTemplatePreview.authority_effect !== "NONE" ||
+          teamTemplatePreview.external_effects !== "NONE"
+        ) {
+          return {
+            kind: "unavailable",
+            code: "TEAM_TEMPLATE_PREVIEW_SCOPE_MISMATCH",
+            correlationId: null,
+            configuration: false,
+          };
+        }
+      } catch (error) {
+        if (
+          error instanceof CampaignOsApiError &&
+          [412, 503].includes(error.status)
+        ) {
+          teamTemplatePreviewUnavailable = true;
+        } else {
+          throw error;
+        }
+      }
+    }
+
     const hasRoadmapGrant = tenantIdentity.application_memberships.some(
       (membership) =>
         membership.grants.some(
@@ -501,6 +566,8 @@ export async function loadShellViewModel(): Promise<ShellViewModel> {
       candidateWorkspaceAvailability,
       teamWorkspace,
       teamWorkspaceAvailability,
+      teamTemplatePreview,
+      teamTemplatePreviewUnavailable,
       campaignRoadmap,
       campaignRoadmapAvailability,
       warRoomSnapshot,

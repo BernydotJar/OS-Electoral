@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-25",
-  "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
-  "current_increment": "C3-TEAM-002",
+  "updated_at": "2026-07-26",
+  "branch": "agent/c3-team-003-template-application-preview",
+  "current_increment": "C3-TEAM-003",
   "iteration_status": "ACTIVE",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "PROGRESSIVE_CINEMATIC_MISSION_CI_GREEN",
-      "next_increment": "C3-TEAM-002"
+      "status": "TEMPLATE_APPLICATION_TESTED_LOCAL",
+      "next_increment": "C3-TEAM-003"
     },
     {
       "id": "WS-07",
@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "ROLE_BLUEPRINTS_CI_GREEN",
-      "next_increment": "C3-TEAM-002"
+      "status": "GOVERNED_TEMPLATE_APPLICATION_TESTED_LOCAL",
+      "next_increment": "C3-TEAM-003"
     },
     {
       "id": "WS-09",
@@ -165,13 +165,13 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 712,
+    "tests_passed": 724,
     "tests_skipped": 10,
-    "coverage_percent": 90.42,
+    "coverage_percent": 90.37,
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_10_SLICES_REVISION_20260721_0011",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
-    "frontend_unit_tests": 88,
+    "frontend_unit_tests": 97,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
@@ -265,7 +265,7 @@
     "compose_current_workspace": "BLOCKED_DOCKER_COMPOSE_V2_UNAVAILABLE_V1_INCOMPATIBLE",
     "terraform_current_workspace": "BLOCKED_TERRAFORM_CLI_UNAVAILABLE_NO_INFRA_CHANGE",
     "supply_chain_current_worktree": "PASS",
-    "frontend_current_worktree": "PASS_88_TESTS_BUILD_ZERO_VULNERABILITIES",
+    "frontend_current_worktree": "PASS_97_TESTS_BUILD_ZERO_VULNERABILITIES",
     "gitleaks_current_worktree": "PASS_8_30_1_VERIFIED_CHECKSUM",
     "observability_pr_ci": "PASS_PR_114_HEAD_BF722EE8E672A9E89A7E74A47465A8E6287602C8_RUN_30041495912",
     "observability_runtime_visual": "PASS_RUN_30041495919",
@@ -317,7 +317,12 @@
     "team_002_compose_stack": "PASS_HOSTED_CI",
     "team_002_postgresql_runtime": "PASS_HOSTED_CI_POSTGRESQL_18_RLS_BACKUP_RESTORE",
     "team_002_pr_ci": "PASS_PR_122_HEAD_7735B533B5EBC43D829D881090798FE1B1605295_RUN_30176654019",
-    "team_002_runtime_visual": "PASS_RUN_30176653983"
+    "team_002_runtime_visual": "PASS_RUN_30176653983",
+    "team_003_focused_tests": "PASS_49_PREVIEW_APPLY_API_MODEL",
+    "team_003_bilingual_dedup": "PASS_LEAN_ES_TO_FULL_EN_5_ADD_3_PRESERVE",
+    "team_003_authority_boundary": "PASS_AUDITED_PREVIEW_APPEND_ONLY_NO_IDENTITY_CAPACITY_PERMISSION",
+    "team_003_functional_browser": "ENCODED_LEAN_5_FULL_10_CUSTOM_11_HOSTED_CI_REQUIRED",
+    "team_003_mobile_preview": "PASS_COMPONENT_CSS_SINGLE_COLUMN_HOSTED_BROWSER_PENDING"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -357,16 +362,14 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-TEAM-002",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
-    "base": "agent/c3-front-006-cinematic-adaptive-journey@427033c69cf8220821713a13a698232c3e033000",
-    "validated_implementation_head": "7735b533b5ebc43d829d881090798fe1b1605295",
-    "draft_pr": 122,
+    "id": "C3-TEAM-003",
+    "state": "TESTED_LOCAL",
+    "branch": "agent/c3-team-003-template-application-preview",
+    "base": "agent/c3-team-002-role-blueprints-cinematic-hero@e0ca30589f610361254e5348e9b9fd3c77e42b57",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "HUMAN_PRODUCT_REVIEW"
+    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
