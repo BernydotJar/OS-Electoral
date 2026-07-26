@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "TEMPLATE_APPLICATION_TESTED_LOCAL",
-      "next_increment": "C3-TEAM-003"
+      "status": "TEMPLATE_APPLICATION_CI_GREEN",
+      "next_increment": "HUMAN_PRODUCT_REVIEW"
     },
     {
       "id": "WS-07",
@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "GOVERNED_TEMPLATE_APPLICATION_TESTED_LOCAL",
-      "next_increment": "C3-TEAM-003"
+      "status": "GOVERNED_TEMPLATE_APPLICATION_CI_GREEN",
+      "next_increment": "HUMAN_PRODUCT_REVIEW"
     },
     {
       "id": "WS-09",
@@ -111,14 +111,14 @@
   ],
   "ready_tasks": [],
   "published_unreviewed_increment": {
-    "id": "C3-TEAM-002",
+    "id": "C3-TEAM-003",
     "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
-    "base": "agent/c3-front-006-cinematic-adaptive-journey",
-    "validated_implementation_head": "7735b533b5ebc43d829d881090798fe1b1605295",
-    "draft_pr": 122,
-    "ci_run_id": 30176654019,
-    "visual_run_id": 30176653983,
+    "branch": "agent/c3-team-003-template-application-preview",
+    "base": "agent/c3-team-002-role-blueprints-cinematic-hero",
+    "validated_implementation_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
+    "draft_pr": 123,
+    "ci_run_id": 30225102075,
+    "visual_run_id": 30225102063,
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE"
   },
@@ -321,8 +321,10 @@
     "team_003_focused_tests": "PASS_49_PREVIEW_APPLY_API_MODEL",
     "team_003_bilingual_dedup": "PASS_LEAN_ES_TO_FULL_EN_5_ADD_3_PRESERVE",
     "team_003_authority_boundary": "PASS_AUDITED_PREVIEW_APPEND_ONLY_NO_IDENTITY_CAPACITY_PERMISSION",
-    "team_003_functional_browser": "ENCODED_LEAN_5_FULL_10_CUSTOM_11_HOSTED_CI_REQUIRED",
-    "team_003_mobile_preview": "PASS_COMPONENT_CSS_SINGLE_COLUMN_HOSTED_BROWSER_PENDING"
+    "team_003_functional_browser": "PASS_HOSTED_LEAN_5_FULL_10_CUSTOM_11",
+    "team_003_mobile_preview": "PASS_HOSTED_SINGLE_COLUMN_NO_OVERFLOW",
+    "team_003_exact_head_ci": "PASS_RUN_30225102075",
+    "team_003_visual_review": "PASS_RUN_30225102063"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -363,13 +365,15 @@
   },
   "active_local_increment": {
     "id": "C3-TEAM-003",
-    "state": "TESTED_LOCAL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-team-003-template-application-preview",
     "base": "agent/c3-team-002-role-blueprints-cinematic-hero@e0ca30589f610361254e5348e9b9fd3c77e42b57",
+    "validated_implementation_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
+    "draft_pr": 123,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
+    "next_action": "HUMAN_PRODUCT_REVIEW"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -382,27 +386,27 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-TEAM-002",
-    "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
-    "validated_implementation_head": "7735b533b5ebc43d829d881090798fe1b1605295",
-    "draft_pr": 122,
+    "id": "C3-TEAM-003",
+    "branch": "agent/c3-team-003-template-application-preview",
+    "validated_implementation_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
+    "draft_pr": 123,
     "status": "CI_GREEN",
-    "ci_run_id": 30176654019,
-    "visual_run_id": 30176653983,
-    "quality_job_id": 89726416944,
-    "frontend_job_id": 89726416949,
-    "visual_job_id": 89726416707,
-    "recovery_job_id": 89726416935,
-    "recovery_artifact_id": 8624400644,
-    "recovery_artifact_digest": "sha256:7e2090cd09ad992490450efd105f1515fabbbd2363518231992c7f94bde97934",
-    "supply_chain_artifact_id": 8624398004,
-    "supply_chain_artifact_digest": "sha256:cdadd98387b05ae802ba896fccdc9751c9d4d2fc67022e11e19147a28bd14890",
-    "frontend_artifact_id": 8624422291,
-    "frontend_artifact_digest": "sha256:2cd287e74b1ccad095edccf264faf194202629c0260fff56ab09190637d86b23",
-    "visual_artifact_id": 8624406463,
-    "visual_artifact_digest": "sha256:cb070dca535e4e2eac18f468b22c432c41b04172eec16964e7a8b6e59b64d967",
-    "gitleaks_artifact_id": 8624397523,
-    "gitleaks_artifact_digest": "sha256:795df7efb042b02bc723384929c62de2c8fd4a7d1eea99a4d26acc9c4d1c7f89",
+    "ci_run_id": 30225102075,
+    "visual_run_id": 30225102063,
+    "quality_job_id": 89853902939,
+    "frontend_job_id": 89853902928,
+    "visual_job_id": 89853902732,
+    "recovery_job_id": 89853902951,
+    "recovery_artifact_id": 8638329866,
+    "recovery_artifact_digest": "sha256:2885b536f549c38c8ebb3230837a720b413e1c88911f50f231ffeb5b942775ac",
+    "supply_chain_artifact_id": 8638326099,
+    "supply_chain_artifact_digest": "sha256:1dde0e810e269220b1e6ffdd7174ce3ecf167d1d0fed273dd6e038a9209ffd69",
+    "frontend_artifact_id": 8638357710,
+    "frontend_artifact_digest": "sha256:3b545067ed15110098981050aab7c3d6f70cd51bd2c4767e3a1512f8629fd3d6",
+    "visual_artifact_id": 8638336015,
+    "visual_artifact_digest": "sha256:c36014383c4db35779258fc6fbfe1c615e3dfbf37a5026a7f1ab899d4870170a",
+    "gitleaks_artifact_id": 8638326247,
+    "gitleaks_artifact_digest": "sha256:4624bf468abbc7c35cbab9f691c0a0a0ebe4a9154397a2a9de5772c7049e1c69",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",

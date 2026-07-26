@@ -598,3 +598,12 @@
 - Passed 724 Python tests, 10 controlled skips, 90.37% coverage, Ruff, strict mypy, 97 frontend tests, production build and zero-vulnerability audit.
 - The hosted browser journey now proves lean 5 → full 10 → manual 11 with mobile preview, persistence, ES/EN and zero axe violations; local nested Docker remains blocked by `lchown /var/empty`.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+
+## 2026-07-26 — C3-TEAM-003 exact-head CI closure
+
+- Published stacked draft PR `#123` on `agent/c3-team-003-template-application-preview`, based on PR `#122`.
+- Validated implementation head `2130f2cd89711aedd710c1e363a4154a48ef5ecb` with CampaignOS CI `30225102075` and Runtime Visual Review `30225102063`.
+- Hosted PostgreSQL/browser evidence proved the governed lean 5 → full 10 → manual 11 workflow, five additions, three preserved bilingual matches, responsive single-column preview, persistence, keyboard interaction and zero axe violations.
+- PostgreSQL 18 RLS, backup/restore, constrained Compose stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
+- Marked `C3-TEAM-003` `CI_GREEN`; production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

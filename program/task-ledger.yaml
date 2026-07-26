@@ -739,7 +739,7 @@
     {
       "task_id": "C3-TEAM-003",
       "owner": "WS-08/WS-06",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/src/campaignos/teams/blueprints.py",
         "backend/src/campaignos/teams/template_application.py",
@@ -762,7 +762,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted PostgreSQL/browser CI remains required",
         "Human product review and merge of the stacked PR chain remain required",
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"

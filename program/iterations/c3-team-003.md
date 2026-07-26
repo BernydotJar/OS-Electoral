@@ -2,7 +2,7 @@
 
 - `branch`: `agent/c3-team-003-template-application-preview`
 - `base`: `agent/c3-team-002-role-blueprints-cinematic-hero@e0ca30589f610361254e5348e9b9fd3c77e42b57`
-- `status`: `TESTED_LOCAL`
+- `status`: `CI_GREEN`
 - `production_status`: `BLOCKED`
 - `release_decision`: `DENY_RELEASE`
 - `external_effects`: `NONE`
@@ -40,8 +40,22 @@ A campaign that starts compactly needs to grow without recreating its team map, 
 - Full Python suite: 724 PASS, 10 controlled skips, 90.37% coverage.
 - Ruff and strict mypy: PASS across 68 source files.
 - Frontend: 97 PASS, lint, TypeScript, production build and zero-vulnerability audit.
-- Hosted PostgreSQL/browser journey is encoded and pending exact-head CI because local nested Docker cannot register the image layer.
+- Exact-head CampaignOS CI `30225102075` and visual review `30225102063` passed.
+- Hosted PostgreSQL/browser evidence proved lean 5 → full 10 → manual 11, bilingual deduplication, one-column mobile preview, reload persistence, keyboard interaction and zero axe violations.
 
 ## Product boundaries
 
 This increment does not assign people, alter existing people, create capacity, RACI, onboarding, memberships, permissions, access, content, contact, spending, mobilization, deployment or production authority.
+
+
+## Exact-head CI receipts
+
+- implementation head: `2130f2cd89711aedd710c1e363a4154a48ef5ecb`
+- draft PR: `#123`
+- CampaignOS CI: `30225102075` — `SUCCESS`
+- Runtime Visual Review: `30225102063` — `SUCCESS`
+- quality job: `89853902939`
+- API/PostgreSQL browser job: `89853902928`
+- visual job: `89853902732`
+- recovery job: `89853902951`
+- production remains `BLOCKED`; release remains `DENY_RELEASE`; external effects remain `NONE`.
