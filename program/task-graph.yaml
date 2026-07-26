@@ -303,7 +303,7 @@
       "id": "C3-TEAM-003",
       "workstream": "WS-08",
       "title": "Governed preview and append-only application of campaign role templates",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-TEAM-002",
         "C3-TEAM-001"

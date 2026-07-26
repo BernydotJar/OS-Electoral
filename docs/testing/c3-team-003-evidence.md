@@ -32,7 +32,7 @@ Next.js production build: PASS
 npm audit: 0 vulnerabilities
 ```
 
-The API-backed browser journey now proves the intended hosted sequence:
+The exact-head hosted API/PostgreSQL browser journey proved:
 
 ```text
 lean map: 5 roles
@@ -43,7 +43,7 @@ manual additional function: 11 roles
 reload persistence, ES/EN, keyboard, axe and no external hosts
 ```
 
-Local execution of that persistent journey remains blocked before product startup by the sandbox nested-Docker image-layer `lchown /var/empty` limitation. The exact-head hosted CI runner is required for PostgreSQL 18, Compose and browser evidence.
+Local execution of that persistent journey remains blocked before product startup by the sandbox nested-Docker image-layer `lchown /var/empty` limitation. Hosted CampaignOS CI `30225102075` supplied the required PostgreSQL 18, Compose and browser evidence at implementation head `2130f2cd89711aedd710c1e363a4154a48ef5ecb`; Runtime Visual Review `30225102063` also passed.
 
 ## Authority and safety findings
 
@@ -54,3 +54,12 @@ Local execution of that persistent journey remains blocked before product startu
 - No authorization table is written.
 - Audit and outbox evidence record `authority_effect=NONE` and `external_effects=NONE`.
 - Production remains `BLOCKED`; release remains `DENY_RELEASE`.
+
+
+## Retained exact-head evidence
+
+- frontend review: `8638357710`, `sha256:3b545067ed15110098981050aab7c3d6f70cd51bd2c4767e3a1512f8629fd3d6`
+- PostgreSQL recovery: `8638329866`, `sha256:2885b536f549c38c8ebb3230837a720b413e1c88911f50f231ffeb5b942775ac`
+- supply chain: `8638326099`, `sha256:1dde0e810e269220b1e6ffdd7174ce3ecf167d1d0fed273dd6e038a9209ffd69`
+- visual review: `8638336015`, `sha256:c36014383c4db35779258fc6fbfe1c615e3dfbf37a5026a7f1ab899d4870170a`
+- Gitleaks SARIF: `8638326247`, `sha256:4624bf468abbc7c35cbab9f691c0a0a0ebe4a9154397a2a9de5772c7049e1c69`
