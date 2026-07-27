@@ -1,3 +1,4 @@
+import { campaignChapterHref } from "@/lib/campaign-chapters";
 import type { EffectiveMembership } from "@/lib/contracts";
 import type { Dictionary } from "@/lib/i18n";
 
@@ -41,7 +42,7 @@ export function deriveNavigation(
     },
     {
       key: "intake",
-      href: `${base}#guided-intake`,
+      href: campaignChapterHref(locale, "foundation"),
       enabled: hasGrant(
         memberships,
         (grant) =>
@@ -57,7 +58,7 @@ export function deriveNavigation(
     },
     {
       key: "candidate",
-      href: `${base}#candidate-workspace`,
+      href: campaignChapterHref(locale, "evidence"),
       enabled: hasGrant(
         memberships,
         (grant) =>
@@ -73,7 +74,7 @@ export function deriveNavigation(
     },
     {
       key: "team",
-      href: `${base}#team-workspace`,
+      href: campaignChapterHref(locale, "team"),
       enabled: hasGrant(
         memberships,
         (grant) =>
@@ -89,7 +90,7 @@ export function deriveNavigation(
     },
     {
       key: "strategy",
-      href: `${base}#strategy-room`,
+      href: campaignChapterHref(locale, "strategy"),
       enabled: hasGrant(
         memberships,
         (grant) =>
@@ -105,7 +106,7 @@ export function deriveNavigation(
     },
     {
       key: "warRoom",
-      href: `${base}#war-room`,
+      href: campaignChapterHref(locale, "operations"),
       enabled: hasGrant(
         memberships,
         (grant) =>

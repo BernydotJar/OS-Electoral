@@ -158,9 +158,24 @@ async def review() -> dict[str, object]:
             "seeded campaign was not selected",
         )
         require(
-            await page.get_by_role("button", name="Comenzar ruta").count() == 1,
-            "authorized intake start control missing",
+            await page.get_by_role("link", name="Comenzar ruta", exact=True).count() == 1,
+            "foundation chapter entry link missing",
         )
+        require(
+            await page.get_by_role("button", name="Comenzar ruta").count() == 0,
+            "foundation mutation leaked into the command overview",
+        )
+        for chapter_id in (
+            "guided-intake",
+            "candidate-workspace",
+            "team-workspace",
+            "strategy-room",
+            "war-room",
+        ):
+            require(
+                await page.locator(f"#{chapter_id}").count() == 0,
+                f"chapter surface leaked into overview: {chapter_id}",
+            )
         html = await page.content()
         require(
             "campaignos-local-development-token" not in html,
@@ -171,6 +186,24 @@ async def review() -> dict[str, object]:
         )
         require(storage == {"local": [], "session": []}, f"browser storage used: {storage}")
 
+        await page.get_by_role("link", name="Comenzar ruta", exact=True).click()
+        await page.wait_for_url("**/es/campaign/foundation**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.locator("#guided-intake").count() == 1,
+            "foundation chapter did not render its mission",
+        )
+        require(
+            await page.locator(
+                "#candidate-workspace, #team-workspace, #strategy-room, #war-room"
+            ).count()
+            == 0,
+            "non-foundation missions leaked into the foundation chapter",
+        )
+        require(
+            await page.get_by_role("button", name="Comenzar ruta").count() == 1,
+            "authorized intake start control missing in foundation chapter",
+        )
         await page.get_by_role("button", name="Comenzar ruta").click()
         await page.wait_for_url("**notice=intake_started**")
         await page.wait_for_load_state("networkidle")
@@ -217,13 +250,34 @@ async def review() -> dict[str, object]:
             "saved budget was not projected",
         )
         require(
-            await page.get_by_role("heading", level=1).inner_text()
-            == "Conocer la candidatura y el territorio",
-            "active mission did not advance to candidate evidence",
+            await page.get_by_role("heading", level=1).inner_text() == "Aterrizar la campaña",
+            "foundation chapter lost its stable chapter identity after save",
+        )
+        await page.locator('a[href="/es/campaign/evidence#candidate-workspace"]').click()
+        await page.wait_for_url("**/es/campaign/evidence**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.locator("#candidate-workspace").count() == 1,
+            "evidence chapter did not render its mission",
+        )
+        require(
+            await page.locator("#guided-intake, #team-workspace, #strategy-room, #war-room").count()
+            == 0,
+            "non-evidence missions leaked into the evidence chapter",
         )
         require(
             await page.get_by_role("button", name="Crear expediente").count() == 1,
             "candidate dossier start control did not unlock",
+        )
+        await page.go_back(wait_until="networkidle")
+        require(
+            "/es/campaign/foundation" in page.url,
+            "browser back did not return to the foundation chapter",
+        )
+        await page.go_forward(wait_until="networkidle")
+        require(
+            "/es/campaign/evidence" in page.url,
+            "browser forward did not restore the evidence chapter",
         )
 
         await page.get_by_label("Nombre público de la candidatura").fill("Ana Pérez")
@@ -266,6 +320,20 @@ async def review() -> dict[str, object]:
         require(
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence was not projected",
+        )
+        await page.locator('a[href="/es/campaign/team#team-workspace"]').click()
+        await page.wait_for_url("**/es/campaign/team**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.locator("#team-workspace").count() == 1,
+            "team chapter did not render its mission",
+        )
+        require(
+            await page.locator(
+                "#guided-intake, #candidate-workspace, #strategy-room, #war-room"
+            ).count()
+            == 0,
+            "non-team missions leaked into the team chapter",
         )
         require(
             await page.get_by_role("button", name="Crear mapa de equipo").count() == 1,
@@ -325,6 +393,25 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Plan humano de cobertura", exact=True).count() == 5,
             "seeded human vacancy plans are not visible",
         )
+        seeded_dossier = page.locator(".team-role-grid .team-role-dossier").first
+        seeded_summary = seeded_dossier.locator("summary")
+        await seeded_summary.focus()
+        await page.keyboard.press("Enter")
+        require(
+            await seeded_dossier.evaluate("element => element.open"),
+            "seeded consultant dossier did not open from keyboard",
+        )
+        for heading in (
+            "Decisiones que prepara o eleva",
+            "Entregables verificables",
+            "Interacciones clave",
+            "Señales de funcionamiento",
+        ):
+            require(
+                await seeded_dossier.get_by_role("heading", name=heading, exact=True).count() == 1,
+                f"seeded consultant dossier missing section: {heading}",
+            )
+        await page.keyboard.press("Enter")
         require(
             await page.get_by_role("button", name="Agregar función").count() == 1,
             "team role editor missing after map creation",
@@ -359,6 +446,20 @@ async def review() -> dict[str, object]:
             ).count()
             == 3,
             "bilingual canonical deduplication is not explained",
+        )
+        require(
+            await page.locator(".team-template-role-card .team-role-dossier").count() == 5,
+            "proposed functions do not expose consultant dossiers",
+        )
+        require(
+            await page.locator(".team-template-skipped-list .team-role-dossier").count() == 3,
+            "preserved functions do not explain their consultant dossiers",
+        )
+        proposed_dossier = page.locator(".team-template-role-card .team-role-dossier").first
+        await proposed_dossier.locator("summary").click()
+        require(
+            await proposed_dossier.get_by_text("Plan digital", exact=True).count() == 1,
+            "proposed function dossier does not include a verifiable deliverable",
         )
         await page.set_viewport_size({"width": 390, "height": 844})
         preview_columns = await page.locator(".team-template-role-grid").evaluate(
@@ -401,6 +502,19 @@ async def review() -> dict[str, object]:
             "Coordinar turnos autorizados\n"
             "Escalar brechas de cobertura"
         )
+        await page.get_by_label("Decisiones que prepara o eleva").fill(
+            "Preparar escenarios de cobertura para decisión humana\n"
+            "Elevar brechas que requieren aprobación"
+        )
+        await page.get_by_label("Entregables verificables").fill(
+            "Plan de turnos\nRegistro de cobertura\nMapa de brechas"
+        )
+        await page.get_by_label("Interacciones clave").fill(
+            "Territorio y organización\nDirección y legal"
+        )
+        await page.get_by_label("Señales de funcionamiento").fill(
+            "Turnos con responsable\nBrechas visibles\nSin asignación automática"
+        )
         await page.get_by_label("Plan para cubrir la función").fill(
             "Definir perfil, entrevistar responsables y aprobar la asignación humana."
         )
@@ -426,23 +540,44 @@ async def review() -> dict[str, object]:
 
         await page.reload(wait_until="networkidle")
         require(
-            await page.get_by_label("Cargo objetivo").input_value() == "Alcaldía Municipal",
-            "intake did not persist after reload",
-        )
-        require(
-            await page.get_by_text("Alcaldía Municipal", exact=True).count() >= 1,
-            "persisted value is absent from read projection",
-        )
-        require(
-            await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
-            "candidate evidence did not persist after reload",
-        )
-        require(
             await page.get_by_text("Coordinación de voluntariado", exact=True).count() >= 1,
             "team role did not persist after reload",
         )
-        await assert_no_overflow(page, "functional-desktop-es")
-        await assert_accessible(page, "functional-desktop-es")
+        manual_dossier = (
+            page.get_by_text("Coordinación de voluntariado", exact=True)
+            .locator("xpath=ancestor::article[1]")
+            .locator(".team-role-dossier")
+        )
+        await manual_dossier.locator("summary").click()
+        require(
+            await manual_dossier.get_by_text("Plan de turnos", exact=True).count() == 1,
+            "manual role consultant dossier did not persist",
+        )
+
+        await page.locator('a[href="/es/campaign/evidence#candidate-workspace"]').click()
+        await page.wait_for_url("**/es/campaign/evidence**")
+        require(
+            await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
+            "candidate evidence did not persist on its chapter route",
+        )
+        await page.locator('a[href="/es/campaign/foundation#guided-intake"]').click()
+        await page.wait_for_url("**/es/campaign/foundation**")
+        require(
+            await page.get_by_label("Cargo objetivo").input_value() == "Alcaldía Municipal",
+            "intake did not persist on its chapter route",
+        )
+        require(
+            await page.get_by_text("Alcaldía Municipal", exact=True).count() >= 1,
+            "persisted intake value is absent from its read projection",
+        )
+        await page.locator('a[href="/es/campaign/team#team-workspace"]').click()
+        await page.wait_for_url("**/es/campaign/team**")
+        require(
+            await page.get_by_text("Coordinación de voluntariado", exact=True).count() >= 1,
+            "team chapter did not restore after chapter-to-chapter navigation",
+        )
+        await assert_no_overflow(page, "functional-desktop-es-team")
+        await assert_accessible(page, "functional-desktop-es-team")
         await page.screenshot(path=ARTIFACT_DIR / "functional-desktop-es.png", full_page=True)
 
         english = await browser.new_page(
@@ -450,29 +585,40 @@ async def review() -> dict[str, object]:
             locale="en-US",
         )
         attach_page_guards(english)
-        await english.goto(f"{BASE_URL}/en", wait_until="networkidle")
+        await english.goto(f"{BASE_URL}/en/campaign/foundation", wait_until="networkidle")
         require(
             await english.get_by_role("button", name="Save changes").count() == 1,
-            "English live editor is unavailable",
+            "English foundation editor is unavailable",
         )
         require(
             await english.get_by_label("Target office").input_value() == "Alcaldía Municipal",
-            "English live projection did not preserve the saved intake",
+            "English foundation projection did not preserve the saved intake",
         )
         require(
             await english.get_by_role("link", name="Administration").count() == 0,
             "Administration placeholder is visible in English",
         )
+        await english.goto(f"{BASE_URL}/en/campaign/evidence", wait_until="networkidle")
         require(
             await english.get_by_role("button", name="Add source").count() == 1,
             "English candidate evidence editor is unavailable",
         )
+        await english.goto(f"{BASE_URL}/en/campaign/team", wait_until="networkidle")
         require(
             await english.get_by_role("button", name="Add function").count() == 1,
             "English team function editor is unavailable",
         )
-        await assert_no_overflow(english, "functional-desktop-en")
-        await assert_accessible(english, "functional-desktop-en")
+        english_dossier = english.locator(".team-role-grid .team-role-dossier").first
+        await english_dossier.locator("summary").click()
+        require(
+            await english_dossier.get_by_role(
+                "heading", name="Verifiable deliverables", exact=True
+            ).count()
+            == 1,
+            "English consultant dossier is unavailable",
+        )
+        await assert_no_overflow(english, "functional-desktop-en-team")
+        await assert_accessible(english, "functional-desktop-en-team")
         await english.screenshot(path=ARTIFACT_DIR / "functional-desktop-en.png", full_page=True)
 
         mobile = await browser.new_page(
@@ -480,20 +626,19 @@ async def review() -> dict[str, object]:
             reduced_motion="reduce",
         )
         attach_page_guards(mobile)
-        await mobile.goto(f"{BASE_URL}/es", wait_until="networkidle")
-        await assert_no_overflow(mobile, "functional-mobile-es")
-        await assert_accessible(mobile, "functional-mobile-es")
-        require(
-            await mobile.get_by_role("button", name="Guardar cambios").count() == 1,
-            "mobile intake editor is not functional",
-        )
-        require(
-            await mobile.get_by_role("button", name="Agregar fuente").count() == 1,
-            "mobile candidate evidence editor is not functional",
-        )
+        await mobile.goto(f"{BASE_URL}/es/campaign/team", wait_until="networkidle")
+        await assert_no_overflow(mobile, "functional-mobile-es-team")
+        await assert_accessible(mobile, "functional-mobile-es-team")
         require(
             await mobile.get_by_role("button", name="Agregar función").count() == 1,
             "mobile team function editor is not functional",
+        )
+        require(
+            await mobile.locator(
+                "#guided-intake, #candidate-workspace, #strategy-room, #war-room"
+            ).count()
+            == 0,
+            "mobile chapter route contains unrelated missions",
         )
         mobile_role_columns = await mobile.locator(".team-role-grid").evaluate(
             "element => getComputedStyle(element).gridTemplateColumns.split(' ').length"
@@ -501,6 +646,19 @@ async def review() -> dict[str, object]:
         require(
             mobile_role_columns == 1,
             f"mobile role blueprints are not a single responsive column: {mobile_role_columns}",
+        )
+        reduced_motion_state = await mobile.locator(".experience-mission-pulse i").first.evaluate(
+            "element => getComputedStyle(element).animationName"
+        )
+        require(
+            reduced_motion_state == "none",
+            f"mission cadence still animates under reduced motion: {reduced_motion_state}",
+        )
+        require(
+            await mobile.get_by_text("Evidencia", exact=True).count() >= 1
+            and await mobile.get_by_text("Decisión humana", exact=True).count() >= 1
+            and await mobile.get_by_text("Ejecución gobernada", exact=True).count() >= 1,
+            "reduced-motion hero lost its static mission cadence",
         )
         await mobile.screenshot(path=ARTIFACT_DIR / "functional-mobile-es.png", full_page=True)
         await browser.close()
@@ -510,10 +668,13 @@ async def review() -> dict[str, object]:
     require(not unexpected_hosts, f"unexpected outbound hosts: {unexpected_hosts}")
     result: dict[str, object] = {
         "status": "PASS",
-        "journey": "campaign_foundation_candidate_evidence_and_team_map",
+        "journey": "command_center_to_isolated_campaign_chapters",
+        "chapter_navigation": "PASS_URL_HISTORY_BACK_FORWARD_ISOLATION",
         "role_blueprints": "PASS_LEAN_5_TO_FULL_10_PLUS_CUSTOM_ROLE",
+        "consultant_role_dossiers": "PASS_PROPOSED_PRESERVED_APPLIED_MANUAL",
         "keyboard_progressive_disclosure": "PASS",
         "template_application": "PASS_PREVIEW_DEDUP_CONFIRM",
+        "reduced_motion_cadence": "PASS_STATIC_EQUIVALENT",
         "mobile_template_preview": "PASS_SINGLE_COLUMN",
         "mobile_role_layout": "PASS_SINGLE_COLUMN",
         "persistence_after_reload": "PASS",

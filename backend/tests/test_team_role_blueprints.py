@@ -22,6 +22,10 @@ def test_lean_blueprint_creates_five_safe_vacant_job_descriptions() -> None:
         assert role.onboarding_status == "NOT_STARTED"
         assert role.purpose
         assert len(role.responsibilities) >= 3
+        assert len(role.decision_scope) >= 2
+        assert len(role.deliverables) >= 3
+        assert len(role.collaboration_points) >= 2
+        assert len(role.success_signals) >= 3
         assert role.vacancy_plan
 
 
@@ -52,6 +56,10 @@ def test_full_blueprint_matches_the_eight_operating_stations() -> None:
         "Storytelling, Speech, and Media Training",
         "Tracking, Risks, and Learning",
     }
+    assert all(role.decision_scope for role in roles)
+    assert all(role.deliverables for role in roles)
+    assert all(role.collaboration_points for role in roles)
+    assert all(role.success_signals for role in roles)
 
 
 def test_custom_blueprint_does_not_impose_roles() -> None:

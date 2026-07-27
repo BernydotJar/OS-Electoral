@@ -4,7 +4,10 @@ import { describe, expect, it } from "vitest";
 
 import { CampaignExperienceHero } from "@/components/campaign-experience-hero";
 import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
-import type { CampaignJourney, CampaignJourneyPhase } from "@/lib/campaign-journey";
+import type {
+  CampaignJourney,
+  CampaignJourneyPhase,
+} from "@/lib/campaign-journey";
 import { dictionaryFor } from "@/lib/i18n";
 
 const dictionary = dictionaryFor("es");
@@ -27,6 +30,7 @@ const journey: CampaignJourney = {
 function hero(mode: "FIRST_USE" | "ACTIVE" | "COMPLETE") {
   return renderToStaticMarkup(
     createElement(CampaignExperienceHero, {
+      locale: "es",
       dictionary,
       mode,
       campaignName: "Campaña Horizonte",
@@ -63,6 +67,11 @@ describe("CampaignExperienceHero", () => {
     expect(html).toContain("Por qué importa");
     expect(html).toContain('class="experience-chapter-mark"');
     expect(html).toContain('class="experience-horizon-light"');
+    expect(html).toContain('class="experience-mission-pulse"');
+    expect(html).toContain("Evidencia");
+    expect(html).toContain("Decisión humana");
+    expect(html).toContain("Ejecución gobernada");
+    expect(html).toContain('data-chapter="evidence"');
     expect(html).not.toContain("Tu campaña empieza aquí");
   });
 
@@ -79,7 +88,11 @@ describe("CampaignExperienceHero", () => {
 describe("CampaignLaunchRoadmap", () => {
   it("renders one dominant chapter with accessible current-step semantics", () => {
     const html = renderToStaticMarkup(
-      createElement(CampaignLaunchRoadmap, { dictionary, journey }),
+      createElement(CampaignLaunchRoadmap, {
+        locale: "es",
+        dictionary,
+        journey,
+      }),
     );
 
     expect(html).toContain('class="journey-chapter"');
@@ -90,7 +103,11 @@ describe("CampaignLaunchRoadmap", () => {
 
   it("explains blocked chapters in text without presenting a broken link", () => {
     const html = renderToStaticMarkup(
-      createElement(CampaignLaunchRoadmap, { dictionary, journey }),
+      createElement(CampaignLaunchRoadmap, {
+        locale: "es",
+        dictionary,
+        journey,
+      }),
     );
 
     expect(html).toContain(dictionary.journey.blockedTitle);

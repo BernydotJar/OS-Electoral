@@ -42,6 +42,22 @@ describe("team workspace forms", () => {
       "Diseñar coordinaciones\nDar seguimiento a cobertura\nEscalar bloqueos",
     );
     form.set(
+      "decision_scope",
+      "Preparar cobertura para decisión humana\nElevar bloqueos de seguridad",
+    );
+    form.set(
+      "deliverables",
+      "Mapa agregado\nPlan logístico\nReporte de brechas",
+    );
+    form.set(
+      "collaboration_points",
+      "Dirección de campaña\nInvestigación y legal",
+    );
+    form.set(
+      "success_signals",
+      "Zonas con responsables\nRiesgos escalados\nSin perfiles individuales",
+    );
+    form.set(
       "vacancy_plan",
       "Definir perfil, entrevistar responsables y aprobar la asignación humana.",
     );
@@ -60,6 +76,17 @@ describe("team workspace forms", () => {
           "Diseñar coordinaciones",
           "Dar seguimiento a cobertura",
           "Escalar bloqueos",
+        ],
+        decision_scope: [
+          "Preparar cobertura para decisión humana",
+          "Elevar bloqueos de seguridad",
+        ],
+        deliverables: ["Mapa agregado", "Plan logístico", "Reporte de brechas"],
+        collaboration_points: ["Dirección de campaña", "Investigación y legal"],
+        success_signals: [
+          "Zonas con responsables",
+          "Riesgos escalados",
+          "Sin perfiles individuales",
         ],
         status: "VACANT",
         principal_id: null,
@@ -81,7 +108,34 @@ describe("team workspace forms", () => {
     form.set("area", "Territorio");
     form.set("purpose", "Organizar el trabajo.");
     form.set("responsibilities", "Coordinar\nCoordinar");
+    form.set("decision_scope", "Preparar decisión");
+    form.set("deliverables", "Plan");
+    form.set("collaboration_points", "Dirección");
+    form.set("success_signals", "Resultado observable");
     form.set("vacancy_plan", "Cubrir la vacante.");
+
+    expect(() => parseTeamRoleForm(form, ROLE_ID)).toThrow(
+      TeamWorkspaceFormError,
+    );
+  });
+
+  it("rejects duplicate or missing consulting dossier entries", () => {
+    const form = new FormData();
+    form.set("locale", "es");
+    form.set("version", "2");
+    form.set("idempotency_key", "team-role-5678");
+    form.set("title", "Investigación");
+    form.set("area", "Evidencia");
+    form.set("purpose", "Mantener hechos verificables.");
+    form.set("responsibilities", "Validar fuentes");
+    form.set("decision_scope", "Elevar contradicciones");
+    form.set("deliverables", "Registro\nRegistro");
+    form.set("collaboration_points", "Estrategia");
+    form.set("success_signals", "Fuentes trazables");
+    form.set(
+      "vacancy_plan",
+      "Seleccionar una persona mediante revisión humana.",
+    );
 
     expect(() => parseTeamRoleForm(form, ROLE_ID)).toThrow(
       TeamWorkspaceFormError,

@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-26",
-  "branch": "agent/c3-team-003-template-application-preview",
-  "current_increment": "C3-TEAM-003",
+  "updated_at": "2026-07-27",
+  "branch": "agent/c3-front-007-guided-chapter-transitions",
+  "current_increment": "C3-FRONT-007",
   "iteration_status": "ACTIVE",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "TEMPLATE_APPLICATION_CI_GREEN",
-      "next_increment": "HUMAN_PRODUCT_REVIEW"
+      "status": "GUIDED_CHAPTERS_AND_ROLE_DOSSIERS_TESTED_LOCAL",
+      "next_increment": "C3-FRONT-007"
     },
     {
       "id": "WS-07",
@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "GOVERNED_TEMPLATE_APPLICATION_CI_GREEN",
-      "next_increment": "HUMAN_PRODUCT_REVIEW"
+      "status": "CONSULTANT_ROLE_DOSSIERS_TESTED_LOCAL",
+      "next_increment": "C3-FRONT-007"
     },
     {
       "id": "WS-09",
@@ -324,7 +324,13 @@
     "team_003_functional_browser": "PASS_HOSTED_LEAN_5_FULL_10_CUSTOM_11",
     "team_003_mobile_preview": "PASS_HOSTED_SINGLE_COLUMN_NO_OVERFLOW",
     "team_003_exact_head_ci": "PASS_RUN_30225102075",
-    "team_003_visual_review": "PASS_RUN_30225102063"
+    "team_003_visual_review": "PASS_RUN_30225102063",
+    "front_007_frontend_tests": "PASS_106",
+    "front_007_backend_focused": "PASS_64_TEAM_CONTRACT_BLUEPRINT_PREVIEW_MODEL_API",
+    "front_007_demo_browser": "PASS_CHAPTER_ROUTES_ES_EN_MOBILE_REDUCED_MOTION_ZERO_AXE",
+    "front_007_role_dossiers": "PASS_BILINGUAL_PROPOSED_PRESERVED_APPLIED_MANUAL",
+    "front_007_functional_browser": "ENCODED_HOSTED_CI_REQUIRED_LOCAL_DOCKER_LAYER_BLOCKED",
+    "front_007_authority_boundary": "PASS_NO_IDENTITY_PERMISSION_PROFILE_CONTACT_SPEND_OR_EXTERNAL_EFFECT"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -364,16 +370,14 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-TEAM-003",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-team-003-template-application-preview",
-    "base": "agent/c3-team-002-role-blueprints-cinematic-hero@e0ca30589f610361254e5348e9b9fd3c77e42b57",
-    "validated_implementation_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
-    "draft_pr": 123,
+    "id": "C3-FRONT-007",
+    "state": "TESTED_LOCAL",
+    "branch": "agent/c3-front-007-guided-chapter-transitions",
+    "base": "agent/c3-team-003-template-application-preview@197ed14e4ebd9c98f744060e3b9bca4d9874a043",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "HUMAN_PRODUCT_REVIEW"
+    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",

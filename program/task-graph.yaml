@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-26",
+  "updated_at": "2026-07-27",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -313,6 +313,22 @@
         "Apply preserves existing roles and appends only missing vacant functions",
         "Stale version, digest drift and no-op templates fail closed with rollback",
         "Responsive live workflow keeps authority and external effects at NONE"
+      ]
+    },
+    {
+      "id": "C3-FRONT-007",
+      "workstream": "WS-06",
+      "title": "Guided campaign chapter transitions and consultant-grade role dossiers",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "C3-TEAM-003",
+        "C3-FRONT-006"
+      ],
+      "acceptance": [
+        "Command overview renders no chapter workspace and each chapter route renders exactly one mission",
+        "History, locale, redirects and native transitions preserve chapter context with reduced-motion equivalence",
+        "Blueprint and manual functions expose decisions, deliverables, interactions and operating signals",
+        "Desktop, mobile and exact authorization keep authority and external effects at NONE"
       ]
     }
   ]

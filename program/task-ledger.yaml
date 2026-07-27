@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-26",
+  "updated_at": "2026-07-27",
   "branch": "agent/c3-team-003-template-application-preview",
   "entries": [
     {
@@ -762,6 +762,38 @@
       ],
       "external_effects": "NONE",
       "blockers": [
+        "Human product review and merge of the stacked PR chain remain required",
+        "Personnel assignment, RACI, capacity, training and access review remain separate increments",
+        "Staging, deployment and production approval remain separate human gates"
+      ]
+    },
+    {
+      "task_id": "C3-FRONT-007",
+      "owner": "WS-06/WS-08",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "frontend/src/app/[locale]/campaign/[chapter]/page.tsx",
+        "frontend/src/components/campaign-chapter-navigation.tsx",
+        "frontend/src/components/campaign-experience-hero.tsx",
+        "frontend/src/components/team-role-dossier.tsx",
+        "frontend/src/components/team-workspace-editor.tsx",
+        "frontend/src/lib/campaign-chapters.ts",
+        "frontend/src/lib/team-contract-parser.ts",
+        "backend/src/campaignos/teams/consulting_profiles.py",
+        "backend/src/campaignos/teams/blueprints.py",
+        "backend/src/campaignos/teams/contracts.py",
+        "backend/src/campaignos/teams/template_application.py",
+        "scripts/frontend/review_dynamic_shell.py",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/design/guided-chapter-transitions.md",
+        "docs/product/team-workspace.md",
+        "docs/api/team-workspace.md",
+        "docs/testing/c3-front-007-evidence.md",
+        "program/iterations/c3-front-007.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted PostgreSQL/browser CI remains required",
         "Human product review and merge of the stacked PR chain remain required",
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"

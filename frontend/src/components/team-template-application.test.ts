@@ -18,7 +18,7 @@ const preview: TeamWorkspaceTemplatePreview = {
   workspace_version: demoTeamWorkspace.workspace.version,
   organization_template: "FULL_CAMPAIGN",
   blueprint_locale: "es",
-  blueprint_version: "2026-07-25.1",
+  blueprint_version: "2026-07-27.1",
   additions: [
     {
       id: "abababab-abab-4bab-8bab-abababababab",
@@ -26,6 +26,24 @@ const preview: TeamWorkspaceTemplatePreview = {
       area: "Digital",
       purpose: "Preparar planes digitales gobernados y medibles.",
       responsibilities: ["Mantener hipótesis", "Escalar riesgos de privacidad"],
+      decision_scope: [
+        "Preparar hipótesis para decisión humana",
+        "Elevar riesgos de privacidad",
+      ],
+      deliverables: [
+        "Plan digital",
+        "Especificación de métricas",
+        "Checklist de aprobaciones",
+      ],
+      collaboration_points: [
+        "Investigación y estrategia",
+        "Contenido, legal y privacidad",
+      ],
+      success_signals: [
+        "Hipótesis medibles",
+        "Datos minimizados",
+        "Activación bloqueada hasta aprobación",
+      ],
       status: "VACANT",
       principal_id: null,
       availability_status: "UNASSESSED",
@@ -41,6 +59,24 @@ const preview: TeamWorkspaceTemplatePreview = {
       area: "Dirección de campaña",
       matched_role_id: "cdcdcdcd-cdcd-4dcd-8dcd-cdcdcdcdcdcd",
       reason: "CANONICAL_BLUEPRINT_MATCH",
+      decision_scope: [
+        "Preparar prioridades para decisión humana",
+        "Elevar cambios que requieren aprobación",
+      ],
+      deliverables: [
+        "Agenda semanal",
+        "Registro de decisiones",
+        "Mapa de bloqueos",
+      ],
+      collaboration_points: [
+        "Investigación y estrategia",
+        "Territorio, comunicación, legal y finanzas",
+      ],
+      success_signals: [
+        "Prioridades con responsable",
+        "Decisiones pendientes visibles",
+        "Sin autoridad implícita",
+      ],
     },
   ],
   preview_digest: "a".repeat(64),

@@ -110,6 +110,20 @@ def _normalize_text_list(value: object, *, label: str, maximum: int) -> tuple[st
     return normalized
 
 
+def _normalize_optional_text_list(value: object, *, label: str, maximum: int) -> tuple[str, ...]:
+    if not isinstance(value, (list, tuple)):
+        raise ValueError(f"{label} must be an array")
+    if len(value) > maximum:
+        raise ValueError(f"{label} must contain at most {maximum} items")
+    normalized = tuple(
+        _normalize_text(item, label=f"{label}[{index}]", maximum=500)
+        for index, item in enumerate(value)
+    )
+    if len(set(normalized)) != len(normalized):
+        raise ValueError(f"{label} contains duplicate items")
+    return normalized
+
+
 def _bound_models(value: object, *, label: str, maximum: int) -> object:
     if value is None:
         return None
@@ -128,6 +142,10 @@ class TeamRoleCard(BaseModel):
     area: str = Field(min_length=1, max_length=160)
     purpose: str = Field(min_length=1, max_length=1000)
     responsibilities: tuple[str, ...] = Field(min_length=1, max_length=20)
+    decision_scope: tuple[str, ...] = Field(default=(), max_length=12)
+    deliverables: tuple[str, ...] = Field(default=(), max_length=12)
+    collaboration_points: tuple[str, ...] = Field(default=(), max_length=12)
+    success_signals: tuple[str, ...] = Field(default=(), max_length=12)
     status: RoleStatus
     principal_id: UUID | None
     availability_status: AvailabilityStatus
@@ -153,6 +171,21 @@ class TeamRoleCard(BaseModel):
     @classmethod
     def normalize_responsibilities(cls, value: object) -> tuple[str, ...]:
         return _normalize_text_list(value, label="role responsibilities", maximum=20)
+
+    @field_validator(
+        "decision_scope",
+        "deliverables",
+        "collaboration_points",
+        "success_signals",
+        mode="before",
+    )
+    @classmethod
+    def normalize_consulting_lists(cls, value: object, info: object) -> tuple[str, ...]:
+        return _normalize_optional_text_list(
+            value,
+            label=str(getattr(info, "field_name", "consulting profile")),
+            maximum=12,
+        )
 
     @field_validator("vacancy_plan", mode="before")
     @classmethod
@@ -398,6 +431,25 @@ class TeamWorkspaceTemplateSkip(BaseModel):
     area: str = Field(min_length=1, max_length=160)
     matched_role_id: UUID
     reason: Literal["CANONICAL_BLUEPRINT_MATCH", "EXACT_TITLE_AREA_MATCH"]
+    decision_scope: tuple[str, ...] = Field(default=(), max_length=12)
+    deliverables: tuple[str, ...] = Field(default=(), max_length=12)
+    collaboration_points: tuple[str, ...] = Field(default=(), max_length=12)
+    success_signals: tuple[str, ...] = Field(default=(), max_length=12)
+
+    @field_validator(
+        "decision_scope",
+        "deliverables",
+        "collaboration_points",
+        "success_signals",
+        mode="before",
+    )
+    @classmethod
+    def normalize_consulting_lists(cls, value: object, info: object) -> tuple[str, ...]:
+        return _normalize_optional_text_list(
+            value,
+            label=str(getattr(info, "field_name", "consulting profile")),
+            maximum=12,
+        )
 
 
 class TeamWorkspaceTemplatePreview(BaseModel):

@@ -31,6 +31,10 @@ function fixture() {
           area: "Dirección",
           purpose: "Coordinar decisiones humanas y accountability.",
           responsibilities: ["Coordinar prioridades"],
+          decision_scope: [],
+          deliverables: [],
+          collaboration_points: [],
+          success_signals: [],
           status: "FILLED",
           principal_id: "88888888-8888-4888-8888-888888888888",
           availability_status: "AVAILABLE",
@@ -44,6 +48,10 @@ function fixture() {
           area: "Evidencia",
           purpose: "Mantener evidencia verificable.",
           responsibilities: ["Validar fuentes"],
+          decision_scope: [],
+          deliverables: [],
+          collaboration_points: [],
+          success_signals: [],
           status: "FILLED",
           principal_id: "99999999-9999-4999-8999-999999999999",
           availability_status: "LIMITED",
@@ -57,6 +65,10 @@ function fixture() {
           area: "Organización",
           purpose: "Diseñar coordinación territorial agregada.",
           responsibilities: ["Definir estructura territorial"],
+          decision_scope: [],
+          deliverables: [],
+          collaboration_points: [],
+          success_signals: [],
           status: "VACANT",
           principal_id: null,
           availability_status: "UNASSESSED",
@@ -258,10 +270,16 @@ describe("team workspace parser", () => {
 
 describe("team workspace template parsers", () => {
   it("accepts a bounded no-authority preview and apply receipt", () => {
-    const role = structuredClone(fixture().workspace.roles![2]!);
-    role.id = "abababab-abab-4bab-8bab-abababababab";
-    role.title = "Digital Strategy";
-    role.area = "Digital";
+    const role = {
+      ...structuredClone(fixture().workspace.roles![2]!),
+      id: "abababab-abab-4bab-8bab-abababababab",
+      title: "Digital Strategy",
+      area: "Digital",
+      decision_scope: ["Prepare decisions", "Elevate approvals"],
+      deliverables: ["Plan", "Register", "Checklist"],
+      collaboration_points: ["Research", "Legal"],
+      success_signals: ["Measured", "Traceable", "Human-gated"],
+    };
     const preview = {
       audit_event_id: fixture().audit_event_id,
       workspace_id: TEAM_ID,
@@ -270,7 +288,7 @@ describe("team workspace template parsers", () => {
       workspace_version: 2,
       organization_template: "FULL_CAMPAIGN",
       blueprint_locale: "en",
-      blueprint_version: "2026-07-25.1",
+      blueprint_version: "2026-07-27.1",
       additions: [role],
       skipped: [
         {
@@ -279,6 +297,10 @@ describe("team workspace template parsers", () => {
           area: "Campaign leadership",
           matched_role_id: DIRECTOR_ID,
           reason: "CANONICAL_BLUEPRINT_MATCH",
+          decision_scope: ["Prepare priorities", "Elevate approvals"],
+          deliverables: ["Agenda", "Decision register", "Blocker map"],
+          collaboration_points: ["Research", "Operations"],
+          success_signals: ["Owned", "Visible", "Human-gated"],
         },
       ],
       preview_digest: "a".repeat(64),
@@ -289,6 +311,8 @@ describe("team workspace template parsers", () => {
     const parsed = parseTeamWorkspaceTemplatePreview(preview);
     expect(parsed.additions[0]?.principal_id).toBeNull();
     expect(parsed.skipped[0]?.matched_role_id).toBe(DIRECTOR_ID);
+    expect(parsed.additions[0]?.deliverables).toHaveLength(3);
+    expect(parsed.skipped[0]?.success_signals).toHaveLength(3);
     expect(parsed.authority_effect).toBe("NONE");
 
     const apply = parseTeamWorkspaceTemplateApplyEvidence({
@@ -313,7 +337,7 @@ describe("team workspace template parsers", () => {
       workspace_version: 2,
       organization_template: "FULL_CAMPAIGN",
       blueprint_locale: "es",
-      blueprint_version: "2026-07-25.1",
+      blueprint_version: "2026-07-27.1",
       additions: [role],
       skipped: [],
       preview_digest: "bad",

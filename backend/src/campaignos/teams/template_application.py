@@ -12,6 +12,7 @@ from campaignos.teams.blueprints import (
     blueprint_entries,
     canonical_blueprint_key,
 )
+from campaignos.teams.consulting_profiles import consulting_profile
 from campaignos.teams.contracts import (
     TeamRoleCard,
     TeamWorkspaceProjection,
@@ -53,6 +54,7 @@ def build_team_template_preview(
     additions: list[TeamRoleCard] = []
     skipped: list[TeamWorkspaceTemplateSkip] = []
     for key, item in blueprint_entries(request.organization_template, request.blueprint_locale):
+        profile = consulting_profile(key, request.blueprint_locale)
         exact = existing_pairs.get(_identity(item.title, item.area))
         canonical = existing_keys.get(key)
         matched = canonical or exact
@@ -64,6 +66,10 @@ def build_team_template_preview(
                     area=item.area,
                     matched_role_id=matched.id,
                     reason=("CANONICAL_BLUEPRINT_MATCH" if canonical else "EXACT_TITLE_AREA_MATCH"),
+                    decision_scope=profile.decision_scope,
+                    deliverables=profile.deliverables,
+                    collaboration_points=profile.collaboration_points,
+                    success_signals=profile.success_signals,
                 )
             )
             continue
@@ -74,6 +80,10 @@ def build_team_template_preview(
                 area=item.area,
                 purpose=item.purpose,
                 responsibilities=item.responsibilities,
+                decision_scope=profile.decision_scope,
+                deliverables=profile.deliverables,
+                collaboration_points=profile.collaboration_points,
+                success_signals=profile.success_signals,
                 status="VACANT",
                 principal_id=None,
                 availability_status="UNASSESSED",

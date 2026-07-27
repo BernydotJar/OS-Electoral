@@ -153,6 +153,13 @@ const es = {
     commandCenterAction: "Abrir operación diaria",
     progressLabel: "Progreso de la ruta de campaña",
     contextHintLabel: "Por qué importa",
+    chapterNavigationLabel: "Navegación por capítulos",
+    backToOverview: "Volver al centro de mando",
+    previousChapter: "Capítulo anterior",
+    nextChapter: "Siguiente capítulo",
+    currentChapter: "Capítulo actual",
+    chapterUnavailable:
+      "El capítulo solicitado todavía está bloqueado. Mostramos la misión disponible más cercana.",
     stageLabel: "Etapa actual",
     completedLabel: "etapas completadas",
     missionLabel: "Tu misión ahora",
@@ -210,6 +217,12 @@ const es = {
       team: "Equipo",
       strategy: "Estrategia",
       operations: "Operación",
+    },
+    missionPulseLabel: "Cadencia de misión",
+    missionPulseStages: {
+      evidence: "Evidencia",
+      decision: "Decisión humana",
+      execution: "Ejecución gobernada",
     },
   },
   campaigns: {
@@ -559,6 +572,23 @@ const es = {
       "Las recomendaciones de acceso requieren una autorización humana exacta y separada. Este espacio de trabajo no crea membresías, roles ni permisos.",
     roles: "Funciones y descripciones de puesto",
     roleResponsibilitiesLabel: "Responsabilidades del puesto",
+    consultingReadout: "LECTURA CONSULTIVA",
+    roleDossierAction: "Abrir expediente operativo",
+    roleDossierMissing:
+      "Esta función histórica aún no tiene expediente consultivo. Complétalo antes de asignar responsabilidad.",
+    decisionScopeLabel: "Decisiones que prepara o eleva",
+    deliverablesLabel: "Entregables verificables",
+    collaborationPointsLabel: "Interacciones clave",
+    successSignalsLabel: "Señales de funcionamiento",
+    decisionScopePlaceholder:
+      "Preparar prioridades para decisión humana\nElevar cambios que requieren aprobación",
+    deliverablesPlaceholder:
+      "Agenda semanal\nRegistro de decisiones\nMapa de bloqueos",
+    collaborationPointsPlaceholder:
+      "Investigación y estrategia\nLegal, finanzas y operación",
+    successSignalsPlaceholder:
+      "Prioridades con responsable y fecha\nDecisiones pendientes visibles\nSin autoridad implícita",
+    consultingListHelp: "Una entrada por línea. Entre 1 y 12 entradas.",
     vacancyPlanLabel: "Plan humano de cobertura",
     filledRoles: "Roles cubiertos",
     vacantRoles: "Vacantes",
@@ -875,6 +905,13 @@ const en: Dictionary = {
     commandCenterAction: "Open daily operations",
     progressLabel: "Campaign path progress",
     contextHintLabel: "Why this matters",
+    chapterNavigationLabel: "Chapter navigation",
+    backToOverview: "Back to command center",
+    previousChapter: "Previous chapter",
+    nextChapter: "Next chapter",
+    currentChapter: "Current chapter",
+    chapterUnavailable:
+      "The requested chapter is still locked. The nearest available mission is shown instead.",
     stageLabel: "Current stage",
     completedLabel: "stages complete",
     missionLabel: "Your mission now",
@@ -932,6 +969,12 @@ const en: Dictionary = {
       team: "Team",
       strategy: "Strategy",
       operations: "Operations",
+    },
+    missionPulseLabel: "Mission cadence",
+    missionPulseStages: {
+      evidence: "Evidence",
+      decision: "Human decision",
+      execution: "Governed execution",
     },
   },
   campaigns: {
@@ -1277,6 +1320,22 @@ const en: Dictionary = {
       "Access recommendations require a separate exact human authorization. This workspace creates no memberships, roles, or grants.",
     roles: "Functions and job descriptions",
     roleResponsibilitiesLabel: "Job responsibilities",
+    consultingReadout: "CONSULTING READOUT",
+    roleDossierAction: "Open operating dossier",
+    roleDossierMissing:
+      "This historical function has no consulting dossier yet. Complete it before assigning responsibility.",
+    decisionScopeLabel: "Decisions prepared or escalated",
+    deliverablesLabel: "Verifiable deliverables",
+    collaborationPointsLabel: "Key interactions",
+    successSignalsLabel: "Operating signals",
+    decisionScopePlaceholder:
+      "Prepare priorities for human decision\nElevate changes requiring approval",
+    deliverablesPlaceholder: "Weekly agenda\nDecision register\nBlocker map",
+    collaborationPointsPlaceholder:
+      "Research and strategy\nLegal, finance, and operations",
+    successSignalsPlaceholder:
+      "Priorities have owner and date\nPending decisions are visible\nNo implicit authority",
+    consultingListHelp: "One entry per line. Between 1 and 12 entries.",
     vacancyPlanLabel: "Human coverage plan",
     filledRoles: "Filled roles",
     vacantRoles: "Vacancies",

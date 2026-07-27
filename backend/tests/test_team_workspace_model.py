@@ -269,10 +269,10 @@ def test_create_replays_exactly_without_creating_authority(database: Database) -
         outbox = session.scalar(select(OutboxEvent))
         assert audit is not None
         assert audit.payload["blueprint_locale"] == "es"
-        assert audit.payload["blueprint_version"] == "2026-07-25.1"
+        assert audit.payload["blueprint_version"] == "2026-07-27.1"
         assert audit.payload["seeded_role_count"] == 5
         assert outbox is not None
-        assert outbox.payload["blueprint_version"] == "2026-07-25.1"
+        assert outbox.payload["blueprint_version"] == "2026-07-27.1"
         assert outbox.payload["seeded_role_count"] == 5
         assert outbox.payload["authority_effect"] == "NONE"
         assert outbox.payload["external_effects"] == "NONE"
