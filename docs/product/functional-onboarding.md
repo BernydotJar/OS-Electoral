@@ -66,6 +66,8 @@ Every downstream political or external action remains absent or separately human
 
 `make functional-dev` starts the real local PostgreSQL/API stack, applies migrations, seeds a bounded development identity plus five exact grants, and starts Next.js in live mode. It validates the configured loopback ports first. A free configured port is preserved; an occupied PostgreSQL, API, S3Mock, Mailpit or frontend port is replaced with a unique ephemeral port and the effective endpoint is printed. The browser never receives the development bearer token; it is used only by Next server code. The backend accepts it only when `CAMPAIGNOS_ENVIRONMENT=development` and refuses combining it with OIDC.
 
+The launcher ignores a `VIRTUAL_ENV` inherited from another checkout and uses the repository's locked environment. If Docker BuildKit reports the exact transient `frontend grpc server closed unexpectedly` transport failure, the launcher bootstraps the selected builder and retries once. Other build failures remain fail-closed and are not retried. A repeated frontend disconnect requires a Docker Desktop restart (`docker desktop restart`) before running `make functional-dev` again; the launcher never prunes caches or removes volumes automatically.
+
 The versioned `.env.functional.example` values are local fixtures, not deployable credentials. Shared and production configurations reject the development identity.
 
 Stop the local stack with:

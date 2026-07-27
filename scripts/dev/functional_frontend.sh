@@ -1,12 +1,17 @@
-#!/bin/sh
-set -eu
+#!/usr/bin/env bash
+set -euo pipefail
 
-ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
+ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/../.." && pwd)
 ENV_FILE=${ENV_FILE:-"$ROOT/.env.functional.example"}
 [ -f "$ENV_FILE" ] || { echo "Missing functional environment: $ENV_FILE" >&2; exit 1; }
 
+# Functional development always uses the repository's locked environment. An
+# activated environment from another checkout must not influence this launcher.
+unset VIRTUAL_ENV
+
 set -a
 # This file is versioned, local-only, and contains no shell expressions.
+# shellcheck source=/dev/null
 . "$ENV_FILE"
 set +a
 
@@ -31,12 +36,12 @@ resolved_ports=$(
 
 while IFS='=' read -r name value; do
   case "$name" in
-    CAMPAIGNOS_API_PORT) export CAMPAIGNOS_API_PORT=$value ;;
-    POSTGRES_PORT) export POSTGRES_PORT=$value ;;
-    S3MOCK_PORT) export S3MOCK_PORT=$value ;;
-    MAILPIT_SMTP_PORT) export MAILPIT_SMTP_PORT=$value ;;
-    MAILPIT_UI_PORT) export MAILPIT_UI_PORT=$value ;;
-    CAMPAIGNOS_FRONTEND_PORT) export CAMPAIGNOS_FRONTEND_PORT=$value ;;
+    CAMPAIGNOS_API_PORT) export CAMPAIGNOS_API_PORT="$value" ;;
+    POSTGRES_PORT) export POSTGRES_PORT="$value" ;;
+    S3MOCK_PORT) export S3MOCK_PORT="$value" ;;
+    MAILPIT_SMTP_PORT) export MAILPIT_SMTP_PORT="$value" ;;
+    MAILPIT_UI_PORT) export MAILPIT_UI_PORT="$value" ;;
+    CAMPAIGNOS_FRONTEND_PORT) export CAMPAIGNOS_FRONTEND_PORT="$value" ;;
     *) echo "Unexpected local port assignment: $name" >&2; exit 1 ;;
   esac
 done <<EOF
@@ -63,8 +68,54 @@ report_port "Mailpit SMTP" "$requested_mailpit_smtp_port" "$MAILPIT_SMTP_PORT"
 report_port "Mailpit UI" "$requested_mailpit_ui_port" "$MAILPIT_UI_PORT"
 report_port "Frontend" "$requested_frontend_port" "$CAMPAIGNOS_FRONTEND_PORT"
 
-docker compose --env-file "$ENV_FILE" up -d --build --remove-orphans \
-  postgres s3mock mailpit migrate api
+compose_up() {
+  local build_log status
+  build_log=$(mktemp "${TMPDIR:-/tmp}/campaignos-functional-build.XXXXXX")
+
+  if docker compose --env-file "$ENV_FILE" up -d --build --remove-orphans \
+    postgres s3mock mailpit migrate api 2>&1 | tee "$build_log"; then
+    rm -f "$build_log"
+    return 0
+  else
+    status=$?
+  fi
+
+  if ! grep -Fq "frontend grpc server closed unexpectedly" "$build_log"; then
+    rm -f "$build_log"
+    return "$status"
+  fi
+
+  printf '%s\n' \
+    "[WARN] Docker BuildKit closed its Dockerfile frontend; bootstrapping the selected builder and retrying once." >&2
+  if ! docker buildx inspect --bootstrap; then
+    rm -f "$build_log"
+    printf '%s\n' \
+      "[ERROR] Docker BuildKit could not bootstrap its selected builder." \
+      "[INFO] Restart Docker Desktop with: docker desktop restart" \
+      "[INFO] Then retry: make functional-dev" >&2
+    return "$status"
+  fi
+
+  : >"$build_log"
+  if docker compose --env-file "$ENV_FILE" up -d --build --remove-orphans \
+    postgres s3mock mailpit migrate api 2>&1 | tee "$build_log"; then
+    rm -f "$build_log"
+    return 0
+  else
+    status=$?
+  fi
+
+  if grep -Fq "frontend grpc server closed unexpectedly" "$build_log"; then
+    printf '%s\n' \
+      "[ERROR] Docker BuildKit closed its Dockerfile frontend twice." \
+      "[INFO] Restart Docker Desktop with: docker desktop restart" \
+      "[INFO] Then retry: make functional-dev" >&2
+  fi
+  rm -f "$build_log"
+  return "$status"
+}
+
+compose_up
 
 attempt=1
 while [ "$attempt" -le 40 ]; do
