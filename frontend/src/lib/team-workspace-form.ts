@@ -62,22 +62,28 @@ function expectedVersion(form: FormData): number {
   return value;
 }
 
-function responsibilities(form: FormData): readonly string[] {
-  const values = field(form, "responsibilities")
+function boundedLines(
+  form: FormData,
+  name: string,
+  maximum: number,
+): readonly string[] {
+  const values = field(form, name)
     .split(/\r?\n/)
     .map((value) => value.trim().replace(/\s+/g, " "))
     .filter(Boolean);
-  if (values.length < 1 || values.length > 20) {
-    throw new TeamWorkspaceFormError("Responsibilities are invalid");
+  if (values.length < 1 || values.length > maximum) {
+    throw new TeamWorkspaceFormError(`${name} is invalid`);
   }
   if (values.some((value) => value.length > 500)) {
-    throw new TeamWorkspaceFormError("Responsibility is too long");
+    throw new TeamWorkspaceFormError(
+      `${name} contains an entry that is too long`,
+    );
   }
   if (
     new Set(values.map((value) => value.toLocaleLowerCase())).size !==
     values.length
   ) {
-    throw new TeamWorkspaceFormError("Responsibilities contain duplicates");
+    throw new TeamWorkspaceFormError(`${name} contains duplicates`);
   }
   return values;
 }
@@ -132,7 +138,11 @@ export function parseTeamRoleForm(
       title: requiredText(form, "title", 160),
       area: requiredText(form, "area", 160),
       purpose: requiredText(form, "purpose", 1000),
-      responsibilities: responsibilities(form),
+      responsibilities: boundedLines(form, "responsibilities", 20),
+      decision_scope: boundedLines(form, "decision_scope", 12),
+      deliverables: boundedLines(form, "deliverables", 12),
+      collaboration_points: boundedLines(form, "collaboration_points", 12),
+      success_signals: boundedLines(form, "success_signals", 12),
       status: "VACANT",
       principal_id: null,
       availability_status: "UNASSESSED",

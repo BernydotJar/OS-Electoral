@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
   typedRoutes: true,
+  experimental: {
+    viewTransition: true,
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

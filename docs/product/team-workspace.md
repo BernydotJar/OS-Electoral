@@ -110,3 +110,24 @@ The preview is bilingual and canonical: a Spanish role such as `Dirección de ca
 Application is append-only. It never overwrites an existing role, changes a person, alters RACI, assigns capacity, completes onboarding, creates a membership or grants access. Proposed role IDs and the digest are deterministic for the observed workspace version, while the backend always recalculates the preview under lock before committing.
 
 The live interface keeps this workflow separate from manual function creation. A no-op preview has no confirmation button. On narrow screens the impact summary, proposed job descriptions and preserved-role list reflow to one column without horizontal overflow.
+
+## Consultant-grade function dossiers
+
+`C3-FRONT-007` upgrades every versioned blueprint function from a descriptive card to a reusable operating dossier. In addition to purpose, responsibilities and the human coverage plan, each canonical function now contains:
+
+- decisions it prepares or escalates for human review;
+- verifiable deliverables expected from the function;
+- key cross-functional interactions;
+- observable signals that the function is operating coherently.
+
+The profile is localized by canonical blueprint identity, so a Spanish function preserved during an English preview receives the same operating meaning. Proposed functions, preserved matches and applied functions expose the profile through one keyboard-operable disclosure. A historical role without these fields remains readable and is marked as requiring dossier completion rather than receiving invented content.
+
+Manual function creation now requires the same four blocks. Each is entered as a bounded newline-separated list and rejects empty, duplicate or oversized entries. This keeps custom functions at the same organizational quality level as built-in blueprints.
+
+These descriptors are consultative, not authoritative. They may prepare decisions or identify required approvals, but never create the approval, principal assignment, membership, permission, spending, publishing or external execution they describe.
+
+## Chapter-based workspace experience
+
+The campaign command overview no longer renders every workspace in one continuous document. Team work is available at `/{locale}/campaign/team`, while preparation, evidence, strategy and operations have their own routes. Chapter navigation, previous/next controls, browser history, form redirects and locale switching preserve the selected mission.
+
+Only one campaign workspace is rendered on a chapter route. The hero shows a three-stage operating cadence—evidence, human decision and governed execution—and route transitions communicate forward/backward direction. Reduced-motion users receive the same structure and cadence without animation.

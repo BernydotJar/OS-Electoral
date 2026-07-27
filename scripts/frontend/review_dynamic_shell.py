@@ -167,6 +167,22 @@ async def review() -> dict[str, object]:
             "current chapter semantics missing",
         )
         require(
+            await desktop.locator(
+                "#guided-intake, #candidate-workspace, #team-workspace, #strategy-room, #war-room"
+            ).count()
+            == 0,
+            "chapter workspaces leaked into the command overview",
+        )
+        require(
+            await desktop.locator(".experience-mission-pulse li").count() == 3,
+            "evidence-to-decision mission cadence missing",
+        )
+        for cadence_label in ("Evidencia", "Decisión humana", "Ejecución gobernada"):
+            require(
+                await desktop.get_by_text(cadence_label, exact=True).count() >= 1,
+                f"mission cadence label missing: {cadence_label}",
+            )
+        require(
             await desktop.locator("video, source[src*='sceneai.art']").count() == 0,
             "third-party cinematic media leaked into the product",
         )
@@ -232,6 +248,33 @@ async def review() -> dict[str, object]:
             not await hint.evaluate("element => element.open"), "Enter did not close mission hint"
         )
 
+        await desktop.locator(
+            '.campaign-experience a[href="/es/campaign/evidence#candidate-workspace"]'
+        ).click()
+        await desktop.wait_for_url("**/es/campaign/evidence**")
+        await desktop.wait_for_load_state("networkidle")
+        require(
+            await desktop.locator(".chapter-navigation").count() == 1,
+            "chapter navigation missing after mission entry",
+        )
+        require(
+            await desktop.locator("#candidate-workspace").count() == 1,
+            "selected evidence chapter is absent",
+        )
+        require(
+            await desktop.locator(
+                "#guided-intake, #team-workspace, #strategy-room, #war-room"
+            ).count()
+            == 0,
+            "unselected missions leaked into evidence chapter",
+        )
+        require(
+            await desktop.locator('[aria-current="step"][data-current="true"]').count() == 1,
+            "chapter navigation lacks one current step",
+        )
+        await assert_no_overflow(desktop, "desktop-es-evidence")
+        await assert_accessible(desktop, "desktop-es-evidence")
+
         html = await desktop.content()
         require(
             "campaignos_access_token" not in html,
@@ -252,9 +295,12 @@ async def review() -> dict[str, object]:
         await desktop.screenshot(path=ARTIFACT_DIR / "desktop-es.png", full_page=True)
 
         await desktop.get_by_role("button", name="EN", exact=True).click()
-        await desktop.wait_for_url(f"{BASE_URL}/en")
+        await desktop.wait_for_url("**/en/campaign/evidence**")
         await desktop.wait_for_load_state("networkidle")
-        require(desktop.url == f"{BASE_URL}/en", f"English locale navigation failed: {desktop.url}")
+        require(
+            "/en/campaign/evidence" in desktop.url,
+            f"English locale did not preserve the chapter path: {desktop.url}",
+        )
         require(
             await desktop.locator("html").get_attribute("lang") == "en",
             "English document lang missing",
@@ -276,7 +322,7 @@ async def review() -> dict[str, object]:
             ),
         )
         mobile.on("pageerror", lambda error: page_errors.append(str(error)))
-        await mobile.goto(f"{BASE_URL}/es", wait_until="networkidle")
+        await mobile.goto(f"{BASE_URL}/es/campaign/evidence", wait_until="networkidle")
         require(
             await mobile.evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches"),
             "reduced-motion context was not active",
@@ -286,6 +332,21 @@ async def review() -> dict[str, object]:
         require(
             await mobile.get_by_text("DEMO SINTÉTICO", exact=True).count() >= 1,
             "mobile demo badge missing",
+        )
+        require(
+            await mobile.locator("#candidate-workspace").count() == 1,
+            "mobile chapter route did not preserve its selected mission",
+        )
+        reduced_animation = await mobile.locator(".experience-mission-pulse i").first.evaluate(
+            "element => getComputedStyle(element).animationName"
+        )
+        require(
+            reduced_animation == "none",
+            f"mission cadence animates under reduced motion: {reduced_animation}",
+        )
+        require(
+            await mobile.locator(".experience-mission-pulse li").count() == 3,
+            "reduced motion removed the static mission cadence",
         )
         await mobile.screenshot(path=ARTIFACT_DIR / "mobile-es.png", full_page=True)
 
@@ -301,7 +362,9 @@ async def review() -> dict[str, object]:
         "desktop_english": "PASS",
         "mobile_spanish": "PASS",
         "keyboard_skip_link": "PASS",
-        "reduced_motion": "PASS",
+        "chapter_navigation": "PASS_ROUTE_ISOLATION_LOCALE_PRESERVATION",
+        "mission_cadence": "PASS_EVIDENCE_DECISION_GOVERNED_EXECUTION",
+        "reduced_motion": "PASS_STATIC_EQUIVALENT",
         "horizontal_overflow": "NONE",
         "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
         "browser_storage": "EMPTY",

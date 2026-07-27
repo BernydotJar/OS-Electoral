@@ -8,6 +8,7 @@ import pytest
 from pydantic import ValidationError
 
 from campaignos.teams.contracts import (
+    TeamRoleCard,
     TeamWorkspaceAssessmentInput,
     TeamWorkspaceContractError,
     TeamWorkspaceCreate,
@@ -140,6 +141,15 @@ def test_create_and_update_normalize_bounded_team_fields() -> None:
         TeamWorkspaceUpdate.model_validate({})
     with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
         TeamWorkspaceUpdate.model_validate({"role_grants": ["admin"]})
+
+
+def test_historical_role_cards_default_to_an_empty_consulting_profile() -> None:
+    role = TeamRoleCard.model_validate(_payload()["roles"][0])  # type: ignore[index]
+
+    assert role.decision_scope == ()
+    assert role.deliverables == ()
+    assert role.collaboration_points == ()
+    assert role.success_signals == ()
 
 
 def test_complete_team_projection_exposes_gaps_without_creating_authority() -> None:

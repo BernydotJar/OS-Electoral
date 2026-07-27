@@ -6,10 +6,11 @@ from dataclasses import dataclass
 from typing import Literal
 from uuid import uuid4
 
+from campaignos.teams.consulting_profiles import consulting_profile
 from campaignos.teams.contracts import OrganizationTemplate, TeamRoleCard
 
 BlueprintLocale = Literal["es", "en"]
-ROLE_BLUEPRINT_VERSION = "2026-07-25.1"
+ROLE_BLUEPRINT_VERSION = "2026-07-27.1"
 
 
 @dataclass(frozen=True, slots=True)
@@ -523,19 +524,26 @@ def build_role_blueprints(
     if organization_template == "CUSTOM":
         return None
     entries = blueprint_entries(organization_template, locale)
-    return tuple(
-        TeamRoleCard(
-            id=uuid4(),
-            title=item.title,
-            area=item.area,
-            purpose=item.purpose,
-            responsibilities=item.responsibilities,
-            status="VACANT",
-            principal_id=None,
-            availability_status="UNASSESSED",
-            weekly_capacity_hours=None,
-            onboarding_status="NOT_STARTED",
-            vacancy_plan=item.vacancy_plan,
+    roles: list[TeamRoleCard] = []
+    for key, item in entries:
+        profile = consulting_profile(key, locale)
+        roles.append(
+            TeamRoleCard(
+                id=uuid4(),
+                title=item.title,
+                area=item.area,
+                purpose=item.purpose,
+                responsibilities=item.responsibilities,
+                decision_scope=profile.decision_scope,
+                deliverables=profile.deliverables,
+                collaboration_points=profile.collaboration_points,
+                success_signals=profile.success_signals,
+                status="VACANT",
+                principal_id=None,
+                availability_status="UNASSESSED",
+                weekly_capacity_hours=None,
+                onboarding_status="NOT_STARTED",
+                vacancy_plan=item.vacancy_plan,
+            )
         )
-        for _, item in entries
-    )
+    return tuple(roles)

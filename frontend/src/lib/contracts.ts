@@ -437,6 +437,10 @@ export type TeamRoleCard = Readonly<{
   area: string;
   purpose: string;
   responsibilities: readonly string[];
+  decision_scope: readonly string[];
+  deliverables: readonly string[];
+  collaboration_points: readonly string[];
+  success_signals: readonly string[];
   status: TeamRoleStatus;
   principal_id: UUID | null;
   availability_status: TeamAvailabilityStatus;
@@ -555,6 +559,10 @@ export type TeamWorkspaceTemplateSkip = Readonly<{
   area: string;
   matched_role_id: UUID;
   reason: "CANONICAL_BLUEPRINT_MATCH" | "EXACT_TITLE_AREA_MATCH";
+  decision_scope: readonly string[];
+  deliverables: readonly string[];
+  collaboration_points: readonly string[];
+  success_signals: readonly string[];
 }>;
 
 export type TeamWorkspaceTemplatePreview = Readonly<{

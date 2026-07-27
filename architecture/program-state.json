@@ -2,8 +2,8 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-26",
-  "source_branch": "agent/c3-team-003-template-application-preview",
+  "updated_at": "2026-07-27",
+  "source_branch": "agent/c3-front-007-guided-chapter-transitions",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
@@ -772,8 +772,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "TEMPLATE_APPLICATION_CI_GREEN",
-      "next_increment": "HUMAN_PRODUCT_REVIEW"
+      "status": "GUIDED_CHAPTERS_AND_ROLE_DOSSIERS_TESTED_LOCAL",
+      "next_increment": "C3-FRONT-007"
     },
     {
       "id": "WS-07",
@@ -784,8 +784,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "GOVERNED_TEMPLATE_APPLICATION_CI_GREEN",
-      "next_increment": "HUMAN_PRODUCT_REVIEW"
+      "status": "CONSULTANT_ROLE_DOSSIERS_TESTED_LOCAL",
+      "next_increment": "C3-FRONT-007"
     },
     {
       "id": "WS-09",
@@ -1088,6 +1088,16 @@
       ]
     },
     {
+      "id": "C3-FRONT-007",
+      "workstream": "WS-06",
+      "title": "Guided campaign chapter transitions and consultant-grade role dossiers",
+      "status": "ACTIVE",
+      "depends_on": [
+        "C3-TEAM-003",
+        "C3-FRONT-006"
+      ]
+    },
+    {
       "id": "action:production-deployment",
       "status": "HUMAN_BLOCKED",
       "depends_on": [
@@ -1160,7 +1170,7 @@
     "total_critical_or_high": 1
   },
   "github_state": {
-    "verified_at": "2026-07-26",
+    "verified_at": "2026-07-27",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1287,16 +1297,14 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-TEAM-003",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-team-003-template-application-preview",
-      "base": "agent/c3-team-002-role-blueprints-cinematic-hero@e0ca30589f610361254e5348e9b9fd3c77e42b57",
-      "validated_implementation_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
-      "draft_pr": 123,
+      "id": "C3-FRONT-007",
+      "state": "TESTED_LOCAL",
+      "branch": "agent/c3-front-007-guided-chapter-transitions",
+      "base": "agent/c3-team-003-template-application-preview@197ed14e4ebd9c98f744060e3b9bca4d9874a043",
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "HUMAN_PRODUCT_REVIEW"
+      "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
     },
     "latest_checkpoint": {
       "id": "C3-TEAM-003",

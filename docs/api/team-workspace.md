@@ -115,3 +115,22 @@ Apply requires the same `If-Match`, a non-empty `Idempotency-Key` and the exact 
 - keeps `authority_effect=NONE` and `external_effects=NONE`.
 
 A preview with no additions cannot be applied. Digest drift returns `TEAM_TEMPLATE_PREVIEW_CONFLICT`; an already-complete template returns `TEAM_TEMPLATE_NO_CHANGES`.
+
+## Consultant profile fields
+
+Blueprint catalog `2026-07-27.1` adds four bounded organizational arrays to each role card:
+
+```json
+{
+  "decision_scope": ["Prepare priorities for human decision"],
+  "deliverables": ["Weekly agenda", "Decision register", "Blocker map"],
+  "collaboration_points": ["Research and strategy", "Legal and finance"],
+  "success_signals": ["Owned priorities", "Visible decisions", "No implicit authority"]
+}
+```
+
+Each list accepts at most twelve unique normalized entries, each bounded to 500 characters. Historical persisted documents that predate the catalog deserialize with empty arrays; the service does not backfill or infer organizational meaning.
+
+Template additions and preserved matches both include the localized canonical consulting profile. The fields therefore participate in the deterministic preview digest and are revalidated under lock during application. A client cannot submit its own proposed profile through template apply.
+
+Manual PATCH replacement or the live append workflow may persist a custom profile, but the fields remain descriptive. They do not write authorization tables, assign a principal, create capacity, complete onboarding or produce an external effect.

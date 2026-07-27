@@ -3,7 +3,12 @@
 import type { Dictionary, Locale } from "@/lib/i18n";
 
 function changeDocumentLocale(locale: Locale): void {
-  window.location.assign(`/${locale}`);
+  const segments = window.location.pathname.split("/");
+  if (segments.length > 1) segments[1] = locale;
+  const pathname = segments.join("/") || `/${locale}`;
+  window.location.assign(
+    `${pathname}${window.location.search}${window.location.hash}`,
+  );
 }
 
 export function LocaleSwitcher({

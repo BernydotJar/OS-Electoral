@@ -1,4 +1,8 @@
+import type { Route } from "next";
+import Link from "next/link";
 import type { CSSProperties } from "react";
+
+import { campaignChapterHref } from "@/lib/campaign-chapters";
 
 import type { CampaignExperienceMode } from "@/lib/campaign-experience";
 import type {
@@ -8,12 +12,14 @@ import type {
 import type { Dictionary } from "@/lib/i18n";
 
 export function CampaignExperienceHero({
+  locale,
   dictionary,
   mode,
   campaignName,
   currentPhase,
   journey,
 }: Readonly<{
+  locale: "es" | "en";
   dictionary: Dictionary;
   mode: CampaignExperienceMode;
   campaignName: string;
@@ -43,11 +49,10 @@ export function CampaignExperienceHero({
     : complete
       ? dictionary.journey.commandCenterAction
       : dictionary.journey.resumeAction;
-  const actionHref = firstUse
-    ? "#guided-intake"
-    : complete
-      ? "#war-room"
-      : currentPhase.href;
+  const actionHref = campaignChapterHref(
+    locale,
+    firstUse ? "foundation" : complete ? "operations" : currentPhase.key,
+  );
   const progress =
     journey.phases.length === 0
       ? 0
@@ -63,6 +68,7 @@ export function CampaignExperienceHero({
       data-mode={mode}
       data-layout={layout}
       aria-labelledby="experience-title"
+      data-chapter={currentPhase.key}
     >
       <div className="experience-atmosphere" aria-hidden="true">
         <span className="experience-orbit experience-orbit-one" />
@@ -72,6 +78,7 @@ export function CampaignExperienceHero({
         <span className="experience-horizon-light" />
         <span className="experience-aurora" />
         <span className="experience-signal" />
+        <span className="experience-sweep" />
       </div>
 
       {!firstUse ? (
@@ -91,12 +98,29 @@ export function CampaignExperienceHero({
             <p>{body}</p>
           </details>
         )}
-        <a href={actionHref}>
+        <Link href={actionHref as Route} transitionTypes={["chapter-forward"]}>
           <span>{action}</span>
           <span className="experience-arrow" aria-hidden="true">
             →
           </span>
-        </a>
+        </Link>
+        <ol
+          className="experience-mission-pulse"
+          aria-label={dictionary.journey.missionPulseLabel}
+        >
+          {Object.entries(dictionary.journey.missionPulseStages).map(
+            ([stage, label], index) => (
+              <li
+                key={stage}
+                data-stage={stage}
+                style={{ "--pulse-index": index } as CSSProperties}
+              >
+                <i aria-hidden="true" />
+                <span>{label}</span>
+              </li>
+            ),
+          )}
+        </ol>
       </div>
 
       {firstUse ? (

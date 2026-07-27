@@ -607,3 +607,13 @@
 - Hosted PostgreSQL/browser evidence proved the governed lean 5 → full 10 → manual 11 workflow, five additions, three preserved bilingual matches, responsive single-column preview, persistence, keyboard interaction and zero axe violations.
 - PostgreSQL 18 RLS, backup/restore, constrained Compose stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
 - Marked `C3-TEAM-003` `CI_GREEN`; production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-27 — C3-FRONT-007 guided chapter and consulting-dossier implementation
+
+- Converted the locale root into a campaign command overview and added stable foundation, evidence, team, strategy and operations chapter routes.
+- Added native Next/React directional view transitions, browser-history preservation, route-aware redirects and a static reduced-motion equivalent.
+- Added an evidence → human decision → governed execution cadence to the cinematic hero and reduced the visual dominance of the optional context hint.
+- Added bilingual consultant-grade decision, deliverable, interaction and operating-signal profiles to every role blueprint and to proposed, preserved, applied and manual role workflows.
+- Passed 106 frontend tests, production build, zero-vulnerability npm audit, 53 focused backend tests, Ruff, format, strict mypy and the demo ES/EN/mobile browser review with zero axe violations or overflow.
+- The local PostgreSQL/browser journey remains blocked before product startup by nested Docker layer registration (`lchown /var/empty`); exact-head hosted CI is required.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 
+import { TeamRoleDossier } from "@/components/team-role-dossier";
 import type {
   TeamWorkspaceProjection,
   TeamWorkspaceTemplatePreview,
@@ -128,7 +129,7 @@ export function TeamWorkspaceEditor({
 
         <form
           className="team-template-preview-form"
-          action={`/${locale}#team-template-preview`}
+          action={`/${locale}/campaign/team#team-template-preview`}
           method="get"
         >
           <label>
@@ -185,11 +186,17 @@ export function TeamWorkspaceEditor({
                         <h5>{role.title}</h5>
                         <p>{role.purpose}</p>
                       </div>
-                      <ul>
-                        {role.responsibilities.map((responsibility) => (
-                          <li key={responsibility}>{responsibility}</li>
-                        ))}
-                      </ul>
+                      <div className="team-template-responsibilities">
+                        <strong>
+                          {dictionary.teamWorkspace.roleResponsibilitiesLabel}
+                        </strong>
+                        <ul>
+                          {role.responsibilities.map((responsibility) => (
+                            <li key={responsibility}>{responsibility}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <TeamRoleDossier profile={role} dictionary={dictionary} />
                     </article>
                   ))}
                 </div>
@@ -215,6 +222,7 @@ export function TeamWorkspaceEditor({
                           ? dictionary.teamWorkspace.templateCanonicalMatch
                           : dictionary.teamWorkspace.templateExactMatch}
                       </small>
+                      <TeamRoleDossier profile={role} dictionary={dictionary} />
                     </li>
                   ))}
                 </ul>
@@ -331,6 +339,52 @@ export function TeamWorkspaceEditor({
                 }
               />
               <small>{dictionary.teamWorkspace.oneResponsibilityPerLine}</small>
+            </label>
+            <label className="field-wide">
+              <span>{dictionary.teamWorkspace.decisionScopeLabel}</span>
+              <textarea
+                name="decision_scope"
+                maxLength={6000}
+                rows={3}
+                required
+                placeholder={dictionary.teamWorkspace.decisionScopePlaceholder}
+              />
+              <small>{dictionary.teamWorkspace.consultingListHelp}</small>
+            </label>
+            <label className="field-wide">
+              <span>{dictionary.teamWorkspace.deliverablesLabel}</span>
+              <textarea
+                name="deliverables"
+                maxLength={6000}
+                rows={4}
+                required
+                placeholder={dictionary.teamWorkspace.deliverablesPlaceholder}
+              />
+              <small>{dictionary.teamWorkspace.consultingListHelp}</small>
+            </label>
+            <label className="field-wide">
+              <span>{dictionary.teamWorkspace.collaborationPointsLabel}</span>
+              <textarea
+                name="collaboration_points"
+                maxLength={6000}
+                rows={3}
+                required
+                placeholder={
+                  dictionary.teamWorkspace.collaborationPointsPlaceholder
+                }
+              />
+              <small>{dictionary.teamWorkspace.consultingListHelp}</small>
+            </label>
+            <label className="field-wide">
+              <span>{dictionary.teamWorkspace.successSignalsLabel}</span>
+              <textarea
+                name="success_signals"
+                maxLength={6000}
+                rows={4}
+                required
+                placeholder={dictionary.teamWorkspace.successSignalsPlaceholder}
+              />
+              <small>{dictionary.teamWorkspace.consultingListHelp}</small>
             </label>
             <label className="field-wide">
               <span>{dictionary.teamWorkspace.vacancyPlan}</span>

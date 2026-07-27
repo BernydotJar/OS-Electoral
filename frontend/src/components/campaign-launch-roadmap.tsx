@@ -1,10 +1,16 @@
+import type { Route } from "next";
+import Link from "next/link";
+
+import { campaignChapterHref } from "@/lib/campaign-chapters";
 import type { CampaignJourney } from "@/lib/campaign-journey";
-import type { Dictionary } from "@/lib/i18n";
+import type { Dictionary, Locale } from "@/lib/i18n";
 
 export function CampaignLaunchRoadmap({
+  locale,
   dictionary,
   journey,
 }: {
+  locale: Locale;
   dictionary: Dictionary;
   journey: CampaignJourney;
 }) {
@@ -61,9 +67,12 @@ export function CampaignLaunchRoadmap({
             <span>{dictionary.journey.blockedBody}</span>
           </div>
         ) : (
-          <a href={currentPhase.href}>
+          <Link
+            href={campaignChapterHref(locale, currentPhase.key) as Route}
+            transitionTypes={["chapter-forward"]}
+          >
             {dictionary.journey.phaseActions[currentPhase.key]}
-          </a>
+          </Link>
         )}
       </article>
 
@@ -99,9 +108,13 @@ export function CampaignLaunchRoadmap({
                   ·
                 </span>
               ) : (
-                <a className="journey-open" href={phase.href}>
+                <Link
+                  className="journey-open"
+                  href={campaignChapterHref(locale, phase.key) as Route}
+                  transitionTypes={["chapter-forward"]}
+                >
                   {dictionary.journey.openPhase}
-                </a>
+                </Link>
               )}
             </li>
           );

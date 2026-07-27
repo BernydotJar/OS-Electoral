@@ -145,6 +145,10 @@ function parseRole(value: unknown, label: string): TeamRoleCard {
       "area",
       "purpose",
       "responsibilities",
+      "decision_scope",
+      "deliverables",
+      "collaboration_points",
+      "success_signals",
       "status",
       "principal_id",
       "availability_status",
@@ -163,6 +167,22 @@ function parseRole(value: unknown, label: string): TeamRoleCard {
       source.responsibilities,
       `${label}.responsibilities`,
     ).map((item, index) => text(item, `${label}.responsibilities[${index}]`)),
+    decision_scope: array(source.decision_scope, `${label}.decision_scope`).map(
+      (item, index) => text(item, `${label}.decision_scope[${index}]`),
+    ),
+    deliverables: array(source.deliverables, `${label}.deliverables`).map(
+      (item, index) => text(item, `${label}.deliverables[${index}]`),
+    ),
+    collaboration_points: array(
+      source.collaboration_points,
+      `${label}.collaboration_points`,
+    ).map((item, index) =>
+      text(item, `${label}.collaboration_points[${index}]`),
+    ),
+    success_signals: array(
+      source.success_signals,
+      `${label}.success_signals`,
+    ).map((item, index) => text(item, `${label}.success_signals[${index}]`)),
     status: literal(
       source.status,
       ["FILLED", "VACANT"] as const,
@@ -728,7 +748,17 @@ function parseTemplateSkip(
   const source = record(value, label);
   exactKeys(
     source,
-    ["blueprint_key", "title", "area", "matched_role_id", "reason"],
+    [
+      "blueprint_key",
+      "title",
+      "area",
+      "matched_role_id",
+      "reason",
+      "decision_scope",
+      "deliverables",
+      "collaboration_points",
+      "success_signals",
+    ],
     label,
   );
   return {
@@ -741,6 +771,22 @@ function parseTemplateSkip(
       ["CANONICAL_BLUEPRINT_MATCH", "EXACT_TITLE_AREA_MATCH"] as const,
       `${label}.reason`,
     ),
+    decision_scope: array(source.decision_scope, `${label}.decision_scope`).map(
+      (item, index) => text(item, `${label}.decision_scope[${index}]`),
+    ),
+    deliverables: array(source.deliverables, `${label}.deliverables`).map(
+      (item, index) => text(item, `${label}.deliverables[${index}]`),
+    ),
+    collaboration_points: array(
+      source.collaboration_points,
+      `${label}.collaboration_points`,
+    ).map((item, index) =>
+      text(item, `${label}.collaboration_points[${index}]`),
+    ),
+    success_signals: array(
+      source.success_signals,
+      `${label}.success_signals`,
+    ).map((item, index) => text(item, `${label}.success_signals[${index}]`)),
   };
 }
 
