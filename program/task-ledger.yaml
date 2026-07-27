@@ -770,7 +770,7 @@
     {
       "task_id": "C3-FRONT-007",
       "owner": "WS-06/WS-08",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "frontend/src/app/[locale]/campaign/[chapter]/page.tsx",
         "frontend/src/components/campaign-chapter-navigation.tsx",
@@ -793,7 +793,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted PostgreSQL/browser CI remains required",
         "Human product review and merge of the stacked PR chain remain required",
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"

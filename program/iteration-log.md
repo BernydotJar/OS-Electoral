@@ -614,6 +614,14 @@
 - Added native Next/React directional view transitions, browser-history preservation, route-aware redirects and a static reduced-motion equivalent.
 - Added an evidence → human decision → governed execution cadence to the cinematic hero and reduced the visual dominance of the optional context hint.
 - Added bilingual consultant-grade decision, deliverable, interaction and operating-signal profiles to every role blueprint and to proposed, preserved, applied and manual role workflows.
-- Passed 106 frontend tests, production build, zero-vulnerability npm audit, 53 focused backend tests, Ruff, format, strict mypy and the demo ES/EN/mobile browser review with zero axe violations or overflow.
+- Passed 106 frontend tests, production build, zero-vulnerability npm audit, 64 focused backend tests, Ruff, format, strict mypy and the demo ES/EN/mobile browser review with zero axe violations or overflow.
 - The local PostgreSQL/browser journey remains blocked before product startup by nested Docker layer registration (`lchown /var/empty`); exact-head hosted CI is required.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-27 — C3-FRONT-007 exact-head CI closure
+
+- Published stacked draft PR `#124` on `agent/c3-front-007-guided-chapter-transitions`, based on PR `#123`.
+- Validated implementation head `0c720d85af4c2c47daa2086f738e2eee637ae9f4` with CampaignOS CI `30303748356` and Runtime Visual Review `30303748338`.
+- Hosted PostgreSQL/browser evidence proved isolated chapter routes, browser history, locale preservation, consultant dossiers, lean 5 → full 10 → manual 11 persistence, mobile layout, keyboard interaction, reduced-motion equivalence and zero axe violations.
+- PostgreSQL 18 RLS, backup/restore, constrained stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
+- Marked `C3-FRONT-007` `CI_GREEN`; production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
