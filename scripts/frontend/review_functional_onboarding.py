@@ -158,11 +158,11 @@ async def review() -> dict[str, object]:
             "seeded campaign was not selected",
         )
         require(
-            await page.get_by_role("link", name="Comenzar ruta", exact=True).count() == 1,
+            await page.locator('a[href="/es/campaign/foundation#guided-intake"]').count() == 1,
             "foundation chapter entry link missing",
         )
         require(
-            await page.get_by_role("button", name="Comenzar ruta").count() == 0,
+            await page.get_by_role("button", name="Comenzar la ruta", exact=True).count() == 0,
             "foundation mutation leaked into the command overview",
         )
         for chapter_id in (
@@ -186,7 +186,7 @@ async def review() -> dict[str, object]:
         )
         require(storage == {"local": [], "session": []}, f"browser storage used: {storage}")
 
-        await page.get_by_role("link", name="Comenzar ruta", exact=True).click()
+        await page.locator('a[href="/es/campaign/foundation#guided-intake"]').click()
         await page.wait_for_url("**/es/campaign/foundation**")
         await page.wait_for_load_state("networkidle")
         require(
