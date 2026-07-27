@@ -158,7 +158,7 @@ async def review() -> dict[str, object]:
             "seeded campaign was not selected",
         )
         require(
-            await page.locator('a[href="/es/campaign/foundation#guided-intake"]').count() == 1,
+            await page.get_by_role("link", name="Comenzar la ruta", exact=True).count() == 1,
             "foundation chapter entry link missing",
         )
         require(
@@ -186,7 +186,7 @@ async def review() -> dict[str, object]:
         )
         require(storage == {"local": [], "session": []}, f"browser storage used: {storage}")
 
-        await page.locator('a[href="/es/campaign/foundation#guided-intake"]').click()
+        await page.get_by_role("link", name="Comenzar la ruta", exact=True).click()
         await page.wait_for_url("**/es/campaign/foundation**")
         await page.wait_for_load_state("networkidle")
         require(
@@ -253,7 +253,9 @@ async def review() -> dict[str, object]:
             await page.get_by_role("heading", level=1).inner_text() == "Aterrizar la campaña",
             "foundation chapter lost its stable chapter identity after save",
         )
-        await page.locator('a[href="/es/campaign/evidence#candidate-workspace"]').click()
+        await page.locator(
+            '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
+        ).click()
         await page.wait_for_url("**/es/campaign/evidence**")
         await page.wait_for_load_state("networkidle")
         require(
@@ -321,7 +323,9 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence was not projected",
         )
-        await page.locator('a[href="/es/campaign/team#team-workspace"]').click()
+        await page.locator(
+            '.chapter-navigation-track a[href="/es/campaign/team#team-workspace"]'
+        ).click()
         await page.wait_for_url("**/es/campaign/team**")
         await page.wait_for_load_state("networkidle")
         require(
@@ -554,13 +558,17 @@ async def review() -> dict[str, object]:
             "manual role consultant dossier did not persist",
         )
 
-        await page.locator('a[href="/es/campaign/evidence#candidate-workspace"]').click()
+        await page.locator(
+            '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
+        ).click()
         await page.wait_for_url("**/es/campaign/evidence**")
         require(
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence did not persist on its chapter route",
         )
-        await page.locator('a[href="/es/campaign/foundation#guided-intake"]').click()
+        await page.locator(
+            '.chapter-navigation-track a[href="/es/campaign/foundation#guided-intake"]'
+        ).click()
         await page.wait_for_url("**/es/campaign/foundation**")
         require(
             await page.get_by_label("Cargo objetivo").input_value() == "Alcaldía Municipal",
@@ -570,7 +578,9 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Alcaldía Municipal", exact=True).count() >= 1,
             "persisted intake value is absent from its read projection",
         )
-        await page.locator('a[href="/es/campaign/team#team-workspace"]').click()
+        await page.locator(
+            '.chapter-navigation-track a[href="/es/campaign/team#team-workspace"]'
+        ).click()
         await page.wait_for_url("**/es/campaign/team**")
         require(
             await page.get_by_text("Coordinación de voluntariado", exact=True).count() >= 1,
