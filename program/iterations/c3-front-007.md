@@ -50,14 +50,14 @@ This increment changes navigation, presentation and organizational role descript
 
 ## Exact-head CI closure
 
-- validated implementation head: `0c720d85af4c2c47daa2086f738e2eee637ae9f4`
+- validated implementation head: `d5e9347f88c59784dec4bf07965ff9adf0e51dd6`
 - draft PR: `#124`
-- CampaignOS CI: `30303748356` — `SUCCESS`
-- Runtime Visual Review: `30303748338` — `SUCCESS`
-- quality job: `90102796868`
-- API/PostgreSQL/browser job: `90102796867`
-- visual job: `90102796016`
-- recovery job: `90102796732`
+- CampaignOS CI: `30306823233` — `SUCCESS`
+- Runtime Visual Review: `30306822839` — `SUCCESS`
+- quality job: `90112970462`
+- API/PostgreSQL/browser job: `90112970562`
+- visual job: `90112968990`
+- recovery job: `90112970438`
 - status: `CI_GREEN`
 - production: `BLOCKED`
 - release: `DENY_RELEASE`

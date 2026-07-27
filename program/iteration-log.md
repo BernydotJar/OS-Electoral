@@ -625,3 +625,12 @@
 - Hosted PostgreSQL/browser evidence proved isolated chapter routes, browser history, locale preservation, consultant dossiers, lean 5 → full 10 → manual 11 persistence, mobile layout, keyboard interaction, reduced-motion equivalence and zero axe violations.
 - PostgreSQL 18 RLS, backup/restore, constrained stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
 - Marked `C3-FRONT-007` `CI_GREEN`; production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+
+## 2026-07-27 — C3-FRONT-007 Docker Desktop BuildKit recovery hotfix
+
+- Reproduced the reported `frontend grpc server closed unexpectedly` path with a controlled Docker CLI stub.
+- Updated `make functional-dev` to ignore a foreign checkout `VIRTUAL_ENV`, bootstrap the selected BuildKit builder and retry exactly once only for that transport failure.
+- Preserved fail-closed behavior for unrelated Dockerfile/build errors and avoided automatic cache, image or volume pruning.
+- Passed 12 focused launcher tests, ShellCheck and exact-head CampaignOS CI `30306823233` plus Runtime Visual Review `30306822839` at `d5e9347f88c59784dec4bf07965ff9adf0e51dd6`.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
