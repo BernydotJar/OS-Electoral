@@ -2,7 +2,7 @@
 
 - `branch`: `agent/c3-front-007-guided-chapter-transitions`
 - `base`: `agent/c3-team-003-template-application-preview@197ed14e4ebd9c98f744060e3b9bca4d9874a043`
-- `status`: `TESTED_LOCAL`
+- `status`: `CI_GREEN`
 - `production_status`: `BLOCKED`
 - `release_decision`: `DENY_RELEASE`
 - `external_effects`: `NONE`
@@ -47,3 +47,18 @@ Human product review found three material experience gaps: campaign chapters sti
 ## Product boundaries
 
 This increment changes navigation, presentation and organizational role descriptions. It does not assign people, create RACI, assess capacity, complete onboarding, grant access, infer political preferences, activate media, publish content, contact citizens, spend funds, deploy infrastructure or approve production.
+
+## Exact-head CI closure
+
+- validated implementation head: `0c720d85af4c2c47daa2086f738e2eee637ae9f4`
+- draft PR: `#124`
+- CampaignOS CI: `30303748356` — `SUCCESS`
+- Runtime Visual Review: `30303748338` — `SUCCESS`
+- quality job: `90102796868`
+- API/PostgreSQL/browser job: `90102796867`
+- visual job: `90102796016`
+- recovery job: `90102796732`
+- status: `CI_GREEN`
+- production: `BLOCKED`
+- release: `DENY_RELEASE`
+- external effects: `NONE`

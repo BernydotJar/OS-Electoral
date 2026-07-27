@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "GUIDED_CHAPTERS_AND_ROLE_DOSSIERS_TESTED_LOCAL",
-      "next_increment": "C3-FRONT-007"
+      "status": "GUIDED_CHAPTERS_AND_ROLE_DOSSIERS_CI_GREEN",
+      "next_increment": "HUMAN_PRODUCT_REVIEW"
     },
     {
       "id": "WS-07",
@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "CONSULTANT_ROLE_DOSSIERS_TESTED_LOCAL",
-      "next_increment": "C3-FRONT-007"
+      "status": "CONSULTANT_ROLE_DOSSIERS_CI_GREEN",
+      "next_increment": "HUMAN_PRODUCT_REVIEW"
     },
     {
       "id": "WS-09",
@@ -111,14 +111,14 @@
   ],
   "ready_tasks": [],
   "published_unreviewed_increment": {
-    "id": "C3-TEAM-003",
+    "id": "C3-FRONT-007",
     "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-team-003-template-application-preview",
-    "base": "agent/c3-team-002-role-blueprints-cinematic-hero",
-    "validated_implementation_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
-    "draft_pr": 123,
-    "ci_run_id": 30225102075,
-    "visual_run_id": 30225102063,
+    "branch": "agent/c3-front-007-guided-chapter-transitions",
+    "base": "agent/c3-team-003-template-application-preview",
+    "validated_implementation_head": "0c720d85af4c2c47daa2086f738e2eee637ae9f4",
+    "draft_pr": 124,
+    "ci_run_id": 30303748356,
+    "visual_run_id": 30303748338,
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE"
   },
@@ -329,8 +329,10 @@
     "front_007_backend_focused": "PASS_64_TEAM_CONTRACT_BLUEPRINT_PREVIEW_MODEL_API",
     "front_007_demo_browser": "PASS_CHAPTER_ROUTES_ES_EN_MOBILE_REDUCED_MOTION_ZERO_AXE",
     "front_007_role_dossiers": "PASS_BILINGUAL_PROPOSED_PRESERVED_APPLIED_MANUAL",
-    "front_007_functional_browser": "ENCODED_HOSTED_CI_REQUIRED_LOCAL_DOCKER_LAYER_BLOCKED",
-    "front_007_authority_boundary": "PASS_NO_IDENTITY_PERMISSION_PROFILE_CONTACT_SPEND_OR_EXTERNAL_EFFECT"
+    "front_007_functional_browser": "PASS_HOSTED_CHAPTERS_HISTORY_DOSSIERS_LEAN_5_FULL_10_CUSTOM_11",
+    "front_007_authority_boundary": "PASS_NO_IDENTITY_PERMISSION_PROFILE_CONTACT_SPEND_OR_EXTERNAL_EFFECT",
+    "front_007_exact_head_ci": "PASS_RUN_30303748356",
+    "front_007_visual_review": "PASS_RUN_30303748338"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -371,13 +373,15 @@
   },
   "active_local_increment": {
     "id": "C3-FRONT-007",
-    "state": "TESTED_LOCAL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-front-007-guided-chapter-transitions",
     "base": "agent/c3-team-003-template-application-preview@197ed14e4ebd9c98f744060e3b9bca4d9874a043",
+    "validated_implementation_head": "0c720d85af4c2c47daa2086f738e2eee637ae9f4",
+    "draft_pr": 124,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
+    "next_action": "HUMAN_PRODUCT_REVIEW"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -390,27 +394,27 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-TEAM-003",
-    "branch": "agent/c3-team-003-template-application-preview",
-    "validated_implementation_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
-    "draft_pr": 123,
+    "id": "C3-FRONT-007",
+    "branch": "agent/c3-front-007-guided-chapter-transitions",
+    "validated_implementation_head": "0c720d85af4c2c47daa2086f738e2eee637ae9f4",
+    "draft_pr": 124,
     "status": "CI_GREEN",
-    "ci_run_id": 30225102075,
-    "visual_run_id": 30225102063,
-    "quality_job_id": 89853902939,
-    "frontend_job_id": 89853902928,
-    "visual_job_id": 89853902732,
-    "recovery_job_id": 89853902951,
-    "recovery_artifact_id": 8638329866,
-    "recovery_artifact_digest": "sha256:2885b536f549c38c8ebb3230837a720b413e1c88911f50f231ffeb5b942775ac",
-    "supply_chain_artifact_id": 8638326099,
-    "supply_chain_artifact_digest": "sha256:1dde0e810e269220b1e6ffdd7174ce3ecf167d1d0fed273dd6e038a9209ffd69",
-    "frontend_artifact_id": 8638357710,
-    "frontend_artifact_digest": "sha256:3b545067ed15110098981050aab7c3d6f70cd51bd2c4767e3a1512f8629fd3d6",
-    "visual_artifact_id": 8638336015,
-    "visual_artifact_digest": "sha256:c36014383c4db35779258fc6fbfe1c615e3dfbf37a5026a7f1ab899d4870170a",
-    "gitleaks_artifact_id": 8638326247,
-    "gitleaks_artifact_digest": "sha256:4624bf468abbc7c35cbab9f691c0a0a0ebe4a9154397a2a9de5772c7049e1c69",
+    "ci_run_id": 30303748356,
+    "visual_run_id": 30303748338,
+    "quality_job_id": 90102796868,
+    "frontend_job_id": 90102796867,
+    "visual_job_id": 90102796016,
+    "recovery_job_id": 90102796732,
+    "recovery_artifact_id": 8667601676,
+    "recovery_artifact_digest": "sha256:bcec609d2aa282871fd5be3b989c4103a06303294d33546b1ec3672848fa6d71",
+    "supply_chain_artifact_id": 8667588724,
+    "supply_chain_artifact_digest": "sha256:da1de30f3ce0654fc628a097afe0298db98d77ce1904715b82c012f5cce6db0e",
+    "frontend_artifact_id": 8667669021,
+    "frontend_artifact_digest": "sha256:67cd30942026413546a7d662cd796c1e3aa2251f29d3c7f26e84d61a7fcf5670",
+    "visual_artifact_id": 8667619538,
+    "visual_artifact_digest": "sha256:843870b1ccacc9751407610e113669eff4e5b726ab00afb6f5fd10b6376d8dbe",
+    "gitleaks_artifact_id": 8667587880,
+    "gitleaks_artifact_digest": "sha256:e8e337a70aa36798a8726bf62b21d9e2d6de26a8dc3c7418a065bd0019245a94",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
