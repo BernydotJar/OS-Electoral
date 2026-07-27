@@ -434,7 +434,7 @@ async def review() -> dict[str, object]:
             "full template preview did not propose exactly five missing functions",
         )
         require(
-            await page.locator(".team-template-skipped-list li").count() == 3,
+            await page.locator(".team-template-skipped-list > li").count() == 3,
             "full template preview did not preserve the three equivalent functions",
         )
         for proposed_title in (
