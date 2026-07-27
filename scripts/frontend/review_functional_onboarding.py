@@ -466,8 +466,15 @@ async def review() -> dict[str, object]:
         proposed_dossier = page.locator(".team-template-role-card .team-role-dossier").first
         await proposed_dossier.locator("summary").click()
         require(
-            await proposed_dossier.get_by_text("Plan digital", exact=True).count() == 1,
-            "proposed function dossier does not include a verifiable deliverable",
+            await proposed_dossier.locator(".team-role-dossier-grid > section").count() == 4,
+            "proposed function dossier does not expose four consulting sections",
+        )
+        require(
+            await proposed_dossier.locator(
+                ".team-role-dossier-grid > section:nth-child(2) li"
+            ).count()
+            == 3,
+            "proposed function dossier does not expose three deliverables",
         )
         await page.set_viewport_size({"width": 390, "height": 844})
         preview_columns = await page.locator(".team-template-role-grid").evaluate(
