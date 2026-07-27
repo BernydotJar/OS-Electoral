@@ -55,6 +55,11 @@ async def assert_no_overflow(page: Page, label: str) -> None:
     )
 
 
+async def wait_for_chapter(page: Page, url_pattern: str, selector: str) -> None:
+    await page.wait_for_url(url_pattern)
+    await page.locator(selector).wait_for(state="visible")
+
+
 async def assert_accessible(page: Page, label: str) -> None:
     require(AXE_SOURCE.is_file(), f"axe-core runtime missing: {AXE_SOURCE}")
     await page.add_script_tag(path=str(AXE_SOURCE))
@@ -187,8 +192,7 @@ async def review() -> dict[str, object]:
         require(storage == {"local": [], "session": []}, f"browser storage used: {storage}")
 
         await page.get_by_role("link", name="Comenzar la ruta", exact=True).click()
-        await page.wait_for_url("**/es/campaign/foundation**")
-        await page.wait_for_load_state("networkidle")
+        await wait_for_chapter(page, "**/es/campaign/foundation**", "#guided-intake")
         require(
             await page.locator("#guided-intake").count() == 1,
             "foundation chapter did not render its mission",
@@ -256,8 +260,7 @@ async def review() -> dict[str, object]:
         await page.locator(
             '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
         ).click()
-        await page.wait_for_url("**/es/campaign/evidence**")
-        await page.wait_for_load_state("networkidle")
+        await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
         require(
             await page.locator("#candidate-workspace").count() == 1,
             "evidence chapter did not render its mission",
@@ -272,11 +275,13 @@ async def review() -> dict[str, object]:
             "candidate dossier start control did not unlock",
         )
         await page.go_back(wait_until="networkidle")
+        await wait_for_chapter(page, "**/es/campaign/foundation**", "#guided-intake")
         require(
             "/es/campaign/foundation" in page.url,
             "browser back did not return to the foundation chapter",
         )
         await page.go_forward(wait_until="networkidle")
+        await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
         require(
             "/es/campaign/evidence" in page.url,
             "browser forward did not restore the evidence chapter",
@@ -326,8 +331,7 @@ async def review() -> dict[str, object]:
         await page.locator(
             '.chapter-navigation-track a[href="/es/campaign/team#team-workspace"]'
         ).click()
-        await page.wait_for_url("**/es/campaign/team**")
-        await page.wait_for_load_state("networkidle")
+        await wait_for_chapter(page, "**/es/campaign/team**", "#team-workspace")
         require(
             await page.locator("#team-workspace").count() == 1,
             "team chapter did not render its mission",
@@ -561,7 +565,7 @@ async def review() -> dict[str, object]:
         await page.locator(
             '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
         ).click()
-        await page.wait_for_url("**/es/campaign/evidence**")
+        await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
         require(
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence did not persist on its chapter route",
@@ -569,7 +573,7 @@ async def review() -> dict[str, object]:
         await page.locator(
             '.chapter-navigation-track a[href="/es/campaign/foundation#guided-intake"]'
         ).click()
-        await page.wait_for_url("**/es/campaign/foundation**")
+        await wait_for_chapter(page, "**/es/campaign/foundation**", "#guided-intake")
         require(
             await page.get_by_label("Cargo objetivo").input_value() == "Alcaldía Municipal",
             "intake did not persist on its chapter route",
@@ -581,7 +585,7 @@ async def review() -> dict[str, object]:
         await page.locator(
             '.chapter-navigation-track a[href="/es/campaign/team#team-workspace"]'
         ).click()
-        await page.wait_for_url("**/es/campaign/team**")
+        await wait_for_chapter(page, "**/es/campaign/team**", "#team-workspace")
         require(
             await page.get_by_text("Coordinación de voluntariado", exact=True).count() >= 1,
             "team chapter did not restore after chapter-to-chapter navigation",
