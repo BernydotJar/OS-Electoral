@@ -433,21 +433,24 @@ async def review() -> dict[str, object]:
             await page.get_by_role("button", name="Agregar función").count() == 1,
             "team role editor missing after map creation",
         )
-        await page.get_by_label("Tipo de trabajo").select_option("DELIVERABLE")
-        await page.get_by_label("Prioridad").first.select_option("HIGH")
-        await page.get_by_label("Cadencia").first.select_option("WEEKLY")
-        await page.get_by_label("Nombre del seguimiento").fill("Agenda semanal de dirección")
-        await page.get_by_label("Resultado y alcance").fill(
+        work_creator = page.locator(".team-work-item-creator")
+        await work_creator.get_by_label("Tipo de trabajo").select_option("DELIVERABLE")
+        await work_creator.get_by_label("Prioridad").select_option("HIGH")
+        await work_creator.locator('select[name="cadence"]').select_option("WEEKLY")
+        await work_creator.get_by_label("Nombre del seguimiento").fill(
+            "Agenda semanal de dirección"
+        )
+        await work_creator.get_by_label("Resultado y alcance").fill(
             "Consolidar prioridades, decisiones pendientes y bloqueos del equipo."
         )
-        await page.get_by_label("Fecha objetivo").first.fill("2026-08-05")
-        await page.get_by_label("Siguiente acción concreta").first.fill(
+        await work_creator.get_by_label("Fecha objetivo").fill("2026-08-05")
+        await work_creator.get_by_label("Siguiente acción concreta").fill(
             "Validar el alcance y los entregables con la jefatura de campaña."
         )
-        await page.get_by_label("Evidencia o comprobantes esperados").fill(
+        await work_creator.get_by_label("Evidencia o comprobantes esperados").fill(
             "Registro de decisiones\nMapa de bloqueos"
         )
-        await page.get_by_role("button", name="Agregar al tablero").click()
+        await work_creator.get_by_role("button", name="Agregar al tablero").click()
         await page.wait_for_url("**notice=team_work_item_saved**")
         await page.wait_for_load_state("networkidle")
         require(
