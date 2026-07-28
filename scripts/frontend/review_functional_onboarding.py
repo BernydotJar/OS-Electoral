@@ -483,11 +483,16 @@ async def review() -> dict[str, object]:
             await work_details.get_by_text("Registro de decisiones", exact=True).count() == 1,
             "operational evidence did not persist",
         )
-        active_option = work_card.locator('select[name="status"] option[value="ACTIVE"]')
-        require(
-            await active_option.is_disabled(),
-            "vacant organizational function could activate work without a human owner",
-        )
+        status_select = work_card.locator('.team-work-check-in select[name="status"]')
+        for executed_status in ("ACTIVE", "BLOCKED", "COMPLETE"):
+            option = status_select.locator(f'option[value="{executed_status}"]')
+            require(
+                await option.get_attribute("disabled") is not None,
+                (
+                    "vacant organizational function exposed executable status "
+                    f"{executed_status} without a human owner"
+                ),
+            )
 
         await page.get_by_label("Modelo organizativo").select_option("FULL_CAMPAIGN")
         await page.get_by_role("button", name="Previsualizar cambios").click()
