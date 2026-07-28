@@ -24,22 +24,6 @@ export function deriveNavigation(
 ): readonly NavigationItem[] {
   const base = `/${locale}`;
   return [
-    { key: "overview", href: `${base}#main`, enabled: true, reason: "BASE" },
-    {
-      key: "campaigns",
-      href: `${base}#campaigns`,
-      enabled: true,
-      reason: "BASE",
-    },
-    {
-      key: "readiness",
-      href: `${base}#readiness`,
-      enabled: hasGrant(
-        memberships,
-        (grant) => grant.resource_type === "campaign_readiness",
-      ),
-      reason: "EXACT_GRANT",
-    },
     {
       key: "intake",
       href: campaignChapterHref(locale, "foundation"),
@@ -53,6 +37,22 @@ export function deriveNavigation(
           grant.campaign_id === currentCampaignId &&
           grant.workspace_id === null &&
           grant.purpose === "Review guided campaign intake",
+      ),
+      reason: "EXACT_GRANT",
+    },
+    { key: "overview", href: `${base}#main`, enabled: true, reason: "BASE" },
+    {
+      key: "campaigns",
+      href: `${base}#campaigns`,
+      enabled: true,
+      reason: "BASE",
+    },
+    {
+      key: "readiness",
+      href: `${base}#readiness`,
+      enabled: hasGrant(
+        memberships,
+        (grant) => grant.resource_type === "campaign_readiness",
       ),
       reason: "EXACT_GRANT",
     },

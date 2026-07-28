@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-27",
-  "branch": "agent/c3-team-003-template-application-preview",
+  "updated_at": "2026-07-28",
+  "branch": "agent/c3-front-008-organic-role-aware-flow",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -824,6 +824,35 @@
       "blockers": [
         "Human product review and merge of the stacked PR chain remain required",
         "Identity assignment, capacity, training, access review, staging and production remain separate gates"
+      ]
+    },
+    {
+      "task_id": "C3-FRONT-008",
+      "owner": "WS-06/WS-07/WS-08",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "frontend/src/components/guided-team-selector.tsx",
+        "frontend/src/components/candidate-action-brief.tsx",
+        "frontend/src/components/candidate-workspace-deck.tsx",
+        "frontend/src/components/candidate-workspace-profile.tsx",
+        "frontend/src/components/team-operations-deck.tsx",
+        "frontend/src/components/shell.tsx",
+        "frontend/src/lib/candidate-action-insights.ts",
+        "frontend/src/lib/navigation.ts",
+        "scripts/frontend/review_dynamic_shell.py",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/design/organic-campaign-flow.md",
+        "docs/product/candidate-workspace.md",
+        "docs/product/team-workspace.md",
+        "docs/testing/c3-front-008-evidence.md",
+        "program/iterations/c3-front-008.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Hosted exact-head PostgreSQL/browser validation remains required",
+        "Server-enforced MY_WORK and TEAM_SHARED projections require governed principal assignments and exact grants",
+        "Human product review and stacked merge remain required",
+        "Staging, production infrastructure and production approval remain separate gates"
       ]
     }
   ]

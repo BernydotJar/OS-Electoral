@@ -30,6 +30,24 @@ function membership(
 }
 
 describe("deriveNavigation", () => {
+  it("places the guided starting route before overview and campaign administration", () => {
+    const intakeMembership = membership("guided_intake");
+    const scopedMembership = {
+      ...intakeMembership,
+      grants: intakeMembership.grants.map((grant) => ({
+        ...grant,
+        campaign_id: CAMPAIGN_ID,
+        purpose: "Review guided campaign intake",
+      })),
+    };
+
+    expect(
+      deriveNavigation("es", [scopedMembership], CAMPAIGN_ID)
+        .filter((item) => item.enabled)
+        .map((item) => item.key),
+    ).toEqual(["intake", "overview", "campaigns"]);
+  });
+
   it("does not treat role labels as permission", () => {
     const navigation = deriveNavigation("es", [
       { ...membership("unrelated"), grants: [] },

@@ -96,3 +96,12 @@ The backend supports exact-authorized create/read/update and current-version sec
 2. append a source classified as official, campaign research, perception, hypothesis or unknown, preserving HTTPS reference, authority, jurisdiction, date, note, version and idempotency.
 
 These operations do not verify a claim or approve a section. Editing claims, biography, purpose, values, attributes, contradictions, development goals, reputation risks, reviewer assignment and approval disposition remain future governed work. Live identity/environment evidence and independent human acceptance also remain pending.
+## Organic action, profile and evidence views
+
+`C3-FRONT-008` separates the live candidate workspace into three mutually exclusive views:
+
+1. **What to do now** derives bounded preparation work from the current next action, evidence inventory, open contradictions, critical/high risks, active development goals and pending approvals.
+2. **Profile and risks** presents the internal candidate record, review status and risk context.
+3. **Sources and evidence** contains the exact-authorized evidence editor and source register.
+
+The action brief is deterministic and grounded in the current projection. It does not generate campaign strategy, infer voter response, authorize a public claim or change `public_use_status=BLOCKED`. Each card prepares a human decision or evidence task and preserves `external_effects=NONE`.

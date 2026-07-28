@@ -642,3 +642,14 @@
 - Hosted PostgreSQL/browser evidence proved planned role-bound work, RACI, evidence, next actions, canonical team redirects, persistence, vacant-role execution blocking, ES/EN/mobile/keyboard and zero axe violations.
 - PostgreSQL 18 RLS, backup/restore, constrained stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
 - Marked `C3-TEAM-004` `CI_GREEN`; production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-28 — C3-FRONT-008 organic campaign flow implementation
+
+- Moved the exactly authorized guided starting route before overview and campaign administration.
+- Replaced the current-team textarea with localized presets, custom entries and removable chips while preserving the canonical newline-separated intake contract.
+- Split candidate work into action, profile/risk and source/evidence views and added deterministic evidence-grounded preparation insights.
+- Combined follow-up creation and the team operating board into one accessible stacked deck and documented the command-view boundary.
+- Compacted recurring mission/command heroes while retaining first-use cinematic behavior and reduced-motion equivalence.
+- Passed 118 frontend tests, lint, strict TypeScript, production build, zero-vulnerability audit and ES/EN/mobile browser review with zero axe violations, overflow, console errors or external hosts.
+- Local PostgreSQL/browser validation remains blocked before product startup by nested Docker layer registration; exact-head hosted CI is required.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

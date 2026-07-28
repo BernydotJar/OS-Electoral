@@ -228,8 +228,24 @@ async def review() -> dict[str, object]:
         await page.get_by_label("Proyecto de candidatura").fill(
             "Proyecto municipal interno sujeto a evidencia y revisión humana."
         )
-        await page.get_by_label("Equipo actual").fill(
-            "Dirección de campaña\nCoordinación financiera"
+        team_selector = page.locator(".guided-team-selector")
+        await team_selector.get_by_label("Función sugerida").select_option(
+            label="Dirección de campaña"
+        )
+        await (
+            team_selector.locator(".guided-team-selector-controls")
+            .get_by_role("button", name="Agregar función")
+            .click()
+        )
+        await team_selector.get_by_label("Otra función o persona").fill("Coordinación financiera")
+        await (
+            team_selector.locator(".guided-team-custom-row")
+            .get_by_role("button", name="Agregar función")
+            .click()
+        )
+        require(
+            await team_selector.locator('[data-team-chip="true"]').count() == 2,
+            "guided team selector did not create two chips",
         )
         await page.get_by_label("Activos actuales").fill("Archivo documental\nAgenda operativa")
         await page.get_by_label("Preguntas que debemos resolver").fill(
@@ -299,8 +315,17 @@ async def review() -> dict[str, object]:
             "candidate start success notice missing",
         )
         require(
+            await page.get_by_role("tab", name="Qué hacer ahora").count() == 1,
+            "candidate action view missing after dossier creation",
+        )
+        require(
+            await page.get_by_text("Qué debemos resolver ahora", exact=True).count() == 1,
+            "candidate action brief missing after dossier creation",
+        )
+        await page.get_by_role("tab", name="Fuentes y evidencia").click()
+        require(
             await page.get_by_role("button", name="Agregar fuente").count() == 1,
-            "candidate evidence editor missing after dossier creation",
+            "candidate evidence editor missing after selecting evidence view",
         )
 
         await page.get_by_label("Tipo de fuente").select_option("OFFICIAL_SOURCE")
@@ -324,6 +349,7 @@ async def review() -> dict[str, object]:
             == 1,
             "candidate evidence success notice missing",
         )
+        await page.get_by_role("tab", name="Fuentes y evidencia").click()
         require(
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence was not projected",
@@ -433,6 +459,11 @@ async def review() -> dict[str, object]:
             await page.get_by_role("button", name="Agregar función").count() == 1,
             "team role editor missing after map creation",
         )
+        require(
+            await page.get_by_role("tab", name="Crear seguimiento").get_attribute("aria-selected")
+            == "true",
+            "empty team operations deck did not begin on creation",
+        )
         work_creator = page.locator(".team-work-item-creator")
         await work_creator.get_by_label("Tipo de trabajo").select_option("DELIVERABLE")
         await work_creator.get_by_label("Prioridad").select_option("HIGH")
@@ -460,6 +491,23 @@ async def review() -> dict[str, object]:
             ).count()
             == 1,
             "operational work success notice missing",
+        )
+        board_tab = page.get_by_role("tab", name="Tablero operativo")
+        require(
+            await board_tab.get_attribute("aria-selected") == "true",
+            "team operations deck did not return to the board after saving work",
+        )
+        await board_tab.focus()
+        await page.keyboard.press("ArrowRight")
+        require(
+            await page.get_by_role("tab", name="Crear seguimiento").get_attribute("aria-selected")
+            == "true",
+            "team creation tab did not activate with ArrowRight",
+        )
+        await page.keyboard.press("ArrowLeft")
+        require(
+            await board_tab.get_attribute("aria-selected") == "true",
+            "team board tab did not reactivate with ArrowLeft",
         )
         planned_column = page.locator('.team-work-columns > section[data-status="PLANNED"]')
         await planned_column.wait_for(state="visible")
@@ -647,6 +695,7 @@ async def review() -> dict[str, object]:
             '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
         ).click()
         await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
+        await page.get_by_role("tab", name="Fuentes y evidencia").click()
         require(
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence did not persist on its chapter route",
@@ -694,6 +743,11 @@ async def review() -> dict[str, object]:
             "Administration placeholder is visible in English",
         )
         await english.goto(f"{BASE_URL}/en/campaign/evidence", wait_until="networkidle")
+        require(
+            await english.get_by_text("What we need to resolve now", exact=True).count() == 1,
+            "English candidate action brief is unavailable",
+        )
+        await english.get_by_role("tab", name="Sources and evidence").click()
         require(
             await english.get_by_role("button", name="Add source").count() == 1,
             "English candidate evidence editor is unavailable",

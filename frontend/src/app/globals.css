@@ -4986,3 +4986,369 @@ button[type="submit"]:hover {
     transform: none;
   }
 }
+
+/* C3-FRONT-008: organic campaign flow and command-safe workspace decks. */
+.guided-team-selector {
+  min-width: 0;
+  padding: 1rem;
+  display: grid;
+  gap: 0.85rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.guided-team-selector legend {
+  padding: 0 0.35rem;
+  color: var(--text-1);
+  font-weight: 760;
+}
+
+.guided-team-selector > p,
+.guided-team-selector > small,
+.guided-team-empty {
+  margin: 0;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+.guided-team-selector-controls,
+.guided-team-custom-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: end;
+}
+
+.guided-team-selector-controls label,
+.guided-team-custom-row label {
+  min-width: 0;
+}
+
+.guided-team-selector-controls button,
+.guided-team-custom-row button {
+  min-height: 2.8rem;
+  white-space: nowrap;
+}
+
+.guided-team-chips {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+.guided-team-chips li {
+  max-width: 100%;
+  min-height: 2.35rem;
+  padding: 0.35rem 0.4rem 0.35rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(116, 214, 177, 0.32);
+  border-radius: 999px;
+  background: rgba(116, 214, 177, 0.085);
+  color: var(--text-1);
+}
+
+.guided-team-chips span {
+  overflow-wrap: anywhere;
+}
+
+.guided-team-chips button {
+  width: 1.65rem;
+  height: 1.65rem;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-2);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.candidate-workspace-deck,
+.team-operations-deck {
+  margin-top: 1.25rem;
+}
+
+.candidate-workspace-tabs,
+.team-operations-deck-tabs {
+  padding: 0.35rem;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(8rem, auto);
+  gap: 0.3rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  background: rgba(3, 10, 16, 0.66);
+}
+
+.candidate-workspace-tabs button,
+.team-operations-deck-tabs button {
+  min-height: 2.55rem;
+  padding: 0.55rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  color: var(--text-3);
+  background: transparent;
+  cursor: pointer;
+}
+
+.candidate-workspace-tabs button[aria-selected="true"],
+.team-operations-deck-tabs button[aria-selected="true"] {
+  color: #04110c;
+  background: var(--approval);
+}
+
+.candidate-workspace-layer {
+  margin-top: 1rem;
+  min-width: 0;
+}
+
+.candidate-action-brief {
+  padding: clamp(1rem, 2.5vw, 1.6rem);
+  border: 1px solid rgba(164, 200, 255, 0.28);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 82% 8%, rgba(164, 200, 255, 0.15), transparent 18rem),
+    linear-gradient(145deg, rgba(15, 29, 48, 0.9), rgba(5, 12, 20, 0.96));
+}
+
+.candidate-action-brief-heading,
+.team-operations-deck-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.candidate-action-brief-heading h3,
+.team-operations-deck-heading h3 {
+  margin: 0.25rem 0 0.45rem;
+  font-size: clamp(1.45rem, 3vw, 2.15rem);
+}
+
+.candidate-action-brief-heading p,
+.team-operations-deck-heading p {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.candidate-action-brief-heading > span,
+.team-command-scope {
+  flex: 0 0 auto;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid rgba(236, 175, 80, 0.3);
+  border-radius: 999px;
+  color: #f2c982;
+  font-size: 0.66rem;
+  font-weight: 760;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.candidate-action-grid {
+  margin-top: 1.1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.candidate-action-grid article {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid var(--surface-border);
+  border-left: 3px solid var(--accent-strong);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.032);
+}
+
+.candidate-action-grid article[data-tone="WARNING"] {
+  border-left-color: #ecaf50;
+}
+
+.candidate-action-grid article[data-tone="CRITICAL"] {
+  border-left-color: #ff7c7c;
+}
+
+.candidate-action-grid article[data-tone="INFO"] {
+  border-left-color: #a4c8ff;
+}
+
+.candidate-action-grid span {
+  color: var(--text-3);
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.candidate-action-grid strong {
+  margin-top: 0.45rem;
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--text-1);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.candidate-action-grid p,
+.candidate-action-boundary,
+.team-command-boundary {
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.candidate-action-boundary,
+.team-command-boundary {
+  margin: 1rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--surface-border);
+  font-size: 0.78rem;
+}
+
+.candidate-profile-view {
+  display: grid;
+  gap: 1rem;
+}
+
+.team-operations-deck {
+  padding: clamp(1rem, 2vw, 1.35rem);
+  border: 1px solid rgba(116, 214, 177, 0.28);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(116, 214, 177, 0.12), transparent 19rem),
+    linear-gradient(145deg, rgba(10, 31, 27, 0.92), rgba(5, 12, 17, 0.97));
+}
+
+.team-operations-deck-tabs {
+  margin-top: 1rem;
+}
+
+.team-operations-stack {
+  position: relative;
+  min-height: 17rem;
+  margin-top: 1rem;
+  isolation: isolate;
+}
+
+.team-operations-layer {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  border-radius: 18px;
+  transition:
+    transform var(--motion-duration-standard) var(--motion-easing-standard),
+    opacity var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.team-operations-layer::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -0.45rem 0.8rem auto;
+  height: 2rem;
+  border: 1px solid rgba(116, 214, 177, 0.15);
+  border-radius: 16px 16px 0 0;
+  background: rgba(8, 21, 23, 0.65);
+  transform: translateY(-0.35rem) scale(0.98);
+  opacity: 0.7;
+}
+
+.team-operations-layer[hidden] {
+  display: none;
+}
+
+.team-operations-layer .team-work-item-creator,
+.team-operations-layer .team-operations-board {
+  margin-top: 0;
+}
+
+.team-operations-heading[data-embedded="true"] {
+  display: block;
+}
+
+/* Returning users need the mission, not another full-screen introduction. */
+.campaign-experience[data-layout="mission"],
+.campaign-experience[data-layout="command"] {
+  min-height: clamp(20rem, 44vh, 29rem);
+  padding-block: clamp(1.5rem, 4vw, 3rem);
+}
+
+.campaign-experience[data-layout="mission"] .experience-copy h1,
+.campaign-experience[data-layout="command"] .experience-copy h1 {
+  max-width: 11ch;
+  font-size: clamp(2.3rem, 6vw, 5rem);
+}
+
+.campaign-experience[data-layout="mission"] .experience-mission-pulse,
+.campaign-experience[data-layout="command"] .experience-mission-pulse {
+  margin-top: 1rem;
+}
+
+.guided-team-selector button:focus-visible,
+.candidate-workspace-tabs button:focus-visible,
+.team-operations-deck-tabs button:focus-visible,
+.guided-team-chips button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .candidate-action-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .guided-team-selector-controls,
+  .guided-team-custom-row,
+  .candidate-action-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guided-team-selector-controls button,
+  .guided-team-custom-row button {
+    width: 100%;
+  }
+
+  .candidate-workspace-tabs,
+  .team-operations-deck-tabs {
+    width: 100%;
+    grid-auto-flow: row;
+    grid-auto-columns: 1fr;
+    border-radius: 16px;
+  }
+
+  .candidate-workspace-tabs button,
+  .team-operations-deck-tabs button {
+    width: 100%;
+    border-radius: 12px;
+  }
+
+  .candidate-action-brief-heading,
+  .team-operations-deck-heading {
+    flex-direction: column;
+  }
+
+  .candidate-action-brief-heading > span,
+  .team-command-scope {
+    align-self: flex-start;
+  }
+
+  .campaign-experience[data-layout="mission"],
+  .campaign-experience[data-layout="command"] {
+    min-height: 23rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-operations-layer,
+  .candidate-workspace-layer {
+    transition: none;
+  }
+}

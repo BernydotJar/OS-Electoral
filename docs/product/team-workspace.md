@@ -150,3 +150,11 @@ The interface puts an operating pulse and the work board before the role directo
 Planning and execution remain distinct. A new item starts as `PLANNED` and may reference a vacant organizational function. Moving it to `ACTIVE`, `BLOCKED` or `COMPLETE` requires every accountable and responsible function to be `FILLED`; this prevents the system from representing work as underway without an authorized human owner. Blocked work requires a blocker plus at-risk/off-track health, and every status/health update requires a human check-in note.
 
 The board does not calculate personal productivity, rank staff, infer performance or create authority. Health is an explicit human report about the work item. All writes reuse the exact-authorized, optimistic-concurrency team-workspace update, preserving tenant scope, idempotency, audit, internal outbox evidence and `external_effects=NONE`.
+
+## Organic team intake and command-view deck
+
+`C3-FRONT-008` replaces the free-form current-team textarea in guided intake with localized function presets, a bounded custom entry and removable chips. The UI still serializes the existing newline-separated `current_team` contract, so no backend migration or silent data rewrite occurs. Selecting a function describes current capacity and never creates identity, membership, permission or authority.
+
+The team chapter now presents **Operations board** and **Create follow-up** as two mutually exclusive views of one operating system. Existing work opens the board first; an empty workspace opens creation first. The role directory remains available after the operating layer.
+
+The current implementation is explicitly a **command view** backed by the existing exact team-workspace grants. Personal views are not produced by filtering browser data. A future backend increment must project `MY_WORK`, `TEAM_SHARED` and `COMMAND` from authenticated principal assignments and exact scoped grants before CampaignOS can claim per-user work visibility.

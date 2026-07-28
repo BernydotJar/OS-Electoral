@@ -1,6 +1,9 @@
 import { CampaignChapterNavigation } from "@/components/campaign-chapter-navigation";
 import { CampaignExperienceHero } from "@/components/campaign-experience-hero";
 import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
+import { CandidateActionBrief } from "@/components/candidate-action-brief";
+import { CandidateWorkspaceDeck } from "@/components/candidate-workspace-deck";
+import { CandidateWorkspaceProfile } from "@/components/candidate-workspace-profile";
 import { CandidateWorkspaceEditor } from "@/components/candidate-workspace-editor";
 import {
   CampaignContextForm,
@@ -10,6 +13,7 @@ import { LocaleSwitcher } from "@/components/locale-switcher";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
 import { TeamOperationsBoard } from "@/components/team-operations-board";
+import { TeamOperationsDeck } from "@/components/team-operations-deck";
 import { TeamRoleDossier } from "@/components/team-role-dossier";
 import { TeamWorkItemEditor } from "@/components/team-work-item-editor";
 import { TeamWorkspaceEditor } from "@/components/team-workspace-editor";
@@ -661,243 +665,34 @@ export function CampaignShell({
                   ) : null}
                 </div>
 
-                <CandidateWorkspaceEditor
-                  locale={locale}
-                  dictionary={dictionary}
-                  demo={model.demo}
-                  availability={model.candidateWorkspaceAvailability}
-                  workspace={candidateWorkspace}
-                  capabilities={candidateCapabilities}
-                  prerequisiteReady={candidatePrerequisiteReady}
-                />
-
                 {candidateWorkspace ? (
                   <>
-                    <div className="intake-status-row">
-                      <div>
-                        <span>{dictionary.candidate.status}</span>
-                        <strong>
-                          {
-                            dictionary.candidate.statusLabels[
-                              candidateWorkspace.status
-                            ]
-                          }
-                        </strong>
-                      </div>
-                      <div>
-                        <span>{dictionary.candidate.nextAction}</span>
-                        <strong>
-                          {
-                            dictionary.candidate.nextActionLabels[
-                              candidateWorkspace.next_action
-                            ]
-                          }
-                        </strong>
-                      </div>
-                    </div>
-
-                    <div className="candidate-boundary" role="note">
-                      <strong>{dictionary.candidate.publicBoundary}</strong>
-                      <p>{dictionary.candidate.publicBoundaryBody}</p>
-                      <code>{candidateWorkspace.public_use_status}</code>
-                    </div>
-
-                    <div className="candidate-layout">
-                      <section aria-labelledby="candidate-checks-title">
-                        <h3 id="candidate-checks-title">
-                          {dictionary.candidate.sections}
-                        </h3>
-                        <ol className="intake-checks">
-                          {candidateWorkspace.checks.map((check, index) => (
-                            <li key={check.key} data-complete={check.complete}>
-                              <span className="intake-step" aria-hidden="true">
-                                {String(index + 1).padStart(2, "0")}
-                              </span>
-                              <div>
-                                <strong>
-                                  {dictionary.candidate.checkLabels[check.key]}
-                                </strong>
-                                <small className="intake-check-state">
-                                  {check.complete
-                                    ? dictionary.intake.checkComplete
-                                    : dictionary.intake.checkPending}
-                                </small>
-                              </div>
-                              <span
-                                className="intake-check-mark"
-                                aria-hidden="true"
-                              >
-                                {check.complete ? "✓" : "·"}
-                              </span>
-                            </li>
-                          ))}
-                        </ol>
-                      </section>
-
-                      <section aria-labelledby="candidate-summary-title">
-                        <h3 id="candidate-summary-title">
-                          {candidateWorkspace.display_name}
-                        </h3>
-                        <div className="candidate-summary-grid">
-                          <article>
-                            <span>{dictionary.candidate.identity}</span>
-                            <strong>
-                              {candidateWorkspace.identity?.claim ??
-                                dictionary.candidate.notAssessed}
-                            </strong>
-                          </article>
-                          <article>
-                            <span>{dictionary.candidate.biography}</span>
-                            <strong>
-                              {candidateWorkspace.biography?.claim ??
-                                dictionary.candidate.notAssessed}
-                            </strong>
-                          </article>
-                          <article>
-                            <span>{dictionary.candidate.purpose}</span>
-                            <strong>
-                              {candidateWorkspace.purpose?.claim ??
-                                dictionary.candidate.notAssessed}
-                            </strong>
-                          </article>
-                          <article>
-                            <span>
-                              {dictionary.candidate.evidenceInventory}
-                            </span>
-                            <strong>
-                              {candidateWorkspace.evidence.length}
-                            </strong>
-                          </article>
-                          <article>
-                            <span>{dictionary.candidate.approvedSections}</span>
-                            <strong>
-                              {
-                                candidateWorkspace.current_approved_sections
-                                  .length
-                              }
-                            </strong>
-                          </article>
-                          <article>
-                            <span>{dictionary.candidate.pendingApprovals}</span>
-                            <strong>
-                              {candidateWorkspace.approvals_required.length}
-                            </strong>
-                          </article>
-                          <article>
-                            <span>
-                              {dictionary.candidate.criticalHighRisks}
-                            </span>
-                            <strong>
-                              {candidateWorkspace.open_critical_high_risks}
-                            </strong>
-                          </article>
-                        </div>
-
-                        <div className="candidate-detail-grid">
-                          <article>
-                            <h4>{dictionary.candidate.values}</h4>
-                            {candidateWorkspace.values === null ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.notAssessed}
-                              </p>
-                            ) : candidateWorkspace.values.length === 0 ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.noItems}
-                              </p>
-                            ) : (
-                              <ul className="intake-items">
-                                {candidateWorkspace.values.map((item) => (
-                                  <li key={item.id}>{item.claim}</li>
-                                ))}
-                              </ul>
-                            )}
-                          </article>
-                          <article>
-                            <h4>{dictionary.candidate.attributes}</h4>
-                            {candidateWorkspace.attributes === null ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.notAssessed}
-                              </p>
-                            ) : candidateWorkspace.attributes.length === 0 ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.noItems}
-                              </p>
-                            ) : (
-                              <ul className="intake-items">
-                                {candidateWorkspace.attributes.map((item) => (
-                                  <li key={item.id}>{item.claim}</li>
-                                ))}
-                              </ul>
-                            )}
-                          </article>
-                          <article>
-                            <h4>{dictionary.candidate.contradictions}</h4>
-                            {candidateWorkspace.contradictions === null ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.notAssessed}
-                              </p>
-                            ) : candidateWorkspace.contradictions.length ===
-                              0 ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.noItems}
-                              </p>
-                            ) : (
-                              <ul className="intake-items">
-                                {candidateWorkspace.contradictions.map(
-                                  (item) => (
-                                    <li key={item.id}>{item.description}</li>
-                                  ),
-                                )}
-                              </ul>
-                            )}
-                          </article>
-                          <article>
-                            <h4>{dictionary.candidate.developmentGoals}</h4>
-                            {candidateWorkspace.development_goals === null ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.notAssessed}
-                              </p>
-                            ) : candidateWorkspace.development_goals.length ===
-                              0 ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.noItems}
-                              </p>
-                            ) : (
-                              <ul className="intake-items">
-                                {candidateWorkspace.development_goals.map(
-                                  (item) => (
-                                    <li key={item.id}>{item.objective}</li>
-                                  ),
-                                )}
-                              </ul>
-                            )}
-                          </article>
-                          <article>
-                            <h4>{dictionary.candidate.reputationRisks}</h4>
-                            {candidateWorkspace.reputation_risks === null ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.notAssessed}
-                              </p>
-                            ) : candidateWorkspace.reputation_risks.length ===
-                              0 ? (
-                              <p className="intake-empty">
-                                {dictionary.candidate.noItems}
-                              </p>
-                            ) : (
-                              <ul className="intake-items">
-                                {candidateWorkspace.reputation_risks.map(
-                                  (item) => (
-                                    <li key={item.id}>
-                                      {item.severity} · {item.title}
-                                    </li>
-                                  ),
-                                )}
-                              </ul>
-                            )}
-                          </article>
-                        </div>
-                      </section>
-                    </div>
+                    <CandidateWorkspaceDeck
+                      dictionary={dictionary}
+                      profile={
+                        <CandidateWorkspaceProfile
+                          dictionary={dictionary}
+                          workspace={candidateWorkspace}
+                        />
+                      }
+                      evidence={
+                        <CandidateWorkspaceEditor
+                          locale={locale}
+                          dictionary={dictionary}
+                          demo={model.demo}
+                          availability={model.candidateWorkspaceAvailability}
+                          workspace={candidateWorkspace}
+                          capabilities={candidateCapabilities}
+                          prerequisiteReady={candidatePrerequisiteReady}
+                        />
+                      }
+                      actions={
+                        <CandidateActionBrief
+                          dictionary={dictionary}
+                          workspace={candidateWorkspace}
+                        />
+                      }
+                    />
 
                     <dl className="intake-evidence">
                       <div>
@@ -912,7 +707,17 @@ export function CampaignShell({
                   </>
                 ) : model.candidateWorkspaceAvailability === "NOT_STARTED" &&
                   candidateCapabilities.canStart &&
-                  candidatePrerequisiteReady ? null : (
+                  candidatePrerequisiteReady ? (
+                  <CandidateWorkspaceEditor
+                    locale={locale}
+                    dictionary={dictionary}
+                    demo={model.demo}
+                    availability={model.candidateWorkspaceAvailability}
+                    workspace={candidateWorkspace}
+                    capabilities={candidateCapabilities}
+                    prerequisiteReady={candidatePrerequisiteReady}
+                  />
+                ) : (
                   <p className="intake-state" role="status">
                     {candidateWorkspaceStateMessage}
                   </p>
@@ -1024,24 +829,30 @@ export function CampaignShell({
                       </article>
                     </div>
 
-                    <TeamWorkItemEditor
-                      locale={locale}
+                    <TeamOperationsDeck
                       dictionary={dictionary}
-                      roles={teamWorkspace.roles ?? []}
-                      workspaceVersion={teamWorkspace.version}
-                      canUpdate={teamCapabilities.canUpdate}
-                      openByDefault={
-                        (teamWorkspace.work_items ?? []).length === 0
+                      hasWorkItems={(teamWorkspace.work_items ?? []).length > 0}
+                      creator={
+                        <TeamWorkItemEditor
+                          locale={locale}
+                          dictionary={dictionary}
+                          roles={teamWorkspace.roles ?? []}
+                          workspaceVersion={teamWorkspace.version}
+                          canUpdate={teamCapabilities.canUpdate}
+                          openByDefault
+                        />
                       }
-                    />
-
-                    <TeamOperationsBoard
-                      locale={locale}
-                      dictionary={dictionary}
-                      roles={teamWorkspace.roles ?? []}
-                      workItems={teamWorkspace.work_items ?? []}
-                      workspaceVersion={teamWorkspace.version}
-                      canUpdate={teamCapabilities.canUpdate}
+                      board={
+                        <TeamOperationsBoard
+                          locale={locale}
+                          dictionary={dictionary}
+                          roles={teamWorkspace.roles ?? []}
+                          workItems={teamWorkspace.work_items ?? []}
+                          workspaceVersion={teamWorkspace.version}
+                          canUpdate={teamCapabilities.canUpdate}
+                          embedded
+                        />
+                      }
                     />
 
                     <div className="team-layout">

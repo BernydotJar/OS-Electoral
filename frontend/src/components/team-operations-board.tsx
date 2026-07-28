@@ -23,6 +23,7 @@ export function TeamOperationsBoard({
   workItems,
   workspaceVersion,
   canUpdate,
+  embedded = false,
 }: Readonly<{
   locale: Locale;
   dictionary: Dictionary;
@@ -30,6 +31,7 @@ export function TeamOperationsBoard({
   workItems: readonly TeamWorkItem[];
   workspaceVersion: number;
   canUpdate: boolean;
+  embedded?: boolean;
 }>) {
   const [roleFilter, setRoleFilter] = useState("ALL");
   const [statusFilter, setStatusFilter] = useState<
@@ -76,18 +78,21 @@ export function TeamOperationsBoard({
     <section
       id="team-operations-board"
       className="team-operations-board"
-      aria-labelledby="team-operations-title"
+      aria-labelledby={embedded ? undefined : "team-operations-title"}
+      aria-label={embedded ? dictionary.teamWorkspace.operationsTitle : undefined}
     >
-      <div className="team-operations-heading">
-        <div>
-          <p className="eyebrow">
-            {dictionary.teamWorkspace.operationsEyebrow}
-          </p>
-          <h3 id="team-operations-title">
-            {dictionary.teamWorkspace.operationsTitle}
-          </h3>
-          <p>{dictionary.teamWorkspace.operationsBody}</p>
-        </div>
+      <div className="team-operations-heading" data-embedded={embedded}>
+        {embedded ? null : (
+          <div>
+            <p className="eyebrow">
+              {dictionary.teamWorkspace.operationsEyebrow}
+            </p>
+            <h3 id="team-operations-title">
+              {dictionary.teamWorkspace.operationsTitle}
+            </h3>
+            <p>{dictionary.teamWorkspace.operationsBody}</p>
+          </div>
+        )}
         <div
           className="team-work-pulse"
           aria-label={dictionary.teamWorkspace.workPulse}
