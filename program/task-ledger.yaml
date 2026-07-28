@@ -801,7 +801,7 @@
     {
       "task_id": "C3-TEAM-004",
       "owner": "WS-08/WS-06",
-      "status": "IN_PROGRESS",
+      "status": "CI_GREEN",
       "evidence": [
         "backend/src/campaignos/teams/contracts.py",
         "backend/tests/test_team_workspace_contracts.py",
@@ -822,7 +822,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Hosted exact-head PostgreSQL/browser validation remains required",
         "Human product review and merge of the stacked PR chain remain required",
         "Identity assignment, capacity, training, access review, staging and production remain separate gates"
       ]
