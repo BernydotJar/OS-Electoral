@@ -653,3 +653,12 @@
 - Passed 118 frontend tests, lint, strict TypeScript, production build, zero-vulnerability audit and ES/EN/mobile browser review with zero axe violations, overflow, console errors or external hosts.
 - Local PostgreSQL/browser validation remains blocked before product startup by nested Docker layer registration; exact-head hosted CI is required.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-28 — C3-FRONT-008 exact-head CI closure
+
+- Published stacked draft PR `#126` on `agent/c3-front-008-organic-role-aware-flow`, based on PR `#125`.
+- Validated implementation head `1db72a82a147d8ca9402c370814331879c1ac3a5` with CampaignOS CI `30400102360` and Runtime Visual Review `30400102373`.
+- Hosted PostgreSQL/browser evidence proved guided team presets and chips, candidate action/profile/evidence tabs, team board/create tabs, keyboard navigation, persistence, ES/EN, mobile, reduced motion and zero axe violations.
+- PostgreSQL RLS, backup/restore, constrained stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
+- Marked `C3-FRONT-008` `CI_GREEN`; personal work visibility remains blocked pending server-side principal/grant projection.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

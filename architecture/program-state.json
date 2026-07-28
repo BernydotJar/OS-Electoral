@@ -772,8 +772,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "ORGANIC_CAMPAIGN_FLOW_TESTED_LOCAL",
-      "next_increment": "C3-FRONT-008_EXACT_HEAD_CI"
+      "status": "ORGANIC_CAMPAIGN_FLOW_CI_GREEN",
+      "next_increment": "C3-FRONT-009_ROLE_AWARE_PROJECTIONS"
     },
     {
       "id": "WS-07",
@@ -1117,7 +1117,7 @@
       "id": "C3-FRONT-008",
       "workstream": "WS-06",
       "title": "Organic campaign flow, candidate action brief and command-safe workspace decks",
-      "status": "ACTIVE",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-TEAM-004",
         "C3-FRONT-007"
@@ -1257,14 +1257,14 @@
       "new_supply_chain_check": "PASS"
     },
     "published_unreviewed_increment": {
-      "id": "C3-TEAM-004",
+      "id": "C3-FRONT-008",
       "state": "DRAFT_PR_CI_GREEN",
-      "branch": "agent/c3-team-004-role-operations-board",
-      "base": "agent/c3-front-007-guided-chapter-transitions",
-      "validated_implementation_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5",
-      "draft_pr": 125,
-      "ci_run_id": 30380383123,
-      "visual_run_id": 30380383149,
+      "branch": "agent/c3-front-008-organic-role-aware-flow",
+      "base": "agent/c3-team-004-role-operations-board",
+      "validated_implementation_head": "1db72a82a147d8ca9402c370814331879c1ac3a5",
+      "draft_pr": 126,
+      "ci_run_id": 30400102360,
+      "visual_run_id": 30400102373,
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE"
     },
@@ -1332,6 +1332,14 @@
         "base": "agent/c3-front-007-guided-chapter-transitions",
         "state": "DRAFT_PR_CI_GREEN",
         "delivered_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5"
+      },
+      {
+        "increment": "C3-FRONT-008",
+        "pr": 126,
+        "branch": "agent/c3-front-008-organic-role-aware-flow",
+        "base": "agent/c3-team-004-role-operations-board",
+        "state": "DRAFT_PR_CI_GREEN",
+        "delivered_head": "1db72a82a147d8ca9402c370814331879c1ac3a5"
       }
     ],
     "git_push_incident": {
@@ -1349,13 +1357,15 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-FRONT-008",
-      "state": "TESTED_LOCAL",
+      "state": "CI_GREEN",
       "branch": "agent/c3-front-008-organic-role-aware-flow",
       "base": "agent/c3-team-004-role-operations-board@47119b2ecacbde3cd949d92f39a043ea93769fff",
+      "validated_implementation_head": "1db72a82a147d8ca9402c370814331879c1ac3a5",
+      "draft_pr": 126,
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
+      "next_action": "HUMAN_PRODUCT_REVIEW"
     },
     "latest_checkpoint": {
       "id": "C3-TEAM-004",
@@ -1409,7 +1419,34 @@
     },
     "desired_required_check_count": 10,
     "live_required_check_count": 8,
-    "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN"
+    "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN",
+    "latest_completed_checkpoint": {
+      "id": "C3-FRONT-008",
+      "branch": "agent/c3-front-008-organic-role-aware-flow",
+      "validated_implementation_head": "1db72a82a147d8ca9402c370814331879c1ac3a5",
+      "draft_pr": 126,
+      "status": "CI_GREEN",
+      "ci_run_id": 30400102360,
+      "visual_run_id": 30400102373,
+      "quality_job_id": 90412547513,
+      "frontend_job_id": 90412547652,
+      "visual_job_id": 90412547343,
+      "recovery_job_id": 90412547596,
+      "recovery_artifact_id": 8704363674,
+      "recovery_artifact_digest": "sha256:1b747ce675a6abb76f6871fdc4be051f5b04e83ff0e80c29f7aaa74ff1a4f15d",
+      "supply_chain_artifact_id": 8704350702,
+      "supply_chain_artifact_digest": "sha256:0071bf94b9c976ba93f878c2ba0f333b4f9ad815edb0ddfa577f3d793d5917f8",
+      "frontend_artifact_id": 8704422692,
+      "frontend_artifact_digest": "sha256:4dde2a099e466975f6a52dfe68b3211e9dd414ae122646f4f974a674ece5832e",
+      "visual_artifact_id": 8704377666,
+      "visual_artifact_digest": "sha256:c51e9a700c31161971397faea259c7951f3139c5a11d35a3266026a5e8695a1e",
+      "gitleaks_artifact_id": 8704353530,
+      "gitleaks_artifact_digest": "sha256:0e7156ab221627ea216416bc769757a8a9bbb045e03f652a0d16c5520ad30f6b",
+      "release_decision": "DENY_RELEASE",
+      "production_status": "BLOCKED",
+      "external_effects": "NONE",
+      "next_action": "HUMAN_PRODUCT_REVIEW"
+    }
   },
   "deployment_state": {
     "github_pages": {
