@@ -5,7 +5,7 @@
   "updated_at": "2026-07-28",
   "branch": "agent/c3-front-008-organic-role-aware-flow",
   "current_increment": "C3-FRONT-008",
-  "iteration_status": "ACTIVE",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "ORGANIC_CAMPAIGN_FLOW_TESTED_LOCAL",
-      "next_increment": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
+      "status": "ORGANIC_CAMPAIGN_FLOW_CI_GREEN",
+      "next_increment": "C3-FRONT-009_ROLE_AWARE_PROJECTIONS"
     },
     {
       "id": "WS-07",
@@ -111,14 +111,14 @@
   ],
   "ready_tasks": [],
   "published_unreviewed_increment": {
-    "id": "C3-TEAM-004",
+    "id": "C3-FRONT-008",
     "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-team-004-role-operations-board",
-    "base": "agent/c3-front-007-guided-chapter-transitions",
-    "validated_implementation_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5",
-    "draft_pr": 125,
-    "ci_run_id": 30380383123,
-    "visual_run_id": 30380383149,
+    "branch": "agent/c3-front-008-organic-role-aware-flow",
+    "base": "agent/c3-team-004-role-operations-board",
+    "validated_implementation_head": "1db72a82a147d8ca9402c370814331879c1ac3a5",
+    "draft_pr": 126,
+    "ci_run_id": 30400102360,
+    "visual_run_id": 30400102373,
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE"
   },
@@ -186,6 +186,14 @@
       "base": "agent/c3-front-007-guided-chapter-transitions",
       "state": "DRAFT_PR_CI_GREEN",
       "delivered_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5"
+    },
+    {
+      "increment": "C3-FRONT-008",
+      "pr": 126,
+      "branch": "agent/c3-front-008-organic-role-aware-flow",
+      "base": "agent/c3-team-004-role-operations-board",
+      "state": "DRAFT_PR_CI_GREEN",
+      "delivered_head": "1db72a82a147d8ca9402c370814331879c1ac3a5"
     }
   ],
   "local_verification": {
@@ -370,8 +378,11 @@
     "front_008_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_ZERO_AXE_NO_OVERFLOW",
     "front_008_candidate_actions": "PASS_DETERMINISTIC_EVIDENCE_REVIEW_GAPS_NO_PUBLIC_USE",
     "front_008_visibility_boundary": "PASS_COMMAND_VIEW_NO_CLIENT_ONLY_PERSONAL_FILTER",
-    "front_008_functional_browser": "PENDING_HOSTED_CI_LOCAL_DOCKER_LAYER_LCHOWN",
-    "front_008_full_verify": "PASS_732_PYTHON_10_SKIPS_90_38_COVERAGE_118_FRONTEND_TERRAFORM_SECURITY_PROGRAM"
+    "front_008_functional_browser": "PASS_HOSTED_CHIPS_CANDIDATE_VIEWS_TEAM_DECK_ES_EN_MOBILE",
+    "front_008_full_verify": "PASS_732_PYTHON_10_SKIPS_90_38_COVERAGE_118_FRONTEND_TERRAFORM_SECURITY_PROGRAM",
+    "front_008_exact_head_ci": "PASS_RUN_30400102360",
+    "front_008_visual_review": "PASS_RUN_30400102373",
+    "front_008_postgresql_runtime": "PASS_HOSTED_CI_POSTGRESQL_RLS_BACKUP_RESTORE"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -412,13 +423,15 @@
   },
   "active_local_increment": {
     "id": "C3-FRONT-008",
-    "state": "TESTED_LOCAL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-front-008-organic-role-aware-flow",
     "base": "agent/c3-team-004-role-operations-board@47119b2ecacbde3cd949d92f39a043ea93769fff",
+    "validated_implementation_head": "1db72a82a147d8ca9402c370814331879c1ac3a5",
+    "draft_pr": 126,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
+    "next_action": "HUMAN_PRODUCT_REVIEW"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -431,27 +444,27 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-TEAM-004",
-    "branch": "agent/c3-team-004-role-operations-board",
-    "validated_implementation_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5",
-    "draft_pr": 125,
+    "id": "C3-FRONT-008",
+    "branch": "agent/c3-front-008-organic-role-aware-flow",
+    "validated_implementation_head": "1db72a82a147d8ca9402c370814331879c1ac3a5",
+    "draft_pr": 126,
     "status": "CI_GREEN",
-    "ci_run_id": 30380383123,
-    "visual_run_id": 30380383149,
-    "quality_job_id": 90346485479,
-    "frontend_job_id": 90346485404,
-    "visual_job_id": 90346485053,
-    "recovery_job_id": 90346485372,
-    "recovery_artifact_id": 8696724146,
-    "recovery_artifact_digest": "sha256:6857d6140f9eb2d2201d424d2af42fa02e430e425824b7aa481841a33e749dc6",
-    "supply_chain_artifact_id": 8696713531,
-    "supply_chain_artifact_digest": "sha256:668c2f34348d806678a05e6175a876446d8101b110e231fadbdb7427893fb773",
-    "frontend_artifact_id": 8696800801,
-    "frontend_artifact_digest": "sha256:7003b300f8d99723f43feb9808393569a644b4b3f513df6253f681bca8ba55f6",
-    "visual_artifact_id": 8696747961,
-    "visual_artifact_digest": "sha256:1d802b74ecadea4b78f1c063a4064c33a623885a11a2032e703b2491e508d565",
-    "gitleaks_artifact_id": 8696714438,
-    "gitleaks_artifact_digest": "sha256:3434832e5b5b1590c504852cdbca81552a55327762aa5c2f29fb90aaf174bc80",
+    "ci_run_id": 30400102360,
+    "visual_run_id": 30400102373,
+    "quality_job_id": 90412547513,
+    "frontend_job_id": 90412547652,
+    "visual_job_id": 90412547343,
+    "recovery_job_id": 90412547596,
+    "recovery_artifact_id": 8704363674,
+    "recovery_artifact_digest": "sha256:1b747ce675a6abb76f6871fdc4be051f5b04e83ff0e80c29f7aaa74ff1a4f15d",
+    "supply_chain_artifact_id": 8704350702,
+    "supply_chain_artifact_digest": "sha256:0071bf94b9c976ba93f878c2ba0f333b4f9ad815edb0ddfa577f3d793d5917f8",
+    "frontend_artifact_id": 8704422692,
+    "frontend_artifact_digest": "sha256:4dde2a099e466975f6a52dfe68b3211e9dd414ae122646f4f974a674ece5832e",
+    "visual_artifact_id": 8704377666,
+    "visual_artifact_digest": "sha256:c51e9a700c31161971397faea259c7951f3139c5a11d35a3266026a5e8695a1e",
+    "gitleaks_artifact_id": 8704353530,
+    "gitleaks_artifact_digest": "sha256:0e7156ab221627ea216416bc769757a8a9bbb045e03f652a0d16c5520ad30f6b",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
