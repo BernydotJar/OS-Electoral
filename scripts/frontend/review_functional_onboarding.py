@@ -395,7 +395,7 @@ async def review() -> dict[str, object]:
             )
         seeded_role = page.locator(".team-role-grid article").first
         seeded_role_details = seeded_role.locator(".team-role-card-details")
-        seeded_role_summary = seeded_role_details.locator("summary")
+        seeded_role_summary = seeded_role_details.locator(":scope > summary")
         await seeded_role_summary.focus()
         await page.keyboard.press("Enter")
         require(
