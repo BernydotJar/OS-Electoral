@@ -9,7 +9,9 @@ import {
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
+import { TeamOperationsBoard } from "@/components/team-operations-board";
 import { TeamRoleDossier } from "@/components/team-role-dossier";
+import { TeamWorkItemEditor } from "@/components/team-work-item-editor";
 import { TeamWorkspaceEditor } from "@/components/team-workspace-editor";
 import { resolveCampaignChapter } from "@/lib/campaign-chapters";
 import { deriveCampaignExperienceMode } from "@/lib/campaign-experience";
@@ -1022,6 +1024,26 @@ export function CampaignShell({
                       </article>
                     </div>
 
+                    <TeamWorkItemEditor
+                      locale={locale}
+                      dictionary={dictionary}
+                      roles={teamWorkspace.roles ?? []}
+                      workspaceVersion={teamWorkspace.version}
+                      canUpdate={teamCapabilities.canUpdate}
+                      openByDefault={
+                        (teamWorkspace.work_items ?? []).length === 0
+                      }
+                    />
+
+                    <TeamOperationsBoard
+                      locale={locale}
+                      dictionary={dictionary}
+                      roles={teamWorkspace.roles ?? []}
+                      workItems={teamWorkspace.work_items ?? []}
+                      workspaceVersion={teamWorkspace.version}
+                      canUpdate={teamCapabilities.canUpdate}
+                    />
+
                     <div className="team-layout">
                       <section aria-labelledby="team-checks-title">
                         <h3 id="team-checks-title">
@@ -1072,116 +1094,120 @@ export function CampaignShell({
                           </p>
                         ) : (
                           <div className="team-role-grid">
-                            {teamWorkspace.roles.map((role) => (
-                              <article key={role.id} data-status={role.status}>
-                                <div>
-                                  <span>{role.area}</span>
-                                  <h4>{role.title}</h4>
-                                </div>
-                                <p>{role.purpose}</p>
-                                <div className="team-role-responsibilities">
-                                  <strong>
-                                    {
-                                      dictionary.teamWorkspace
-                                        .roleResponsibilitiesLabel
-                                    }
-                                  </strong>
-                                  <ul>
-                                    {role.responsibilities.map(
-                                      (responsibility) => (
-                                        <li key={responsibility}>
-                                          {responsibility}
-                                        </li>
-                                      ),
-                                    )}
-                                  </ul>
-                                </div>
-                                <TeamRoleDossier
-                                  profile={role}
-                                  dictionary={dictionary}
-                                />
-                                <dl>
-                                  <div>
-                                    <dt>{dictionary.teamWorkspace.capacity}</dt>
-                                    <dd>
-                                      {role.weekly_capacity_hours === null
-                                        ? "—"
-                                        : `${role.weekly_capacity_hours} ${dictionary.teamWorkspace.hours}`}
-                                    </dd>
+                            {teamWorkspace.roles.map((role) => {
+                              const relatedWork = (
+                                teamWorkspace.work_items ?? []
+                              ).filter((item) =>
+                                item.assignments.some(
+                                  (assignment) =>
+                                    assignment.role_id === role.id,
+                                ),
+                              );
+                              const attentionCount = relatedWork.filter(
+                                (item) =>
+                                  item.status === "BLOCKED" ||
+                                  item.health === "AT_RISK" ||
+                                  item.health === "OFF_TRACK",
+                              ).length;
+                              return (
+                                <article
+                                  key={role.id}
+                                  data-status={role.status}
+                                >
+                                  <div className="team-role-card-heading">
+                                    <div>
+                                      <span>{role.area}</span>
+                                      <h4>{role.title}</h4>
+                                    </div>
+                                    <div className="team-role-work-summary">
+                                      <span>
+                                        <strong>{relatedWork.length}</strong>{" "}
+                                        {dictionary.teamWorkspace.roleWorkCount}
+                                      </span>
+                                      {attentionCount > 0 ? (
+                                        <span data-attention="true">
+                                          <strong>{attentionCount}</strong>{" "}
+                                          {
+                                            dictionary.teamWorkspace
+                                              .roleAttentionCount
+                                          }
+                                        </span>
+                                      ) : null}
+                                    </div>
                                   </div>
-                                  <div>
-                                    <dt>{dictionary.teamWorkspace.status}</dt>
-                                    <dd>
+                                  <p>{role.purpose}</p>
+                                  <details className="team-role-card-details">
+                                    <summary>
                                       {
                                         dictionary.teamWorkspace
-                                          .roleStatusLabels[role.status]
+                                          .roleDetailAction
                                       }
-                                    </dd>
-                                  </div>
-                                </dl>
-                                {role.vacancy_plan ? (
-                                  <div className="team-vacancy-plan">
-                                    <strong>
-                                      {
-                                        dictionary.teamWorkspace
-                                          .vacancyPlanLabel
-                                      }
-                                    </strong>
-                                    <p>{role.vacancy_plan}</p>
-                                  </div>
-                                ) : null}
-                              </article>
-                            ))}
+                                    </summary>
+                                    <div className="team-role-responsibilities">
+                                      <strong>
+                                        {
+                                          dictionary.teamWorkspace
+                                            .roleResponsibilitiesLabel
+                                        }
+                                      </strong>
+                                      <ul>
+                                        {role.responsibilities.map(
+                                          (responsibility) => (
+                                            <li key={responsibility}>
+                                              {responsibility}
+                                            </li>
+                                          ),
+                                        )}
+                                      </ul>
+                                    </div>
+                                    <TeamRoleDossier
+                                      profile={role}
+                                      dictionary={dictionary}
+                                    />
+                                    <dl>
+                                      <div>
+                                        <dt>
+                                          {dictionary.teamWorkspace.capacity}
+                                        </dt>
+                                        <dd>
+                                          {role.weekly_capacity_hours === null
+                                            ? "—"
+                                            : `${role.weekly_capacity_hours} ${dictionary.teamWorkspace.hours}`}
+                                        </dd>
+                                      </div>
+                                      <div>
+                                        <dt>
+                                          {dictionary.teamWorkspace.status}
+                                        </dt>
+                                        <dd>
+                                          {
+                                            dictionary.teamWorkspace
+                                              .roleStatusLabels[role.status]
+                                          }
+                                        </dd>
+                                      </div>
+                                    </dl>
+                                    {role.vacancy_plan ? (
+                                      <div className="team-vacancy-plan">
+                                        <strong>
+                                          {
+                                            dictionary.teamWorkspace
+                                              .vacancyPlanLabel
+                                          }
+                                        </strong>
+                                        <p>{role.vacancy_plan}</p>
+                                      </div>
+                                    ) : null}
+                                  </details>
+                                </article>
+                              );
+                            })}
                           </div>
                         )}
                       </section>
                     </div>
 
                     <div className="team-detail-grid">
-                      <article>
-                        <h3>{dictionary.teamWorkspace.workItems}</h3>
-                        {teamWorkspace.work_items === null ? (
-                          <p className="intake-empty">
-                            {dictionary.teamWorkspace.notAssessed}
-                          </p>
-                        ) : teamWorkspace.work_items.length === 0 ? (
-                          <p className="intake-empty">
-                            {dictionary.teamWorkspace.noItems}
-                          </p>
-                        ) : (
-                          <ul className="team-work-items">
-                            {teamWorkspace.work_items.map((item) => (
-                              <li key={item.id}>
-                                <strong>{item.name}</strong>
-                                <p>{item.description}</p>
-                                <ul>
-                                  {item.assignments.map((assignment) => {
-                                    const role = teamWorkspace.roles?.find(
-                                      (candidate) =>
-                                        candidate.id === assignment.role_id,
-                                    );
-                                    return (
-                                      <li
-                                        key={`${item.id}-${assignment.role_id}-${assignment.responsibility}`}
-                                      >
-                                        <span>
-                                          {
-                                            dictionary.teamWorkspace
-                                              .responsibilityLabels[
-                                              assignment.responsibility
-                                            ]
-                                          }
-                                        </span>
-                                        {role?.title ?? assignment.role_id}
-                                      </li>
-                                    );
-                                  })}
-                                </ul>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </article>
                       <article>
                         <h3>{dictionary.teamWorkspace.training}</h3>
                         {teamWorkspace.training_requirements === null ? (

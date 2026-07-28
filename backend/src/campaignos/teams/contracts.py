@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from datetime import datetime
+from datetime import date, datetime
 from typing import Literal, Self
 from uuid import UUID
 
@@ -14,6 +14,10 @@ RoleStatus = Literal["FILLED", "VACANT"]
 AvailabilityStatus = Literal["UNASSESSED", "AVAILABLE", "LIMITED", "UNAVAILABLE"]
 ProgressStatus = Literal["NOT_STARTED", "IN_PROGRESS", "COMPLETE"]
 WorkItemStatus = Literal["PLANNED", "ACTIVE", "BLOCKED", "COMPLETE"]
+WorkItemType = Literal["TASK", "DELIVERABLE", "CHECK_IN", "DECISION_PREP"]
+WorkItemPriority = Literal["CRITICAL", "HIGH", "MEDIUM", "LOW"]
+WorkItemHealth = Literal["NOT_REPORTED", "ON_TRACK", "AT_RISK", "OFF_TRACK"]
+WorkItemCadence = Literal["AD_HOC", "DAILY", "WEEKLY", "BIWEEKLY", "MONTHLY"]
 RaciResponsibility = Literal["RESPONSIBLE", "ACCOUNTABLE", "CONSULTED", "INFORMED"]
 AccessReviewStatus = Literal["PROPOSED", "REVIEWED", "REJECTED"]
 TeamWorkspaceStatus = Literal["SETUP_REQUIRED", "STRUCTURE_IN_PROGRESS", "READY_FOR_HUMAN_REVIEW"]
@@ -207,6 +211,16 @@ class TeamWorkItem(BaseModel):
     name: str = Field(min_length=1, max_length=255)
     description: str = Field(min_length=1, max_length=2000)
     status: WorkItemStatus
+    work_type: WorkItemType = "TASK"
+    priority: WorkItemPriority = "MEDIUM"
+    health: WorkItemHealth = "NOT_REPORTED"
+    target_date: date | None = None
+    next_action: str | None = Field(default=None, max_length=1000)
+    blocker: str | None = Field(default=None, max_length=1000)
+    evidence: tuple[str, ...] = Field(default=(), max_length=12)
+    cadence: WorkItemCadence = "AD_HOC"
+    check_in_note: str | None = Field(default=None, max_length=2000)
+    last_check_in_at: datetime | None = None
     assignments: tuple[RaciAssignment, ...] = Field(min_length=1, max_length=50)
 
     @field_validator("name", mode="before")
@@ -218,6 +232,47 @@ class TeamWorkItem(BaseModel):
     @classmethod
     def normalize_description(cls, value: object) -> str:
         return _normalize_text(value, label="work item description", maximum=2000)
+
+    @field_validator("next_action", "blocker", mode="before")
+    @classmethod
+    def normalize_optional_summary(cls, value: object, info: object) -> str | None:
+        return _normalize_optional_text(
+            value,
+            label=str(getattr(info, "field_name", "work item summary")),
+            maximum=1000,
+        )
+
+    @field_validator("check_in_note", mode="before")
+    @classmethod
+    def normalize_check_in_note(cls, value: object) -> str | None:
+        return _normalize_optional_text(value, label="check_in_note", maximum=2000)
+
+    @field_validator("evidence", mode="before")
+    @classmethod
+    def normalize_evidence(cls, value: object) -> tuple[str, ...]:
+        return _normalize_optional_text_list(value, label="work item evidence", maximum=12)
+
+    @field_validator("last_check_in_at")
+    @classmethod
+    def require_check_in_timezone(cls, value: datetime | None) -> datetime | None:
+        if value is not None and value.utcoffset() is None:
+            raise ValueError("last_check_in_at must include a timezone")
+        return value
+
+    @model_validator(mode="after")
+    def validate_operating_state(self) -> Self:
+        if self.status == "BLOCKED":
+            if self.blocker is None:
+                raise ValueError("blocked work item requires a blocker")
+            if self.health not in {"AT_RISK", "OFF_TRACK"}:
+                raise ValueError("blocked work item health must be at risk or off track")
+        elif self.blocker is not None:
+            raise ValueError("non-blocked work item cannot retain a blocker")
+        if self.health in {"AT_RISK", "OFF_TRACK"} and self.check_in_note is None:
+            raise ValueError("at-risk work item requires a check-in note")
+        if self.last_check_in_at is not None and self.check_in_note is None:
+            raise ValueError("last_check_in_at requires a check-in note")
+        return self
 
 
 class TeamTrainingRequirement(BaseModel):
@@ -376,6 +431,12 @@ class TeamWorkspaceProjection(BaseModel):
     filled_role_count: int = Field(ge=0)
     vacant_role_count: int = Field(ge=0)
     total_weekly_capacity_hours: int = Field(ge=0)
+    total_work_item_count: int = Field(ge=0)
+    planned_work_item_count: int = Field(ge=0)
+    active_work_item_count: int = Field(ge=0)
+    blocked_work_item_count: int = Field(ge=0)
+    completed_work_item_count: int = Field(ge=0)
+    attention_work_item_count: int = Field(ge=0)
     next_action: TeamNextAction
     authority_effect: Literal["NONE"] = "NONE"
     external_effects: Literal["NONE"] = "NONE"
@@ -539,13 +600,17 @@ def assess_team_workspace(value: TeamWorkspaceAssessmentInput) -> TeamWorkspaceP
                 f"unknown role reference {assignment.role_id} from work item {work_item.id}",
             )
             assigned_role = roles_by_id[assignment.role_id]
-            if work_item.status in {"ACTIVE", "BLOCKED"} and assignment.responsibility in {
+            if work_item.status in {
+                "ACTIVE",
+                "BLOCKED",
+                "COMPLETE",
+            } and assignment.responsibility in {
                 "ACCOUNTABLE",
                 "RESPONSIBLE",
             }:
                 _require(
                     assigned_role.status == "FILLED",
-                    f"active accountability requires a filled role: {assignment.role_id}",
+                    f"executed work requires a filled role: {assignment.role_id}",
                 )
             key = (assignment.role_id, assignment.responsibility)
             _require(
@@ -695,6 +760,16 @@ def assess_team_workspace(value: TeamWorkspaceAssessmentInput) -> TeamWorkspaceP
     filled_roles = tuple(role for role in value.roles or () if role.status == "FILLED")
     vacant_roles = tuple(role for role in value.roles or () if role.status == "VACANT")
     total_capacity = sum(role.weekly_capacity_hours or 0 for role in filled_roles)
+    work_items = value.work_items or ()
+    planned_work_items = tuple(item for item in work_items if item.status == "PLANNED")
+    active_work_items = tuple(item for item in work_items if item.status == "ACTIVE")
+    blocked_work_items = tuple(item for item in work_items if item.status == "BLOCKED")
+    completed_work_items = tuple(item for item in work_items if item.status == "COMPLETE")
+    attention_work_items = tuple(
+        item
+        for item in work_items
+        if item.status == "BLOCKED" or item.health in {"AT_RISK", "OFF_TRACK"}
+    )
 
     return TeamWorkspaceProjection(
         id=value.id,
@@ -715,6 +790,12 @@ def assess_team_workspace(value: TeamWorkspaceAssessmentInput) -> TeamWorkspaceP
         filled_role_count=len(filled_roles),
         vacant_role_count=len(vacant_roles),
         total_weekly_capacity_hours=total_capacity,
+        total_work_item_count=len(work_items),
+        planned_work_item_count=len(planned_work_items),
+        active_work_item_count=len(active_work_items),
+        blocked_work_item_count=len(blocked_work_items),
+        completed_work_item_count=len(completed_work_items),
+        attention_work_item_count=len(attention_work_items),
         next_action=next_action,
         limitation_codes=LIMITATION_CODES,
         version=value.version,

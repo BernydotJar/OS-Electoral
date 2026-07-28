@@ -797,6 +797,35 @@
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"
       ]
+    },
+    {
+      "task_id": "C3-TEAM-004",
+      "owner": "WS-08/WS-06",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "backend/src/campaignos/teams/contracts.py",
+        "backend/tests/test_team_workspace_contracts.py",
+        "frontend/src/components/team-operations-board.tsx",
+        "frontend/src/components/team-work-item-editor.tsx",
+        "frontend/src/components/team-operations-board.test.ts",
+        "frontend/src/components/shell.tsx",
+        "frontend/src/lib/team-contract-parser.ts",
+        "frontend/src/lib/team-workspace-form.ts",
+        "frontend/src/app/api/ui/team-workspace/work-item/route.ts",
+        "frontend/src/app/api/ui/team-workspace/work-item-status/route.ts",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/product/team-workspace.md",
+        "docs/api/team-workspace.md",
+        "docs/design/team-role-operations-board.md",
+        "docs/testing/c3-team-004-evidence.md",
+        "program/iterations/c3-team-004.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Hosted exact-head PostgreSQL/browser validation remains required",
+        "Human product review and merge of the stacked PR chain remain required",
+        "Identity assignment, capacity, training, access review, staging and production remain separate gates"
+      ]
     }
   ]
 }

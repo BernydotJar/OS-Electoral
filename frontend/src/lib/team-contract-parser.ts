@@ -113,6 +113,29 @@ function timestamp(value: unknown, label: string): string {
   return candidate;
 }
 
+function nullableText(value: unknown, label: string): string | null {
+  return value === null ? null : text(value, label);
+}
+
+function dateOnly(value: unknown, label: string): string {
+  const candidate = text(value, label);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(candidate)) {
+    throw new TeamContractValidationError(`${label} must be an ISO date`);
+  }
+  const parsed = new Date(`${candidate}T00:00:00Z`);
+  if (
+    !Number.isFinite(parsed.getTime()) ||
+    parsed.toISOString().slice(0, 10) !== candidate
+  ) {
+    throw new TeamContractValidationError(`${label} must be a valid ISO date`);
+  }
+  return candidate;
+}
+
+function nullableTimestamp(value: unknown, label: string): string | null {
+  return value === null ? null : timestamp(value, label);
+}
+
 function literal<T extends string>(
   value: unknown,
   allowed: readonly T[],
@@ -264,10 +287,26 @@ function parseWorkItem(value: unknown, label: string): TeamWorkItem {
   const source = record(value, label);
   exactKeys(
     source,
-    ["id", "name", "description", "status", "assignments"],
+    [
+      "id",
+      "name",
+      "description",
+      "status",
+      "work_type",
+      "priority",
+      "health",
+      "target_date",
+      "next_action",
+      "blocker",
+      "evidence",
+      "cadence",
+      "check_in_note",
+      "last_check_in_at",
+      "assignments",
+    ],
     label,
   );
-  return {
+  const workItem: TeamWorkItem = {
     id: uuid(source.id, `${label}.id`),
     name: text(source.name, `${label}.name`),
     description: text(source.description, `${label}.description`),
@@ -276,10 +315,74 @@ function parseWorkItem(value: unknown, label: string): TeamWorkItem {
       ["PLANNED", "ACTIVE", "BLOCKED", "COMPLETE"] as const,
       `${label}.status`,
     ),
+    work_type: literal(
+      source.work_type,
+      ["TASK", "DELIVERABLE", "CHECK_IN", "DECISION_PREP"] as const,
+      `${label}.work_type`,
+    ),
+    priority: literal(
+      source.priority,
+      ["CRITICAL", "HIGH", "MEDIUM", "LOW"] as const,
+      `${label}.priority`,
+    ),
+    health: literal(
+      source.health,
+      ["NOT_REPORTED", "ON_TRACK", "AT_RISK", "OFF_TRACK"] as const,
+      `${label}.health`,
+    ),
+    target_date:
+      source.target_date === null
+        ? null
+        : dateOnly(source.target_date, `${label}.target_date`),
+    next_action: nullableText(source.next_action, `${label}.next_action`),
+    blocker: nullableText(source.blocker, `${label}.blocker`),
+    evidence: array(source.evidence, `${label}.evidence`).map((item, index) =>
+      text(item, `${label}.evidence[${index}]`),
+    ),
+    cadence: literal(
+      source.cadence,
+      ["AD_HOC", "DAILY", "WEEKLY", "BIWEEKLY", "MONTHLY"] as const,
+      `${label}.cadence`,
+    ),
+    check_in_note: nullableText(source.check_in_note, `${label}.check_in_note`),
+    last_check_in_at: nullableTimestamp(
+      source.last_check_in_at,
+      `${label}.last_check_in_at`,
+    ),
     assignments: array(source.assignments, `${label}.assignments`).map(
       (item, index) => parseAssignment(item, `${label}.assignments[${index}]`),
     ),
   };
+  if (workItem.status === "BLOCKED") {
+    if (workItem.blocker === null) {
+      throw new TeamContractValidationError(
+        `${label} blocked work requires a blocker`,
+      );
+    }
+    if (workItem.health !== "AT_RISK" && workItem.health !== "OFF_TRACK") {
+      throw new TeamContractValidationError(
+        `${label} blocked work health must be at risk or off track`,
+      );
+    }
+  } else if (workItem.blocker !== null) {
+    throw new TeamContractValidationError(
+      `${label} non-blocked work cannot retain a blocker`,
+    );
+  }
+  if (
+    (workItem.health === "AT_RISK" || workItem.health === "OFF_TRACK") &&
+    workItem.check_in_note === null
+  ) {
+    throw new TeamContractValidationError(
+      `${label} at-risk work requires a check-in note`,
+    );
+  }
+  if (workItem.last_check_in_at !== null && workItem.check_in_note === null) {
+    throw new TeamContractValidationError(
+      `${label} last check-in requires a note`,
+    );
+  }
+  return workItem;
 }
 
 function parseTraining(value: unknown, label: string): TeamTrainingRequirement {
@@ -371,6 +474,12 @@ function parseProjection(value: unknown): TeamWorkspaceProjection {
       "filled_role_count",
       "vacant_role_count",
       "total_weekly_capacity_hours",
+      "total_work_item_count",
+      "planned_work_item_count",
+      "active_work_item_count",
+      "blocked_work_item_count",
+      "completed_work_item_count",
+      "attention_work_item_count",
       "next_action",
       "authority_effect",
       "external_effects",
@@ -429,7 +538,9 @@ function parseProjection(value: unknown): TeamWorkspaceProjection {
       );
     }
     if (
-      item.status === "ACTIVE" &&
+      (item.status === "ACTIVE" ||
+        item.status === "BLOCKED" ||
+        item.status === "COMPLETE") &&
       item.assignments.some(
         (assignment) =>
           (assignment.responsibility === "ACCOUNTABLE" ||
@@ -597,6 +708,34 @@ function parseProjection(value: unknown): TeamWorkspaceProjection {
       "team workspace capacity summary is inconsistent",
     );
   }
+  const workSummary = {
+    total: (workItems ?? []).length,
+    planned: (workItems ?? []).filter((item) => item.status === "PLANNED")
+      .length,
+    active: (workItems ?? []).filter((item) => item.status === "ACTIVE").length,
+    blocked: (workItems ?? []).filter((item) => item.status === "BLOCKED")
+      .length,
+    completed: (workItems ?? []).filter((item) => item.status === "COMPLETE")
+      .length,
+    attention: (workItems ?? []).filter(
+      (item) =>
+        item.status === "BLOCKED" ||
+        item.health === "AT_RISK" ||
+        item.health === "OFF_TRACK",
+    ).length,
+  };
+  if (
+    source.total_work_item_count !== workSummary.total ||
+    source.planned_work_item_count !== workSummary.planned ||
+    source.active_work_item_count !== workSummary.active ||
+    source.blocked_work_item_count !== workSummary.blocked ||
+    source.completed_work_item_count !== workSummary.completed ||
+    source.attention_work_item_count !== workSummary.attention
+  ) {
+    throw new TeamContractValidationError(
+      "team workspace work summary is inconsistent",
+    );
+  }
   const limitations = array(
     source.limitation_codes,
     "team workspace.limitation_codes",
@@ -666,6 +805,30 @@ function parseProjection(value: unknown): TeamWorkspaceProjection {
     total_weekly_capacity_hours: integer(
       source.total_weekly_capacity_hours,
       "team workspace.capacity",
+    ),
+    total_work_item_count: integer(
+      source.total_work_item_count,
+      "team workspace.total_work_item_count",
+    ),
+    planned_work_item_count: integer(
+      source.planned_work_item_count,
+      "team workspace.planned_work_item_count",
+    ),
+    active_work_item_count: integer(
+      source.active_work_item_count,
+      "team workspace.active_work_item_count",
+    ),
+    blocked_work_item_count: integer(
+      source.blocked_work_item_count,
+      "team workspace.blocked_work_item_count",
+    ),
+    completed_work_item_count: integer(
+      source.completed_work_item_count,
+      "team workspace.completed_work_item_count",
+    ),
+    attention_work_item_count: integer(
+      source.attention_work_item_count,
+      "team workspace.attention_work_item_count",
     ),
     next_action: literal(
       source.next_action,

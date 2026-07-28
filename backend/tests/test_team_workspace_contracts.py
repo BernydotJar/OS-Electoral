@@ -9,6 +9,7 @@ from pydantic import ValidationError
 
 from campaignos.teams.contracts import (
     TeamRoleCard,
+    TeamWorkItem,
     TeamWorkspaceAssessmentInput,
     TeamWorkspaceContractError,
     TeamWorkspaceCreate,
@@ -152,6 +153,62 @@ def test_historical_role_cards_default_to_an_empty_consulting_profile() -> None:
     assert role.success_signals == ()
 
 
+def test_historical_work_items_receive_safe_operating_defaults() -> None:
+    work_item = TeamWorkItem.model_validate(_payload()["work_items"][0])  # type: ignore[index]
+
+    assert work_item.work_type == "TASK"
+    assert work_item.priority == "MEDIUM"
+    assert work_item.health == "NOT_REPORTED"
+    assert work_item.target_date is None
+    assert work_item.next_action is None
+    assert work_item.blocker is None
+    assert work_item.evidence == ()
+    assert work_item.cadence == "AD_HOC"
+    assert work_item.check_in_note is None
+    assert work_item.last_check_in_at is None
+
+
+def test_operating_work_item_requires_consistent_blocker_and_health() -> None:
+    source = deepcopy(_payload()["work_items"][0])  # type: ignore[index]
+    source.update(
+        {
+            "status": "BLOCKED",
+            "health": "AT_RISK",
+            "blocker": "Falta una decisión humana sobre alcance.",
+            "check_in_note": "El entregable no puede avanzar hasta resolver el alcance.",
+        }
+    )
+    blocked = TeamWorkItem.model_validate(source)
+    assert blocked.blocker == "Falta una decisión humana sobre alcance."
+
+    missing_blocker = deepcopy(source)
+    missing_blocker["blocker"] = None
+    with pytest.raises(ValidationError, match="blocked work item requires a blocker"):
+        TeamWorkItem.model_validate(missing_blocker)
+
+    inconsistent_health = deepcopy(source)
+    inconsistent_health["health"] = "ON_TRACK"
+    with pytest.raises(ValidationError, match="health must be at risk or off track"):
+        TeamWorkItem.model_validate(inconsistent_health)
+
+    stale_blocker = deepcopy(source)
+    stale_blocker["status"] = "ACTIVE"
+    with pytest.raises(ValidationError, match="cannot retain a blocker"):
+        TeamWorkItem.model_validate(stale_blocker)
+
+
+def test_at_risk_work_requires_a_human_check_in_note() -> None:
+    source = deepcopy(_payload()["work_items"][0])  # type: ignore[index]
+    source.update({"health": "OFF_TRACK", "check_in_note": None})
+    with pytest.raises(ValidationError, match="requires a check-in note"):
+        TeamWorkItem.model_validate(source)
+
+    source["check_in_note"] = "La fecha objetivo requiere revisión humana."
+    source["last_check_in_at"] = "2026-07-28T09:00:00"
+    with pytest.raises(ValidationError, match="must include a timezone"):
+        TeamWorkItem.model_validate(source)
+
+
 def test_complete_team_projection_exposes_gaps_without_creating_authority() -> None:
     projection = assess_team_workspace(TeamWorkspaceAssessmentInput.model_validate(_payload()))
 
@@ -159,6 +216,12 @@ def test_complete_team_projection_exposes_gaps_without_creating_authority() -> N
     assert projection.completed_checks == projection.total_checks == 8
     assert projection.vacant_role_count == 1
     assert projection.total_weekly_capacity_hours == 60
+    assert projection.total_work_item_count == 1
+    assert projection.planned_work_item_count == 0
+    assert projection.active_work_item_count == 1
+    assert projection.blocked_work_item_count == 0
+    assert projection.completed_work_item_count == 0
+    assert projection.attention_work_item_count == 0
     assert projection.next_action == "CONTINUE_HUMAN_GOVERNANCE"
     assert projection.authority_effect == "NONE"
     assert projection.external_effects == "NONE"
@@ -198,17 +261,13 @@ def test_active_accountable_and_responsible_assignments_require_filled_roles() -
     accountable_vacancy = _payload()
     vacancy_id = accountable_vacancy["roles"][2]["id"]  # type: ignore[index]
     accountable_vacancy["work_items"][0]["assignments"][0]["role_id"] = vacancy_id  # type: ignore[index]
-    with pytest.raises(
-        TeamWorkspaceContractError, match="active accountability requires a filled role"
-    ):
+    with pytest.raises(TeamWorkspaceContractError, match="executed work requires a filled role"):
         assess_team_workspace(TeamWorkspaceAssessmentInput.model_validate(accountable_vacancy))
 
     responsible_vacancy = _payload()
     vacancy_id = responsible_vacancy["roles"][2]["id"]  # type: ignore[index]
     responsible_vacancy["work_items"][0]["assignments"][1]["role_id"] = vacancy_id  # type: ignore[index]
-    with pytest.raises(
-        TeamWorkspaceContractError, match="active accountability requires a filled role"
-    ):
+    with pytest.raises(TeamWorkspaceContractError, match="executed work requires a filled role"):
         assess_team_workspace(TeamWorkspaceAssessmentInput.model_validate(responsible_vacancy))
 
 
@@ -297,3 +356,67 @@ def test_incomplete_onboarding_training_or_access_review_drives_next_action() ->
     access["access_recommendations"][0]["status"] = "PROPOSED"  # type: ignore[index]
     projection = assess_team_workspace(TeamWorkspaceAssessmentInput.model_validate(access))
     assert projection.next_action == "REVIEW_ACCESS_RECOMMENDATIONS"
+
+
+def test_completed_work_requires_filled_accountable_and_responsible_roles() -> None:
+    payload = _payload()
+    work_item = payload["work_items"][0]  # type: ignore[index]
+    work_item["status"] = "COMPLETE"
+    vacancy_id = payload["roles"][2]["id"]  # type: ignore[index]
+    work_item["assignments"] = [
+        {
+            "role_id": vacancy_id,
+            "responsibility": "ACCOUNTABLE",
+        },
+        {
+            "role_id": vacancy_id,
+            "responsibility": "RESPONSIBLE",
+        },
+    ]
+
+    with pytest.raises(ValueError, match="executed work requires a filled role"):
+        assess_team_workspace(TeamWorkspaceAssessmentInput.model_validate(payload))
+
+
+def test_team_projection_rolls_up_operating_attention_without_scoring_people() -> None:
+    payload = _payload()
+    first = payload["work_items"][0]  # type: ignore[index]
+    first.update(
+        {
+            "health": "AT_RISK",
+            "check_in_note": "La evidencia pendiente puede mover la fecha objetivo.",
+            "next_action": "Validar las dos fuentes pendientes.",
+        }
+    )
+    second = deepcopy(first)
+    second["id"] = UUID("60000000-0000-4000-8000-000000000002")
+    second.update(
+        {
+            "name": "Preparar entregable semanal",
+            "status": "PLANNED",
+            "health": "NOT_REPORTED",
+            "check_in_note": None,
+            "next_action": "Definir alcance y fecha con dirección.",
+        }
+    )
+    third = deepcopy(first)
+    third["id"] = UUID("60000000-0000-4000-8000-000000000003")
+    third.update(
+        {
+            "name": "Cerrar decisión registrada",
+            "status": "COMPLETE",
+            "health": "ON_TRACK",
+            "check_in_note": None,
+            "next_action": None,
+        }
+    )
+    payload["work_items"] = [first, second, third]
+
+    projection = assess_team_workspace(TeamWorkspaceAssessmentInput.model_validate(payload))
+
+    assert projection.total_work_item_count == 3
+    assert projection.planned_work_item_count == 1
+    assert projection.active_work_item_count == 1
+    assert projection.blocked_work_item_count == 0
+    assert projection.completed_work_item_count == 1
+    assert projection.attention_work_item_count == 1

@@ -134,3 +134,46 @@ Each list accepts at most twelve unique normalized entries, each bounded to 500 
 Template additions and preserved matches both include the localized canonical consulting profile. The fields therefore participate in the deterministic preview digest and are revalidated under lock during application. A client cannot submit its own proposed profile through template apply.
 
 Manual PATCH replacement or the live append workflow may persist a custom profile, but the fields remain descriptive. They do not write authorization tables, assign a principal, create capacity, complete onboarding or produce an external effect.
+
+
+## Operational work-item contract
+
+`C3-TEAM-004` extends each RACI work item without changing the persisted table or authorization model. Historical documents remain readable through safe defaults (`TASK`, `MEDIUM`, `NOT_REPORTED`, `AD_HOC`, no date, blocker, evidence or check-in).
+
+```json
+{
+  "id": "uuid",
+  "name": "Weekly campaign direction agenda",
+  "description": "Consolidate priorities, decisions and blockers.",
+  "status": "PLANNED",
+  "work_type": "DELIVERABLE",
+  "priority": "HIGH",
+  "health": "NOT_REPORTED",
+  "target_date": "2026-08-05",
+  "next_action": "Validate scope with campaign leadership.",
+  "blocker": null,
+  "evidence": ["Decision register", "Blocker map"],
+  "cadence": "WEEKLY",
+  "check_in_note": null,
+  "last_check_in_at": null,
+  "assignments": [
+    {"role_id": "uuid", "responsibility": "ACCOUNTABLE"},
+    {"role_id": "uuid", "responsibility": "RESPONSIBLE"}
+  ]
+}
+```
+
+The deterministic projection also returns total, planned, active, blocked, completed and attention counts. Attention means blocked or explicitly reported `AT_RISK`/`OFF_TRACK`; it is not a personnel score.
+
+Validation remains fail-closed:
+
+- every item has exactly one accountable and at least one responsible function;
+- active and blocked work requires filled accountable/responsible functions;
+- blocked work requires a blocker and at-risk/off-track health;
+- non-blocked work cannot retain a blocker;
+- at-risk/off-track work requires a human check-in note;
+- a check-in timestamp must be timezone-aware and cannot exist without a note;
+- role references stay inside the same tenant/campaign workspace;
+- PATCH remains version-bound and idempotent, with atomic aggregate, audit, outbox and receipt persistence.
+
+The live UI routes for creating and updating follow-up are server-side adapters over the existing exact-authorized PATCH. They never accept identity, membership, permission or external-action fields.

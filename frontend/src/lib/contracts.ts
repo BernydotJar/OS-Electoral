@@ -401,6 +401,13 @@ export type TeamAvailabilityStatus =
   "UNASSESSED" | "AVAILABLE" | "LIMITED" | "UNAVAILABLE";
 export type TeamProgressStatus = "NOT_STARTED" | "IN_PROGRESS" | "COMPLETE";
 export type TeamWorkItemStatus = "PLANNED" | "ACTIVE" | "BLOCKED" | "COMPLETE";
+export type TeamWorkItemType =
+  "TASK" | "DELIVERABLE" | "CHECK_IN" | "DECISION_PREP";
+export type TeamWorkItemPriority = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+export type TeamWorkItemHealth =
+  "NOT_REPORTED" | "ON_TRACK" | "AT_RISK" | "OFF_TRACK";
+export type TeamWorkItemCadence =
+  "AD_HOC" | "DAILY" | "WEEKLY" | "BIWEEKLY" | "MONTHLY";
 export type TeamRaciResponsibility =
   "RESPONSIBLE" | "ACCOUNTABLE" | "CONSULTED" | "INFORMED";
 export type TeamAccessReviewStatus = "PROPOSED" | "REVIEWED" | "REJECTED";
@@ -459,6 +466,16 @@ export type TeamWorkItem = Readonly<{
   name: string;
   description: string;
   status: TeamWorkItemStatus;
+  work_type: TeamWorkItemType;
+  priority: TeamWorkItemPriority;
+  health: TeamWorkItemHealth;
+  target_date: string | null;
+  next_action: string | null;
+  blocker: string | null;
+  evidence: readonly string[];
+  cadence: TeamWorkItemCadence;
+  check_in_note: string | null;
+  last_check_in_at: string | null;
   assignments: readonly TeamRaciAssignment[];
 }>;
 
@@ -508,6 +525,12 @@ export type TeamWorkspaceProjection = Readonly<{
   filled_role_count: number;
   vacant_role_count: number;
   total_weekly_capacity_hours: number;
+  total_work_item_count: number;
+  planned_work_item_count: number;
+  active_work_item_count: number;
+  blocked_work_item_count: number;
+  completed_work_item_count: number;
+  attention_work_item_count: number;
   next_action: TeamNextAction;
   authority_effect: "NONE";
   external_effects: "NONE";

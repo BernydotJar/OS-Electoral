@@ -393,15 +393,24 @@ async def review() -> dict[str, object]:
                 await page.get_by_role("heading", name=seeded_title, exact=True).count() == 1,
                 f"seeded job description missing: {seeded_title}",
             )
+        seeded_role = page.locator(".team-role-grid article").first
+        seeded_role_details = seeded_role.locator(".team-role-card-details")
+        seeded_role_summary = seeded_role_details.locator("summary")
+        await seeded_role_summary.focus()
+        await page.keyboard.press("Enter")
         require(
-            await page.get_by_text("Responsabilidades del puesto", exact=True).count() == 5,
-            "seeded job responsibilities are not visible",
+            await seeded_role_details.evaluate("element => element.open"),
+            "seeded role details did not open from keyboard",
         )
         require(
-            await page.get_by_text("Plan humano de cobertura", exact=True).count() == 5,
-            "seeded human vacancy plans are not visible",
+            await seeded_role.get_by_text("Responsabilidades del puesto", exact=True).count() == 1,
+            "seeded job responsibilities are not available on demand",
         )
-        seeded_dossier = page.locator(".team-role-grid .team-role-dossier").first
+        require(
+            await seeded_role.get_by_text("Plan humano de cobertura", exact=True).count() == 1,
+            "seeded human vacancy plan is not available on demand",
+        )
+        seeded_dossier = seeded_role.locator(".team-role-dossier")
         seeded_summary = seeded_dossier.locator("summary")
         await seeded_summary.focus()
         await page.keyboard.press("Enter")
@@ -423,6 +432,49 @@ async def review() -> dict[str, object]:
         require(
             await page.get_by_role("button", name="Agregar función").count() == 1,
             "team role editor missing after map creation",
+        )
+        await page.get_by_label("Tipo de trabajo").select_option("DELIVERABLE")
+        await page.get_by_label("Prioridad").first.select_option("HIGH")
+        await page.get_by_label("Cadencia").first.select_option("WEEKLY")
+        await page.get_by_label("Nombre del seguimiento").fill("Agenda semanal de dirección")
+        await page.get_by_label("Resultado y alcance").fill(
+            "Consolidar prioridades, decisiones pendientes y bloqueos del equipo."
+        )
+        await page.get_by_label("Fecha objetivo").first.fill("2026-08-05")
+        await page.get_by_label("Siguiente acción concreta").first.fill(
+            "Validar el alcance y los entregables con la jefatura de campaña."
+        )
+        await page.get_by_label("Evidencia o comprobantes esperados").fill(
+            "Registro de decisiones\nMapa de bloqueos"
+        )
+        await page.get_by_role("button", name="Agregar al tablero").click()
+        await page.wait_for_url("**notice=team_work_item_saved**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Seguimiento operativo agregado al tablero con una nueva versión.",
+                exact=True,
+            ).count()
+            == 1,
+            "operational work success notice missing",
+        )
+        work_card = page.locator(".team-work-card").filter(has_text="Agenda semanal de dirección")
+        require(await work_card.count() == 1, "planned operational work was not projected")
+        require(
+            await work_card.get_by_text("Planificado", exact=True).count() >= 1,
+            "planned work status is missing",
+        )
+        work_details = work_card.locator(".team-work-details")
+        await work_details.locator("summary").focus()
+        await page.keyboard.press("Enter")
+        require(
+            await work_details.get_by_text("Registro de decisiones", exact=True).count() == 1,
+            "operational evidence did not persist",
+        )
+        active_option = work_card.locator('select[name="status"] option[value="ACTIVE"]')
+        require(
+            await active_option.is_disabled(),
+            "vacant organizational function could activate work without a human owner",
         )
 
         await page.get_by_label("Modelo organizativo").select_option("FULL_CAMPAIGN")
@@ -558,6 +610,10 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Coordinación de voluntariado", exact=True).count() >= 1,
             "team role did not persist after reload",
         )
+        require(
+            await page.get_by_text("Agenda semanal de dirección", exact=True).count() == 1,
+            "operational work item did not persist after reload",
+        )
         manual_dossier = (
             page.get_by_text("Coordinación de voluntariado", exact=True)
             .locator("xpath=ancestor::article[1]")
@@ -668,6 +724,13 @@ async def review() -> dict[str, object]:
             mobile_role_columns == 1,
             f"mobile role blueprints are not a single responsive column: {mobile_role_columns}",
         )
+        mobile_work_columns = await mobile.locator(".team-work-columns").evaluate(
+            "element => getComputedStyle(element).gridTemplateColumns.split(' ').length"
+        )
+        require(
+            mobile_work_columns == 1,
+            f"mobile operations board is not a single responsive column: {mobile_work_columns}",
+        )
         reduced_motion_state = await mobile.locator(".experience-mission-pulse i").first.evaluate(
             "element => getComputedStyle(element).animationName"
         )
@@ -693,6 +756,7 @@ async def review() -> dict[str, object]:
         "chapter_navigation": "PASS_URL_HISTORY_BACK_FORWARD_ISOLATION",
         "role_blueprints": "PASS_LEAN_5_TO_FULL_10_PLUS_CUSTOM_ROLE",
         "consultant_role_dossiers": "PASS_PROPOSED_PRESERVED_APPLIED_MANUAL",
+        "role_operations_board": "PASS_PLANNED_RACI_EVIDENCE_PERSISTENCE_VACANT_ACTIVATION_BLOCKED",
         "keyboard_progressive_disclosure": "PASS",
         "template_application": "PASS_PREVIEW_DEDUP_CONFIRM",
         "reduced_motion_cadence": "PASS_STATIC_EQUIVALENT",
