@@ -461,11 +461,20 @@ async def review() -> dict[str, object]:
             == 1,
             "operational work success notice missing",
         )
-        work_card = page.locator(".team-work-card").filter(has_text="Agenda semanal de dirección")
-        require(await work_card.count() == 1, "planned operational work was not projected")
+        planned_column = page.locator('.team-work-columns > section[data-status="PLANNED"]')
+        await planned_column.wait_for(state="visible")
         require(
-            await work_card.get_by_text("Planificado", exact=True).count() >= 1,
-            "planned work status is missing",
+            await planned_column.get_by_role("heading", name="Planificado", exact=True).count()
+            == 1,
+            "planned work column is missing",
+        )
+        work_card = planned_column.locator(".team-work-card").filter(
+            has_text="Agenda semanal de dirección"
+        )
+        await work_card.wait_for(state="visible")
+        require(
+            await work_card.count() == 1,
+            "planned operational work was not projected",
         )
         work_details = work_card.locator(".team-work-details")
         await work_details.locator("summary").focus()
