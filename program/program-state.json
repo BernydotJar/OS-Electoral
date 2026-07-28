@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-27",
-  "branch": "agent/c3-team-004-role-operations-board",
-  "current_increment": "C3-TEAM-004",
+  "updated_at": "2026-07-28",
+  "branch": "agent/c3-front-008-organic-role-aware-flow",
+  "current_increment": "C3-FRONT-008",
   "iteration_status": "ACTIVE",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "GUIDED_CHAPTERS_AND_ROLE_DOSSIERS_CI_GREEN",
-      "next_increment": "HUMAN_PRODUCT_REVIEW"
+      "status": "ORGANIC_CAMPAIGN_FLOW_TESTED_LOCAL",
+      "next_increment": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
     },
     {
       "id": "WS-07",
@@ -189,13 +189,13 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 724,
+    "tests_passed": 732,
     "tests_skipped": 10,
-    "coverage_percent": 90.37,
+    "coverage_percent": 90.38,
     "coverage_gate": "PASS",
     "postgresql_integration": "PASS_TWICE_10_SLICES_REVISION_20260721_0011",
     "identity_focused_tests": "PASS_CONTRACT_MODEL_FAILURE_API_OIDC",
-    "frontend_unit_tests": 97,
+    "frontend_unit_tests": 118,
     "frontend_lint_type_build_audit": "PASS_ZERO_VULNERABILITIES",
     "frontend_browser_review": "PASS_ES_EN_DESKTOP_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG22AA",
     "frontend_pr_ci": "PASS_PR_89_HEAD_437B469_RUN_29856835515",
@@ -364,7 +364,14 @@
     "team_004_functional_browser": "PASS_HOSTED_ROLE_WORK_CREATE_PERSIST_RACI_EVIDENCE_ES_EN_MOBILE",
     "team_004_authority_boundary": "PASS_PLANNED_ROLE_WORK_NO_IDENTITY_PERMISSION_SCORE_OR_EXTERNAL_EFFECT",
     "team_004_exact_head_ci": "PASS_RUN_30380383123",
-    "team_004_visual_review": "PASS_RUN_30380383149"
+    "team_004_visual_review": "PASS_RUN_30380383149",
+    "front_008_frontend_tests": "PASS_118",
+    "front_008_build_audit": "PASS_NEXT16_ZERO_VULNERABILITIES",
+    "front_008_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_ZERO_AXE_NO_OVERFLOW",
+    "front_008_candidate_actions": "PASS_DETERMINISTIC_EVIDENCE_REVIEW_GAPS_NO_PUBLIC_USE",
+    "front_008_visibility_boundary": "PASS_COMMAND_VIEW_NO_CLIENT_ONLY_PERSONAL_FILTER",
+    "front_008_functional_browser": "PENDING_HOSTED_CI_LOCAL_DOCKER_LAYER_LCHOWN",
+    "front_008_full_verify": "PASS_732_PYTHON_10_SKIPS_90_38_COVERAGE_118_FRONTEND_TERRAFORM_SECURITY_PROGRAM"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -404,16 +411,14 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-TEAM-004",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-team-004-role-operations-board",
-    "base": "agent/c3-front-007-guided-chapter-transitions@0a93c27ccb99fec3e4e4ac9f9d2475d098df995c",
-    "validated_implementation_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5",
-    "draft_pr": 125,
+    "id": "C3-FRONT-008",
+    "state": "TESTED_LOCAL",
+    "branch": "agent/c3-front-008-organic-role-aware-flow",
+    "base": "agent/c3-team-004-role-operations-board@47119b2ecacbde3cd949d92f39a043ea93769fff",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "HUMAN_PRODUCT_REVIEW"
+    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",

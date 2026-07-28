@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 
+import { GuidedTeamSelector } from "@/components/guided-team-selector";
 import type {
   CampaignProjection,
   GuidedIntakeProjection,
@@ -169,15 +170,12 @@ export function GuidedIntakeEditor({
           />
           <small>{dictionary.intake.candidateProjectHelp}</small>
         </label>
+        <GuidedTeamSelector
+          dictionary={dictionary}
+          defaultValues={intake.current_team ?? []}
+        />
         {(
           [
-            [
-              "current_team",
-              dictionary.intake.currentTeam,
-              intake.current_team,
-              dictionary.intake.currentTeamHelp,
-              dictionary.intake.currentTeamPlaceholder,
-            ],
             [
               "current_assets",
               dictionary.intake.currentAssets,

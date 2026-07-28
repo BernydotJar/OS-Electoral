@@ -153,6 +153,13 @@ async def review() -> dict[str, object]:
             await desktop.locator('.campaign-experience[data-layout="mission"]').count() == 1,
             "adaptive active-mission hero missing",
         )
+        hero_height = await desktop.locator('.campaign-experience[data-layout="mission"]').evaluate(
+            "element => element.getBoundingClientRect().height"
+        )
+        require(
+            hero_height < 700,
+            f"returning mission hero remains too dominant: {hero_height}",
+        )
         require(
             await desktop.get_by_role("progressbar", name="Progreso de la ruta de campaña").count()
             == 1,
@@ -252,7 +259,8 @@ async def review() -> dict[str, object]:
             '.campaign-experience a[href="/es/campaign/evidence#candidate-workspace"]'
         ).click()
         await desktop.wait_for_url("**/es/campaign/evidence**")
-        await desktop.wait_for_load_state("networkidle")
+        await desktop.locator("#candidate-workspace").wait_for(state="visible")
+        await desktop.locator(".chapter-navigation").wait_for(state="visible")
         require(
             await desktop.locator(".chapter-navigation").count() == 1,
             "chapter navigation missing after mission entry",
@@ -260,6 +268,35 @@ async def review() -> dict[str, object]:
         require(
             await desktop.locator("#candidate-workspace").count() == 1,
             "selected evidence chapter is absent",
+        )
+        action_tab = desktop.get_by_role("tab", name="Qué hacer ahora")
+        require(await action_tab.count() == 1, "candidate action tab missing")
+        require(
+            await desktop.get_by_text("Qué debemos resolver ahora", exact=True).count() == 1,
+            "candidate action brief missing",
+        )
+        await action_tab.focus()
+        await desktop.keyboard.press("ArrowRight")
+        require(
+            await desktop.get_by_role("tab", name="Perfil y riesgos").get_attribute("aria-selected")
+            == "true",
+            "candidate profile tab did not activate with ArrowRight",
+        )
+        require(
+            await desktop.locator(".candidate-profile-view").count() == 1,
+            "candidate profile view did not activate",
+        )
+        await desktop.keyboard.press("ArrowRight")
+        require(
+            await desktop.get_by_role("tab", name="Fuentes y evidencia").get_attribute(
+                "aria-selected"
+            )
+            == "true",
+            "candidate evidence tab did not activate with ArrowRight",
+        )
+        require(
+            await desktop.locator("#candidate-evidence-panel:not([hidden])").count() == 1,
+            "candidate evidence view did not activate",
         )
         require(
             await desktop.locator(

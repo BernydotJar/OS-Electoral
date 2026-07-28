@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-27",
+  "updated_at": "2026-07-28",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -339,6 +339,24 @@
       "depends_on": [
         "C3-TEAM-003",
         "C3-FRONT-007"
+      ]
+    },
+    {
+      "id": "C3-FRONT-008",
+      "workstream": "WS-06",
+      "title": "Organic campaign flow, candidate action brief and command-safe workspace decks",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "C3-TEAM-004",
+        "C3-FRONT-007"
+      ],
+      "acceptance": [
+        "Guided starting route precedes overview when exact intake grant exists",
+        "Current-team intake uses presets and chips while preserving the canonical contract",
+        "Candidate actions, profile/risks and evidence are separate accessible views",
+        "Team board and follow-up creation are mutually exclusive accessible views",
+        "Returning hero is compact with mobile and reduced-motion equivalence",
+        "Command view claims no personal visibility without server-side principal grants"
       ]
     }
   ]

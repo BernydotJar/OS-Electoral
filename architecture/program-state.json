@@ -2,8 +2,8 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-27",
-  "source_branch": "agent/c3-team-004-role-operations-board",
+  "updated_at": "2026-07-28",
+  "source_branch": "agent/c3-front-008-organic-role-aware-flow",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
@@ -772,8 +772,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "GUIDED_CHAPTERS_AND_ROLE_DOSSIERS_CI_GREEN",
-      "next_increment": "HUMAN_PRODUCT_REVIEW"
+      "status": "ORGANIC_CAMPAIGN_FLOW_TESTED_LOCAL",
+      "next_increment": "C3-FRONT-008_EXACT_HEAD_CI"
     },
     {
       "id": "WS-07",
@@ -1114,6 +1114,24 @@
       ]
     },
     {
+      "id": "C3-FRONT-008",
+      "workstream": "WS-06",
+      "title": "Organic campaign flow, candidate action brief and command-safe workspace decks",
+      "status": "ACTIVE",
+      "depends_on": [
+        "C3-TEAM-004",
+        "C3-FRONT-007"
+      ],
+      "acceptance": [
+        "Guided starting route precedes overview when exact intake grant exists",
+        "Current-team intake uses presets and chips while preserving the canonical contract",
+        "Candidate actions, profile/risks and evidence are separate accessible views",
+        "Team board and follow-up creation are mutually exclusive accessible views",
+        "Returning hero is compact with mobile and reduced-motion equivalence",
+        "Command view claims no personal visibility without server-side principal grants"
+      ]
+    },
+    {
       "id": "action:production-deployment",
       "status": "HUMAN_BLOCKED",
       "depends_on": [
@@ -1330,16 +1348,14 @@
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
-      "id": "C3-TEAM-004",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-team-004-role-operations-board",
-      "base": "agent/c3-front-007-guided-chapter-transitions@0a93c27ccb99fec3e4e4ac9f9d2475d098df995c",
-      "validated_implementation_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5",
-      "draft_pr": 125,
+      "id": "C3-FRONT-008",
+      "state": "TESTED_LOCAL",
+      "branch": "agent/c3-front-008-organic-role-aware-flow",
+      "base": "agent/c3-team-004-role-operations-board@47119b2ecacbde3cd949d92f39a043ea93769fff",
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "HUMAN_PRODUCT_REVIEW"
+      "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
     },
     "latest_checkpoint": {
       "id": "C3-TEAM-004",

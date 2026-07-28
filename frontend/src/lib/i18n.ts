@@ -286,9 +286,28 @@ const es = {
     candidateProjectPlaceholder:
       "Ej. Queremos construir una candidatura municipal basada en evidencia, organización comunitaria y resultados medibles.",
     currentTeamHelp:
-      "Una persona o función por línea. Incluye coordinaciones, secretarías y roles todavía vacantes.",
+      "Selecciona las funciones que ya existen y agrega cualquier coordinación o vacante que todavía no aparezca.",
     currentTeamPlaceholder:
       "Coordinación general — confirmada\nTerritorio — por definir",
+    currentTeamPresetLabel: "Función sugerida",
+    currentTeamCustomLabel: "Otra función o coordinación",
+    currentTeamCustomPlaceholder: "Ej. Coordinación jurídica",
+    currentTeamAddAction: "Agregar función",
+    currentTeamSelectedLabel: "Equipo registrado",
+    currentTeamRemoveAction: "Quitar",
+    currentTeamEmpty: "Todavía no registraste funciones del equipo.",
+    currentTeamBoundary:
+      "Estas selecciones describen capacidad existente; no asignan identidad, autoridad ni permisos.",
+    currentTeamOptions: {
+      campaignChief: "Dirección de campaña",
+      research: "Investigación electoral",
+      territory: "Territorio y movilización",
+      communication: "Comunicación y narrativa",
+      digital: "Estrategia digital",
+      legalFinance: "Legal, administración y finanzas",
+      logistics: "Logística y agenda",
+      warRoom: "Seguimiento, riesgos y aprendizaje",
+    },
     currentAssetsHelp:
       "Registra recursos existentes: archivos, redes, herramientas, oficina, vehículos, voluntariado o alianzas autorizadas.",
     currentAssetsPlaceholder:
@@ -476,6 +495,33 @@ const es = {
       OBTAIN_SECTION_APPROVALS: "Obtener aprobaciones humanas por sección",
       CONTINUE_HUMAN_GOVERNANCE: "Continuar gobierno y decisiones humanas",
     },
+    workspaceViewLabel: "Vistas del expediente de candidatura",
+    actionViewLabel: "Qué hacer ahora",
+    profileViewLabel: "Perfil y riesgos",
+    evidenceViewLabel: "Fuentes y evidencia",
+    actionBriefEyebrow: "INSIGHTS · SIGUIENTE DECISIÓN",
+    actionBriefTitle: "Qué debemos resolver ahora",
+    actionBriefBody:
+      "CampaignOS convierte vacíos, riesgos y revisiones pendientes en trabajo preparatorio trazable. No decide estrategia ni autoriza uso público.",
+    actionBriefBoundary:
+      "Estos insights preparan revisión humana y mantienen el uso público bloqueado.",
+    zeroVerifiedSources: "0 fuentes verificables",
+    actionInsightLabels: {
+      NEXT_ACTION: "Siguiente acción humana",
+      EVIDENCE_GAP: "Falta evidencia verificable",
+      CONTRADICTIONS_OPEN: "Contradicciones abiertas",
+      RISK_DECISION_REQUIRED: "Riesgos que requieren decisión",
+      DEVELOPMENT_ACTIVE: "Desarrollo pendiente",
+      APPROVALS_PENDING: "Aprobaciones pendientes",
+    },
+    actionInsightBodies: {
+      NEXT_ACTION: "Avanza el siguiente gate sin saltar evidencia ni aprobación.",
+      EVIDENCE_GAP: "Agrega fuentes oficiales o investigación de campaña con procedencia.",
+      CONTRADICTIONS_OPEN: "Contrasta las versiones y documenta la resolución antes de usar la declaración.",
+      RISK_DECISION_REQUIRED: "Eleva el riesgo a revisión humana con evidencia y responsable.",
+      DEVELOPMENT_ACTIVE: "Convierte el objetivo de desarrollo en preparación, responsable y evidencia.",
+      APPROVALS_PENDING: "Obtén aprobaciones vigentes por sección antes de avanzar.",
+    },
     sectionLabels: {
       identity: "Identidad",
       biography: "Biografía",
@@ -602,6 +648,12 @@ const es = {
     operationsTitle: "Operación del equipo",
     operationsBody:
       "Convierte cada función en trabajo verificable. Revisa qué avanza, qué requiere decisión y qué debe ocurrir después.",
+    operationsViewLabel: "Vista de operación del equipo",
+    boardViewAction: "Tablero operativo",
+    createViewAction: "Crear seguimiento",
+    commandViewLabel: "Vista de mando",
+    commandViewBoundary:
+      "Esta vista amplia requiere autorización de mando. La vista individual por función se habilitará sólo con asignaciones de identidad y permisos gobernados.",
     workPulse: "Pulso operativo del equipo",
     attention: "Requieren atención",
     filterRole: "Filtrar por función",
@@ -1110,9 +1162,28 @@ const en: Dictionary = {
     candidateProjectPlaceholder:
       "Example: Build a municipal candidacy based on evidence, community organization, and measurable results.",
     currentTeamHelp:
-      "One person or function per line. Include coordinations, departments, and roles that remain vacant.",
+      "Select the functions already present and add any coordination or vacancy that is still missing.",
     currentTeamPlaceholder:
       "General coordination — confirmed\nTerritory — to be defined",
+    currentTeamPresetLabel: "Suggested function",
+    currentTeamCustomLabel: "Another function or coordination",
+    currentTeamCustomPlaceholder: "E.g. Legal coordination",
+    currentTeamAddAction: "Add function",
+    currentTeamSelectedLabel: "Registered team",
+    currentTeamRemoveAction: "Remove",
+    currentTeamEmpty: "No team functions have been registered yet.",
+    currentTeamBoundary:
+      "These selections describe existing capacity; they assign no identity, authority, or permission.",
+    currentTeamOptions: {
+      campaignChief: "Campaign direction",
+      research: "Electoral research",
+      territory: "Territory and mobilization",
+      communication: "Communication and narrative",
+      digital: "Digital strategy",
+      legalFinance: "Legal, administration, and finance",
+      logistics: "Logistics and agenda",
+      warRoom: "Tracking, risks, and learning",
+    },
     currentAssetsHelp:
       "Record current resources: files, channels, tools, office, vehicles, volunteers, or authorized alliances.",
     currentAssetsPlaceholder:
@@ -1300,6 +1371,33 @@ const en: Dictionary = {
       OBTAIN_SECTION_APPROVALS: "Obtain human section approvals",
       CONTINUE_HUMAN_GOVERNANCE: "Continue human governance and decisions",
     },
+    workspaceViewLabel: "Candidate workspace views",
+    actionViewLabel: "What to do now",
+    profileViewLabel: "Profile and risks",
+    evidenceViewLabel: "Sources and evidence",
+    actionBriefEyebrow: "INSIGHTS · NEXT DECISION",
+    actionBriefTitle: "What we need to resolve now",
+    actionBriefBody:
+      "CampaignOS turns gaps, risks, and pending reviews into traceable preparation work. It does not decide strategy or authorize public use.",
+    actionBriefBoundary:
+      "These insights prepare human review and keep public use blocked.",
+    zeroVerifiedSources: "0 verified sources",
+    actionInsightLabels: {
+      NEXT_ACTION: "Next human action",
+      EVIDENCE_GAP: "Verifiable evidence is missing",
+      CONTRADICTIONS_OPEN: "Open contradictions",
+      RISK_DECISION_REQUIRED: "Risks requiring a decision",
+      DEVELOPMENT_ACTIVE: "Development work pending",
+      APPROVALS_PENDING: "Approvals pending",
+    },
+    actionInsightBodies: {
+      NEXT_ACTION: "Advance the next gate without skipping evidence or approval.",
+      EVIDENCE_GAP: "Add official sources or campaign research with provenance.",
+      CONTRADICTIONS_OPEN: "Compare versions and document resolution before using the claim.",
+      RISK_DECISION_REQUIRED: "Escalate the risk for human review with evidence and an owner.",
+      DEVELOPMENT_ACTIVE: "Turn the development goal into preparation, ownership, and evidence.",
+      APPROVALS_PENDING: "Obtain current section approvals before proceeding.",
+    },
     sectionLabels: {
       identity: "Identity",
       biography: "Biography",
@@ -1425,6 +1523,12 @@ const en: Dictionary = {
     operationsTitle: "Team operations",
     operationsBody:
       "Turn every function into verifiable work. Review what is moving, what requires a decision, and what must happen next.",
+    operationsViewLabel: "Team operations view",
+    boardViewAction: "Operations board",
+    createViewAction: "Create follow-up",
+    commandViewLabel: "Command view",
+    commandViewBoundary:
+      "This broad view requires command authorization. Per-function views will be enabled only through governed identity assignments and permissions.",
     workPulse: "Team operating pulse",
     attention: "Need attention",
     filterRole: "Filter by function",
