@@ -237,7 +237,9 @@ async def review() -> dict[str, object]:
             .get_by_role("button", name="Agregar función")
             .click()
         )
-        await team_selector.get_by_label("Otra función o persona").fill("Coordinación financiera")
+        await team_selector.get_by_label("Otra función o coordinación").fill(
+            "Coordinación financiera"
+        )
         await (
             team_selector.locator(".guided-team-custom-row")
             .get_by_role("button", name="Agregar función")
