@@ -703,7 +703,9 @@ async def review() -> dict[str, object]:
             await english.get_by_role("button", name="Add function").count() == 1,
             "English team function editor is unavailable",
         )
-        english_dossier = english.locator(".team-role-grid .team-role-dossier").first
+        english_role_details = english.locator(".team-role-grid .team-role-card-details").first
+        await english_role_details.locator(":scope > summary").click()
+        english_dossier = english_role_details.locator(".team-role-dossier")
         await english_dossier.locator("summary").click()
         require(
             await english_dossier.get_by_role(
