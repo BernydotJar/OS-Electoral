@@ -34,6 +34,7 @@ describe("campaign chapter routing", () => {
   it("maps existing workspace anchors to their chapter", () => {
     expect(campaignChapterKeyForAnchor("guided-intake")).toBe("foundation");
     expect(campaignChapterKeyForAnchor("team-template-preview")).toBe("team");
+    expect(campaignChapterKeyForAnchor("team-operations-board")).toBe("team");
     expect(campaignChapterKeyForAnchor("campaigns")).toBeNull();
   });
 
@@ -44,9 +45,13 @@ describe("campaign chapter routing", () => {
   });
 
   it("allows revisiting visible chapters but fails closed for locked routes", () => {
-    expect(resolveCampaignChapter(journey, "foundation").key).toBe("foundation");
+    expect(resolveCampaignChapter(journey, "foundation").key).toBe(
+      "foundation",
+    );
     expect(resolveCampaignChapter(journey, "team").key).toBe("team");
-    expect(resolveCampaignChapter(journey, "operations").key).toBe("operations");
+    expect(resolveCampaignChapter(journey, "operations").key).toBe(
+      "operations",
+    );
     expect(resolveCampaignChapter(journey, "strategy").key).toBe("evidence");
   });
 });

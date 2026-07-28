@@ -25,6 +25,7 @@ const ANCHOR_TO_CHAPTER = new Map<string, CampaignJourneyPhaseKey>([
   ),
   ["team-template-preview", "team"],
   ["team-role-editor", "team"],
+  ["team-operations-board", "team"],
 ]);
 
 export function parseCampaignChapterKey(
@@ -35,9 +36,7 @@ export function parseCampaignChapterKey(
     : null;
 }
 
-export function campaignChapterAnchor(
-  key: CampaignJourneyPhaseKey,
-): string {
+export function campaignChapterAnchor(key: CampaignJourneyPhaseKey): string {
   return (
     CAMPAIGN_CHAPTER_DEFINITIONS.find((chapter) => chapter.key === key)
       ?.anchor ?? "main"
@@ -76,7 +75,9 @@ export function resolveCampaignChapter(
     throw new Error("Campaign journey must contain at least one phase");
   }
   if (requested === null) return current;
-  const requestedPhase = journey.phases.find((phase) => phase.key === requested);
+  const requestedPhase = journey.phases.find(
+    (phase) => phase.key === requested,
+  );
   if (!requestedPhase || requestedPhase.state === "LOCKED") return current;
   return requestedPhase;
 }
