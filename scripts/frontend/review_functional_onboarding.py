@@ -631,11 +631,12 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Agenda semanal de dirección", exact=True).count() == 1,
             "operational work item did not persist after reload",
         )
-        manual_dossier = (
-            page.get_by_text("Coordinación de voluntariado", exact=True)
-            .locator("xpath=ancestor::article[1]")
-            .locator(".team-role-dossier")
+        manual_role_card = page.get_by_text("Coordinación de voluntariado", exact=True).locator(
+            "xpath=ancestor::article[1]"
         )
+        manual_role_details = manual_role_card.locator(".team-role-card-details")
+        await manual_role_details.locator(":scope > summary").click()
+        manual_dossier = manual_role_details.locator(".team-role-dossier")
         await manual_dossier.locator("summary").click()
         require(
             await manual_dossier.get_by_text("Plan de turnos", exact=True).count() == 1,
