@@ -3,8 +3,8 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-27",
-  "branch": "agent/c3-front-007-guided-chapter-transitions",
-  "current_increment": "C3-FRONT-007",
+  "branch": "agent/c3-team-004-role-operations-board",
+  "current_increment": "C3-TEAM-004",
   "iteration_status": "ACTIVE",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "CONSULTANT_ROLE_DOSSIERS_CI_GREEN",
-      "next_increment": "HUMAN_PRODUCT_REVIEW"
+      "status": "ROLE_OPERATIONS_BOARD_TESTED_LOCAL",
+      "next_increment": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
     },
     {
       "id": "WS-09",
@@ -348,7 +348,13 @@
     "front_007_functional_browser": "PASS_HOSTED_CHAPTERS_HISTORY_DOSSIERS_LEAN_5_FULL_10_CUSTOM_11",
     "front_007_authority_boundary": "PASS_NO_IDENTITY_PERMISSION_PROFILE_CONTACT_SPEND_OR_EXTERNAL_EFFECT",
     "front_007_exact_head_ci": "PASS_RUN_30306823233",
-    "front_007_visual_review": "PASS_RUN_30306822839"
+    "front_007_visual_review": "PASS_RUN_30306822839",
+    "team_004_backend_focused": "PASS_69_TEAM_CONTRACT_MODEL_API_BLUEPRINT",
+    "team_004_frontend_tests": "PASS_111",
+    "team_004_frontend_build_audit": "PASS_NEXT16_ZERO_VULNERABILITIES",
+    "team_004_demo_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_ZERO_AXE_NO_OVERFLOW",
+    "team_004_functional_browser": "PENDING_HOSTED_CI_LOCAL_DOCKER_LAYER_LCHOWN",
+    "team_004_authority_boundary": "PASS_PLANNED_ROLE_WORK_NO_IDENTITY_PERMISSION_SCORE_OR_EXTERNAL_EFFECT"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -388,16 +394,14 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-FRONT-007",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-front-007-guided-chapter-transitions",
-    "base": "agent/c3-team-003-template-application-preview@197ed14e4ebd9c98f744060e3b9bca4d9874a043",
-    "validated_implementation_head": "d5e9347f88c59784dec4bf07965ff9adf0e51dd6",
-    "draft_pr": 124,
+    "id": "C3-TEAM-004",
+    "state": "TESTED_LOCAL",
+    "branch": "agent/c3-team-004-role-operations-board",
+    "base": "agent/c3-front-007-guided-chapter-transitions@0a93c27ccb99fec3e4e4ac9f9d2475d098df995c",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "HUMAN_PRODUCT_REVIEW"
+    "next_action": "COMMIT_PUSH_DRAFT_PR_EXACT_HEAD_CI"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",

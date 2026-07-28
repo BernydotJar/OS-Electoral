@@ -2,6 +2,12 @@ import type {
   TeamBlueprintTemplate,
   TeamOrganizationTemplate,
   TeamRoleCard,
+  TeamWorkItem,
+  TeamWorkItemCadence,
+  TeamWorkItemHealth,
+  TeamWorkItemPriority,
+  TeamWorkItemStatus,
+  TeamWorkItemType,
   TeamWorkspaceTemplateApplyInput,
   TeamWorkspaceCreateInput,
 } from "@/lib/contracts";
@@ -19,6 +25,37 @@ const BLUEPRINT_TEMPLATES = new Set<TeamBlueprintTemplate>([
   "FULL_CAMPAIGN",
 ]);
 const DIGEST_PATTERN = /^[0-9a-f]{64}$/;
+const WORK_ITEM_TYPES = new Set<TeamWorkItemType>([
+  "TASK",
+  "DELIVERABLE",
+  "CHECK_IN",
+  "DECISION_PREP",
+]);
+const WORK_ITEM_PRIORITIES = new Set<TeamWorkItemPriority>([
+  "CRITICAL",
+  "HIGH",
+  "MEDIUM",
+  "LOW",
+]);
+const WORK_ITEM_CADENCES = new Set<TeamWorkItemCadence>([
+  "AD_HOC",
+  "DAILY",
+  "WEEKLY",
+  "BIWEEKLY",
+  "MONTHLY",
+]);
+const WORK_ITEM_STATUSES = new Set<TeamWorkItemStatus>([
+  "PLANNED",
+  "ACTIVE",
+  "BLOCKED",
+  "COMPLETE",
+]);
+const WORK_ITEM_HEALTH = new Set<TeamWorkItemHealth>([
+  "NOT_REPORTED",
+  "ON_TRACK",
+  "AT_RISK",
+  "OFF_TRACK",
+]);
 
 export class TeamWorkspaceFormError extends Error {}
 
@@ -41,6 +78,47 @@ function locale(form: FormData): "es" | "en" {
 function requiredText(form: FormData, name: string, maximum: number): string {
   const value = field(form, name).trim().replace(/\s+/g, " ");
   if (!value || value.length > maximum) {
+    throw new TeamWorkspaceFormError(`${name} is invalid`);
+  }
+  return value;
+}
+
+function optionalText(
+  form: FormData,
+  name: string,
+  maximum: number,
+): string | null {
+  const value = field(form, name).trim().replace(/\s+/g, " ");
+  if (!value) return null;
+  if (value.length > maximum) {
+    throw new TeamWorkspaceFormError(`${name} is invalid`);
+  }
+  return value;
+}
+
+function optionalDate(form: FormData, name: string): string | null {
+  const value = field(form, name).trim();
+  if (!value) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    throw new TeamWorkspaceFormError(`${name} is invalid`);
+  }
+  const parsed = new Date(`${value}T00:00:00Z`);
+  if (
+    !Number.isFinite(parsed.getTime()) ||
+    parsed.toISOString().slice(0, 10) !== value
+  ) {
+    throw new TeamWorkspaceFormError(`${name} is invalid`);
+  }
+  return value;
+}
+
+function enumField<T extends string>(
+  form: FormData,
+  name: string,
+  allowed: ReadonlySet<T>,
+): T {
+  const value = field(form, name) as T;
+  if (!allowed.has(value)) {
     throw new TeamWorkspaceFormError(`${name} is invalid`);
   }
   return value;
@@ -78,6 +156,29 @@ function boundedLines(
     throw new TeamWorkspaceFormError(
       `${name} contains an entry that is too long`,
     );
+  }
+  if (
+    new Set(values.map((value) => value.toLocaleLowerCase())).size !==
+    values.length
+  ) {
+    throw new TeamWorkspaceFormError(`${name} contains duplicates`);
+  }
+  return values;
+}
+
+function optionalLines(
+  form: FormData,
+  name: string,
+  maximum: number,
+): readonly string[] {
+  const raw = field(form, name).trim();
+  if (!raw) return [];
+  const values = raw
+    .split(/\r?\n/)
+    .map((value) => value.trim().replace(/\s+/g, " "))
+    .filter(Boolean);
+  if (values.length > maximum || values.some((value) => value.length > 500)) {
+    throw new TeamWorkspaceFormError(`${name} is invalid`);
   }
   if (
     new Set(values.map((value) => value.toLocaleLowerCase())).size !==
@@ -149,6 +250,119 @@ export function parseTeamRoleForm(
       weekly_capacity_hours: null,
       onboarding_status: "NOT_STARTED",
       vacancy_plan: requiredText(form, "vacancy_plan", 1000),
+    },
+  };
+}
+
+export type ParsedTeamWorkItemForm = Readonly<{
+  locale: "es" | "en";
+  expectedVersion: number;
+  idempotencyKey: string;
+  workItem: TeamWorkItem;
+}>;
+
+export function parseTeamWorkItemForm(form: FormData): ParsedTeamWorkItemForm {
+  const workItemId = field(form, "work_item_id").trim();
+  if (!UUID_PATTERN.test(workItemId)) {
+    throw new TeamWorkspaceFormError("work_item_id is invalid");
+  }
+  const roleId = field(form, "role_id").trim();
+  if (!UUID_PATTERN.test(roleId)) {
+    throw new TeamWorkspaceFormError("role_id is invalid");
+  }
+  return {
+    locale: locale(form),
+    expectedVersion: expectedVersion(form),
+    idempotencyKey: idempotencyKey(form),
+    workItem: {
+      id: workItemId,
+      name: requiredText(form, "name", 255),
+      description: requiredText(form, "description", 2000),
+      status: "PLANNED",
+      work_type: enumField(form, "work_type", WORK_ITEM_TYPES),
+      priority: enumField(form, "priority", WORK_ITEM_PRIORITIES),
+      health: "NOT_REPORTED",
+      target_date: optionalDate(form, "target_date"),
+      next_action: requiredText(form, "next_action", 1000),
+      blocker: null,
+      evidence: optionalLines(form, "evidence", 12),
+      cadence: enumField(form, "cadence", WORK_ITEM_CADENCES),
+      check_in_note: null,
+      last_check_in_at: null,
+      assignments: [
+        { role_id: roleId, responsibility: "ACCOUNTABLE" },
+        { role_id: roleId, responsibility: "RESPONSIBLE" },
+      ],
+    },
+  };
+}
+
+export type ParsedTeamWorkItemUpdateForm = Readonly<{
+  locale: "es" | "en";
+  expectedVersion: number;
+  idempotencyKey: string;
+  workItemId: string;
+  updates: Readonly<{
+    status: TeamWorkItemStatus;
+    priority: TeamWorkItemPriority;
+    health: TeamWorkItemHealth;
+    target_date: string | null;
+    next_action: string | null;
+    blocker: string | null;
+    cadence: TeamWorkItemCadence;
+    check_in_note: string | null;
+  }>;
+}>;
+
+export function parseTeamWorkItemUpdateForm(
+  form: FormData,
+): ParsedTeamWorkItemUpdateForm {
+  const workItemId = field(form, "work_item_id").trim();
+  if (!UUID_PATTERN.test(workItemId)) {
+    throw new TeamWorkspaceFormError("work_item_id is invalid");
+  }
+  const status = enumField(form, "status", WORK_ITEM_STATUSES);
+  const health = enumField(form, "health", WORK_ITEM_HEALTH);
+  const nextAction = optionalText(form, "next_action", 1000);
+  const blocker = optionalText(form, "blocker", 1000);
+  const checkInNote = optionalText(form, "check_in_note", 2000);
+  if (checkInNote === null) {
+    throw new TeamWorkspaceFormError("check_in_note is required");
+  }
+  if (status !== "COMPLETE" && nextAction === null) {
+    throw new TeamWorkspaceFormError("next_action is required");
+  }
+  if (status === "BLOCKED") {
+    if (blocker === null || (health !== "AT_RISK" && health !== "OFF_TRACK")) {
+      throw new TeamWorkspaceFormError(
+        "blocked work requires a blocker and risk health",
+      );
+    }
+  } else if (blocker !== null) {
+    throw new TeamWorkspaceFormError(
+      "non-blocked work cannot retain a blocker",
+    );
+  }
+  if (
+    (health === "AT_RISK" || health === "OFF_TRACK") &&
+    checkInNote === null
+  ) {
+    throw new TeamWorkspaceFormError("at-risk work requires a check-in note");
+  }
+  return {
+    locale: locale(form),
+    expectedVersion: expectedVersion(form),
+    idempotencyKey: idempotencyKey(form),
+    workItemId,
+    updates: {
+      status,
+      priority: enumField(form, "priority", WORK_ITEM_PRIORITIES),
+      health,
+      target_date: optionalDate(form, "target_date"),
+      next_action: nextAction,
+      blocker,
+      cadence: enumField(form, "cadence", WORK_ITEM_CADENCES),
+      check_in_note: checkInNote,
     },
   };
 }

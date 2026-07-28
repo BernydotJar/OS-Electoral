@@ -23,7 +23,7 @@ The shell is bilingual and responsive. In an exactly authorized live session, te
 
 ## Core invariants
 
-- every active or blocked work item has exactly one `ACCOUNTABLE` role;
+- every active, blocked or completed work item has exactly one `ACCOUNTABLE` role;
 - every work item has at least one `RESPONSIBLE` role;
 - active accountable and responsible assignments must use filled roles;
 - filled roles require a principal, assessed availability and positive weekly capacity;
@@ -81,7 +81,7 @@ The backend supports exact-authorized create, read, update, template preview and
 2. preview and append only missing functions from a lean or full template;
 3. append a vacant function manually with area, purpose, responsibilities and a human vacancy plan.
 
-The UI deliberately creates no principal assignment, weekly capacity, onboarding completion, membership or permission. Personnel invitations, governed identity assignment, RACI, capacity assessment, training, access recommendation review, dedicated approvers and independent human acceptance remain future work.
+The UI deliberately creates no principal assignment, weekly capacity, onboarding completion, membership or permission. Personnel invitations, governed identity assignment, capacity assessment, training, access recommendation review, dedicated approvers and independent human acceptance remain future work. Organizational RACI and planned follow-up are now operable; execution still requires filled human roles.
 ## Role blueprints
 
 `C3-TEAM-002` adds versioned, bilingual role blueprints at workspace creation time. They reduce blank-page setup without creating employment, identity, capacity, membership, permission, spending, publishing, contact or production authority.
@@ -131,3 +131,22 @@ These descriptors are consultative, not authoritative. They may prepare decision
 The campaign command overview no longer renders every workspace in one continuous document. Team work is available at `/{locale}/campaign/team`, while preparation, evidence, strategy and operations have their own routes. Chapter navigation, previous/next controls, browser history, form redirects and locale switching preserve the selected mission.
 
 Only one campaign workspace is rendered on a chapter route. The hero shows a three-stage operating cadence—evidence, human decision and governed execution—and route transitions communicate forward/backward direction. Reduced-motion users receive the same structure and cadence without animation.
+
+
+## Role operations board
+
+`C3-TEAM-004` converts the team map from an organizational directory into a bounded operating system for campaign follow-up. Every work item can now record:
+
+- work type: task, deliverable, recurring check-in or decision preparation;
+- priority and explicit human-reported health;
+- planned, active, blocked or complete state;
+- target date, cadence and concrete next action;
+- blocker and human check-in note;
+- expected evidence or receipts;
+- exact RACI assignments to functions inside the same workspace.
+
+The interface puts an operating pulse and the work board before the role directory. Users can filter by function or state, inspect attention items, open evidence and RACI details, and record a governed check-in. Role cards remain available as compact dossiers and display their work count plus attention count instead of forcing every job description open at once.
+
+Planning and execution remain distinct. A new item starts as `PLANNED` and may reference a vacant organizational function. Moving it to `ACTIVE`, `BLOCKED` or `COMPLETE` requires every accountable and responsible function to be `FILLED`; this prevents the system from representing work as underway without an authorized human owner. Blocked work requires a blocker plus at-risk/off-track health, and every status/health update requires a human check-in note.
+
+The board does not calculate personal productivity, rank staff, infer performance or create authority. Health is an explicit human report about the work item. All writes reuse the exact-authorized, optimistic-concurrency team-workspace update, preserving tenant scope, idempotency, audit, internal outbox evidence and `external_effects=NONE`.

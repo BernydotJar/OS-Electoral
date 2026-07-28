@@ -4,6 +4,8 @@ import {
   TeamWorkspaceFormError,
   parseTeamRoleForm,
   parseTeamTemplateApplyForm,
+  parseTeamWorkItemForm,
+  parseTeamWorkItemUpdateForm,
   parseTeamWorkspaceStartForm,
 } from "@/lib/team-workspace-form";
 
@@ -138,6 +140,98 @@ describe("team workspace forms", () => {
     );
 
     expect(() => parseTeamRoleForm(form, ROLE_ID)).toThrow(
+      TeamWorkspaceFormError,
+    );
+  });
+
+  it("creates one planned operational item without identity or authority", () => {
+    const form = new FormData();
+    form.set("locale", "es");
+    form.set("version", "3");
+    form.set("idempotency_key", "team-work-item-1234");
+    form.set("work_item_id", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb");
+    form.set("role_id", ROLE_ID);
+    form.set("work_type", "DELIVERABLE");
+    form.set("priority", "HIGH");
+    form.set("cadence", "WEEKLY");
+    form.set("name", "  Agenda semanal de dirección ");
+    form.set("description", "Consolidar prioridades, decisiones y bloqueos.");
+    form.set("target_date", "2026-08-05");
+    form.set("next_action", "Validar el alcance con la jefatura de campaña.");
+    form.set("evidence", "Registro de decisiones\nMapa de bloqueos");
+
+    expect(parseTeamWorkItemForm(form)).toEqual({
+      locale: "es",
+      expectedVersion: 3,
+      idempotencyKey: "team-work-item-1234",
+      workItem: {
+        id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        name: "Agenda semanal de dirección",
+        description: "Consolidar prioridades, decisiones y bloqueos.",
+        status: "PLANNED",
+        work_type: "DELIVERABLE",
+        priority: "HIGH",
+        health: "NOT_REPORTED",
+        target_date: "2026-08-05",
+        next_action: "Validar el alcance con la jefatura de campaña.",
+        blocker: null,
+        evidence: ["Registro de decisiones", "Mapa de bloqueos"],
+        cadence: "WEEKLY",
+        check_in_note: null,
+        last_check_in_at: null,
+        assignments: [
+          { role_id: ROLE_ID, responsibility: "ACCOUNTABLE" },
+          { role_id: ROLE_ID, responsibility: "RESPONSIBLE" },
+        ],
+      },
+    });
+
+    expect(parseTeamWorkItemForm(form).workItem.id).toBe(
+      "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+    );
+  });
+
+  it("parses one human health check-in and blocks inconsistent state", () => {
+    const form = new FormData();
+    form.set("locale", "es");
+    form.set("version", "4");
+    form.set("idempotency_key", "team-work-update-1234");
+    form.set("work_item_id", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb");
+    form.set("status", "BLOCKED");
+    form.set("priority", "CRITICAL");
+    form.set("health", "OFF_TRACK");
+    form.set("target_date", "2026-08-07");
+    form.set("next_action", "Elevar la decisión pendiente.");
+    form.set("blocker", "Falta una aprobación humana de alcance.");
+    form.set("cadence", "DAILY");
+    form.set("check_in_note", "La ruta crítica permanece detenida.");
+
+    expect(parseTeamWorkItemUpdateForm(form)).toEqual({
+      locale: "es",
+      expectedVersion: 4,
+      idempotencyKey: "team-work-update-1234",
+      workItemId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      updates: {
+        status: "BLOCKED",
+        priority: "CRITICAL",
+        health: "OFF_TRACK",
+        target_date: "2026-08-07",
+        next_action: "Elevar la decisión pendiente.",
+        blocker: "Falta una aprobación humana de alcance.",
+        cadence: "DAILY",
+        check_in_note: "La ruta crítica permanece detenida.",
+      },
+    });
+
+    form.set("blocker", "");
+    expect(() => parseTeamWorkItemUpdateForm(form)).toThrow(
+      TeamWorkspaceFormError,
+    );
+
+    form.set("status", "ACTIVE");
+    form.set("health", "ON_TRACK");
+    form.set("check_in_note", "");
+    expect(() => parseTeamWorkItemUpdateForm(form)).toThrow(
       TeamWorkspaceFormError,
     );
   });

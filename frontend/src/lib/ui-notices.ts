@@ -6,6 +6,8 @@ export const UI_NOTICES = [
   "candidate_evidence_saved",
   "team_started",
   "team_role_saved",
+  "team_work_item_saved",
+  "team_work_item_updated",
   "team_template_applied",
   "authorization_denied",
   "conflict",
