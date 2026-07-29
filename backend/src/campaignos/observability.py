@@ -47,6 +47,8 @@ SAFE_LOG_FIELDS: Final = {
     "retried",
     "dead_lettered",
     "worker_id",
+    "policy_class",
+    "rate_limit_outcome",
 }
 
 
@@ -166,6 +168,7 @@ class MetricsRegistry:
         self._duration_sum_ms: defaultdict[tuple[str, str], float] = defaultdict(float)
         self._duration_buckets: Counter[tuple[str, str, int]] = Counter()
         self._readiness: dict[str, bool] = {}
+        self._rate_limit_decisions: Counter[tuple[str, str]] = Counter()
 
     def request_started(self) -> None:
         with self._lock:
@@ -201,6 +204,20 @@ class MetricsRegistry:
         with self._lock:
             self._readiness[dependency] = ready
 
+    def rate_limit_decision(self, *, policy_class: str, outcome: str) -> None:
+        allowed_classes = {
+            "read",
+            "mutation",
+            "expensive_read",
+            "identity_lifecycle",
+            "governed_agent_execution",
+        }
+        allowed_outcomes = {"allowed", "denied", "unavailable", "configuration_error"}
+        if policy_class not in allowed_classes or outcome not in allowed_outcomes:
+            raise ValueError("rate-limit metrics require bounded labels")
+        with self._lock:
+            self._rate_limit_decisions[(policy_class, outcome)] += 1
+
     def render_prometheus(
         self,
         *,
@@ -215,6 +232,7 @@ class MetricsRegistry:
             duration_sum = dict(self._duration_sum_ms)
             duration_buckets = dict(self._duration_buckets)
             readiness = dict(self._readiness)
+            rate_limit_decisions = dict(self._rate_limit_decisions)
         lines = [
             "# HELP campaignos_build_info Static service build information.",
             "# TYPE campaignos_build_info gauge",
@@ -279,6 +297,17 @@ class MetricsRegistry:
         )
         for dependency, ready in sorted(readiness.items()):
             lines.append(f'campaignos_readiness{{dependency="{dependency}"}} {1 if ready else 0}')
+        lines.extend(
+            [
+                "# HELP campaignos_rate_limit_decisions_total Server-owned rate-limit decisions.",
+                "# TYPE campaignos_rate_limit_decisions_total counter",
+            ]
+        )
+        for (policy_class, outcome), count in sorted(rate_limit_decisions.items()):
+            lines.append(
+                "campaignos_rate_limit_decisions_total"
+                f'{{policy_class="{policy_class}",outcome="{outcome}"}} {count}'
+            )
         if database_pool:
             lines.extend(
                 [

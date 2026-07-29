@@ -700,3 +700,34 @@
 - The localized repair is technically complete and its delivery state is `review`; merge remains a separate human gate.
 - `C3-SEC-002` remains `spec_ready`, implementation has not started, and the executable ready set remains empty pending explicit approval.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external political effects remain `NONE`.
+
+
+## 2026-07-29 — C3-SEC-002 approved SHIP implementation and local review
+
+- Recorded explicit product-owner approval for the reviewed SHIP spec and bounded migration.
+- Added revision `20260729_0012`, atomic DB-time tenant/opaque-principal counters, forced RLS, capped counts and bounded cleanup.
+- Bound 41 protected API routes to reviewed policy classes while preserving exact authorization and existing idempotency/version semantics.
+- Added sanitized RFC 9457 `429`/`503`, `Retry-After`, low-cardinality metrics and privacy-safe structured events.
+- Localized repairs split the security core from its FastAPI adapter, covered authenticated metrics, enforced transaction-scope/timezone checks, made PostgreSQL tests hermetic and suppressed connection-string command echo.
+- `make verify`: 749 Python passed, 11 skipped, 90.31% coverage; 119 frontend tests/build/audit; Terraform plan-only, security, program and release gates passed.
+- Isolated PostgreSQL: 11 slices passed through revision `20260729_0012`, including concurrency, RLS, rollover, rollback and cleanup.
+- Functional, Security and Database Reviewers pass the bounded increment; Production Reviewer keeps it in review pending hosted CI, staging load, cleanup scheduler, edge controls and external approvals.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.
+
+
+## 2026-07-29 — C3-SEC-002 exact-head CI closure
+
+- Published stacked draft PR `#128` on `agent/c3-sec-002-rate-limiting-abuse-protection`, based on draft PR `#127`.
+- Validated implementation head `c5261d547b1f4149ed1cb55c122159a9fe661d81` with CampaignOS CI `30431102657` and Runtime Visual Review `30431101415`.
+- Hosted PostgreSQL 18 proved revision `20260729_0012`, forced RLS, atomic rate-limit counters, concurrency, rollover, rollback and bounded cleanup.
+- Recovery, constrained stack E2E, frontend/browser, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
+- Marked `C3-SEC-002` `CI_GREEN`; Graph Harness remains in `review`, and human close/merge remains a separate gate.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-29 — Graph Harness runtime-state drift localized repair
+
+- Detected that the canonical manifest and fallback state still projected `C3-SEC-002` as `spec_ready` with approval `PENDING` after the approved node had advanced to Graph Harness `review`.
+- Reconciled both typed runtime summaries to the authoritative execution projection: active feature `C3-SEC-002`, state `review`, approval `APPROVED`, ready set empty.
+- Extended the program validator to fail closed when canonical or fallback Graph Harness runtime state diverges from `program/graph-harness-execution.json`.
+- Added a regression test for the stale pre-approval state; focused validation passes with 13 tests, Ruff, format and executable program truth.
+- No product behavior, schema, limits, dependencies, infrastructure or political external effects changed. Human close/merge remains pending; production stays `BLOCKED` and release stays `DENY_RELEASE`.

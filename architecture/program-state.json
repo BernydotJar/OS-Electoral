@@ -13,7 +13,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "One open CRITICAL platform finding remains. Main is cumulatively merged and post-merge CI is green, but application rate limiting is not implemented, managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
+  "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is locally reviewed, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -1151,6 +1151,23 @@
       ]
     },
     {
+      "id": "C3-SEC-002",
+      "workstream": "WS-13",
+      "title": "Tenant and principal rate limiting and abuse protection",
+      "status": "CI_GREEN",
+      "depends_on": [
+        "C3-IAM-001",
+        "C3-API-001",
+        "C3-SEC-001"
+      ],
+      "acceptance": [
+        "Every protected API operation has a reviewed server-owned policy class",
+        "PostgreSQL atomically enforces tenant/principal budgets under forced RLS",
+        "Sanitized RFC 9457 rate-limit errors expose Retry-After without identity or counter keys",
+        "Concurrency, rollback, cross-tenant, BOLA, unavailable-store and regression gates pass"
+      ]
+    },
+    {
       "id": "action:production-deployment",
       "status": "HUMAN_BLOCKED",
       "depends_on": [
@@ -1896,10 +1913,10 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": null,
+    "active_feature": "C3-SEC-002",
     "selected_feature": "C3-SEC-002",
-    "selected_feature_state": "spec_ready",
-    "approval_gate": "PENDING",
+    "selected_feature_state": "review",
+    "approval_gate": "APPROVED",
     "ready_nodes": []
   }
 }

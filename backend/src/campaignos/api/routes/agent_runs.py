@@ -21,10 +21,12 @@ from campaignos.agents.service import (
 )
 from campaignos.api.dependencies import CurrentTenantAuthorization
 from campaignos.api.errors import ProblemException
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.identity.authorization import (
     EffectivePermissionGrant,
     TenantAuthorizationContext,
 )
+from campaignos.security import RateLimitPolicyClass
 
 router = APIRouter(tags=["governed agent runs"])
 
@@ -164,6 +166,7 @@ def _verify_scope(
         "deployment and mobilization are disabled."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.GOVERNED_AGENT)
 def create_agent_run(
     request: Request,
     response: Response,
@@ -183,6 +186,12 @@ def create_agent_run(
         action="create",
         purpose=CREATE_AGENT_RUN_PURPOSE,
         detail="Agent run creation is not authorized",
+    )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.GOVERNED_AGENT,
     )
     try:
         evidence = service.create(
@@ -208,6 +217,7 @@ def create_agent_run(
     response_model=AgentRunReadEvidence,
     summary="Read an internal governed recommendation run",
 )
+@rate_limit_policy(RateLimitPolicyClass.GOVERNED_AGENT)
 def get_agent_run(
     request: Request,
     tenant_id: UUID,
@@ -222,6 +232,12 @@ def get_agent_run(
         action="read",
         purpose=READ_AGENT_RUN_PURPOSE,
         detail="Agent run read is not authorized",
+    )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.GOVERNED_AGENT,
     )
     try:
         evidence = service.get(

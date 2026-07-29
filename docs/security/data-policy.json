@@ -43,6 +43,7 @@
     "strategy_decision",
     "agent_run",
     "audit_evidence",
+    "rate_limit_bucket",
     "object_attachment",
     "terraform_state",
     "secret_or_token"
@@ -151,6 +152,21 @@
       "purposes": ["Attribute security-sensitive reads, writes and approvals"],
       "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
       "deletion_mode": "APPEND_CORRECTION_OWNER_BREAK_GLASS_ONLY",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "rate_limit_bucket",
+      "classification": "RESTRICTED",
+      "owner": "Security and Platform Operations",
+      "purposes": [
+        "Enforce bounded tenant and opaque-principal request budgets",
+        "Detect aggregate service abuse without profiling people"
+      ],
+      "retention_posture": "EPHEMERAL",
+      "deletion_mode": "DELETE_EXPIRED_BUCKETS_IN_BOUNDED_BATCHES",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
       "feature_state": "ENABLED_PREPRODUCTION",
       "legal_review": "REQUIRED",

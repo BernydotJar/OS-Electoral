@@ -82,7 +82,7 @@
   },
   "next_safe_actions": [
     "Human-review and approve the C3-SEC-002 SHIP specification before implementation.",
-    "Implement application-layer tenant/principal rate limiting after approval and preserve exact authorization semantics.",
+    "Collect exact-head hosted CI for the reviewed application-layer rate-limit increment; retain production DENY_RELEASE until staging and independent gates pass.",
     "Authorize a cost-bounded non-production environment before any Terraform apply.",
     "Run staging migration, recovery, telemetry, load, rollback and security exercises.",
     "Obtain independent security, privacy, legal, operational and final production approvals."

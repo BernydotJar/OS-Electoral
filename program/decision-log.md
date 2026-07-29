@@ -378,3 +378,12 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `docs/architecture/graph-harness-runtime.md`, `program/graph-harness-execution.json`, PR `#126`, main CI `30424626008`
 - `rationale`: Copying or redefining framework concepts would create competing sources of truth; an adapter preserves the product graph and enables one-feature lifecycle, approval gates and localized repair.
 - `consequences`: `C3-SEC-002` remains `spec_ready` and outside the executable roadmap until human approval. Production remains blocked.
+
+
+## DEC-2026-07-29-002 — Approve C3-SEC-002 for SHIP implementation
+
+- `status`: `APPROVED`
+- `scope`: `C3-SEC-002`
+- `decision`: The product owner explicitly approved the reviewed SHIP specification for tenant/principal rate limiting, including its bounded PostgreSQL migration. This approval authorizes implementation and disposable/local migration verification only.
+- `evidence`: user statement `Aprobado C3-SEC-002 para implementación SHIP.`, `specs/C3-SEC-002/requirements.md`, `specs/C3-SEC-002/design.md`, `specs/C3-SEC-002/tasks.md`
+- `consequences`: `C3-SEC-002` becomes the sole active execution node. Cloud deployment, production release, spending, external infrastructure and political external effects remain unauthorized and blocked.

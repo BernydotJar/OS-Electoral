@@ -9,6 +9,11 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 
 from campaignos.api.dependencies import CurrentPrincipal, CurrentTenantAuthorization
 from campaignos.api.errors import ProblemException
+from campaignos.api.rate_limits import (
+    enforce_pre_auth_rate_limit,
+    enforce_rate_limit,
+    rate_limit_policy,
+)
 from campaignos.identity.authorization import (
     EffectivePermissionGrant,
     TenantAuthorizationContext,
@@ -36,6 +41,7 @@ from campaignos.identity.lifecycle_contracts import (
     SupportAccessEvidence,
     SupportAccessRevoke,
 )
+from campaignos.security import RateLimitPolicyClass, RateLimitSubjectScope
 
 router = APIRouter(tags=["identity lifecycle"])
 
@@ -160,6 +166,7 @@ def _correlation_id(request: Request) -> str:
         "The provider plan is not executed and no email or Cognito mutation occurs."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
 def create_invitation(
     request: Request,
     tenant_id: UUID,
@@ -180,6 +187,12 @@ def create_invitation(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Membership invitation creation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    )
     try:
         evidence = lifecycle.create_invitation(
             tenant_id,
@@ -217,6 +230,10 @@ def create_invitation(
     response_model=InvitationAcceptanceEvidence,
     summary="Accept one invitation with the current verified identity",
 )
+@rate_limit_policy(
+    RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    subject_scope=RateLimitSubjectScope.PREAUTH,
+)
 def accept_invitation(
     request: Request,
     tenant_id: UUID,
@@ -225,6 +242,11 @@ def accept_invitation(
     lifecycle: LifecycleDependency,
     idempotency_key: Annotated[str | None, Header(alias="Idempotency-Key")] = None,
 ) -> InvitationAcceptanceEvidence:
+    enforce_pre_auth_rate_limit(
+        request,
+        principal=principal,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    )
     try:
         evidence = lifecycle.accept_invitation(
             tenant_id,
@@ -259,6 +281,7 @@ def accept_invitation(
     response_model=InvitationMutationEvidence,
     summary="Revoke one pending invitation",
 )
+@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
 def revoke_invitation(
     request: Request,
     tenant_id: UUID,
@@ -279,6 +302,12 @@ def revoke_invitation(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Invitation revocation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    )
     try:
         evidence = lifecycle.revoke_invitation(
             tenant_id,
@@ -310,6 +339,7 @@ def revoke_invitation(
     response_model=SessionEvidence,
     summary="Register or refresh the current verified application session",
 )
+@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
 def register_current_session(
     request: Request,
     tenant_id: UUID,
@@ -317,6 +347,12 @@ def register_current_session(
     authorization: CurrentTenantAuthorization,
     lifecycle: LifecycleDependency,
 ) -> SessionEvidence:
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    )
     try:
         evidence = lifecycle.register_session(
             tenant_id,
@@ -348,6 +384,7 @@ def register_current_session(
     response_model=SessionEvidence,
     summary="Revoke an application session",
 )
+@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
 def revoke_session(
     request: Request,
     tenant_id: UUID,
@@ -362,6 +399,12 @@ def revoke_session(
         resource_type="application_session",
         resource_id=str(session_id),
         purpose=REVOKE_SESSION_PURPOSE,
+    )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
     )
     try:
         evidence = lifecycle.revoke_session(
@@ -397,6 +440,7 @@ def revoke_session(
     response_model=MembershipRevocationEvidence,
     summary="Revoke a membership and its effective local access",
 )
+@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
 def revoke_membership(
     request: Request,
     tenant_id: UUID,
@@ -417,6 +461,12 @@ def revoke_membership(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Membership revocation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    )
     try:
         evidence = lifecycle.revoke_membership(
             tenant_id,
@@ -454,6 +504,7 @@ def revoke_membership(
     status_code=status.HTTP_201_CREATED,
     summary="Request time-bound exact support access",
 )
+@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
 def request_support_access(
     request: Request,
     tenant_id: UUID,
@@ -474,6 +525,12 @@ def request_support_access(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Support access request is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    )
     try:
         evidence = lifecycle.request_support_access(
             tenant_id,
@@ -510,6 +567,7 @@ def request_support_access(
     response_model=SupportAccessEvidence,
     summary="Approve one time-bound support request",
 )
+@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
 def approve_support_access(
     request: Request,
     tenant_id: UUID,
@@ -530,6 +588,12 @@ def approve_support_access(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Support access approval is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    )
     try:
         evidence = lifecycle.approve_support_access(
             tenant_id,
@@ -561,6 +625,7 @@ def approve_support_access(
     response_model=SupportAccessEvidence,
     summary="Revoke one approved time-bound support request",
 )
+@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
 def revoke_support_access(
     request: Request,
     tenant_id: UUID,
@@ -581,6 +646,12 @@ def revoke_support_access(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Support access revocation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    )
     try:
         evidence = lifecycle.revoke_support_access(
             tenant_id,

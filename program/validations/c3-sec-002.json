@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-SEC-002",
+  "assessed_at": "2026-07-29",
+  "mode": "SHIP",
+  "branch": "agent/c3-sec-002-rate-limiting-abuse-protection",
+  "base": "agent/c3-harness-001-graph-reconciliation@5e0818b6dc85376fdaa08cf2ab0af9c2d21460ea",
+  "state": "CI_GREEN",
+  "human_approval": {
+    "recorded": true,
+    "recorded_at": "2026-07-29T00:29:00-06:00",
+    "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
+    "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
+  },
+  "verification": {
+    "python_passed": 749,
+    "python_skipped": 11,
+    "coverage_percent": 90.31,
+    "frontend_passed": 119,
+    "dependency_vulnerabilities": 0,
+    "postgresql_slices_passed": 11,
+    "postgresql_version_local": "15.18",
+    "migration_head": "20260729_0012",
+    "protected_routes": 41,
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy_source_files": 73,
+    "terraform": "PASS_PLAN_ONLY",
+    "program_truth": "PASS_BLOCKED",
+    "release_decision": "DENY_RELEASE"
+  },
+  "review": {
+    "functional": "PASS_FOR_REVIEW",
+    "security": "PASS_INCREMENT_PRODUCTION_BLOCKED",
+    "database": "PASS_ADDITIVE_MIGRATION",
+    "production": "KEEP_IN_REVIEW_DENY_RELEASE"
+  },
+  "remaining_gates": [
+    "Managed staging load and contention proof",
+    "Cleanup scheduler and approved retention",
+    "Edge DDoS/WAF and invalid-token abuse controls",
+    "Deployed telemetry and alert routing",
+    "Independent security, privacy, database, operational and legal approval",
+    "Human close, merge and production approval"
+  ],
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "status": "CI_GREEN",
+  "hosted_ci": {
+    "result": "PASS_EXACT_HEAD",
+    "validated_implementation_head": "c5261d547b1f4149ed1cb55c122159a9fe661d81",
+    "draft_pr": 128,
+    "campaignos_ci_run_id": 30431102657,
+    "runtime_visual_run_id": 30431101415,
+    "jobs": {
+      "supply_chain": 90508299272,
+      "frontend_browser": 90508299282,
+      "secret_scan": 90508299288,
+      "quality": 90508299292,
+      "recovery": 90508299295,
+      "dependency_audit": 90508299314,
+      "terraform_plan_only": 90508299338,
+      "postgresql_migrations_rls": 90508299364,
+      "codeql": 90508299406,
+      "constrained_stack_e2e": 90508299414,
+      "runtime_visual": 90508294359
+    },
+    "artifacts": {
+      "frontend": {
+        "id": 8715594812,
+        "digest": "sha256:f9d2a0ef1195259ab7779db18ac17437779df85298e01072f67c560e49cdb810"
+      },
+      "recovery": {
+        "id": 8715541657,
+        "digest": "sha256:4879772b4b409b1abef94bfb9925179eb596b34385ce785d67dfe308b6cbe33c"
+      },
+      "gitleaks": {
+        "id": 8715535489,
+        "digest": "sha256:ac6f4bc6ba54a4af16b7918156150e5ae79cc49a2c71458ae5b83d37a9375328"
+      },
+      "supply_chain": {
+        "id": 8715533651,
+        "digest": "sha256:6e5bde47cad565848d7ff40f9f76e3f121fd747cafa07e93613d0650f8d63ef2"
+      },
+      "runtime_visual": {
+        "id": 8715553353,
+        "digest": "sha256:e2e720d7ed9dfe854ae234be8085f50d7e6e8fd9581705abe8cde1bbfbc47609"
+      }
+    }
+  },
+  "remote_state": "DRAFT_PR_128_CI_GREEN_EXACT_IMPLEMENTATION_HEAD",
+  "implementation_commit": "c5261d547b1f4149ed1cb55c122159a9fe661d81",
+  "head_commit": "c5261d547b1f4149ed1cb55c122159a9fe661d81",
+  "draft_pr": 128,
+  "ci_run_id": 30431102657,
+  "visual_run_id": 30431101415
+}

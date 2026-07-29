@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
 
 from campaignos.api.dependencies import CurrentTenantAuthorization
 from campaignos.api.errors import ProblemException
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.identity.authorization import EffectivePermissionGrant, TenantAuthorizationContext
 from campaignos.operations import (
     CampaignOperationsService,
@@ -30,6 +31,7 @@ from campaignos.operations import (
     WarRoomSnapshotNotFound,
     WarRoomSnapshotReadEvidence,
 )
+from campaignos.security import RateLimitPolicyClass
 
 router = APIRouter(tags=["campaign operations"])
 CREATE_ROADMAP_PURPOSE = "Create campaign operations roadmap"
@@ -177,6 +179,7 @@ def _correlation_id(request: Request) -> str:
         "No task, political action, contact, publication, spending or mobilization is executed."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def create_roadmap(
     request: Request,
     response: Response,
@@ -199,6 +202,12 @@ def create_roadmap(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Campaign roadmap creation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     try:
         evidence = service.create_roadmap(
             tenant_id,
@@ -236,6 +245,7 @@ def create_roadmap(
     response_model=CampaignRoadmapReadEvidence,
     summary="Read the campaign operations roadmap",
 )
+@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
 def read_roadmap(
     request: Request,
     response: Response,
@@ -256,6 +266,12 @@ def read_roadmap(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Campaign roadmap read is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.EXPENSIVE_READ,
+    )
     try:
         evidence = service.get_roadmap(
             tenant_id,
@@ -287,6 +303,7 @@ def read_roadmap(
     response_model=CampaignRoadmapUpdateEvidence,
     summary="Update the campaign operations roadmap",
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def update_roadmap(
     request: Request,
     response: Response,
@@ -310,6 +327,12 @@ def update_roadmap(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Campaign roadmap update is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     expected = _expected_version(if_match)
     try:
         evidence = service.update_roadmap(
@@ -350,6 +373,7 @@ def update_roadmap(
         "The read is audited and has no authority or external effect."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
 def read_latest_war_room_snapshot(
     request: Request,
     tenant_id: UUID,
@@ -369,6 +393,12 @@ def read_latest_war_room_snapshot(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Daily War Room snapshot read is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.EXPENSIVE_READ,
+    )
     try:
         evidence = service.get_latest_snapshot(
             tenant_id,
@@ -404,6 +434,7 @@ def read_latest_war_room_snapshot(
         "roadmap version. It does not execute or authorize any task."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def create_war_room_snapshot(
     request: Request,
     response: Response,
@@ -427,6 +458,12 @@ def create_war_room_snapshot(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Daily War Room snapshot creation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     expected = _expected_version(if_match)
     try:
         evidence = service.create_snapshot(

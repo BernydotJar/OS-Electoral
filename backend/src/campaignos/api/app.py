@@ -6,7 +6,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import cast
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 
 from campaignos.agents import (
     AgentRunService,
@@ -18,6 +18,7 @@ from campaignos.agents import (
 )
 from campaignos.api.errors import install_exception_handlers
 from campaignos.api.middleware import request_controls
+from campaignos.api.rate_limits import enforce_declared_rate_limit_boundary
 from campaignos.api.routes import (
     agent_runs,
     campaign_operations,
@@ -82,6 +83,13 @@ from campaignos.operations import (
     SqlAlchemyCampaignOperationsService,
     UnavailableCampaignOperationsService,
 )
+from campaignos.security import (
+    DisabledRateLimiter,
+    RateLimiter,
+    SqlAlchemyRateLimiter,
+    UnavailableRateLimiter,
+    policy_catalog_from_settings,
+)
 from campaignos.strategy import (
     SqlAlchemyStrategyWorkspaceService,
     StrategyWorkspaceService,
@@ -118,6 +126,7 @@ def create_app(
     campaign_readiness_reader: CampaignReadinessReader | None = None,
     campaign_writer: CampaignWriter | None = None,
     workspace_writer: WorkspaceWriter | None = None,
+    rate_limiter: RateLimiter | None = None,
     metrics_registry: MetricsRegistry | None = None,
 ) -> FastAPI:
     runtime_settings = settings or get_settings()
@@ -138,6 +147,15 @@ def create_app(
             pool_timeout_seconds=runtime_settings.database_pool_timeout_seconds,
         )
     database_runtime = database_runtime or UnavailableDatabase()
+    rate_limit_catalog = policy_catalog_from_settings(runtime_settings)
+    rate_limit_boundary = rate_limiter
+    if rate_limit_boundary is None and runtime_settings.rate_limits_enabled:
+        if isinstance(database_runtime, Database):
+            rate_limit_boundary = SqlAlchemyRateLimiter(database_runtime, rate_limit_catalog)
+        else:
+            rate_limit_boundary = UnavailableRateLimiter()
+    if rate_limit_boundary is None:
+        rate_limit_boundary = DisabledRateLimiter(rate_limit_catalog)
     authorization_directory = membership_directory
     if authorization_directory is None and isinstance(database_runtime, Database):
         authorization_directory = SqlAlchemyMembershipDirectory(database_runtime)
@@ -221,6 +239,7 @@ def create_app(
         docs_url=docs_url,
         redoc_url=redoc_url,
         lifespan=lifespan,
+        dependencies=[Depends(enforce_declared_rate_limit_boundary)],
     )
     app.state.settings = runtime_settings
     app.state.token_verifier = verifier
@@ -238,6 +257,7 @@ def create_app(
     app.state.campaign_readiness_reader = campaign_readiness_boundary
     app.state.campaign_writer = campaign_write_boundary
     app.state.workspace_writer = workspace_write_boundary
+    app.state.rate_limiter = rate_limit_boundary
     app.state.metrics = metrics
     app.state.logger = logger
 

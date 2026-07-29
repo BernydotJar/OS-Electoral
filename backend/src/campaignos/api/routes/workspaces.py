@@ -8,7 +8,9 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 
 from campaignos.api.dependencies import CurrentTenantAuthorization
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.identity.authorization import EffectivePermissionGrant, TenantAuthorizationContext
+from campaignos.security import RateLimitPolicyClass
 from campaignos.workspaces import (
     WorkspaceCreate,
     WorkspaceIdempotencyConflict,
@@ -52,6 +54,7 @@ def _create_grant(
     response_model=WorkspaceWriteEvidence,
     status_code=status.HTTP_201_CREATED,
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def create_workspace(
     request: Request,
     tenant_id: UUID,
@@ -68,6 +71,12 @@ def create_workspace(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Workspace creation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     if idempotency_key is None or not idempotency_key.strip():
         raise HTTPException(
             status_code=status.HTTP_428_PRECONDITION_REQUIRED,

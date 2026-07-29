@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
 
 from campaignos.api.dependencies import CurrentTenantAuthorization
 from campaignos.api.errors import ProblemException
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.candidates import (
     CandidateSectionApprovalRequest,
     CandidateWorkspaceApprovalEvidence,
@@ -33,6 +34,7 @@ from campaignos.identity.authorization import (
     EffectivePermissionGrant,
     TenantAuthorizationContext,
 )
+from campaignos.security import RateLimitPolicyClass
 
 router = APIRouter(tags=["candidate workspace"])
 
@@ -200,6 +202,7 @@ def _verify_scope(
         "The result remains blocked for public use and has no external effects."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def create_candidate_workspace(
     request: Request,
     response: Response,
@@ -227,6 +230,12 @@ def create_candidate_workspace(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Candidate workspace creation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     try:
         evidence = service.create(
             tenant_id,
@@ -259,6 +268,7 @@ def create_candidate_workspace(
     responses={status.HTTP_200_OK: {"headers": {"ETag": {"schema": {"type": "string"}}}}},
     summary="Read candidate evidence workspace",
 )
+@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
 def get_candidate_workspace(
     request: Request,
     response: Response,
@@ -278,6 +288,12 @@ def get_candidate_workspace(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Candidate workspace read is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.EXPENSIVE_READ,
+    )
     try:
         evidence = service.get(
             tenant_id,
@@ -301,6 +317,7 @@ def get_candidate_workspace(
     responses={status.HTTP_200_OK: {"headers": {"ETag": {"schema": {"type": "string"}}}}},
     summary="Update candidate evidence workspace",
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def update_candidate_workspace(
     request: Request,
     response: Response,
@@ -335,6 +352,12 @@ def update_candidate_workspace(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Candidate workspace update is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     expected_version = _expected_version(request, if_match)
     try:
         evidence = service.update(
@@ -378,6 +401,7 @@ def update_candidate_workspace(
         "public positioning, strategy, publication or any external effect."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def approve_candidate_section(
     request: Request,
     response: Response,
@@ -412,6 +436,12 @@ def approve_candidate_section(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Candidate section approval is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     expected_version = _expected_version(request, if_match)
     try:
         evidence = service.approve_section(

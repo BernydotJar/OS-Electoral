@@ -28,14 +28,14 @@
   "scheduler": {
     "evaluated_at": "2026-07-29",
     "one_active_feature": true,
-    "active_feature": null,
+    "active_feature": "C3-SEC-002",
     "ready_nodes": [],
     "selected_node": {
       "id": "C3-SEC-002",
       "title": "Tenant and principal rate limiting and abuse protection",
       "mode": "SHIP",
-      "state": "spec_ready",
-      "human_approval": "PENDING",
+      "state": "review",
+      "human_approval": "APPROVED",
       "dependencies": [
         "C3-IAM-001",
         "C3-API-001",
@@ -46,15 +46,29 @@
         "specs/C3-SEC-002/design.md",
         "specs/C3-SEC-002/tasks.md"
       ],
-      "selection_reason": "Rate limiting and abuse protection is a production security gate marked NOT_IMPLEMENTED, has satisfied code dependencies, requires no cloud account to specify, and is safer to close before broader product expansion."
+      "selection_reason": "C3-SEC-002 closes the application-layer rate-limit implementation gap with an approved SHIP increment; local implementation, role-separated review and exact-head hosted CI are complete, while human close, merge and production gates remain pending.",
+      "approval_receipt": {
+        "recorded_at": "2026-07-29T00:29:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
+        "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
+      },
+      "review_artifact": "progress/review_C3-SEC-002.md",
+      "local_evidence": [
+        "docs/testing/c3-sec-002-evidence.md",
+        "program/validations/c3-sec-002.json"
+      ],
+      "hosted_evidence": {
+        "validated_implementation_head": "c5261d547b1f4149ed1cb55c122159a9fe661d81",
+        "draft_pr": 128,
+        "campaignos_ci_run_id": 30431102657,
+        "runtime_visual_run_id": 30431101415,
+        "conclusion": "SUCCESS",
+        "production_status": "BLOCKED",
+        "release_decision": "DENY_RELEASE"
+      }
     },
     "blocked_nodes": [
-      {
-        "id": "C3-SEC-002",
-        "gate": "HUMAN_SPEC_APPROVAL",
-        "owner": "Product owner",
-        "next_valid_command": "Approve C3-SEC-002 for SHIP implementation"
-      },
       {
         "id": "action:production-deployment",
         "gate": "HUMAN_PRODUCTION_APPROVAL_AND_INCOMPLETE_PRODUCTION_GATES",

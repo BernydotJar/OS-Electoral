@@ -134,6 +134,7 @@ def install_exception_handlers(app: FastAPI) -> None:
             409: ("Request conflict", "IDEMPOTENCY_CONFLICT"),
             412: ("Precondition failed", "VERSION_CONFLICT"),
             428: ("Precondition required", "VERSION_REQUIRED"),
+            429: ("Too many requests", "RATE_LIMIT_EXCEEDED"),
             503: ("Service unavailable", "AUTHORIZATION_UNAVAILABLE"),
         }
         title, code = error_metadata.get(

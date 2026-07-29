@@ -978,3 +978,34 @@ class AgentRun(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
+
+
+class RateLimitBucket(Base):
+    """Bounded fixed-window counter with tenant RLS and opaque principal identity."""
+
+    __tablename__ = "rate_limit_buckets"
+    __table_args__ = (
+        CheckConstraint(
+            "policy_class IN ('read', 'mutation', 'expensive_read', "
+            "'identity_lifecycle', 'governed_agent_execution')",
+            name="ck_rate_limit_buckets_policy_class",
+        ),
+        CheckConstraint("policy_version >= 1", name="ck_rate_limit_buckets_policy_version"),
+        CheckConstraint(
+            "window_seconds BETWEEN 1 AND 86400",
+            name="ck_rate_limit_buckets_window_seconds",
+        ),
+        CheckConstraint("request_count >= 1", name="ck_rate_limit_buckets_request_count"),
+        Index("ix_rate_limit_buckets_tenant_window", "tenant_id", "window_start"),
+    )
+
+    tenant_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True)
+    principal_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True)
+    policy_class: Mapped[str] = mapped_column(String(40), primary_key=True)
+    policy_version: Mapped[int] = mapped_column(Integer, primary_key=True)
+    window_start: Mapped[datetime] = mapped_column(DateTime(timezone=True), primary_key=True)
+    window_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
+    request_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )

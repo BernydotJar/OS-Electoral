@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
 
 from campaignos.api.dependencies import CurrentTenantAuthorization
 from campaignos.api.errors import ProblemException
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.identity.authorization import (
     EffectivePermissionGrant,
     TenantAuthorizationContext,
@@ -27,6 +28,7 @@ from campaignos.onboarding.service import (
     GuidedIntakeUnavailable,
     GuidedIntakeVersionConflict,
 )
+from campaignos.security import RateLimitPolicyClass
 
 router = APIRouter(tags=["guided intake"])
 
@@ -167,6 +169,7 @@ def _verify_scope(
         "evidence. It does not generate strategy, approve a candidate or trigger outreach."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def start_guided_intake(
     request: Request,
     response: Response,
@@ -193,6 +196,12 @@ def start_guided_intake(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Guided intake start is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     try:
         evidence = service.start(
             tenant_id,
@@ -224,6 +233,7 @@ def start_guided_intake(
     responses={status.HTTP_200_OK: {"headers": {"ETag": {"schema": {"type": "string"}}}}},
     summary="Read guided campaign intake",
 )
+@rate_limit_policy(RateLimitPolicyClass.READ)
 def get_guided_intake(
     request: Request,
     response: Response,
@@ -243,6 +253,12 @@ def get_guided_intake(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Guided intake read is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.READ,
+    )
     try:
         evidence = service.get(
             tenant_id,
@@ -266,6 +282,7 @@ def get_guided_intake(
     responses={status.HTTP_200_OK: {"headers": {"ETag": {"schema": {"type": "string"}}}}},
     summary="Update guided campaign intake",
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def update_guided_intake(
     request: Request,
     response: Response,
@@ -300,6 +317,12 @@ def update_guided_intake(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Guided intake update is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     try:
         evidence = service.update(
             tenant_id,

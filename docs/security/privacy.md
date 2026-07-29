@@ -1,7 +1,7 @@
 # CampaignOS privacy principles and control plan
 
 Status: **DRAFT — qualified privacy and jurisdictional legal review required**
-Last updated: `2026-07-21`
+Last updated: `2026-07-29`
 
 CampaignOS applies purpose limitation, minimization, provenance, accuracy, access control, retention, deletion, transparency, and human accountability to all personal or political information.
 
@@ -19,6 +19,8 @@ Before a data category or field is enabled, record:
 - incident severity and notification owner.
 
 Unknown purpose or basis fails closed. Free text cannot be used to bypass a structured prohibition. The executable inventory and current non-legal retention postures are versioned in `docs/security/data-policy.json` and validated by `scripts/security/verify_security_policy.py`.
+
+Rate-limit buckets contain only tenant-scoped opaque UUID keys, policy class/version, bounded window and count metadata. They are ephemeral security controls, not identity profiles or political-behavior records. Raw issuer, subject, email, IP, token, request content and voter-level information are excluded; bounded tenant-scoped cleanup is required before production.
 
 ## Political and sensitive data
 

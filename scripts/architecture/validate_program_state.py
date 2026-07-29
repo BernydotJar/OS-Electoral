@@ -407,7 +407,7 @@ def validate_workstreams_and_roadmap(data: dict[str, Any]) -> dict[str, dict[str
         "production deployment action must be HUMAN_BLOCKED",
     )
     has_active_increment = any(
-        item["status"] in {"ACTIVE", "EXECUTABLE_NEXT"}
+        item["status"] in {"ACTIVE", "EXECUTABLE_NEXT", "REVIEWED"}
         for item in roadmap
         if item["id"] != "action:production-deployment"
     )
@@ -532,6 +532,7 @@ def validate_policy_boundaries(data: dict[str, Any]) -> None:
 
 def validate_graph_harness_execution(data: dict[str, Any]) -> None:
     execution = load_json(GRAPH_HARNESS_EXECUTION)
+    fallback_state = load_json(PROGRAM_STATE)
     require(execution["schema_version"] == "1.0", "unsupported Graph Harness projection schema")
     require(execution["projection_only"] is True, "Graph Harness state must remain a projection")
 
@@ -569,18 +570,93 @@ def validate_graph_harness_execution(data: dict[str, Any]) -> None:
 
     scheduler = execution["scheduler"]
     require(scheduler["one_active_feature"] is True, "Graph Harness one-feature invariant disabled")
-    require(scheduler["active_feature"] is None, "a feature is active before approval")
-    require(scheduler["ready_nodes"] == [], "spec-ready work cannot appear in the ready set")
+    require(
+        scheduler["ready_nodes"] == [],
+        "Graph Harness ready set must be empty while selected work is active or awaiting approval",
+    )
 
     selected = scheduler["selected_node"]
     require(selected["id"] == "C3-SEC-002", "unexpected selected Graph Harness node")
     require(selected["mode"] == "SHIP", "selected Graph Harness node must be SHIP")
-    require(selected["state"] == "spec_ready", "selected node must stop at spec_ready")
-    require(selected["human_approval"] == "PENDING", "selected node bypassed human approval")
     require(
-        selected["id"] not in {item["id"] for item in data["roadmap"]},
-        "unapproved spec-ready node leaked into the executable roadmap",
+        selected["state"] in {"spec_ready", "in_progress", "review"},
+        "unsupported selected-node lifecycle state",
     )
+    roadmap_by_id = {item["id"]: item for item in data["roadmap"]}
+    if selected["state"] == "spec_ready":
+        require(selected["human_approval"] == "PENDING", "spec-ready node bypassed human approval")
+        require(scheduler["active_feature"] is None, "a feature is active before approval")
+        require(
+            selected["id"] not in roadmap_by_id,
+            "unapproved spec-ready node leaked into the executable roadmap",
+        )
+        require(
+            "approval_receipt" not in selected, "pending node cannot contain an approval receipt"
+        )
+    else:
+        require(selected["human_approval"] == "APPROVED", "active node lacks human approval")
+        require(scheduler["active_feature"] == selected["id"], "active Graph Harness feature drift")
+        require(selected["id"] in roadmap_by_id, "approved node is absent from executable roadmap")
+        expected_statuses = (
+            {"ACTIVE"} if selected["state"] == "in_progress" else {"REVIEWED", "CI_GREEN"}
+        )
+        require(
+            roadmap_by_id[selected["id"]]["status"] in expected_statuses,
+            "approved node lifecycle and roadmap status drift",
+        )
+        if selected["state"] == "review":
+            review_artifact = selected.get("review_artifact")
+            require(isinstance(review_artifact, str), "review node lacks review artifact")
+            require((ROOT / review_artifact).is_file(), "review artifact is missing")
+            local_evidence = selected.get("local_evidence")
+            require(
+                isinstance(local_evidence, list) and local_evidence,
+                "review node lacks local evidence",
+            )
+            for relative in local_evidence:
+                require((ROOT / relative).is_file(), f"review evidence is missing: {relative}")
+        receipt = selected.get("approval_receipt")
+        require(isinstance(receipt, dict), "approved node lacks an approval receipt")
+        require(receipt.get("source") == "USER_EXPLICIT_APPROVAL", "approval receipt source drift")
+        require(
+            bool(str(receipt.get("statement", "")).strip()), "approval receipt statement is missing"
+        )
+        require(
+            "SHIP" in str(receipt.get("statement", "")), "approval receipt is not scoped to SHIP"
+        )
+        require(bool(str(receipt.get("scope", "")).strip()), "approval receipt scope is missing")
+        require_iso_date(
+            str(receipt.get("recorded_at", ""))[:10], "Graph Harness approval receipt date"
+        )
+        require(
+            all(item["id"] != selected["id"] for item in scheduler["blocked_nodes"]),
+            "approved active node remains listed as blocked",
+        )
+
+    expected_runtime_state = {
+        "framework_repository": framework["repository"],
+        "framework_revision": framework["revision"],
+        "mode": framework["mode"],
+        "projection": "program/graph-harness-execution.json",
+        "canonical_manifest": execution["canonical_sources"]["manifest"],
+        "canonical_task_graph": execution["canonical_sources"]["task_graph"],
+        "canonical_task_ledger": execution["canonical_sources"]["task_ledger"],
+        "active_feature": scheduler["active_feature"],
+        "selected_feature": selected["id"],
+        "selected_feature_state": selected["state"],
+        "approval_gate": selected["human_approval"],
+        "ready_nodes": scheduler["ready_nodes"],
+    }
+    for label, runtime_state in (
+        ("canonical manifest", data.get("graph_harness_runtime")),
+        ("fallback program state", fallback_state.get("graph_harness_runtime")),
+    ):
+        require(isinstance(runtime_state, dict), f"{label} lacks Graph Harness runtime state")
+        require(
+            runtime_state == expected_runtime_state,
+            f"{label} Graph Harness runtime state drift",
+        )
+
     for relative in selected["specs"]:
         require((ROOT / relative).is_file(), f"missing Graph Harness feature spec: {relative}")
 
