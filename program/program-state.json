@@ -7,7 +7,7 @@
   "current_increment": "C3-SEC-002",
   "iteration_status": "MERGED_TO_MAIN",
   "production_status": "BLOCKED",
-  "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is CI-green with PostgreSQL 18, recovery, constrained-stack, CodeQL, dependency, supply-chain, secret and visual evidence, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
+  "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -93,8 +93,8 @@
     {
       "id": "WS-13",
       "name": "Security, Privacy and Compliance",
-      "status": "RATE_LIMITING_CI_GREEN_PRODUCTION_GATES_OPEN",
-      "next_increment": "HUMAN_REVIEW_AND_MERGE_GATE"
+      "status": "RATE_LIMITING_MERGED_PRODUCTION_GATES_OPEN",
+      "next_increment": "C3-PERF-001"
     },
     {
       "id": "WS-14",
@@ -464,7 +464,7 @@
     "No live OIDC login, recovery, MFA, provider invitation delivery or provider session revocation",
     "No approved AWS dev/staging/production environment or managed PostgreSQL runtime exists",
     "No managed encrypted backup schedule, PITR, retention, deployed telemetry, alert routing or accepted RPO/RTO exists",
-    "Broader authenticated product journeys, rate limiting, load tests and rollback proof remain incomplete",
+    "Broader authenticated product journeys, constrained load verification and managed rollback proof remain incomplete",
     "No independent operational, security, privacy, domain, legal or explicit human production approval"
   ],
   "git_push_incident": {
@@ -502,7 +502,17 @@
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_action": "HUMAN_APPROVE_C3_PERF_001_SPEC"
+    "next_action": "HUMAN_APPROVE_C3_PERF_001_SPEC",
+    "quality_job_id": 90655507781,
+    "postgresql_job_id": 90655507918,
+    "recovery_job_id": 90655508032,
+    "frontend_job_id": 90655507835,
+    "stack_e2e_job_id": 90655507994,
+    "codeql_job_id": 90655507848,
+    "terraform_job_id": 90655507780,
+    "dependency_job_id": 90655507869,
+    "secret_job_id": 90655508048,
+    "supply_chain_job_id": 90655507950
   },
   "production_blockers": [],
   "cumulative_merge": {
