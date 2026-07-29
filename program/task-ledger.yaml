@@ -406,7 +406,7 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Authenticated browser mutation, independent human acceptance, merge and live environments remain pending"
+        "Authenticated browser mutation, independent human acceptance, and live environments remain pending"
       ],
       "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
       "cumulative_merge_pr": 117
@@ -767,7 +767,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human product review and merge of the stacked PR chain remain required",
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"
       ],
@@ -804,7 +803,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human product review and merge of the stacked PR chain remain required",
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"
       ],
@@ -837,7 +835,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human product review and merge of the stacked PR chain remain required",
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"
       ],
@@ -868,7 +865,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human product review and merge of the stacked PR chain remain required",
         "Identity assignment, capacity, training, access review, staging and production remain separate gates"
       ],
       "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
