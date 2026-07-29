@@ -5112,7 +5112,11 @@ button[type="submit"]:hover {
   border: 1px solid rgba(164, 200, 255, 0.28);
   border-radius: 20px;
   background:
-    radial-gradient(circle at 82% 8%, rgba(164, 200, 255, 0.15), transparent 18rem),
+    radial-gradient(
+      circle at 82% 8%,
+      rgba(164, 200, 255, 0.15),
+      transparent 18rem
+    ),
     linear-gradient(145deg, rgba(15, 29, 48, 0.9), rgba(5, 12, 20, 0.96));
 }
 
@@ -5221,7 +5225,11 @@ button[type="submit"]:hover {
   border: 1px solid rgba(116, 214, 177, 0.28);
   border-radius: 22px;
   background:
-    radial-gradient(circle at 12% 12%, rgba(116, 214, 177, 0.12), transparent 19rem),
+    radial-gradient(
+      circle at 12% 12%,
+      rgba(116, 214, 177, 0.12),
+      transparent 19rem
+    ),
     linear-gradient(145deg, rgba(10, 31, 27, 0.92), rgba(5, 12, 17, 0.97));
 }
 
@@ -5244,23 +5252,6 @@ button[type="submit"]:hover {
   transition:
     transform var(--motion-duration-standard) var(--motion-easing-standard),
     opacity var(--motion-duration-fast) var(--motion-easing-standard);
-}
-
-.team-operations-layer::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: -0.45rem 0.8rem auto;
-  height: 2rem;
-  border: 1px solid rgba(116, 214, 177, 0.15);
-  border-radius: 16px 16px 0 0;
-  background: rgba(8, 21, 23, 0.65);
-  transform: translateY(-0.35rem) scale(0.98);
-  opacity: 0.7;
-}
-
-.team-operations-layer[hidden] {
-  display: none;
 }
 
 .team-operations-layer .team-work-item-creator,
@@ -5349,6 +5340,122 @@ button[type="submit"]:hover {
 @media (prefers-reduced-motion: reduce) {
   .team-operations-layer,
   .candidate-workspace-layer {
+    transition: none;
+  }
+}
+
+/* C3-FRONT-008 feedback closure: one-time setup and true interleaved operation cards. */
+.guided-intake-review {
+  margin-top: 1rem;
+}
+
+.guided-intake-review > summary {
+  min-height: 5.25rem;
+  padding: 1rem 1.1rem;
+  display: grid;
+  align-content: center;
+  gap: 0.3rem;
+  border: 1px solid rgba(245, 195, 106, 0.28);
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(245, 195, 106, 0.12),
+      transparent 14rem
+    ),
+    rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+}
+
+.guided-intake-review > summary span {
+  color: var(--text-1);
+  font-weight: 780;
+}
+
+.guided-intake-review > summary small {
+  max-width: 68ch;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.guided-intake-review > summary:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.guided-intake-review-body {
+  padding-top: 1rem;
+}
+
+.guided-intake-panel[data-complete="false"] .guided-intake-review {
+  margin-top: 0;
+}
+
+.guided-intake-panel[data-complete="false"] .guided-intake-review > summary {
+  display: none;
+}
+
+.guided-intake-panel[data-complete="true"] {
+  padding-bottom: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.team-operations-stack {
+  display: grid;
+  padding: 1.15rem 1.15rem 0 0;
+  perspective: 1200px;
+}
+
+.team-operations-layer {
+  grid-area: 1 / 1;
+  transform-origin: 50% 0;
+  will-change: transform, opacity, filter;
+}
+
+.team-operations-layer[data-active="true"] {
+  z-index: 3;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: none;
+  pointer-events: auto;
+}
+
+.team-operations-layer[data-active="false"] {
+  z-index: 1;
+  max-height: min(22rem, 78vh);
+  overflow: hidden;
+  opacity: 0.58;
+  transform: translate3d(1.05rem, -1.05rem, -2rem) scale(0.972);
+  filter: saturate(0.55) brightness(0.72);
+  pointer-events: none;
+  user-select: none;
+}
+
+.team-operations-layer[data-active="false"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    transparent 2.5rem,
+    rgba(4, 10, 14, 0.72)
+  );
+}
+
+@media (max-width: 680px) {
+  .team-operations-stack {
+    padding: 0.85rem 0.65rem 0 0;
+  }
+
+  .team-operations-layer[data-active="false"] {
+    transform: translate3d(0.55rem, -0.75rem, -1rem) scale(0.982);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-operations-layer[data-active="true"],
+  .team-operations-layer[data-active="false"] {
     transition: none;
   }
 }

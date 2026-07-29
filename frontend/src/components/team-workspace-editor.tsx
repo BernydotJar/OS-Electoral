@@ -176,6 +176,41 @@ export function TeamWorkspaceEditor({
             </div>
 
             {templatePreview.additions.length > 0 ? (
+              <form
+                className="team-template-confirm-form"
+                action="/api/ui/team-workspace/template-apply"
+                method="post"
+              >
+                <input type="hidden" name="locale" value={locale} />
+                <input
+                  type="hidden"
+                  name="version"
+                  value={templatePreview.workspace_version}
+                />
+                <input
+                  type="hidden"
+                  name="organization_template"
+                  value={templatePreview.organization_template}
+                />
+                <input
+                  type="hidden"
+                  name="preview_digest"
+                  value={templatePreview.preview_digest}
+                />
+                <input
+                  type="hidden"
+                  name="idempotency_key"
+                  value={`team-template:${randomUUID()}`}
+                />
+                <p>{dictionary.teamWorkspace.templateConfirmBoundary}</p>
+                <button type="submit">
+                  {dictionary.teamWorkspace.templateConfirmAction} ·{" "}
+                  {templatePreview.additions.length}
+                </button>
+              </form>
+            ) : null}
+
+            {templatePreview.additions.length > 0 ? (
               <div className="team-template-change-group">
                 <h4>{dictionary.teamWorkspace.templateAdditionsTitle}</h4>
                 <div className="team-template-role-grid">
@@ -227,40 +262,6 @@ export function TeamWorkspaceEditor({
                   ))}
                 </ul>
               </div>
-            ) : null}
-
-            {templatePreview.additions.length > 0 ? (
-              <form
-                className="team-template-confirm-form"
-                action="/api/ui/team-workspace/template-apply"
-                method="post"
-              >
-                <input type="hidden" name="locale" value={locale} />
-                <input
-                  type="hidden"
-                  name="version"
-                  value={templatePreview.workspace_version}
-                />
-                <input
-                  type="hidden"
-                  name="organization_template"
-                  value={templatePreview.organization_template}
-                />
-                <input
-                  type="hidden"
-                  name="preview_digest"
-                  value={templatePreview.preview_digest}
-                />
-                <input
-                  type="hidden"
-                  name="idempotency_key"
-                  value={`team-template:${randomUUID()}`}
-                />
-                <p>{dictionary.teamWorkspace.templateConfirmBoundary}</p>
-                <button type="submit">
-                  {dictionary.teamWorkspace.templateConfirmAction}
-                </button>
-              </form>
             ) : null}
           </div>
         ) : null}

@@ -269,6 +269,10 @@ async def review() -> dict[str, object]:
             await desktop.locator("#candidate-workspace").count() == 1,
             "selected evidence chapter is absent",
         )
+        require(
+            await desktop.locator(".campaign-experience").count() == 0,
+            "mission hero leaked into the evidence chapter",
+        )
         action_tab = desktop.get_by_role("tab", name="Qué hacer ahora")
         require(await action_tab.count() == 1, "candidate action tab missing")
         require(
@@ -331,6 +335,72 @@ async def review() -> dict[str, object]:
         )
         await desktop.screenshot(path=ARTIFACT_DIR / "desktop-es.png", full_page=True)
 
+        await desktop.locator(
+            '.chapter-navigation-track a[href="/es/campaign/team#team-workspace"]'
+        ).click()
+        await desktop.wait_for_url("**/es/campaign/team**")
+        await desktop.locator("#team-workspace").wait_for(state="visible")
+        require(
+            await desktop.locator(".campaign-experience").count() == 0,
+            "mission hero leaked into the team chapter",
+        )
+        operation_layers = desktop.locator(".team-operations-layer")
+        require(
+            await operation_layers.count() == 2,
+            "team operation cards are not both retained in the visual stack",
+        )
+        create_layer = desktop.locator('[data-layer="create"]')
+        board_layer = desktop.locator('[data-layer="board"]')
+        require(
+            await create_layer.get_attribute("data-active") == "true"
+            and await board_layer.get_attribute("data-active") == "false",
+            "empty demo operation stack does not begin with creation in front",
+        )
+        layer_geometry = await desktop.locator(".team-operations-stack").evaluate(
+            """stack => {
+              const active = stack.querySelector('[data-active="true"]');
+              const inactive = stack.querySelector('[data-active="false"]');
+              const activeRect = active.getBoundingClientRect();
+              const inactiveRect = inactive.getBoundingClientRect();
+              return {
+                topDelta: inactiveRect.top - activeRect.top,
+                leftDelta: inactiveRect.left - activeRect.left,
+                activeZ: Number(getComputedStyle(active).zIndex),
+                inactiveZ: Number(getComputedStyle(inactive).zIndex),
+              };
+            }"""
+        )
+        require(
+            layer_geometry["topDelta"] < 0
+            and layer_geometry["leftDelta"] > 0
+            and layer_geometry["activeZ"] > layer_geometry["inactiveZ"],
+            f"operation cards are not visibly interleaved: {layer_geometry}",
+        )
+        create_tab = desktop.get_by_role("tab", name="Crear seguimiento")
+        board_tab = desktop.get_by_role("tab", name="Tablero operativo")
+        await create_tab.focus()
+        await desktop.keyboard.press("ArrowLeft")
+        require(
+            await board_tab.get_attribute("aria-selected") == "true"
+            and await board_layer.get_attribute("data-active") == "true"
+            and await create_layer.get_attribute("data-active") == "false",
+            "keyboard navigation did not exchange the operation cards",
+        )
+        await desktop.keyboard.press("ArrowRight")
+        require(
+            await create_tab.get_attribute("aria-selected") == "true"
+            and await create_layer.get_attribute("data-active") == "true",
+            "keyboard navigation did not restore the creation card to the front",
+        )
+        await assert_no_overflow(desktop, "desktop-es-team")
+        await assert_accessible(desktop, "desktop-es-team")
+        await desktop.screenshot(path=ARTIFACT_DIR / "desktop-es-team.png", full_page=True)
+
+        await desktop.locator(
+            '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
+        ).click()
+        await desktop.wait_for_url("**/es/campaign/evidence**")
+        await desktop.locator("#candidate-workspace").wait_for(state="visible")
         await desktop.get_by_role("button", name="EN", exact=True).click()
         await desktop.wait_for_url("**/en/campaign/evidence**")
         await desktop.wait_for_load_state("networkidle")
@@ -343,9 +413,15 @@ async def review() -> dict[str, object]:
             "English document lang missing",
         )
         require(
-            await desktop.get_by_role("heading", level=1).inner_text()
-            == "Understand the candidacy and territory",
-            "English active-mission heading mismatch",
+            await desktop.get_by_role(
+                "heading", name="Candidate executive workspace", exact=True
+            ).count()
+            == 1,
+            "English candidate chapter heading mismatch",
+        )
+        require(
+            await desktop.locator(".campaign-experience").count() == 0,
+            "mission hero leaked into the English candidate chapter",
         )
         await assert_no_overflow(desktop, "desktop-en")
         await assert_accessible(desktop, "desktop-en")
@@ -374,16 +450,25 @@ async def review() -> dict[str, object]:
             await mobile.locator("#candidate-workspace").count() == 1,
             "mobile chapter route did not preserve its selected mission",
         )
-        reduced_animation = await mobile.locator(".experience-mission-pulse i").first.evaluate(
-            "element => getComputedStyle(element).animationName"
-        )
         require(
-            reduced_animation == "none",
-            f"mission cadence animates under reduced motion: {reduced_animation}",
+            await mobile.locator(".campaign-experience, .experience-mission-pulse").count() == 0,
+            "mission hero leaked into the mobile candidate chapter",
         )
+        reduced_transition = await mobile.locator(".candidate-workspace-layer").first.evaluate(
+            "element => getComputedStyle(element).transitionDuration"
+        )
+
+        def transition_seconds(value: str) -> float:
+            token = value.strip()
+            if token.endswith("ms"):
+                return float(token[:-2]) / 1000
+            if token.endswith("s"):
+                return float(token[:-1])
+            raise ReviewFailure(f"unexpected transition duration token: {token}")
+
         require(
-            await mobile.locator(".experience-mission-pulse li").count() == 3,
-            "reduced motion removed the static mission cadence",
+            all(transition_seconds(part) <= 0.0001 for part in reduced_transition.split(",")),
+            f"candidate workspace still transitions under reduced motion: {reduced_transition}",
         )
         await mobile.screenshot(path=ARTIFACT_DIR / "mobile-es.png", full_page=True)
 
@@ -410,6 +495,7 @@ async def review() -> dict[str, object]:
         "page_errors": [],
         "screenshots": [
             str(ARTIFACT_DIR / "desktop-es.png"),
+            str(ARTIFACT_DIR / "desktop-es-team.png"),
             str(ARTIFACT_DIR / "desktop-en.png"),
             str(ARTIFACT_DIR / "mobile-es.png"),
         ],

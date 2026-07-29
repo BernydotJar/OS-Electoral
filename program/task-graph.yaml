@@ -345,17 +345,18 @@
       "id": "C3-FRONT-008",
       "workstream": "WS-06",
       "title": "Organic campaign flow, candidate action brief and command-safe workspace decks",
-      "status": "CI_GREEN",
+      "status": "IN_PROGRESS",
       "depends_on": [
         "C3-TEAM-004",
         "C3-FRONT-007"
       ],
       "acceptance": [
-        "Guided starting route precedes overview when exact intake grant exists",
+        "Guided starting route precedes overview when exact intake grant exists and becomes a collapsed revisable setup after completion",
         "Current-team intake uses presets and chips while preserving the canonical contract",
         "Candidate actions, profile/risks and evidence are separate accessible views",
-        "Team board and follow-up creation are mutually exclusive accessible views",
-        "Returning hero is compact with mobile and reduced-motion equivalence",
+        "Mission hero appears only in the campaign command overview and never inside chapter workspaces",
+        "Team board and follow-up creation remain as two interleaved accessible cards with the inactive card inert behind the active card",
+        "Template confirmation is visible beside the preview summary and applies only missing vacant functions",
         "Command view claims no personal visibility without server-side principal grants"
       ]
     }

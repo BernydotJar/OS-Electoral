@@ -198,6 +198,10 @@ async def review() -> dict[str, object]:
             "foundation chapter did not render its mission",
         )
         require(
+            await page.locator(".campaign-experience").count() == 0,
+            "mission hero leaked into the foundation chapter",
+        )
+        require(
             await page.locator(
                 "#candidate-workspace, #team-workspace, #strategy-room, #war-room"
             ).count()
@@ -263,6 +267,12 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Cambios guardados con nueva versión.", exact=True).count() == 1,
             "save success notice missing",
         )
+        guided_review = page.locator(".guided-intake-review")
+        require(
+            not await guided_review.evaluate("element => element.open"),
+            "completed guided intake did not collapse into one-time setup",
+        )
+        await guided_review.locator("summary").click()
         require(
             await page.get_by_label("Cargo objetivo").input_value() == "Alcaldía Municipal",
             "saved office was not projected",
@@ -272,8 +282,11 @@ async def review() -> dict[str, object]:
             "saved budget was not projected",
         )
         require(
-            await page.get_by_role("heading", level=1).inner_text() == "Aterrizar la campaña",
-            "foundation chapter lost its stable chapter identity after save",
+            await page.get_by_role(
+                "heading", name="Construye la base de tu campaña", exact=True
+            ).count()
+            == 1,
+            "foundation route lost its setup identity after save",
         )
         await page.locator(
             '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
@@ -466,6 +479,43 @@ async def review() -> dict[str, object]:
             == "true",
             "empty team operations deck did not begin on creation",
         )
+        operation_layers = page.locator(".team-operations-layer")
+        require(
+            await operation_layers.count() == 2,
+            "team operations deck does not retain two interleaved cards",
+        )
+        create_layer = page.locator('[data-layer="create"]')
+        board_layer = page.locator('[data-layer="board"]')
+        require(
+            await create_layer.get_attribute("data-active") == "true",
+            "creation card is not in front for an empty board",
+        )
+        require(
+            await board_layer.get_attribute("data-active") == "false"
+            and await board_layer.get_attribute("inert") is not None
+            and await board_layer.get_attribute("aria-hidden") == "true",
+            "inactive board card is not retained safely behind the creation card",
+        )
+        layer_geometry = await page.locator(".team-operations-stack").evaluate(
+            """stack => {
+              const active = stack.querySelector('[data-active="true"]');
+              const inactive = stack.querySelector('[data-active="false"]');
+              const activeRect = active.getBoundingClientRect();
+              const inactiveRect = inactive.getBoundingClientRect();
+              return {
+                topDelta: inactiveRect.top - activeRect.top,
+                leftDelta: inactiveRect.left - activeRect.left,
+                activeZ: Number(getComputedStyle(active).zIndex),
+                inactiveZ: Number(getComputedStyle(inactive).zIndex),
+              };
+            }"""
+        )
+        require(
+            layer_geometry["topDelta"] < 0
+            and layer_geometry["leftDelta"] > 0
+            and layer_geometry["activeZ"] > layer_geometry["inactiveZ"],
+            f"operation cards are not visibly interleaved: {layer_geometry}",
+        )
         work_creator = page.locator(".team-work-item-creator")
         await work_creator.get_by_label("Tipo de trabajo").select_option("DELIVERABLE")
         await work_creator.get_by_label("Prioridad").select_option("HIGH")
@@ -498,6 +548,12 @@ async def review() -> dict[str, object]:
         require(
             await board_tab.get_attribute("aria-selected") == "true",
             "team operations deck did not return to the board after saving work",
+        )
+        require(
+            await board_layer.get_attribute("data-active") == "true"
+            and await create_layer.get_attribute("data-active") == "false"
+            and await create_layer.get_attribute("inert") is not None,
+            "operation cards did not exchange front and back positions after save",
         )
         await board_tab.focus()
         await page.keyboard.press("ArrowRight")
@@ -607,7 +663,22 @@ async def review() -> dict[str, object]:
         await page.set_viewport_size({"width": 1440, "height": 1000})
         await assert_accessible(page, "team-template-preview-desktop")
 
-        await page.get_by_role("button", name="Aplicar funciones nuevas").click()
+        apply_template = page.get_by_role("button", name="Aplicar funciones nuevas · 5", exact=True)
+        require(
+            await apply_template.count() == 1,
+            "template apply action is not visible next to the preview summary",
+        )
+        confirmation_top = await apply_template.evaluate(
+            "element => element.closest('.team-template-confirm-form').getBoundingClientRect().top"
+        )
+        catalog_top = await page.locator(".team-template-role-grid").evaluate(
+            "element => element.getBoundingClientRect().top"
+        )
+        require(
+            confirmation_top < catalog_top,
+            "template confirmation remains buried below the detailed catalog",
+        )
+        await apply_template.click()
         await page.wait_for_url("**notice=team_template_applied**")
         await page.wait_for_load_state("networkidle")
         require(
@@ -706,6 +777,16 @@ async def review() -> dict[str, object]:
             '.chapter-navigation-track a[href="/es/campaign/foundation#guided-intake"]'
         ).click()
         await wait_for_chapter(page, "**/es/campaign/foundation**", "#guided-intake")
+        require(
+            await page.locator(".campaign-experience").count() == 0,
+            "mission hero leaked back into the completed foundation route",
+        )
+        guided_review = page.locator(".guided-intake-review")
+        require(
+            not await guided_review.evaluate("element => element.open"),
+            "completed setup did not remain collapsed after chapter navigation",
+        )
+        await guided_review.locator("summary").click()
         require(
             await page.get_by_label("Cargo objetivo").input_value() == "Alcaldía Municipal",
             "intake did not persist on its chapter route",

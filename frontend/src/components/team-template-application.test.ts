@@ -112,6 +112,8 @@ describe("TeamWorkspaceEditor template application", () => {
 
   it("renders additions, preserved roles, digest confirmation, and no authority claim", () => {
     const html = render(preview);
+    const confirmationIndex = html.indexOf("team-template-confirm-form");
+    const catalogIndex = html.indexOf("team-template-role-grid");
 
     expect(html).toContain("Funciones nuevas propuestas");
     expect(html).toContain("Estrategia digital");
@@ -121,6 +123,10 @@ describe("TeamWorkspaceEditor template application", () => {
     expect(html).toContain('name="preview_digest"');
     expect(html).toContain("a".repeat(64));
     expect(html).toContain("No asigna personas");
+    expect(html).toContain("Aplicar funciones nuevas · 1");
+    expect(confirmationIndex).toBeGreaterThan(-1);
+    expect(catalogIndex).toBeGreaterThan(-1);
+    expect(confirmationIndex).toBeLessThan(catalogIndex);
   });
 
   it("does not render an apply button when the authoritative preview is a no-op", () => {

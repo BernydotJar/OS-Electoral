@@ -47,7 +47,9 @@ export function TeamOperationsDeck({
     <section className="team-operations-deck" data-view={view}>
       <div className="team-operations-deck-heading">
         <div>
-          <p className="eyebrow">{dictionary.teamWorkspace.operationsEyebrow}</p>
+          <p className="eyebrow">
+            {dictionary.teamWorkspace.operationsEyebrow}
+          </p>
           <h3>{dictionary.teamWorkspace.operationsTitle}</h3>
           <p>{dictionary.teamWorkspace.operationsBody}</p>
         </div>
@@ -91,8 +93,11 @@ export function TeamOperationsDeck({
           className="team-operations-layer"
           role="tabpanel"
           aria-labelledby="team-board-tab"
-          hidden={view !== "BOARD"}
+          aria-hidden={view !== "BOARD"}
+          inert={view !== "BOARD"}
+          tabIndex={view === "BOARD" ? 0 : -1}
           data-layer="board"
+          data-active={view === "BOARD"}
         >
           {board}
         </div>
@@ -101,8 +106,11 @@ export function TeamOperationsDeck({
           className="team-operations-layer"
           role="tabpanel"
           aria-labelledby="team-create-tab"
-          hidden={view !== "CREATE"}
+          aria-hidden={view !== "CREATE"}
+          inert={view !== "CREATE"}
+          tabIndex={view === "CREATE" ? 0 : -1}
           data-layer="create"
+          data-active={view === "CREATE"}
         >
           {creator}
         </div>

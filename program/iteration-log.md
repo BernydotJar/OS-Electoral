@@ -662,3 +662,14 @@
 - PostgreSQL RLS, backup/restore, constrained stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
 - Marked `C3-FRONT-008` `CI_GREEN`; personal work visibility remains blocked pending server-side principal/grant projection.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-28 — C3-FRONT-008 human-review feedback closure local checkpoint
+
+- Restricted the cinematic mission hero to the command overview; foundation, candidate and team chapters now begin directly with their task surface.
+- Converted completed guided intake into a collapsed, keyboard-operable one-time setup that remains available for authorized review.
+- Replaced the team-operation toggle illusion with two measured, interleaved cards whose active/inactive depth exchanges through tabs and arrow keys.
+- Elevated the governed template-application confirmation beside the preview summary and exposed the exact count of missing vacancies.
+- Passed 732 Python tests, 10 controlled skips, 90.38% coverage, 119 frontend tests, build, security, Terraform, program/release validators and Chromium ES/EN/mobile/keyboard review with zero axe violations or overflow.
+- Local PostgreSQL/browser execution remains blocked before product startup by nested Docker layer registration (`lchown /var/empty`); new exact-head hosted CI is required.
+- Last remote green head: `dfea5f21952c9b91f34879fdc4b6051e58cedc09`; current feedback closure state: `TESTED_LOCAL`.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
