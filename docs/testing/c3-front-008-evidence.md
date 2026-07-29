@@ -46,7 +46,28 @@ The latest product review identified three interaction gaps on top of the previo
 
 Local Chromium proved the overview/chapter hero boundary, desktop team-card geometry, keyboard depth exchange, ES/EN, mobile, reduced motion, zero axe violations and no horizontal overflow. The full repository gate passed with 732 Python tests, 10 controlled skips, 90.38% coverage and 119 frontend tests. The nested local Docker daemon still stops before CampaignOS startup at `lchown /var/empty`; hosted exact-head CI remains required for the PostgreSQL mutation and persistence proof.
 
-The last remotely validated PR head before this feedback closure is `dfea5f21952c9b91f34879fdc4b6051e58cedc09` (`CampaignOS CI 30400505954`, `Runtime Visual Review 30400506057`). The feedback closure is `TESTED_LOCAL` until a new exact-head run succeeds.
+The feedback closure is exact-head validated at `92369e59162a134ed7c64188828fa15b5711a22e` with CampaignOS CI `30414864886` and Runtime Visual Review `30414864870`.
+
+## Human-review feedback exact-head closure
+
+Implementation head `92369e59162a134ed7c64188828fa15b5711a22e` passed CampaignOS CI `30414864886` and Runtime Visual Review `30414864870` on draft PR `#126`. The hosted PostgreSQL/API/browser job `90459048370` proved:
+
+- completed guided intake starts collapsed in Spanish and English and reopens only for explicit review;
+- the mission hero is absent from foundation, candidate and team chapter workspaces;
+- both team-operation cards remain in one visual stack, exchange front/back state with keyboard navigation and preserve accessibility isolation;
+- the governed template preview exposes `Aplicar funciones nuevas · 5` before the detailed catalog, applies only missing vacant functions and persists ten total functions;
+- candidate and team data persist across chapter navigation and reload;
+- desktop/mobile, ES/EN, reduced motion, zero axe violations, no overflow, no unexpected hosts and no console/page errors.
+
+Retained artifacts:
+
+- frontend review: `8709836555`, `sha256:96f68c284755d070635dabeace377dc4025ffeb08e768e6155d2e91e83ffca4a`
+- PostgreSQL recovery: `8709775631`, `sha256:fe74f4569ee69b0a38e6196cb8e0e34a590ea077a652034c1335aa5804739594`
+- supply chain: `8709766285`, `sha256:16ba977998a298c6c8e7c5e7d31c45631544b9b6b1402bbaa0cada7b5a205fa4`
+- visual review: `8709781483`, `sha256:754d5df46a96301c911ef951f4101f242078a5a8c7811828542a56b06a704a24`
+- Gitleaks SARIF: `8709767723`, `sha256:2b264fa00cc7421b66e7d04920fc6b2de11c3ab30f3fdcf0f24786bddfa2392d`
+
+CampaignOS CI runs `30414156474` and `30414548165` remain preserved as historical failures. Each failed only because the evolving browser harness still asserted the removed chapter hero or an always-expanded completed setup. Both failed heads are ancestors of `92369e59162a134ed7c64188828fa15b5711a22e` and are explicitly superseded by successful run `30414864886`.
 
 ## Safety and authority
 

@@ -673,3 +673,12 @@
 - Local PostgreSQL/browser execution remains blocked before product startup by nested Docker layer registration (`lchown /var/empty`); new exact-head hosted CI is required.
 - Last remote green head: `dfea5f21952c9b91f34879fdc4b6051e58cedc09`; current feedback closure state: `TESTED_LOCAL`.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-28 — C3-FRONT-008 human-review feedback exact-head CI closure
+
+- Validated implementation head `92369e59162a134ed7c64188828fa15b5711a22e` with CampaignOS CI `30414864886` and Runtime Visual Review `30414864870`.
+- Hosted PostgreSQL/API/browser evidence proved the completed setup collapse/reopen flow, chapter hero isolation, physically interleaved team cards, keyboard depth exchange, governed application of five missing vacancies, persistence, ES/EN, mobile, reduced motion and zero axe violations.
+- Preserved CI runs `30414156474` and `30414548165` as historical harness failures and superseded both with the successful equal-or-broader run `30414864886`; both failed SHAs are ancestors of the successful head.
+- PostgreSQL RLS, backup/restore, constrained stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
+- Marked `C3-FRONT-008` `CI_GREEN`; personal work visibility remains blocked pending server-side principal/grant projection.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

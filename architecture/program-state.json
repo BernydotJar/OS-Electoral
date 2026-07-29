@@ -413,6 +413,18 @@
       "conclusion": "SUCCESS",
       "head_sha": "2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76",
       "scope": "C3-RELEASE-001 main-based exact-head validation after remediation of the brace-expansion advisory; quality, PostgreSQL, recovery, frontend/browser, stack E2E, CodeQL, secret, dependency, Terraform and supply-chain jobs passed"
+    },
+    {
+      "run_id": 30414864886,
+      "conclusion": "SUCCESS",
+      "head_sha": "92369e59162a134ed7c64188828fa15b5711a22e",
+      "scope": "PR 126 C3-FRONT-008 human-review feedback closure: quality, PostgreSQL/RLS, recovery, governed template application, API/browser persistence, interleaved team cards, chapter hero isolation, mobile/reduced motion, stack E2E, CodeQL, secret, dependency, Terraform and supply-chain jobs passed"
+    },
+    {
+      "run_id": 30414864870,
+      "conclusion": "SUCCESS",
+      "head_sha": "92369e59162a134ed7c64188828fa15b5711a22e",
+      "scope": "PR 126 C3-FRONT-008 human-review feedback closure runtime visual review"
     }
   ],
   "bounded_contexts": [
@@ -1117,7 +1129,7 @@
       "id": "C3-FRONT-008",
       "workstream": "WS-06",
       "title": "Organic campaign flow, candidate action brief and command-safe workspace decks",
-      "status": "ACTIVE",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-TEAM-004",
         "C3-FRONT-007"
@@ -1205,7 +1217,7 @@
     "total_critical_or_high": 1
   },
   "github_state": {
-    "verified_at": "2026-07-27",
+    "verified_at": "2026-07-28",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1262,10 +1274,10 @@
       "state": "DRAFT_PR_CI_GREEN",
       "branch": "agent/c3-front-008-organic-role-aware-flow",
       "base": "agent/c3-team-004-role-operations-board",
-      "validated_implementation_head": "dfea5f21952c9b91f34879fdc4b6051e58cedc09",
+      "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
       "draft_pr": 126,
-      "ci_run_id": 30400505954,
-      "visual_run_id": 30400506057,
+      "ci_run_id": 30414864886,
+      "visual_run_id": 30414864870,
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE"
     },
@@ -1340,7 +1352,7 @@
         "branch": "agent/c3-front-008-organic-role-aware-flow",
         "base": "agent/c3-team-004-role-operations-board",
         "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "dfea5f21952c9b91f34879fdc4b6051e58cedc09"
+        "delivered_head": "92369e59162a134ed7c64188828fa15b5711a22e"
       }
     ],
     "git_push_incident": {
@@ -1358,38 +1370,38 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-FRONT-008",
-      "state": "TESTED_LOCAL",
+      "state": "CI_GREEN",
       "branch": "agent/c3-front-008-organic-role-aware-flow",
       "base": "agent/c3-team-004-role-operations-board@47119b2ecacbde3cd949d92f39a043ea93769fff",
-      "last_green_head": "dfea5f21952c9b91f34879fdc4b6051e58cedc09",
+      "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
       "draft_pr": 126,
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "COMMIT_PUSH_EXACT_HEAD_CI"
+      "next_action": "HUMAN_PRODUCT_REVIEW"
     },
     "latest_checkpoint": {
       "id": "C3-FRONT-008",
       "branch": "agent/c3-front-008-organic-role-aware-flow",
-      "validated_implementation_head": "dfea5f21952c9b91f34879fdc4b6051e58cedc09",
+      "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
       "draft_pr": 126,
       "status": "CI_GREEN",
-      "ci_run_id": 30400505954,
-      "visual_run_id": 30400506057,
-      "quality_job_id": 90413869503,
-      "frontend_job_id": 90413869479,
-      "visual_job_id": 90413869329,
-      "recovery_job_id": 90413869356,
-      "recovery_artifact_id": 8704508946,
-      "recovery_artifact_digest": "sha256:b25e78c802026df755ce2af057e3fa13edddf9106a54b31add544033bd78453e",
-      "supply_chain_artifact_id": 8704503851,
-      "supply_chain_artifact_digest": "sha256:3e33e31aba64b11e790ed8703364bfc3e093375fd2fd0dfaa184afaa50f16012",
-      "frontend_artifact_id": 8704798672,
-      "frontend_artifact_digest": "sha256:e3f1e1821725a158e7d84f19859a159142992937338a604fdcfda70f3825a418",
-      "visual_artifact_id": 8704530760,
-      "visual_artifact_digest": "sha256:519bc5a33c8571a61ce84f3902d8d00c544b1f98e577ce9c4de41509591ccd30",
-      "gitleaks_artifact_id": 8704502126,
-      "gitleaks_artifact_digest": "sha256:496100436ae02a8983ec766882205fa2d358f041d3afdd50bcaced945c1516b3",
+      "ci_run_id": 30414864886,
+      "visual_run_id": 30414864870,
+      "quality_job_id": 90459048337,
+      "frontend_job_id": 90459048370,
+      "visual_job_id": 90459047769,
+      "recovery_job_id": 90459048330,
+      "recovery_artifact_id": 8709775631,
+      "recovery_artifact_digest": "sha256:fe74f4569ee69b0a38e6196cb8e0e34a590ea077a652034c1335aa5804739594",
+      "supply_chain_artifact_id": 8709766285,
+      "supply_chain_artifact_digest": "sha256:16ba977998a298c6c8e7c5e7d31c45631544b9b6b1402bbaa0cada7b5a205fa4",
+      "frontend_artifact_id": 8709836555,
+      "frontend_artifact_digest": "sha256:96f68c284755d070635dabeace377dc4025ffeb08e768e6155d2e91e83ffca4a",
+      "visual_artifact_id": 8709781483,
+      "visual_artifact_digest": "sha256:754d5df46a96301c911ef951f4101f242078a5a8c7811828542a56b06a704a24",
+      "gitleaks_artifact_id": 8709767723,
+      "gitleaks_artifact_digest": "sha256:2b264fa00cc7421b66e7d04920fc6b2de11c3ab30f3fdcf0f24786bddfa2392d",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
@@ -1424,25 +1436,25 @@
     "latest_completed_checkpoint": {
       "id": "C3-FRONT-008",
       "branch": "agent/c3-front-008-organic-role-aware-flow",
-      "validated_implementation_head": "dfea5f21952c9b91f34879fdc4b6051e58cedc09",
+      "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
       "draft_pr": 126,
       "status": "CI_GREEN",
-      "ci_run_id": 30400505954,
-      "visual_run_id": 30400506057,
-      "quality_job_id": 90413869503,
-      "frontend_job_id": 90413869479,
-      "visual_job_id": 90413869329,
-      "recovery_job_id": 90413869356,
-      "recovery_artifact_id": 8704508946,
-      "recovery_artifact_digest": "sha256:b25e78c802026df755ce2af057e3fa13edddf9106a54b31add544033bd78453e",
-      "supply_chain_artifact_id": 8704503851,
-      "supply_chain_artifact_digest": "sha256:3e33e31aba64b11e790ed8703364bfc3e093375fd2fd0dfaa184afaa50f16012",
-      "frontend_artifact_id": 8704798672,
-      "frontend_artifact_digest": "sha256:e3f1e1821725a158e7d84f19859a159142992937338a604fdcfda70f3825a418",
-      "visual_artifact_id": 8704530760,
-      "visual_artifact_digest": "sha256:519bc5a33c8571a61ce84f3902d8d00c544b1f98e577ce9c4de41509591ccd30",
-      "gitleaks_artifact_id": 8704502126,
-      "gitleaks_artifact_digest": "sha256:496100436ae02a8983ec766882205fa2d358f041d3afdd50bcaced945c1516b3",
+      "ci_run_id": 30414864886,
+      "visual_run_id": 30414864870,
+      "quality_job_id": 90459048337,
+      "frontend_job_id": 90459048370,
+      "visual_job_id": 90459047769,
+      "recovery_job_id": 90459048330,
+      "recovery_artifact_id": 8709775631,
+      "recovery_artifact_digest": "sha256:fe74f4569ee69b0a38e6196cb8e0e34a590ea077a652034c1335aa5804739594",
+      "supply_chain_artifact_id": 8709766285,
+      "supply_chain_artifact_digest": "sha256:16ba977998a298c6c8e7c5e7d31c45631544b9b6b1402bbaa0cada7b5a205fa4",
+      "frontend_artifact_id": 8709836555,
+      "frontend_artifact_digest": "sha256:96f68c284755d070635dabeace377dc4025ffeb08e768e6155d2e91e83ffca4a",
+      "visual_artifact_id": 8709781483,
+      "visual_artifact_digest": "sha256:754d5df46a96301c911ef951f4101f242078a5a8c7811828542a56b06a704a24",
+      "gitleaks_artifact_id": 8709767723,
+      "gitleaks_artifact_digest": "sha256:2b264fa00cc7421b66e7d04920fc6b2de11c3ab30f3fdcf0f24786bddfa2392d",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
@@ -1818,6 +1830,28 @@
       "reviewer": "independent release verification",
       "date": "2026-07-24",
       "reason": "The successor preserves the supported ESLint 9/Next.js toolchain, removes the vulnerable dependency result without suppressing audit, and passes equal-or-broader exact-head validation."
+    },
+    {
+      "run_id": 30414156474,
+      "conclusion": "FAILURE",
+      "head_sha": "03e7ba8d0d10fa929ba5a859aca1c3e86af79477",
+      "scope": "C3-FRONT-008 feedback closure; all jobs passed except the API-backed browser journey, whose final English foundation assertion expected the completed one-time setup editor to remain expanded",
+      "superseded_by": 30414864886,
+      "verification_evidence": "CampaignOS CI run 30414864886 at 92369e59162a134ed7c64188828fa15b5711a22e; the failed SHA is an ancestor and the corrected journey proves the completed English setup starts collapsed, opens on explicit review, preserves intake data and completes all equivalent jobs",
+      "reviewer": "independent release verification",
+      "date": "2026-07-28",
+      "reason": "The observed failure was an obsolete harness expectation after the intended one-time setup behavior changed; the successor preserves the product behavior and passes the equal-or-broader PostgreSQL/API/browser journey."
+    },
+    {
+      "run_id": 30414548165,
+      "conclusion": "FAILURE",
+      "head_sha": "0153cf1fc811b7814025e67c61acfe39883a7ff9",
+      "scope": "C3-FRONT-008 feedback closure; all jobs passed except the final mobile reduced-motion assertion, which still searched for the mission pulse inside the team chapter after the hero was intentionally removed from chapter workspaces",
+      "superseded_by": 30414864886,
+      "verification_evidence": "CampaignOS CI run 30414864886 at 92369e59162a134ed7c64188828fa15b5711a22e; the failed SHA is an ancestor and the corrected journey proves no chapter hero, two interleaved team cards, mobile single-column layout, reduced-motion equivalence, template persistence and all equivalent jobs",
+      "reviewer": "independent release verification",
+      "date": "2026-07-28",
+      "reason": "The observed failure was a stale harness locator, not a runtime product defect; the successor validates the intended hero isolation and the complete equal-or-broader functional journey."
     }
   ]
 }
