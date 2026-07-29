@@ -902,6 +902,36 @@
       ],
       "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
       "cumulative_merge_pr": 126
+    },
+    {
+      "task_id": "C3-SEC-002",
+      "owner": "WS-13/WS-05/WS-03",
+      "status": "REVIEWED",
+      "evidence": [
+        "specs/C3-SEC-002/requirements.md",
+        "specs/C3-SEC-002/design.md",
+        "specs/C3-SEC-002/tasks.md",
+        "program/graph-harness-execution.json",
+        "progress/review_C3-SEC-002.md",
+        "docs/testing/c3-sec-002-evidence.md",
+        "program/iterations/c3-sec-002.md",
+        "program/validations/c3-sec-002.json",
+        "docs/security/rate-limiting.md",
+        "docs/api/errors.md",
+        "docs/operations/rate-limit-operations.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted CI and PostgreSQL 18 evidence remain pending",
+        "Managed staging load, cleanup scheduling and edge DDoS/WAF remain separate platform gates",
+        "Independent external security, privacy, database, operational, legal, human close and merge remain pending"
+      ],
+      "approval": {
+        "recorded_at": "2026-07-29T00:29:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
+        "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
+      }
     }
   ]
 }

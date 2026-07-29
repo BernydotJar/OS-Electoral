@@ -9,10 +9,12 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
 
 from campaignos.api.dependencies import CurrentTenantAuthorization
 from campaignos.api.errors import ProblemException
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.identity.authorization import (
     EffectivePermissionGrant,
     TenantAuthorizationContext,
 )
+from campaignos.security import RateLimitPolicyClass
 from campaignos.strategy import (
     StrategyDecisionEvidence,
     StrategyDecisionRequest,
@@ -226,6 +228,7 @@ def _grant_or_forbid(
         "publication, spending, mobilization, targeting or contact authority."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def create_strategy_workspace(
     request: Request,
     response: Response,
@@ -245,6 +248,12 @@ def create_strategy_workspace(
         action="create",
         purpose=CREATE_STRATEGY_PURPOSE,
         detail="Strategy workspace creation is not authorized",
+    )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
     )
     try:
         evidence = service.create(
@@ -272,6 +281,7 @@ def create_strategy_workspace(
     responses={status.HTTP_200_OK: {"headers": {"ETag": {"schema": {"type": "string"}}}}},
     summary="Read campaign strategy workspace",
 )
+@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
 def get_strategy_workspace(
     request: Request,
     response: Response,
@@ -286,6 +296,12 @@ def get_strategy_workspace(
         action="read",
         purpose=READ_STRATEGY_PURPOSE,
         detail="Strategy workspace read is not authorized",
+    )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.EXPENSIVE_READ,
     )
     try:
         evidence = service.get(
@@ -310,6 +326,7 @@ def get_strategy_workspace(
     responses={status.HTTP_200_OK: {"headers": {"ETag": {"schema": {"type": "string"}}}}},
     summary="Update campaign strategy workspace",
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def update_strategy_workspace(
     request: Request,
     response: Response,
@@ -333,6 +350,12 @@ def update_strategy_workspace(
         action="update",
         purpose=UPDATE_STRATEGY_PURPOSE,
         detail="Strategy workspace update is not authorized",
+    )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
     )
     expected_version = _expected_version(request, if_match)
     try:
@@ -370,6 +393,7 @@ def update_strategy_workspace(
         "contact, spending or mobilization."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def decide_strategy_workspace(
     request: Request,
     response: Response,
@@ -393,6 +417,12 @@ def decide_strategy_workspace(
         action="approve",
         purpose=DECIDE_STRATEGY_PURPOSE,
         detail="Internal strategy decision is not authorized",
+    )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
     )
     expected_version = _expected_version(request, if_match)
     try:

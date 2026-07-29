@@ -62,7 +62,7 @@ Production remains `BLOCKED`. Risks are not closed by local tests, green draft c
 - **Status:** OPEN / non-blocking for local functional development; production-blocking through existing identity, environment and human-acceptance gates.
 - **Evidence:** the development verifier is environment-gated, token-safe and grant-free; the live intake journey passes PostgreSQL/API/browser checks.
 - **Risk:** fixed local credentials would be unsafe if copied into shared configuration, and only one mutation journey is complete.
-- **Mitigation:** shared/production validation rejects the verifier; secrets remain server-only; CI scans for leakage; live OIDC, broader journeys, rate limiting, observability and independent user acceptance remain required.
+- **Mitigation:** shared/production validation rejects the verifier; secrets remain server-only; CI scans for leakage; live OIDC, broader journeys, staging rate-limit/edge-abuse verification, observability and independent user acceptance remain required.
 
 
 ## C3-OBS-001 residual risk — local control plane without managed-environment proof

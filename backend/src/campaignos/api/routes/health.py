@@ -8,9 +8,15 @@ from typing import cast
 from fastapi import APIRouter, HTTPException, Request, Response, status
 from pydantic import BaseModel, ConfigDict
 
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.data import DatabaseRuntime
 from campaignos.identity.oidc import TokenVerifier
 from campaignos.observability import MetricsRegistry
+from campaignos.security import RateLimitPolicyClass
+from campaignos.security.rate_limits import (
+    OPERATIONAL_METRICS_PRINCIPAL_ID,
+    PREAUTH_SCOPE_TENANT_ID,
+)
 
 router = APIRouter(tags=["system"])
 
@@ -78,6 +84,7 @@ def ready(request: Request, response: Response) -> ReadinessResponse:
     summary="Low-cardinality Prometheus service metrics",
     include_in_schema=False,
 )
+@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
 def metrics(request: Request) -> Response:
     settings = request.app.state.settings
     if not settings.metrics_enabled:
@@ -93,6 +100,12 @@ def metrics(request: Request) -> Response:
                 detail="Metrics authentication is required",
                 headers={"WWW-Authenticate": "Bearer"},
             )
+    enforce_rate_limit(
+        request,
+        tenant_id=PREAUTH_SCOPE_TENANT_ID,
+        principal_id=OPERATIONAL_METRICS_PRINCIPAL_ID,
+        policy_class=RateLimitPolicyClass.EXPENSIVE_READ,
+    )
     registry = cast(MetricsRegistry, request.app.state.metrics)
     database = cast(DatabaseRuntime, request.app.state.database)
     payload = registry.render_prometheus(

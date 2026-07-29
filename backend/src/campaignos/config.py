@@ -56,6 +56,20 @@ class Settings(BaseSettings):
     database_max_overflow: int = Field(default=5, ge=0, le=50)
     database_pool_timeout_seconds: int = Field(default=5, ge=1, le=30)
 
+    rate_limits_enabled: bool = False
+    rate_limit_policy_version: int = Field(default=1, ge=1, le=1_000_000)
+    rate_limit_read_requests: int = Field(default=240, ge=1, le=1_000_000)
+    rate_limit_read_window_seconds: int = Field(default=60, ge=1, le=86_400)
+    rate_limit_mutation_requests: int = Field(default=60, ge=1, le=1_000_000)
+    rate_limit_mutation_window_seconds: int = Field(default=60, ge=1, le=86_400)
+    rate_limit_expensive_read_requests: int = Field(default=30, ge=1, le=1_000_000)
+    rate_limit_expensive_read_window_seconds: int = Field(default=60, ge=1, le=86_400)
+    rate_limit_identity_requests: int = Field(default=20, ge=1, le=1_000_000)
+    rate_limit_identity_window_seconds: int = Field(default=300, ge=1, le=86_400)
+    rate_limit_agent_requests: int = Field(default=10, ge=1, le=1_000_000)
+    rate_limit_agent_window_seconds: int = Field(default=300, ge=1, le=86_400)
+    rate_limit_cleanup_batch_size: int = Field(default=500, ge=1, le=1_000)
+
     object_storage_endpoint: str | None = None
     object_storage_access_key: str | None = None
     object_storage_secret_key: SecretStr | None = None
@@ -192,6 +206,10 @@ class Settings(BaseSettings):
                 raise ValueError(
                     "Metrics bearer token is required when metrics are enabled "
                     "outside development and test"
+                )
+            if not self.rate_limits_enabled:
+                raise ValueError(
+                    "Server-enforced rate limiting is required outside development and test"
                 )
 
         return self

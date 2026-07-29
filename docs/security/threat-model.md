@@ -2,7 +2,7 @@
 
 Status: **DRAFT — technical controls are partial; independent security/privacy review required**
 Version: `0.2`
-Last updated: `2026-07-21`
+Last updated: `2026-07-29`
 
 ## Scope and safety objective
 
@@ -60,7 +60,7 @@ See `docs/architecture/system-context.md`. The security-critical transitions are
 | TM-18 | Political manipulation or illegal data use encoded as feature | immutable prohibited-capability registry, purpose/consent gates, hard evals, incident escalation, domain/legal review | Prototype prohibitions exist; production enforcement/review incomplete |
 | TM-19 | Public-resource/campaign mixing | tenant/integration separation, source classification, blocked municipal/public-employee imports, critical incident and legal routing | Policy/eval target only |
 | TM-20 | Covert team or citizen surveillance | prohibit continuous individual location/loyalty/productivity tracking; consented aggregate/task-level alternatives; privacy review | Policy boundary only |
-| TM-21 | Denial of service, abusive API use, queue exhaustion | request/body limits, rate quotas by principal/tenant, backpressure, bounded retries, DLQ, WAF, load and failure tests | Not implemented |
+| TM-21 | Denial of service, abusive API use, queue exhaustion | request/body limits, rate quotas by principal/tenant, backpressure, bounded retries, DLQ, WAF, load and failure tests | PostgreSQL-backed tenant/opaque-principal rate limits cover all 41 protected API routes with atomic counters, forced RLS, fail-closed errors and bounded telemetry; edge DDoS/WAF, body limits, staging load, deployed alerts and cleanup scheduling remain absent |
 | TM-22 | Mutable-reference or partial-commit corruption in prototype adapters | defensive copies, explicit scoped write intent, atomic snapshot/restore, late-failure tests | Repaired and covered in current worktree; independent review pending |
 | TM-23 | Evidence from another scope or lexical similarity marked verified | explicit scope/provenance, exact-claim human review, enabling-class/status checks, cross-scope rejection | Repaired and covered in current worktree; durable workflow absent |
 

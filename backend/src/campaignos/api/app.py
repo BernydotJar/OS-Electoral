@@ -82,6 +82,13 @@ from campaignos.operations import (
     SqlAlchemyCampaignOperationsService,
     UnavailableCampaignOperationsService,
 )
+from campaignos.security import (
+    DisabledRateLimiter,
+    RateLimiter,
+    SqlAlchemyRateLimiter,
+    UnavailableRateLimiter,
+    policy_catalog_from_settings,
+)
 from campaignos.strategy import (
     SqlAlchemyStrategyWorkspaceService,
     StrategyWorkspaceService,
@@ -118,6 +125,7 @@ def create_app(
     campaign_readiness_reader: CampaignReadinessReader | None = None,
     campaign_writer: CampaignWriter | None = None,
     workspace_writer: WorkspaceWriter | None = None,
+    rate_limiter: RateLimiter | None = None,
     metrics_registry: MetricsRegistry | None = None,
 ) -> FastAPI:
     runtime_settings = settings or get_settings()
@@ -138,6 +146,15 @@ def create_app(
             pool_timeout_seconds=runtime_settings.database_pool_timeout_seconds,
         )
     database_runtime = database_runtime or UnavailableDatabase()
+    rate_limit_catalog = policy_catalog_from_settings(runtime_settings)
+    rate_limit_boundary = rate_limiter
+    if rate_limit_boundary is None and runtime_settings.rate_limits_enabled:
+        if isinstance(database_runtime, Database):
+            rate_limit_boundary = SqlAlchemyRateLimiter(database_runtime, rate_limit_catalog)
+        else:
+            rate_limit_boundary = UnavailableRateLimiter()
+    if rate_limit_boundary is None:
+        rate_limit_boundary = DisabledRateLimiter(rate_limit_catalog)
     authorization_directory = membership_directory
     if authorization_directory is None and isinstance(database_runtime, Database):
         authorization_directory = SqlAlchemyMembershipDirectory(database_runtime)
@@ -238,6 +255,7 @@ def create_app(
     app.state.campaign_readiness_reader = campaign_readiness_boundary
     app.state.campaign_writer = campaign_write_boundary
     app.state.workspace_writer = workspace_write_boundary
+    app.state.rate_limiter = rate_limit_boundary
     app.state.metrics = metrics
     app.state.logger = logger
 

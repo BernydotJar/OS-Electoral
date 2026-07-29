@@ -71,7 +71,7 @@ def test_append_only_guards_deny_constrained_role_mutation(
 
     with admin_engine.begin() as connection:
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == (
-            "20260721_0011"
+            "20260729_0012"
         )
         trigger_rows = set(
             connection.execute(

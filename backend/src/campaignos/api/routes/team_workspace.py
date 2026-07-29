@@ -9,10 +9,12 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
 
 from campaignos.api.dependencies import CurrentTenantAuthorization
 from campaignos.api.errors import ProblemException
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.identity.authorization import (
     EffectivePermissionGrant,
     TenantAuthorizationContext,
 )
+from campaignos.security import RateLimitPolicyClass
 from campaignos.teams import (
     TeamWorkspaceCreate,
     TeamWorkspaceCreateEvidence,
@@ -225,6 +227,7 @@ def _verify_template_preview_scope(
         "recommendations never create application authority or external effects."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def create_team_workspace(
     request: Request,
     response: Response,
@@ -252,6 +255,12 @@ def create_team_workspace(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Team workspace creation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     try:
         evidence = service.create(
             tenant_id,
@@ -284,6 +293,7 @@ def create_team_workspace(
     responses={status.HTTP_200_OK: {"headers": {"ETag": {"schema": {"type": "string"}}}}},
     summary="Read campaign team workspace",
 )
+@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
 def get_team_workspace(
     request: Request,
     response: Response,
@@ -303,6 +313,12 @@ def get_team_workspace(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Team workspace read is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.EXPENSIVE_READ,
+    )
     try:
         evidence = service.get(
             tenant_id,
@@ -325,6 +341,7 @@ def get_team_workspace(
     response_model=TeamWorkspaceTemplatePreview,
     summary="Preview append-only campaign role template changes",
 )
+@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
 def preview_team_workspace_template(
     request: Request,
     tenant_id: UUID,
@@ -345,6 +362,12 @@ def preview_team_workspace_template(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Team workspace template preview is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.EXPENSIVE_READ,
+    )
     expected_version = _expected_version(request, if_match)
     try:
         preview = service.preview_template(
@@ -378,6 +401,7 @@ def preview_team_workspace_template(
     response_model=TeamWorkspaceTemplateApplyEvidence,
     summary="Apply confirmed campaign role template additions",
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def apply_team_workspace_template(
     request: Request,
     response: Response,
@@ -400,6 +424,12 @@ def apply_team_workspace_template(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Team workspace template application is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     expected_version = _expected_version(request, if_match)
     try:
         evidence = service.apply_template(
@@ -440,6 +470,7 @@ def apply_team_workspace_template(
     responses={status.HTTP_200_OK: {"headers": {"ETag": {"schema": {"type": "string"}}}}},
     summary="Update campaign team workspace",
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def update_team_workspace(
     request: Request,
     response: Response,
@@ -474,6 +505,12 @@ def update_team_workspace(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Team workspace update is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     expected_version = _expected_version(request, if_match)
     try:
         evidence = service.update(

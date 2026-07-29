@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, R
 
 from campaignos.api.dependencies import CurrentTenantAuthorization
 from campaignos.api.errors import ProblemException
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.campaigns import (
     CampaignCreate,
     CampaignCreateConflict,
@@ -37,6 +38,7 @@ from campaignos.identity.authorization import (
     EffectivePermissionGrant,
     TenantAuthorizationContext,
 )
+from campaignos.security import RateLimitPolicyClass
 
 router = APIRouter(tags=["campaigns"])
 CREATE_CAMPAIGN_PURPOSE = "Create tenant campaign"
@@ -94,6 +96,7 @@ def _create_grant(
         "publication, outreach, mobilization, or production use."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def create_campaign(
     request: Request,
     response: Response,
@@ -116,6 +119,12 @@ def create_campaign(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Campaign creation is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     raw_idempotency_values = request.headers.getlist("idempotency-key")
     if len(raw_idempotency_values) != 1:
         raise HTTPException(
@@ -207,7 +216,9 @@ def _authorized_campaign_ids(authorization: TenantAuthorizationContext) -> tuple
     "/tenants/{tenant_id}/campaigns",
     response_model=CampaignPage,
 )
+@rate_limit_policy(RateLimitPolicyClass.READ)
 def list_campaigns(
+    request: Request,
     tenant_id: UUID,
     authorization: CurrentTenantAuthorization,
     directory: CampaignDirectoryDependency,
@@ -216,6 +227,12 @@ def list_campaigns(
 ) -> CampaignPage:
     """List only campaigns covered by exact current grants, without total counts."""
     campaign_ids = _authorized_campaign_ids(authorization)
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.READ,
+    )
     try:
         page = directory.list_authorized(
             tenant_id,
@@ -241,7 +258,9 @@ def list_campaigns(
     "/tenants/{tenant_id}/campaigns/{campaign_id}",
     response_model=CampaignProjection,
 )
+@rate_limit_policy(RateLimitPolicyClass.READ)
 def get_campaign(
+    request: Request,
     tenant_id: UUID,
     campaign_id: UUID,
     authorization: CurrentTenantAuthorization,
@@ -259,6 +278,12 @@ def get_campaign(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Campaign access is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.READ,
+    )
     try:
         projection = directory.get(tenant_id, campaign_id)
     except CampaignNotFound as exc:
@@ -314,6 +339,7 @@ def _readiness_grant(
         "financial, security, publication, production, or other human approval."
     ),
 )
+@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
 def get_campaign_readiness(
     request: Request,
     tenant_id: UUID,
@@ -328,6 +354,12 @@ def get_campaign_readiness(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Campaign readiness access is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.EXPENSIVE_READ,
+    )
     try:
         evidence = reader.get(
             tenant_id,
@@ -405,6 +437,7 @@ def _expected_version(if_match: str | None) -> int:
     "/tenants/{tenant_id}/campaigns/{campaign_id}",
     response_model=CampaignWriteEvidence,
 )
+@rate_limit_policy(RateLimitPolicyClass.MUTATION)
 def update_campaign(
     request: Request,
     tenant_id: UUID,
@@ -422,6 +455,12 @@ def update_campaign(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Campaign update is not authorized",
         )
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.MUTATION,
+    )
     if idempotency_key is None or not idempotency_key.strip():
         raise HTTPException(
             status_code=status.HTTP_428_PRECONDITION_REQUIRED,

@@ -700,3 +700,16 @@
 - The localized repair is technically complete and its delivery state is `review`; merge remains a separate human gate.
 - `C3-SEC-002` remains `spec_ready`, implementation has not started, and the executable ready set remains empty pending explicit approval.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external political effects remain `NONE`.
+
+
+## 2026-07-29 — C3-SEC-002 approved SHIP implementation and local review
+
+- Recorded explicit product-owner approval for the reviewed SHIP spec and bounded migration.
+- Added revision `20260729_0012`, atomic DB-time tenant/opaque-principal counters, forced RLS, capped counts and bounded cleanup.
+- Bound 41 protected API routes to reviewed policy classes while preserving exact authorization and existing idempotency/version semantics.
+- Added sanitized RFC 9457 `429`/`503`, `Retry-After`, low-cardinality metrics and privacy-safe structured events.
+- Localized repairs split the security core from its FastAPI adapter, covered authenticated metrics, enforced transaction-scope/timezone checks, made PostgreSQL tests hermetic and suppressed connection-string command echo.
+- `make verify`: 749 Python passed, 11 skipped, 90.31% coverage; 119 frontend tests/build/audit; Terraform plan-only, security, program and release gates passed.
+- Isolated PostgreSQL: 11 slices passed through revision `20260729_0012`, including concurrency, RLS, rollover, rollback and cleanup.
+- Functional, Security and Database Reviewers pass the bounded increment; Production Reviewer keeps it in review pending hosted CI, staging load, cleanup scheduler, edge controls and external approvals.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.

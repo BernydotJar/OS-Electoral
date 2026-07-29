@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-SEC-002",
+  "assessed_at": "2026-07-29",
+  "mode": "SHIP",
+  "branch": "agent/c3-sec-002-rate-limiting-abuse-protection",
+  "base": "agent/c3-harness-001-graph-reconciliation@5e0818b6dc85376fdaa08cf2ab0af9c2d21460ea",
+  "state": "REVIEWED_LOCAL",
+  "human_approval": {
+    "recorded": true,
+    "recorded_at": "2026-07-29T00:29:00-06:00",
+    "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
+    "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
+  },
+  "verification": {
+    "python_passed": 749,
+    "python_skipped": 11,
+    "coverage_percent": 90.31,
+    "frontend_passed": 119,
+    "dependency_vulnerabilities": 0,
+    "postgresql_slices_passed": 11,
+    "postgresql_version_local": "15.18",
+    "migration_head": "20260729_0012",
+    "protected_routes": 41,
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy_source_files": 73,
+    "terraform": "PASS_PLAN_ONLY",
+    "program_truth": "PASS_BLOCKED",
+    "release_decision": "DENY_RELEASE"
+  },
+  "review": {
+    "functional": "PASS_FOR_REVIEW",
+    "security": "PASS_INCREMENT_PRODUCTION_BLOCKED",
+    "database": "PASS_ADDITIVE_MIGRATION",
+    "production": "KEEP_IN_REVIEW_DENY_RELEASE"
+  },
+  "remaining_gates": [
+    "Exact-head hosted CI and PostgreSQL 18 evidence",
+    "Managed staging load and contention proof",
+    "Cleanup scheduler and approved retention",
+    "Edge DDoS/WAF and invalid-token abuse controls",
+    "Deployed telemetry and alert routing",
+    "Independent security, privacy, database, operational and legal approval",
+    "Human close, merge and production approval"
+  ],
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE"
+}

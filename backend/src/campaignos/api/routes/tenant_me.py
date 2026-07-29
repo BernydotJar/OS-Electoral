@@ -6,11 +6,13 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from pydantic import BaseModel, ConfigDict
 
 from campaignos.api.dependencies import CurrentPrincipal, CurrentTenantAuthorization
+from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.identity.authorization import EffectiveMembership
+from campaignos.security import RateLimitPolicyClass
 
 router = APIRouter(tags=["identity"])
 
@@ -37,11 +39,19 @@ class TenantMeResponse(BaseModel):
     response_model=TenantMeResponse,
     summary="Current tenant identity and authorization",
 )
+@rate_limit_policy(RateLimitPolicyClass.READ)
 def tenant_me(
+    request: Request,
     tenant_id: UUID,
     principal: CurrentPrincipal,
     authorization: CurrentTenantAuthorization,
 ) -> TenantMeResponse:
+    enforce_rate_limit(
+        request,
+        tenant_id=tenant_id,
+        principal_id=authorization.principal_id,
+        policy_class=RateLimitPolicyClass.READ,
+    )
     return TenantMeResponse(
         principal_id=authorization.principal_id,
         tenant_id=tenant_id,
