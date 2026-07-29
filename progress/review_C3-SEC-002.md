@@ -1,9 +1,9 @@
 # C3-SEC-002 SHIP review
 
-Feature: `C3-SEC-002 — Tenant and principal rate limiting and abuse protection`  
-Mode: `SHIP`  
-Date: `2026-07-29`  
-Implementation branch: `agent/c3-sec-002-rate-limiting-abuse-protection`  
+Feature: `C3-SEC-002 — Tenant and principal rate limiting and abuse protection`
+Mode: `SHIP`
+Date: `2026-07-29`
+Implementation branch: `agent/c3-sec-002-rate-limiting-abuse-protection`
 Base: `agent/c3-harness-001-graph-reconciliation@5e0818b6dc85376fdaa08cf2ab0af9c2d21460ea`
 
 ## Reviewer separation

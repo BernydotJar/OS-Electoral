@@ -1,9 +1,9 @@
 # C3-SEC-002 evidence — tenant/principal rate limiting
 
-Date: `2026-07-29`  
-Mode: `SHIP`  
-State: `REVIEWED_LOCAL`  
-Production: `BLOCKED`  
+Date: `2026-07-29`
+Mode: `SHIP`
+State: `REVIEWED_LOCAL`
+Production: `BLOCKED`
 External effects: `NONE`
 
 ## Delivered control

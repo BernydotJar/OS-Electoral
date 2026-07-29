@@ -1,7 +1,7 @@
 # CampaignOS rate limiting and abuse protection
 
-Status: **SHIP implementation under review; production remains blocked**  
-Feature: `C3-SEC-002`  
+Status: **SHIP implementation under review; production remains blocked**
+Feature: `C3-SEC-002`
 Migration: `20260729_0012`
 
 ## Security boundary
