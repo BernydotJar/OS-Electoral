@@ -532,6 +532,7 @@ def validate_policy_boundaries(data: dict[str, Any]) -> None:
 
 def validate_graph_harness_execution(data: dict[str, Any]) -> None:
     execution = load_json(GRAPH_HARNESS_EXECUTION)
+    fallback_state = load_json(PROGRAM_STATE)
     require(execution["schema_version"] == "1.0", "unsupported Graph Harness projection schema")
     require(execution["projection_only"] is True, "Graph Harness state must remain a projection")
 
@@ -631,6 +632,31 @@ def validate_graph_harness_execution(data: dict[str, Any]) -> None:
             all(item["id"] != selected["id"] for item in scheduler["blocked_nodes"]),
             "approved active node remains listed as blocked",
         )
+
+    expected_runtime_state = {
+        "framework_repository": framework["repository"],
+        "framework_revision": framework["revision"],
+        "mode": framework["mode"],
+        "projection": "program/graph-harness-execution.json",
+        "canonical_manifest": execution["canonical_sources"]["manifest"],
+        "canonical_task_graph": execution["canonical_sources"]["task_graph"],
+        "canonical_task_ledger": execution["canonical_sources"]["task_ledger"],
+        "active_feature": scheduler["active_feature"],
+        "selected_feature": selected["id"],
+        "selected_feature_state": selected["state"],
+        "approval_gate": selected["human_approval"],
+        "ready_nodes": scheduler["ready_nodes"],
+    }
+    for label, runtime_state in (
+        ("canonical manifest", data.get("graph_harness_runtime")),
+        ("fallback program state", fallback_state.get("graph_harness_runtime")),
+    ):
+        require(isinstance(runtime_state, dict), f"{label} lacks Graph Harness runtime state")
+        require(
+            runtime_state == expected_runtime_state,
+            f"{label} Graph Harness runtime state drift",
+        )
+
     for relative in selected["specs"]:
         require((ROOT / relative).is_file(), f"missing Graph Harness feature spec: {relative}")
 

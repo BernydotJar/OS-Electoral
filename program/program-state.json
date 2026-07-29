@@ -583,10 +583,10 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": null,
+    "active_feature": "C3-SEC-002",
     "selected_feature": "C3-SEC-002",
-    "selected_feature_state": "spec_ready",
-    "approval_gate": "PENDING",
+    "selected_feature_state": "review",
+    "approval_gate": "APPROVED",
     "ready_nodes": []
   },
   "residual_blockers": []

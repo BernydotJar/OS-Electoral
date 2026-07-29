@@ -149,6 +149,20 @@ def test_graph_harness_projection_stops_at_human_approval() -> None:
     assert execution["localized_repair"]["delivery"]["merge_gate"] == "PENDING_HUMAN_REVIEW"
 
 
+def test_graph_harness_projection_rejects_stale_canonical_runtime_state() -> None:
+    validator = load_validator()
+    payload = copy.deepcopy(manifest())
+    payload["graph_harness_runtime"]["active_feature"] = None
+    payload["graph_harness_runtime"]["selected_feature_state"] = "spec_ready"
+    payload["graph_harness_runtime"]["approval_gate"] = "PENDING"
+
+    with pytest.raises(
+        AssertionError,
+        match="canonical manifest Graph Harness runtime state drift",
+    ):
+        validator.validate_graph_harness_execution(payload)
+
+
 def test_graph_harness_projection_rejects_active_node_without_approval(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

@@ -723,3 +723,11 @@
 - Recovery, constrained stack E2E, frontend/browser, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
 - Marked `C3-SEC-002` `CI_GREEN`; Graph Harness remains in `review`, and human close/merge remains a separate gate.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-29 — Graph Harness runtime-state drift localized repair
+
+- Detected that the canonical manifest and fallback state still projected `C3-SEC-002` as `spec_ready` with approval `PENDING` after the approved node had advanced to Graph Harness `review`.
+- Reconciled both typed runtime summaries to the authoritative execution projection: active feature `C3-SEC-002`, state `review`, approval `APPROVED`, ready set empty.
+- Extended the program validator to fail closed when canonical or fallback Graph Harness runtime state diverges from `program/graph-harness-execution.json`.
+- Added a regression test for the stale pre-approval state; focused validation passes with 13 tests, Ruff, format and executable program truth.
+- No product behavior, schema, limits, dependencies, infrastructure or political external effects changed. Human close/merge remains pending; production stays `BLOCKED` and release stays `DENY_RELEASE`.
