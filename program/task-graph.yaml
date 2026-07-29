@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-28",
+  "updated_at": "2026-07-29",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -38,7 +38,7 @@
       "id": "C3-CI-001",
       "workstream": "WS-02",
       "title": "Required CI, supply-chain checks and protected delivery flow",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FOUND-001A",
         "C3-DEVEX-001"
@@ -58,7 +58,7 @@
       "id": "C3-IAM-002",
       "workstream": "WS-03",
       "title": "Tenant invitation, application session, membership revocation and time-bound support lifecycle",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-IAM-001"
       ],
@@ -83,7 +83,7 @@
       "id": "C3-API-001",
       "workstream": "WS-05",
       "title": "Versioned FastAPI baseline, health, readiness and background-job contracts",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-IAM-001",
         "C3-DATA-001"
@@ -93,7 +93,7 @@
       "id": "C3-API-005",
       "workstream": "WS-05",
       "title": "Audited operational campaign readiness projection",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-001"
       ],
@@ -107,7 +107,7 @@
       "id": "C3-API-006",
       "workstream": "WS-05",
       "title": "Idempotent tenant campaign creation",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-005"
       ],
@@ -121,7 +121,7 @@
       "id": "C3-FRONT-001",
       "workstream": "WS-06",
       "title": "Next.js application shell, typed API client, i18n and accessible design system",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-DEVEX-001",
         "C3-API-001"
@@ -131,7 +131,7 @@
       "id": "C3-ONBOARD-001",
       "workstream": "WS-07",
       "title": "Persisted guided intake and research-first campaign roadmap",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -141,7 +141,7 @@
       "id": "C3-CANDIDATE-001",
       "workstream": "WS-07",
       "title": "Evidence-backed candidate workspace and human review boundary",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-ONBOARD-001"
       ]
@@ -150,7 +150,7 @@
       "id": "C3-TEAM-001",
       "workstream": "WS-08",
       "title": "Team Builder and governed Training Academy baseline",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -160,7 +160,7 @@
       "id": "C3-STRATEGY-001",
       "workstream": "WS-09",
       "title": "Research, evidence, strategy and decision-governance persistence",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-DATA-001",
         "C3-API-001"
@@ -170,7 +170,7 @@
       "id": "C3-OPS-001",
       "workstream": "WS-10",
       "title": "Campaign roadmap and Daily War Room coordination",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-001"
       ]
@@ -179,7 +179,7 @@
       "id": "C3-AGENT-001",
       "workstream": "WS-11",
       "title": "Provider-neutral agent runtime, deterministic guards and hard evals",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-001",
         "C3-STRATEGY-001"
@@ -189,7 +189,7 @@
       "id": "C3-INFRA-001",
       "workstream": "WS-12",
       "title": "Terraform AWS dev baseline with remote state and least privilege",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-CI-001",
         "C3-API-001"
@@ -199,7 +199,7 @@
       "id": "C3-SEC-001",
       "workstream": "WS-13",
       "title": "Threat model, privacy controls and security verification gates",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-IAM-001",
         "C3-DATA-001",
@@ -210,7 +210,7 @@
       "id": "C3-FRONT-002",
       "workstream": "WS-06",
       "title": "API-backed campaign selection and functional guided-intake editing",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-ONBOARD-001",
@@ -221,7 +221,7 @@
       "id": "C3-FRONT-003",
       "workstream": "WS-06",
       "title": "Campaign launch roadmap and guided campaign foundation UX",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-002",
         "C3-CANDIDATE-001",
@@ -245,7 +245,7 @@
       "id": "C3-RELEASE-001",
       "workstream": "WS-15",
       "title": "Staging evidence, release record and explicit production approval gate",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-ONBOARD-001",
         "C3-TEAM-001",
@@ -258,7 +258,7 @@
       "id": "C3-FRONT-004",
       "workstream": "WS-06",
       "title": "Adaptive campaign entry and governed candidate evidence workflow",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-003",
         "C3-CANDIDATE-001"
@@ -268,7 +268,7 @@
       "id": "C3-FRONT-005",
       "workstream": "WS-06",
       "title": "Parallel campaign team organization workflow",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-004",
         "C3-TEAM-001"
@@ -278,7 +278,7 @@
       "id": "C3-FRONT-006",
       "workstream": "WS-06",
       "title": "Cinematic adaptive campaign journey and chapter navigation",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-005"
       ]
@@ -287,7 +287,7 @@
       "id": "C3-TEAM-002",
       "workstream": "WS-08",
       "title": "Bilingual campaign role blueprints and progressive cinematic mission",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-006",
         "C3-TEAM-001"
@@ -303,7 +303,7 @@
       "id": "C3-TEAM-003",
       "workstream": "WS-08",
       "title": "Governed preview and append-only application of campaign role templates",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-002",
         "C3-TEAM-001"
@@ -319,7 +319,7 @@
       "id": "C3-FRONT-007",
       "workstream": "WS-06",
       "title": "Guided campaign chapter transitions and consultant-grade role dossiers",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-003",
         "C3-FRONT-006"
@@ -335,7 +335,7 @@
       "id": "C3-TEAM-004",
       "workstream": "WS-08",
       "title": "Role operations board, explicit health check-ins and governed follow-up",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-003",
         "C3-FRONT-007"
@@ -345,7 +345,7 @@
       "id": "C3-FRONT-008",
       "workstream": "WS-06",
       "title": "Organic campaign flow, candidate action brief and command-safe workspace decks",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-004",
         "C3-FRONT-007"

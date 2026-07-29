@@ -1,5 +1,20 @@
 # CampaignOS current-state assessment
 
+## Graph Harness reconciliation — 2026-07-29
+
+This section supersedes the older current-state narrative below while preserving it as historical evidence.
+
+- Cumulative PR `#126` was rebased and merged into protected `main@a12bed0771299ef8c7bc611b69b1b8db1c01d968`.
+- Post-merge CampaignOS CI `30424626008` passed all ten jobs, including PostgreSQL/RLS, backup/restore, API-backed browser persistence, CodeQL, Terraform plan-only, secret, dependency, supply-chain and constrained-stack gates.
+- PRs `#118` through `#125` were closed as superseded by the cumulative merge; their branches, SHAs, checks and evidence remain preserved.
+- The temporary authenticated review environment was validated and then stopped. It is not staging or production evidence.
+- Graph Harness SDLC is the external SHIP execution runtime at revision `0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26`.
+- CampaignOS retains `architecture/program-state.json`, `program/task-graph.yaml` and `program/task-ledger.yaml` as canonical product state; `program/graph-harness-execution.json` is a validated projection only.
+- The localized post-merge state repair is complete. No product code, dependency, schema, cloud resource, campaign action or production authority changed.
+- The next selected product feature is `C3-SEC-002` (tenant/principal rate limiting and abuse protection), mode `SHIP`, state `spec_ready`.
+- The executable ready set is empty until a human approves that spec. Production remains `BLOCKED` and release remains `DENY_RELEASE`.
+
+
 Assessment date: `2026-07-24 America/Guatemala`
 
 Authoritative target: CampaignOS production-readiness program for `BernydotJar/OS-Electoral`.
@@ -69,7 +84,7 @@ The only public deployed surface remains the static, read-only GitHub Pages demo
 | Area | Evidence | Determination |
 |---|---|---|
 | Integrated product baseline | C3-OBS PR `#114`, `main@19868e4d4382c8444b814fbdb0bec9c1ebed6ab5` | `MERGED_TO_MAIN`; not deployed |
-| Active review | clean main-based C3-RELEASE PR `#116` at validated implementation head `2d8e9ef0b3ed71e11c1ba2a83703fc5441d31e76`; PR `#115` closed as superseded | repository increment `CI_GREEN`; merge pending |
+| Current integration | cumulative PR `#126` rebased into `main@a12bed0771299ef8c7bc611b69b1b8db1c01d968`; PRs `#118`–`#125` closed as superseded | `MERGED_TO_MAIN`; post-merge CI `30424626008` passed |
 | Functional frontend | PostgreSQL/API/browser guided-intake journey, 60 frontend tests, zero axe violations | `VERIFIED_POSTGRESQL`; live identity, broader journeys and human acceptance pending |
 | Observability and recovery | CI `30128291931`, visual `30128291969`, recovery job `89596869908`, artifact `8610100205` | `CI_GREEN`; managed/staging evidence pending |
 | Identity lifecycle | invitation/session/revocation/support contracts and PostgreSQL evidence | `CI_GREEN` baseline; live provider pending |
@@ -86,9 +101,10 @@ The manifest now records each run with `HISTORICAL_FAILURE_SUPERSEDED`, a distin
 
 ## Next executable increments
 
-1. Merge exact-head green C3-RELEASE PR `#116` under the explicit owner authorization already recorded.
-2. Authorize a cost-bounded non-production staging environment before any infrastructure apply.
-3. Preserve `release_decision=DENY_RELEASE` and `production_status=BLOCKED` until every remaining environment, operational and human gate is proven.
+1. Obtain explicit human approval for the `C3-SEC-002` SHIP specification before implementation.
+2. After approval, execute only that node and attach localized security, PostgreSQL, API and exact-head evidence.
+3. Authorize a cost-bounded non-production staging environment before any infrastructure apply.
+4. Preserve `release_decision=DENY_RELEASE` and `production_status=BLOCKED` until every remaining environment, operational and human gate is proven.
 
 Production deployment remains prohibited until every production gate passes and an authorized human records explicit scoped approval.
 

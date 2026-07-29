@@ -682,3 +682,13 @@
 - PostgreSQL RLS, backup/restore, constrained stack, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
 - Marked `C3-FRONT-008` `CI_GREEN`; personal work visibility remains blocked pending server-side principal/grant projection.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-07-29 — Graph Harness post-merge reconciliation and next-node specification
+
+- Reconciled cumulative PR `#126`, protected `main@a12bed0771299ef8c7bc611b69b1b8db1c01d968`, post-merge CI `30424626008`, PRs `#118`–`#125` closed as superseded, and the stopped temporary review environment.
+- Marked the integrated delivery nodes `MERGED_TO_MAIN` and removed obsolete merge blockers while preserving non-merge production gaps.
+- Pinned Graph Harness SDLC revision `0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26` as an external SHIP runtime projection; no framework source was copied or changed.
+- Selected `C3-SEC-002` as the next production-value node because rate limiting is `NOT_IMPLEMENTED`, its code dependencies are integrated, and specification requires no cloud spend.
+- Created complete requirements, design and tasks. The node is `spec_ready`; implementation remains blocked by the human approval gate.
+- Full verification passed with 734 Python tests, 10 controlled skips, 90.38% coverage, 14 focused program/release tests, Graph Harness `./init.sh`, program, release, eval, safety and secret gates.
+- Product code, dependencies, schema, infrastructure and political external effects remain unchanged. Production stays `BLOCKED`; release stays `DENY_RELEASE`.

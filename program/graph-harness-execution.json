@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "projection_only": true,
+  "framework": {
+    "repository": "https://github.com/BernydotJar/Graph-harness-sdlc",
+    "revision": "0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26",
+    "mode": "SHIP"
+  },
+  "target": {
+    "repository": "https://github.com/BernydotJar/OS-Electoral",
+    "revision": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
+  },
+  "canonical_sources": {
+    "manifest": "architecture/program-state.json",
+    "task_graph": "program/task-graph.yaml",
+    "task_ledger": "program/task-ledger.yaml",
+    "fallback_state": "program/program-state.json"
+  },
+  "lifecycle_mapping": {
+    "pending": "candidate_without_complete_spec",
+    "spec_ready": "complete_spec_human_approval_pending",
+    "approved_ready": "EXECUTABLE_NEXT/READY",
+    "running": "ACTIVE/IN_PROGRESS",
+    "review": "review_artifact_and_exact_head_evidence_pending",
+    "done": "MERGED_TO_MAIN",
+    "blocked": "BLOCKED_BY_DEPENDENCY_OR_HUMAN_BLOCKED"
+  },
+  "scheduler": {
+    "evaluated_at": "2026-07-29",
+    "one_active_feature": true,
+    "active_feature": null,
+    "ready_nodes": [],
+    "selected_node": {
+      "id": "C3-SEC-002",
+      "title": "Tenant and principal rate limiting and abuse protection",
+      "mode": "SHIP",
+      "state": "spec_ready",
+      "human_approval": "PENDING",
+      "dependencies": [
+        "C3-IAM-001",
+        "C3-API-001",
+        "C3-SEC-001"
+      ],
+      "specs": [
+        "specs/C3-SEC-002/requirements.md",
+        "specs/C3-SEC-002/design.md",
+        "specs/C3-SEC-002/tasks.md"
+      ],
+      "selection_reason": "Rate limiting and abuse protection is a production security gate marked NOT_IMPLEMENTED, has satisfied code dependencies, requires no cloud account to specify, and is safer to close before broader product expansion."
+    },
+    "blocked_nodes": [
+      {
+        "id": "C3-SEC-002",
+        "gate": "HUMAN_SPEC_APPROVAL",
+        "owner": "Product owner",
+        "next_valid_command": "Approve C3-SEC-002 for SHIP implementation"
+      },
+      {
+        "id": "action:production-deployment",
+        "gate": "HUMAN_PRODUCTION_APPROVAL_AND_INCOMPLETE_PRODUCTION_GATES",
+        "owner": "Authorized production approver",
+        "next_valid_command": "Complete all production gates and record scoped approval"
+      }
+    ]
+  },
+  "localized_repair": {
+    "id": "repair:post-merge-program-truth-2026-07-29",
+    "status": "COMPLETED",
+    "scope": "Reconcile cumulative PR 126, main CI, closed superseded PRs, canonical task statuses, and stopped temporary review deployment without changing product code.",
+    "evidence": [
+      "https://github.com/BernydotJar/OS-Electoral/pull/126",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30424626008",
+      "main@a12bed0771299ef8c7bc611b69b1b8db1c01d968"
+    ]
+  }
+}
