@@ -91,7 +91,8 @@ Rules:
 - database time determines `window_start`;
 - increments are atomic;
 - a rejected increment does not modify domain state;
-- transaction rollback also rolls back counter mutation when the check and operation share a transaction;
+- each consumed budget is committed through an independent rate-limit transaction before domain execution;
+- later domain validation, conflict, exception, or rollback does not refund the consumed attempt;
 - RLS binds every row to the transaction-local tenant context;
 - callers cannot read arbitrary bucket rows through public API routes;
 - cleanup is bounded and operational, not request-path full-table deletion;
@@ -126,7 +127,7 @@ No current-documentation checkpoint is needed for program-ledger bookkeeping.
 ## Risks
 
 - Database contention: mitigate with bounded policy classes, indexed exact keys, fixed windows, and measured concurrency tests.
-- Counter mutation before a failed request: choose transaction placement explicitly and test rollback semantics.
+- Counter persistence boundary: commit consumption before domain execution and prove that later domain rollback does not make abusive failing requests free.
 - Authorization oracle: pre-authorization limits must not reveal resource existence or tenant membership.
 - Shared-principal abuse: keys include tenant and policy class; support/service identities require explicit reviewed policies.
 - Clock drift: use database time only.
