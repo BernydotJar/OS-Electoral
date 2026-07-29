@@ -755,6 +755,16 @@ def validate_fallback_records(
                 task_id == "C3-CI-001",
                 f"only the delivery task may record review-branch publication: {task_id}",
             )
+        if entry["status"] == "MERGED_TO_MAIN":
+            for blocker in entry.get("blockers", []):
+                normalized_blocker = str(blocker).lower()
+                stale_merge_gate = "merge" in normalized_blocker and any(
+                    marker in normalized_blocker for marker in ("pending", "remain", "required")
+                )
+                require(
+                    not stale_merge_gate,
+                    f"merged task retains a stale merge blocker: {task_id}",
+                )
         for evidence in entry["evidence"]:
             require((ROOT / evidence).is_file(), f"missing task evidence: {task_id}: {evidence}")
 

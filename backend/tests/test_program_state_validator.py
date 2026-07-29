@@ -126,6 +126,29 @@ def test_program_rejects_incomplete_delivery_without_active_increment() -> None:
         validator.validate_workstreams_and_roadmap(payload)
 
 
+def test_fallback_ledger_rejects_stale_merge_blocker(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    validator = load_validator()
+    payload = manifest()
+    roadmap = validator.validate_workstreams_and_roadmap(payload)
+    task_ledger = json.loads(validator.TASK_LEDGER.read_text(encoding="utf-8"))
+    merged_entry = next(
+        entry for entry in task_ledger["entries"] if entry["status"] == "MERGED_TO_MAIN"
+    )
+    merged_entry.setdefault("blockers", []).append("Merge remains pending")
+    original_load_json = validator.load_json
+
+    def load_json(path: Path) -> dict[str, Any]:
+        if path == validator.TASK_LEDGER:
+            return task_ledger
+        return original_load_json(path)
+
+    monkeypatch.setattr(validator, "load_json", load_json)
+    with pytest.raises(AssertionError, match="stale merge blocker"):
+        validator.validate_fallback_records(payload, roadmap)
+
+
 def test_graph_harness_projection_stops_at_human_approval() -> None:
     validator = load_validator()
     payload = manifest()
