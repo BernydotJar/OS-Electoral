@@ -15,7 +15,9 @@ The implementation stores only tenant UUID, opaque principal UUID, policy class/
 ## Acceptance evidence
 
 - route inventory proves exact method/path-to-policy coverage and an explicit enforcement call;
-- BOLA denial occurs before tenant budget mutation;
+- every protected route consumes an opaque principal pre-authorization budget before FastAPI model binding;
+- malformed authenticated headers, paths and bodies are not free attempts;
+- BOLA and exact-grant denial occur before tenant budget mutation;
 - allowed scope denial occurs before domain service execution;
 - preauthorization uses fixed internal scope and opaque UUIDv5 principal;
 - `429` includes `Retry-After` and correlation ID without key or count disclosure;

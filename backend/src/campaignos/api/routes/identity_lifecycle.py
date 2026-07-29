@@ -41,7 +41,7 @@ from campaignos.identity.lifecycle_contracts import (
     SupportAccessEvidence,
     SupportAccessRevoke,
 )
-from campaignos.security import RateLimitPolicyClass
+from campaignos.security import RateLimitPolicyClass, RateLimitSubjectScope
 
 router = APIRouter(tags=["identity lifecycle"])
 
@@ -230,7 +230,10 @@ def create_invitation(
     response_model=InvitationAcceptanceEvidence,
     summary="Accept one invitation with the current verified identity",
 )
-@rate_limit_policy(RateLimitPolicyClass.IDENTITY_LIFECYCLE)
+@rate_limit_policy(
+    RateLimitPolicyClass.IDENTITY_LIFECYCLE,
+    subject_scope=RateLimitSubjectScope.PREAUTH,
+)
 def accept_invitation(
     request: Request,
     tenant_id: UUID,

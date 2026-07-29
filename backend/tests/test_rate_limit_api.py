@@ -256,6 +256,45 @@ class Directory:
         )
 
 
+class AllowLimiter:
+    def __init__(self) -> None:
+        self.calls: list[tuple[UUID, UUID, RateLimitPolicyClass]] = []
+
+    def consume(
+        self,
+        tenant_id: UUID,
+        principal_id: UUID,
+        policy_class: RateLimitPolicyClass,
+    ) -> RateLimitDecision:
+        self.calls.append((tenant_id, principal_id, policy_class))
+        return RateLimitDecision(
+            allowed=True,
+            policy_class=policy_class,
+            retry_after_seconds=0,
+            policy_version=1,
+        )
+
+
+class AllowThenDenyLimiter:
+    def __init__(self) -> None:
+        self.calls: list[tuple[UUID, UUID, RateLimitPolicyClass]] = []
+
+    def consume(
+        self,
+        tenant_id: UUID,
+        principal_id: UUID,
+        policy_class: RateLimitPolicyClass,
+    ) -> RateLimitDecision:
+        self.calls.append((tenant_id, principal_id, policy_class))
+        allowed = len(self.calls) == 1
+        return RateLimitDecision(
+            allowed=allowed,
+            policy_class=policy_class,
+            retry_after_seconds=0 if allowed else 23,
+            policy_version=1,
+        )
+
+
 class DenyLimiter:
     def __init__(self) -> None:
         self.calls: list[tuple[UUID, UUID, RateLimitPolicyClass]] = []
@@ -311,8 +350,8 @@ def test_every_protected_route_has_exact_policy_and_consumption() -> None:
     assert len(observed) == 41
 
 
-def test_authorization_denial_does_not_consume_another_budget() -> None:
-    limiter = DenyLimiter()
+def test_authorization_denial_consumes_only_opaque_preauth_budget() -> None:
+    limiter = AllowLimiter()
     settings = Settings(environment=Environment.TEST, expose_api_docs=True)
     with TestClient(
         create_app(
@@ -329,11 +368,76 @@ def test_authorization_denial_does_not_consume_another_budget() -> None:
         )
 
     assert response.status_code == 403
-    assert limiter.calls == []
+    assert len(limiter.calls) == 1
+    tenant_id, principal_id, policy_class = limiter.calls[0]
+    assert tenant_id == PREAUTH_SCOPE_TENANT_ID
+    assert principal_id not in {TENANT_ID, PRINCIPAL_ID}
+    assert policy_class is RateLimitPolicyClass.READ
+
+
+def test_authenticated_invalid_requests_consume_before_model_validation() -> None:
+    limiter = AllowLimiter()
+    settings = Settings(environment=Environment.TEST, expose_api_docs=True)
+    with TestClient(
+        create_app(
+            settings,
+            token_verifier=Verifier(),
+            membership_directory=Directory(authorized=True),
+            rate_limiter=limiter,
+        )
+    ) as client:
+        missing_header = client.post(
+            f"/api/v1/tenants/{TENANT_ID}/campaigns",
+            headers={"Authorization": "Bearer valid-token"},
+            json={
+                "slug": "municipal-2028",
+                "name": "Municipal 2028",
+                "jurisdiction": "Antigua Guatemala",
+                "stage": "PRECAMPAIGN",
+            },
+        )
+        malformed_body = client.post(
+            f"/api/v1/tenants/{TENANT_ID}/campaigns",
+            headers={
+                "Authorization": "Bearer valid-token",
+                "Idempotency-Key": "invalid-body-attempt",
+            },
+            json={"slug": 7},
+        )
+
+    assert missing_header.status_code == 428
+    assert malformed_body.status_code == 422
+    assert len(limiter.calls) == 2
+    assert all(call[0] == PREAUTH_SCOPE_TENANT_ID for call in limiter.calls)
+    assert all(call[1] not in {TENANT_ID, PRINCIPAL_ID} for call in limiter.calls)
+    assert all(call[2] is RateLimitPolicyClass.MUTATION for call in limiter.calls)
+
+
+def test_denied_budget_preempts_request_model_validation() -> None:
+    limiter = DenyLimiter()
+    settings = Settings(environment=Environment.TEST, expose_api_docs=True)
+    with TestClient(
+        create_app(
+            settings,
+            token_verifier=Verifier(),
+            membership_directory=Directory(authorized=True),
+            rate_limiter=limiter,
+        )
+    ) as client:
+        response = client.post(
+            f"/api/v1/tenants/{TENANT_ID}/campaigns",
+            headers={"Authorization": "Bearer valid-token"},
+            json={"slug": 7},
+        )
+
+    assert response.status_code == 429
+    assert len(limiter.calls) == 1
+    assert limiter.calls[0][0] == PREAUTH_SCOPE_TENANT_ID
+    assert limiter.calls[0][2] is RateLimitPolicyClass.MUTATION
 
 
 def test_authorized_request_is_denied_before_domain_execution() -> None:
-    limiter = DenyLimiter()
+    limiter = AllowThenDenyLimiter()
     settings = Settings(environment=Environment.TEST, expose_api_docs=True)
     with TestClient(
         create_app(
@@ -351,7 +455,10 @@ def test_authorized_request_is_denied_before_domain_execution() -> None:
 
     assert response.status_code == 429
     assert response.headers["retry-after"] == "23"
-    assert limiter.calls == [(TENANT_ID, PRINCIPAL_ID, RateLimitPolicyClass.READ)]
+    assert len(limiter.calls) == 2
+    assert limiter.calls[0][0] == PREAUTH_SCOPE_TENANT_ID
+    assert limiter.calls[0][2] is RateLimitPolicyClass.READ
+    assert limiter.calls[1] == (TENANT_ID, PRINCIPAL_ID, RateLimitPolicyClass.READ)
 
 
 def test_me_uses_internal_preauthorization_scope() -> None:

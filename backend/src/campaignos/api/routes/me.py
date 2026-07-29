@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict
 from campaignos.api.dependencies import current_principal
 from campaignos.api.rate_limits import enforce_pre_auth_rate_limit, rate_limit_policy
 from campaignos.identity.models import AuthenticatedPrincipal
-from campaignos.security import RateLimitPolicyClass
+from campaignos.security import RateLimitPolicyClass, RateLimitSubjectScope
 
 router = APIRouter(tags=["identity"])
 CurrentPrincipal = Annotated[AuthenticatedPrincipal, Depends(current_principal)]
@@ -33,7 +33,7 @@ class MeResponse(BaseModel):
 
 
 @router.get("/me", response_model=MeResponse, summary="Current authenticated identity")
-@rate_limit_policy(RateLimitPolicyClass.READ)
+@rate_limit_policy(RateLimitPolicyClass.READ, subject_scope=RateLimitSubjectScope.PREAUTH)
 def me(request: Request, principal: CurrentPrincipal) -> MeResponse:
     enforce_pre_auth_rate_limit(
         request, principal=principal, policy_class=RateLimitPolicyClass.READ

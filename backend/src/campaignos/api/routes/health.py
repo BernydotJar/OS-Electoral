@@ -12,7 +12,7 @@ from campaignos.api.rate_limits import enforce_rate_limit, rate_limit_policy
 from campaignos.data import DatabaseRuntime
 from campaignos.identity.oidc import TokenVerifier
 from campaignos.observability import MetricsRegistry
-from campaignos.security import RateLimitPolicyClass
+from campaignos.security import RateLimitPolicyClass, RateLimitSubjectScope
 from campaignos.security.rate_limits import (
     OPERATIONAL_METRICS_PRINCIPAL_ID,
     PREAUTH_SCOPE_TENANT_ID,
@@ -84,7 +84,10 @@ def ready(request: Request, response: Response) -> ReadinessResponse:
     summary="Low-cardinality Prometheus service metrics",
     include_in_schema=False,
 )
-@rate_limit_policy(RateLimitPolicyClass.EXPENSIVE_READ)
+@rate_limit_policy(
+    RateLimitPolicyClass.EXPENSIVE_READ,
+    subject_scope=RateLimitSubjectScope.OPERATIONAL,
+)
 def metrics(request: Request) -> Response:
     settings = request.app.state.settings
     if not settings.metrics_enabled:

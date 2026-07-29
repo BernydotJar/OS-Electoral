@@ -14,7 +14,7 @@ Authorization ordering is route-sensitive:
 4. consume the scoped policy budget;
 5. execute the domain operation.
 
-For endpoints where authorization itself is the abuse target, a separate principal-level pre-authorization policy may run before resource lookup. That policy cannot reveal tenant or resource existence.
+Every protected authenticated route runs an opaque principal-level pre-authorization budget after token verification and before FastAPI request-model binding. That budget uses the internal preauthorization namespace and cannot reveal tenant or resource existence. Tenant-scoped consumption remains after exact grant authorization inside the endpoint.
 
 ## Files You May Read
 
@@ -128,7 +128,7 @@ No current-documentation checkpoint is needed for program-ledger bookkeeping.
 
 - Database contention: mitigate with bounded policy classes, indexed exact keys, fixed windows, and measured concurrency tests.
 - Counter persistence boundary: commit consumption before domain execution and prove that later domain rollback does not make abusive failing requests free.
-- Authorization oracle: pre-authorization limits must not reveal resource existence or tenant membership.
+- Authorization oracle: pre-authorization limits use only an opaque principal identity and never reveal resource existence or tenant membership; tenant counters remain exact-grant gated.
 - Shared-principal abuse: keys include tenant and policy class; support/service identities require explicit reviewed policies.
 - Clock drift: use database time only.
 - Unbounded retention: define bounded cleanup and operational ownership.

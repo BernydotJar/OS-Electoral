@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from datetime import datetime
+from enum import StrEnum
 from typing import Final, Protocol, TypeVar, cast
 from uuid import UUID, uuid5
 
@@ -21,10 +22,19 @@ from campaignos.security.rate_limit_contracts import (
 )
 
 RATE_LIMIT_POLICY_ATTRIBUTE: Final = "__campaignos_rate_limit_policy__"
+RATE_LIMIT_SCOPE_ATTRIBUTE: Final = "__campaignos_rate_limit_scope__"
 PREAUTH_SCOPE_TENANT_ID: Final = UUID("00000000-0000-5000-8000-000000000001")
 PREAUTH_PRINCIPAL_NAMESPACE: Final = UUID("3c129df3-887a-5e8c-a5a7-0c4db4f502a4")
 OPERATIONAL_METRICS_PRINCIPAL_ID: Final = UUID("00000000-0000-5000-8000-000000000002")
 Endpoint = TypeVar("Endpoint", bound=Callable[..., object])
+
+
+class RateLimitSubjectScope(StrEnum):
+    """Server-owned identity boundary used before request-model validation."""
+
+    TENANT = "tenant"
+    PREAUTH = "preauth"
+    OPERATIONAL = "operational"
 
 
 class RateLimitStoreUnavailable(RuntimeError):
@@ -272,11 +282,16 @@ def policy_catalog_from_settings(settings: Settings) -> RateLimitPolicyCatalog:
     )
 
 
-def rate_limit_policy(policy_class: RateLimitPolicyClass) -> Callable[[Endpoint], Endpoint]:
-    """Attach reviewed policy metadata without wrapping the FastAPI endpoint."""
+def rate_limit_policy(
+    policy_class: RateLimitPolicyClass,
+    *,
+    subject_scope: RateLimitSubjectScope = RateLimitSubjectScope.TENANT,
+) -> Callable[[Endpoint], Endpoint]:
+    """Attach reviewed policy and subject metadata without wrapping the endpoint."""
 
     def decorate(endpoint: Endpoint) -> Endpoint:
         setattr(endpoint, RATE_LIMIT_POLICY_ATTRIBUTE, policy_class)
+        setattr(endpoint, RATE_LIMIT_SCOPE_ATTRIBUTE, subject_scope)
         return endpoint
 
     return decorate
@@ -285,6 +300,11 @@ def rate_limit_policy(policy_class: RateLimitPolicyClass) -> Callable[[Endpoint]
 def declared_rate_limit_policy(endpoint: object) -> RateLimitPolicyClass | None:
     value = getattr(endpoint, RATE_LIMIT_POLICY_ATTRIBUTE, None)
     return value if isinstance(value, RateLimitPolicyClass) else None
+
+
+def declared_rate_limit_scope(endpoint: object) -> RateLimitSubjectScope | None:
+    value = getattr(endpoint, RATE_LIMIT_SCOPE_ATTRIBUTE, None)
+    return value if isinstance(value, RateLimitSubjectScope) else None
 
 
 def preauth_principal_id(principal: AuthenticatedPrincipal) -> UUID:

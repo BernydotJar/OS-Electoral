@@ -6,7 +6,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import cast
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 
 from campaignos.agents import (
     AgentRunService,
@@ -18,6 +18,7 @@ from campaignos.agents import (
 )
 from campaignos.api.errors import install_exception_handlers
 from campaignos.api.middleware import request_controls
+from campaignos.api.rate_limits import enforce_declared_rate_limit_boundary
 from campaignos.api.routes import (
     agent_runs,
     campaign_operations,
@@ -238,6 +239,7 @@ def create_app(
         docs_url=docs_url,
         redoc_url=redoc_url,
         lifespan=lifespan,
+        dependencies=[Depends(enforce_declared_rate_limit_boundary)],
     )
     app.state.settings = runtime_settings
     app.state.token_verifier = verifier

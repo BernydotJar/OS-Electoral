@@ -38,7 +38,7 @@ Decision: **PASS FOR INCREMENT; PRODUCTION BLOCKED**.
 Verified:
 
 - server-owned policy catalog with no client exemptions;
-- exact authorization before tenant-scoped budget consumption;
+- opaque principal pre-authorization before model binding, followed by exact authorization before tenant-scoped budget consumption;
 - fixed opaque preauthorization namespace for `/me`, invitation acceptance and metrics;
 - no raw issuer, subject, email, IP, bearer token, body, campaign content or voter information in keys, logs or metrics;
 - fail-closed store and metadata behavior;

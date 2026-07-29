@@ -42,6 +42,8 @@ The table has forced row-level security. `campaignos.tenant_id` binds `SELECT`, 
 
 The preauthorization scope deliberately has no foreign key to a tenant or principal record. It is an internal security namespace, not a product tenant, membership or identity record.
 
+All protected authenticated routes consume this opaque principal budget after bearer verification and before FastAPI binds headers, path values, query values, or request bodies. Invalid authenticated requests therefore count toward abuse protection. Valid tenant operations subsequently consume the tenant/principal budget only after the endpoint's exact permission grant succeeds; authorization failures never mutate a tenant counter.
+
 ## Privacy and prohibited uses
 
 The executable policy classifies buckets as `INTERNAL`, `EPHEMERAL` security controls. They may be used only to enforce aggregate service budgets. They must not be used for:
