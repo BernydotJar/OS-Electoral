@@ -71,6 +71,20 @@
       "https://github.com/BernydotJar/OS-Electoral/pull/126",
       "https://github.com/BernydotJar/OS-Electoral/actions/runs/30424626008",
       "main@a12bed0771299ef8c7bc611b69b1b8db1c01d968"
-    ]
+    ],
+    "delivery": {
+      "state": "review",
+      "implementation_head": "1677b375072b5c0ad4fa6555b59672f98fcdad96",
+      "draft_pr": 127,
+      "campaignos_ci_run_id": 30427514369,
+      "campaignos_ci_conclusion": "SUCCESS",
+      "visual_run_id": 30427514394,
+      "visual_conclusion": "SUCCESS",
+      "merge_gate": "PENDING_HUMAN_REVIEW",
+      "evidence": [
+        "docs/testing/c3-harness-001-evidence.md",
+        "program/validations/c3-harness-001.json"
+      ]
+    }
   }
 }

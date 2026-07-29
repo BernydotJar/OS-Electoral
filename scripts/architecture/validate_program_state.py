@@ -589,6 +589,28 @@ def validate_graph_harness_execution(data: dict[str, Any]) -> None:
     require(bool(repair["scope"].strip()), "localized graph repair scope is missing")
     require(repair["evidence"], "localized graph repair lacks evidence")
 
+    delivery = repair["delivery"]
+    require(delivery["state"] == "review", "localized repair delivery must remain in review")
+    require(
+        bool(SHA_PATTERN.fullmatch(delivery["implementation_head"])),
+        "invalid localized repair implementation SHA",
+    )
+    require(
+        isinstance(delivery["draft_pr"], int) and delivery["draft_pr"] > 0,
+        "invalid localized repair draft PR",
+    )
+    require(
+        delivery["campaignos_ci_conclusion"] == "SUCCESS"
+        and delivery["visual_conclusion"] == "SUCCESS",
+        "localized repair exact-head validation is not green",
+    )
+    require(
+        delivery["merge_gate"] == "PENDING_HUMAN_REVIEW",
+        "localized repair bypassed the merge review gate",
+    )
+    for relative in delivery["evidence"]:
+        require((ROOT / relative).is_file(), f"missing localized repair evidence: {relative}")
+
 
 def validate_fallback_records(
     data: dict[str, Any], roadmap_by_id: dict[str, dict[str, Any]]
