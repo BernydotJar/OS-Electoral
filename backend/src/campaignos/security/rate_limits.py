@@ -9,7 +9,6 @@ from uuid import UUID, uuid5
 
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
 
 from campaignos.config import Settings
 from campaignos.data import Database
@@ -176,47 +175,25 @@ class SqlAlchemyRateLimiter:
         principal_id: UUID,
         policy_class: RateLimitPolicyClass,
     ) -> RateLimitDecision:
+        """Commit one budget before domain execution so later rollback cannot refund it."""
         policy = self._catalog.policy_for(policy_class)
         try:
             with self._database.tenant_transaction(tenant_id) as session:
-                return self.consume_in_session(
-                    session,
-                    tenant_id=tenant_id,
-                    principal_id=principal_id,
-                    policy=policy,
+                row = (
+                    session.execute(
+                        self._CONSUME,
+                        {
+                            "tenant_id": str(tenant_id),
+                            "principal_id": str(principal_id),
+                            "policy_class": policy.policy_class.value,
+                            "policy_version": policy.version,
+                            "window_seconds": policy.window_seconds,
+                            "counter_cap": policy.request_limit + 1,
+                        },
+                    )
+                    .mappings()
+                    .one()
                 )
-        except RateLimitStoreUnavailable:
-            raise
-        except SQLAlchemyError as exc:
-            raise RateLimitStoreUnavailable("Rate-limit store is unavailable") from exc
-
-    def consume_in_session(
-        self,
-        session: Session,
-        *,
-        tenant_id: UUID,
-        principal_id: UUID,
-        policy: RateLimitPolicy,
-    ) -> RateLimitDecision:
-        """Consume in a caller-owned transaction so rollback can include the counter."""
-        if session.info.get("tenant_id") != tenant_id:
-            raise RateLimitStoreUnavailable("Rate-limit tenant scope mismatch")
-        try:
-            row = (
-                session.execute(
-                    self._CONSUME,
-                    {
-                        "tenant_id": str(tenant_id),
-                        "principal_id": str(principal_id),
-                        "policy_class": policy.policy_class.value,
-                        "policy_version": policy.version,
-                        "window_seconds": policy.window_seconds,
-                        "counter_cap": policy.request_limit + 1,
-                    },
-                )
-                .mappings()
-                .one()
-            )
         except SQLAlchemyError as exc:
             raise RateLimitStoreUnavailable("Rate-limit store is unavailable") from exc
         request_count = cast(int, row["request_count"])

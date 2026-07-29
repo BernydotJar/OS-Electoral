@@ -64,6 +64,6 @@ Rate limiting is explicitly optional only in `development` and `test`. `staging`
 
 ## Evidence and limitations
 
-Local PostgreSQL proves atomic concurrency, forced RLS, cross-tenant isolation, class/principal/version separation, rollback and bounded cleanup. Route inventory tests require exactly one reviewed class and one enforcement call for all 41 protected source routes.
+Local PostgreSQL proves atomic concurrency, forced RLS, cross-tenant isolation, class/principal/version separation, persistence across later domain rollback, and bounded cleanup. Route inventory tests require exactly one reviewed class and one enforcement call for all 41 protected source routes.
 
 This is application-layer authenticated traffic protection. It does **not** provide edge DDoS mitigation, WAF policy, anonymous volumetric protection, production capacity sizing or staging load acceptance. Those remain separate platform and production gates.

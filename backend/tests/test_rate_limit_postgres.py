@@ -19,7 +19,6 @@ from campaignos.security import (
     RateLimitPolicy,
     RateLimitPolicyCatalog,
     RateLimitPolicyClass,
-    RateLimitStoreUnavailable,
     SqlAlchemyRateLimiter,
 )
 
@@ -231,26 +230,12 @@ def test_rate_limit_postgres_atomicity_rls_rollback_and_cleanup(
             )
             assert versions == {1, 2}
 
-        with database.tenant_transaction(tenant_a) as session:
-            with pytest.raises(RateLimitStoreUnavailable, match="Rate-limit tenant scope mismatch"):
-                limiter.consume_in_session(
-                    session,
-                    tenant_id=tenant_b,
-                    principal_id=uuid4(),
-                    policy=catalog().policy_for(RateLimitPolicyClass.READ),
-                )
-
         rollback_principal = uuid4()
-        with pytest.raises(RuntimeError, match="force rollback"):
-            with database.tenant_transaction(tenant_a) as session:
-                decision = limiter.consume_in_session(
-                    session,
-                    tenant_id=tenant_a,
-                    principal_id=rollback_principal,
-                    policy=catalog().policy_for(RateLimitPolicyClass.READ),
-                )
-                assert decision.allowed
-                raise RuntimeError("force rollback")
+        decision = limiter.consume(tenant_a, rollback_principal, RateLimitPolicyClass.READ)
+        assert decision.allowed
+        with pytest.raises(RuntimeError, match="force domain rollback"):
+            with database.tenant_transaction(tenant_a):
+                raise RuntimeError("force domain rollback")
         with database.tenant_transaction(tenant_a) as session:
             assert (
                 session.scalar(
@@ -258,7 +243,7 @@ def test_rate_limit_postgres_atomicity_rls_rollback_and_cleanup(
                     .select_from(RateLimitBucket)
                     .where(RateLimitBucket.principal_id == rollback_principal)
                 )
-                == 0
+                == 1
             )
 
         stale_a = uuid4()

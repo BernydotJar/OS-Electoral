@@ -65,7 +65,7 @@ Verified:
 - atomic `INSERT ... ON CONFLICT DO UPDATE` using database transaction time;
 - counter cap at `limit + 1`;
 - tenant, principal, class, policy-version and window separation;
-- concurrent burst threshold, rollover, transaction rollback and bounded `SKIP LOCKED` cleanup;
+- concurrent burst threshold, rollover, persistence across later domain rollback and bounded `SKIP LOCKED` cleanup;
 - application rollback can retain the additive table; destructive downgrade remains test/disposable only.
 
 Residual gates:
@@ -80,9 +80,9 @@ Final decision: **KEEP FEATURE IN REVIEW; DENY PRODUCTION RELEASE**.
 | Gate | Decision | Evidence / residual risk |
 |---|---|---|
 | Security | Increment pass | Application-layer authenticated controls pass; edge abuse and independent review remain. |
-| Data correctness | Pass | Atomic PostgreSQL, DB time, RLS, policy version, rollback and rollover pass. |
+| Data correctness | Pass | Atomic PostgreSQL, DB time, RLS, policy version, persistent consumption across later domain rollback and rollover pass. |
 | Performance | Partial | Exact-key statements and a 20-request local burst complete within the 10-second test budget; no representative staging capacity proof. |
-| Failure modes | Pass for increment | Store unavailable, metadata mismatch, invalid config, concurrency, rollover and rollback fail closed. |
+| Failure modes | Pass for increment | Store unavailable, metadata mismatch, invalid config, concurrency, rollover and domain rollback accounting fail closed. |
 | Observability readiness | Partial | Bounded metric/log hooks exist; no deployed collector, dashboard, alert receiver or SLO. |
 | Testing | Pass for increment | Full local verification, 11 PostgreSQL slices and exact-head hosted CI on PostgreSQL 18 pass. |
 | UX/accessibility | Not changed | Backend returns locale-neutral machine codes; a future UI feature must add localized retry guidance. |

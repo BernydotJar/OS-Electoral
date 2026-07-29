@@ -25,8 +25,8 @@ The implementation stores only tenant UUID, opaque principal UUID, policy class/
 - migration reaches `20260729_0012`, has forced RLS and passes Alembic check;
 - 20 concurrent requests against a limit of 5 produce exactly 5 allows and 15 denials, with one stored count capped at 6;
 - tenant, principal, class, version and one-second window rollover are isolated;
-- mismatched transaction scope fails before SQL;
-- shared-transaction rollback removes the counter mutation;
+- the public limiter owns the tenant-scoped transaction and exposes no caller-owned transaction path;
+- independent rate-limit commit survives later domain rollback so failing abuse attempts are counted;
 - cleanup is timezone-aware, tenant-scoped and bounded to 1–1,000 rows.
 
 ## Local verification
