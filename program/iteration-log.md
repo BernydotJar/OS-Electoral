@@ -18,7 +18,7 @@
 
 ### Local verification evidence
 
-- `make verify`: `214 passed`, `1 skipped`; Ruff lint/format, strict mypy, program truth and campaign-safety scan passed. The skip remains the explicitly isolated PostgreSQL marker.
+- `make verify`: `215 passed`, `1 skipped`; Ruff lint/format, strict mypy, program truth and campaign-safety scan passed. The skip remains the explicitly isolated PostgreSQL marker.
 - coverage: `93.91%`, above the configured `90%` threshold.
 - focused authorization/API/database suite after exact-purpose hardening: `32 passed`, `1 skipped`.
 - isolated PostgreSQL 18.3 migration/RLS/authorization run: `1 passed`, `5 deselected`; the disposable container was removed after the test.
@@ -690,5 +690,13 @@
 - Pinned Graph Harness SDLC revision `0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26` as an external SHIP runtime projection; no framework source was copied or changed.
 - Selected `C3-SEC-002` as the next production-value node because rate limiting is `NOT_IMPLEMENTED`, its code dependencies are integrated, and specification requires no cloud spend.
 - Created complete requirements, design and tasks. The node is `spec_ready`; implementation remains blocked by the human approval gate.
-- Full verification passed with 734 Python tests, 10 controlled skips, 90.38% coverage, 14 focused program/release tests, Graph Harness `./init.sh`, program, release, eval, safety and secret gates.
+- Full verification passed with 735 Python tests, 10 controlled skips, 90.38% coverage, 15 focused program/release tests, Graph Harness `./init.sh`, program, release, eval, safety and secret gates.
 - Product code, dependencies, schema, infrastructure and political external effects remain unchanged. Production stays `BLOCKED`; release stays `DENY_RELEASE`.
+
+## 2026-07-29 — Graph Harness reconciliation exact-head review checkpoint
+
+- Implementation head `1677b375072b5c0ad4fa6555b59672f98fcdad96` passed CampaignOS CI `30427514369` and Runtime Visual Review `30427514394` in draft PR `#127`.
+- PostgreSQL/RLS, backup/restore, API/browser persistence, quality, CodeQL, dependency, Terraform plan-only, secret, supply-chain and constrained-stack jobs passed.
+- The localized repair is technically complete and its delivery state is `review`; merge remains a separate human gate.
+- `C3-SEC-002` remains `spec_ready`, implementation has not started, and the executable ready set remains empty pending explicit approval.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external political effects remain `NONE`.

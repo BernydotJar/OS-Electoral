@@ -204,7 +204,7 @@
     }
   ],
   "local_verification": {
-    "tests_passed": 734,
+    "tests_passed": 735,
     "tests_skipped": 10,
     "coverage_percent": 90.38,
     "coverage_gate": "PASS",
@@ -396,8 +396,11 @@
     "main_post_merge_recovery": "PASS_ARTIFACT_8713127644",
     "main_post_merge_supply_chain": "PASS_ARTIFACT_8713120801",
     "graph_harness_projection": "PASS_SPEC_READY_C3_SEC_002_APPROVAL_PENDING",
-    "graph_harness_validator_tests": "PASS_14",
-    "graph_harness_framework_init": "PASS_REVISION_0EB0D5F_FEATURES_7_ACTIVE_0"
+    "graph_harness_validator_tests": "PASS_15",
+    "graph_harness_framework_init": "PASS_REVISION_0EB0D5F_FEATURES_7_ACTIVE_0",
+    "graph_harness_exact_head_ci": "PASS_RUN_30427514369_HEAD_1677B375072B5C0AD4FA6555B59672F98FCDAD96",
+    "graph_harness_visual_review": "PASS_RUN_30427514394",
+    "graph_harness_delivery_state": "REVIEW_PR_127"
   },
   "critical_path": [
     "C3-FOUND-001A",

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "validation_id": "repair:post-merge-program-truth-2026-07-29",
+  "framework": {
+    "repository": "https://github.com/BernydotJar/Graph-harness-sdlc",
+    "revision": "0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26",
+    "mode": "SHIP",
+    "init_validation": "PASS"
+  },
+  "target": {
+    "repository": "https://github.com/BernydotJar/OS-Electoral",
+    "base_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+    "implementation_head": "1677b375072b5c0ad4fa6555b59672f98fcdad96",
+    "draft_pr": 127
+  },
+  "verification": {
+    "campaignos_ci_run": 30427514369,
+    "campaignos_ci_conclusion": "SUCCESS",
+    "visual_run": 30427514394,
+    "visual_conclusion": "SUCCESS",
+    "python_passed": 735,
+    "python_skipped": 10,
+    "coverage_percent": 90.38,
+    "focused_validator_tests": 15,
+    "program_truth": "PASS",
+    "release_decision": "DENY_RELEASE",
+    "production_status": "BLOCKED",
+    "secret_scan": "PASS"
+  },
+  "selected_feature": {
+    "id": "C3-SEC-002",
+    "mode": "SHIP",
+    "state": "spec_ready",
+    "human_approval": "PENDING",
+    "implementation_started": false
+  },
+  "delivery": {
+    "state": "review",
+    "merge_gate": "PENDING_HUMAN_REVIEW",
+    "external_effects": "NONE"
+  }
+}
