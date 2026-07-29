@@ -14,6 +14,7 @@ MANIFEST = ROOT / "architecture/program-state.json"
 PROGRAM_STATE = ROOT / "program/program-state.json"
 TASK_GRAPH = ROOT / "program/task-graph.yaml"
 TASK_LEDGER = ROOT / "program/task-ledger.yaml"
+GRAPH_HARNESS_EXECUTION = ROOT / "program/graph-harness-execution.json"
 
 ROADMAP_STATUSES = {
     "ACTIVE",
@@ -145,6 +146,7 @@ REQUIRED_PROGRAM_ARTIFACTS = {
     "program/autoskills-review.md",
     "program/context7-evidence.md",
     "program/current-state-assessment.md",
+    "program/graph-harness-execution.json",
     "program/iteration-log.md",
     "program/production-gap-matrix.md",
     "program/program-state.json",
@@ -528,6 +530,66 @@ def validate_policy_boundaries(data: dict[str, Any]) -> None:
         require(campaign[field] == "BLOCKED", f"campaign gate unexpectedly opened: {field}")
 
 
+def validate_graph_harness_execution(data: dict[str, Any]) -> None:
+    execution = load_json(GRAPH_HARNESS_EXECUTION)
+    require(execution["schema_version"] == "1.0", "unsupported Graph Harness projection schema")
+    require(execution["projection_only"] is True, "Graph Harness state must remain a projection")
+
+    framework = execution["framework"]
+    require(
+        framework["repository"] == "https://github.com/BernydotJar/Graph-harness-sdlc",
+        "Graph Harness repository drift",
+    )
+    require(
+        bool(SHA_PATTERN.fullmatch(framework["revision"])),
+        "Graph Harness revision must be a full SHA",
+    )
+    require(framework["mode"] == "SHIP", "CampaignOS Graph Harness mode must be SHIP")
+
+    target = execution["target"]
+    require(
+        target["repository"] == "https://github.com/BernydotJar/OS-Electoral",
+        "Graph Harness target repository drift",
+    )
+    require(
+        target["revision"] == data["github_state"]["cumulative_merge"]["main_sha"],
+        "Graph Harness target revision is not the cumulative main SHA",
+    )
+
+    require(
+        execution["canonical_sources"]
+        == {
+            "manifest": "architecture/program-state.json",
+            "task_graph": "program/task-graph.yaml",
+            "task_ledger": "program/task-ledger.yaml",
+            "fallback_state": "program/program-state.json",
+        },
+        "Graph Harness canonical source mapping drift",
+    )
+
+    scheduler = execution["scheduler"]
+    require(scheduler["one_active_feature"] is True, "Graph Harness one-feature invariant disabled")
+    require(scheduler["active_feature"] is None, "a feature is active before approval")
+    require(scheduler["ready_nodes"] == [], "spec-ready work cannot appear in the ready set")
+
+    selected = scheduler["selected_node"]
+    require(selected["id"] == "C3-SEC-002", "unexpected selected Graph Harness node")
+    require(selected["mode"] == "SHIP", "selected Graph Harness node must be SHIP")
+    require(selected["state"] == "spec_ready", "selected node must stop at spec_ready")
+    require(selected["human_approval"] == "PENDING", "selected node bypassed human approval")
+    require(
+        selected["id"] not in {item["id"] for item in data["roadmap"]},
+        "unapproved spec-ready node leaked into the executable roadmap",
+    )
+    for relative in selected["specs"]:
+        require((ROOT / relative).is_file(), f"missing Graph Harness feature spec: {relative}")
+
+    repair = execution["localized_repair"]
+    require(repair["status"] == "COMPLETED", "localized graph repair is not complete")
+    require(bool(repair["scope"].strip()), "localized graph repair scope is missing")
+    require(repair["evidence"], "localized graph repair lacks evidence")
+
+
 def validate_fallback_records(
     data: dict[str, Any], roadmap_by_id: dict[str, dict[str, Any]]
 ) -> None:
@@ -626,6 +688,7 @@ def main() -> int:
     open_critical_high = validate_findings(data)
     validate_deployment_and_gates(data, failed_runs, open_critical_high)
     validate_policy_boundaries(data)
+    validate_graph_harness_execution(data)
     validate_fallback_records(data, roadmap_by_id)
 
     print(

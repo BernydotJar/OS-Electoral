@@ -13,6 +13,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 VALIDATOR_PATH = ROOT / "scripts" / "architecture" / "validate_program_state.py"
 MANIFEST_PATH = ROOT / "architecture" / "program-state.json"
+GRAPH_HARNESS_PATH = ROOT / "program" / "graph-harness-execution.json"
 
 
 def load_validator() -> ModuleType:
@@ -108,7 +109,7 @@ def test_program_accepts_verified_delivery_closure() -> None:
 
     roadmap = validator.validate_workstreams_and_roadmap(payload)
 
-    assert roadmap["C3-RELEASE-001"]["status"] == "CI_GREEN"
+    assert roadmap["C3-RELEASE-001"]["status"] == "MERGED_TO_MAIN"
     assert roadmap["action:production-deployment"]["status"] == "HUMAN_BLOCKED"
 
 
@@ -123,3 +124,36 @@ def test_program_rejects_incomplete_delivery_without_active_increment() -> None:
 
     with pytest.raises(AssertionError, match="fully verified delivery closure"):
         validator.validate_workstreams_and_roadmap(payload)
+
+
+def test_graph_harness_projection_stops_at_human_approval() -> None:
+    validator = load_validator()
+    payload = manifest()
+
+    validator.validate_graph_harness_execution(payload)
+
+    execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
+    assert execution["scheduler"]["active_feature"] is None
+    assert execution["scheduler"]["ready_nodes"] == []
+    assert execution["scheduler"]["selected_node"]["state"] == "spec_ready"
+    assert execution["scheduler"]["selected_node"]["human_approval"] == "PENDING"
+
+
+def test_graph_harness_projection_rejects_approval_bypass(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    validator = load_validator()
+    payload = manifest()
+    execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
+    execution["scheduler"]["selected_node"]["human_approval"] = "APPROVED"
+    original_load_json = validator.load_json
+
+    def load_json(path: Path) -> dict[str, Any]:
+        if path == validator.GRAPH_HARNESS_EXECUTION:
+            return execution
+        return original_load_json(path)
+
+    monkeypatch.setattr(validator, "load_json", load_json)
+
+    with pytest.raises(AssertionError, match="bypassed human approval"):
+        validator.validate_graph_harness_execution(payload)

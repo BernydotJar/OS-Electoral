@@ -369,3 +369,12 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `frontend/src/lib/campaign-journey.ts`, `frontend/src/components/campaign-launch-roadmap.tsx`, `docs/product/campaign-launch-roadmap.md`, `docs/testing/c3-front-003-evidence.md`.
 - `rationale`: Non-technical candidates and representatives need orientation, causality and next actions. A dense implementation dashboard and unexplained English reduce trust and can misrepresent incomplete modules as usable.
 - `consequences`: Candidate evidence, team design, strategy, territorial data and War Room mutation remain visibly blocked until exact authorized workflows exist. The roadmap grants no publication, contact, profiling, spending, mobilization, deployment or production authority.
+
+## DEC-2026-07-29-001 — Use Graph Harness as an external runtime projection
+
+- `status`: `ACCEPTED`
+- `scope`: `repair:post-merge-program-truth-2026-07-29`
+- `decision`: Pin Graph Harness SDLC at `0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26` as the execution methodology while retaining CampaignOS canonical manifest, graph and ledger. `program/graph-harness-execution.json` is a validated projection and cannot override product state.
+- `evidence`: `docs/architecture/graph-harness-runtime.md`, `program/graph-harness-execution.json`, PR `#126`, main CI `30424626008`
+- `rationale`: Copying or redefining framework concepts would create competing sources of truth; an adapter preserves the product graph and enables one-feature lifecycle, approval gates and localized repair.
+- `consequences`: `C3-SEC-002` remains `spec_ready` and outside the executable roadmap until human approval. Production remains blocked.

@@ -2,8 +2,8 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-28",
-  "source_branch": "agent/c3-front-008-organic-role-aware-flow",
+  "updated_at": "2026-07-29",
+  "source_branch": "agent/c3-harness-001-graph-reconciliation",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
     "main_sha_observed": "ff38e996ba05b2ea4b5c034b44d084776736dad0",
@@ -13,7 +13,7 @@
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
-  "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by cumulative C2 visual run 29660653755, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
+  "production_status_reason": "One open CRITICAL platform finding remains. Main is cumulatively merged and post-merge CI is green, but application rate limiting is not implemented, managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "stack": [
     {
       "id": "increment:c2-plat-001-hardening",
@@ -425,6 +425,12 @@
       "conclusion": "SUCCESS",
       "head_sha": "92369e59162a134ed7c64188828fa15b5711a22e",
       "scope": "PR 126 C3-FRONT-008 human-review feedback closure runtime visual review"
+    },
+    {
+      "run_id": 30424626008,
+      "conclusion": "SUCCESS",
+      "head_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "scope": "Post-rebase main validation for cumulative PR 126: locked quality, PostgreSQL/RLS, recovery, dependency audit, SBOM/provenance, Terraform plan-only, API/browser persistence, secret scan, CodeQL and constrained stack E2E all passed."
     }
   ],
   "bounded_contexts": [
@@ -867,7 +873,7 @@
     },
     {
       "id": "C3-CI-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FOUND-001A",
         "C3-DEVEX-001"
@@ -885,7 +891,7 @@
     },
     {
       "id": "C3-IAM-002",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-IAM-001"
       ],
@@ -902,7 +908,7 @@
     },
     {
       "id": "C3-API-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-IAM-001",
         "C3-DATA-001"
@@ -911,7 +917,7 @@
     },
     {
       "id": "C3-API-005",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-001"
       ],
@@ -919,7 +925,7 @@
     },
     {
       "id": "C3-API-006",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-005"
       ],
@@ -927,7 +933,7 @@
     },
     {
       "id": "C3-FRONT-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-DEVEX-001",
         "C3-API-001"
@@ -936,7 +942,7 @@
     },
     {
       "id": "C3-ONBOARD-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -945,7 +951,7 @@
     },
     {
       "id": "C3-CANDIDATE-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-ONBOARD-001"
       ],
@@ -953,7 +959,7 @@
     },
     {
       "id": "C3-TEAM-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-API-001"
@@ -962,7 +968,7 @@
     },
     {
       "id": "C3-STRATEGY-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-DATA-001",
         "C3-API-001"
@@ -971,7 +977,7 @@
     },
     {
       "id": "C3-OPS-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-001"
       ],
@@ -979,7 +985,7 @@
     },
     {
       "id": "C3-AGENT-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-001",
         "C3-STRATEGY-001"
@@ -988,7 +994,7 @@
     },
     {
       "id": "C3-INFRA-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-CI-001",
         "C3-API-001"
@@ -997,7 +1003,7 @@
     },
     {
       "id": "C3-SEC-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-IAM-001",
         "C3-DATA-001",
@@ -1007,7 +1013,7 @@
     },
     {
       "id": "C3-FRONT-002",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-001",
         "C3-ONBOARD-001",
@@ -1019,7 +1025,7 @@
       "id": "C3-FRONT-003",
       "workstream": "WS-06",
       "title": "Campaign launch roadmap and guided campaign foundation UX",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-002",
         "C3-CANDIDATE-001",
@@ -1040,7 +1046,7 @@
     },
     {
       "id": "C3-RELEASE-001",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-ONBOARD-001",
         "C3-TEAM-001",
@@ -1054,7 +1060,7 @@
       "id": "C3-FRONT-004",
       "workstream": "WS-06",
       "title": "Adaptive campaign entry and governed candidate evidence workflow",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-003",
         "C3-CANDIDATE-001"
@@ -1064,7 +1070,7 @@
       "id": "C3-FRONT-005",
       "workstream": "WS-06",
       "title": "Parallel campaign team organization workflow",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-004",
         "C3-TEAM-001"
@@ -1074,7 +1080,7 @@
       "id": "C3-FRONT-006",
       "workstream": "WS-06",
       "title": "Cinematic adaptive campaign journey and chapter navigation",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-005"
       ]
@@ -1083,7 +1089,7 @@
       "id": "C3-TEAM-002",
       "workstream": "WS-08",
       "title": "Bilingual campaign role blueprints and progressive cinematic mission",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-006",
         "C3-TEAM-001"
@@ -1093,7 +1099,7 @@
       "id": "C3-TEAM-003",
       "workstream": "WS-08",
       "title": "Governed preview and append-only application of campaign role templates",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-002",
         "C3-TEAM-001"
@@ -1103,7 +1109,7 @@
       "id": "C3-FRONT-007",
       "workstream": "WS-06",
       "title": "Guided campaign chapter transitions and consultant-grade role dossiers",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-003",
         "C3-FRONT-006"
@@ -1113,7 +1119,7 @@
       "id": "C3-TEAM-004",
       "workstream": "WS-08",
       "title": "Role operations board, explicit health check-ins and governed follow-up",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-003",
         "C3-FRONT-007"
@@ -1129,7 +1135,7 @@
       "id": "C3-FRONT-008",
       "workstream": "WS-06",
       "title": "Organic campaign flow, candidate action brief and command-safe workspace decks",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-004",
         "C3-FRONT-007"
@@ -1217,7 +1223,7 @@
     "total_critical_or_high": 1
   },
   "github_state": {
-    "verified_at": "2026-07-28",
+    "verified_at": "2026-07-29",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1242,17 +1248,10 @@
       83,
       114,
       116,
-      117
+      117,
+      126
     ],
-    "open_pull_requests": [
-      118,
-      119,
-      120,
-      121,
-      122,
-      123,
-      124
-    ],
+    "open_pull_requests": [],
     "main_branch_protection": "ENABLED_STRICT_8_CHECKS_1_REVIEW_ADMIN_ENFORCED",
     "rulesets": "NONE_BRANCH_PROTECTION_ACTIVE",
     "actions_allowed": "SELECTED_GITHUB_OWNED_PLUS_TWO_PATTERNS",
@@ -1262,97 +1261,106 @@
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {
-      "run_id": 30147774389,
-      "head_sha": "38c4cf059acd9690f1f378a340797811ec8dbf12",
+      "run_id": 30424626008,
+      "head_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
       "conclusion": "SUCCESS",
       "required_check_enforcement": true,
       "required_check_count": 8,
-      "new_supply_chain_check": "PASS"
+      "frontend_api_postgresql_journey": "PASS",
+      "recovery": "PASS",
+      "supply_chain": "PASS"
     },
-    "published_unreviewed_increment": {
-      "id": "C3-FRONT-008",
-      "state": "DRAFT_PR_CI_GREEN",
-      "branch": "agent/c3-front-008-organic-role-aware-flow",
-      "base": "agent/c3-team-004-role-operations-board",
-      "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
-      "draft_pr": 126,
-      "ci_run_id": 30414864886,
-      "visual_run_id": 30414864870,
-      "release_decision": "DENY_RELEASE",
-      "external_effects": "NONE"
-    },
+    "published_unreviewed_increment": null,
     "review_stack": [
       {
         "increment": "C3-FRONT-003",
         "pr": 118,
         "branch": "agent/c3-front-003-campaign-launch-roadmap",
         "base": "main",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "ff7b10fed951f176609c43ad83b501f83d92b810"
+        "state": "CLOSED_SUPERSEDED_BY_126",
+        "delivered_head": "ff7b10fed951f176609c43ad83b501f83d92b810",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       },
       {
         "increment": "C3-FRONT-004",
         "pr": 119,
         "branch": "agent/c3-front-004-candidate-evidence-workflow",
         "base": "agent/c3-front-003-campaign-launch-roadmap",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "d22d9fac7ce9d59430edff927f5343f8391719f5"
+        "state": "CLOSED_SUPERSEDED_BY_126",
+        "delivered_head": "d22d9fac7ce9d59430edff927f5343f8391719f5",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       },
       {
         "increment": "C3-FRONT-005",
         "pr": 120,
         "branch": "agent/c3-front-005-team-organization-workflow",
         "base": "agent/c3-front-004-candidate-evidence-workflow",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146"
+        "state": "CLOSED_SUPERSEDED_BY_126",
+        "delivered_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       },
       {
         "increment": "C3-FRONT-006",
         "pr": 121,
         "branch": "agent/c3-front-006-cinematic-adaptive-journey",
         "base": "agent/c3-front-005-team-organization-workflow",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "9d98f754924a94a1bfc5be190e8604d51673f99c"
+        "state": "CLOSED_SUPERSEDED_BY_126",
+        "delivered_head": "9d98f754924a94a1bfc5be190e8604d51673f99c",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       },
       {
         "increment": "C3-TEAM-002",
         "pr": 122,
         "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
         "base": "agent/c3-front-006-cinematic-adaptive-journey",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "7735b533b5ebc43d829d881090798fe1b1605295"
+        "state": "CLOSED_SUPERSEDED_BY_126",
+        "delivered_head": "7735b533b5ebc43d829d881090798fe1b1605295",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       },
       {
         "increment": "C3-TEAM-003",
         "pr": 123,
         "branch": "agent/c3-team-003-template-application-preview",
         "base": "agent/c3-team-002-role-blueprints-cinematic-hero",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb"
+        "state": "CLOSED_SUPERSEDED_BY_126",
+        "delivered_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       },
       {
         "increment": "C3-FRONT-007",
         "pr": 124,
         "branch": "agent/c3-front-007-guided-chapter-transitions",
         "base": "agent/c3-team-003-template-application-preview",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "d5e9347f88c59784dec4bf07965ff9adf0e51dd6"
+        "state": "CLOSED_SUPERSEDED_BY_126",
+        "delivered_head": "d5e9347f88c59784dec4bf07965ff9adf0e51dd6",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       },
       {
         "increment": "C3-TEAM-004",
         "pr": 125,
         "branch": "agent/c3-team-004-role-operations-board",
         "base": "agent/c3-front-007-guided-chapter-transitions",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5"
+        "state": "CLOSED_SUPERSEDED_BY_126",
+        "delivered_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       },
       {
         "increment": "C3-FRONT-008",
         "pr": 126,
         "branch": "agent/c3-front-008-organic-role-aware-flow",
         "base": "agent/c3-team-004-role-operations-board",
-        "state": "DRAFT_PR_CI_GREEN",
-        "delivered_head": "92369e59162a134ed7c64188828fa15b5711a22e"
+        "state": "MERGED_TO_MAIN_REBASE",
+        "delivered_head": "92369e59162a134ed7c64188828fa15b5711a22e",
+        "merged_via_pr": 126,
+        "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
       }
     ],
     "git_push_incident": {
@@ -1368,44 +1376,38 @@
       "frontend_target_verified": true
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
-    "active_local_increment": {
-      "id": "C3-FRONT-008",
-      "state": "CI_GREEN",
-      "branch": "agent/c3-front-008-organic-role-aware-flow",
-      "base": "agent/c3-team-004-role-operations-board@47119b2ecacbde3cd949d92f39a043ea93769fff",
-      "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
-      "draft_pr": 126,
-      "production_status": "BLOCKED",
-      "release_decision": "DENY_RELEASE",
-      "external_effects": "NONE",
-      "next_action": "HUMAN_PRODUCT_REVIEW"
-    },
+    "active_local_increment": null,
     "latest_checkpoint": {
       "id": "C3-FRONT-008",
-      "branch": "agent/c3-front-008-organic-role-aware-flow",
-      "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
-      "draft_pr": 126,
-      "status": "CI_GREEN",
-      "ci_run_id": 30414864886,
-      "visual_run_id": 30414864870,
-      "quality_job_id": 90459048337,
-      "frontend_job_id": 90459048370,
-      "visual_job_id": 90459047769,
-      "recovery_job_id": 90459048330,
-      "recovery_artifact_id": 8709775631,
-      "recovery_artifact_digest": "sha256:fe74f4569ee69b0a38e6196cb8e0e34a590ea077a652034c1335aa5804739594",
-      "supply_chain_artifact_id": 8709766285,
-      "supply_chain_artifact_digest": "sha256:16ba977998a298c6c8e7c5e7d31c45631544b9b6b1402bbaa0cada7b5a205fa4",
-      "frontend_artifact_id": 8709836555,
-      "frontend_artifact_digest": "sha256:96f68c284755d070635dabeace377dc4025ffeb08e768e6155d2e91e83ffca4a",
-      "visual_artifact_id": 8709781483,
-      "visual_artifact_digest": "sha256:754d5df46a96301c911ef951f4101f242078a5a8c7811828542a56b06a704a24",
-      "gitleaks_artifact_id": 8709767723,
-      "gitleaks_artifact_digest": "sha256:2b264fa00cc7421b66e7d04920fc6b2de11c3ab30f3fdcf0f24786bddfa2392d",
+      "status": "MERGED_TO_MAIN",
+      "merge_strategy": "REBASE",
+      "merge_pr": 126,
+      "merged_at": "2026-07-29T05:17:02Z",
+      "main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "post_merge_ci_run_id": 30424626008,
+      "post_merge_ci_conclusion": "SUCCESS",
+      "quality_job_id": 90488268932,
+      "postgresql_job_id": 90488268939,
+      "recovery_job_id": 90488268865,
+      "frontend_job_id": 90488268913,
+      "stack_e2e_job_id": 90488268940,
+      "codeql_job_id": 90488268918,
+      "terraform_job_id": 90488268927,
+      "dependency_job_id": 90488268907,
+      "secret_job_id": 90488268929,
+      "supply_chain_job_id": 90488268909,
+      "frontend_artifact_id": 8713170626,
+      "frontend_artifact_digest": "sha256:d6a4413c985a09416161915486356bb8e174a4d63ce89910e1cf201e81addf89",
+      "recovery_artifact_id": 8713127644,
+      "recovery_artifact_digest": "sha256:90aa77beefd54abc18e27afa75987608ddcf860ac85b7ecfc04db7ec0fc3580f",
+      "supply_chain_artifact_id": 8713120801,
+      "supply_chain_artifact_digest": "sha256:6e73ab3a0ba918c5b09ac9cfe4904d467e1cb2e7715c6a3f1f512c37c24d1fe8",
+      "gitleaks_artifact_id": 8713118612,
+      "gitleaks_artifact_digest": "sha256:f3d6453a17fce9dddce444ef83a64e2ba17d532332e2ef8e038a84492dda8a79",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
-      "external_effects": "NONE",
-      "next_action": "HUMAN_PRODUCT_REVIEW"
+      "external_effects": "TEMPORARY_AUTHENTICATED_NON_PRODUCTION_REVIEW_ENVIRONMENT_STOPPED",
+      "next_action": "HUMAN_APPROVE_C3_SEC_002_SPEC"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",
@@ -1423,11 +1425,28 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 117,
+      "pr": 126,
       "status": "MERGED_TO_MAIN_REBASE",
-      "main_sha": "38c4cf059acd9690f1f378a340797811ec8dbf12",
+      "main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
       "checks_before_merge": "SUCCESS",
-      "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED",
+      "post_merge_ci_run_id": 30424626008,
+      "post_merge_ci_conclusion": "SUCCESS",
+      "included_increment_prs": [
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
+      ],
+      "historical_prs": "118-125_CLOSED_SUPERSEDED_BY_126",
+      "previous_cumulative_merge": {
+        "pr": 117,
+        "main_sha": "38c4cf059acd9690f1f378a340797811ec8dbf12"
+      },
       "open_pull_requests_observed": 0
     },
     "desired_required_check_count": 10,
@@ -1435,30 +1454,35 @@
     "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN",
     "latest_completed_checkpoint": {
       "id": "C3-FRONT-008",
-      "branch": "agent/c3-front-008-organic-role-aware-flow",
-      "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
-      "draft_pr": 126,
-      "status": "CI_GREEN",
-      "ci_run_id": 30414864886,
-      "visual_run_id": 30414864870,
-      "quality_job_id": 90459048337,
-      "frontend_job_id": 90459048370,
-      "visual_job_id": 90459047769,
-      "recovery_job_id": 90459048330,
-      "recovery_artifact_id": 8709775631,
-      "recovery_artifact_digest": "sha256:fe74f4569ee69b0a38e6196cb8e0e34a590ea077a652034c1335aa5804739594",
-      "supply_chain_artifact_id": 8709766285,
-      "supply_chain_artifact_digest": "sha256:16ba977998a298c6c8e7c5e7d31c45631544b9b6b1402bbaa0cada7b5a205fa4",
-      "frontend_artifact_id": 8709836555,
-      "frontend_artifact_digest": "sha256:96f68c284755d070635dabeace377dc4025ffeb08e768e6155d2e91e83ffca4a",
-      "visual_artifact_id": 8709781483,
-      "visual_artifact_digest": "sha256:754d5df46a96301c911ef951f4101f242078a5a8c7811828542a56b06a704a24",
-      "gitleaks_artifact_id": 8709767723,
-      "gitleaks_artifact_digest": "sha256:2b264fa00cc7421b66e7d04920fc6b2de11c3ab30f3fdcf0f24786bddfa2392d",
+      "status": "MERGED_TO_MAIN",
+      "merge_strategy": "REBASE",
+      "merge_pr": 126,
+      "merged_at": "2026-07-29T05:17:02Z",
+      "main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "post_merge_ci_run_id": 30424626008,
+      "post_merge_ci_conclusion": "SUCCESS",
+      "quality_job_id": 90488268932,
+      "postgresql_job_id": 90488268939,
+      "recovery_job_id": 90488268865,
+      "frontend_job_id": 90488268913,
+      "stack_e2e_job_id": 90488268940,
+      "codeql_job_id": 90488268918,
+      "terraform_job_id": 90488268927,
+      "dependency_job_id": 90488268907,
+      "secret_job_id": 90488268929,
+      "supply_chain_job_id": 90488268909,
+      "frontend_artifact_id": 8713170626,
+      "frontend_artifact_digest": "sha256:d6a4413c985a09416161915486356bb8e174a4d63ce89910e1cf201e81addf89",
+      "recovery_artifact_id": 8713127644,
+      "recovery_artifact_digest": "sha256:90aa77beefd54abc18e27afa75987608ddcf860ac85b7ecfc04db7ec0fc3580f",
+      "supply_chain_artifact_id": 8713120801,
+      "supply_chain_artifact_digest": "sha256:6e73ab3a0ba918c5b09ac9cfe4904d467e1cb2e7715c6a3f1f512c37c24d1fe8",
+      "gitleaks_artifact_id": 8713118612,
+      "gitleaks_artifact_digest": "sha256:f3d6453a17fce9dddce444ef83a64e2ba17d532332e2ef8e038a84492dda8a79",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
-      "external_effects": "NONE",
-      "next_action": "HUMAN_PRODUCT_REVIEW"
+      "external_effects": "TEMPORARY_AUTHENTICATED_NON_PRODUCTION_REVIEW_ENVIRONMENT_STOPPED",
+      "next_action": "HUMAN_APPROVE_C3_SEC_002_SPEC"
     }
   },
   "deployment_state": {
@@ -1479,6 +1503,16 @@
       "state": "BLOCKED",
       "human_approval_recorded": false,
       "approval_receipt": null
+    },
+    "ephemeral_review": {
+      "classification": "TEMPORARY_AUTHENTICATED_NON_PRODUCTION",
+      "state": "STOPPED",
+      "source_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "public_url": "https://nutritional-salt-journalism-productions.trycloudflare.com",
+      "credentials_retained_in_repository": false,
+      "counts_as_production_evidence": false,
+      "verification": "PASS_DESKTOP_MOBILE_ES_EN_ZERO_BROWSER_ERRORS",
+      "stopped_at": "2026-07-29"
     }
   },
   "production_gates": [
@@ -1853,5 +1887,19 @@
       "date": "2026-07-28",
       "reason": "The observed failure was a stale harness locator, not a runtime product defect; the successor validates the intended hero isolation and the complete equal-or-broader functional journey."
     }
-  ]
+  ],
+  "graph_harness_runtime": {
+    "framework_repository": "https://github.com/BernydotJar/Graph-harness-sdlc",
+    "framework_revision": "0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26",
+    "mode": "SHIP",
+    "projection": "program/graph-harness-execution.json",
+    "canonical_manifest": "architecture/program-state.json",
+    "canonical_task_graph": "program/task-graph.yaml",
+    "canonical_task_ledger": "program/task-ledger.yaml",
+    "active_feature": null,
+    "selected_feature": "C3-SEC-002",
+    "selected_feature_state": "spec_ready",
+    "approval_gate": "PENDING",
+    "ready_nodes": []
+  }
 }

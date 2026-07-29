@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-28",
+  "updated_at": "2026-07-29",
   "branch": "agent/c3-front-008-organic-role-aware-flow",
   "entries": [
     {
@@ -17,7 +17,9 @@
         "program/iterations/c3-resume-001.md"
       ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-ARCH-001",
@@ -30,7 +32,9 @@
         "docs/adr/002-modular-monolith-before-microservices.md"
       ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-DEVEX-001",
@@ -45,12 +49,14 @@
         "uv.lock"
       ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-CI-001",
       "owner": "WS-02",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         ".github/campaignos-security-policy.json",
         ".github/workflows/campaignos-ci.yml",
@@ -67,17 +73,18 @@
       ],
       "external_effects": "REVIEW_BRANCH_AND_DRAFT_PR",
       "blockers": [
-        "Human review and merge remain pending",
         "Historical failed runs are preserved and explicitly superseded; periodic evidence audit remains required",
         "No AWS environment, deployment, rollback or production approval evidence exists"
       ],
-      "publication_state": "DRAFT_PR_CI_GREEN_EXACT_HEAD_ATTESTED",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "implementation_commit": "26b8e24f03e16c309ad20976bd8632627ecd734f",
       "exact_head_fix_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
       "head_commit": "0501c4bd4bfac4a6e762c65aa191cf7290a5d448",
       "draft_pr": 99,
       "ci_run_id": 29880153335,
-      "visual_run_id": 29880153340
+      "visual_run_id": 29880153340,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-IAM-001",
@@ -99,12 +106,14 @@
       "blockers": [
         "No live identity provider or login/recovery/session lifecycle",
         "No membership administration, support elevation or complete domain/worker action enforcement"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-IAM-002",
       "owner": "WS-03",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/migrations/versions/20260721_0004_identity_lifecycle.py",
         "backend/src/campaignos/identity/lifecycle.py",
@@ -121,15 +130,16 @@
         "program/iterations/c3-iam-002.md"
       ],
       "external_effects": "NONE",
-      "publication_state": "DRAFT_PR_CI_GREEN",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "blockers": [
-        "Human review and merge pending",
         "No live provider/RDS/dev/staging/production verification"
       ],
       "implementation_commit": "5eb45e92f6f292ea673c572811031805cc89cabe",
       "draft_pr": 90,
       "ci_run_id": 29857981975,
-      "visual_run_id": 29857981487
+      "visual_run_id": 29857981487,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-DATA-001",
@@ -143,12 +153,14 @@
         "docs/adr/004-postgresql-tenant-isolation.md"
       ],
       "external_effects": "NONE",
-      "blockers": []
+      "blockers": [],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-API-001",
       "owner": "WS-05",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/api/app.py",
         "backend/src/campaignos/api/routes/health.py",
@@ -185,19 +197,20 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human review and merge remain pending",
         "Worker control plane, observability and external transport remain separate later work",
         "No live identity, cloud environment or production verification is claimed"
       ],
-      "publication_state": "DRAFT_PR_CI_GREEN",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "implementation_commit": "55215a86b54be2f1cca3a0e78248ab5ae66fecb2",
       "draft_pr": 97,
-      "ci_run_id": 29876982499
+      "ci_run_id": 29876982499,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-API-005",
       "owner": "WS-05",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/campaigns/readiness.py",
         "backend/src/campaignos/data/audit.py",
@@ -215,19 +228,20 @@
         "program/iterations/c3-api-005.md"
       ],
       "external_effects": "NONE",
-      "publication_state": "DRAFT_PR_CI_GREEN",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "implementation_commit": "22bc9a3f324a9a3cb1312fad7322596c7b719249",
       "blockers": [
-        "Human review and merge pending",
         "No RDS, dev, staging or production verification"
       ],
       "draft_pr": 87,
-      "ci_run_id": 29854461414
+      "ci_run_id": 29854461414,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-API-006",
       "owner": "WS-05",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/campaigns/create_model.py",
         "backend/src/campaignos/data/idempotency.py",
@@ -241,19 +255,20 @@
         "program/iterations/c3-api-006.md"
       ],
       "external_effects": "NONE",
-      "publication_state": "DRAFT_PR_CI_GREEN",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "implementation_commit": "c91d60217e2ee0c0ec0f38c139852e7d73c78a58",
       "blockers": [
-        "Human review and merge pending",
         "No RDS, dev, staging or production verification"
       ],
       "draft_pr": 88,
-      "ci_run_id": 29854464519
+      "ci_run_id": 29854464519,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-FRONT-001",
       "owner": "WS-06",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "frontend/package.json",
         "frontend/package-lock.json",
@@ -281,19 +296,21 @@
       "blockers": [
         "No live OIDC login or trusted tenant-selection lifecycle",
         "No complete API-backed mutation journey or human user acceptance",
-        "Human review, merge and dev/staging/production deployment remain pending"
+        "Dev/staging/production deployment remain pending"
       ],
-      "publication_state": "DRAFT_PR_CI_GREEN",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "implementation_commit": "b21f3d55ca0e89d3e6575076b5affa90732e3438",
       "policy_commit": "0763b7d0b8222043e0cf436c813ebfd61376d970",
       "head_commit": "437b46930c68d6ed3a8233c139b0eaa03724b068",
       "draft_pr": 89,
-      "ci_run_id": 29856835515
+      "ci_run_id": 29856835515,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-ONBOARD-001",
       "owner": "WS-07",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/migrations/versions/20260721_0005_guided_intake.py",
         "backend/tests/test_guided_intake_contracts.py",
@@ -306,18 +323,19 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human review and merge remain pending",
         "Authenticated non-technical mutation journey and live environments remain future work"
       ],
       "implementation_commit": "aa6fe239887173f3fb83366b640ad7b3121f361c",
       "head_commit": "aa6fe239887173f3fb83366b640ad7b3121f361c",
       "draft_pr": 92,
-      "ci_run_id": 29865306720
+      "ci_run_id": 29865306720,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-CANDIDATE-001",
       "owner": "WS-07",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/migrations/versions/20260721_0006_candidate_workspace.py",
         "backend/tests/test_candidate_workspace_contracts.py",
@@ -336,12 +354,14 @@
       "head_commit": "a94aa0da1e62e3ab8dc81bdec4b0a548e4687cd5",
       "draft_pr": 93,
       "ci_run_id": 29868426699,
-      "visual_run_id": 29868426740
+      "visual_run_id": 29868426740,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-TEAM-001",
       "owner": "WS-08",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/tests/test_team_workspace_contracts.py",
         "backend/tests/test_team_workspace_model.py",
@@ -354,7 +374,7 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human review/merge, authenticated editing, customer acceptance and live environments remain pending"
+        "Authenticated editing, customer acceptance and live environments remain pending"
       ],
       "implementation_commit": "d18d89b",
       "checkpoint_commit": "90775f35824a8a2252580be28b274ce345bedc41",
@@ -362,12 +382,14 @@
       "head_commit": "af3e43074e3876fe26f8ba1497269f1d69183bf8",
       "draft_pr": 94,
       "ci_run_id": 29870461743,
-      "visual_run_id": 29870461745
+      "visual_run_id": 29870461745,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-STRATEGY-001",
       "owner": "WS-09",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/tests/test_strategy_workspace_contracts.py",
         "backend/tests/test_strategy_workspace_model.py",
@@ -385,12 +407,14 @@
       "external_effects": "NONE",
       "blockers": [
         "Authenticated browser mutation, independent human acceptance, merge and live environments remain pending"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-OPS-001",
       "owner": "WS-10",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/tests/test_campaign_operations_contracts.py",
         "backend/tests/test_campaign_operations_model.py",
@@ -405,19 +429,21 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human review/merge, authenticated editing, customer acceptance and live environments remain pending"
+        "Authenticated editing, customer acceptance and live environments remain pending"
       ],
       "implementation_commit": "0b1436f334726d10eae75a9fba06884bae34af3f",
       "validated_head": "47e34a408da881b3f7e77660a4dc3435032b36f4",
       "head_commit": "47e34a408da881b3f7e77660a4dc3435032b36f4",
       "draft_pr": 95,
       "ci_run_id": 29871611889,
-      "visual_run_id": 29871611856
+      "visual_run_id": 29871611856,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-AGENT-001",
       "owner": "WS-11",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/migrations/versions/20260721_0010_governed_agent_runs.py",
         "backend/src/campaignos/agents/contracts.py",
@@ -438,22 +464,23 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human review and merge remain pending",
         "No live provider, processor/privacy/residency/retention approval or staging leakage exercise",
         "No authenticated human disposition UI or production environment"
       ],
-      "publication_state": "DRAFT_PR_CI_GREEN",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "implementation_commit": "04db6bcd0cd8e61a848c7416d7ef1109246f9cd5",
       "draft_pr": 98,
       "ci_run_id": 29878876280,
       "receipt_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
       "head_commit": "8d6c491a6681ea2395e2f81800dda294e41b69bb",
-      "visual_run_id": 29878876285
+      "visual_run_id": 29878876285,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-INFRA-001",
       "owner": "WS-12",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         ".terraform-version",
         "infra/terraform/bootstrap/.terraform.lock.hcl",
@@ -480,15 +507,17 @@
         "AWS account selection, credentials, remote state, live plan/apply and paid resources are explicitly prohibited",
         "No dev/staging/production environment, backup restore, observability, load, rollback or independent acceptance exists"
       ],
-      "publication_state": "DRAFT_PR_CI_GREEN_PLAN_ONLY",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "implementation_commit": "ede3881ee25c61d4a1106a0c2823e944ed7b081d",
       "draft_pr": 100,
-      "ci_run_id": 29882176565
+      "ci_run_id": 29882176565,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-SEC-001",
       "owner": "WS-13",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/migrations/versions/20260721_0011_append_only_security.py",
         "backend/tests/test_security_policy.py",
@@ -507,17 +536,19 @@
         "No live environment, attachment/export path, backup restore, rate limiting or production processor evidence",
         "Privileged database owner remains a break-glass mutation boundary and external integrity anchoring is absent"
       ],
-      "publication_state": "DRAFT_PR_CI_GREEN",
+      "publication_state": "MERGED_TO_MAIN_REBASE",
       "implementation_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
       "head_commit": "ab63e19079ac0828fe3555dbbeb9493e94d02829",
       "draft_pr": 105,
       "ci_run_id": 29943367172,
-      "visual_run_id": 29943367823
+      "visual_run_id": 29943367823,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-FRONT-002",
       "owner": "WS-06",
-      "status": "VERIFIED_POSTGRESQL",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/config.py",
         "backend/src/campaignos/identity/oidc.py",
@@ -547,16 +578,17 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head draft PR and CI functional Compose E2E are pending",
         "Development identity is not live OIDC authentication",
         "Independent human user acceptance and deployed dev/staging environments remain pending",
         "Campaign creation and post-create access lifecycle remain intentionally absent"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-FRONT-003",
       "owner": "WS-06",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "frontend/src/lib/campaign-journey.ts",
         "frontend/src/lib/campaign-journey.test.ts",
@@ -574,10 +606,11 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human product review and merge remain required",
         "Candidate, team, strategy, territorial-data and War Room mutation journeys remain incomplete",
         "Staging and production deployment remain separate costed human gates"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     },
     {
       "task_id": "C3-OBS-001",
@@ -601,12 +634,14 @@
       "blockers": [
         "No managed backup schedule, PITR, telemetry transport, staging failure exercise or accepted RPO/RTO exists",
         "Independent operational, security, privacy, legal and human production approvals remain pending"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-RELEASE-001",
       "owner": "WS-15",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "program/iterations/c3-release-001.md",
         "program/validations/c3-release-001.json",
@@ -617,12 +652,14 @@
       "blockers": [
         "No approved staging environment or managed runtime exists",
         "No independent security, privacy, legal, operational or explicit human production approval exists"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 117
     },
     {
       "task_id": "C3-FRONT-004",
       "owner": "WS-06",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "frontend/src/lib/campaign-experience.ts",
         "frontend/src/lib/campaign-experience.test.ts",
@@ -643,15 +680,16 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human product review and merge remain required",
         "Claim approval, team, strategy and operations mutation journeys remain incomplete",
         "Staging and production remain separate costed human gates"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     },
     {
       "task_id": "C3-FRONT-005",
       "owner": "WS-06",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "frontend/src/lib/campaign-journey.ts",
         "frontend/src/lib/campaign-journey.test.ts",
@@ -673,15 +711,16 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human product review and merge remain required",
         "Identity assignment, RACI, capacity, training and access review remain incomplete",
         "Strategy, staging and production remain separate human gates"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     },
     {
       "task_id": "C3-FRONT-006",
       "owner": "WS-06",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "frontend/src/components/campaign-experience-hero.tsx",
         "frontend/src/components/campaign-launch-roadmap.tsx",
@@ -697,15 +736,16 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Human product review and merge remain required",
         "Full consultant portfolio mode and remaining campaign modules remain separate increments",
         "Staging and production remain separate costed human gates"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     },
     {
       "task_id": "C3-TEAM-002",
       "owner": "WS-08/WS-06",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/teams/blueprints.py",
         "backend/src/campaignos/teams/contracts.py",
@@ -734,12 +774,14 @@
       "implementation_commit": "7735b533b5ebc43d829d881090798fe1b1605295",
       "draft_pr": 122,
       "ci_run_id": 30176654019,
-      "visual_run_id": 30176653983
+      "visual_run_id": 30176653983,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     },
     {
       "task_id": "C3-TEAM-003",
       "owner": "WS-08/WS-06",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/teams/blueprints.py",
         "backend/src/campaignos/teams/template_application.py",
@@ -765,12 +807,14 @@
         "Human product review and merge of the stacked PR chain remain required",
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     },
     {
       "task_id": "C3-FRONT-007",
       "owner": "WS-06/WS-08",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "frontend/src/app/[locale]/campaign/[chapter]/page.tsx",
         "frontend/src/components/campaign-chapter-navigation.tsx",
@@ -796,12 +840,14 @@
         "Human product review and merge of the stacked PR chain remain required",
         "Personnel assignment, RACI, capacity, training and access review remain separate increments",
         "Staging, deployment and production approval remain separate human gates"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     },
     {
       "task_id": "C3-TEAM-004",
       "owner": "WS-08/WS-06",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "backend/src/campaignos/teams/contracts.py",
         "backend/tests/test_team_workspace_contracts.py",
@@ -824,12 +870,14 @@
       "blockers": [
         "Human product review and merge of the stacked PR chain remain required",
         "Identity assignment, capacity, training, access review, staging and production remain separate gates"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     },
     {
       "task_id": "C3-FRONT-008",
       "owner": "WS-06/WS-07/WS-08",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "frontend/src/components/guided-team-selector.tsx",
         "frontend/src/components/candidate-action-brief.tsx",
@@ -850,9 +898,10 @@
       "external_effects": "NONE",
       "blockers": [
         "Server-enforced MY_WORK and TEAM_SHARED projections require governed principal assignments and exact grants",
-        "Human product review and stacked merge remain required",
         "Staging, production infrastructure and production approval remain separate gates"
-      ]
+      ],
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "cumulative_merge_pr": 126
     }
   ]
 }

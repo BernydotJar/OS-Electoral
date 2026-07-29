@@ -2,12 +2,12 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-28",
-  "branch": "agent/c3-front-008-organic-role-aware-flow",
+  "updated_at": "2026-07-29",
+  "branch": "agent/c3-harness-001-graph-reconciliation",
   "current_increment": "C3-FRONT-008",
-  "iteration_status": "CI_GREEN",
+  "iteration_status": "MERGED_TO_MAIN",
   "production_status": "BLOCKED",
-  "production_status_reason": "One open CRITICAL production finding remains. Historical visual-review failures are explicitly superseded by a broader exact-head green run, but managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
+  "production_status_reason": "One open CRITICAL platform finding remains. Main is cumulatively merged and post-merge CI is green, but application rate limiting is not implemented, managed backups/PITR, deployed telemetry, alert routing, staging failure exercises, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -110,94 +110,101 @@
     }
   ],
   "ready_tasks": [],
-  "published_unreviewed_increment": {
-    "id": "C3-FRONT-008",
-    "state": "DRAFT_PR_CI_GREEN",
-    "branch": "agent/c3-front-008-organic-role-aware-flow",
-    "base": "agent/c3-team-004-role-operations-board",
-    "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
-    "draft_pr": 126,
-    "ci_run_id": 30414864886,
-    "visual_run_id": 30414864870,
-    "release_decision": "DENY_RELEASE",
-    "external_effects": "NONE"
-  },
+  "published_unreviewed_increment": null,
   "review_stack": [
     {
       "increment": "C3-FRONT-003",
       "pr": 118,
       "branch": "agent/c3-front-003-campaign-launch-roadmap",
       "base": "main",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "ff7b10fed951f176609c43ad83b501f83d92b810"
+      "state": "CLOSED_SUPERSEDED_BY_126",
+      "delivered_head": "ff7b10fed951f176609c43ad83b501f83d92b810",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     },
     {
       "increment": "C3-FRONT-004",
       "pr": 119,
       "branch": "agent/c3-front-004-candidate-evidence-workflow",
       "base": "agent/c3-front-003-campaign-launch-roadmap",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "d22d9fac7ce9d59430edff927f5343f8391719f5"
+      "state": "CLOSED_SUPERSEDED_BY_126",
+      "delivered_head": "d22d9fac7ce9d59430edff927f5343f8391719f5",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     },
     {
       "increment": "C3-FRONT-005",
       "pr": 120,
       "branch": "agent/c3-front-005-team-organization-workflow",
       "base": "agent/c3-front-004-candidate-evidence-workflow",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146"
+      "state": "CLOSED_SUPERSEDED_BY_126",
+      "delivered_head": "ecf1168c4ee9c6257596cccf4babbb7c040e6146",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     },
     {
       "increment": "C3-FRONT-006",
       "pr": 121,
       "branch": "agent/c3-front-006-cinematic-adaptive-journey",
       "base": "agent/c3-front-005-team-organization-workflow",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "9d98f754924a94a1bfc5be190e8604d51673f99c"
+      "state": "CLOSED_SUPERSEDED_BY_126",
+      "delivered_head": "9d98f754924a94a1bfc5be190e8604d51673f99c",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     },
     {
       "increment": "C3-TEAM-002",
       "pr": 122,
       "branch": "agent/c3-team-002-role-blueprints-cinematic-hero",
       "base": "agent/c3-front-006-cinematic-adaptive-journey",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "7735b533b5ebc43d829d881090798fe1b1605295"
+      "state": "CLOSED_SUPERSEDED_BY_126",
+      "delivered_head": "7735b533b5ebc43d829d881090798fe1b1605295",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     },
     {
       "increment": "C3-TEAM-003",
       "pr": 123,
       "branch": "agent/c3-team-003-template-application-preview",
       "base": "agent/c3-team-002-role-blueprints-cinematic-hero",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb"
+      "state": "CLOSED_SUPERSEDED_BY_126",
+      "delivered_head": "2130f2cd89711aedd710c1e363a4154a48ef5ecb",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     },
     {
       "increment": "C3-FRONT-007",
       "pr": 124,
       "branch": "agent/c3-front-007-guided-chapter-transitions",
       "base": "agent/c3-team-003-template-application-preview",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "d5e9347f88c59784dec4bf07965ff9adf0e51dd6"
+      "state": "CLOSED_SUPERSEDED_BY_126",
+      "delivered_head": "d5e9347f88c59784dec4bf07965ff9adf0e51dd6",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     },
     {
       "increment": "C3-TEAM-004",
       "pr": 125,
       "branch": "agent/c3-team-004-role-operations-board",
       "base": "agent/c3-front-007-guided-chapter-transitions",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5"
+      "state": "CLOSED_SUPERSEDED_BY_126",
+      "delivered_head": "0fb7cadd5f81c4c38a77f195e6b24d20e580cca5",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     },
     {
       "increment": "C3-FRONT-008",
       "pr": 126,
       "branch": "agent/c3-front-008-organic-role-aware-flow",
       "base": "agent/c3-team-004-role-operations-board",
-      "state": "DRAFT_PR_CI_GREEN",
-      "delivered_head": "92369e59162a134ed7c64188828fa15b5711a22e"
+      "state": "MERGED_TO_MAIN_REBASE",
+      "delivered_head": "92369e59162a134ed7c64188828fa15b5711a22e",
+      "merged_via_pr": 126,
+      "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
     }
   ],
   "local_verification": {
-    "tests_passed": 732,
+    "tests_passed": 734,
     "tests_skipped": 10,
     "coverage_percent": 90.38,
     "coverage_gate": "PASS",
@@ -383,7 +390,14 @@
     "front_008_exact_head_ci": "PASS_RUN_30414864886",
     "front_008_visual_review": "PASS_RUN_30414864870",
     "front_008_postgresql_runtime": "PASS_HOSTED_CI_POSTGRESQL_RLS_BACKUP_RESTORE_TEMPLATE_MUTATION_PERSISTENCE",
-    "front_008_feedback_supersession": "PASS_2_HARNESS_FAILURES_SUPERSEDED_BY_30414864886"
+    "front_008_feedback_supersession": "PASS_2_HARNESS_FAILURES_SUPERSEDED_BY_30414864886",
+    "main_post_merge_ci": "PASS_RUN_30424626008_HEAD_A12BED0771299EF8C7BC611B69B1B8DB1C01D968",
+    "main_post_merge_frontend_api_postgresql": "PASS",
+    "main_post_merge_recovery": "PASS_ARTIFACT_8713127644",
+    "main_post_merge_supply_chain": "PASS_ARTIFACT_8713120801",
+    "graph_harness_projection": "PASS_SPEC_READY_C3_SEC_002_APPROVAL_PENDING",
+    "graph_harness_validator_tests": "PASS_14",
+    "graph_harness_framework_init": "PASS_REVISION_0EB0D5F_FEATURES_7_ACTIVE_0"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -422,18 +436,7 @@
     "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
     "frontend_target_verified": true
   },
-  "active_local_increment": {
-    "id": "C3-FRONT-008",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-front-008-organic-role-aware-flow",
-    "base": "agent/c3-team-004-role-operations-board@47119b2ecacbde3cd949d92f39a043ea93769fff",
-    "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
-    "draft_pr": 126,
-    "production_status": "BLOCKED",
-    "release_decision": "DENY_RELEASE",
-    "external_effects": "NONE",
-    "next_action": "HUMAN_PRODUCT_REVIEW"
-  },
+  "active_local_increment": null,
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
     "component": "Cloud_Sandbox_MCP.git_push isolated-workspace wrapper",
@@ -446,38 +449,74 @@
   },
   "latest_completed_checkpoint": {
     "id": "C3-FRONT-008",
-    "branch": "agent/c3-front-008-organic-role-aware-flow",
-    "validated_implementation_head": "92369e59162a134ed7c64188828fa15b5711a22e",
-    "draft_pr": 126,
-    "status": "CI_GREEN",
-    "ci_run_id": 30414864886,
-    "visual_run_id": 30414864870,
-    "quality_job_id": 90459048337,
-    "frontend_job_id": 90459048370,
-    "visual_job_id": 90459047769,
-    "recovery_job_id": 90459048330,
-    "recovery_artifact_id": 8709775631,
-    "recovery_artifact_digest": "sha256:fe74f4569ee69b0a38e6196cb8e0e34a590ea077a652034c1335aa5804739594",
-    "supply_chain_artifact_id": 8709766285,
-    "supply_chain_artifact_digest": "sha256:16ba977998a298c6c8e7c5e7d31c45631544b9b6b1402bbaa0cada7b5a205fa4",
-    "frontend_artifact_id": 8709836555,
-    "frontend_artifact_digest": "sha256:96f68c284755d070635dabeace377dc4025ffeb08e768e6155d2e91e83ffca4a",
-    "visual_artifact_id": 8709781483,
-    "visual_artifact_digest": "sha256:754d5df46a96301c911ef951f4101f242078a5a8c7811828542a56b06a704a24",
-    "gitleaks_artifact_id": 8709767723,
-    "gitleaks_artifact_digest": "sha256:2b264fa00cc7421b66e7d04920fc6b2de11c3ab30f3fdcf0f24786bddfa2392d",
+    "status": "MERGED_TO_MAIN",
+    "merge_strategy": "REBASE",
+    "merge_pr": 126,
+    "merged_at": "2026-07-29T05:17:02Z",
+    "main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+    "post_merge_ci_run_id": 30424626008,
+    "post_merge_ci_conclusion": "SUCCESS",
+    "quality_job_id": 90488268932,
+    "postgresql_job_id": 90488268939,
+    "recovery_job_id": 90488268865,
+    "frontend_job_id": 90488268913,
+    "stack_e2e_job_id": 90488268940,
+    "codeql_job_id": 90488268918,
+    "terraform_job_id": 90488268927,
+    "dependency_job_id": 90488268907,
+    "secret_job_id": 90488268929,
+    "supply_chain_job_id": 90488268909,
+    "frontend_artifact_id": 8713170626,
+    "frontend_artifact_digest": "sha256:d6a4413c985a09416161915486356bb8e174a4d63ce89910e1cf201e81addf89",
+    "recovery_artifact_id": 8713127644,
+    "recovery_artifact_digest": "sha256:90aa77beefd54abc18e27afa75987608ddcf860ac85b7ecfc04db7ec0fc3580f",
+    "supply_chain_artifact_id": 8713120801,
+    "supply_chain_artifact_digest": "sha256:6e73ab3a0ba918c5b09ac9cfe4904d467e1cb2e7715c6a3f1f512c37c24d1fe8",
+    "gitleaks_artifact_id": 8713118612,
+    "gitleaks_artifact_digest": "sha256:f3d6453a17fce9dddce444ef83a64e2ba17d532332e2ef8e038a84492dda8a79",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
-    "external_effects": "NONE",
-    "next_action": "HUMAN_PRODUCT_REVIEW"
+    "external_effects": "TEMPORARY_AUTHENTICATED_NON_PRODUCTION_REVIEW_ENVIRONMENT_STOPPED",
+    "next_action": "HUMAN_APPROVE_C3_SEC_002_SPEC"
   },
   "production_blockers": [],
   "cumulative_merge": {
-    "pr": 117,
+    "pr": 126,
     "status": "MERGED_TO_MAIN_REBASE",
-    "main_sha": "38c4cf059acd9690f1f378a340797811ec8dbf12",
+    "main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
     "checks_before_merge": "SUCCESS",
-    "historical_prs": "RECONCILED_OR_CLOSED_SUPERSEDED",
+    "post_merge_ci_run_id": 30424626008,
+    "post_merge_ci_conclusion": "SUCCESS",
+    "included_increment_prs": [
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126
+    ],
+    "historical_prs": "118-125_CLOSED_SUPERSEDED_BY_126",
+    "previous_cumulative_merge": {
+      "pr": 117,
+      "main_sha": "38c4cf059acd9690f1f378a340797811ec8dbf12"
+    },
     "open_pull_requests_observed": 0
+  },
+  "graph_harness_runtime": {
+    "framework_repository": "https://github.com/BernydotJar/Graph-harness-sdlc",
+    "framework_revision": "0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26",
+    "mode": "SHIP",
+    "projection": "program/graph-harness-execution.json",
+    "canonical_manifest": "architecture/program-state.json",
+    "canonical_task_graph": "program/task-graph.yaml",
+    "canonical_task_ledger": "program/task-ledger.yaml",
+    "active_feature": null,
+    "selected_feature": "C3-SEC-002",
+    "selected_feature_state": "spec_ready",
+    "approval_gate": "PENDING",
+    "ready_nodes": []
   }
 }
