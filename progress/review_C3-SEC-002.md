@@ -84,7 +84,7 @@ Final decision: **KEEP FEATURE IN REVIEW; DENY PRODUCTION RELEASE**.
 | Performance | Partial | Exact-key statements and a 20-request local burst complete within the 10-second test budget; no representative staging capacity proof. |
 | Failure modes | Pass for increment | Store unavailable, metadata mismatch, invalid config, concurrency, rollover and rollback fail closed. |
 | Observability readiness | Partial | Bounded metric/log hooks exist; no deployed collector, dashboard, alert receiver or SLO. |
-| Testing | Pass for local review | Full local verification and 11 PostgreSQL slices pass; exact-head hosted CI remains required. |
+| Testing | Pass for increment | Full local verification, 11 PostgreSQL slices and exact-head hosted CI on PostgreSQL 18 pass. |
 | UX/accessibility | Not changed | Backend returns locale-neutral machine codes; a future UI feature must add localized retry guidance. |
 | Operations | Partial | Runbook, rollout/remediation and bounded cleanup contract exist; scheduler and staging exercise remain absent. |
 
@@ -101,4 +101,11 @@ Final decision: **KEEP FEATURE IN REVIEW; DENY PRODUCTION RELEASE**.
 
 ## Recommendation
 
-Advance `C3-SEC-002` to Graph Harness `review`, publish a stacked draft PR, collect exact-head hosted CI and preserve production `BLOCKED`. Human closure/merge remains a separate gate.
+Keep `C3-SEC-002` in Graph Harness `review` with status `CI_GREEN` in stacked draft PR `#128`. Human closure/merge remains a separate gate and production stays `BLOCKED`.
+
+
+## Hosted exact-head review receipt
+
+Implementation head `c5261d547b1f4149ed1cb55c122159a9fe661d81` passed CampaignOS CI `30431102657` and Runtime Visual Review `30431101415`. PostgreSQL 18 migrations/RLS, native recovery, constrained stack E2E, frontend/browser, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
+
+This receipt changes the increment from `REVIEWED_LOCAL` to `CI_GREEN`; it does not change the Production Reviewer decision, authorize merge or satisfy managed staging and production gates.

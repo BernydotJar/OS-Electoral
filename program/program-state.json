@@ -3,11 +3,11 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-29",
-  "branch": "agent/c3-harness-001-graph-reconciliation",
+  "branch": "agent/c3-sec-002-rate-limiting-abuse-protection",
   "current_increment": "C3-SEC-002",
-  "iteration_status": "REVIEWED",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
-  "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is locally reviewed, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
+  "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is CI-green with PostgreSQL 18, recovery, constrained-stack, CodeQL, dependency, supply-chain, secret and visual evidence, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
   "fallback_records": {
     "task_graph": "program/task-graph.yaml",
@@ -93,8 +93,8 @@
     {
       "id": "WS-13",
       "name": "Security, Privacy and Compliance",
-      "status": "SECURITY_CI_GREEN",
-      "next_increment": "C3-OBS-001"
+      "status": "RATE_LIMITING_CI_GREEN_PRODUCTION_GATES_OPEN",
+      "next_increment": "HUMAN_REVIEW_AND_MERGE_GATE"
     },
     {
       "id": "WS-14",
@@ -110,7 +110,18 @@
     }
   ],
   "ready_tasks": [],
-  "published_unreviewed_increment": null,
+  "published_unreviewed_increment": {
+    "id": "C3-SEC-002",
+    "state": "DRAFT_PR_CI_GREEN",
+    "branch": "agent/c3-sec-002-rate-limiting-abuse-protection",
+    "base": "agent/c3-harness-001-graph-reconciliation",
+    "validated_implementation_head": "c5261d547b1f4149ed1cb55c122159a9fe661d81",
+    "draft_pr": 128,
+    "ci_run_id": 30431102657,
+    "visual_run_id": 30431101415,
+    "release_decision": "DENY_RELEASE",
+    "external_effects": "NONE"
+  },
   "review_stack": [
     {
       "increment": "C3-FRONT-003",
@@ -201,6 +212,22 @@
       "delivered_head": "92369e59162a134ed7c64188828fa15b5711a22e",
       "merged_via_pr": 126,
       "integrated_main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
+    },
+    {
+      "increment": "C3-HARNESS-001",
+      "pr": 127,
+      "branch": "agent/c3-harness-001-graph-reconciliation",
+      "base": "main",
+      "state": "DRAFT_PR_CI_GREEN",
+      "delivered_head": "5e0818b6dc85376fdaa08cf2ab0af9c2d21460ea"
+    },
+    {
+      "increment": "C3-SEC-002",
+      "pr": 128,
+      "branch": "agent/c3-sec-002-rate-limiting-abuse-protection",
+      "base": "agent/c3-harness-001-graph-reconciliation",
+      "state": "DRAFT_PR_CI_GREEN",
+      "delivered_head": "c5261d547b1f4149ed1cb55c122159a9fe661d81"
     }
   ],
   "local_verification": {
@@ -405,7 +432,26 @@
     "c3_sec_002_rate_limit_contracts": "PASS_CATALOG_429_503_PREAUTH_METRICS_CONFIG",
     "c3_sec_002_postgresql": "PASS_ATOMIC_CONCURRENCY_RLS_ROLLBACK_ROLLOVER_CLEANUP",
     "c3_sec_002_review": "PASS_FUNCTIONAL_SECURITY_DATABASE_PRODUCTION_HOLD",
-    "c3_sec_002_full_verify": "PASS_749_PYTHON_11_SKIPS_90_31_COVERAGE_119_FRONTEND_TERRAFORM_SECURITY_PROGRAM"
+    "c3_sec_002_full_verify": "PASS_749_PYTHON_11_SKIPS_90_31_COVERAGE_119_FRONTEND_TERRAFORM_SECURITY_PROGRAM",
+    "c3_sec_002_delivery_state": "DRAFT_PR_128_CI_GREEN_REVIEW_STACK_127_TO_128",
+    "c3_sec_002_exact_head_ci": "PASS_RUN_30431102657_HEAD_C5261D547B1F4149ED1CB55C122159A9FE661D81",
+    "c3_sec_002_visual_review": "PASS_RUN_30431101415",
+    "c3_sec_002_postgresql_18_ci": "PASS_JOB_90508299364_MIGRATION_RLS_RATE_LIMIT_CONCURRENCY",
+    "c3_sec_002_recovery_ci": "PASS_JOB_90508299295_ARTIFACT_8715541657",
+    "c3_sec_002_stack_e2e_ci": "PASS_JOB_90508299414",
+    "c3_sec_002_frontend_ci": "PASS_JOB_90508299282_ARTIFACT_8715594812",
+    "c3_sec_002_codeql_ci": "PASS_JOB_90508299406",
+    "c3_sec_002_dependency_ci": "PASS_JOB_90508299314_ZERO_KNOWN_VULNERABILITIES",
+    "c3_sec_002_secret_scan_ci": "PASS_JOB_90508299288_ARTIFACT_8715535489",
+    "c3_sec_002_supply_chain_ci": "PASS_JOB_90508299272_ARTIFACT_8715533651",
+    "c3_sec_002_terraform_ci": "PASS_JOB_90508299338_PLAN_ONLY",
+    "c3_sec_002_quality_ci": "PASS_JOB_90508299292",
+    "c3_sec_002_runtime_visual_job": "PASS_JOB_90508294359_ARTIFACT_8715553353",
+    "c3_sec_002_frontend_artifact_digest": "sha256:f9d2a0ef1195259ab7779db18ac17437779df85298e01072f67c560e49cdb810",
+    "c3_sec_002_recovery_artifact_digest": "sha256:4879772b4b409b1abef94bfb9925179eb596b34385ce785d67dfe308b6cbe33c",
+    "c3_sec_002_gitleaks_artifact_digest": "sha256:ac6f4bc6ba54a4af16b7918156150e5ae79cc49a2c71458ae5b83d37a9375328",
+    "c3_sec_002_supply_chain_artifact_digest": "sha256:6e5bde47cad565848d7ff40f9f76e3f121fd747cafa07e93613d0650f8d63ef2",
+    "c3_sec_002_visual_artifact_digest": "sha256:e2e720d7ed9dfe854ae234be8085f50d7e6e8fd9581705abe8cde1bbfbc47609"
   },
   "critical_path": [
     "C3-FOUND-001A",
@@ -446,16 +492,20 @@
   },
   "active_local_increment": {
     "id": "C3-SEC-002",
-    "state": "REVIEWED_LOCAL",
+    "state": "CI_GREEN",
     "branch": "agent/c3-sec-002-rate-limiting-abuse-protection",
     "base": "agent/c3-harness-001-graph-reconciliation@5e0818b6dc85376fdaa08cf2ab0af9c2d21460ea",
     "approved_spec": "specs/C3-SEC-002/requirements.md",
     "review_artifact": "progress/review_C3-SEC-002.md",
     "approval_recorded_at": "2026-07-29T00:29:00-06:00",
+    "validated_implementation_head": "c5261d547b1f4149ed1cb55c122159a9fe661d81",
+    "draft_pr": 128,
+    "ci_run_id": 30431102657,
+    "visual_run_id": 30431101415,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUBLISH_STACKED_DRAFT_PR_AND_COLLECT_EXACT_HEAD_CI"
+    "next_action": "HUMAN_REVIEW_PR_127_THEN_PR_128_NO_MERGE_WITHOUT_EXPLICIT_AUTHORIZATION"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",

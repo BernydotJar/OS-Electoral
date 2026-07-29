@@ -713,3 +713,13 @@
 - Isolated PostgreSQL: 11 slices passed through revision `20260729_0012`, including concurrency, RLS, rollover, rollback and cleanup.
 - Functional, Security and Database Reviewers pass the bounded increment; Production Reviewer keeps it in review pending hosted CI, staging load, cleanup scheduler, edge controls and external approvals.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.
+
+
+## 2026-07-29 — C3-SEC-002 exact-head CI closure
+
+- Published stacked draft PR `#128` on `agent/c3-sec-002-rate-limiting-abuse-protection`, based on draft PR `#127`.
+- Validated implementation head `c5261d547b1f4149ed1cb55c122159a9fe661d81` with CampaignOS CI `30431102657` and Runtime Visual Review `30431101415`.
+- Hosted PostgreSQL 18 proved revision `20260729_0012`, forced RLS, atomic rate-limit counters, concurrency, rollover, rollback and bounded cleanup.
+- Recovery, constrained stack E2E, frontend/browser, CodeQL, dependency audit, secret scan, Terraform plan-only, SBOM/provenance and visual review all concluded `SUCCESS`.
+- Marked `C3-SEC-002` `CI_GREEN`; Graph Harness remains in `review`, and human close/merge remains a separate gate.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

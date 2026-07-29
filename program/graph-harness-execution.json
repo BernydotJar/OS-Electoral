@@ -46,7 +46,7 @@
         "specs/C3-SEC-002/design.md",
         "specs/C3-SEC-002/tasks.md"
       ],
-      "selection_reason": "C3-SEC-002 closes the application-layer rate-limit implementation gap with an approved SHIP increment; local implementation and role-separated review are complete while exact-head hosted CI and production gates remain pending.",
+      "selection_reason": "C3-SEC-002 closes the application-layer rate-limit implementation gap with an approved SHIP increment; local implementation, role-separated review and exact-head hosted CI are complete, while human close, merge and production gates remain pending.",
       "approval_receipt": {
         "recorded_at": "2026-07-29T00:29:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
@@ -57,7 +57,16 @@
       "local_evidence": [
         "docs/testing/c3-sec-002-evidence.md",
         "program/validations/c3-sec-002.json"
-      ]
+      ],
+      "hosted_evidence": {
+        "validated_implementation_head": "c5261d547b1f4149ed1cb55c122159a9fe661d81",
+        "draft_pr": 128,
+        "campaignos_ci_run_id": 30431102657,
+        "runtime_visual_run_id": 30431101415,
+        "conclusion": "SUCCESS",
+        "production_status": "BLOCKED",
+        "release_decision": "DENY_RELEASE"
+      }
     },
     "blocked_nodes": [
       {

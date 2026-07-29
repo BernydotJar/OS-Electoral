@@ -2,7 +2,7 @@
 
 Date: `2026-07-29`
 Mode: `SHIP`
-State: `REVIEWED_LOCAL`
+State: `CI_GREEN`
 Production: `BLOCKED`
 External effects: `NONE`
 
@@ -50,7 +50,7 @@ UTF8
 Data checksums: enabled
 ```
 
-The hosted CI PostgreSQL baseline uses PostgreSQL 18 and remains required at the exact published head.
+Hosted exact-head CI used PostgreSQL 18 and passed the migration, forced-RLS, concurrency, rollover, rollback and cleanup contracts.
 
 ## Localized repair history
 
@@ -70,3 +70,25 @@ No failed product validation remains unresolved locally. Historical execution de
 - deployed telemetry, alert routing and on-call ownership;
 - independent security, privacy, database, operational and legal review;
 - explicit production approval.
+
+
+## Hosted exact-head evidence
+
+```text
+validated implementation head: c5261d547b1f4149ed1cb55c122159a9fe661d81
+draft PR: #128 (base PR #127)
+CampaignOS CI: 30431102657 SUCCESS
+Runtime Visual Review: 30431101415 SUCCESS
+PostgreSQL migrations/RLS: job 90508299364 SUCCESS
+Constrained stack E2E: job 90508299414 SUCCESS
+Recovery: job 90508299295 / artifact 8715541657
+Frontend/browser: job 90508299282 / artifact 8715594812
+CodeQL: job 90508299406 SUCCESS
+Dependency audit: job 90508299314 SUCCESS
+Secret scan: job 90508299288 / artifact 8715535489
+Supply chain: job 90508299272 / artifact 8715533651
+Terraform plan-only: job 90508299338 SUCCESS
+Runtime visual artifact: 8715553353
+```
+
+Artifact digests are recorded in `program/validations/c3-sec-002.json`. Exact-head CI closes the repository verification gate only. Managed staging load, cleanup scheduling, edge controls, deployed observability, independent approvals, human merge and production release remain open.

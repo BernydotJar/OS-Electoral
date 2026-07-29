@@ -906,7 +906,7 @@
     {
       "task_id": "C3-SEC-002",
       "owner": "WS-13/WS-05/WS-03",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "evidence": [
         "specs/C3-SEC-002/requirements.md",
         "specs/C3-SEC-002/design.md",
@@ -922,9 +922,9 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted CI and PostgreSQL 18 evidence remain pending",
-        "Managed staging load, cleanup scheduling and edge DDoS/WAF remain separate platform gates",
-        "Independent external security, privacy, database, operational, legal, human close and merge remain pending"
+        "Managed staging load, contention proof, cleanup scheduling and approved retention remain separate platform gates",
+        "Edge DDoS/WAF, invalid-token abuse controls, deployed telemetry and alert routing remain absent",
+        "Independent security, privacy, database, operational, legal, human close and merge approvals remain pending"
       ],
       "approval": {
         "recorded_at": "2026-07-29T00:29:00-06:00",
