@@ -814,8 +814,23 @@ async def review() -> dict[str, object]:
         attach_page_guards(english)
         await english.goto(f"{BASE_URL}/en/campaign/foundation", wait_until="networkidle")
         require(
+            await english.locator(".campaign-experience").count() == 0,
+            "mission hero leaked into the English foundation chapter",
+        )
+        english_guided_review = english.locator(".guided-intake-review")
+        require(
+            await english_guided_review.count() == 1
+            and not await english_guided_review.evaluate("element => element.open"),
+            "completed English setup did not start collapsed",
+        )
+        require(
+            await english.get_by_role("button", name="Save changes").count() == 0,
+            "completed English setup exposed its editor before review",
+        )
+        await english_guided_review.get_by_text("Initial setup complete", exact=True).click()
+        require(
             await english.get_by_role("button", name="Save changes").count() == 1,
-            "English foundation editor is unavailable",
+            "English foundation editor is unavailable after opening setup review",
         )
         require(
             await english.get_by_label("Target office").input_value() == "Alcaldía Municipal",
