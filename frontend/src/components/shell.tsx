@@ -340,14 +340,16 @@ export function CampaignShell({
               {dictionary.notices[notice]}
             </div>
           ) : null}
-          <CampaignExperienceHero
-            locale={locale}
-            dictionary={dictionary}
-            mode={experienceMode}
-            campaignName={model.campaign.name}
-            currentPhase={currentJourneyPhase}
-            journey={campaignJourney}
-          />
+          {chapterRouteActive ? null : (
+            <CampaignExperienceHero
+              locale={locale}
+              dictionary={dictionary}
+              mode={experienceMode}
+              campaignName={model.campaign.name}
+              currentPhase={currentJourneyPhase}
+              journey={campaignJourney}
+            />
+          )}
 
           {chapterRouteActive ? null : (
             <CampaignLaunchRoadmap
@@ -421,6 +423,7 @@ export function CampaignShell({
                 id="guided-intake"
                 className="guided-intake-panel"
                 aria-labelledby="guided-intake-title"
+                data-complete={guidedIntake?.status === "READY_FOR_RESEARCH"}
               >
                 <div className="intake-heading">
                   <div>
@@ -449,182 +452,211 @@ export function CampaignShell({
                   ) : null}
                 </div>
 
-                <GuidedIntakeEditor
-                  locale={locale}
-                  dictionary={dictionary}
-                  demo={model.demo}
-                  availability={model.guidedIntakeAvailability}
-                  intake={guidedIntake}
-                  capabilities={intakeCapabilities}
-                />
+                <details
+                  className="guided-intake-review"
+                  open={guidedIntake?.status !== "READY_FOR_RESEARCH"}
+                >
+                  <summary>
+                    <span>{dictionary.intake.completedTitle}</span>
+                    <small>{dictionary.intake.completedBody}</small>
+                  </summary>
+                  <div className="guided-intake-review-body">
+                    <GuidedIntakeEditor
+                      locale={locale}
+                      dictionary={dictionary}
+                      demo={model.demo}
+                      availability={model.guidedIntakeAvailability}
+                      intake={guidedIntake}
+                      capabilities={intakeCapabilities}
+                    />
 
-                {guidedIntake ? (
-                  <>
-                    <div className="intake-status-row">
-                      <div>
-                        <span>{dictionary.intake.status}</span>
-                        <strong>
-                          {dictionary.intake.statusLabels[guidedIntake.status]}
-                        </strong>
-                      </div>
-                      <div>
-                        <span>{dictionary.intake.nextAction}</span>
-                        <strong>
-                          {
-                            dictionary.intake.nextActionLabels[
-                              guidedIntake.next_action
-                            ]
-                          }
-                        </strong>
-                      </div>
-                    </div>
-
-                    <div className="intake-layout">
-                      <section aria-labelledby="intake-checks-title">
-                        <h3 id="intake-checks-title">
-                          {dictionary.intake.checks}
-                        </h3>
-                        <ol className="intake-checks">
-                          {guidedIntake.checks.map((check, index) => (
-                            <li key={check.key} data-complete={check.complete}>
-                              <span className="intake-step" aria-hidden="true">
-                                {String(index + 1).padStart(2, "0")}
-                              </span>
-                              <div>
-                                <strong>
-                                  {dictionary.intake.checkLabels[check.key]}
-                                </strong>
-                                <small className="intake-check-state">
-                                  {check.complete
-                                    ? dictionary.intake.checkComplete
-                                    : dictionary.intake.checkPending}
-                                </small>
-                              </div>
-                              <span
-                                className="intake-check-mark"
-                                aria-hidden="true"
-                              >
-                                {check.complete ? "✓" : "·"}
-                              </span>
-                            </li>
-                          ))}
-                        </ol>
-                      </section>
-
-                      <section aria-labelledby="intake-context-title">
-                        <h3 id="intake-context-title">
-                          {dictionary.shell.currentContext}
-                        </h3>
-                        <dl className="intake-data">
+                    {guidedIntake ? (
+                      <>
+                        <div className="intake-status-row">
                           <div>
-                            <dt>{dictionary.intake.office}</dt>
-                            <dd>
-                              {guidedIntake.office ??
-                                dictionary.intake.notAssessed}
-                            </dd>
-                          </div>
-                          <div>
-                            <dt>{dictionary.intake.candidateProject}</dt>
-                            <dd>
-                              {guidedIntake.candidate_project ??
-                                dictionary.intake.notAssessed}
-                            </dd>
-                          </div>
-                          <div>
-                            <dt>{dictionary.intake.currentTeam}</dt>
-                            <dd>
-                              <IntakeItems
-                                items={guidedIntake.current_team}
-                                dictionary={dictionary}
-                              />
-                            </dd>
-                          </div>
-                          <div>
-                            <dt>{dictionary.intake.currentAssets}</dt>
-                            <dd>
-                              <IntakeItems
-                                items={guidedIntake.current_assets}
-                                dictionary={dictionary}
-                              />
-                            </dd>
-                          </div>
-                          <div>
-                            <dt>{dictionary.intake.budgetStatus}</dt>
-                            <dd>
+                            <span>{dictionary.intake.status}</span>
+                            <strong>
                               {
-                                dictionary.intake.budgetStatusLabels[
-                                  guidedIntake.budget_status
+                                dictionary.intake.statusLabels[
+                                  guidedIntake.status
                                 ]
                               }
-                            </dd>
+                            </strong>
                           </div>
                           <div>
-                            <dt>{dictionary.intake.knownUnknowns}</dt>
-                            <dd>
-                              <IntakeItems
-                                items={guidedIntake.known_unknowns}
-                                dictionary={dictionary}
-                              />
-                            </dd>
+                            <span>{dictionary.intake.nextAction}</span>
+                            <strong>
+                              {
+                                dictionary.intake.nextActionLabels[
+                                  guidedIntake.next_action
+                                ]
+                              }
+                            </strong>
+                          </div>
+                        </div>
+
+                        <div className="intake-layout">
+                          <section aria-labelledby="intake-checks-title">
+                            <h3 id="intake-checks-title">
+                              {dictionary.intake.checks}
+                            </h3>
+                            <ol className="intake-checks">
+                              {guidedIntake.checks.map((check, index) => (
+                                <li
+                                  key={check.key}
+                                  data-complete={check.complete}
+                                >
+                                  <span
+                                    className="intake-step"
+                                    aria-hidden="true"
+                                  >
+                                    {String(index + 1).padStart(2, "0")}
+                                  </span>
+                                  <div>
+                                    <strong>
+                                      {dictionary.intake.checkLabels[check.key]}
+                                    </strong>
+                                    <small className="intake-check-state">
+                                      {check.complete
+                                        ? dictionary.intake.checkComplete
+                                        : dictionary.intake.checkPending}
+                                    </small>
+                                  </div>
+                                  <span
+                                    className="intake-check-mark"
+                                    aria-hidden="true"
+                                  >
+                                    {check.complete ? "✓" : "·"}
+                                  </span>
+                                </li>
+                              ))}
+                            </ol>
+                          </section>
+
+                          <section aria-labelledby="intake-context-title">
+                            <h3 id="intake-context-title">
+                              {dictionary.shell.currentContext}
+                            </h3>
+                            <dl className="intake-data">
+                              <div>
+                                <dt>{dictionary.intake.office}</dt>
+                                <dd>
+                                  {guidedIntake.office ??
+                                    dictionary.intake.notAssessed}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>{dictionary.intake.candidateProject}</dt>
+                                <dd>
+                                  {guidedIntake.candidate_project ??
+                                    dictionary.intake.notAssessed}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>{dictionary.intake.currentTeam}</dt>
+                                <dd>
+                                  <IntakeItems
+                                    items={guidedIntake.current_team}
+                                    dictionary={dictionary}
+                                  />
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>{dictionary.intake.currentAssets}</dt>
+                                <dd>
+                                  <IntakeItems
+                                    items={guidedIntake.current_assets}
+                                    dictionary={dictionary}
+                                  />
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>{dictionary.intake.budgetStatus}</dt>
+                                <dd>
+                                  {
+                                    dictionary.intake.budgetStatusLabels[
+                                      guidedIntake.budget_status
+                                    ]
+                                  }
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>{dictionary.intake.knownUnknowns}</dt>
+                                <dd>
+                                  <IntakeItems
+                                    items={guidedIntake.known_unknowns}
+                                    dictionary={dictionary}
+                                  />
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>
+                                  {dictionary.intake.evidenceRequirements}
+                                </dt>
+                                <dd>
+                                  <IntakeItems
+                                    items={guidedIntake.evidence_requirements}
+                                    dictionary={dictionary}
+                                  />
+                                </dd>
+                              </div>
+                            </dl>
+                          </section>
+                        </div>
+
+                        <section
+                          className="research-actions"
+                          aria-labelledby="research-actions-title"
+                        >
+                          <div>
+                            <h3 id="research-actions-title">
+                              {dictionary.intake.researchActions}
+                            </h3>
+                            <p>{dictionary.common.notApproval}</p>
+                          </div>
+                          {guidedIntake.research_first_actions.length > 0 ? (
+                            <ol>
+                              {guidedIntake.research_first_actions.map(
+                                (action) => (
+                                  <li key={action}>
+                                    {
+                                      dictionary.intake.researchActionLabels[
+                                        action
+                                      ]
+                                    }
+                                  </li>
+                                ),
+                              )}
+                            </ol>
+                          ) : (
+                            <p className="intake-empty">
+                              {
+                                dictionary.intake.nextActionLabels[
+                                  guidedIntake.next_action
+                                ]
+                              }
+                            </p>
+                          )}
+                        </section>
+
+                        <dl className="intake-evidence">
+                          <div>
+                            <dt>{dictionary.intake.readReceipt}</dt>
+                            <dd>{model.guidedIntake?.audit_event_id}</dd>
                           </div>
                           <div>
-                            <dt>{dictionary.intake.evidenceRequirements}</dt>
-                            <dd>
-                              <IntakeItems
-                                items={guidedIntake.evidence_requirements}
-                                dictionary={dictionary}
-                              />
-                            </dd>
+                            <dt>{dictionary.intake.updatedAt}</dt>
+                            <dd>{guidedIntake.updated_at}</dd>
                           </div>
                         </dl>
-                      </section>
-                    </div>
-
-                    <section
-                      className="research-actions"
-                      aria-labelledby="research-actions-title"
-                    >
-                      <div>
-                        <h3 id="research-actions-title">
-                          {dictionary.intake.researchActions}
-                        </h3>
-                        <p>{dictionary.common.notApproval}</p>
-                      </div>
-                      {guidedIntake.research_first_actions.length > 0 ? (
-                        <ol>
-                          {guidedIntake.research_first_actions.map((action) => (
-                            <li key={action}>
-                              {dictionary.intake.researchActionLabels[action]}
-                            </li>
-                          ))}
-                        </ol>
-                      ) : (
-                        <p className="intake-empty">
-                          {
-                            dictionary.intake.nextActionLabels[
-                              guidedIntake.next_action
-                            ]
-                          }
-                        </p>
-                      )}
-                    </section>
-
-                    <dl className="intake-evidence">
-                      <div>
-                        <dt>{dictionary.intake.readReceipt}</dt>
-                        <dd>{model.guidedIntake?.audit_event_id}</dd>
-                      </div>
-                      <div>
-                        <dt>{dictionary.intake.updatedAt}</dt>
-                        <dd>{guidedIntake.updated_at}</dd>
-                      </div>
-                    </dl>
-                  </>
-                ) : (
-                  <p className="intake-state" role="status">
-                    {guidedIntakeStateMessage}
-                  </p>
-                )}
+                      </>
+                    ) : (
+                      <p className="intake-state" role="status">
+                        {guidedIntakeStateMessage}
+                      </p>
+                    )}
+                  </div>
+                </details>
               </section>
             </ChapterSurface>
           ) : null}

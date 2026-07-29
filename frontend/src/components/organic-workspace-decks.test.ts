@@ -70,7 +70,7 @@ describe("organic workspace decks", () => {
     expect(html.match(/hidden=""/g)?.length).toBe(2);
   });
 
-  it("renders mutually exclusive team operations tabs with command visibility language", () => {
+  it("renders two interleaved team operation cards with one inert layer behind", () => {
     const html = renderToStaticMarkup(
       createElement(TeamOperationsDeck, {
         dictionary,
@@ -85,7 +85,11 @@ describe("organic workspace decks", () => {
     expect(html).toContain("Crear seguimiento");
     expect(html).toContain("Vista de mando");
     expect(html).toContain('aria-selected="true"');
-    expect(html).toContain('hidden=""');
+    expect(html).toContain('data-active="true"');
+    expect(html).toContain('data-active="false"');
+    expect(html).toContain('aria-hidden="true"');
+    expect(html).toContain('inert=""');
+    expect(html).not.toContain('hidden=""');
   });
 
   it("renders candidate actions with grounded counts and no public-use claim", () => {

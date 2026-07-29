@@ -829,7 +829,7 @@
     {
       "task_id": "C3-FRONT-008",
       "owner": "WS-06/WS-07/WS-08",
-      "status": "CI_GREEN",
+      "status": "IN_PROGRESS",
       "evidence": [
         "frontend/src/components/guided-team-selector.tsx",
         "frontend/src/components/candidate-action-brief.tsx",
@@ -849,6 +849,7 @@
       ],
       "external_effects": "NONE",
       "blockers": [
+        "Hosted exact-head PostgreSQL/browser validation is required for the feedback closure",
         "Server-enforced MY_WORK and TEAM_SHARED projections require governed principal assignments and exact grants",
         "Human product review and stacked merge remain required",
         "Staging, production infrastructure and production approval remain separate gates"

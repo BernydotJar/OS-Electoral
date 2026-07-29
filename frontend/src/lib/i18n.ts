@@ -267,6 +267,9 @@ const es = {
     eyebrow: "INICIO GUIADO · EVIDENCIA PRIMERO",
     title: "Construye la base de tu campaña",
     body: "Responde preguntas claras para que CampaignOS pueda indicarte qué sigue, qué evidencia falta y qué trabajo debe organizarse.",
+    completedTitle: "Configuración inicial completada",
+    completedBody:
+      "La base ya está registrada. Ábrela sólo cuando necesites revisar o actualizar la configuración de inicio.",
     startTitle: "Comenzar la ruta guiada",
     startBody:
       "Crea el registro interno y su evidencia de auditoría. No inicia estrategia, contacto ni ejecución externa.",
@@ -515,12 +518,18 @@ const es = {
       APPROVALS_PENDING: "Aprobaciones pendientes",
     },
     actionInsightBodies: {
-      NEXT_ACTION: "Avanza el siguiente gate sin saltar evidencia ni aprobación.",
-      EVIDENCE_GAP: "Agrega fuentes oficiales o investigación de campaña con procedencia.",
-      CONTRADICTIONS_OPEN: "Contrasta las versiones y documenta la resolución antes de usar la declaración.",
-      RISK_DECISION_REQUIRED: "Eleva el riesgo a revisión humana con evidencia y responsable.",
-      DEVELOPMENT_ACTIVE: "Convierte el objetivo de desarrollo en preparación, responsable y evidencia.",
-      APPROVALS_PENDING: "Obtén aprobaciones vigentes por sección antes de avanzar.",
+      NEXT_ACTION:
+        "Avanza el siguiente gate sin saltar evidencia ni aprobación.",
+      EVIDENCE_GAP:
+        "Agrega fuentes oficiales o investigación de campaña con procedencia.",
+      CONTRADICTIONS_OPEN:
+        "Contrasta las versiones y documenta la resolución antes de usar la declaración.",
+      RISK_DECISION_REQUIRED:
+        "Eleva el riesgo a revisión humana con evidencia y responsable.",
+      DEVELOPMENT_ACTIVE:
+        "Convierte el objetivo de desarrollo en preparación, responsable y evidencia.",
+      APPROVALS_PENDING:
+        "Obtén aprobaciones vigentes por sección antes de avanzar.",
     },
     sectionLabels: {
       identity: "Identidad",
@@ -1143,6 +1152,9 @@ const en: Dictionary = {
     eyebrow: "GUIDED START · EVIDENCE FIRST",
     title: "Build your campaign foundation",
     body: "Answer clear questions so CampaignOS can show what comes next, what evidence is missing, and what work must be organized.",
+    completedTitle: "Initial setup complete",
+    completedBody:
+      "The foundation is already recorded. Open it only when you need to review or update the starting configuration.",
     startTitle: "Start the verifiable intake",
     startBody:
       "Creates the internal record and audit evidence. It does not start strategy, contact, or external execution.",
@@ -1391,11 +1403,16 @@ const en: Dictionary = {
       APPROVALS_PENDING: "Approvals pending",
     },
     actionInsightBodies: {
-      NEXT_ACTION: "Advance the next gate without skipping evidence or approval.",
-      EVIDENCE_GAP: "Add official sources or campaign research with provenance.",
-      CONTRADICTIONS_OPEN: "Compare versions and document resolution before using the claim.",
-      RISK_DECISION_REQUIRED: "Escalate the risk for human review with evidence and an owner.",
-      DEVELOPMENT_ACTIVE: "Turn the development goal into preparation, ownership, and evidence.",
+      NEXT_ACTION:
+        "Advance the next gate without skipping evidence or approval.",
+      EVIDENCE_GAP:
+        "Add official sources or campaign research with provenance.",
+      CONTRADICTIONS_OPEN:
+        "Compare versions and document resolution before using the claim.",
+      RISK_DECISION_REQUIRED:
+        "Escalate the risk for human review with evidence and an owner.",
+      DEVELOPMENT_ACTIVE:
+        "Turn the development goal into preparation, ownership, and evidence.",
       APPROVALS_PENDING: "Obtain current section approvals before proceeding.",
     },
     sectionLabels: {
