@@ -37,6 +37,15 @@ def require(condition: bool, message: str) -> None:
         raise ReviewFailure(message)
 
 
+def transition_seconds(value: str) -> float:
+    token = value.strip()
+    if token.endswith("ms"):
+        return float(token[:-2]) / 1000
+    if token.endswith("s"):
+        return float(token[:-1])
+    raise ReviewFailure(f"unexpected transition duration token: {token}")
+
+
 async def assert_no_overflow(page: Page, label: str) -> None:
     widths = await page.evaluate(
         """() => ({
@@ -903,18 +912,20 @@ async def review() -> dict[str, object]:
             mobile_work_columns == 1,
             f"mobile operations board is not a single responsive column: {mobile_work_columns}",
         )
-        reduced_motion_state = await mobile.locator(".experience-mission-pulse i").first.evaluate(
-            "element => getComputedStyle(element).animationName"
+        require(
+            await mobile.locator(".campaign-experience, .experience-mission-pulse").count() == 0,
+            "mission hero leaked into the mobile team chapter",
         )
         require(
-            reduced_motion_state == "none",
-            f"mission cadence still animates under reduced motion: {reduced_motion_state}",
+            await mobile.locator(".team-operations-layer").count() == 2,
+            "mobile team chapter lost one of its interleaved operation cards",
+        )
+        reduced_transition = await mobile.locator(".team-operations-layer").first.evaluate(
+            "element => getComputedStyle(element).transitionDuration"
         )
         require(
-            await mobile.get_by_text("Evidencia", exact=True).count() >= 1
-            and await mobile.get_by_text("Decisión humana", exact=True).count() >= 1
-            and await mobile.get_by_text("Ejecución gobernada", exact=True).count() >= 1,
-            "reduced-motion hero lost its static mission cadence",
+            all(transition_seconds(part) <= 0.0001 for part in reduced_transition.split(",")),
+            f"team operation cards still transition under reduced motion: {reduced_transition}",
         )
         await mobile.screenshot(path=ARTIFACT_DIR / "functional-mobile-es.png", full_page=True)
         await browser.close()
