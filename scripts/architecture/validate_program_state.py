@@ -576,7 +576,7 @@ def validate_graph_harness_execution(data: dict[str, Any]) -> None:
     )
 
     selected = scheduler["selected_node"]
-    require(selected["id"] == "C3-SEC-002", "unexpected selected Graph Harness node")
+    require(bool(str(selected["id"]).strip()), "selected Graph Harness node lacks an ID")
     require(selected["mode"] == "SHIP", "selected Graph Harness node must be SHIP")
     require(
         selected["state"] in {"spec_ready", "in_progress", "review"},
@@ -666,7 +666,10 @@ def validate_graph_harness_execution(data: dict[str, Any]) -> None:
     require(repair["evidence"], "localized graph repair lacks evidence")
 
     delivery = repair["delivery"]
-    require(delivery["state"] == "review", "localized repair delivery must remain in review")
+    require(
+        delivery["state"] in {"review", "merged"},
+        "localized repair delivery has an unsupported state",
+    )
     require(
         bool(SHA_PATTERN.fullmatch(delivery["implementation_head"])),
         "invalid localized repair implementation SHA",
@@ -680,10 +683,24 @@ def validate_graph_harness_execution(data: dict[str, Any]) -> None:
         and delivery["visual_conclusion"] == "SUCCESS",
         "localized repair exact-head validation is not green",
     )
-    require(
-        delivery["merge_gate"] == "PENDING_HUMAN_REVIEW",
-        "localized repair bypassed the merge review gate",
-    )
+    if delivery["state"] == "review":
+        require(
+            delivery["merge_gate"] == "PENDING_HUMAN_REVIEW",
+            "localized repair bypassed the merge review gate",
+        )
+    else:
+        require(
+            delivery["merge_gate"] == "SATISFIED_USER_AUTHORIZATION",
+            "merged delivery lacks explicit merge authorization evidence",
+        )
+        require(
+            bool(SHA_PATTERN.fullmatch(delivery["merged_main_sha"])),
+            "merged delivery lacks a valid main SHA",
+        )
+        require(
+            delivery["post_merge_ci_conclusion"] == "SUCCESS",
+            "merged delivery lacks successful post-merge CI",
+        )
     for relative in delivery["evidence"]:
         require((ROOT / relative).is_file(), f"missing localized repair evidence: {relative}")
 

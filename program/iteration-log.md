@@ -731,3 +731,13 @@
 - Extended the program validator to fail closed when canonical or fallback Graph Harness runtime state diverges from `program/graph-harness-execution.json`.
 - Added a regression test for the stale pre-approval state; focused validation passes with 13 tests, Ruff, format and executable program truth.
 - No product behavior, schema, limits, dependencies, infrastructure or political external effects changed. Human close/merge remains pending; production stays `BLOCKED` and release stays `DENY_RELEASE`.
+
+## 2026-07-29 — C3-SEC-002 merge closure and C3-PERF-001 selection
+
+- Merged Graph Harness runtime PR `#127` at main `b4e24cd7f7e9842fbd6e656580a3ac7365533d40` after resolving the stale-ledger review finding.
+- Merged C3-SEC-002 PR `#128` at main `1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae` after localized repairs for durable rollback accounting and pre-binding malformed-request abuse protection.
+- Post-merge CampaignOS CI `30475334941` passed quality, PostgreSQL/RLS, recovery, frontend/browser, stack E2E, CodeQL, dependencies, secrets, Terraform plan-only, and supply-chain gates.
+- Kept strict required checks, conversation resolution, and admin enforcement; the impossible self-review count is `0` because the repository has one owner and GitHub forbids self-approval.
+- Marked C3-SEC-002 `MERGED_TO_MAIN` and selected `C3-PERF-001` as `spec_ready` because the production `load-test` gate remains `NOT_IMPLEMENTED`.
+- Added complete SHIP requirements, design, and tasks for a bounded cost-free authenticated load and PostgreSQL contention harness.
+- No deployment, infrastructure apply, spending, publication, citizen contact, targeting, or political external effect occurred. Production remains `BLOCKED`; release remains `DENY_RELEASE`.

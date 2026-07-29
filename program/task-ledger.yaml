@@ -902,7 +902,7 @@
     {
       "task_id": "C3-SEC-002",
       "owner": "WS-13/WS-05/WS-03",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-SEC-002/requirements.md",
         "specs/C3-SEC-002/design.md",
@@ -919,15 +919,21 @@
       "external_effects": "NONE",
       "blockers": [
         "Managed staging load, contention proof, cleanup scheduling and approved retention remain separate platform gates",
-        "Edge DDoS/WAF, invalid-token abuse controls, deployed telemetry and alert routing remain absent",
-        "Independent security, privacy, database, operational, legal, human close and merge approvals remain pending"
+        "Edge DDoS/WAF, invalid-token abuse controls, deployed telemetry and alert routing remain absent"
       ],
       "approval": {
         "recorded_at": "2026-07-29T00:29:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
+        "statement": "Aprobado C3-SEC-002 para implementaci\u00f3n SHIP.",
         "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
-      }
+      },
+      "implementation_commit": "74977e390d33929f6cb5b2e850d52f8f7456f524",
+      "head_commit": "74977e390d33929f6cb5b2e850d52f8f7456f524",
+      "draft_pr": 128,
+      "ci_run_id": 30475055645,
+      "visual_run_id": 30475056564,
+      "integrated_main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae",
+      "post_merge_ci_run_id": 30475334941
     }
   ]
 }

@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
+    "revision": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -28,45 +28,25 @@
   "scheduler": {
     "evaluated_at": "2026-07-29",
     "one_active_feature": true,
-    "active_feature": "C3-SEC-002",
+    "active_feature": null,
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-SEC-002",
-      "title": "Tenant and principal rate limiting and abuse protection",
+      "id": "C3-PERF-001",
+      "title": "Authenticated load and contention verification",
       "mode": "SHIP",
-      "state": "review",
-      "human_approval": "APPROVED",
+      "state": "spec_ready",
+      "human_approval": "PENDING",
       "dependencies": [
-        "C3-IAM-001",
         "C3-API-001",
-        "C3-SEC-001"
+        "C3-OBS-001",
+        "C3-SEC-002"
       ],
       "specs": [
-        "specs/C3-SEC-002/requirements.md",
-        "specs/C3-SEC-002/design.md",
-        "specs/C3-SEC-002/tasks.md"
+        "specs/C3-PERF-001/requirements.md",
+        "specs/C3-PERF-001/design.md",
+        "specs/C3-PERF-001/tasks.md"
       ],
-      "selection_reason": "C3-SEC-002 closes the application-layer rate-limit implementation gap with an approved SHIP increment; local implementation, role-separated review and exact-head hosted CI are complete, while human close, merge and production gates remain pending.",
-      "approval_receipt": {
-        "recorded_at": "2026-07-29T00:29:00-06:00",
-        "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
-        "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
-      },
-      "review_artifact": "progress/review_C3-SEC-002.md",
-      "local_evidence": [
-        "docs/testing/c3-sec-002-evidence.md",
-        "program/validations/c3-sec-002.json"
-      ],
-      "hosted_evidence": {
-        "validated_implementation_head": "c5261d547b1f4149ed1cb55c122159a9fe661d81",
-        "draft_pr": 128,
-        "campaignos_ci_run_id": 30431102657,
-        "runtime_visual_run_id": 30431101415,
-        "conclusion": "SUCCESS",
-        "production_status": "BLOCKED",
-        "release_decision": "DENY_RELEASE"
-      }
+      "selection_reason": "The production load-test gate is NOT_IMPLEMENTED; a bounded cost-free authenticated load and PostgreSQL contention harness is the highest-value safe node after C3-SEC-002 merged."
     },
     "blocked_nodes": [
       {
@@ -78,26 +58,30 @@
     ]
   },
   "localized_repair": {
-    "id": "repair:post-merge-program-truth-2026-07-29",
+    "id": "repair:c3-sec-002-review-and-merge-2026-07-29",
     "status": "COMPLETED",
-    "scope": "Reconcile cumulative PR 126, main CI, closed superseded PRs, canonical task statuses, and stopped temporary review deployment without changing product code.",
+    "scope": "Close review findings, merge Graph Harness runtime and C3-SEC-002, and reconcile exact-head plus post-merge evidence without deployment.",
     "evidence": [
-      "https://github.com/BernydotJar/OS-Electoral/pull/126",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30424626008",
-      "main@a12bed0771299ef8c7bc611b69b1b8db1c01d968"
+      "https://github.com/BernydotJar/OS-Electoral/pull/127",
+      "https://github.com/BernydotJar/OS-Electoral/pull/128",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30475334941",
+      "main@1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae"
     ],
     "delivery": {
-      "state": "review",
-      "implementation_head": "1677b375072b5c0ad4fa6555b59672f98fcdad96",
-      "draft_pr": 127,
-      "campaignos_ci_run_id": 30427514369,
+      "state": "merged",
+      "implementation_head": "74977e390d33929f6cb5b2e850d52f8f7456f524",
+      "draft_pr": 128,
+      "campaignos_ci_run_id": 30475055645,
       "campaignos_ci_conclusion": "SUCCESS",
-      "visual_run_id": 30427514394,
+      "visual_run_id": 30475056564,
       "visual_conclusion": "SUCCESS",
-      "merge_gate": "PENDING_HUMAN_REVIEW",
+      "merge_gate": "SATISFIED_USER_AUTHORIZATION",
+      "merged_main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae",
+      "post_merge_ci_run_id": 30475334941,
+      "post_merge_ci_conclusion": "SUCCESS",
       "evidence": [
-        "docs/testing/c3-harness-001-evidence.md",
-        "program/validations/c3-harness-001.json"
+        "docs/testing/c3-sec-002-evidence.md",
+        "program/validations/c3-sec-002.json"
       ]
     }
   }
