@@ -70,7 +70,7 @@ describe("organic workspace decks", () => {
     expect(html.match(/hidden=""/g)?.length).toBe(2);
   });
 
-  it("renders two interleaved team operation cards with one inert layer behind", () => {
+  it("renders one visible team operation panel while retaining an inert alternate panel", () => {
     const html = renderToStaticMarkup(
       createElement(TeamOperationsDeck, {
         dictionary,

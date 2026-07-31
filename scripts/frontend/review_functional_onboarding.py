@@ -516,7 +516,7 @@ async def review() -> dict[str, object]:
         operation_layers = page.locator(".team-operations-layer")
         require(
             await operation_layers.count() == 2,
-            "team operations deck does not retain two interleaved cards",
+            "team operations deck must retain two accessible tab panels",
         )
         create_layer = page.locator('[data-layer="create"]')
         board_layer = page.locator('[data-layer="board"]')
@@ -528,27 +528,25 @@ async def review() -> dict[str, object]:
             await board_layer.get_attribute("data-active") == "false"
             and await board_layer.get_attribute("inert") is not None
             and await board_layer.get_attribute("aria-hidden") == "true",
-            "inactive board card is not retained safely behind the creation card",
+            "inactive board panel is not inert and hidden from assistive technology",
         )
-        layer_geometry = await page.locator(".team-operations-stack").evaluate(
+        layer_visibility = await page.locator(".team-operations-stack").evaluate(
             """stack => {
               const active = stack.querySelector('[data-active="true"]');
               const inactive = stack.querySelector('[data-active="false"]');
-              const activeRect = active.getBoundingClientRect();
-              const inactiveRect = inactive.getBoundingClientRect();
               return {
-                topDelta: inactiveRect.top - activeRect.top,
-                leftDelta: inactiveRect.left - activeRect.left,
-                activeZ: Number(getComputedStyle(active).zIndex),
-                inactiveZ: Number(getComputedStyle(inactive).zIndex),
+                activeDisplay: getComputedStyle(active).display,
+                activeVisibility: getComputedStyle(active).visibility,
+                inactiveDisplay: getComputedStyle(inactive).display,
+                inactiveVisibility: getComputedStyle(inactive).visibility,
               };
             }"""
         )
         require(
-            layer_geometry["topDelta"] < 0
-            and layer_geometry["leftDelta"] > 0
-            and layer_geometry["activeZ"] > layer_geometry["inactiveZ"],
-            f"operation cards are not visibly interleaved: {layer_geometry}",
+            layer_visibility["activeDisplay"] != "none"
+            and layer_visibility["activeVisibility"] == "visible"
+            and layer_visibility["inactiveDisplay"] == "none",
+            f"inactive operation panel still distracts or occupies layout: {layer_visibility}",
         )
         work_creator = page.locator(".team-work-item-creator")
         await work_creator.get_by_label("Tipo de trabajo").select_option("DELIVERABLE")
@@ -937,7 +935,7 @@ async def review() -> dict[str, object]:
         )
         require(
             await mobile.locator(".team-operations-layer").count() == 2,
-            "mobile team chapter lost one of its interleaved operation cards",
+            "mobile team chapter lost one of its operation tab panels",
         )
         reduced_transition = await mobile.locator(".team-operations-layer").first.evaluate(
             "element => getComputedStyle(element).transitionDuration"
