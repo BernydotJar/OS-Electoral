@@ -853,7 +853,7 @@ async def review() -> dict[str, object]:
             await english.get_by_role("button", name="Save changes").count() == 0,
             "completed English setup exposed its editor before review",
         )
-        await english_guided_review.get_by_text("Initial setup complete", exact=True).click()
+        await english_guided_review.get_by_text("View saved setup", exact=True).click()
         require(
             await english.get_by_role("button", name="Save changes").count() == 1,
             "English foundation editor is unavailable after opening setup review",
