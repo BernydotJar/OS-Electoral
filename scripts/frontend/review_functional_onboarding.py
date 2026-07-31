@@ -69,6 +69,14 @@ async def wait_for_chapter(page: Page, url_pattern: str, selector: str) -> None:
     await page.locator(selector).wait_for(state="visible")
 
 
+async def navigate_from_chapter(page: Page, href: str) -> None:
+    chapter_map = page.locator(".chapter-command-map")
+    require(await chapter_map.count() == 1, "chapter map disclosure is missing")
+    if not await chapter_map.evaluate("element => element.open"):
+        await chapter_map.locator(":scope > summary").click()
+    await page.locator(f'.chapter-command-track a[href="{href}"]').click()
+
+
 async def assert_accessible(page: Page, label: str) -> None:
     require(AXE_SOURCE.is_file(), f"axe-core runtime missing: {AXE_SOURCE}")
     await page.add_script_tag(path=str(AXE_SOURCE))
@@ -124,6 +132,17 @@ async def review() -> dict[str, object]:
         page = await context.new_page()
         attach_page_guards(page)
 
+        readiness_response = await context.request.get(f"{BASE_URL}/api/v1/ready")
+        require(
+            readiness_response.status == 200,
+            "same-origin frontend readiness did not return HTTP 200",
+        )
+        readiness_payload = await readiness_response.json()
+        require(
+            isinstance(readiness_payload, dict) and readiness_payload.get("status") == "READY",
+            "same-origin frontend readiness did not proxy the backend contract",
+        )
+
         response = await page.goto(f"{BASE_URL}/es", wait_until="networkidle")
         require(response is not None and response.ok, "live shell did not load")
         require(
@@ -143,9 +162,16 @@ async def review() -> dict[str, object]:
             "granted candidate module is not visible",
         )
         require(
-            await page.get_by_role("heading", level=1).inner_text()
-            == "Convierte una idea política en una campaña que sabe avanzar",
-            "first-use campaign welcome is missing",
+            await page.get_by_role("heading", level=1).inner_text() == "Tu campaña, paso a paso",
+            "campaign command overview heading is missing",
+        )
+        require(
+            await page.locator(".campaign-command-overview").count() == 1,
+            "campaign command overview is missing",
+        )
+        require(
+            await page.locator(".campaign-experience").count() == 0,
+            "retired first-use hero remains visible",
         )
         require(
             await page.get_by_role("button", name="Crear expediente").count() == 0,
@@ -172,7 +198,10 @@ async def review() -> dict[str, object]:
             "seeded campaign was not selected",
         )
         require(
-            await page.get_by_role("link", name="Comenzar la ruta", exact=True).count() == 1,
+            await page.get_by_role(
+                "link", name="Continuar información de arranque", exact=True
+            ).count()
+            == 1,
             "foundation chapter entry link missing",
         )
         require(
@@ -200,7 +229,7 @@ async def review() -> dict[str, object]:
         )
         require(storage == {"local": [], "session": []}, f"browser storage used: {storage}")
 
-        await page.get_by_role("link", name="Comenzar la ruta", exact=True).click()
+        await page.get_by_role("link", name="Continuar información de arranque", exact=True).click()
         await wait_for_chapter(page, "**/es/campaign/foundation**", "#guided-intake")
         require(
             await page.locator("#guided-intake").count() == 1,
@@ -297,9 +326,7 @@ async def review() -> dict[str, object]:
             == 1,
             "foundation route lost its setup identity after save",
         )
-        await page.locator(
-            '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
-        ).click()
+        await navigate_from_chapter(page, "/es/campaign/evidence#candidate-workspace")
         await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
         require(
             await page.locator("#candidate-workspace").count() == 1,
@@ -378,9 +405,7 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence was not projected",
         )
-        await page.locator(
-            '.chapter-navigation-track a[href="/es/campaign/team#team-workspace"]'
-        ).click()
+        await navigate_from_chapter(page, "/es/campaign/team#team-workspace")
         await wait_for_chapter(page, "**/es/campaign/team**", "#team-workspace")
         require(
             await page.locator("#team-workspace").count() == 1,
@@ -773,18 +798,14 @@ async def review() -> dict[str, object]:
             "manual role consultant dossier did not persist",
         )
 
-        await page.locator(
-            '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
-        ).click()
+        await navigate_from_chapter(page, "/es/campaign/evidence#candidate-workspace")
         await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
         await page.get_by_role("tab", name="Fuentes y evidencia").click()
         require(
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence did not persist on its chapter route",
         )
-        await page.locator(
-            '.chapter-navigation-track a[href="/es/campaign/foundation#guided-intake"]'
-        ).click()
+        await navigate_from_chapter(page, "/es/campaign/foundation#guided-intake")
         await wait_for_chapter(page, "**/es/campaign/foundation**", "#guided-intake")
         require(
             await page.locator(".campaign-experience").count() == 0,
@@ -804,9 +825,7 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Alcaldía Municipal", exact=True).count() >= 1,
             "persisted intake value is absent from its read projection",
         )
-        await page.locator(
-            '.chapter-navigation-track a[href="/es/campaign/team#team-workspace"]'
-        ).click()
+        await navigate_from_chapter(page, "/es/campaign/team#team-workspace")
         await wait_for_chapter(page, "**/es/campaign/team**", "#team-workspace")
         require(
             await page.get_by_text("Coordinación de voluntariado", exact=True).count() >= 1,
@@ -936,6 +955,7 @@ async def review() -> dict[str, object]:
     result: dict[str, object] = {
         "status": "PASS",
         "journey": "command_center_to_isolated_campaign_chapters",
+        "same_origin_readiness": "PASS_FRONTEND_PROXY_TO_BACKEND_READY",
         "chapter_navigation": "PASS_URL_HISTORY_BACK_FORWARD_ISOLATION",
         "role_blueprints": "PASS_LEAN_5_TO_FULL_10_PLUS_CUSTOM_ROLE",
         "consultant_role_dossiers": "PASS_PROPOSED_PRESERVED_APPLIED_MANUAL",

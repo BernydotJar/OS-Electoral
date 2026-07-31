@@ -149,28 +149,31 @@ def test_fallback_ledger_rejects_stale_merge_blocker(
         validator.validate_fallback_records(payload, roadmap)
 
 
-def test_graph_harness_projection_stops_at_human_approval() -> None:
+def test_graph_harness_projection_tracks_active_localized_repair() -> None:
     validator = load_validator()
     payload = manifest()
 
     validator.validate_graph_harness_execution(payload)
 
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
-    assert execution["scheduler"]["active_feature"] is None
+    selected = execution["scheduler"]["selected_node"]
+    assert execution["scheduler"]["active_feature"] == "C3-FRONT-008R1"
     assert execution["scheduler"]["ready_nodes"] == []
-    assert execution["scheduler"]["selected_node"]["id"] == "C3-PERF-001"
-    assert execution["scheduler"]["selected_node"]["state"] == "spec_ready"
-    assert execution["scheduler"]["selected_node"]["human_approval"] == "PENDING"
+    assert selected["id"] == "C3-FRONT-008R1"
+    assert selected["state"] == "review"
+    assert selected["human_approval"] == "APPROVED"
+    assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
     assert execution["localized_repair"]["delivery"]["state"] == "merged"
+    assert execution["localized_repair"]["delivery"]["draft_pr"] == 138
     assert execution["localized_repair"]["delivery"]["merge_gate"] == "SATISFIED_USER_AUTHORIZATION"
 
 
 def test_graph_harness_projection_rejects_stale_canonical_runtime_state() -> None:
     validator = load_validator()
     payload = copy.deepcopy(manifest())
-    payload["graph_harness_runtime"]["active_feature"] = "C3-SEC-002"
-    payload["graph_harness_runtime"]["selected_feature_state"] = "review"
-    payload["graph_harness_runtime"]["approval_gate"] = "APPROVED"
+    payload["graph_harness_runtime"]["active_feature"] = None
+    payload["graph_harness_runtime"]["selected_feature_state"] = "spec_ready"
+    payload["graph_harness_runtime"]["approval_gate"] = "PENDING"
 
     with pytest.raises(
         AssertionError,
@@ -179,13 +182,13 @@ def test_graph_harness_projection_rejects_stale_canonical_runtime_state() -> Non
         validator.validate_graph_harness_execution(payload)
 
 
-def test_graph_harness_projection_rejects_spec_approval_bypass(
+def test_graph_harness_projection_rejects_active_node_without_approval(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     validator = load_validator()
     payload = manifest()
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
-    execution["scheduler"]["selected_node"]["human_approval"] = "APPROVED"
+    execution["scheduler"]["selected_node"]["human_approval"] = "PENDING"
     original_load_json = validator.load_json
 
     def load_json(path: Path) -> dict[str, Any]:
@@ -194,17 +197,17 @@ def test_graph_harness_projection_rejects_spec_approval_bypass(
         return original_load_json(path)
 
     monkeypatch.setattr(validator, "load_json", load_json)
-    with pytest.raises(AssertionError, match="bypassed human approval"):
+    with pytest.raises(AssertionError, match="active node lacks human approval"):
         validator.validate_graph_harness_execution(payload)
 
 
-def test_graph_harness_projection_rejects_receipt_on_pending_spec(
+def test_graph_harness_projection_rejects_missing_approval_receipt(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     validator = load_validator()
     payload = manifest()
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
-    execution["scheduler"]["selected_node"]["approval_receipt"] = {"source": "invalid"}
+    del execution["scheduler"]["selected_node"]["approval_receipt"]
     original_load_json = validator.load_json
 
     def load_json(path: Path) -> dict[str, Any]:
@@ -213,7 +216,7 @@ def test_graph_harness_projection_rejects_receipt_on_pending_spec(
         return original_load_json(path)
 
     monkeypatch.setattr(validator, "load_json", load_json)
-    with pytest.raises(AssertionError, match="pending node cannot contain"):
+    with pytest.raises(AssertionError, match="approved node lacks an approval receipt"):
         validator.validate_graph_harness_execution(payload)
 
 

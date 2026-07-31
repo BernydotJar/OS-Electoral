@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae"
+    "revision": "a8c61170c55aeba59e3830837c869b572fe84a9a"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -26,29 +26,47 @@
     "blocked": "BLOCKED_BY_DEPENDENCY_OR_HUMAN_BLOCKED"
   },
   "scheduler": {
-    "evaluated_at": "2026-07-29",
+    "evaluated_at": "2026-07-30",
     "one_active_feature": true,
-    "active_feature": null,
+    "active_feature": "C3-FRONT-008R1",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-PERF-001",
-      "title": "Authenticated load and contention verification",
+      "id": "C3-FRONT-008R1",
+      "title": "QA command surface and local readiness repair",
       "mode": "SHIP",
-      "state": "spec_ready",
-      "human_approval": "PENDING",
+      "state": "review",
+      "human_approval": "APPROVED",
       "dependencies": [
-        "C3-API-001",
-        "C3-OBS-001",
+        "C3-FRONT-008",
         "C3-SEC-002"
       ],
       "specs": [
-        "specs/C3-PERF-001/requirements.md",
-        "specs/C3-PERF-001/design.md",
-        "specs/C3-PERF-001/tasks.md"
+        "specs/C3-FRONT-008R1/requirements.md",
+        "specs/C3-FRONT-008R1/design.md",
+        "specs/C3-FRONT-008R1/tasks.md"
       ],
-      "selection_reason": "The production load-test gate is NOT_IMPLEMENTED; a bounded cost-free authenticated load and PostgreSQL contention harness is the highest-value safe node after C3-SEC-002 merged."
+      "selection_reason": "Human QA exposed a reproducible local-readiness ambiguity and redundant command hierarchy; localized repair directly improves the critical user journey without cloud cost or political external effects.",
+      "approval_receipt": {
+        "recorded_at": "2026-07-30T23:58:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "Continue Graph Harness execution and implement the reported premium frontend QA repair as a bounded SHIP increment.",
+        "scope": "Command overview, chapter hierarchy, local readiness clarity, evaluator evidence and tests only; no production deployment, paid media, citizen contact, targeting, spending or external political effects."
+      },
+      "review_artifact": "progress/review_C3-FRONT-008R1.md",
+      "local_evidence": [
+        "docs/testing/c3-front-008r1-evidence.md",
+        "docs/testing/c3-front-008r1-us-strategist-eval.md",
+        "program/iterations/c3-front-008r1.md",
+        "program/validations/c3-front-008r1.json"
+      ]
     },
     "blocked_nodes": [
+      {
+        "id": "C3-PERF-001",
+        "gate": "HUMAN_APPROVAL_PENDING",
+        "owner": "Product owner",
+        "next_valid_command": "Approve the existing C3-PERF-001 SHIP specification after this localized repair closes"
+      },
       {
         "id": "action:production-deployment",
         "gate": "HUMAN_PRODUCTION_APPROVAL_AND_INCOMPLETE_PRODUCTION_GATES",
@@ -58,30 +76,29 @@
     ]
   },
   "localized_repair": {
-    "id": "repair:c3-sec-002-review-and-merge-2026-07-29",
+    "id": "repair:post-merge-program-truth-2026-07-29",
     "status": "COMPLETED",
-    "scope": "Close review findings, merge Graph Harness runtime and C3-SEC-002, and reconcile exact-head plus post-merge evidence without deployment.",
+    "scope": "Close C3-SEC-002, reconcile protected main, and select the next bounded performance specification without deployment.",
     "evidence": [
-      "https://github.com/BernydotJar/OS-Electoral/pull/127",
-      "https://github.com/BernydotJar/OS-Electoral/pull/128",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30475334941",
-      "main@1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae"
+      "https://github.com/BernydotJar/OS-Electoral/pull/138",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30476900916",
+      "main@a8c61170c55aeba59e3830837c869b572fe84a9a"
     ],
     "delivery": {
       "state": "merged",
-      "implementation_head": "74977e390d33929f6cb5b2e850d52f8f7456f524",
-      "draft_pr": 128,
-      "campaignos_ci_run_id": 30475055645,
+      "implementation_head": "c9d98cb85e327d992d9ca097012e1498547dc213",
+      "draft_pr": 138,
+      "campaignos_ci_run_id": 30476653575,
       "campaignos_ci_conclusion": "SUCCESS",
-      "visual_run_id": 30475056564,
+      "visual_run_id": 30476653625,
       "visual_conclusion": "SUCCESS",
       "merge_gate": "SATISFIED_USER_AUTHORIZATION",
-      "merged_main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae",
-      "post_merge_ci_run_id": 30475334941,
+      "merged_main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
+      "post_merge_ci_run_id": 30476900916,
       "post_merge_ci_conclusion": "SUCCESS",
       "evidence": [
-        "docs/testing/c3-sec-002-evidence.md",
-        "program/validations/c3-sec-002.json"
+        "docs/testing/c3-harness-001-evidence.md",
+        "program/validations/c3-harness-001.json"
       ]
     }
   }

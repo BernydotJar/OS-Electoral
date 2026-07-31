@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-FRONT-008R1",
+  "assessed_at": "2026-07-30",
+  "mode": "SHIP",
+  "branch": "agent/c3-front-008r1-qa-command-surface",
+  "base": "main@a8c61170c55aeba59e3830837c869b572fe84a9a",
+  "state": "REVIEWED",
+  "human_approval": {
+    "recorded": true,
+    "recorded_at": "2026-07-30T23:58:00-06:00",
+    "source": "USER_EXPLICIT_APPROVAL",
+    "scope": "Command overview, chapter hierarchy, local readiness clarity, evaluator evidence and tests only; no production deployment, paid media, citizen contact, targeting, spending or external political effects."
+  },
+  "verification": {
+    "python_passed": 753,
+    "python_skipped": 11,
+    "coverage_percent": 90.39,
+    "frontend_test_files": 28,
+    "frontend_passed": 120,
+    "dependency_vulnerabilities": 0,
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy_source_files": 73,
+    "next_build": "PASS",
+    "terraform": "PASS_PLAN_ONLY",
+    "program_truth": "PASS_BLOCKED",
+    "release_decision": "DENY_RELEASE"
+  },
+  "browser_review": {
+    "dynamic_demo": "PASS",
+    "command_overview": "PASS_CURRENT_FOCUS_PROGRESSIVE_PATH",
+    "chapter_navigation": "PASS_ROUTE_ISOLATION_LOCALE_PRESERVATION",
+    "same_origin_readiness": "PASS_FRONTEND_PROXY_TO_BACKEND_READY",
+    "functional_postgresql_api_browser": "PASS",
+    "desktop_spanish": "PASS",
+    "desktop_english": "PASS",
+    "mobile_spanish": "PASS",
+    "keyboard": "PASS",
+    "reduced_motion": "PASS_STATIC_EQUIVALENT",
+    "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+    "horizontal_overflow": "NONE",
+    "unexpected_outbound_hosts": [],
+    "console_errors": [],
+    "page_errors": [],
+    "browser_storage": "EMPTY"
+  },
+  "critic_findings": [
+    {
+      "id": "C3-FRONT-008R1-F1",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "The visual progress element lacked an accessible name.",
+      "repair": "Bound the localized progress label directly to the progress element and reran the unchanged browser gates."
+    },
+    {
+      "id": "C3-FRONT-008R1-F2",
+      "severity": "INFO",
+      "status": "SUPERSEDED_ENVIRONMENT_LIMITATION",
+      "finding": "Nested Docker failed before CampaignOS startup while registering an upstream layer with lchown /var/empty: permission denied.",
+      "repair": "Executed the equivalent isolated host PostgreSQL/API/browser journey; hosted exact-head CI remains required for PostgreSQL 18 and container evidence."
+    }
+  ],
+  "candidate_evaluator": {
+    "internal_research_and_decision_prep": "PASS",
+    "complete_us_campaign_operations_claim": "DENY",
+    "production_release": "DENY"
+  },
+  "remaining_gates": [
+    "Exact-head hosted CampaignOS CI",
+    "Exact-head runtime visual review",
+    "Hosted PostgreSQL 18 functional and container evidence",
+    "Review-thread closure",
+    "Merge and successful post-merge CI",
+    "All separate production infrastructure, security, privacy, legal and human-production approvals"
+  ],
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "status": "REVIEWED",
+  "hosted_ci": {
+    "result": "PENDING_EXACT_HEAD",
+    "pull_request": null,
+    "implementation_head": null,
+    "campaignos_ci_run_id": null,
+    "runtime_visual_run_id": null
+  }
+}

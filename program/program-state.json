@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-29",
-  "branch": "agent/c3-sec-002-post-merge-reconciliation",
-  "current_increment": "C3-SEC-002",
-  "iteration_status": "MERGED_TO_MAIN",
+  "updated_at": "2026-07-30",
+  "branch": "agent/c3-front-008r1-qa-command-surface",
+  "current_increment": "C3-FRONT-008R1",
+  "iteration_status": "REVIEWED",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "ORGANIC_CAMPAIGN_FLOW_CI_GREEN",
-      "next_increment": "C3-FRONT-009_ROLE_AWARE_PROJECTIONS"
+      "status": "QA_COMMAND_SURFACE_ACTIVE",
+      "next_increment": "C3-FRONT-008R1"
     },
     {
       "id": "WS-07",
@@ -479,7 +479,25 @@
     "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
     "frontend_target_verified": true
   },
-  "active_local_increment": null,
+  "active_local_increment": {
+    "id": "C3-FRONT-008R1",
+    "state": "REVIEWED",
+    "branch": "agent/c3-front-008r1-qa-command-surface",
+    "base": "main@a8c61170c55aeba59e3830837c869b572fe84a9a",
+    "approved_spec": "specs/C3-FRONT-008R1/requirements.md",
+    "approval_recorded_at": "2026-07-30T23:58:00-06:00",
+    "production_status": "BLOCKED",
+    "release_decision": "DENY_RELEASE",
+    "external_effects": "NONE",
+    "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_HOSTED_GATES",
+    "review_artifact": "progress/review_C3-FRONT-008R1.md",
+    "local_evidence": [
+      "docs/testing/c3-front-008r1-evidence.md",
+      "docs/testing/c3-front-008r1-us-strategist-eval.md",
+      "program/iterations/c3-front-008r1.md",
+      "program/validations/c3-front-008r1.json"
+    ]
+  },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
     "component": "Cloud_Sandbox_MCP.git_push isolated-workspace wrapper",
@@ -491,46 +509,45 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-SEC-002",
+    "id": "repair:post-merge-program-truth-2026-07-29",
     "status": "MERGED_TO_MAIN",
     "merge_strategy": "SQUASH",
-    "merge_pr": 128,
-    "merged_at": "2026-07-29T17:26:31Z",
-    "main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae",
-    "post_merge_ci_run_id": 30475334941,
+    "merge_pr": 138,
+    "merged_at": "2026-07-29T17:46:58Z",
+    "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
+    "post_merge_ci_run_id": 30476900916,
     "post_merge_ci_conclusion": "SUCCESS",
+    "quality_job_id": 90660770486,
+    "postgresql_job_id": 90660770351,
+    "recovery_job_id": 90660770399,
+    "frontend_job_id": 90660770426,
+    "stack_e2e_job_id": 90660770461,
+    "codeql_job_id": 90660770467,
+    "terraform_job_id": 90660770271,
+    "dependency_job_id": 90660770511,
+    "secret_job_id": 90660770425,
+    "supply_chain_job_id": 90660770303,
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_action": "HUMAN_APPROVE_C3_PERF_001_SPEC",
-    "quality_job_id": 90655507781,
-    "postgresql_job_id": 90655507918,
-    "recovery_job_id": 90655508032,
-    "frontend_job_id": 90655507835,
-    "stack_e2e_job_id": 90655507994,
-    "codeql_job_id": 90655507848,
-    "terraform_job_id": 90655507780,
-    "dependency_job_id": 90655507869,
-    "secret_job_id": 90655508048,
-    "supply_chain_job_id": 90655507950
+    "next_action": "COMPLETE_C3_FRONT_008R1_LOCAL_REVIEW"
   },
   "production_blockers": [],
   "cumulative_merge": {
-    "pr": 128,
+    "pr": 138,
     "status": "MERGED_TO_MAIN_SQUASH",
-    "main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae",
+    "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
     "checks_before_merge": "SUCCESS",
-    "post_merge_ci_run_id": 30475334941,
+    "post_merge_ci_run_id": 30476900916,
     "post_merge_ci_conclusion": "SUCCESS",
     "included_increment_prs": [
-      127,
-      128
+      138
     ],
     "previous_cumulative_merge": {
-      "pr": 126,
-      "main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968"
+      "pr": 128,
+      "main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae"
     },
-    "open_pull_requests_observed": 9
+    "open_pull_requests_observed": 10
   },
   "graph_harness_runtime": {
     "framework_repository": "https://github.com/BernydotJar/Graph-harness-sdlc",
@@ -540,10 +557,10 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": null,
-    "selected_feature": "C3-PERF-001",
-    "selected_feature_state": "spec_ready",
-    "approval_gate": "PENDING",
+    "active_feature": "C3-FRONT-008R1",
+    "selected_feature": "C3-FRONT-008R1",
+    "selected_feature_state": "review",
+    "approval_gate": "APPROVED",
     "ready_nodes": []
   },
   "residual_blockers": []

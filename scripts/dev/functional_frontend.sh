@@ -134,8 +134,22 @@ done
 CAMPAIGNOS_ADMIN_DATABASE_URL="postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@127.0.0.1:${POSTGRES_PORT}/${POSTGRES_DB}" \
   make dev-seed
 
-printf '%s\n' "[OK] Functional local API is ready at ${CAMPAIGNOS_API_BASE_URL}"
-printf '%s\n' "[OK] Starting live frontend; open http://127.0.0.1:${CAMPAIGNOS_FRONTEND_PORT}/es"
+frontend_base_url="http://127.0.0.1:${CAMPAIGNOS_FRONTEND_PORT}"
+backend_ready_url="${CAMPAIGNOS_API_BASE_URL}/api/v1/ready"
+frontend_ready_url="${frontend_base_url}/api/v1/ready"
+
+printf '%s\n' \
+  "" \
+  "[READY] CampaignOS functional environment" \
+  "  Frontend (ES):      ${frontend_base_url}/es" \
+  "  Frontend (EN):      ${frontend_base_url}/en" \
+  "  Browser readiness:  ${frontend_ready_url}" \
+  "  Backend API:        ${CAMPAIGNOS_API_BASE_URL}" \
+  "  Backend readiness:  ${backend_ready_url}" \
+  "  Mailpit UI:         http://127.0.0.1:${MAILPIT_UI_PORT}" \
+  "" \
+  "[INFO] Use the Browser readiness URL when checking from the frontend port." \
+  "[OK] Starting the live frontend. Keep this terminal open."
 exec npm --prefix frontend run dev -- \
   --hostname 127.0.0.1 \
   --port "$CAMPAIGNOS_FRONTEND_PORT"

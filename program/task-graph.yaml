@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-29",
+  "updated_at": "2026-07-30",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -375,6 +375,22 @@
         "PostgreSQL atomically enforces tenant/principal budgets under forced RLS",
         "Sanitized RFC 9457 rate-limit errors expose Retry-After without identity or counter keys",
         "Concurrency, rollback, cross-tenant, BOLA, unavailable-store and regression gates pass"
+      ]
+    },
+    {
+      "id": "C3-FRONT-008R1",
+      "workstream": "WS-06",
+      "title": "QA command surface and local readiness repair",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-FRONT-008",
+        "C3-SEC-002"
+      ],
+      "acceptance": [
+        "Overview renders one interactive command surface and no redundant active-mission hero",
+        "Chapter routes expose one requested workspace immediately after a compact disclosed campaign map",
+        "Frontend and backend readiness URLs are unambiguous and the same-origin proxy fails closed",
+        "ES/EN, mobile, keyboard, reduced motion, WCAG, candidate evaluator and safety gates pass"
       ]
     }
   ]
