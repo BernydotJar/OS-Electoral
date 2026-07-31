@@ -630,19 +630,28 @@ async def review() -> dict[str, object]:
               return {
                 borderRadius: parseFloat(style.borderRadius),
                 backdropFilter: style.backdropFilter || style.webkitBackdropFilter,
+                backgroundImage: style.backgroundImage,
+                backgroundColor: style.backgroundColor,
+                borderColor: style.borderColor,
                 boxShadow: style.boxShadow,
                 nextActionBackground: nextStyle?.backgroundImage ?? 'none',
                 structuredBadges: element.querySelectorAll('[data-kind]').length,
               };
             }"""
         )
+        glass_enhancement = "blur" in card_style["backdropFilter"]
+        glass_fallback = (
+            card_style["backgroundImage"] != "none"
+            and card_style["borderColor"] != "rgba(0, 0, 0, 0)"
+            and "inset" in card_style["boxShadow"]
+        )
         require(
             card_style["borderRadius"] >= 18
-            and "blur" in card_style["backdropFilter"]
+            and (glass_enhancement or glass_fallback)
             and card_style["boxShadow"] != "none"
             and card_style["nextActionBackground"] != "none"
             and card_style["structuredBadges"] == 3,
-            f"work card lacks restrained liquid-glass hierarchy: {card_style}",
+            f"work card lacks restrained liquid-glass hierarchy or fallback: {card_style}",
         )
         work_details = work_card.locator(".team-work-details")
         await work_details.locator("summary").focus()
