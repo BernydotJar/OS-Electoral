@@ -163,7 +163,7 @@ def test_graph_harness_projection_stops_at_next_human_gate() -> None:
     assert selected["state"] == "spec_ready"
     assert selected["human_approval"] == "PENDING"
     assert execution["localized_repair"]["delivery"]["state"] == "merged"
-    assert execution["localized_repair"]["delivery"]["draft_pr"] == 139
+    assert execution["localized_repair"]["delivery"]["draft_pr"] == 143
     assert execution["localized_repair"]["delivery"]["merge_gate"] == "SATISFIED_USER_AUTHORIZATION"
 
 

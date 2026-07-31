@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "340415de8a4acaecba0d3194a2b9053d52451399"
+    "revision": "998072c64c976d8b2e559862df5dab0e84104b98"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -46,7 +46,7 @@
         "specs/C3-PERF-001/design.md",
         "specs/C3-PERF-001/tasks.md"
       ],
-      "selection_reason": "C1-PLAN-001 and C3-FRONT-008R1 are merged; the existing load-test specification is the highest-priority safe node but remains human-gated."
+      "selection_reason": "C3-FRONT-010 is merged and post-merge verified; C3-PERF-001 remains the highest-priority safe node but requires explicit human approval."
     },
     "blocked_nodes": [
       {
@@ -58,29 +58,33 @@
     ]
   },
   "localized_repair": {
-    "id": "repair:c1-plan-001-post-merge-2026-07-31",
+    "id": "repair:c3-front-010-post-merge-2026-07-31",
     "status": "COMPLETED",
-    "scope": "Record PR 139 merge, successful post-merge CI, close C1-PLAN-001 and return the scheduler to the pending C3-PERF-001 approval gate.",
+    "scope": "Record PR 143 merge, exact-head and post-merge evidence, authenticated demo verification, and return the scheduler to the pending C3-PERF-001 approval gate.",
     "evidence": [
-      "https://github.com/BernydotJar/OS-Electoral/pull/139",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30646639373",
-      "main@340415de8a4acaecba0d3194a2b9053d52451399"
+      "https://github.com/BernydotJar/OS-Electoral/pull/143",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30656253464",
+      "main@998072c64c976d8b2e559862df5dab0e84104b98",
+      "https://nutritional-salt-journalism-productions.trycloudflare.com"
     ],
     "delivery": {
       "state": "merged",
-      "implementation_head": "eb5834a21f07a2c8c5308683a9f87729402a212d",
-      "draft_pr": 139,
-      "campaignos_ci_run_id": 30646374458,
+      "implementation_head": "f4d5ab4d9c22917bf5bff37b5e368afda18b3406",
+      "draft_pr": 143,
+      "campaignos_ci_run_id": 30656019602,
       "campaignos_ci_conclusion": "SUCCESS",
-      "visual_run_id": 30646374451,
+      "visual_run_id": 30656019685,
       "visual_conclusion": "SUCCESS",
       "merge_gate": "SATISFIED_USER_AUTHORIZATION",
-      "merged_main_sha": "340415de8a4acaecba0d3194a2b9053d52451399",
-      "post_merge_ci_run_id": 30646639373,
+      "merged_main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
+      "post_merge_ci_run_id": 30656253464,
       "post_merge_ci_conclusion": "SUCCESS",
+      "demo_classification": "TEMPORARY_AUTHENTICATED_NON_PRODUCTION",
+      "demo_verification": "PASS",
       "evidence": [
-        "docs/testing/c1-plan-001-evidence.md",
-        "program/validations/c1-plan-001.json"
+        "docs/testing/c3-front-010-evidence.md",
+        "program/validations/c3-front-010.json",
+        "progress/review_C3-FRONT-010.md"
       ]
     }
   }
