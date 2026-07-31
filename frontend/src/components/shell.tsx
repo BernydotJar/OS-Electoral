@@ -777,7 +777,8 @@ export function CampaignShell({
                   ) : null}
                 </div>
 
-                {teamWorkspace ? (
+                {teamWorkspace &&
+                teamWorkspace.completed_checks < teamWorkspace.total_checks ? (
                   <div className="team-progress-guidance" role="status">
                     <strong>{dictionary.teamWorkspace.progressGuidanceTitle}</strong>
                     <p>{dictionary.teamWorkspace.progressGuidanceBody}</p>
