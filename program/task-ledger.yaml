@@ -986,10 +986,18 @@
       "external_effects": "NONE",
       "blockers": [],
       "approval": {
-        "recorded_at": "2026-07-31T17:00:00-06:00",
+        "recorded_at": "2026-07-31T18:26:44Z",
         "source": "USER_EXPLICIT_APPROVAL",
         "statement": "Continue the existing Graph Harness SDLC program and implement the compact premium shell and liquid-glass operations repair.",
-        "scope": "Bounded frontend QA repair and temporary authenticated demo update; no production deployment, publication, contact, targeting, spending or mobilization."
+        "scope": "Bounded frontend QA repair and temporary authenticated demo update; no production deployment, publication, contact, targeting, spending or mobilization.",
+        "recorded_at_basis": "FIRST_DURABLE_AUTHORIZED_IMPLEMENTATION_COMMIT",
+        "authorization_chronology": {
+          "user_instruction": "PRECEDES_FIRST_IMPLEMENTATION_COMMIT",
+          "exact_chat_timestamp": "NOT_EXPOSED_BY_RUNTIME",
+          "first_durable_commit": "2026-07-31T18:26:44Z",
+          "pull_request_created_at": "2026-07-31T18:30:14Z",
+          "merged_at": "2026-07-31T18:42:51Z"
+        }
       },
       "implementation_commit": "f4d5ab4d9c22917bf5bff37b5e368afda18b3406",
       "head_commit": "f4d5ab4d9c22917bf5bff37b5e368afda18b3406",

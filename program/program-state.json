@@ -495,7 +495,7 @@
     "status": "MERGED_TO_MAIN",
     "merge_strategy": "SQUASH",
     "merge_pr": 143,
-    "merged_at": "2026-07-31T18:06:00Z",
+    "merged_at": "2026-07-31T18:42:51Z",
     "main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
     "post_merge_ci_run_id": 30656253464,
     "post_merge_ci_conclusion": "SUCCESS",

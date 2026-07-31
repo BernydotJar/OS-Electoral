@@ -106,3 +106,7 @@ public mobile viewport containment: PASS at 390px
 ```
 
 The final critic pass also repaired exact-anchor preservation when dismissing notices and mobile session-menu containment. The authenticated demo serves the merged UI SHA; its backend runtime is byte-equivalent because no backend file changed between the prior and current UI builds.
+
+## Authorization chronology correction
+
+The initiating user instruction explicitly requested this bounded frontend repair before any implementation work. The chat runtime does not expose an immutable timestamp for that message, so the ledger uses the first durable authorized implementation commit (`2026-07-31T18:26:44Z`) as the receipt capture time rather than inventing a message timestamp. PR #143 was created at `18:30:14Z` and merged at the immutable Git committer time `18:42:51Z`.
