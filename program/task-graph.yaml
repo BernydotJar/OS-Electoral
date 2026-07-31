@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-30",
+  "updated_at": "2026-07-31",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -381,7 +381,7 @@
       "id": "C3-FRONT-008R1",
       "workstream": "WS-06",
       "title": "QA command surface and local readiness repair",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-008",
         "C3-SEC-002"
@@ -391,6 +391,25 @@
         "Chapter routes expose one requested workspace immediately after a compact disclosed campaign map",
         "Frontend and backend readiness URLs are unambiguous and the same-origin proxy fails closed",
         "ES/EN, mobile, keyboard, reduced motion, WCAG, candidate evaluator and safety gates pass"
+      ]
+    },
+    {
+      "id": "C1-PLAN-001",
+      "workstream": "WS-10",
+      "title": "Evidence-governed municipal campaign planning for women and sport",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-OPS-001",
+        "C3-STRATEGY-001",
+        "C3-FRONT-008R1"
+      ],
+      "acceptance": [
+        "Strategic plan, 90-day plan, scorecard and War Room cadence form one internal operating system",
+        "Women and sport remain public-problem and policy hypotheses rather than persuasion segments",
+        "Community listening is consented, aggregate and separated from contact databases",
+        "User-reported field activities remain pending verification with explicit evidence requirements",
+        "Unavailable local files remain an external blocker with a safe intake manifest",
+        "DeerFlow is optional execution research only and does not replace Graph Harness or CampaignOS authority"
       ]
     }
   ]

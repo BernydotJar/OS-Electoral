@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-30",
+  "updated_at": "2026-07-31",
   "branch": "agent/c3-front-008-organic-role-aware-flow",
   "entries": [
     {
@@ -938,7 +938,7 @@
     {
       "task_id": "C3-FRONT-008R1",
       "owner": "WS-06/WS-07/WS-02",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-FRONT-008R1/requirements.md",
         "specs/C3-FRONT-008R1/design.md",
@@ -957,7 +957,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted CI, runtime visual review and merge evidence remain pending",
         "Campaign documents on the user's local Mac remain unavailable to the sandbox and must not be inferred"
       ],
       "approval": {
@@ -965,7 +964,45 @@
         "source": "USER_EXPLICIT_APPROVAL",
         "statement": "Continue Graph Harness execution and implement the reported premium frontend QA repair as a bounded SHIP increment.",
         "scope": "Command overview, chapter hierarchy, local readiness clarity, evaluator evidence and tests only; no production deployment, paid media, citizen contact, targeting, spending or external political effects."
-      }
+      },
+      "integrated_main_sha": "eb7b78aebce545702c482c90902d4464021d8ec5",
+      "cumulative_merge_pr": 140
+    },
+    {
+      "task_id": "C1-PLAN-001",
+      "owner": "WS-10/WS-11/WS-13",
+      "status": "REVIEWED",
+      "evidence": [
+        "specs/C1-PLAN-001/requirements.md",
+        "specs/C1-PLAN-001/design.md",
+        "specs/C1-PLAN-001/tasks.md",
+        "campaign/planning/README.md",
+        "campaign/planning/strategic-plan-2026-2027.md",
+        "campaign/planning/first-90-days.md",
+        "campaign/planning/women-sport-strategic-hypothesis.md",
+        "campaign/planning/community-coffee-listening-protocol.md",
+        "campaign/evidence/user-reported-field-activity-register.md",
+        "campaign/evidence/local-source-intake-manifest.md",
+        "operations/war-room/weekly-cadence.md",
+        "agent/deerflow/campaign-planning-harness.md",
+        "docs/testing/c1-plan-001-evidence.md",
+        "progress/review_C1-PLAN-001.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Hosted exact-head CI and PR review remain pending",
+        "Local macOS source files are unavailable until attached or versioned",
+        "User-reported field activities require original-source verification before public use"
+      ],
+      "approval": {
+        "recorded_at": "2026-07-31T09:59:00-06:00",
+        "source": "USER_EXPLICIT_DIRECTION",
+        "statement": "Evaluate, repair and continue the campaign planning work for women, sport, community listening and existing campaign materials.",
+        "scope": "Internal evidence, planning, protocols and Graph Harness records only; no targeting, publication, contact execution, spending, mobilization or production deployment."
+      },
+      "implementation_commit": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
+      "head_commit": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
+      "draft_pr": 139
     }
   ]
 }

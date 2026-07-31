@@ -157,15 +157,15 @@ def test_graph_harness_projection_tracks_active_localized_repair() -> None:
 
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
     selected = execution["scheduler"]["selected_node"]
-    assert execution["scheduler"]["active_feature"] == "C3-FRONT-008R1"
+    assert execution["scheduler"]["active_feature"] == "C1-PLAN-001"
     assert execution["scheduler"]["ready_nodes"] == []
-    assert selected["id"] == "C3-FRONT-008R1"
+    assert selected["id"] == "C1-PLAN-001"
     assert selected["state"] == "review"
     assert selected["human_approval"] == "APPROVED"
     assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
-    assert execution["localized_repair"]["delivery"]["state"] == "merged"
-    assert execution["localized_repair"]["delivery"]["draft_pr"] == 138
-    assert execution["localized_repair"]["delivery"]["merge_gate"] == "SATISFIED_USER_AUTHORIZATION"
+    assert execution["localized_repair"]["delivery"]["state"] == "review"
+    assert execution["localized_repair"]["delivery"]["draft_pr"] == 139
+    assert execution["localized_repair"]["delivery"]["merge_gate"] == "PENDING_HUMAN_REVIEW"
 
 
 def test_graph_harness_projection_rejects_stale_canonical_runtime_state() -> None:
@@ -235,7 +235,7 @@ def test_graph_harness_projection_rejects_merge_gate_bypass(
         return original_load_json(path)
 
     monkeypatch.setattr(validator, "load_json", load_json)
-    with pytest.raises(AssertionError, match="lacks explicit merge authorization"):
+    with pytest.raises(AssertionError, match="bypassed the merge review gate"):
         validator.validate_graph_harness_execution(payload)
 
 

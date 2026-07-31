@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-30",
-  "branch": "agent/c3-front-008r1-qa-command-surface",
-  "current_increment": "C3-FRONT-008R1",
+  "updated_at": "2026-07-31",
+  "branch": "feat/antigua-campaign-planning-women-sport",
+  "current_increment": "C1-PLAN-001",
   "iteration_status": "REVIEWED",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
@@ -110,7 +110,16 @@
     }
   ],
   "ready_tasks": [],
-  "published_unreviewed_increment": null,
+  "published_unreviewed_increment": {
+    "id": "C1-PLAN-001",
+    "state": "DRAFT_PR_REPAIR_PENDING_HOSTED_CI",
+    "branch": "feat/antigua-campaign-planning-women-sport",
+    "base": "main@eb7b78aebce545702c482c90902d4464021d8ec5",
+    "validated_implementation_head": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
+    "draft_pr": 139,
+    "release_decision": "DENY_RELEASE",
+    "external_effects": "NONE"
+  },
   "review_stack": [
     {
       "increment": "C3-FRONT-003",
@@ -480,23 +489,19 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-FRONT-008R1",
+    "id": "C1-PLAN-001",
     "state": "REVIEWED",
-    "branch": "agent/c3-front-008r1-qa-command-surface",
-    "base": "main@a8c61170c55aeba59e3830837c869b572fe84a9a",
-    "approved_spec": "specs/C3-FRONT-008R1/requirements.md",
-    "approval_recorded_at": "2026-07-30T23:58:00-06:00",
+    "branch": "feat/antigua-campaign-planning-women-sport",
+    "base": "main@eb7b78aebce545702c482c90902d4464021d8ec5",
+    "approved_spec": "specs/C1-PLAN-001/requirements.md",
+    "review_artifact": "progress/review_C1-PLAN-001.md",
+    "approval_recorded_at": "2026-07-31T09:59:00-06:00",
+    "validated_implementation_head": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
+    "draft_pr": 139,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_HOSTED_GATES",
-    "review_artifact": "progress/review_C3-FRONT-008R1.md",
-    "local_evidence": [
-      "docs/testing/c3-front-008r1-evidence.md",
-      "docs/testing/c3-front-008r1-us-strategist-eval.md",
-      "program/iterations/c3-front-008r1.md",
-      "program/validations/c3-front-008r1.json"
-    ]
+    "next_action": "RUN_EXACT_HEAD_CI_AND_REVIEW_PR_139"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -509,43 +514,43 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "repair:post-merge-program-truth-2026-07-29",
+    "id": "C3-FRONT-008R1",
     "status": "MERGED_TO_MAIN",
     "merge_strategy": "SQUASH",
-    "merge_pr": 138,
-    "merged_at": "2026-07-29T17:46:58Z",
-    "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
-    "post_merge_ci_run_id": 30476900916,
+    "merge_pr": 140,
+    "merged_at": "2026-07-31T16:03:00Z",
+    "main_sha": "eb7b78aebce545702c482c90902d4464021d8ec5",
+    "post_merge_ci_run_id": 30645488443,
     "post_merge_ci_conclusion": "SUCCESS",
-    "quality_job_id": 90660770486,
-    "postgresql_job_id": 90660770351,
-    "recovery_job_id": 90660770399,
-    "frontend_job_id": 90660770426,
-    "stack_e2e_job_id": 90660770461,
-    "codeql_job_id": 90660770467,
-    "terraform_job_id": 90660770271,
-    "dependency_job_id": 90660770511,
-    "secret_job_id": 90660770425,
-    "supply_chain_job_id": 90660770303,
+    "quality_job_id": 91205706417,
+    "postgresql_job_id": 91205706928,
+    "recovery_job_id": 91205706681,
+    "frontend_job_id": 91205706282,
+    "stack_e2e_job_id": 91205706482,
+    "codeql_job_id": 91205706557,
+    "terraform_job_id": 91205706388,
+    "dependency_job_id": 91205706436,
+    "secret_job_id": 91205706362,
+    "supply_chain_job_id": 91205706236,
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_action": "COMPLETE_C3_FRONT_008R1_LOCAL_REVIEW"
+    "next_action": "REVIEW_C1_PLAN_001_PR_139"
   },
   "production_blockers": [],
   "cumulative_merge": {
-    "pr": 138,
+    "pr": 140,
     "status": "MERGED_TO_MAIN_SQUASH",
-    "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
+    "main_sha": "eb7b78aebce545702c482c90902d4464021d8ec5",
     "checks_before_merge": "SUCCESS",
-    "post_merge_ci_run_id": 30476900916,
+    "post_merge_ci_run_id": 30645488443,
     "post_merge_ci_conclusion": "SUCCESS",
     "included_increment_prs": [
-      138
+      140
     ],
     "previous_cumulative_merge": {
-      "pr": 128,
-      "main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae"
+      "pr": 138,
+      "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a"
     },
     "open_pull_requests_observed": 10
   },
@@ -557,8 +562,8 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-FRONT-008R1",
-    "selected_feature": "C3-FRONT-008R1",
+    "active_feature": "C1-PLAN-001",
+    "selected_feature": "C1-PLAN-001",
     "selected_feature_state": "review",
     "approval_gate": "APPROVED",
     "ready_nodes": []
