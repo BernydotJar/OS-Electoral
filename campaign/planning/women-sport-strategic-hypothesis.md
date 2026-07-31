@@ -18,7 +18,7 @@ La ventaja política no debe provenir de explotar una identidad. Debe provenir d
 | H-MD-04 | El fútbol femenino puede articular liderazgo, salud y pertenencia sin paternalismo | Grupos con jugadoras, entrenadoras y familias | Agenda formulada por participantes, no por la campaña |
 | H-MD-05 | Actividades deportivas permiten escuchar a personas poco presentes en reuniones políticas | Registro agregado de participación | Mayor diversidad respecto de reuniones tradicionales |
 
-## 3. Segmentos de investigación, no de persuasión
+## 3. Perspectivas que deben estar representadas, no segmentos de persuasión
 
 - Mujeres comerciantes y emprendedoras.
 - Madres, cuidadoras y jefas de hogar.
@@ -74,7 +74,7 @@ Objetivo: combinar convivencia deportiva y diagnóstico, sin convertir el evento
 
 Entregables:
 
-- mapa de equipos y liderazgos;
+- mapa agregado de organizaciones y roles públicos, sin directorio personal;
 - encuesta breve de experiencia;
 - mesa de escucha con jugadoras y familias;
 - ficha de infraestructura;
@@ -90,7 +90,7 @@ Objetivo: fortalecer capacidades de entrenadoras, árbitras, organizadoras y jó
 
 ## 6. KPIs
 
-- Participantes únicas y tasa de retorno.
+- Sesiones realizadas, comunidades representadas y continuidad agregada; no se rastrea comportamiento político individual.
 - Porcentaje de mujeres en roles de decisión del piloto.
 - Comunidades representadas.
 - Problemas repetidos y validados.

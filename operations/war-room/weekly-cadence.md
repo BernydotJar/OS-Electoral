@@ -42,7 +42,7 @@ Para cada experimento:
 
 - comunidades cubiertas;
 - hallazgos;
-- contactos y consentimiento;
+- sesiones de escucha, consentimiento y minimización de datos;
 - compromisos pendientes.
 
 ### 5. Mensaje y agenda - 10 min

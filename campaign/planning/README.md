@@ -30,3 +30,9 @@ Cada iniciativa debe tener:
 - decisión o gate asociado.
 
 Ningún documento de esta carpeta autoriza publicación, pauta, contacto ciudadano, movilización o gasto.
+
+## Evidencia de campo y archivos locales
+
+- `../evidence/user-reported-field-activity-register.md` conserva actividades reportadas por el usuario como pendientes de verificación.
+- `community-coffee-listening-protocol.md` define una escucha comunitaria no persuasiva y sin base de contactos.
+- `../evidence/local-source-intake-manifest.md` documenta el bloqueo y el método seguro para incorporar materiales del disco local.

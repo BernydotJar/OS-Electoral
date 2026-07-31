@@ -10,7 +10,7 @@ Cycle 0 is complete. The War Room repository, runtime rules, strategic gates, de
 
 The human campaign owner has approved the current stage, electoral territory, and 90-day operating objective. Cycle 1 will build the minimum evidence, organizational structure, and territorial prioritization required before scaling communication.
 
-No priority electoral segment, public narrative, paid-media audience, budget ceiling, or geographic mobilization priority has been approved.
+No priority public-problem agenda, public narrative, paid-media audience, budget ceiling, or geographic mobilization priority has been approved.
 
 The Campaign Chief has directed that women and sport be developed as a research and program-design hypothesis. This does not approve women as a homogeneous electoral segment, authorize targeted persuasion, or open communication, paid-media, or mobilization gates. The hypothesis will be evaluated through diverse listening, municipal viability, territorial evidence, pilots, and the decision scorecard under `campaign/planning/`.
 
@@ -22,7 +22,7 @@ The Campaign Chief has directed that women and sport be developed as a research 
 | Campaign stage | Exploratory pre-candidacy | Approved |
 | Electoral objective | Prepare a pre-candidacy for Mayor of Antigua Guatemala | Approved |
 | Electoral territory | Municipality of Antigua Guatemala, Sacatepequez | Approved |
-| Priority segment | Not selected; must emerge from research | Under research |
+| Priority public-problem agenda | Not selected; must emerge from evidence and municipal viability | Under research |
 | Public positioning | Not approved | Blocked |
 | Budget ceiling | Not registered | Blocked |
 
@@ -34,9 +34,9 @@ The Campaign Chief has directed that women and sport be developed as a research 
 | Electoral Research | Active | Build the source inventory and electoral evidence baseline |
 | Tracking, Risks, and Learning | Active | Maintain assumptions, evidence gaps, decisions, and gates |
 | Territory and Mobilization | Research only | Define territorial units and data requirements; no mobilization |
-| Digital Strategy | Blocked | Requires an approved segment, objective, and message |
-| Political Content | Blocked | Requires an approved segment, objective, and message |
-| Paid Media and Distribution | Blocked | Requires segment, geographic priority, conversion objective, and budget |
+| Digital Strategy | Blocked | Requires an approved public-problem agenda, objective, and message |
+| Political Content | Blocked | Requires an approved public-problem agenda, objective, and message |
+| Paid Media and Distribution | Blocked | Requires a separately approved objective, lawful audience policy, geographic scope and budget |
 | Storytelling and Media Training | Blocked | Requires approved positioning and audience |
 
 ## Cycle 1 Decision Questions
@@ -45,7 +45,7 @@ The Campaign Chief has directed that women and sport be developed as a research 
 2. What campaign knowledge already exists but has not been documented or verified?
 3. Which statements are verified facts, campaign research, perceptions, hypotheses, or unknowns?
 4. Which territorial units should be used for analysis inside Antigua Guatemala?
-5. What evidence is required to select a priority segment and geographic priority?
+5. What evidence is required to select a priority public-problem agenda and territorial service scope?
 6. Which strategic decisions can be made now, and which must remain blocked?
 
 ## Primary Artifact
@@ -85,7 +85,7 @@ Populate `research/evidence-register.md` with an inventory of currently availabl
 
 ## Human Input Required
 
-Provide or identify the first available evidence sources. Do not select a priority segment until the evidence baseline is sufficient.
+Provide or identify the first available evidence sources. Do not approve a priority agenda or public positioning until the evidence baseline and municipal-viability review are sufficient.
 
 ## Next Agent
 

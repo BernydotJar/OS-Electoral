@@ -25,9 +25,9 @@ Puntaje por criterio: 0 inexistente, 1 débil, 2 parcial, 3 suficiente.
 ## Decisiones cubiertas
 
 - prioridad de mujeres y deporte;
-- territorio de concentración;
+- territorio de investigación o servicio;
 - propuesta pública;
 - narrativa;
 - actividad de campo;
-- pauta o distribución;
+- preparación de distribución, sujeta a gate independiente;
 - alianza institucional.

@@ -1,8 +1,11 @@
 # Plan estratégico de campaña Antigua 4.0 2026-2027
 
-Estado: Borrador interno para decisión humana  
-Propietario: Jefatura de Campaña  
-Territorio: Municipio de La Antigua Guatemala, Sacatepéquez  
+Estado: Borrador interno para decisión humana
+
+Propietario: Jefatura de Campaña
+
+Territorio: Municipio de La Antigua Guatemala, Sacatepéquez
+
 Etapa: Precandidatura exploratoria
 
 ## 1. Tesis
@@ -13,7 +16,7 @@ Antigua 4.0 debe competir como una organización municipal preparada para gobern
 
 Construir suficiente evidencia, organización y validación territorial para que la Jefatura de Campaña pueda decidir:
 
-1. segmento o coalición prioritaria;
+1. problemas públicos y coaliciones cívicas prioritarias;
 2. territorios de primera concentración;
 3. posicionamiento público;
 4. agenda de mujeres y deporte;
@@ -48,7 +51,7 @@ ESCUCHAR
 - Integrar resultados electorales, padrón, centros de votación, fichas comunitarias y PDM-OT.
 - Crear unidades territoriales comparables.
 - Mantener separados hechos, percepciones, hipótesis y desconocidos.
-- Priorizar por necesidad pública, relevancia electoral, accesibilidad y capacidad organizativa.
+- Priorizar por necesidad pública, competencia municipal, evidencia territorial, accesibilidad y capacidad de ejecución; nunca por susceptibilidad política individual.
 
 ### 4.3 Propuesta y narrativa
 
@@ -83,11 +86,11 @@ Resultado: hallazgos de campo, pilotos de mujeres/deporte y primera matriz terri
 
 ### Fase C - Decisión estratégica
 
-Resultado: segmento o coalición prioritaria, narrativa, territorios y presupuesto aprobados.
+Resultado: problemas públicos, coaliciones cívicas, territorios de servicio y presupuesto preliminar aprobados para preparación interna.
 
 ### Fase D - Escalamiento gobernado
 
-Resultado: comunicación, organización y movilización habilitadas mediante gates humanos.
+Resultado: preparación operativa habilitada mediante gates humanos; cualquier comunicación pública, contacto, gasto o movilización requiere autorizaciones independientes todavía cerradas.
 
 ## 6. KPIs de dirección
 
@@ -116,8 +119,8 @@ Resultado: comunicación, organización y movilización habilitadas mediante gat
 
 La campaña debe poder responder, con evidencia:
 
-- dónde competir primero;
-- con quiénes construir;
+- qué problemas municipales y territorios de servicio requieren atención primero;
+- con qué organizaciones y liderazgos cívicos colaborar bajo consentimiento;
 - qué problema municipal liderar;
 - qué mensaje es creíble;
 - qué equipo puede ejecutarlo;

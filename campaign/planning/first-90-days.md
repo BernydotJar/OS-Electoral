@@ -9,7 +9,7 @@ Pasar de materiales dispersos a una campaña capaz de decidir y ejecutar con evi
 ## Semanas 1-2 - Reordenamiento
 
 - Confirmar mandato, relación partidaria y calendario de decisión.
-- Inventariar plan de gobierno, estrategia digital, fichas territoriales, discursos, contactos y eventos.
+- Inventariar plan de gobierno, estrategia digital, fichas territoriales, discursos, registros de actividades y fuentes disponibles. Los contactos personales quedan fuera del repositorio salvo consentimiento, propósito y control de acceso aprobados.
 - Nombrar responsables interinos por estación.
 - Establecer reunión semanal de War Room.
 - Definir presupuesto operativo mínimo y reglas de gasto.
@@ -23,10 +23,10 @@ Entregables:
 
 ## Semanas 3-4 - Evidencia y territorio
 
-- Completar matriz de comunidades y centros de votación.
-- Integrar datos históricos y brechas demográficas.
-- Identificar tres territorios para investigación inicial.
-- Crear guiones de entrevista y consentimiento.
+- Completar matriz de comunidades, servicios, infraestructura y fuentes territoriales; los centros de votación se usan solo como geografía pública agregada.
+- Integrar datos históricos y brechas de servicios en forma agregada, sin inferir preferencia política individual ni crear perfiles de persuasión.
+- Identificar tres territorios para investigación municipal inicial mediante necesidad pública, cobertura de evidencia y viabilidad logística.
+- Crear guiones de escucha, consentimiento, minimización de datos y no atribución.
 - Levantar inventario de organizaciones deportivas y de mujeres.
 
 ## Semanas 5-6 - Escucha estructurada
@@ -47,7 +47,7 @@ Entregables:
 
 - Ejecutar un piloto deportivo con escucha y seguimiento.
 - Ejecutar un recorrido de seguridad y cuidados.
-- Medir participación, diversidad, confianza y cumplimiento.
+- Medir cobertura comunitaria agregada, diversidad de perspectivas, calidad de evidencia y cumplimiento; asistencia nunca equivale a apoyo electoral.
 - Corregir protocolo y herramientas.
 
 ## Semanas 11-12 - Decisión

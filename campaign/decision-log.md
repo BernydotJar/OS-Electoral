@@ -12,7 +12,7 @@ Use this file for decisions, not discussions.
 
 | Decision Needed | Owner | Blocks | Due |
 |---|---|---|---|
-| Select priority segment | Research + Campaign Chief | Content and paid media | TBD |
+| Select priority public-problem agenda | Research + Campaign Chief | Public positioning and later communication review | TBD |
 | Approve budget ceiling | Campaign Chief | Paid media | TBD |
 | Approve public positioning | Campaign Chief | Content, storytelling, and publication | TBD |
 | Decide whether women and sport advance from hypothesis to strategic priority | Research + Campaign Chief | Related program design and later narrative decisions | End of 90-day evidence cycle |
@@ -25,4 +25,4 @@ This entry preserves history: it records decisions already identified as human-a
 - stage: exploratory pre-candidacy;
 - territory: Municipality of Antigua Guatemala, Sacatepequez.
 
-Owner: Campaign Chief. Evidence: `campaign/current-state.md`. Impact: research may proceed under the mandate; segment, positioning, budget, content, paid media and mobilization remain blocked. Reversibility: the Campaign Chief may supersede the baseline through a later dated decision.
+Owner: Campaign Chief. Evidence: `campaign/current-state.md`. Impact: research may proceed under the mandate; priority agenda, positioning, budget, content, paid media and mobilization remain blocked. Reversibility: the Campaign Chief may supersede the baseline through a later dated decision.
