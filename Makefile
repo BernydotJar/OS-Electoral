@@ -5,12 +5,14 @@ TERRAFORM ?= terraform
 RECOVERY_CLIENT_IMAGE ?= postgres:18.3-alpine3.23@sha256:54451ecb8ab38c24c3ec123f2fd501303a3a1856a5c66e98cecf2460d5e1e9d7
 RECOVERY_OUTPUT_DIR ?= artifacts/c3-obs-001
 RECOVERY_TARGET_DATABASE ?= campaignos_recovery_restore_test
+PERFORMANCE_OUTPUT_DIR ?= artifacts/c3-perf-001
+SOURCE_REVISION ?= $(shell git rev-parse HEAD)
 ENV_FILE ?= $(if $(wildcard .env),.env,.env.example)
 COMPOSE = docker compose --env-file $(ENV_FILE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap dev functional-dev functional-down dev-seed test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-functional-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify recovery-verify
+.PHONY: help bootstrap dev functional-dev functional-down dev-seed test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-functional-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify recovery-verify performance-postgres
 
 help: ## Show the available developer commands.
 	@awk 'BEGIN {FS = ":.*## "; printf "CampaignOS developer commands:\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -39,6 +41,18 @@ test: ## Run the complete locked pytest suite with the enforced coverage floor.
 test-postgres: ## Run isolated PostgreSQL migration and RLS tests (requires *_test URL).
 	@test -n "$(CAMPAIGNOS_TEST_DATABASE_URL)" || { echo "CAMPAIGNOS_TEST_DATABASE_URL is required" >&2; exit 1; }
 	@CAMPAIGNOS_TEST_DATABASE_URL="$(CAMPAIGNOS_TEST_DATABASE_URL)" $(UV) run --locked pytest -W error -m postgres backend/tests/test_database.py backend/tests/test_campaign_create_postgres.py backend/tests/test_identity_lifecycle_postgres.py backend/tests/test_guided_intake_postgres.py backend/tests/test_candidate_workspace_postgres.py backend/tests/test_team_workspace_postgres.py backend/tests/test_campaign_operations_postgres.py backend/tests/test_strategy_workspace_postgres.py backend/tests/test_agent_run_postgres.py backend/tests/test_security_postgres.py backend/tests/test_rate_limit_postgres.py
+
+performance-postgres: ## Run bounded authenticated load verification and validate its sanitized receipt.
+	@test -n "$(CAMPAIGNOS_TEST_DATABASE_URL)" || { echo "CAMPAIGNOS_TEST_DATABASE_URL is required" >&2; exit 1; }
+	@test -n "$(SOURCE_REVISION)" || { echo "SOURCE_REVISION is required" >&2; exit 1; }
+	rm -rf "$(PERFORMANCE_OUTPUT_DIR)"
+	@status=0; \
+		CAMPAIGNOS_TEST_DATABASE_URL="$(CAMPAIGNOS_TEST_DATABASE_URL)" SOURCE_REVISION="$(SOURCE_REVISION)" \
+		$(UV) run --locked python scripts/performance/run_authenticated_load.py \
+			--output "$(PERFORMANCE_OUTPUT_DIR)/load-verification.json" || status=$$?; \
+		$(UV) run --locked python scripts/performance/verify_load_receipt.py \
+			"$(PERFORMANCE_OUTPUT_DIR)/load-verification.json" || status=$$?; \
+		exit $$status
 
 lint: ## Run Ruff against the maintained backend, migrations and tests.
 	$(UV) run --locked ruff check backend

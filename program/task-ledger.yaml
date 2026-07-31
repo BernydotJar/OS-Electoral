@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-31",
-  "branch": "agent/c3-front-010-post-merge-reconciliation",
+  "branch": "agent/c3-perf-001-authenticated-load-verification",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -1044,6 +1044,74 @@
       "integrated_main_sha": "340415de8a4acaecba0d3194a2b9053d52451399",
       "cumulative_merge_pr": 139,
       "post_merge_ci_run_id": 30646639373
+    },
+    {
+      "task_id": "C3-PERF-001",
+      "owner": "WS-13/WS-05/WS-03",
+      "status": "CI_GREEN",
+      "evidence": [
+        "specs/C3-PERF-001/requirements.md",
+        "specs/C3-PERF-001/design.md",
+        "specs/C3-PERF-001/tasks.md",
+        "backend/src/campaignos/performance/contracts.py",
+        "backend/src/campaignos/performance/catalog.py",
+        "backend/src/campaignos/performance/runner.py",
+        "backend/src/campaignos/performance/executor.py",
+        "scripts/performance/run_authenticated_load.py",
+        "scripts/performance/verify_load_receipt.py",
+        "docs/testing/c3-perf-001-primary-docs.md",
+        "docs/testing/c3-perf-001-evidence.md",
+        "docs/operations/load-verification.md",
+        "program/iterations/c3-perf-001.md",
+        "program/validations/c3-perf-001.json",
+        "progress/review_C3-PERF-001.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Managed staging capacity, edge DDoS/WAF, deployed telemetry and production approval remain separate gates"
+      ],
+      "approval": {
+        "recorded_at": "2026-07-31T15:35:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly authorized C3-PERF-001 for SHIP implementation: \"tienes mi autorizacion para terminar el desarrollo\".",
+        "scope": "Implement and verify the approved C3-PERF-001 SHIP specification in disposable local/CI environments only; no production deployment, cloud resource creation, spending, dependency expansion, live provider calls, publication, citizen contact, targeting or mobilization."
+      },
+      "base_main_sha": "83c3577ff2467e8e4681229741c32fe85a19f0c9",
+      "branch": "agent/c3-perf-001-authenticated-load-verification",
+      "review_artifact": "progress/review_C3-PERF-001.md",
+      "local_verification": {
+        "focused_tests": "PASS",
+        "python_passed": 790,
+        "python_skipped": 12,
+        "coverage_percent": 90.22,
+        "make_verify": "PASS",
+        "postgresql_18": "PENDING_REPAIRED_EXACT_HEAD_HOSTED_CI"
+      },
+      "implementation_commit": "b74272db344aca75804c6f4233aeb13897037c00",
+      "head_commit": "2def59cb1240bfc99fd884aa80ac1489100d4bea",
+      "draft_pr": 145,
+      "ci_run_id": 30670226754,
+      "visual_run_id": 30670226689,
+      "postgresql_version_verified": "18.3",
+      "load_receipt_artifact_id": 8808493722,
+      "exact_contention_totals": {
+        "allowed": 5,
+        "denied": 15
+      },
+      "pool_peak_checked_out": 19,
+      "pool_after_checked_out": 0,
+      "exact_head_status": "SUCCESS",
+      "superseded_exact_head_evidence": {
+        "head": "7f739ae62f131c71720ca2889e692033a72796c3",
+        "campaignos_ci_run_id": 30669975877,
+        "conclusion": "SUCCESS_BEFORE_REVIEW_REPAIR"
+      },
+      "load_receipt_source_revision": "deff40ce754f4a2ae64875ca609b48ec97934023",
+      "review_findings_resolved": [
+        "C3-PERF-001-F1",
+        "C3-PERF-001-F2",
+        "C3-PERF-001-F3"
+      ]
     }
   ]
 }

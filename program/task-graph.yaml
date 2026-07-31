@@ -427,6 +427,23 @@
         "Unavailable local files remain an external blocker with a safe intake manifest",
         "DeerFlow is optional execution research only and does not replace Graph Harness or CampaignOS authority"
       ]
+    },
+    {
+      "id": "C3-PERF-001",
+      "workstream": "WS-13",
+      "title": "Authenticated load and contention verification",
+      "status": "CI_GREEN",
+      "depends_on": [
+        "C3-API-001",
+        "C3-OBS-001",
+        "C3-SEC-002"
+      ],
+      "acceptance": [
+        "A versioned bounded workload catalog covers authenticated API, denial, contention, rollback, unavailable-store and cleanup scenarios",
+        "Strict sanitized receipts reject unknown or sensitive fields and make no production capacity claim",
+        "PostgreSQL 18 contention, rate-limit correctness, pool recovery and cleanup remain deterministic under hard ceilings",
+        "Focused and complete repository gates pass while production remains BLOCKED and external effects remain NONE"
+      ]
     }
   ]
 }

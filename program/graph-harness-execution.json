@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "998072c64c976d8b2e559862df5dab0e84104b98"
+    "revision": "83c3577ff2467e8e4681229741c32fe85a19f0c9"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -28,14 +28,14 @@
   "scheduler": {
     "evaluated_at": "2026-07-31",
     "one_active_feature": true,
-    "active_feature": null,
+    "active_feature": "C3-PERF-001",
     "ready_nodes": [],
     "selected_node": {
       "id": "C3-PERF-001",
       "title": "Authenticated load and contention verification",
       "mode": "SHIP",
-      "state": "spec_ready",
-      "human_approval": "PENDING",
+      "state": "review",
+      "human_approval": "APPROVED",
       "dependencies": [
         "C3-API-001",
         "C3-OBS-001",
@@ -46,7 +46,22 @@
         "specs/C3-PERF-001/design.md",
         "specs/C3-PERF-001/tasks.md"
       ],
-      "selection_reason": "C3-FRONT-010 is merged and post-merge verified; C3-PERF-001 remains the highest-priority safe node but requires explicit human approval."
+      "selection_reason": "C3-PERF-001 passed repaired local verification and repaired exact-head PostgreSQL 18.3 CI; final documentation-only exact-head checks and thread closure remain.",
+      "approval_receipt": {
+        "recorded_at": "2026-07-31T15:35:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly authorized C3-PERF-001 for SHIP implementation: \"tienes mi autorizacion para terminar el desarrollo\".",
+        "scope": "Implement and verify the approved C3-PERF-001 SHIP specification in disposable local/CI environments only; no production deployment, cloud resource creation, spending, dependency expansion, live provider calls, publication, citizen contact, targeting or mobilization."
+      },
+      "review_artifact": "progress/review_C3-PERF-001.md",
+      "local_evidence": [
+        "docs/testing/c3-perf-001-primary-docs.md",
+        "docs/testing/c3-perf-001-evidence.md",
+        "docs/operations/load-verification.md",
+        "program/iterations/c3-perf-001.md",
+        "program/validations/c3-perf-001.json",
+        "progress/review_C3-PERF-001.md"
+      ]
     },
     "blocked_nodes": [
       {
@@ -60,7 +75,7 @@
   "localized_repair": {
     "id": "repair:c3-front-010-post-merge-2026-07-31",
     "status": "COMPLETED",
-    "scope": "Record PR 143 merge, exact-head and post-merge evidence, authenticated demo verification, and return the scheduler to the pending C3-PERF-001 approval gate.",
+    "scope": "Record PR 143 merge, exact-head and post-merge evidence, authenticated demo verification, and return the scheduler to the C3-PERF-001 lifecycle.",
     "evidence": [
       "https://github.com/BernydotJar/OS-Electoral/pull/143",
       "https://github.com/BernydotJar/OS-Electoral/actions/runs/30656253464",
@@ -87,5 +102,34 @@
         "progress/review_C3-FRONT-010.md"
       ]
     }
+  },
+  "active_increment": {
+    "id": "C3-PERF-001",
+    "status": "CI_GREEN",
+    "branch": "agent/c3-perf-001-authenticated-load-verification",
+    "approval_receipt": {
+      "recorded_at": "2026-07-31T15:35:00-06:00",
+      "source": "USER_EXPLICIT_APPROVAL",
+      "statement": "User explicitly authorized C3-PERF-001 for SHIP implementation: \"tienes mi autorizacion para terminar el desarrollo\".",
+      "scope": "Implement and verify the approved C3-PERF-001 SHIP specification in disposable local/CI environments only; no production deployment, cloud resource creation, spending, dependency expansion, live provider calls, publication, citizen contact, targeting or mobilization."
+    },
+    "production_status": "BLOCKED",
+    "release_decision": "DENY_RELEASE",
+    "external_effects": "NONE",
+    "review_artifact": "progress/review_C3-PERF-001.md",
+    "next_action": "MERGE_AFTER_FINAL_DOCS_HEAD_RECHECK_AND_THREAD_CLOSURE",
+    "implementation_commit": "b74272db344aca75804c6f4233aeb13897037c00",
+    "pull_request": 145,
+    "campaignos_ci_run_id": 30670226754,
+    "runtime_visual_run_id": 30670226689,
+    "postgresql_version_verified": "18.3",
+    "load_receipt_artifact_id": 8808493722,
+    "superseded_exact_head_evidence": {
+      "head": "7f739ae62f131c71720ca2889e692033a72796c3",
+      "campaignos_ci_run_id": 30669975877,
+      "conclusion": "SUCCESS_BEFORE_REVIEW_REPAIR"
+    },
+    "review_head": "2def59cb1240bfc99fd884aa80ac1489100d4bea",
+    "load_receipt_source_revision": "deff40ce754f4a2ae64875ca609b48ec97934023"
   }
 }

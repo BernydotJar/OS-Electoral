@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-PERF-001",
+  "assessed_at": "2026-07-31",
+  "mode": "SHIP",
+  "branch": "agent/c3-perf-001-authenticated-load-verification",
+  "base": "main@83c3577ff2467e8e4681229741c32fe85a19f0c9",
+  "state": "CI_GREEN",
+  "scope": "Bounded authenticated API, PostgreSQL contention, rollback, fail-closed, pool and cleanup verification only.",
+  "hard_limits": {
+    "max_concurrency_per_scenario": 20,
+    "max_requests_per_scenario": 600,
+    "max_scenario_seconds": 60,
+    "max_harness_seconds": 600
+  },
+  "local_verification": {
+    "focused_tests": "PASS",
+    "python_passed": 790,
+    "python_skipped": 12,
+    "coverage_percent": 90.22,
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "failure_receipt": "PASS",
+    "postgresql_18": "PASS_REPAIRED_HOSTED_EXACT_HEAD",
+    "local_postgresql_18_blocker": "DOCKER_LAYER_LCHOWN_ENVIRONMENT_LIMITATION",
+    "make_verify": "PASS",
+    "frontend_tests": "122_PASS",
+    "terraform": "PASS_PLAN_ONLY_NO_APPLY",
+    "program_security_release_safety": "PASS_PRODUCTION_BLOCKED"
+  },
+  "hosted_ci": {
+    "result": "SUCCESS_REPAIRED_EXACT_HEAD",
+    "pull_request": 145,
+    "implementation_commit": "b74272db344aca75804c6f4233aeb13897037c00",
+    "review_head": "2def59cb1240bfc99fd884aa80ac1489100d4bea",
+    "campaignos_ci_run_id": 30670226754,
+    "runtime_visual_run_id": 30670226689,
+    "postgresql_version": "18.3",
+    "load_receipt_artifact_id": 8808493722,
+    "load_receipt_source_revision": "deff40ce754f4a2ae64875ca609b48ec97934023",
+    "source_revision_classification": "GITHUB_PULL_REQUEST_MERGE_REF",
+    "scenario_count": 11,
+    "contention_allowed": 5,
+    "contention_denied": 15,
+    "peak_checked_out": 19,
+    "after_checked_out": 0,
+    "sensitive_value_scan": "PASS",
+    "review_findings_resolved": [
+      "C3-PERF-001-F1",
+      "C3-PERF-001-F2",
+      "C3-PERF-001-F3"
+    ]
+  },
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "production_capacity_claim": false,
+  "external_effects": "NONE",
+  "status": "CI_GREEN",
+  "critic_findings": [
+    {
+      "id": "C3-PERF-001-F1",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Malformed and BOLA scenarios did not prove exact preauthorization rate-limit ordering.",
+      "repair": "Added a thread-safe sanitized recording limiter and scenario-level exact scope/policy call assertions."
+    },
+    {
+      "id": "C3-PERF-001-F2",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "ThreadPoolExecutor shutdown could wait beyond the advertised scenario timeout.",
+      "repair": "Made the authoritative harness process-isolated per scenario with terminate/kill supervision and idempotent role cleanup."
+    },
+    {
+      "id": "C3-PERF-001-F3",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "A schema-valid receipt could claim PASS with missing or internally failed scenario evidence.",
+      "repair": "Added internal accounting/decision validators and cross-catalog completeness/configuration validation in write and verify paths."
+    }
+  ]
+}
