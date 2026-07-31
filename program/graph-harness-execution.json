@@ -46,7 +46,7 @@
         "specs/C3-PERF-001/design.md",
         "specs/C3-PERF-001/tasks.md"
       ],
-      "selection_reason": "C3-PERF-001 completed producer, critic, fixer and local independent verification; exact-head PostgreSQL 18 and review gates remain pending.",
+      "selection_reason": "C3-PERF-001 passed local verification and exact-head PostgreSQL 18.3 CI; final documentation-only exact-head checks and merge remain.",
       "approval_receipt": {
         "recorded_at": "2026-07-31T15:35:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
@@ -105,7 +105,7 @@
   },
   "active_increment": {
     "id": "C3-PERF-001",
-    "status": "REVIEWED",
+    "status": "CI_GREEN",
     "branch": "agent/c3-perf-001-authenticated-load-verification",
     "approval_receipt": {
       "recorded_at": "2026-07-31T15:35:00-06:00",
@@ -117,6 +117,12 @@
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
     "review_artifact": "progress/review_C3-PERF-001.md",
-    "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_POSTGRESQL_18_GATES"
+    "next_action": "MERGE_AFTER_EXACT_HEAD_RECHECK_AND_THREAD_CLOSURE",
+    "implementation_commit": "65b962d71e4b71a7e88bf9cec4ee1e7e5ed2dcee",
+    "pull_request": 145,
+    "campaignos_ci_run_id": 30669150640,
+    "runtime_visual_run_id": 30669150651,
+    "postgresql_version_verified": "18.3",
+    "load_receipt_artifact_id": 8808117715
   }
 }

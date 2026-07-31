@@ -1222,7 +1222,7 @@
       "id": "C3-PERF-001",
       "workstream": "WS-13",
       "title": "Authenticated load and contention verification",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-001",
         "C3-OBS-001",
@@ -1479,7 +1479,7 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-PERF-001",
-      "state": "REVIEWED",
+      "state": "CI_GREEN",
       "branch": "agent/c3-perf-001-authenticated-load-verification",
       "base": "main@83c3577ff2467e8e4681229741c32fe85a19f0c9",
       "approved_spec": "specs/C3-PERF-001/requirements.md",
@@ -1487,14 +1487,19 @@
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_POSTGRESQL_18_GATES",
+      "next_action": "MERGE_AFTER_EXACT_HEAD_RECHECK_AND_THREAD_CLOSURE",
       "review_artifact": "progress/review_C3-PERF-001.md",
       "local_evidence": [
         "docs/testing/c3-perf-001-evidence.md",
         "docs/operations/load-verification.md",
         "program/iterations/c3-perf-001.md",
         "program/validations/c3-perf-001.json"
-      ]
+      ],
+      "implementation_commit": "65b962d71e4b71a7e88bf9cec4ee1e7e5ed2dcee",
+      "exact_head_ci_run_id": 30669150640,
+      "exact_head_ci_conclusion": "SUCCESS",
+      "postgresql_version_verified": "18.3",
+      "load_receipt_artifact_id": 8808117715
     },
     "latest_checkpoint": {
       "id": "C3-FRONT-010",

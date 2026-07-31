@@ -5,7 +5,7 @@
   "mode": "SHIP",
   "branch": "agent/c3-perf-001-authenticated-load-verification",
   "base": "main@83c3577ff2467e8e4681229741c32fe85a19f0c9",
-  "state": "LOCAL_REVIEWED",
+  "state": "CI_GREEN",
   "scope": "Bounded authenticated API, PostgreSQL contention, rollback, fail-closed, pool and cleanup verification only.",
   "hard_limits": {
     "max_concurrency_per_scenario": 20,
@@ -21,18 +21,27 @@
     "ruff": "PASS",
     "mypy": "PASS",
     "failure_receipt": "PASS",
-    "postgresql_18": "PENDING_HOSTED_EXACT_HEAD",
+    "postgresql_18": "PASS_HOSTED_EXACT_HEAD",
     "local_postgresql_18_blocker": "DOCKER_LAYER_LCHOWN_ENVIRONMENT_LIMITATION"
   },
   "hosted_ci": {
-    "result": "PENDING_EXACT_HEAD",
-    "pull_request": null,
-    "implementation_head": null,
-    "campaignos_ci_run_id": null
+    "result": "SUCCESS",
+    "pull_request": 145,
+    "implementation_head": "65b962d71e4b71a7e88bf9cec4ee1e7e5ed2dcee",
+    "campaignos_ci_run_id": 30669150640,
+    "runtime_visual_run_id": 30669150651,
+    "postgresql_version": "18.3",
+    "load_receipt_artifact_id": 8808117715,
+    "scenario_count": 11,
+    "contention_allowed": 5,
+    "contention_denied": 15,
+    "peak_checked_out": 18,
+    "after_checked_out": 0,
+    "sensitive_value_scan": "PASS"
   },
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "production_capacity_claim": false,
   "external_effects": "NONE",
-  "status": "LOCAL_REVIEWED"
+  "status": "CI_GREEN"
 }

@@ -432,7 +432,7 @@
       "id": "C3-PERF-001",
       "workstream": "WS-13",
       "title": "Authenticated load and contention verification",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-001",
         "C3-OBS-001",

@@ -48,3 +48,22 @@ The local Docker daemon cannot register the pinned PostgreSQL 18.3 image layer b
 - exact-head quality, security, supply-chain and functional checks;
 - exact-head review-thread closure;
 - merge and post-merge main CI.
+
+## Exact-head PostgreSQL 18.3 evidence
+
+Implementation head `65b962d71e4b71a7e88bf9cec4ee1e7e5ed2dcee` passed CampaignOS CI run `30669150640` and runtime visual run `30669150651`.
+
+Sanitized artifact `campaignos-authenticated-load-verification` (`8808117715`) was independently downloaded and re-validated:
+
+```text
+PostgreSQL: 18.3
+scenarios: 11 / 11 PASS
+contention: 5 allowed / 15 denied
+peak checked-out connections: 18
+checked-out connections after every scenario: 0
+unexpected errors: 0
+scenario timeouts: 0
+sensitive key/value scan: PASS
+production_capacity_claim: false
+external_effects: NONE
+```

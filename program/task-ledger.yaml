@@ -1048,7 +1048,7 @@
     {
       "task_id": "C3-PERF-001",
       "owner": "WS-13/WS-05/WS-03",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "evidence": [
         "specs/C3-PERF-001/requirements.md",
         "specs/C3-PERF-001/design.md",
@@ -1086,7 +1086,20 @@
         "coverage_percent": 90.52,
         "make_verify": "PASS_LOCAL_NON_POSTGRESQL_18",
         "postgresql_18": "PENDING_EXACT_HEAD_HOSTED_CI"
-      }
+      },
+      "implementation_commit": "65b962d71e4b71a7e88bf9cec4ee1e7e5ed2dcee",
+      "head_commit": "65b962d71e4b71a7e88bf9cec4ee1e7e5ed2dcee",
+      "draft_pr": 145,
+      "ci_run_id": 30669150640,
+      "visual_run_id": 30669150651,
+      "postgresql_version_verified": "18.3",
+      "load_receipt_artifact_id": 8808117715,
+      "exact_contention_totals": {
+        "allowed": 5,
+        "denied": 15
+      },
+      "pool_peak_checked_out": 18,
+      "pool_after_checked_out": 0
     }
   ]
 }
