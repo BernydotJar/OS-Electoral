@@ -216,6 +216,65 @@ class ScenarioReceipt(BaseModel):
     cleanup_duration_ms: float = Field(ge=0, le=60_000)
     overall_decision: Literal["PASS", "FAIL"]
 
+    @model_validator(mode="after")
+    def validate_internal_accounting(self) -> Self:
+        http_responses = (
+            self.response_classes.success_2xx
+            + self.response_classes.redirect_3xx
+            + self.response_classes.client_error_4xx
+            + self.response_classes.server_error_5xx
+        )
+        if http_responses != self.completed:
+            raise ValueError("HTTP response classes must equal completed operations")
+        if (
+            self.completed + self.response_classes.transport_error + self.timed_out
+            != self.configured_requests
+        ):
+            raise ValueError("operation accounting must equal configured requests")
+        rate_limit_total = (
+            self.rate_limit_outcomes.allowed
+            + self.rate_limit_outcomes.denied
+            + self.rate_limit_outcomes.unavailable
+            + self.rate_limit_outcomes.not_applicable
+        )
+        if rate_limit_total != self.completed:
+            raise ValueError("rate-limit outcomes must equal completed operations")
+        if self.expected_errors > self.completed:
+            raise ValueError("expected errors cannot exceed completed operations")
+        latencies = (
+            self.latency.minimum_ms,
+            self.latency.median_ms,
+            self.latency.p95_ms,
+            self.latency.p99_ms,
+            self.latency.maximum_ms,
+        )
+        if tuple(sorted(latencies)) != latencies:
+            raise ValueError("latency summary must be monotonic")
+        derived_invariant = (
+            "PASS" if not self.invariant_failures and self.unexpected_errors == 0 else "FAIL"
+        )
+        if self.invariant_decision != derived_invariant:
+            raise ValueError("invariant decision does not match failures")
+        derived_overall = (
+            "PASS"
+            if self.invariant_decision == self.threshold_decision == self.cleanup_decision == "PASS"
+            else "FAIL"
+        )
+        if self.overall_decision != derived_overall:
+            raise ValueError("scenario overall decision is inconsistent")
+        if self.cleanup_decision == "PASS" and (
+            self.pool.after.checked_out > self.pool.before.checked_out
+        ):
+            raise ValueError("passing cleanup cannot retain checked-out connections")
+        if self.overall_decision == "PASS" and (
+            self.completed != self.configured_requests
+            or self.timed_out
+            or self.response_classes.transport_error
+            or self.unexpected_errors
+        ):
+            raise ValueError("passing scenario must complete every configured operation")
+        return self
+
 
 class RuntimeContext(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -257,7 +316,59 @@ class LoadVerificationReceipt(BaseModel):
             raise ValueError("passing receipts cannot contain harness failures")
         if self.overall_decision == "PASS" and not self.scenarios:
             raise ValueError("passing receipts require scenario evidence")
+        if self.overall_decision == "PASS" and any(
+            scenario.overall_decision != "PASS" for scenario in self.scenarios
+        ):
+            raise ValueError("passing receipt cannot contain a failed scenario")
         return self
+
+
+def validate_receipt_against_catalog(
+    receipt: LoadVerificationReceipt,
+    catalog: WorkloadCatalog,
+) -> None:
+    """Cross-check immutable receipt configuration and derived decisions."""
+
+    if receipt.catalog_version != catalog.catalog_version:
+        raise ValueError("receipt catalog version does not match the workload catalog")
+    expected = {scenario.scenario_id: scenario for scenario in catalog.scenarios}
+    observed = {scenario.scenario_id: scenario for scenario in receipt.scenarios}
+    unknown = set(observed) - set(expected)
+    if unknown:
+        raise ValueError("receipt contains scenarios outside the workload catalog")
+    for scenario_id, scenario_receipt in observed.items():
+        configured = expected[scenario_id]
+        if (
+            scenario_receipt.policy_class != configured.policy_class
+            or scenario_receipt.configured_requests != configured.request_count
+            or scenario_receipt.configured_concurrency != configured.concurrency
+            or scenario_receipt.configured_timeout_seconds != configured.timeout_seconds
+        ):
+            raise ValueError("receipt scenario configuration drifted from the catalog")
+        if (
+            scenario_receipt.threshold_decision == "PASS"
+            and scenario_receipt.latency.p99_ms > configured.latency_ceiling_ms
+        ):
+            raise ValueError("passing latency decision exceeds the catalog ceiling")
+        if (
+            scenario_receipt.overall_decision == "PASS"
+            and configured.expected_allowed is not None
+            and (
+                scenario_receipt.rate_limit_outcomes.allowed != configured.expected_allowed
+                or scenario_receipt.rate_limit_outcomes.denied != configured.expected_denied
+            )
+        ):
+            raise ValueError("passing receipt rate-limit totals drifted from the catalog")
+    expected_overall = (
+        "PASS"
+        if set(observed) == set(expected)
+        and all(item.overall_decision == "PASS" for item in observed.values())
+        else "FAIL"
+    )
+    if receipt.overall_decision != expected_overall:
+        raise ValueError("receipt overall decision does not match catalog evidence")
+    if receipt.overall_decision == "PASS" and receipt.harness_failure_codes:
+        raise ValueError("passing receipt cannot contain harness failure codes")
 
 
 SENSITIVE_KEY_PATTERN = re.compile(

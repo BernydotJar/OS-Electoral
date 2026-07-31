@@ -8,8 +8,9 @@ from campaignos.performance.executor import CampaignOSLoadExecutor
 class FakePostgresRuntime:
     server_version = "18.3"
 
-    def __init__(self, database_url: str) -> None:
+    def __init__(self, database_url: str, *, role_name: str | None = None) -> None:
         assert database_url.endswith("_test")
+        del role_name
         self.closed = False
 
     def pool_snapshot(self) -> PoolSnapshot:
@@ -100,8 +101,8 @@ class FakeLimiter:
 
 
 class OperationalFakePostgresRuntime(FakePostgresRuntime):
-    def __init__(self, database_url: str) -> None:
-        super().__init__(database_url)
+    def __init__(self, database_url: str, *, role_name: str | None = None) -> None:
+        super().__init__(database_url, role_name=role_name)
         self.limiter = FakeLimiter()
         self.database = FakeDatabase()
         self.inserted_stale = 0
@@ -151,5 +152,43 @@ def test_postgres_scenario_orchestration_is_bounded(
             (),
         ]
         assert executor.cleanup(cleanup).decision == "PASS"
+    finally:
+        executor.close()
+
+
+def test_malformed_and_bola_scenarios_record_only_preauthorization_calls(
+    monkeypatch,
+) -> None:  # type: ignore[no-untyped-def]
+    monkeypatch.setattr(
+        executor_module,
+        "_PostgresRuntime",
+        OperationalFakePostgresRuntime,
+    )
+    executor = CampaignOSLoadExecutor("postgresql+psycopg://local/performance_test")
+    scenarios = {
+        scenario.scenario_id: scenario for scenario in default_workload_catalog().scenarios
+    }
+    try:
+        for scenario_id in (
+            ScenarioId.MALFORMED_AUTHENTICATED,
+            ScenarioId.BOLA_DENIED,
+        ):
+            scenario = scenarios[scenario_id]
+            executor.prepare(scenario)
+            results = [executor.execute(scenario, index) for index in range(scenario.request_count)]
+            assert all(result.invariant_failures == () for result in results)
+            assert executor.invariant_failures(scenario) == ()
+
+        bola = scenarios[ScenarioId.BOLA_DENIED]
+        executor.prepare(bola)
+        executor.execute(bola, 0)
+        executor._recording_limiter.consume(  # type: ignore[attr-defined]
+            executor_module.TENANT_ID,
+            executor_module.PRINCIPAL_ID,
+            executor_module.RateLimitPolicyClass.READ,
+        )
+        failures = executor.invariant_failures(bola)
+        assert "TENANT_BUDGET_CONSUMED_BEFORE_AUTHORIZATION" in failures
+        assert "UNEXPECTED_RATE_LIMIT_SCOPE_CALL" in failures
     finally:
         executor.close()

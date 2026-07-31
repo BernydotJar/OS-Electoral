@@ -17,10 +17,15 @@ from campaignos.performance.contracts import (
     WorkloadCatalog,
     WorkloadScenario,
     assert_receipt_sanitized,
+    validate_receipt_against_catalog,
 )
-from campaignos.performance.executor import CampaignOSLoadExecutor
+from campaignos.performance.executor import (
+    CampaignOSLoadExecutor,
+    cleanup_verification_role,
+)
 from campaignos.performance.receipt import load_and_verify_receipt, write_receipt
 from campaignos.performance.runner import BoundedLoadRunner, ScenarioExecutor, nearest_rank
+from campaignos.performance.supervisor import ProcessIsolatedLoadSupervisor
 
 __all__ = [
     "CATALOG_VERSION",
@@ -31,6 +36,7 @@ __all__ = [
     "LoadVerificationReceipt",
     "OperationResult",
     "PoolSnapshot",
+    "ProcessIsolatedLoadSupervisor",
     "RouteClass",
     "RunnerLimits",
     "ScenarioExecutor",
@@ -39,6 +45,8 @@ __all__ = [
     "WorkloadScenario",
     "assert_complete_catalog",
     "assert_receipt_sanitized",
+    "validate_receipt_against_catalog",
+    "cleanup_verification_role",
     "default_workload_catalog",
     "load_and_verify_receipt",
     "nearest_rank",

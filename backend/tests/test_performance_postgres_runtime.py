@@ -15,8 +15,9 @@ class FakeAdminConnection:
         self.statements.append(str(statement))
         return "18.3 (verification build)"
 
-    def execute(self, statement):  # type: ignore[no-untyped-def]
+    def execute(self, statement, parameters=None):  # type: ignore[no-untyped-def]
         self.statements.append(str(statement))
+        del parameters
         return None
 
 
@@ -155,3 +156,77 @@ def test_postgres_runtime_revokes_role_after_partial_initialization_failure(
 def test_postgres_runtime_rejects_non_test_database() -> None:
     with pytest.raises(ValueError, match="isolated PostgreSQL"):
         executor_module._PostgresRuntime("postgresql+psycopg://admin:local@127.0.0.1/campaignos")
+
+
+class CleanupAdminConnection(FakeAdminConnection):
+    def __init__(self, *, exists: bool) -> None:
+        super().__init__()
+        self.exists = exists
+
+    def scalar(self, statement, parameters=None):  # type: ignore[no-untyped-def]
+        self.statements.append(str(statement))
+        del parameters
+        if "pg_roles" in str(statement):
+            return self.exists
+        return "18.3"
+
+
+class CleanupAdminEngine(FakeAdminEngine):
+    def __init__(self, *, exists: bool) -> None:
+        super().__init__()
+        self.connection = CleanupAdminConnection(exists=exists)
+
+
+def test_supervisor_cleanup_revokes_existing_role(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    admin = CleanupAdminEngine(exists=True)
+    monkeypatch.setattr(executor_module, "create_engine", lambda *args, **kwargs: admin)
+
+    executor_module.cleanup_verification_role(
+        "postgresql+psycopg://admin:local@127.0.0.1/campaignos_perf_test",
+        "campaignos_perf_abcdef123456",
+    )
+
+    statements = "\n".join(admin.connection.statements)
+    assert "pg_terminate_backend" in statements
+    assert "DROP OWNED BY" in statements
+    assert "DROP ROLE" in statements
+    assert admin.disposed is True
+
+
+def test_supervisor_cleanup_is_idempotent_for_absent_role(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    admin = CleanupAdminEngine(exists=False)
+    monkeypatch.setattr(executor_module, "create_engine", lambda *args, **kwargs: admin)
+
+    executor_module.cleanup_verification_role(
+        "postgresql+psycopg://admin:local@127.0.0.1/campaignos_perf_test",
+        "campaignos_perf_abcdef123456",
+    )
+
+    statements = "\n".join(admin.connection.statements)
+    assert "DROP ROLE" not in statements
+    assert admin.disposed is True
+
+
+@pytest.mark.parametrize(
+    ("database_url", "role_name"),
+    [
+        (
+            "postgresql+psycopg://admin:local@127.0.0.1/campaignos",
+            "campaignos_perf_abcdef123456",
+        ),
+        (
+            "postgresql+psycopg://admin:local@127.0.0.1/campaignos_perf_test",
+            "unsafe-role",
+        ),
+    ],
+)
+def test_supervisor_cleanup_rejects_unsafe_scope(
+    database_url: str,
+    role_name: str,
+) -> None:
+    with pytest.raises(ValueError):
+        executor_module.cleanup_verification_role(database_url, role_name)

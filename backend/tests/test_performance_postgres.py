@@ -9,8 +9,7 @@ from alembic.config import Config
 from sqlalchemy.engine import make_url
 
 from campaignos.performance import (
-    BoundedLoadRunner,
-    CampaignOSLoadExecutor,
+    ProcessIsolatedLoadSupervisor,
     ScenarioId,
     assert_receipt_sanitized,
     default_workload_catalog,
@@ -42,14 +41,12 @@ def test_bounded_authenticated_load_harness_against_postgres(
     command.upgrade(alembic, "head")
     command.check(alembic)
 
-    executor = CampaignOSLoadExecutor(database_url)
-    runner = BoundedLoadRunner(
-        catalog=default_workload_catalog(),
-        executor=executor,
+    supervisor = ProcessIsolatedLoadSupervisor(
+        database_url=database_url,
         source_revision="c" * 40,
-        postgresql_version=executor.postgresql_version,
+        catalog=default_workload_catalog(),
     )
-    receipt = runner.run()
+    receipt = supervisor.run()
 
     assert receipt.overall_decision == "PASS"
     assert receipt.production_capacity_claim is False

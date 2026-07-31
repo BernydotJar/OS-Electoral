@@ -26,6 +26,7 @@ from campaignos.performance.contracts import (
     WorkloadCatalog,
     WorkloadScenario,
     assert_receipt_sanitized,
+    validate_receipt_against_catalog,
 )
 
 
@@ -35,6 +36,8 @@ class ScenarioExecutor(Protocol):
     def execute(self, scenario: WorkloadScenario, request_index: int) -> OperationResult: ...
 
     def pool_snapshot(self) -> PoolSnapshot: ...
+
+    def invariant_failures(self, scenario: WorkloadScenario) -> tuple[str, ...]: ...
 
     def cleanup(self, scenario: WorkloadScenario) -> CleanupResult: ...
 
@@ -143,8 +146,17 @@ class BoundedLoadRunner:
             scenarios=tuple(scenario_receipts),
             overall_decision=overall,
         )
+        validate_receipt_against_catalog(receipt, self.catalog)
         assert_receipt_sanitized(receipt)
         return receipt
+
+    def run_scenario(self, scenario: WorkloadScenario) -> ScenarioReceipt:
+        """Run one catalog scenario; real executors require process supervision."""
+
+        configured = {item.scenario_id: item for item in self.catalog.scenarios}
+        if configured.get(scenario.scenario_id) != scenario:
+            raise ValueError("scenario does not match the configured workload catalog")
+        return self._run_scenario(scenario)
 
     def _run_scenario(self, scenario: WorkloadScenario) -> ScenarioReceipt:
         self.executor.prepare(scenario)
@@ -158,10 +170,13 @@ class BoundedLoadRunner:
             for index in range(scenario.request_count)
         ]
         done, pending = wait(futures, timeout=scenario.timeout_seconds)
-        timed_out = len(pending)
-        for future in pending:
-            future.cancel()
+        if pending:
+            for future in pending:
+                future.cancel()
+            executor.shutdown(wait=False, cancel_futures=True)
+            return self._scenario_timeout_receipt(scenario, before)
         executor.shutdown(wait=True, cancel_futures=True)
+        timed_out = 0
 
         measured: list[_MeasuredResult] = []
         for future in done:
@@ -196,6 +211,10 @@ class BoundedLoadRunner:
         invariant_failures = {
             failure for result in results for failure in result.invariant_failures
         }
+        try:
+            invariant_failures.update(self.executor.invariant_failures(scenario))
+        except Exception:
+            invariant_failures.add("EXECUTOR_INVARIANT_CHECK_FAILURE")
         transport_errors = sum(item.failed for item in measured)
         unexpected_errors = transport_errors
         unexpected_errors += sum(
@@ -290,7 +309,30 @@ class BoundedLoadRunner:
         )
 
     def _harness_timeout_receipt(self, scenario: WorkloadScenario) -> ScenarioReceipt:
-        snapshot = self.executor.pool_snapshot()
+        return self._timeout_receipt(
+            scenario,
+            self.executor.pool_snapshot(),
+            failure_code="HARNESS_TIMEOUT",
+        )
+
+    def _scenario_timeout_receipt(
+        self,
+        scenario: WorkloadScenario,
+        snapshot: PoolSnapshot,
+    ) -> ScenarioReceipt:
+        return self._timeout_receipt(
+            scenario,
+            snapshot,
+            failure_code="SCENARIO_TIMEOUT",
+        )
+
+    @staticmethod
+    def _timeout_receipt(
+        scenario: WorkloadScenario,
+        snapshot: PoolSnapshot,
+        *,
+        failure_code: str,
+    ) -> ScenarioReceipt:
         return ScenarioReceipt(
             scenario_id=scenario.scenario_id,
             policy_class=scenario.policy_class,
@@ -306,7 +348,7 @@ class BoundedLoadRunner:
                 redirect_3xx=0,
                 client_error_4xx=0,
                 server_error_5xx=0,
-                transport_error=scenario.request_count,
+                transport_error=0,
             ),
             rate_limit_outcomes=RateLimitOutcomeCounts(
                 allowed=0,
@@ -316,7 +358,7 @@ class BoundedLoadRunner:
             ),
             latency=summarize_latency([]),
             pool=PoolEvidence(before=snapshot, peak=snapshot, after=snapshot),
-            invariant_failures=("HARNESS_TIMEOUT",),
+            invariant_failures=(failure_code,),
             invariant_decision="FAIL",
             threshold_decision="FAIL",
             cleanup_decision="FAIL",

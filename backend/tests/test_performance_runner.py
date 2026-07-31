@@ -48,6 +48,10 @@ class ScriptedExecutor:
     def pool_snapshot(self) -> PoolSnapshot:
         return self.after if self.closed else self.before
 
+    def invariant_failures(self, scenario: WorkloadScenario) -> tuple[str, ...]:
+        del scenario
+        return ()
+
     def cleanup(self, scenario: WorkloadScenario) -> CleanupResult:
         del scenario
         self.closed = True

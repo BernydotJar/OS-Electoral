@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from collections import Counter
 from datetime import UTC, datetime, timedelta
 from threading import Lock
 from time import monotonic_ns
@@ -44,7 +45,7 @@ from campaignos.performance.contracts import (
     WorkloadScenario,
 )
 from campaignos.security import (
-    DisabledRateLimiter,
+    RateLimitDecision,
     RateLimitPolicy,
     RateLimitPolicyCatalog,
     RateLimitPolicyClass,
@@ -52,6 +53,7 @@ from campaignos.security import (
     UnavailableRateLimiter,
     policy_catalog_from_settings,
 )
+from campaignos.security.rate_limits import PREAUTH_SCOPE_TENANT_ID
 
 
 class _HttpResponse(Protocol):
@@ -217,8 +219,43 @@ class _SessionLifecycle:
         )
 
 
+class _RecordingRateLimiter:
+    """Record sanitized scope/policy calls while returning deterministic allows."""
+
+    def __init__(self, catalog: RateLimitPolicyCatalog) -> None:
+        self._catalog = catalog
+        self._lock = Lock()
+        self._calls: list[tuple[str, RateLimitPolicyClass]] = []
+
+    def consume(
+        self,
+        tenant_id: UUID,
+        principal_id: UUID,
+        policy_class: RateLimitPolicyClass,
+    ) -> RateLimitDecision:
+        del principal_id
+        scope = "preauth" if tenant_id == PREAUTH_SCOPE_TENANT_ID else "tenant"
+        with self._lock:
+            self._calls.append((scope, policy_class))
+        policy = self._catalog.policy_for(policy_class)
+        return RateLimitDecision(
+            allowed=True,
+            policy_class=policy.policy_class,
+            retry_after_seconds=0,
+            policy_version=policy.version,
+        )
+
+    def reset(self) -> None:
+        with self._lock:
+            self._calls.clear()
+
+    def snapshot(self) -> tuple[tuple[str, RateLimitPolicyClass], ...]:
+        with self._lock:
+            return tuple(self._calls)
+
+
 class _PostgresRuntime:
-    def __init__(self, admin_url: str) -> None:
+    def __init__(self, admin_url: str, *, role_name: str | None = None) -> None:
         parsed = make_url(admin_url)
         if parsed.drivername != "postgresql+psycopg" or not (
             parsed.database and parsed.database.endswith("_test")
@@ -227,9 +264,9 @@ class _PostgresRuntime:
                 "performance verification requires an isolated PostgreSQL *_test database"
             )
         self.admin_engine = create_engine(admin_url, pool_pre_ping=True)
-        self.role_name = f"campaignos_perf_{uuid4().hex[:12]}"
+        self.role_name = role_name or f"campaignos_perf_{uuid4().hex[:12]}"
         self.role_password = uuid4().hex
-        if not re.fullmatch(r"[a-z][a-z0-9_]{1,62}", self.role_name):
+        if not re.fullmatch(r"campaignos_perf_[0-9a-f]{12}", self.role_name):
             raise ValueError("generated database role is invalid")
         role_created = False
         database: Database | None = None
@@ -346,13 +383,47 @@ class _PostgresRuntime:
                 self.admin_engine.dispose()
 
 
+def cleanup_verification_role(admin_url: str, role_name: str) -> None:
+    """Idempotently revoke a supervised verification role after abnormal exit."""
+
+    parsed = make_url(admin_url)
+    if parsed.drivername != "postgresql+psycopg" or not (
+        parsed.database and parsed.database.endswith("_test")
+    ):
+        raise ValueError("role cleanup requires an isolated PostgreSQL *_test database")
+    if not re.fullmatch(r"campaignos_perf_[0-9a-f]{12}", role_name):
+        raise ValueError("verification role name is invalid")
+    engine = create_engine(admin_url, pool_pre_ping=True)
+    try:
+        with engine.begin() as connection:
+            exists = bool(
+                connection.scalar(
+                    text("SELECT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = :role_name)"),
+                    {"role_name": role_name},
+                )
+            )
+            if not exists:
+                return
+            connection.execute(
+                text(
+                    "SELECT pg_terminate_backend(pid) FROM pg_stat_activity "
+                    "WHERE usename = :role_name AND pid <> pg_backend_pid()"
+                ),
+                {"role_name": role_name},
+            )
+            connection.execute(text(f'DROP OWNED BY "{role_name}"'))
+            connection.execute(text(f'DROP ROLE "{role_name}"'))
+    finally:
+        engine.dispose()
+
+
 class CampaignOSLoadExecutor:
     """Execute the reviewed catalog without outbound providers or production effects."""
 
-    def __init__(self, database_url: str) -> None:
-        self._postgres = _PostgresRuntime(database_url)
+    def __init__(self, database_url: str, *, role_name: str | None = None) -> None:
+        self._postgres = _PostgresRuntime(database_url, role_name=role_name)
         settings = Settings(environment=Environment.TEST, expose_api_docs=False)
-        disabled = DisabledRateLimiter(policy_catalog_from_settings(settings))
+        self._recording_limiter = _RecordingRateLimiter(policy_catalog_from_settings(settings))
         verifier = _Verifier()
         directory = _Directory()
         self._allowed_app = create_app(
@@ -363,7 +434,7 @@ class CampaignOSLoadExecutor:
             campaign_creator=cast(CampaignCreator, _LockedCampaignCreator()),
             campaign_readiness_reader=cast(CampaignReadinessReader, _LockedReadinessReader()),
             agent_run_service=UnavailableAgentRunService(),
-            rate_limiter=disabled,
+            rate_limiter=self._recording_limiter,
         )
         self._unavailable_app = create_app(
             settings,
@@ -379,6 +450,7 @@ class CampaignOSLoadExecutor:
 
     def prepare(self, scenario: WorkloadScenario) -> None:
         self._prepared = scenario.scenario_id
+        self._recording_limiter.reset()
         if scenario.scenario_id in {
             ScenarioId.RATE_LIMIT_CONTENTION,
             ScenarioId.DOMAIN_ROLLBACK_ACCOUNTING,
@@ -407,6 +479,29 @@ class CampaignOSLoadExecutor:
             ScenarioId.CLEANUP: self._cleanup_batch,
         }
         return handlers[scenario.scenario_id](request_index)
+
+    def invariant_failures(self, scenario: WorkloadScenario) -> tuple[str, ...]:
+        calls = self._recording_limiter.snapshot()
+        expected_policy: RateLimitPolicyClass | None = None
+        if scenario.scenario_id is ScenarioId.MALFORMED_AUTHENTICATED:
+            expected_policy = RateLimitPolicyClass.MUTATION
+        elif scenario.scenario_id is ScenarioId.BOLA_DENIED:
+            expected_policy = RateLimitPolicyClass.READ
+        if expected_policy is None:
+            return ()
+
+        counts = Counter(calls)
+        failures: set[str] = set()
+        expected_call = ("preauth", expected_policy)
+        if counts[expected_call] != scenario.request_count:
+            failures.add("PREAUTH_RATE_LIMIT_CALL_COUNT_DRIFT")
+        if sum(counts.values()) != scenario.request_count:
+            failures.add("UNEXPECTED_RATE_LIMIT_SCOPE_CALL")
+        if any(scope != "preauth" for scope, _ in calls):
+            failures.add("TENANT_BUDGET_CONSUMED_BEFORE_AUTHORIZATION")
+        if any(policy is not expected_policy for _, policy in calls):
+            failures.add("RATE_LIMIT_POLICY_ORDER_DRIFT")
+        return tuple(sorted(failures))
 
     def pool_snapshot(self) -> PoolSnapshot:
         return self._postgres.pool_snapshot()

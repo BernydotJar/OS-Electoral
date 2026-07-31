@@ -14,14 +14,12 @@ from alembic.config import Config
 from sqlalchemy.engine import make_url
 
 from campaignos.performance import (
-    BoundedLoadRunner,
     LoadVerificationReceipt,
+    ProcessIsolatedLoadSupervisor,
     RunnerLimits,
-    default_workload_catalog,
     write_receipt,
 )
 from campaignos.performance.contracts import RuntimeContext
-from campaignos.performance.executor import CampaignOSLoadExecutor
 
 
 def _revision(value: str | None) -> str:
@@ -98,14 +96,11 @@ def main() -> int:
     try:
         database_url = _database_url(args.database_url)
         _migrate(database_url)
-        executor = CampaignOSLoadExecutor(database_url)
-        runner = BoundedLoadRunner(
-            catalog=default_workload_catalog(),
-            executor=executor,
+        supervisor = ProcessIsolatedLoadSupervisor(
+            database_url=database_url,
             source_revision=revision,
-            postgresql_version=executor.postgresql_version,
         )
-        receipt = runner.run()
+        receipt = supervisor.run()
     except Exception:
         receipt = _failure_receipt(revision, "HARNESS_EXECUTION_FAILURE")
 
