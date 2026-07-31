@@ -1,6 +1,6 @@
 # Current State
 
-Last updated: 2026-07-14  
+Last updated: 2026-07-31
 Cycle: 1 - Electoral Evidence Baseline  
 Overall status: Research active; communication, paid media, and mobilization remain gated
 
@@ -11,6 +11,8 @@ Cycle 0 is complete. The War Room repository, runtime rules, strategic gates, de
 The human campaign owner has approved the current stage, electoral territory, and 90-day operating objective. Cycle 1 will build the minimum evidence, organizational structure, and territorial prioritization required before scaling communication.
 
 No priority electoral segment, public narrative, paid-media audience, budget ceiling, or geographic mobilization priority has been approved.
+
+The Campaign Chief has directed that women and sport be developed as a research and program-design hypothesis. This does not approve women as a homogeneous electoral segment, authorize targeted persuasion, or open communication, paid-media, or mobilization gates. The hypothesis will be evaluated through diverse listening, municipal viability, territorial evidence, pilots, and the decision scorecard under `campaign/planning/`.
 
 ## Approved Working Mandate
 
@@ -79,7 +81,7 @@ The next blocker is evidence intake. The campaign must identify the documents, d
 
 ## Next Recommended Action
 
-Populate `research/evidence-register.md` with an inventory of currently available evidence before collecting or purchasing new information.
+Populate `research/evidence-register.md` with an inventory of currently available evidence before collecting or purchasing new information, and execute the first two weeks in `campaign/planning/first-90-days.md` to inventory campaign materials, assign interim owners, and establish the War Room cadence.
 
 ## Human Input Required
 

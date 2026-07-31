@@ -6,6 +6,7 @@ Use this file for decisions, not discussions.
 |---|---|---|---|---|---|---|
 | 2026-07-14 | Initialize Cycle 0 before content, paid media, or field operations | Campaign Chief | Repo state and War Room mandate | Creates strategic gates | Yes | Draft |
 | 2026-07-17 | Reconcile the approved 90-day objective, exploratory stage, and Antigua Guatemala electoral territory into the decision log | Campaign Chief (authority recorded in current state); C2-PLAT-001 records reconciliation only | `campaign/current-state.md` approved working mandate | Removes documentation drift; does not open tactical gates | Yes | Approved baseline recorded |
+| 2026-07-31 | Register women and sport as a strategic research and program-design hypothesis, not an approved electoral segment | Campaign Chief | User direction and `campaign/planning/women-sport-strategic-hypothesis.md` | Enables research, listening and internal pilots only; tactical gates remain closed | Yes | Research hypothesis recorded |
 
 ## Pending Decisions
 
@@ -14,6 +15,7 @@ Use this file for decisions, not discussions.
 | Select priority segment | Research + Campaign Chief | Content and paid media | TBD |
 | Approve budget ceiling | Campaign Chief | Paid media | TBD |
 | Approve public positioning | Campaign Chief | Content, storytelling, and publication | TBD |
+| Decide whether women and sport advance from hypothesis to strategic priority | Research + Campaign Chief | Related program design and later narrative decisions | End of 90-day evidence cycle |
 
 ## Reconciliation note — 2026-07-17
 
