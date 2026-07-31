@@ -101,7 +101,7 @@ describe("CampaignShell chapter routes", () => {
 
     expect(html).toContain('id="guided-intake"');
     expect(html).toContain('data-complete="true"');
-    expect(html).toContain("Configuración inicial completada");
+    expect(html).toContain("Ver la configuración registrada");
     expect(html).toContain('class="guided-intake-review"');
     expect(html).not.toContain('class="campaign-experience"');
   });

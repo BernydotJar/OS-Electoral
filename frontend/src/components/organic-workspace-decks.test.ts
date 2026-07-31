@@ -103,7 +103,7 @@ describe("organic workspace decks", () => {
     expect(html).toContain("Qué debemos resolver ahora");
     expect(html).toContain("Definir y verificar identidad");
     expect(html).toContain("Falta evidencia verificable");
-    expect(html).toContain("Uso público bloqueado");
+    expect(html).toContain("Preparación interna activa");
     expect(html).not.toContain("publicar ahora");
   });
 });
