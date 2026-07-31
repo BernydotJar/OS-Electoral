@@ -103,3 +103,22 @@ Next.js production build / npm audit: PASS
 Terraform: PASS_PLAN_ONLY_NO_APPLY
 Program / security / release / eval / safety: PASS with production BLOCKED
 ```
+
+## Repaired exact-head PostgreSQL 18.3 evidence
+
+The repaired review head `2def59cb1240bfc99fd884aa80ac1489100d4bea` passed CampaignOS CI run `30670226754` and runtime visual run `30670226689`. The retained load-verification artifact is `8808493722`.
+
+GitHub Actions executed the pull-request merge ref `deff40ce754f4a2ae64875ca609b48ec97934023`, which is therefore the receipt's `source_revision`; the PR review head remains recorded separately.
+
+```text
+PostgreSQL: 18.3
+scenarios: 11 / 11 PASS
+contention: 5 allowed / 15 denied
+peak checked-out connections: 19
+checked-out connections after every scenario: 0
+unexpected errors: 0
+scenario timeouts: 0
+sensitive key/value scan: PASS
+production_capacity_claim: false
+external_effects: NONE
+```

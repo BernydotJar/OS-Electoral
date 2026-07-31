@@ -1222,7 +1222,7 @@
       "id": "C3-PERF-001",
       "workstream": "WS-13",
       "title": "Authenticated load and contention verification",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-API-001",
         "C3-OBS-001",
@@ -1479,7 +1479,7 @@
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "active_local_increment": {
       "id": "C3-PERF-001",
-      "state": "REVIEWED",
+      "state": "CI_GREEN",
       "branch": "agent/c3-perf-001-authenticated-load-verification",
       "base": "main@83c3577ff2467e8e4681229741c32fe85a19f0c9",
       "approved_spec": "specs/C3-PERF-001/requirements.md",
@@ -1487,7 +1487,7 @@
       "production_status": "BLOCKED",
       "release_decision": "DENY_RELEASE",
       "external_effects": "NONE",
-      "next_action": "PUBLISH_REVIEW_REPAIR_AND_RUN_EXACT_HEAD_POSTGRESQL_18_GATES",
+      "next_action": "MERGE_AFTER_FINAL_DOCS_HEAD_RECHECK_AND_THREAD_CLOSURE",
       "review_artifact": "progress/review_C3-PERF-001.md",
       "local_evidence": [
         "docs/testing/c3-perf-001-evidence.md",
@@ -1495,16 +1495,19 @@
         "program/iterations/c3-perf-001.md",
         "program/validations/c3-perf-001.json"
       ],
-      "implementation_commit": "b74272d",
-      "exact_head_ci_run_id": null,
-      "exact_head_ci_conclusion": "PENDING_RECHECK_AFTER_REVIEW_REPAIR",
+      "implementation_commit": "b74272db344aca75804c6f4233aeb13897037c00",
+      "exact_head_ci_run_id": 30670226754,
+      "exact_head_ci_conclusion": "SUCCESS",
       "postgresql_version_verified": "18.3",
-      "load_receipt_artifact_id": 8808117715,
+      "load_receipt_artifact_id": 8808493722,
       "superseded_exact_head_evidence": {
         "head": "7f739ae62f131c71720ca2889e692033a72796c3",
         "campaignos_ci_run_id": 30669975877,
         "conclusion": "SUCCESS_BEFORE_REVIEW_REPAIR"
-      }
+      },
+      "review_head": "2def59cb1240bfc99fd884aa80ac1489100d4bea",
+      "runtime_visual_run_id": 30670226689,
+      "load_receipt_source_revision": "deff40ce754f4a2ae64875ca609b48ec97934023"
     },
     "latest_checkpoint": {
       "id": "C3-FRONT-010",

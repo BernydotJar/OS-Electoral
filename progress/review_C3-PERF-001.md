@@ -2,7 +2,7 @@
 
 ## Disposition
 
-`PASS_LOCAL_REVIEW_REPAIR_EXACT_HEAD_POSTGRESQL_18_PENDING`
+`PASS_REPAIRED_EXACT_HEAD_POSTGRESQL_18`
 
 ## Requirements traceability
 
@@ -40,3 +40,7 @@ Accepted findings and disposition:
 3. top-level PASS could mask missing/failed evidence — RESOLVED with internal receipt accounting and full catalog cross-validation.
 
 Repaired code commit: `b74272d`. Local suite: 790 passed, 12 skipped, 90.22% coverage. Repaired exact-head PostgreSQL 18.3 evidence remains pending.
+
+## Repaired exact-head disposition
+
+Repaired head `2def59cb1240bfc99fd884aa80ac1489100d4bea` passed all required checks. PostgreSQL 18.3 artifact `8808493722` independently re-validated 11/11 scenarios, exact 5/15 contention, zero post-scenario checked-out connections and no sensitive values. The three review findings are ready for thread resolution.

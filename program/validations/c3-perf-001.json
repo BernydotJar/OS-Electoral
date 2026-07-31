@@ -5,7 +5,7 @@
   "mode": "SHIP",
   "branch": "agent/c3-perf-001-authenticated-load-verification",
   "base": "main@83c3577ff2467e8e4681229741c32fe85a19f0c9",
-  "state": "LOCAL_REVIEWED_AFTER_FIXES",
+  "state": "CI_GREEN",
   "scope": "Bounded authenticated API, PostgreSQL contention, rollback, fail-closed, pool and cleanup verification only.",
   "hard_limits": {
     "max_concurrency_per_scenario": 20,
@@ -21,7 +21,7 @@
     "ruff": "PASS",
     "mypy": "PASS",
     "failure_receipt": "PASS",
-    "postgresql_18": "PENDING_REPAIRED_EXACT_HEAD",
+    "postgresql_18": "PASS_REPAIRED_HOSTED_EXACT_HEAD",
     "local_postgresql_18_blocker": "DOCKER_LAYER_LCHOWN_ENVIRONMENT_LIMITATION",
     "make_verify": "PASS",
     "frontend_tests": "122_PASS",
@@ -29,20 +29,33 @@
     "program_security_release_safety": "PASS_PRODUCTION_BLOCKED"
   },
   "hosted_ci": {
-    "result": "PENDING_REPAIRED_EXACT_HEAD",
+    "result": "SUCCESS_REPAIRED_EXACT_HEAD",
     "pull_request": 145,
-    "implementation_head": "b74272d",
-    "superseded_evidence": {
-      "head": "7f739ae62f131c71720ca2889e692033a72796c3",
-      "campaignos_ci_run_id": 30669975877,
-      "reason": "Three review findings required code changes after the successful run."
-    }
+    "implementation_commit": "b74272db344aca75804c6f4233aeb13897037c00",
+    "review_head": "2def59cb1240bfc99fd884aa80ac1489100d4bea",
+    "campaignos_ci_run_id": 30670226754,
+    "runtime_visual_run_id": 30670226689,
+    "postgresql_version": "18.3",
+    "load_receipt_artifact_id": 8808493722,
+    "load_receipt_source_revision": "deff40ce754f4a2ae64875ca609b48ec97934023",
+    "source_revision_classification": "GITHUB_PULL_REQUEST_MERGE_REF",
+    "scenario_count": 11,
+    "contention_allowed": 5,
+    "contention_denied": 15,
+    "peak_checked_out": 19,
+    "after_checked_out": 0,
+    "sensitive_value_scan": "PASS",
+    "review_findings_resolved": [
+      "C3-PERF-001-F1",
+      "C3-PERF-001-F2",
+      "C3-PERF-001-F3"
+    ]
   },
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "production_capacity_claim": false,
   "external_effects": "NONE",
-  "status": "LOCAL_REVIEWED_AFTER_FIXES",
+  "status": "CI_GREEN",
   "critic_findings": [
     {
       "id": "C3-PERF-001-F1",
