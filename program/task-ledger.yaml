@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-31",
-  "branch": "agent/c3-front-008-organic-role-aware-flow",
+  "branch": "agent/c3-front-010-post-merge-reconciliation",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -924,7 +924,7 @@
       "approval": {
         "recorded_at": "2026-07-29T00:29:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
+        "statement": "Aprobado C3-SEC-002 para implementaci\u00f3n SHIP.",
         "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
       },
       "implementation_commit": "74977e390d33929f6cb5b2e850d52f8f7456f524",
@@ -967,6 +967,37 @@
       },
       "integrated_main_sha": "eb7b78aebce545702c482c90902d4464021d8ec5",
       "cumulative_merge_pr": 140
+    },
+    {
+      "task_id": "C3-FRONT-010",
+      "owner": "WS-06/WS-07/WS-02",
+      "status": "MERGED_TO_MAIN",
+      "evidence": [
+        "frontend/src/components/shell.tsx",
+        "frontend/src/components/notice-dismiss-link.tsx",
+        "frontend/src/components/team-operations-board.tsx",
+        "frontend/src/app/globals.css",
+        "scripts/frontend/review_dynamic_shell.py",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/testing/c3-front-010-evidence.md",
+        "program/validations/c3-front-010.json",
+        "progress/review_C3-FRONT-010.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [],
+      "approval": {
+        "recorded_at": "2026-07-31T17:00:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "Continue the existing Graph Harness SDLC program and implement the compact premium shell and liquid-glass operations repair.",
+        "scope": "Bounded frontend QA repair and temporary authenticated demo update; no production deployment, publication, contact, targeting, spending or mobilization."
+      },
+      "implementation_commit": "f4d5ab4d9c22917bf5bff37b5e368afda18b3406",
+      "head_commit": "f4d5ab4d9c22917bf5bff37b5e368afda18b3406",
+      "cumulative_merge_pr": 143,
+      "integrated_main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
+      "ci_run_id": 30656019602,
+      "visual_run_id": 30656019685,
+      "post_merge_ci_run_id": 30656253464
     },
     {
       "task_id": "C1-PLAN-001",

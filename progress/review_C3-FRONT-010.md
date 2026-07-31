@@ -69,3 +69,16 @@ Findings and repairs:
 Ready for review-branch publication and exact-head hosted verification. This repair does not authorize production deployment, publication, citizen contact, targeting, spending, mobilization or any other external political effect.
 
 Production remains `BLOCKED`; release remains `DENY_RELEASE`; external effects remain `NONE`.
+
+## Final disposition
+
+`MERGED_TO_MAIN_POST_MERGE_VERIFIED`
+
+- PR: `#143`
+- final implementation head: `f4d5ab4d9c22917bf5bff37b5e368afda18b3406`
+- merged main: `998072c64c976d8b2e559862df5dab0e84104b98`
+- exact-head CI: `30656019602` / SUCCESS
+- runtime visual review: `30656019685` / SUCCESS
+- post-merge CI: `30656253464` / SUCCESS
+- review threads: zero unresolved
+- authenticated temporary demo: verified on desktop and 390px mobile

@@ -3,17 +3,17 @@
   "increment": "C3-FRONT-010",
   "assessed_at": "2026-07-31",
   "mode": "SHIP",
-  "branch": "agent/c3-front-010-compact-command-glass",
+  "branch": "agent/c3-front-010-post-merge-reconciliation",
   "base": "main@d2ad6d5eaeb46208fc00ea5fb9eb0be81eae26ee",
-  "implementation_commit": "b14f0ae",
-  "state": "LOCAL_REVIEWED",
+  "implementation_commit": "f4d5ab4d9c22917bf5bff37b5e368afda18b3406",
+  "state": "MERGED_TO_MAIN",
   "scope": "Compact internal command chrome, collapsed technical context, calm authorization feedback, restrained liquid-glass operational cards and deterministic evaluators only.",
   "verification": {
     "python_passed": 753,
     "python_skipped": 11,
     "coverage_percent": 90.39,
-    "frontend_test_files": 28,
-    "frontend_passed": 121,
+    "frontend_test_files": 29,
+    "frontend_passed": 122,
     "dependency_vulnerabilities": 0,
     "typecheck": "PASS",
     "eslint": "PASS",
@@ -24,7 +24,10 @@
     "horizontal_overflow": "NONE",
     "unexpected_outbound_hosts": [],
     "program_truth": "PASS_BLOCKED",
-    "release_decision": "DENY_RELEASE"
+    "release_decision": "DENY_RELEASE",
+    "hosted_postgresql_api_browser": "PASS",
+    "post_merge_ci": "PASS",
+    "public_authenticated_demo": "PASS"
   },
   "critic_findings": [
     {
@@ -54,17 +57,40 @@
       "status": "ENVIRONMENT_LIMITATION",
       "finding": "Nested Docker failed before product startup while registering an upstream layer with lchown /var/empty: permission denied.",
       "repair": "Require hosted exact-head PostgreSQL/API/browser verification before merge."
+    },
+    {
+      "id": "C3-FRONT-010-F5",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "Notice dismissal could lose a live form anchor.",
+      "repair": "Client dismissal removes only notice, preserves remaining query parameters and the current hash, and disables scroll reset."
+    },
+    {
+      "id": "C3-FRONT-010-F6",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "The mobile session disclosure could escape the viewport.",
+      "repair": "Anchored the disclosure to the full compact bar and added a 390px browser containment gate."
     }
   ],
   "hosted_ci": {
-    "result": "PENDING_EXACT_HEAD",
-    "pull_request": null,
-    "implementation_head": null,
-    "campaignos_ci_run_id": null,
-    "runtime_visual_run_id": null
+    "result": "SUCCESS",
+    "pull_request": 143,
+    "implementation_head": "f4d5ab4d9c22917bf5bff37b5e368afda18b3406",
+    "campaignos_ci_run_id": 30656019602,
+    "runtime_visual_run_id": 30656019685,
+    "merged_main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
+    "post_merge_ci_run_id": 30656253464
   },
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
-  "status": "LOCAL_REVIEWED"
+  "status": "MERGED_TO_MAIN",
+  "deployment_evidence": {
+    "classification": "TEMPORARY_AUTHENTICATED_NON_PRODUCTION",
+    "public_url": "https://nutritional-salt-journalism-productions.trycloudflare.com",
+    "ui_source_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
+    "backend_runtime_equivalent": true,
+    "verification": "PASS_DESKTOP_MOBILE_READY"
+  }
 }

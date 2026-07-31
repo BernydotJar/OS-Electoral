@@ -89,3 +89,20 @@ This is an isolated workstation runtime limitation. The exact-head hosted workfl
 - separate production and external-effect approvals.
 
 Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## Exact-head, merge and demo evidence
+
+```text
+pull request: 143
+final implementation head: f4d5ab4d9c22917bf5bff37b5e368afda18b3406
+exact-head CampaignOS CI: 30656019602 / SUCCESS
+exact-head runtime visual review: 30656019685 / SUCCESS
+merged main: 998072c64c976d8b2e559862df5dab0e84104b98
+post-merge CampaignOS CI: 30656253464 / SUCCESS
+public demo classification: TEMPORARY_AUTHENTICATED_NON_PRODUCTION
+public demo readiness: PASS
+public desktop compact chrome: 64px / PASS
+public mobile viewport containment: PASS at 390px
+```
+
+The final critic pass also repaired exact-anchor preservation when dismissing notices and mobile session-menu containment. The authenticated demo serves the merged UI SHA; its backend runtime is byte-equivalent because no backend file changed between the prior and current UI builds.

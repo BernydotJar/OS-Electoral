@@ -3,13 +3,13 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-31",
-  "source_branch": "agent/c1-plan-001-post-merge-reconciliation",
+  "source_branch": "agent/c3-front-010-post-merge-reconciliation",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
-    "main_sha_observed": "340415de8a4acaecba0d3194a2b9053d52451399",
+    "main_sha_observed": "998072c64c976d8b2e559862df5dab0e84104b98",
     "c2_integration_state": "MERGED_TO_MAIN",
     "c3_foundation_iam_api_state": "MERGED_TO_MAIN",
-    "c3_program_state": "C1_PLAN_001_MERGED_C3_PERF_001_SPEC_READY"
+    "c3_program_state": "C3_FRONT_010_MERGED_C3_PERF_001_SPEC_READY"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
@@ -1184,6 +1184,22 @@
       ]
     },
     {
+      "id": "C3-FRONT-010",
+      "workstream": "WS-06",
+      "title": "Compact command chrome and restrained liquid-glass operations",
+      "status": "MERGED_TO_MAIN",
+      "depends_on": [
+        "C3-FRONT-008R1",
+        "C3-TEAM-004"
+      ],
+      "acceptance": [
+        "Internal chapter chrome renders at no more than 80px and defers technical session context behind a collapsed disclosure",
+        "Authorization-denied feedback preserves the workspace, current route, remaining query parameters and exact anchor",
+        "Operational cards separate status, type, priority and health with a restrained glass enhancement and deterministic fallback",
+        "Desktop, mobile, ES/EN, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and post-merge gates pass"
+      ]
+    },
+    {
       "id": "C1-PLAN-001",
       "workstream": "WS-10",
       "title": "Evidence-governed municipal campaign planning for women and sport",
@@ -1306,7 +1322,8 @@
       128,
       138,
       139,
-      140
+      140,
+      143
     ],
     "open_pull_requests": [
       129,
@@ -1328,8 +1345,8 @@
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {
-      "run_id": 30646639373,
-      "head_sha": "340415de8a4acaecba0d3194a2b9053d52451399",
+      "run_id": 30656253464,
+      "head_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
       "conclusion": "SUCCESS",
       "required_check_enforcement": true,
       "required_check_count": 8,
@@ -1443,33 +1460,15 @@
       "frontend_target_verified": true
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
-    "active_local_increment": {
-      "id": "C3-FRONT-008R1",
-      "state": "REVIEWED",
-      "branch": "agent/c3-front-008r1-qa-command-surface",
-      "base": "main@a8c61170c55aeba59e3830837c869b572fe84a9a",
-      "approved_spec": "specs/C3-FRONT-008R1/requirements.md",
-      "approval_recorded_at": "2026-07-30T23:58:00-06:00",
-      "production_status": "BLOCKED",
-      "release_decision": "DENY_RELEASE",
-      "external_effects": "NONE",
-      "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_HOSTED_GATES",
-      "review_artifact": "progress/review_C3-FRONT-008R1.md",
-      "local_evidence": [
-        "docs/testing/c3-front-008r1-evidence.md",
-        "docs/testing/c3-front-008r1-us-strategist-eval.md",
-        "program/iterations/c3-front-008r1.md",
-        "program/validations/c3-front-008r1.json"
-      ]
-    },
+    "active_local_increment": null,
     "latest_checkpoint": {
-      "id": "C1-PLAN-001",
+      "id": "C3-FRONT-010",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "merge_pr": 139,
-      "merged_at": "2026-07-31T16:20:00Z",
-      "main_sha": "340415de8a4acaecba0d3194a2b9053d52451399",
-      "post_merge_ci_run_id": 30646639373,
+      "merge_pr": 143,
+      "merged_at": "2026-07-31T18:06:00Z",
+      "main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
+      "post_merge_ci_run_id": 30656253464,
       "post_merge_ci_conclusion": "SUCCESS",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
@@ -1492,18 +1491,18 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 139,
+      "pr": 143,
       "status": "MERGED_TO_MAIN_SQUASH",
-      "main_sha": "340415de8a4acaecba0d3194a2b9053d52451399",
+      "main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
       "checks_before_merge": "SUCCESS",
-      "post_merge_ci_run_id": 30646639373,
+      "post_merge_ci_run_id": 30656253464,
       "post_merge_ci_conclusion": "SUCCESS",
       "included_increment_prs": [
-        139
+        143
       ],
       "previous_cumulative_merge": {
-        "pr": 140,
-        "main_sha": "eb7b78aebce545702c482c90902d4464021d8ec5"
+        "pr": 139,
+        "main_sha": "340415de8a4acaecba0d3194a2b9053d52451399"
       },
       "open_pull_requests_observed": 9
     },
@@ -1511,13 +1510,13 @@
     "live_required_check_count": 8,
     "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN",
     "latest_completed_checkpoint": {
-      "id": "C1-PLAN-001",
+      "id": "C3-FRONT-010",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "merge_pr": 139,
-      "merged_at": "2026-07-31T16:20:00Z",
-      "main_sha": "340415de8a4acaecba0d3194a2b9053d52451399",
-      "post_merge_ci_run_id": 30646639373,
+      "merge_pr": 143,
+      "merged_at": "2026-07-31T18:06:00Z",
+      "main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
+      "post_merge_ci_run_id": 30656253464,
       "post_merge_ci_conclusion": "SUCCESS",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
@@ -1546,13 +1545,13 @@
     },
     "ephemeral_review": {
       "classification": "TEMPORARY_AUTHENTICATED_NON_PRODUCTION",
-      "state": "STOPPED",
-      "source_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
+      "state": "RUNNING",
+      "source_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
       "public_url": "https://nutritional-salt-journalism-productions.trycloudflare.com",
       "credentials_retained_in_repository": false,
       "counts_as_production_evidence": false,
-      "verification": "PASS_DESKTOP_MOBILE_ES_EN_ZERO_BROWSER_ERRORS",
-      "stopped_at": "2026-07-29"
+      "verification": "PASS_COMPACT_CHROME_GLASS_DESKTOP_MOBILE_READY",
+      "stopped_at": null
     }
   },
   "production_gates": [

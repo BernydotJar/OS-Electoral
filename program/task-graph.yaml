@@ -394,6 +394,22 @@
       ]
     },
     {
+      "id": "C3-FRONT-010",
+      "workstream": "WS-06",
+      "title": "Compact command chrome and restrained liquid-glass operations",
+      "status": "MERGED_TO_MAIN",
+      "depends_on": [
+        "C3-FRONT-008R1",
+        "C3-TEAM-004"
+      ],
+      "acceptance": [
+        "Internal chapter chrome renders at no more than 80px and defers technical session context behind a collapsed disclosure",
+        "Authorization-denied feedback preserves the workspace, current route, remaining query parameters and exact anchor",
+        "Operational cards separate status, type, priority and health with a restrained glass enhancement and deterministic fallback",
+        "Desktop, mobile, ES/EN, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and post-merge gates pass"
+      ]
+    },
+    {
       "id": "C1-PLAN-001",
       "workstream": "WS-10",
       "title": "Evidence-governed municipal campaign planning for women and sport",
