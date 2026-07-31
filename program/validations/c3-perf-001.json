@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-PERF-001",
+  "assessed_at": "2026-07-31",
+  "mode": "SHIP",
+  "branch": "agent/c3-perf-001-authenticated-load-verification",
+  "base": "main@83c3577ff2467e8e4681229741c32fe85a19f0c9",
+  "state": "LOCAL_REVIEWED",
+  "scope": "Bounded authenticated API, PostgreSQL contention, rollback, fail-closed, pool and cleanup verification only.",
+  "hard_limits": {
+    "max_concurrency_per_scenario": 20,
+    "max_requests_per_scenario": 600,
+    "max_scenario_seconds": 60,
+    "max_harness_seconds": 600
+  },
+  "local_verification": {
+    "focused_tests": "PASS",
+    "python_passed": 778,
+    "python_skipped": 12,
+    "coverage_percent": 90.52,
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "failure_receipt": "PASS",
+    "postgresql_18": "PENDING_HOSTED_EXACT_HEAD",
+    "local_postgresql_18_blocker": "DOCKER_LAYER_LCHOWN_ENVIRONMENT_LIMITATION"
+  },
+  "hosted_ci": {
+    "result": "PENDING_EXACT_HEAD",
+    "pull_request": null,
+    "implementation_head": null,
+    "campaignos_ci_run_id": null
+  },
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "production_capacity_claim": false,
+  "external_effects": "NONE",
+  "status": "LOCAL_REVIEWED"
+}

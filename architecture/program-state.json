@@ -3,13 +3,13 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-31",
-  "source_branch": "agent/c3-front-010-post-merge-reconciliation",
+  "source_branch": "agent/c3-perf-001-authenticated-load-verification",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
-    "main_sha_observed": "998072c64c976d8b2e559862df5dab0e84104b98",
+    "main_sha_observed": "83c3577ff2467e8e4681229741c32fe85a19f0c9",
     "c2_integration_state": "MERGED_TO_MAIN",
     "c3_foundation_iam_api_state": "MERGED_TO_MAIN",
-    "c3_program_state": "C3_FRONT_010_MERGED_C3_PERF_001_SPEC_READY"
+    "c3_program_state": "C3_PERF_001_IN_PROGRESS"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
@@ -1219,6 +1219,23 @@
       ]
     },
     {
+      "id": "C3-PERF-001",
+      "workstream": "WS-13",
+      "title": "Authenticated load and contention verification",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-API-001",
+        "C3-OBS-001",
+        "C3-SEC-002"
+      ],
+      "acceptance": [
+        "A versioned bounded workload catalog covers authenticated API, denial, contention, rollback, unavailable-store and cleanup scenarios",
+        "Strict sanitized receipts reject unknown or sensitive fields and make no production capacity claim",
+        "PostgreSQL 18 contention, rate-limit correctness, pool recovery and cleanup remain deterministic under hard ceilings",
+        "Focused and complete repository gates pass while production remains BLOCKED and external effects remain NONE"
+      ]
+    },
+    {
       "id": "action:production-deployment",
       "status": "HUMAN_BLOCKED",
       "depends_on": [
@@ -1345,8 +1362,8 @@
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {
-      "run_id": 30656253464,
-      "head_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
+      "run_id": 30667485767,
+      "head_sha": "83c3577ff2467e8e4681229741c32fe85a19f0c9",
       "conclusion": "SUCCESS",
       "required_check_enforcement": true,
       "required_check_count": 8,
@@ -1460,7 +1477,25 @@
       "frontend_target_verified": true
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
-    "active_local_increment": null,
+    "active_local_increment": {
+      "id": "C3-PERF-001",
+      "state": "REVIEWED",
+      "branch": "agent/c3-perf-001-authenticated-load-verification",
+      "base": "main@83c3577ff2467e8e4681229741c32fe85a19f0c9",
+      "approved_spec": "specs/C3-PERF-001/requirements.md",
+      "approval_recorded_at": "2026-07-31T15:35:00-06:00",
+      "production_status": "BLOCKED",
+      "release_decision": "DENY_RELEASE",
+      "external_effects": "NONE",
+      "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_POSTGRESQL_18_GATES",
+      "review_artifact": "progress/review_C3-PERF-001.md",
+      "local_evidence": [
+        "docs/testing/c3-perf-001-evidence.md",
+        "docs/operations/load-verification.md",
+        "program/iterations/c3-perf-001.md",
+        "program/validations/c3-perf-001.json"
+      ]
+    },
     "latest_checkpoint": {
       "id": "C3-FRONT-010",
       "status": "MERGED_TO_MAIN",
@@ -1491,18 +1526,18 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 143,
+      "pr": 144,
       "status": "MERGED_TO_MAIN_SQUASH",
-      "main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
+      "main_sha": "83c3577ff2467e8e4681229741c32fe85a19f0c9",
       "checks_before_merge": "SUCCESS",
-      "post_merge_ci_run_id": 30656253464,
+      "post_merge_ci_run_id": 30667485767,
       "post_merge_ci_conclusion": "SUCCESS",
       "included_increment_prs": [
-        143
+        144
       ],
       "previous_cumulative_merge": {
-        "pr": 139,
-        "main_sha": "340415de8a4acaecba0d3194a2b9053d52451399"
+        "pr": 143,
+        "main_sha": "998072c64c976d8b2e559862df5dab0e84104b98"
       },
       "open_pull_requests_observed": 9
     },
@@ -1935,10 +1970,10 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": null,
+    "active_feature": "C3-PERF-001",
     "selected_feature": "C3-PERF-001",
-    "selected_feature_state": "spec_ready",
-    "approval_gate": "PENDING",
+    "selected_feature_state": "review",
+    "approval_gate": "APPROVED",
     "ready_nodes": []
   }
 }
