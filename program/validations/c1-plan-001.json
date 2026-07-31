@@ -5,7 +5,7 @@
   "mode": "SHIP",
   "branch": "feat/antigua-campaign-planning-women-sport",
   "base": "main@eb7b78aebce545702c482c90902d4464021d8ec5",
-  "state": "REVIEWED",
+  "state": "MERGED_TO_MAIN",
   "human_approval": {
     "recorded": true,
     "recorded_at": "2026-07-31T09:59:00-06:00",
@@ -41,8 +41,17 @@
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
-  "status": "REVIEWED",
+  "status": "MERGED_TO_MAIN",
   "implementation_commit": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
-  "head_commit": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
-  "draft_pr": 139
+  "head_commit": "eb5834a21f07a2c8c5308683a9f87729402a212d",
+  "draft_pr": 139,
+  "hosted_ci": {
+    "result": "PASS_EXACT_HEAD",
+    "campaignos_ci_run_id": 30646374458,
+    "runtime_visual_run_id": 30646374451,
+    "post_merge_ci_run_id": 30646639373,
+    "post_merge_ci_conclusion": "SUCCESS",
+    "merged_main_sha": "340415de8a4acaecba0d3194a2b9053d52451399"
+  },
+  "remote_state": "MERGED_PR_139_POST_MERGE_CI_GREEN"
 }
