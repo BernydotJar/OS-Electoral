@@ -407,6 +407,14 @@ async def review() -> dict[str, object]:
         )
         await navigate_from_chapter(page, "/es/campaign/team#team-workspace")
         await wait_for_chapter(page, "**/es/campaign/team**", "#team-workspace")
+        compact_topbar = page.locator(".topbar-compact")
+        require(await compact_topbar.count() == 1, "team chapter lacks compact command chrome")
+        compact_height = await compact_topbar.evaluate("element => element.getBoundingClientRect().height")
+        require(compact_height <= 80, f"compact command chrome is too tall: {compact_height}")
+        require(
+            await page.locator(".context-strip").count() == 0,
+            "chapter still exposes the full technical context strip",
+        )
         require(
             await page.locator("#team-workspace").count() == 1,
             "team chapter did not render its mission",
@@ -613,6 +621,28 @@ async def review() -> dict[str, object]:
         require(
             await work_card.count() == 1,
             "planned operational work was not projected",
+        )
+        card_style = await work_card.evaluate(
+            """element => {
+              const style = getComputedStyle(element);
+              const nextAction = element.querySelector('.team-work-next-action');
+              const nextStyle = nextAction ? getComputedStyle(nextAction) : null;
+              return {
+                borderRadius: parseFloat(style.borderRadius),
+                backdropFilter: style.backdropFilter || style.webkitBackdropFilter,
+                boxShadow: style.boxShadow,
+                nextActionBackground: nextStyle?.backgroundImage ?? 'none',
+                structuredBadges: element.querySelectorAll('[data-kind]').length,
+              };
+            }"""
+        )
+        require(
+            card_style["borderRadius"] >= 18
+            and "blur" in card_style["backdropFilter"]
+            and card_style["boxShadow"] != "none"
+            and card_style["nextActionBackground"] != "none"
+            and card_style["structuredBadges"] == 3,
+            f"work card lacks restrained liquid-glass hierarchy: {card_style}",
         )
         work_details = work_card.locator(".team-work-details")
         await work_details.locator("summary").focus()

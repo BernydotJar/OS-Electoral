@@ -327,6 +327,27 @@ async def review() -> dict[str, object]:
         ).click()
         await desktop.wait_for_url("**/es/campaign/team**")
         await desktop.locator("#team-workspace").wait_for(state="visible")
+        compact_topbar = desktop.locator(".topbar-compact")
+        require(await compact_topbar.count() == 1, "team chapter lacks compact command chrome")
+        compact_height = await compact_topbar.evaluate("element => element.getBoundingClientRect().height")
+        require(compact_height <= 80, f"compact command chrome is too tall: {compact_height}")
+        require(
+            await desktop.locator(".context-strip").count() == 0,
+            "technical context strip still occupies chapter space",
+        )
+        session_menu = desktop.locator(".session-context-menu")
+        require(
+            await session_menu.count() == 1
+            and not await session_menu.evaluate("element => element.open"),
+            "session context is not collapsed by default",
+        )
+        await session_menu.locator("summary").click()
+        require(
+            await session_menu.evaluate("element => element.open")
+            and await session_menu.get_by_text("Campaña", exact=True).count() == 1,
+            "compact session context did not reveal technical details",
+        )
+        await session_menu.locator("summary").click()
         require(
             await desktop.locator(".campaign-experience").count() == 0,
             "mission hero leaked into the team chapter",
