@@ -24,107 +24,106 @@ export function deriveNavigation(
 ): readonly NavigationItem[] {
   const base = `/${locale}`;
   return [
-    {
-      key: "intake",
-      href: campaignChapterHref(locale, "foundation"),
-      enabled: hasGrant(
-        memberships,
-        (grant) =>
-          currentCampaignId !== undefined &&
-          grant.action === "read" &&
-          grant.resource_type === "guided_intake" &&
-          grant.resource_id === currentCampaignId &&
-          grant.campaign_id === currentCampaignId &&
-          grant.workspace_id === null &&
-          grant.purpose === "Review guided campaign intake",
-      ),
-      reason: "EXACT_GRANT",
-    },
     { key: "overview", href: `${base}#main`, enabled: true, reason: "BASE" },
     {
-      key: "campaigns",
-      href: `${base}#campaigns`,
-      enabled: true,
-      reason: "BASE",
-    },
+          key: "candidate",
+          href: campaignChapterHref(locale, "evidence"),
+          enabled: hasGrant(
+            memberships,
+            (grant) =>
+              currentCampaignId !== undefined &&
+              grant.action === "read" &&
+              grant.resource_type === "candidate_workspace" &&
+              grant.resource_id === currentCampaignId &&
+              grant.campaign_id === currentCampaignId &&
+              grant.workspace_id === null &&
+              grant.purpose === "Review candidate evidence workspace",
+          ),
+          reason: "EXACT_GRANT",
+        },
     {
-      key: "readiness",
-      href: `${base}#readiness`,
-      enabled: hasGrant(
-        memberships,
-        (grant) => grant.resource_type === "campaign_readiness",
-      ),
-      reason: "EXACT_GRANT",
-    },
+          key: "team",
+          href: campaignChapterHref(locale, "team"),
+          enabled: hasGrant(
+            memberships,
+            (grant) =>
+              currentCampaignId !== undefined &&
+              grant.action === "read" &&
+              grant.resource_type === "team_workspace" &&
+              grant.resource_id === currentCampaignId &&
+              grant.campaign_id === currentCampaignId &&
+              grant.workspace_id === null &&
+              grant.purpose === "Review campaign team workspace",
+          ),
+          reason: "EXACT_GRANT",
+        },
     {
-      key: "candidate",
-      href: campaignChapterHref(locale, "evidence"),
-      enabled: hasGrant(
-        memberships,
-        (grant) =>
-          currentCampaignId !== undefined &&
-          grant.action === "read" &&
-          grant.resource_type === "candidate_workspace" &&
-          grant.resource_id === currentCampaignId &&
-          grant.campaign_id === currentCampaignId &&
-          grant.workspace_id === null &&
-          grant.purpose === "Review candidate evidence workspace",
-      ),
-      reason: "EXACT_GRANT",
-    },
+          key: "intake",
+          href: campaignChapterHref(locale, "foundation"),
+          enabled: hasGrant(
+            memberships,
+            (grant) =>
+              currentCampaignId !== undefined &&
+              grant.action === "read" &&
+              grant.resource_type === "guided_intake" &&
+              grant.resource_id === currentCampaignId &&
+              grant.campaign_id === currentCampaignId &&
+              grant.workspace_id === null &&
+              grant.purpose === "Review guided campaign intake",
+          ),
+          reason: "EXACT_GRANT",
+        },
     {
-      key: "team",
-      href: campaignChapterHref(locale, "team"),
-      enabled: hasGrant(
-        memberships,
-        (grant) =>
-          currentCampaignId !== undefined &&
-          grant.action === "read" &&
-          grant.resource_type === "team_workspace" &&
-          grant.resource_id === currentCampaignId &&
-          grant.campaign_id === currentCampaignId &&
-          grant.workspace_id === null &&
-          grant.purpose === "Review campaign team workspace",
-      ),
-      reason: "EXACT_GRANT",
-    },
+          key: "readiness",
+          href: `${base}#readiness`,
+          enabled: hasGrant(
+            memberships,
+            (grant) => grant.resource_type === "campaign_readiness",
+          ),
+          reason: "EXACT_GRANT",
+        },
     {
-      key: "strategy",
-      href: campaignChapterHref(locale, "strategy"),
-      enabled: hasGrant(
-        memberships,
-        (grant) =>
-          currentCampaignId !== undefined &&
-          grant.action === "read" &&
-          grant.resource_type === "strategy_workspace" &&
-          grant.resource_id === currentCampaignId &&
-          grant.campaign_id === currentCampaignId &&
-          grant.workspace_id === null &&
-          grant.purpose === "Review campaign strategy workspace",
-      ),
-      reason: "EXACT_GRANT",
-    },
+          key: "campaigns",
+          href: `${base}#campaigns`,
+          enabled: true,
+          reason: "BASE",
+        },
     {
-      key: "warRoom",
-      href: campaignChapterHref(locale, "operations"),
-      enabled: hasGrant(
-        memberships,
-        (grant) =>
-          currentCampaignId !== undefined &&
-          grant.action === "read" &&
-          grant.resource_type === "campaign_roadmap" &&
-          grant.resource_id === currentCampaignId &&
-          grant.campaign_id === currentCampaignId &&
-          grant.workspace_id === null &&
-          grant.purpose === "Review campaign operations roadmap",
-      ),
-      reason: "EXACT_GRANT",
-    },
+          key: "strategy",
+          href: campaignChapterHref(locale, "strategy"),
+          enabled: hasGrant(
+            memberships,
+            (grant) =>
+              currentCampaignId !== undefined &&
+              grant.action === "read" &&
+              grant.resource_type === "strategy_workspace" &&
+              grant.resource_id === currentCampaignId &&
+              grant.campaign_id === currentCampaignId &&
+              grant.workspace_id === null &&
+              grant.purpose === "Review campaign strategy workspace",
+          ),
+          reason: "EXACT_GRANT",
+        },
     {
-      key: "evidence",
-      href: `${base}#evidence`,
-      enabled: false,
-      reason: "FUTURE_CAPABILITY",
-    },
-  ];
-}
+          key: "warRoom",
+          href: campaignChapterHref(locale, "operations"),
+          enabled: hasGrant(
+            memberships,
+            (grant) =>
+              currentCampaignId !== undefined &&
+              grant.action === "read" &&
+              grant.resource_type === "campaign_roadmap" &&
+              grant.resource_id === currentCampaignId &&
+              grant.campaign_id === currentCampaignId &&
+              grant.workspace_id === null &&
+              grant.purpose === "Review campaign operations roadmap",
+          ),
+          reason: "EXACT_GRANT",
+        },
+    {
+          key: "evidence",
+          href: `${base}#evidence`,
+          enabled: false,
+          reason: "FUTURE_CAPABILITY",
+        }
+  ];}

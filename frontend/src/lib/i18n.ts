@@ -35,6 +35,7 @@ const es = {
     humanAuthority: "DECISIÓN HUMANA",
     authorizationContext: "CONTEXTO DE AUTORIZACIÓN",
     currentContext: "Contexto actual",
+    technicalDetails: "Ver detalles técnicos y permisos",
     tenant: "Organización",
     campaign: "Campaña",
     principal: "Sesión",
@@ -277,9 +278,9 @@ const es = {
     eyebrow: "INICIO GUIADO · EVIDENCIA PRIMERO",
     title: "Construye la base de tu campaña",
     body: "Responde preguntas claras para que CampaignOS pueda indicarte qué sigue, qué evidencia falta y qué trabajo debe organizarse.",
-    completedTitle: "Configuración inicial completada",
+    completedTitle: "Ver la configuración registrada",
     completedBody:
-      "La base ya está registrada. Ábrela sólo cuando necesites revisar o actualizar la configuración de inicio.",
+      "Consulta aquí lo que ingresaste y abre la edición cuando necesites actualizarlo.",
     startTitle: "Comenzar la ruta guiada",
     startBody:
       "Crea el registro interno y su evidencia de auditoría. No inicia estrategia, contacto ni ejecución externa.",
@@ -464,7 +465,7 @@ const es = {
     approvedSections: "Secciones aprobadas",
     pendingApprovals: "Aprobaciones pendientes",
     criticalHighRisks: "Riesgos críticos/altos abiertos",
-    publicBoundary: "Uso público bloqueado",
+    publicBoundary: "Preparación interna activa",
     publicBoundaryBody:
       "La aprobación interna no autoriza posicionamiento público, estrategia, contenido, contacto, gasto ni movilización.",
     notStarted:
@@ -517,7 +518,7 @@ const es = {
     actionBriefBody:
       "CampaignOS convierte vacíos, riesgos y revisiones pendientes en trabajo preparatorio trazable. No decide estrategia ni autoriza uso público.",
     actionBriefBoundary:
-      "Estos insights preparan revisión humana y mantienen el uso público bloqueado.",
+      "Puedes probar, documentar y organizar esta sección. Las publicaciones y demás efectos externos conservan revisión separada.",
     zeroVerifiedSources: "0 fuentes verificables",
     actionInsightLabels: {
       NEXT_ACTION: "Siguiente acción humana",
@@ -635,6 +636,9 @@ const es = {
     },
     status: "Estado organizacional",
     progress: "pasos completos",
+    progressGuidanceTitle: "Qué falta para completar esta etapa",
+    progressGuidanceBody: "El indicador resume preparación del equipo. Completa estos puntos para llegar al siguiente estado:",
+    progressDetailsAction: "Ver los 8 pasos y su estado",
     nextAction: "Siguiente acción humana",
     authorityBoundary: "Las etiquetas de rol no son permisos",
     authorityBody:
@@ -889,7 +893,7 @@ const es = {
     overview: "Resumen",
     campaigns: "Campañas",
     readiness: "Preparación",
-    intake: "Ruta de inicio",
+    intake: "Preparación inicial",
     candidate: "Candidatura",
     team: "Equipo",
     strategy: "Estrategia",
@@ -937,6 +941,7 @@ const en: Dictionary = {
     humanAuthority: "HUMAN DECISION",
     authorizationContext: "AUTHORIZATION CONTEXT",
     currentContext: "Current context",
+    technicalDetails: "View technical details and permissions",
     tenant: "Organization",
     campaign: "Campaign",
     principal: "Session",
@@ -1172,7 +1177,7 @@ const en: Dictionary = {
     eyebrow: "GUIDED START · EVIDENCE FIRST",
     title: "Build your campaign foundation",
     body: "Answer clear questions so CampaignOS can show what comes next, what evidence is missing, and what work must be organized.",
-    completedTitle: "Initial setup complete",
+    completedTitle: "View saved setup",
     completedBody:
       "The foundation is already recorded. Open it only when you need to review or update the starting configuration.",
     startTitle: "Start the verifiable intake",
@@ -1359,7 +1364,7 @@ const en: Dictionary = {
     approvedSections: "Approved sections",
     pendingApprovals: "Pending approvals",
     criticalHighRisks: "Open critical/high risks",
-    publicBoundary: "Public use blocked",
+    publicBoundary: "Internal preparation active",
     publicBoundaryBody:
       "Internal approval does not authorize public positioning, strategy, content, contact, spending, or mobilization.",
     notStarted:
@@ -1412,7 +1417,7 @@ const en: Dictionary = {
     actionBriefBody:
       "CampaignOS turns gaps, risks, and pending reviews into traceable preparation work. It does not decide strategy or authorize public use.",
     actionBriefBoundary:
-      "These insights prepare human review and keep public use blocked.",
+      "You can test, document, and organize this section. Publishing and other external effects retain a separate review gate.",
     zeroVerifiedSources: "0 verified sources",
     actionInsightLabels: {
       NEXT_ACTION: "Next human action",
@@ -1529,6 +1534,9 @@ const en: Dictionary = {
     },
     status: "Organizational status",
     progress: "checks complete",
+    progressGuidanceTitle: "What remains to complete this stage",
+    progressGuidanceBody: "The indicator summarizes team readiness. Complete these points to reach the next state:",
+    progressDetailsAction: "View all 8 steps and their status",
     nextAction: "Next human action",
     authorityBoundary: "Role labels are not permissions",
     authorityBody:
@@ -1782,7 +1790,7 @@ const en: Dictionary = {
     overview: "Overview",
     campaigns: "Campaigns",
     readiness: "Preparation",
-    intake: "Starting path",
+    intake: "Initial preparation",
     candidate: "Candidate",
     team: "Team",
     strategy: "Strategy",

@@ -343,25 +343,23 @@ async def review() -> dict[str, object]:
             and await board_layer.get_attribute("data-active") == "false",
             "empty demo operation stack does not begin with creation in front",
         )
-        layer_geometry = await desktop.locator(".team-operations-stack").evaluate(
+        layer_visibility = await desktop.locator(".team-operations-stack").evaluate(
             """stack => {
               const active = stack.querySelector('[data-active="true"]');
               const inactive = stack.querySelector('[data-active="false"]');
-              const activeRect = active.getBoundingClientRect();
-              const inactiveRect = inactive.getBoundingClientRect();
               return {
-                topDelta: inactiveRect.top - activeRect.top,
-                leftDelta: inactiveRect.left - activeRect.left,
-                activeZ: Number(getComputedStyle(active).zIndex),
-                inactiveZ: Number(getComputedStyle(inactive).zIndex),
+                activeDisplay: getComputedStyle(active).display,
+                activeVisibility: getComputedStyle(active).visibility,
+                inactiveDisplay: getComputedStyle(inactive).display,
+                inactiveVisibility: getComputedStyle(inactive).visibility,
               };
             }"""
         )
         require(
-            layer_geometry["topDelta"] < 0
-            and layer_geometry["leftDelta"] > 0
-            and layer_geometry["activeZ"] > layer_geometry["inactiveZ"],
-            f"operation cards are not visibly interleaved: {layer_geometry}",
+            layer_visibility["activeDisplay"] != "none"
+            and layer_visibility["activeVisibility"] == "visible"
+            and layer_visibility["inactiveDisplay"] == "none",
+            f"inactive operation card still distracts or occupies layout: {layer_visibility}",
         )
         create_tab = desktop.get_by_role("tab", name="Crear seguimiento")
         board_tab = desktop.get_by_role("tab", name="Tablero operativo")

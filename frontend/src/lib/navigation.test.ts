@@ -30,7 +30,7 @@ function membership(
 }
 
 describe("deriveNavigation", () => {
-  it("places the guided starting route before overview and campaign administration", () => {
+  it("places the command overview before candidate, team, and preparation", () => {
     const intakeMembership = membership("guided_intake");
     const scopedMembership = {
       ...intakeMembership,
@@ -45,7 +45,7 @@ describe("deriveNavigation", () => {
       deriveNavigation("es", [scopedMembership], CAMPAIGN_ID)
         .filter((item) => item.enabled)
         .map((item) => item.key),
-    ).toEqual(["intake", "overview", "campaigns"]);
+    ).toEqual(["overview", "intake", "campaigns"]);
   });
 
   it("does not treat role labels as permission", () => {

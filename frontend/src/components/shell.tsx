@@ -368,10 +368,8 @@ export function CampaignShell({
                 demo={model.demo}
               />
 
-              <section
-                className="context-details"
-                aria-labelledby="context-title"
-              >
+              <details className="context-details technical-details">
+                <summary>{dictionary.shell.technicalDetails}</summary>
                 <div>
                   <p className="eyebrow">
                     {dictionary.shell.authorizationContext}
@@ -396,7 +394,7 @@ export function CampaignShell({
                     <dd>{model.campaign.version}</dd>
                   </div>
                 </dl>
-              </section>
+              </details>
             </>
           )}
 
@@ -779,6 +777,23 @@ export function CampaignShell({
                   ) : null}
                 </div>
 
+                {teamWorkspace &&
+                teamWorkspace.completed_checks < teamWorkspace.total_checks ? (
+                  <div className="team-progress-guidance" role="status">
+                    <strong>{dictionary.teamWorkspace.progressGuidanceTitle}</strong>
+                    <p>{dictionary.teamWorkspace.progressGuidanceBody}</p>
+                    <ul>
+                      {teamWorkspace.checks
+                        .filter((check) => !check.complete)
+                        .map((check) => (
+                          <li key={check.key}>
+                            {dictionary.teamWorkspace.checkLabels[check.key]}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ) : null}
+
                 <TeamWorkspaceEditor
                   locale={locale}
                   dictionary={dictionary}
@@ -871,7 +886,11 @@ export function CampaignShell({
                     />
 
                     <div className="team-layout">
-                      <section aria-labelledby="team-checks-title">
+                      <details className="team-progress-details">
+                        <summary>
+                          {dictionary.teamWorkspace.progressDetailsAction}
+                        </summary>
+                        <section aria-labelledby="team-checks-title">
                         <h3 id="team-checks-title">
                           {dictionary.teamWorkspace.progress}
                         </h3>
@@ -904,7 +923,8 @@ export function CampaignShell({
                             </li>
                           ))}
                         </ol>
-                      </section>
+                        </section>
+                      </details>
 
                       <section aria-labelledby="team-roles-title">
                         <h3 id="team-roles-title">
