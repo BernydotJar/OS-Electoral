@@ -68,8 +68,9 @@ describe("CampaignShell chapter routes", () => {
   it("keeps the command overview focused on roadmap and campaign context", () => {
     const html = render(null);
 
-    expect(html).toContain('class="campaign-experience"');
+    expect(html).toContain('class="campaign-command-overview"');
     expect(html).toContain('id="campaign-journey"');
+    expect(html).not.toContain('class="campaign-experience"');
     expect(html).toContain('id="campaigns"');
     expect(html).not.toContain('id="guided-intake"');
     expect(html).not.toContain('id="candidate-workspace"');
@@ -83,7 +84,8 @@ describe("CampaignShell chapter routes", () => {
 
     expect(html).toContain('data-chapter="team"');
     expect(html).toContain('id="team-workspace"');
-    expect(html).toContain('class="chapter-navigation"');
+    expect(html).toContain('class="chapter-command-bar"');
+    expect(html).toContain('class="chapter-command-map"');
     expect(html).not.toContain('class="campaign-experience"');
     expect(html).not.toContain("MISIÓN ACTIVA");
     expect(html).not.toContain('id="campaign-journey"');

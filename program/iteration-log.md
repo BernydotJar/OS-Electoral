@@ -741,3 +741,14 @@
 - Marked C3-SEC-002 `MERGED_TO_MAIN` and selected `C3-PERF-001` as `spec_ready` because the production `load-test` gate remains `NOT_IMPLEMENTED`.
 - Added complete SHIP requirements, design, and tasks for a bounded cost-free authenticated load and PostgreSQL contention harness.
 - No deployment, infrastructure apply, spending, publication, citizen contact, targeting, or political external effect occurred. Production remains `BLOCKED`; release remains `DENY_RELEASE`.
+
+## 2026-07-30 — C3-FRONT-008R1 human QA repair active checkpoint
+
+- Reconstructed `main@a8c61170c55aeba59e3830837c869b572fe84a9a`, protected post-merge CI `30476900916`, Graph Harness state, current frontend routes and draft planning PR `#139` from repository evidence.
+- Classified the reported readiness `404`: port `62240` was the dynamically assigned Next.js frontend, not the backend API. Added a sanitized same-origin `/api/v1/ready` proxy and an unambiguous functional-launch URL summary.
+- Removed the redundant active-mission hero and replaced the overview with one current-focus command surface, exact progress, compact stage shortcuts and a keyboard-operable full-path disclosure.
+- Replaced the chapter-wide route navigator with a compact command bar so each selected workspace begins immediately after orientation controls.
+- Updated deterministic browser evaluators and product/design documentation; added a United States strategist evaluation with `PASS_INTERNAL_RESEARCH_AND_DECISION_PREP` and explicit denial of complete US campaign-operations or production claims.
+- Frontend lint, strict TypeScript, 120 tests, production build and zero-vulnerability audit pass. Focused Graph Harness/program validation passes with 14 tests.
+- `C3-FRONT-008R1` is the sole active approved SHIP node. Dynamic/functional browser review, full repository verification, exact-head hosted CI and merge evidence remain pending.
+- `C3-PERF-001` remains blocked by its independent human approval gate. Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.

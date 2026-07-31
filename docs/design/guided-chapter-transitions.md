@@ -1,6 +1,6 @@
 # Guided campaign chapters and operating motion
 
-`C3-FRONT-007` replaces the continuously stacked campaign workspaces with one command overview and one URL-addressable route per campaign chapter.
+`C3-FRONT-007` introduced URL-addressable campaign chapters. `C3-FRONT-008R1` repairs their presentation hierarchy after human QA: the requested workspace now follows a compact command bar instead of a full route-wide navigator or repeated mission hero.
 
 ## Navigation model
 
@@ -13,42 +13,45 @@
 /{locale}/campaign/operations
 ```
 
-The locale root is the command overview: it contains campaign context, current mission, the roadmap and governed readiness information. It does not render the five chapter workspaces. A chapter route renders one mission, the compact chapter navigator and previous/next controls.
+The locale root is the command overview. It contains campaign context, the interactive campaign path and governed readiness information, but no chapter workspace.
 
-Existing workspace anchors remain canonical inside their chapter route. Form redirects, preview requests and locale changes preserve the current chapter, query and anchor. Browser back/forward therefore restores real campaign locations instead of replaying scroll positions in one document.
+A chapter route contains:
+
+1. a compact command bar;
+2. the selected workspace;
+3. no active-mission hero;
+4. no unselected workspace.
+
+The command bar exposes overview, current chapter, previous/next and a closed-by-default full campaign map. This preserves orientation without displacing the primary task.
+
+Workspace anchors remain canonical inside their chapter route. Form redirects, preview requests and locale changes preserve chapter, query and anchor. Browser back/forward restores campaign locations rather than replaying scroll positions in one document.
 
 A valid but locked chapter request fails closed to the current available mission and explains the fallback. Invalid chapter slugs return `404`.
 
 ## Transition behavior
 
-CampaignOS uses the experimental Next.js 16 / React 19 `ViewTransition` integration already present in the locked dependency graph. No animation library, third-party media, tracking or external host is added.
+CampaignOS uses the Next.js/React View Transition integration already present in the locked dependency graph. No animation library, third-party media, tracking or external host is added.
 
-- forward navigation moves the outgoing chapter left and introduces the next chapter from the right;
+- forward navigation communicates movement to a later chapter;
 - backward navigation mirrors the direction;
 - the current chapter indicator uses one shared transition identity;
-- navigation remains interruptible and degrades to ordinary App Router navigation when the browser lacks View Transition support;
-- `prefers-reduced-motion: reduce` disables every route animation and loading sweep.
+- navigation remains interruptible and degrades to normal App Router navigation;
+- `prefers-reduced-motion: reduce` disables non-essential route animation.
 
-Motion never changes authorization, data, completion, evidence or availability. It only communicates direction and continuity.
+Motion never changes authorization, data, completion, evidence or availability.
 
-## Mission cadence
+## Progressive disclosure
 
-The campaign hero includes one visible three-stage operating cadence:
-
-1. evidence;
-2. human decision;
-3. governed execution.
-
-The moving pulse communicates flow rather than decoration. The active chapter changes the pulse accent without changing meaning. Reduced-motion mode renders the same three stages as a static diagram.
+The complete five-stage map is available through a native `details` element. It begins closed, is keyboard-operable and exposes stable links only for navigable stages. Locked and blocked stages remain visible as status, not as broken actions.
 
 ## Accessibility and safety
 
 - routes have stable URLs and native link semantics;
-- one chapter is marked `aria-current="step"`;
+- one chapter carries `aria-current="step"`;
 - previous/next labels remain explicit;
 - focus, keyboard, locale switching and browser history are preserved;
-- narrow screens use horizontal chapter navigation with snap points while the mission itself remains one column;
-- the primary hero action uses a solid high-contrast foreground/background pair;
-- axe WCAG 2.2 AA automation, overflow checks and reduced-motion browser checks are required.
+- narrow screens keep the workspace one column and allow only the disclosed map to scroll horizontally;
+- automated axe WCAG 2.2 AA, overflow and reduced-motion checks are release gates;
+- chapter navigation grants no permission and causes no external campaign effect.
 
-Production remains blocked. Chapter navigation grants no permission and causes no external campaign effect.
+Production remains blocked.

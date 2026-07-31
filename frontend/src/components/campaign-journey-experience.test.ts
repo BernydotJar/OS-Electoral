@@ -2,7 +2,6 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
-import { CampaignExperienceHero } from "@/components/campaign-experience-hero";
 import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
 import type {
   CampaignJourney,
@@ -27,91 +26,44 @@ const journey: CampaignJourney = {
   phases,
 };
 
-function hero(mode: "FIRST_USE" | "ACTIVE" | "COMPLETE") {
+function renderRoadmap(value: CampaignJourney = journey): string {
   return renderToStaticMarkup(
-    createElement(CampaignExperienceHero, {
+    createElement(CampaignLaunchRoadmap, {
       locale: "es",
       dictionary,
-      mode,
-      campaignName: "Campaña Horizonte",
-      currentPhase: phases[1]!,
-      journey,
+      journey: value,
     }),
   );
 }
 
-describe("CampaignExperienceHero", () => {
-  it("renders a five-act owned cinematic story for first use", () => {
-    const html = hero("FIRST_USE");
-
-    expect(html).toContain('data-layout="opening"');
-    expect(html).toContain('class="experience-storyboard"');
-    expect(html.match(/data-scene=/g)).toHaveLength(5);
-    expect(html).toContain("Territorio");
-    expect(html).toContain("Evidencia");
-    expect(html).toContain("Equipo");
-    expect(html).toContain("Estrategia");
-    expect(html).toContain("Operación");
-    expect(html).not.toContain("<video");
-    expect(html).not.toContain("sceneai.art");
-  });
-
-  it("renders a compact active mission with real progress", () => {
-    const html = hero("ACTIVE");
-
-    expect(html).toContain('data-layout="mission"');
-    expect(html).toContain('aria-valuenow="1"');
-    expect(html).toContain('aria-valuemax="5"');
-    expect(html).toContain("Conocer la candidatura y el territorio");
-    expect(html).toContain('class="experience-hint"');
-    expect(html).toContain("Por qué importa");
-    expect(html).toContain('class="experience-chapter-mark"');
-    expect(html).toContain('class="experience-horizon-light"');
-    expect(html).toContain('class="experience-mission-pulse"');
-    expect(html).toContain("Evidencia");
-    expect(html).toContain("Decisión humana");
-    expect(html).toContain("Ejecución gobernada");
-    expect(html).toContain('data-chapter="evidence"');
-    expect(html).not.toContain("Tu campaña empieza aquí");
-  });
-
-  it("renders a command-center completion state instead of onboarding", () => {
-    const html = hero("COMPLETE");
-
-    expect(html).toContain('data-layout="command"');
-    expect(html).toContain(dictionary.journey.commandCenterLabel);
-    expect(html).toContain(dictionary.journey.completeTitle);
-    expect(html).not.toContain(dictionary.journey.firstUseAction);
-  });
-});
-
 describe("CampaignLaunchRoadmap", () => {
-  it("renders one dominant chapter with accessible current-step semantics", () => {
-    const html = renderToStaticMarkup(
-      createElement(CampaignLaunchRoadmap, {
-        locale: "es",
-        dictionary,
-        journey,
-      }),
-    );
+  it("renders one restrained command overview without the former mission hero", () => {
+    const html = renderRoadmap();
 
-    expect(html).toContain('class="journey-chapter"');
+    expect(html).toContain('class="campaign-command-overview"');
+    expect(html).toContain('class="command-priority"');
+    expect(html).toContain(dictionary.journey.title);
+    expect(html).toContain(dictionary.journey.commandPriorityLabel);
+    expect(html).toContain("Conocer la candidatura y el territorio");
     expect(html).toContain('aria-current="step"');
-    expect(html).toContain('data-current="true"');
-    expect(html).toContain('class="journey-horizon"');
+    expect(html).not.toContain('class="campaign-experience"');
+    expect(html).not.toContain("MISIÓN ACTIVA");
   });
 
-  it("explains blocked chapters in text without presenting a broken link", () => {
-    const html = renderToStaticMarkup(
-      createElement(CampaignLaunchRoadmap, {
-        locale: "es",
-        dictionary,
-        journey,
-      }),
-    );
+  it("keeps the full path available through an accessible disclosure", () => {
+    const html = renderRoadmap();
+
+    expect(html).toContain('class="command-path-disclosure"');
+    expect(html).toContain(dictionary.journey.explorePathLabel);
+    expect(html.match(/class="command-path-index"/g)).toHaveLength(5);
+    expect(html).toContain('href="/es/campaign/evidence#candidate-workspace"');
+  });
+
+  it("explains blocked stages without presenting a broken workspace action", () => {
+    const html = renderRoadmap();
 
     expect(html).toContain(dictionary.journey.blockedTitle);
     expect(html).toContain(dictionary.journey.blockedBody);
-    expect(html).not.toMatch(/href="#war-room"/);
+    expect(html).not.toContain('href="/es/campaign/operations#war-room"');
   });
 });

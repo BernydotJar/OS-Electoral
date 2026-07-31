@@ -123,9 +123,8 @@ async def review() -> dict[str, object]:
             "Spanish document lang missing",
         )
         require(
-            await desktop.get_by_role("heading", level=1).inner_text()
-            == "Conocer la candidatura y el territorio",
-            "Spanish active-mission heading mismatch",
+            await desktop.get_by_role("heading", level=1).inner_text() == "Tu campaña, paso a paso",
+            "Spanish command-overview heading mismatch",
         )
         require(
             await desktop.get_by_text("DEMO SINTÉTICO", exact=True).count() >= 1,
@@ -146,19 +145,12 @@ async def review() -> dict[str, object]:
             "strategy/evidence boundary missing",
         )
         require(
-            await desktop.get_by_role("heading", name="Tu campaña, paso a paso").count() == 1,
-            "campaign master path missing",
+            await desktop.locator(".campaign-command-overview").count() == 1,
+            "campaign command overview missing",
         )
         require(
-            await desktop.locator('.campaign-experience[data-layout="mission"]').count() == 1,
-            "adaptive active-mission hero missing",
-        )
-        hero_height = await desktop.locator('.campaign-experience[data-layout="mission"]').evaluate(
-            "element => element.getBoundingClientRect().height"
-        )
-        require(
-            hero_height < 700,
-            f"returning mission hero remains too dominant: {hero_height}",
+            await desktop.locator(".campaign-experience").count() == 0,
+            "retired mission hero remains visible on the command overview",
         )
         require(
             await desktop.get_by_role("progressbar", name="Progreso de la ruta de campaña").count()
@@ -166,12 +158,19 @@ async def review() -> dict[str, object]:
             "campaign progress semantics missing",
         )
         require(
-            await desktop.locator(".journey-chapter").count() == 1,
-            "dominant campaign chapter missing",
+            await desktop.locator(".command-priority").count() == 1,
+            "current decision focus is missing",
         )
         require(
-            await desktop.locator('.journey-horizon [aria-current="step"]').count() == 1,
-            "current chapter semantics missing",
+            await desktop.get_by_role(
+                "heading", name="Conocer la candidatura y el territorio", exact=True
+            ).count()
+            == 1,
+            "current evidence focus is missing",
+        )
+        require(
+            await desktop.locator('.command-stage-navigation [aria-current="step"]').count() == 1,
+            "current stage semantics missing",
         )
         require(
             await desktop.locator(
@@ -180,34 +179,15 @@ async def review() -> dict[str, object]:
             == 0,
             "chapter workspaces leaked into the command overview",
         )
+        path_disclosure = desktop.locator(".command-path-disclosure")
+        require(await path_disclosure.count() == 1, "complete path disclosure missing")
         require(
-            await desktop.locator(".experience-mission-pulse li").count() == 3,
-            "evidence-to-decision mission cadence missing",
+            not await path_disclosure.evaluate("element => element.open"),
+            "complete path disclosure must start closed",
         )
-        for cadence_label in ("Evidencia", "Decisión humana", "Ejecución gobernada"):
-            require(
-                await desktop.get_by_text(cadence_label, exact=True).count() >= 1,
-                f"mission cadence label missing: {cadence_label}",
-            )
         require(
             await desktop.locator("video, source[src*='sceneai.art']").count() == 0,
             "third-party cinematic media leaked into the product",
-        )
-        require(
-            await desktop.locator(".experience-chapter-mark").count() == 1,
-            "cinematic chapter mark missing",
-        )
-        require(
-            await desktop.locator(
-                ".experience-horizon-light, .experience-aurora, .experience-signal"
-            ).count()
-            == 3,
-            "owned cinematic atmosphere is incomplete",
-        )
-        hint = desktop.locator(".experience-hint")
-        require(await hint.count() == 1, "progressive mission hint missing")
-        require(
-            not await hint.evaluate("element => element.open"), "mission hint must start closed"
         )
         visible_text = await desktop.locator("body").inner_text()
         for internal_code in (
@@ -242,27 +222,33 @@ async def review() -> dict[str, object]:
         active_id = await desktop.evaluate("document.activeElement?.id")
         require(active_id == "main", f"skip link did not focus main content: {active_id}")
 
-        hint_summary = desktop.locator(".experience-hint > summary")
-        await hint_summary.focus()
+        path_summary = desktop.locator(".command-path-disclosure > summary")
+        await path_summary.focus()
         require(
-            await desktop.evaluate("document.activeElement?.matches('.experience-hint > summary')"),
-            "mission hint summary is not keyboard focusable",
+            await desktop.evaluate(
+                "document.activeElement?.matches('.command-path-disclosure > summary')"
+            ),
+            "complete path summary is not keyboard focusable",
         )
         await desktop.keyboard.press("Enter")
-        require(await hint.evaluate("element => element.open"), "Enter did not open mission hint")
+        require(
+            await path_disclosure.evaluate("element => element.open"),
+            "Enter did not open the complete path",
+        )
         await desktop.keyboard.press("Enter")
         require(
-            not await hint.evaluate("element => element.open"), "Enter did not close mission hint"
+            not await path_disclosure.evaluate("element => element.open"),
+            "Enter did not close the complete path",
         )
 
         await desktop.locator(
-            '.campaign-experience a[href="/es/campaign/evidence#candidate-workspace"]'
+            '.command-priority a[href="/es/campaign/evidence#candidate-workspace"]'
         ).click()
         await desktop.wait_for_url("**/es/campaign/evidence**")
         await desktop.locator("#candidate-workspace").wait_for(state="visible")
-        await desktop.locator(".chapter-navigation").wait_for(state="visible")
+        await desktop.locator(".chapter-command-bar").wait_for(state="visible")
         require(
-            await desktop.locator(".chapter-navigation").count() == 1,
+            await desktop.locator(".chapter-command-bar").count() == 1,
             "chapter navigation missing after mission entry",
         )
         require(
@@ -335,8 +321,9 @@ async def review() -> dict[str, object]:
         )
         await desktop.screenshot(path=ARTIFACT_DIR / "desktop-es.png", full_page=True)
 
+        await desktop.locator(".chapter-command-map > summary").click()
         await desktop.locator(
-            '.chapter-navigation-track a[href="/es/campaign/team#team-workspace"]'
+            '.chapter-command-track a[href="/es/campaign/team#team-workspace"]'
         ).click()
         await desktop.wait_for_url("**/es/campaign/team**")
         await desktop.locator("#team-workspace").wait_for(state="visible")
@@ -396,8 +383,9 @@ async def review() -> dict[str, object]:
         await assert_accessible(desktop, "desktop-es-team")
         await desktop.screenshot(path=ARTIFACT_DIR / "desktop-es-team.png", full_page=True)
 
+        await desktop.locator(".chapter-command-map > summary").click()
         await desktop.locator(
-            '.chapter-navigation-track a[href="/es/campaign/evidence#candidate-workspace"]'
+            '.chapter-command-track a[href="/es/campaign/evidence#candidate-workspace"]'
         ).click()
         await desktop.wait_for_url("**/es/campaign/evidence**")
         await desktop.locator("#candidate-workspace").wait_for(state="visible")
@@ -485,7 +473,7 @@ async def review() -> dict[str, object]:
         "mobile_spanish": "PASS",
         "keyboard_skip_link": "PASS",
         "chapter_navigation": "PASS_ROUTE_ISOLATION_LOCALE_PRESERVATION",
-        "mission_cadence": "PASS_EVIDENCE_DECISION_GOVERNED_EXECUTION",
+        "command_overview": "PASS_CURRENT_FOCUS_PROGRESSIVE_PATH",
         "reduced_motion": "PASS_STATIC_EQUIVALENT",
         "horizontal_overflow": "NONE",
         "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",

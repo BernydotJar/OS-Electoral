@@ -1,6 +1,8 @@
 # Cinematic campaign journey
 
-Status: implemented local slice; production remains blocked.
+Status: historical design record for `C3-FRONT-006`; production remains blocked.
+
+> Superseded presentation note: human QA in `C3-FRONT-008R1` removed the separate first-use/active mission hero from the current product. CampaignOS now uses one restrained command overview and compact chapter bars. The safety, route-motion and no-external-media constraints in this record remain authoritative.
 
 ## Intent
 
