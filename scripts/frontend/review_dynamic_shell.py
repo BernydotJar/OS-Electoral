@@ -477,6 +477,20 @@ async def review() -> dict[str, object]:
             all(transition_seconds(part) <= 0.0001 for part in reduced_transition.split(",")),
             f"candidate workspace still transitions under reduced motion: {reduced_transition}",
         )
+        mobile_session_menu = mobile.locator(".session-context-menu")
+        await mobile_session_menu.locator("summary").click()
+        session_bounds = await mobile_session_menu.locator("dl").evaluate(
+            """element => {
+              const rect = element.getBoundingClientRect();
+              return {left: rect.left, right: rect.right, viewport: window.innerWidth};
+            }"""
+        )
+        require(
+            session_bounds["left"] >= 0
+            and session_bounds["right"] <= session_bounds["viewport"],
+            f"mobile session disclosure escapes viewport: {session_bounds}",
+        )
+        await mobile_session_menu.locator("summary").click()
         await mobile.screenshot(path=ARTIFACT_DIR / "mobile-es.png", full_page=True)
 
         await browser.close()

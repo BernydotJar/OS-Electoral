@@ -9,6 +9,7 @@ import {
   GuidedIntakeEditor,
 } from "@/components/functional-onboarding";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { NoticeDismissLink } from "@/components/notice-dismiss-link";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
 import { TeamOperationsBoard } from "@/components/team-operations-board";
@@ -415,7 +416,10 @@ export function CampaignShell({
             >
               <span className="notice-indicator" aria-hidden="true" />
               <p>{dictionary.notices[notice]}</p>
-              <a href={cleanCurrentHref}>{dictionary.shell.dismissNotice}</a>
+              <NoticeDismissLink
+                fallbackHref={cleanCurrentHref}
+                label={dictionary.shell.dismissNotice}
+              />
             </div>
           ) : null}
           {chapterRouteActive ? null : (
