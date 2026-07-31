@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "a8c61170c55aeba59e3830837c869b572fe84a9a"
+    "revision": "eb7b78aebce545702c482c90902d4464021d8ec5"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -26,38 +26,38 @@
     "blocked": "BLOCKED_BY_DEPENDENCY_OR_HUMAN_BLOCKED"
   },
   "scheduler": {
-    "evaluated_at": "2026-07-30",
+    "evaluated_at": "2026-07-31",
     "one_active_feature": true,
-    "active_feature": "C3-FRONT-008R1",
+    "active_feature": "C1-PLAN-001",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-FRONT-008R1",
-      "title": "QA command surface and local readiness repair",
+      "id": "C1-PLAN-001",
+      "title": "Evidence-governed municipal campaign planning for women and sport",
       "mode": "SHIP",
       "state": "review",
       "human_approval": "APPROVED",
       "dependencies": [
-        "C3-FRONT-008",
-        "C3-SEC-002"
+        "C3-OPS-001",
+        "C3-STRATEGY-001",
+        "C3-FRONT-008R1"
       ],
       "specs": [
-        "specs/C3-FRONT-008R1/requirements.md",
-        "specs/C3-FRONT-008R1/design.md",
-        "specs/C3-FRONT-008R1/tasks.md"
+        "specs/C1-PLAN-001/requirements.md",
+        "specs/C1-PLAN-001/design.md",
+        "specs/C1-PLAN-001/tasks.md"
       ],
-      "selection_reason": "Human QA exposed a reproducible local-readiness ambiguity and redundant command hierarchy; localized repair directly improves the critical user journey without cloud cost or political external effects.",
+      "selection_reason": "User-directed campaign planning already existed as an unfinished draft PR; repairing its evidence, privacy and anti-targeting boundaries completes existing work before starting new work.",
       "approval_receipt": {
-        "recorded_at": "2026-07-30T23:58:00-06:00",
+        "recorded_at": "2026-07-31T09:59:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "Continue Graph Harness execution and implement the reported premium frontend QA repair as a bounded SHIP increment.",
-        "scope": "Command overview, chapter hierarchy, local readiness clarity, evaluator evidence and tests only; no production deployment, paid media, citizen contact, targeting, spending or external political effects."
+        "statement": "Approved C1-PLAN-001 for bounded SHIP documentation and internal planning repair.",
+        "scope": "Internal evidence, planning, protocols and Graph Harness records only; no targeting, publication, contact execution, spending, mobilization or production deployment."
       },
-      "review_artifact": "progress/review_C3-FRONT-008R1.md",
+      "review_artifact": "progress/review_C1-PLAN-001.md",
       "local_evidence": [
-        "docs/testing/c3-front-008r1-evidence.md",
-        "docs/testing/c3-front-008r1-us-strategist-eval.md",
-        "program/iterations/c3-front-008r1.md",
-        "program/validations/c3-front-008r1.json"
+        "docs/testing/c1-plan-001-evidence.md",
+        "campaign/evidence/user-reported-field-activity-register.md",
+        "campaign/evidence/local-source-intake-manifest.md"
       ]
     },
     "blocked_nodes": [
@@ -65,7 +65,7 @@
         "id": "C3-PERF-001",
         "gate": "HUMAN_APPROVAL_PENDING",
         "owner": "Product owner",
-        "next_valid_command": "Approve the existing C3-PERF-001 SHIP specification after this localized repair closes"
+        "next_valid_command": "Approve the existing C3-PERF-001 SHIP specification after campaign planning review closes"
       },
       {
         "id": "action:production-deployment",
@@ -76,29 +76,26 @@
     ]
   },
   "localized_repair": {
-    "id": "repair:post-merge-program-truth-2026-07-29",
+    "id": "repair:c1-plan-001-evidence-boundaries-2026-07-31",
     "status": "COMPLETED",
-    "scope": "Close C3-SEC-002, reconcile protected main, and select the next bounded performance specification without deployment.",
+    "scope": "Repair the existing Antigua women-and-sport planning draft, remove targeting ambiguity, add consent and evidence boundaries, and preserve unverified field reports without external action.",
     "evidence": [
-      "https://github.com/BernydotJar/OS-Electoral/pull/138",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30476900916",
-      "main@a8c61170c55aeba59e3830837c869b572fe84a9a"
+      "docs/testing/c1-plan-001-evidence.md",
+      "progress/review_C1-PLAN-001.md",
+      "https://github.com/BernydotJar/OS-Electoral/pull/139"
     ],
     "delivery": {
-      "state": "merged",
-      "implementation_head": "c9d98cb85e327d992d9ca097012e1498547dc213",
-      "draft_pr": 138,
-      "campaignos_ci_run_id": 30476653575,
+      "state": "review",
+      "implementation_head": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
+      "draft_pr": 139,
+      "campaignos_ci_run_id": 30646047279,
       "campaignos_ci_conclusion": "SUCCESS",
-      "visual_run_id": 30476653625,
+      "visual_run_id": 30646047267,
       "visual_conclusion": "SUCCESS",
-      "merge_gate": "SATISFIED_USER_AUTHORIZATION",
-      "merged_main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
-      "post_merge_ci_run_id": 30476900916,
-      "post_merge_ci_conclusion": "SUCCESS",
+      "merge_gate": "PENDING_HUMAN_REVIEW",
       "evidence": [
-        "docs/testing/c3-harness-001-evidence.md",
-        "program/validations/c3-harness-001.json"
+        "docs/testing/c1-plan-001-evidence.md",
+        "campaign/evidence/user-reported-field-activity-register.md"
       ]
     }
   }

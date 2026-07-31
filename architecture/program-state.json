@@ -2,14 +2,14 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-30",
-  "source_branch": "agent/c3-front-008r1-qa-command-surface",
+  "updated_at": "2026-07-31",
+  "source_branch": "feat/antigua-campaign-planning-women-sport",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
-    "main_sha_observed": "a8c61170c55aeba59e3830837c869b572fe84a9a",
+    "main_sha_observed": "eb7b78aebce545702c482c90902d4464021d8ec5",
     "c2_integration_state": "MERGED_TO_MAIN",
     "c3_foundation_iam_api_state": "MERGED_TO_MAIN",
-    "c3_program_state": "CUMULATIVE_PR_138_MERGED_TO_MAIN_FRONTEND_QA_REPAIR_ACTIVE"
+    "c3_program_state": "C3_FRONT_008R1_MERGED_C1_PLAN_001_REVIEW"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
@@ -1171,7 +1171,7 @@
       "id": "C3-FRONT-008R1",
       "workstream": "WS-06",
       "title": "QA command surface and local readiness repair",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-008",
         "C3-SEC-002"
@@ -1181,6 +1181,25 @@
         "Chapter routes expose one requested workspace immediately after a compact disclosed campaign map",
         "Frontend and backend readiness URLs are unambiguous and the same-origin proxy fails closed",
         "ES/EN, mobile, keyboard, reduced motion, WCAG, candidate evaluator and safety gates pass"
+      ]
+    },
+    {
+      "id": "C1-PLAN-001",
+      "workstream": "WS-10",
+      "title": "Evidence-governed municipal campaign planning for women and sport",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-OPS-001",
+        "C3-STRATEGY-001",
+        "C3-FRONT-008R1"
+      ],
+      "acceptance": [
+        "Strategic plan, 90-day plan, scorecard and War Room cadence form one internal operating system",
+        "Women and sport remain public-problem and policy hypotheses rather than persuasion segments",
+        "Community listening is consented, aggregate and separated from contact databases",
+        "User-reported field activities remain pending verification with explicit evidence requirements",
+        "Unavailable local files remain an external blocker with a safe intake manifest",
+        "DeerFlow is optional execution research only and does not replace Graph Harness or CampaignOS authority"
       ]
     },
     {
@@ -1256,7 +1275,7 @@
     "total_critical_or_high": 1
   },
   "github_state": {
-    "verified_at": "2026-07-30",
+    "verified_at": "2026-07-31",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1285,7 +1304,8 @@
       126,
       127,
       128,
-      138
+      138,
+      140
     ],
     "open_pull_requests": [
       129,
@@ -1308,8 +1328,8 @@
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {
-      "run_id": 30476900916,
-      "head_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
+      "run_id": 30645488443,
+      "head_sha": "eb7b78aebce545702c482c90902d4464021d8ec5",
       "conclusion": "SUCCESS",
       "required_check_enforcement": true,
       "required_check_count": 8,
@@ -1443,28 +1463,28 @@
       ]
     },
     "latest_checkpoint": {
-      "id": "repair:post-merge-program-truth-2026-07-29",
+      "id": "C3-FRONT-008R1",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "merge_pr": 138,
-      "merged_at": "2026-07-29T17:46:58Z",
-      "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
-      "post_merge_ci_run_id": 30476900916,
+      "merge_pr": 140,
+      "merged_at": "2026-07-31T16:03:00Z",
+      "main_sha": "eb7b78aebce545702c482c90902d4464021d8ec5",
+      "post_merge_ci_run_id": 30645488443,
       "post_merge_ci_conclusion": "SUCCESS",
-      "quality_job_id": 90660770486,
-      "postgresql_job_id": 90660770351,
-      "recovery_job_id": 90660770399,
-      "frontend_job_id": 90660770426,
-      "stack_e2e_job_id": 90660770461,
-      "codeql_job_id": 90660770467,
-      "terraform_job_id": 90660770271,
-      "dependency_job_id": 90660770511,
-      "secret_job_id": 90660770425,
-      "supply_chain_job_id": 90660770303,
+      "quality_job_id": 91205706417,
+      "postgresql_job_id": 91205706928,
+      "recovery_job_id": 91205706681,
+      "frontend_job_id": 91205706282,
+      "stack_e2e_job_id": 91205706482,
+      "codeql_job_id": 91205706557,
+      "terraform_job_id": 91205706388,
+      "dependency_job_id": 91205706436,
+      "secret_job_id": 91205706362,
+      "supply_chain_job_id": 91205706236,
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
-      "next_action": "COMPLETE_C3_FRONT_008R1_LOCAL_REVIEW"
+      "next_action": "REVIEW_C1_PLAN_001_PR_139"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",
@@ -1482,18 +1502,18 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 138,
+      "pr": 140,
       "status": "MERGED_TO_MAIN_SQUASH",
-      "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
+      "main_sha": "eb7b78aebce545702c482c90902d4464021d8ec5",
       "checks_before_merge": "SUCCESS",
-      "post_merge_ci_run_id": 30476900916,
+      "post_merge_ci_run_id": 30645488443,
       "post_merge_ci_conclusion": "SUCCESS",
       "included_increment_prs": [
-        138
+        140
       ],
       "previous_cumulative_merge": {
-        "pr": 128,
-        "main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae"
+        "pr": 138,
+        "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a"
       },
       "open_pull_requests_observed": 10
     },
@@ -1501,28 +1521,28 @@
     "live_required_check_count": 8,
     "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN",
     "latest_completed_checkpoint": {
-      "id": "repair:post-merge-program-truth-2026-07-29",
+      "id": "C3-FRONT-008R1",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "merge_pr": 138,
-      "merged_at": "2026-07-29T17:46:58Z",
-      "main_sha": "a8c61170c55aeba59e3830837c869b572fe84a9a",
-      "post_merge_ci_run_id": 30476900916,
+      "merge_pr": 140,
+      "merged_at": "2026-07-31T16:03:00Z",
+      "main_sha": "eb7b78aebce545702c482c90902d4464021d8ec5",
+      "post_merge_ci_run_id": 30645488443,
       "post_merge_ci_conclusion": "SUCCESS",
-      "quality_job_id": 90660770486,
-      "postgresql_job_id": 90660770351,
-      "recovery_job_id": 90660770399,
-      "frontend_job_id": 90660770426,
-      "stack_e2e_job_id": 90660770461,
-      "codeql_job_id": 90660770467,
-      "terraform_job_id": 90660770271,
-      "dependency_job_id": 90660770511,
-      "secret_job_id": 90660770425,
-      "supply_chain_job_id": 90660770303,
+      "quality_job_id": 91205706417,
+      "postgresql_job_id": 91205706928,
+      "recovery_job_id": 91205706681,
+      "frontend_job_id": 91205706282,
+      "stack_e2e_job_id": 91205706482,
+      "codeql_job_id": 91205706557,
+      "terraform_job_id": 91205706388,
+      "dependency_job_id": 91205706436,
+      "secret_job_id": 91205706362,
+      "supply_chain_job_id": 91205706236,
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
-      "next_action": "COMPLETE_C3_FRONT_008R1_LOCAL_REVIEW"
+      "next_action": "REVIEW_C1_PLAN_001_PR_139"
     }
   },
   "deployment_state": {
@@ -1936,8 +1956,8 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-FRONT-008R1",
-    "selected_feature": "C3-FRONT-008R1",
+    "active_feature": "C1-PLAN-001",
+    "selected_feature": "C1-PLAN-001",
     "selected_feature_state": "review",
     "approval_gate": "APPROVED",
     "ready_nodes": []

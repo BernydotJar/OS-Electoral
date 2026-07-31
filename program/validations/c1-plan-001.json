@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "increment": "C1-PLAN-001",
+  "assessed_at": "2026-07-31",
+  "mode": "SHIP",
+  "branch": "feat/antigua-campaign-planning-women-sport",
+  "base": "main@eb7b78aebce545702c482c90902d4464021d8ec5",
+  "state": "REVIEWED",
+  "human_approval": {
+    "recorded": true,
+    "recorded_at": "2026-07-31T09:59:00-06:00",
+    "source": "USER_EXPLICIT_APPROVAL",
+    "statement": "Approved C1-PLAN-001 for bounded SHIP documentation and internal planning repair.",
+    "scope": "Internal evidence, planning, protocols and Graph Harness records only; no targeting, publication, contact execution, spending, mobilization or production deployment."
+  },
+  "verification": {
+    "git_diff_check": "PASS",
+    "secret_scan": "PASS",
+    "program_truth": "PENDING_AFTER_STATE_UPDATE",
+    "previous_ci_run": 30608095603,
+    "previous_ci_result": "FAIL_WHITESPACE_ONLY",
+    "exact_head_ci_run": 30646047279,
+    "exact_head_ci_result": "SUCCESS",
+    "visual_run": 30646047267,
+    "visual_result": "SUCCESS",
+    "all_other_previous_jobs": "SUCCESS"
+  },
+  "review": {
+    "functional": "PASS_INTERNAL_PLANNING",
+    "security": "PASS_AFTER_TARGETING_BOUNDARY_REPAIR",
+    "data": "PASS_AGGREGATE_NO_PERSON_PROFILES",
+    "production": "DENY_RELEASE"
+  },
+  "remaining_gates": [
+    "Hosted exact-head CI",
+    "PR review and merge",
+    "Local source files attachment and intake",
+    "Verification of user-reported activities",
+    "Independent legal/privacy review before any field execution"
+  ],
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "status": "REVIEWED",
+  "implementation_commit": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
+  "head_commit": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
+  "draft_pr": 139
+}
