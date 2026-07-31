@@ -1,5 +1,4 @@
 import { CampaignChapterNavigation } from "@/components/campaign-chapter-navigation";
-import { CampaignExperienceHero } from "@/components/campaign-experience-hero";
 import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
 import { CandidateActionBrief } from "@/components/candidate-action-brief";
 import { CandidateWorkspaceDeck } from "@/components/candidate-workspace-deck";
@@ -18,7 +17,6 @@ import { TeamRoleDossier } from "@/components/team-role-dossier";
 import { TeamWorkItemEditor } from "@/components/team-work-item-editor";
 import { TeamWorkspaceEditor } from "@/components/team-workspace-editor";
 import { resolveCampaignChapter } from "@/lib/campaign-chapters";
-import { deriveCampaignExperienceMode } from "@/lib/campaign-experience";
 import { deriveCampaignJourney } from "@/lib/campaign-journey";
 import type { CampaignJourneyPhaseKey } from "@/lib/campaign-journey";
 import type { Dictionary, Locale } from "@/lib/i18n";
@@ -235,10 +233,6 @@ export function CampaignShell({
       team: teamPreparationAvailable && teamPrerequisiteReady,
     },
   });
-  const experienceMode = deriveCampaignExperienceMode({
-    guidedIntakeAvailability: model.guidedIntakeAvailability,
-    journey: campaignJourney,
-  });
   const currentJourneyPhase = resolveCampaignChapter(
     campaignJourney,
     selectedChapter,
@@ -340,17 +334,6 @@ export function CampaignShell({
               {dictionary.notices[notice]}
             </div>
           ) : null}
-          {chapterRouteActive ? null : (
-            <CampaignExperienceHero
-              locale={locale}
-              dictionary={dictionary}
-              mode={experienceMode}
-              campaignName={model.campaign.name}
-              currentPhase={currentJourneyPhase}
-              journey={campaignJourney}
-            />
-          )}
-
           {chapterRouteActive ? null : (
             <CampaignLaunchRoadmap
               locale={locale}

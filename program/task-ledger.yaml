@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-29",
+  "updated_at": "2026-07-30",
   "branch": "agent/c3-front-008-organic-role-aware-flow",
   "entries": [
     {
@@ -924,7 +924,7 @@
       "approval": {
         "recorded_at": "2026-07-29T00:29:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "Aprobado C3-SEC-002 para implementaci\u00f3n SHIP.",
+        "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
         "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
       },
       "implementation_commit": "74977e390d33929f6cb5b2e850d52f8f7456f524",
@@ -934,6 +934,38 @@
       "visual_run_id": 30475056564,
       "integrated_main_sha": "1a7eb93039bcc60f8987c99e4b06ecf96c9a10ae",
       "post_merge_ci_run_id": 30475334941
+    },
+    {
+      "task_id": "C3-FRONT-008R1",
+      "owner": "WS-06/WS-07/WS-02",
+      "status": "REVIEWED",
+      "evidence": [
+        "specs/C3-FRONT-008R1/requirements.md",
+        "specs/C3-FRONT-008R1/design.md",
+        "specs/C3-FRONT-008R1/tasks.md",
+        "frontend/src/components/campaign-launch-roadmap.tsx",
+        "frontend/src/components/campaign-chapter-navigation.tsx",
+        "frontend/src/app/api/v1/ready/route.ts",
+        "scripts/dev/functional_frontend.sh",
+        "scripts/frontend/review_dynamic_shell.py",
+        "scripts/frontend/review_functional_onboarding.py",
+        "docs/testing/c3-front-008r1-us-strategist-eval.md",
+        "docs/testing/c3-front-008r1-evidence.md",
+        "program/iterations/c3-front-008r1.md",
+        "program/validations/c3-front-008r1.json",
+        "progress/review_C3-FRONT-008R1.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted CI, runtime visual review and merge evidence remain pending",
+        "Campaign documents on the user's local Mac remain unavailable to the sandbox and must not be inferred"
+      ],
+      "approval": {
+        "recorded_at": "2026-07-30T23:58:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "Continue Graph Harness execution and implement the reported premium frontend QA repair as a bounded SHIP increment.",
+        "scope": "Command overview, chapter hierarchy, local readiness clarity, evaluator evidence and tests only; no production deployment, paid media, citizen contact, targeting, spending or external political effects."
+      }
     }
   ]
 }

@@ -151,6 +151,16 @@ const es = {
       "La ruta está completa, pero las decisiones, revisiones y efectos externos continúan bajo autoridad humana.",
     commandCenterLabel: "CENTRO DE MANDO",
     commandCenterAction: "Abrir operación diaria",
+    commandPriorityLabel: "FOCO DE DECISIÓN ACTUAL",
+    statusLabel: "Estado",
+    outcomeLabel: "Resultado esperado",
+    stageNavigationLabel: "Atajos de las etapas de campaña",
+    explorePathLabel: "Explorar la ruta completa",
+    explorePathBody:
+      "Revisa cada etapa, su resultado esperado y el espacio de trabajo que la sostiene.",
+    chapterMapLabel: "Ver mapa de la campaña",
+    chapterMapBody:
+      "Abre la navegación completa sin desplazar el espacio de trabajo principal.",
     progressLabel: "Progreso de la ruta de campaña",
     contextHintLabel: "Por qué importa",
     chapterNavigationLabel: "Navegación por capítulos",
@@ -1040,6 +1050,16 @@ const en: Dictionary = {
       "The path is complete, while decisions, reviews, and external effects remain under human authority.",
     commandCenterLabel: "COMMAND CENTER",
     commandCenterAction: "Open daily operations",
+    commandPriorityLabel: "CURRENT DECISION FOCUS",
+    statusLabel: "Status",
+    outcomeLabel: "Expected outcome",
+    stageNavigationLabel: "Campaign stage shortcuts",
+    explorePathLabel: "Explore the complete path",
+    explorePathBody:
+      "Review every stage, its expected outcome, and the workspace that supports it.",
+    chapterMapLabel: "View campaign map",
+    chapterMapBody:
+      "Open the complete navigation without pushing the primary workspace below the fold.",
     progressLabel: "Campaign path progress",
     contextHintLabel: "Why this matters",
     chapterNavigationLabel: "Chapter navigation",

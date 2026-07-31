@@ -387,3 +387,12 @@ This log records scoped implementation decisions. It does not grant political, l
 - `decision`: The product owner explicitly approved the reviewed SHIP specification for tenant/principal rate limiting, including its bounded PostgreSQL migration. This approval authorizes implementation and disposable/local migration verification only.
 - `evidence`: user statement `Aprobado C3-SEC-002 para implementación SHIP.`, `specs/C3-SEC-002/requirements.md`, `specs/C3-SEC-002/design.md`, `specs/C3-SEC-002/tasks.md`
 - `consequences`: `C3-SEC-002` becomes the sole active execution node. Cloud deployment, production release, spending, external infrastructure and political external effects remain unauthorized and blocked.
+
+## DEC-2026-07-30-003 — Use one command overview and workspace-first chapter routes
+
+- `status`: `APPROVED`
+- `scope`: `C3-FRONT-008R1`
+- `decision`: Replace the separate active-mission hero plus campaign roadmap with one restrained interactive command surface. On chapter routes, keep orientation in a compact command bar and place the selected workspace immediately afterward. Provide a same-origin frontend readiness route and print all effective local URLs separately.
+- `evidence`: human QA screenshot and report, `specs/C3-FRONT-008R1/**`, `frontend/src/components/campaign-launch-roadmap.tsx`, `frontend/src/components/campaign-chapter-navigation.tsx`, `frontend/src/app/api/v1/ready/route.ts`, `scripts/dev/functional_frontend.sh`.
+- `rationale`: The duplicate hero repeated the current mission and made CampaignOS feel like a landing page instead of an operating system. Dynamic local ports also made a correct frontend URL look like an API URL, producing a misleading 404.
+- `consequences`: The full path remains available through progressive disclosure, chapters retain stable URLs/history/locale, and browser readiness works on the frontend port. No external media, authority, deployment or political effect is introduced. Production remains `BLOCKED`.
