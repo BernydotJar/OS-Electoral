@@ -971,7 +971,7 @@
     {
       "task_id": "C1-PLAN-001",
       "owner": "WS-10/WS-11/WS-13",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C1-PLAN-001/requirements.md",
         "specs/C1-PLAN-001/design.md",
@@ -990,7 +990,6 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Hosted exact-head CI and PR review remain pending",
         "Local macOS source files are unavailable until attached or versioned",
         "User-reported field activities require original-source verification before public use"
       ],
@@ -1002,7 +1001,10 @@
       },
       "implementation_commit": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
       "head_commit": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
-      "draft_pr": 139
+      "draft_pr": 139,
+      "integrated_main_sha": "340415de8a4acaecba0d3194a2b9053d52451399",
+      "cumulative_merge_pr": 139,
+      "post_merge_ci_run_id": 30646639373
     }
   ]
 }

@@ -397,7 +397,7 @@
       "id": "C1-PLAN-001",
       "workstream": "WS-10",
       "title": "Evidence-governed municipal campaign planning for women and sport",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-OPS-001",
         "C3-STRATEGY-001",

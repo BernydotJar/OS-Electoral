@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "eb7b78aebce545702c482c90902d4464021d8ec5"
+    "revision": "340415de8a4acaecba0d3194a2b9053d52451399"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -28,45 +28,27 @@
   "scheduler": {
     "evaluated_at": "2026-07-31",
     "one_active_feature": true,
-    "active_feature": "C1-PLAN-001",
+    "active_feature": null,
     "ready_nodes": [],
     "selected_node": {
-      "id": "C1-PLAN-001",
-      "title": "Evidence-governed municipal campaign planning for women and sport",
+      "id": "C3-PERF-001",
+      "title": "Authenticated load and contention verification",
       "mode": "SHIP",
-      "state": "review",
-      "human_approval": "APPROVED",
+      "state": "spec_ready",
+      "human_approval": "PENDING",
       "dependencies": [
-        "C3-OPS-001",
-        "C3-STRATEGY-001",
-        "C3-FRONT-008R1"
+        "C3-API-001",
+        "C3-OBS-001",
+        "C3-SEC-002"
       ],
       "specs": [
-        "specs/C1-PLAN-001/requirements.md",
-        "specs/C1-PLAN-001/design.md",
-        "specs/C1-PLAN-001/tasks.md"
+        "specs/C3-PERF-001/requirements.md",
+        "specs/C3-PERF-001/design.md",
+        "specs/C3-PERF-001/tasks.md"
       ],
-      "selection_reason": "User-directed campaign planning already existed as an unfinished draft PR; repairing its evidence, privacy and anti-targeting boundaries completes existing work before starting new work.",
-      "approval_receipt": {
-        "recorded_at": "2026-07-31T09:59:00-06:00",
-        "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "Approved C1-PLAN-001 for bounded SHIP documentation and internal planning repair.",
-        "scope": "Internal evidence, planning, protocols and Graph Harness records only; no targeting, publication, contact execution, spending, mobilization or production deployment."
-      },
-      "review_artifact": "progress/review_C1-PLAN-001.md",
-      "local_evidence": [
-        "docs/testing/c1-plan-001-evidence.md",
-        "campaign/evidence/user-reported-field-activity-register.md",
-        "campaign/evidence/local-source-intake-manifest.md"
-      ]
+      "selection_reason": "C1-PLAN-001 and C3-FRONT-008R1 are merged; the existing load-test specification is the highest-priority safe node but remains human-gated."
     },
     "blocked_nodes": [
-      {
-        "id": "C3-PERF-001",
-        "gate": "HUMAN_APPROVAL_PENDING",
-        "owner": "Product owner",
-        "next_valid_command": "Approve the existing C3-PERF-001 SHIP specification after campaign planning review closes"
-      },
       {
         "id": "action:production-deployment",
         "gate": "HUMAN_PRODUCTION_APPROVAL_AND_INCOMPLETE_PRODUCTION_GATES",
@@ -76,26 +58,29 @@
     ]
   },
   "localized_repair": {
-    "id": "repair:c1-plan-001-evidence-boundaries-2026-07-31",
+    "id": "repair:c1-plan-001-post-merge-2026-07-31",
     "status": "COMPLETED",
-    "scope": "Repair the existing Antigua women-and-sport planning draft, remove targeting ambiguity, add consent and evidence boundaries, and preserve unverified field reports without external action.",
+    "scope": "Record PR 139 merge, successful post-merge CI, close C1-PLAN-001 and return the scheduler to the pending C3-PERF-001 approval gate.",
     "evidence": [
-      "docs/testing/c1-plan-001-evidence.md",
-      "progress/review_C1-PLAN-001.md",
-      "https://github.com/BernydotJar/OS-Electoral/pull/139"
+      "https://github.com/BernydotJar/OS-Electoral/pull/139",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30646639373",
+      "main@340415de8a4acaecba0d3194a2b9053d52451399"
     ],
     "delivery": {
-      "state": "review",
-      "implementation_head": "022b912b4ca2f9e855a5b4f820ad325f12e559c5",
+      "state": "merged",
+      "implementation_head": "eb5834a21f07a2c8c5308683a9f87729402a212d",
       "draft_pr": 139,
-      "campaignos_ci_run_id": 30646047279,
+      "campaignos_ci_run_id": 30646374458,
       "campaignos_ci_conclusion": "SUCCESS",
-      "visual_run_id": 30646047267,
+      "visual_run_id": 30646374451,
       "visual_conclusion": "SUCCESS",
-      "merge_gate": "PENDING_HUMAN_REVIEW",
+      "merge_gate": "SATISFIED_USER_AUTHORIZATION",
+      "merged_main_sha": "340415de8a4acaecba0d3194a2b9053d52451399",
+      "post_merge_ci_run_id": 30646639373,
+      "post_merge_ci_conclusion": "SUCCESS",
       "evidence": [
         "docs/testing/c1-plan-001-evidence.md",
-        "campaign/evidence/user-reported-field-activity-register.md"
+        "program/validations/c1-plan-001.json"
       ]
     }
   }
