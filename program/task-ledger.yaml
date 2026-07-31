@@ -1048,7 +1048,7 @@
     {
       "task_id": "C3-PERF-001",
       "owner": "WS-13/WS-05/WS-03",
-      "status": "CI_GREEN",
+      "status": "REVIEWED",
       "evidence": [
         "specs/C3-PERF-001/requirements.md",
         "specs/C3-PERF-001/design.md",
@@ -1081,17 +1081,17 @@
       "review_artifact": "progress/review_C3-PERF-001.md",
       "local_verification": {
         "focused_tests": "PASS",
-        "python_passed": 778,
+        "python_passed": 790,
         "python_skipped": 12,
-        "coverage_percent": 90.52,
-        "make_verify": "PASS_LOCAL_NON_POSTGRESQL_18",
-        "postgresql_18": "PENDING_EXACT_HEAD_HOSTED_CI"
+        "coverage_percent": 90.22,
+        "make_verify": "PASS",
+        "postgresql_18": "PENDING_REPAIRED_EXACT_HEAD_HOSTED_CI"
       },
-      "implementation_commit": "65b962d71e4b71a7e88bf9cec4ee1e7e5ed2dcee",
-      "head_commit": "65b962d71e4b71a7e88bf9cec4ee1e7e5ed2dcee",
+      "implementation_commit": "b74272d",
+      "head_commit": "b74272d",
       "draft_pr": 145,
-      "ci_run_id": 30669150640,
-      "visual_run_id": 30669150651,
+      "ci_run_id": null,
+      "visual_run_id": null,
       "postgresql_version_verified": "18.3",
       "load_receipt_artifact_id": 8808117715,
       "exact_contention_totals": {
@@ -1099,7 +1099,13 @@
         "denied": 15
       },
       "pool_peak_checked_out": 18,
-      "pool_after_checked_out": 0
+      "pool_after_checked_out": 0,
+      "exact_head_status": "PENDING_RECHECK_AFTER_REVIEW_REPAIR",
+      "superseded_exact_head_evidence": {
+        "head": "7f739ae62f131c71720ca2889e692033a72796c3",
+        "campaignos_ci_run_id": 30669975877,
+        "conclusion": "SUCCESS_BEFORE_REVIEW_REPAIR"
+      }
     }
   ]
 }

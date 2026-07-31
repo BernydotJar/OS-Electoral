@@ -6,7 +6,7 @@ This runbook executes C3-PERF-001 only against a disposable PostgreSQL database 
 
 - no more than 20 workers per scenario;
 - no more than 600 requests per scenario;
-- no more than 60 seconds per scenario;
+- no more than 60 seconds of scenario work; each scenario runs in a separate process that the parent terminates at the deadline;
 - no more than 10 minutes for the focused harness;
 - PostgreSQL role is temporary, `NOSUPERUSER`, `NOBYPASSRLS` and receives only the rate-limit table privileges required by the harness;
 - role-level `statement_timeout=5s` and `lock_timeout=2s` bound database waits;
@@ -59,4 +59,4 @@ Expected 4xx/5xx responses are counted separately from unexpected errors. `gover
 
 ## Cleanup and failure handling
 
-The temporary application role is dropped in a `finally` path after pool disposal. Current and stale test buckets are deleted under tenant RLS. CI uploads the sanitized receipt for 30 days even when the harness fails. Any missing receipt is itself a CI failure.
+Each scenario receives a deterministic temporary application role. The child drops it after pool disposal, and the parent performs an idempotent cleanup after normal, failed or terminated child exit. Current and stale test buckets are deleted under tenant RLS. CI uploads the sanitized receipt for 30 days even when the harness fails. Any missing receipt is itself a CI failure.

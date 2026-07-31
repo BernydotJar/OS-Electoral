@@ -33,3 +33,13 @@ Findings repaired before review:
 ## Release gate
 
 Review publication is allowed only after full local verification. Merge is allowed only after exact-head hosted PostgreSQL 18, required checks and review-thread closure. This increment never authorizes production or external effects.
+
+## Pull-request review repair
+
+Three high-severity findings were accepted and fixed:
+
+- exact preauthorization rate-limit calls are now measured rather than inferred;
+- real execution is isolated per scenario in killable processes, so a hung worker cannot extend work beyond its deadline;
+- receipt PASS is derived from complete catalog evidence and internally consistent child decisions, not trusted from a top-level field.
+
+The previous green exact-head run is superseded. Repaired PostgreSQL 18.3 CI is mandatory.

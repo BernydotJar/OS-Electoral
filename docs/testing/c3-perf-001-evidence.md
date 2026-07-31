@@ -67,3 +67,39 @@ sensitive key/value scan: PASS
 production_capacity_claim: false
 external_effects: NONE
 ```
+
+## Review repair — process isolation and receipt consistency
+
+Three review findings superseded the first successful exact-head run:
+
+1. malformed and BOLA scenarios now record sanitized rate-limit scope/policy calls and require exactly one opaque preauthorization consumption per request with no tenant budget consumed before authorization;
+2. the authoritative CLI now runs every scenario in a separate spawn process, terminates it at the scenario deadline, and idempotently revokes its deterministic temporary PostgreSQL role after normal or abnormal exit;
+3. scenario receipts now cross-check operation totals, status classes, rate-limit outcomes, latency ordering, child decisions and pool recovery; the independent verifier also requires complete catalog coverage and exact immutable configuration before accepting PASS.
+
+Repaired local evidence at code commit `b74272d`:
+
+```text
+focused performance tests: 33 passed / 1 PostgreSQL integration skip
+complete Python suite: 790 passed / 12 controlled skips
+coverage: 90.22%
+Ruff: PASS
+mypy: PASS
+failure receipt retained and independently rejected as PASS: PASS
+hard-timeout supervisor termination test: PASS
+exact preauthorization ordering tests: PASS
+truncated/failed-child PASS rejection tests: PASS
+```
+
+The earlier successful exact-head runs and artifact remain historical evidence for the pre-repair implementation only. PostgreSQL 18.3 must pass again on the repaired head before merge.
+
+## Final repaired local gate
+
+```text
+make verify: PASS
+Python: 790 passed / 12 controlled skips / 90.22% coverage
+Frontend: 29 files / 122 tests PASS
+Ruff / format / mypy: PASS
+Next.js production build / npm audit: PASS
+Terraform: PASS_PLAN_ONLY_NO_APPLY
+Program / security / release / eval / safety: PASS with production BLOCKED
+```

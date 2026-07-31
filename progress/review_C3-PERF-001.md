@@ -2,7 +2,7 @@
 
 ## Disposition
 
-`PASS_EXACT_HEAD_POSTGRESQL_18`
+`PASS_LOCAL_REVIEW_REPAIR_EXACT_HEAD_POSTGRESQL_18_PENDING`
 
 ## Requirements traceability
 
@@ -30,3 +30,13 @@
 - 11 scenarios, exact 5/15 contention totals and pool return to zero: PASS.
 
 Production remains `BLOCKED`; release remains `DENY_RELEASE`; external effects remain `NONE`.
+
+## Review repair
+
+Accepted findings and disposition:
+
+1. exact malformed/BOLA preauthorization ordering — RESOLVED with recorded sanitized scope/policy calls;
+2. timeout could block in executor shutdown — RESOLVED with per-scenario process isolation and parent termination;
+3. top-level PASS could mask missing/failed evidence — RESOLVED with internal receipt accounting and full catalog cross-validation.
+
+Repaired code commit: `b74272d`. Local suite: 790 passed, 12 skipped, 90.22% coverage. Repaired exact-head PostgreSQL 18.3 evidence remains pending.
