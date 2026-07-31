@@ -9,6 +9,7 @@ import {
   GuidedIntakeEditor,
 } from "@/components/functional-onboarding";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { NoticeDismissLink } from "@/components/notice-dismiss-link";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
 import { TeamOperationsBoard } from "@/components/team-operations-board";
@@ -16,7 +17,10 @@ import { TeamOperationsDeck } from "@/components/team-operations-deck";
 import { TeamRoleDossier } from "@/components/team-role-dossier";
 import { TeamWorkItemEditor } from "@/components/team-work-item-editor";
 import { TeamWorkspaceEditor } from "@/components/team-workspace-editor";
-import { resolveCampaignChapter } from "@/lib/campaign-chapters";
+import {
+  campaignChapterHref,
+  resolveCampaignChapter,
+} from "@/lib/campaign-chapters";
 import { deriveCampaignJourney } from "@/lib/campaign-journey";
 import type { CampaignJourneyPhaseKey } from "@/lib/campaign-journey";
 import type { Dictionary, Locale } from "@/lib/i18n";
@@ -240,6 +244,16 @@ export function CampaignShell({
   const chapterRouteActive = selectedChapter !== null;
   const requestedLockedChapter =
     selectedChapter !== null && currentJourneyPhase.key !== selectedChapter;
+  const chapterTitle = {
+    foundation: dictionary.nav.intake,
+    evidence: dictionary.nav.candidate,
+    team: dictionary.nav.team,
+    strategy: dictionary.nav.strategy,
+    operations: dictionary.nav.warRoom,
+  }[currentJourneyPhase.key];
+  const cleanCurrentHref = chapterRouteActive
+    ? campaignChapterHref(locale, currentJourneyPhase.key)
+    : `/${locale}`;
 
   const roles = [
     ...new Set(model.memberships.flatMap((membership) => membership.roles)),
@@ -293,45 +307,119 @@ export function CampaignShell({
       </aside>
 
       <div className="workspace">
-        <header className="topbar">
-          <div>
-            <p className="eyebrow">{dictionary.shell.eyebrow}</p>
-            <p className="topbar-title">{dictionary.shell.title}</p>
-          </div>
-          <div className="topbar-actions">
-            <span
-              className={`mode-badge ${model.demo ? "mode-demo" : "mode-live"}`}
-            >
-              {model.demo ? dictionary.common.demo : dictionary.common.live}
-            </span>
-            <LocaleSwitcher locale={locale} dictionary={dictionary} />
-          </div>
+        <header
+          className={`topbar ${chapterRouteActive ? "topbar-compact" : "topbar-overview"}`}
+        >
+          {chapterRouteActive ? (
+            <>
+              <div className="topbar-context">
+                <span className="topbar-context-step" aria-hidden="true">
+                  {String(
+                    campaignJourney.phases.findIndex(
+                      (phase) => phase.key === currentJourneyPhase.key,
+                    ) + 1,
+                  ).padStart(2, "0")}
+                </span>
+                <div>
+                  <p className="topbar-title">{chapterTitle}</p>
+                  <p className="topbar-subtitle">
+                    {
+                      dictionary.journey.phaseDescriptions[
+                        currentJourneyPhase.key
+                      ]
+                    }
+                  </p>
+                </div>
+              </div>
+              <div className="topbar-actions">
+                <details className="session-context-menu">
+                  <summary>
+                    <span
+                      className={`session-state-dot ${model.demo ? "session-demo" : "session-live"}`}
+                      aria-hidden="true"
+                    />
+                    <span>{dictionary.shell.sessionContext}</span>
+                  </summary>
+                  <dl>
+                    <div>
+                      <dt>{dictionary.shell.tenant}</dt>
+                      <dd>{model.identity.tenant_id}</dd>
+                    </div>
+                    <div>
+                      <dt>{dictionary.shell.campaign}</dt>
+                      <dd>{model.campaign.name}</dd>
+                    </div>
+                    <div>
+                      <dt>{dictionary.shell.principal}</dt>
+                      <dd>
+                        {model.identity.display_name ?? model.identity.subject}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>{dictionary.shell.sessionState}</dt>
+                      <dd>
+                        {model.demo ? dictionary.common.demo : dictionary.common.live}
+                      </dd>
+                    </div>
+                  </dl>
+                </details>
+                <LocaleSwitcher locale={locale} dictionary={dictionary} />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <p className="eyebrow">{dictionary.shell.eyebrow}</p>
+                <p className="topbar-title">{dictionary.shell.title}</p>
+              </div>
+              <div className="topbar-actions">
+                <span
+                  className={`mode-badge ${model.demo ? "mode-demo" : "mode-live"}`}
+                >
+                  {model.demo ? dictionary.common.demo : dictionary.common.live}
+                </span>
+                <LocaleSwitcher locale={locale} dictionary={dictionary} />
+              </div>
+            </>
+          )}
         </header>
 
-        <section
-          className="context-strip"
-          aria-label={dictionary.shell.currentContext}
-        >
-          <div>
-            <span>{dictionary.shell.tenant}</span>
-            <strong>{model.identity.tenant_id}</strong>
-          </div>
-          <div>
-            <span>{dictionary.shell.campaign}</span>
-            <strong>{model.campaign.name}</strong>
-          </div>
-          <div>
-            <span>{dictionary.shell.principal}</span>
-            <strong>
-              {model.identity.display_name ?? model.identity.subject}
-            </strong>
-          </div>
-        </section>
+        {chapterRouteActive ? null : (
+          <section
+            className="context-strip"
+            aria-label={dictionary.shell.currentContext}
+          >
+            <div>
+              <span>{dictionary.shell.tenant}</span>
+              <strong>{model.identity.tenant_id}</strong>
+            </div>
+            <div>
+              <span>{dictionary.shell.campaign}</span>
+              <strong>{model.campaign.name}</strong>
+            </div>
+            <div>
+              <span>{dictionary.shell.principal}</span>
+              <strong>
+                {model.identity.display_name ?? model.identity.subject}
+              </strong>
+            </div>
+          </section>
+        )}
 
         <main id="main" className="main-content" tabIndex={-1}>
           {notice ? (
-            <div className="notice-banner" role="status" aria-live="polite">
-              {dictionary.notices[notice]}
+            <div
+              className="notice-banner"
+              data-notice={notice}
+              role="status"
+              aria-live="polite"
+            >
+              <span className="notice-indicator" aria-hidden="true" />
+              <p>{dictionary.notices[notice]}</p>
+              <NoticeDismissLink
+                fallbackHref={cleanCurrentHref}
+                label={dictionary.shell.dismissNotice}
+              />
             </div>
           ) : null}
           {chapterRouteActive ? null : (

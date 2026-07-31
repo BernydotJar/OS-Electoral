@@ -3,6 +3,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: vi.fn() }),
+}));
 vi.mock("react", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react")>();
   return {
@@ -53,6 +56,7 @@ const model: ShellViewModel = {
 
 function render(
   selectedChapter: "foundation" | "evidence" | "team" | null,
+  notice: "authorization_denied" | null = null,
 ): string {
   return renderToStaticMarkup(
     createElement(CampaignShell, {
@@ -60,6 +64,7 @@ function render(
       dictionary: dictionaryFor("es"),
       model,
       selectedChapter,
+      notice,
     }),
   );
 }
@@ -68,6 +73,8 @@ describe("CampaignShell chapter routes", () => {
   it("keeps the command overview focused on roadmap and campaign context", () => {
     const html = render(null);
 
+    expect(html).toContain('class="topbar topbar-overview"');
+    expect(html).toContain('class="context-strip"');
     expect(html).toContain('class="campaign-command-overview"');
     expect(html).toContain('id="campaign-journey"');
     expect(html).not.toContain('class="campaign-experience"');
@@ -86,6 +93,12 @@ describe("CampaignShell chapter routes", () => {
     expect(html).toContain('id="team-workspace"');
     expect(html).toContain('class="chapter-command-bar"');
     expect(html).toContain('class="chapter-command-map"');
+    expect(html).toContain('class="topbar topbar-compact"');
+    expect(html).toContain('class="topbar-context"');
+    expect(html).toContain('class="session-context-menu"');
+    expect(html).toContain(">Equipo</p>");
+    expect(html).not.toContain('class="context-strip"');
+    expect(html).not.toContain(dictionaryFor("es").shell.title);
     expect(html).not.toContain('class="campaign-experience"');
     expect(html).not.toContain("MISIÓN ACTIVA");
     expect(html).not.toContain('id="campaign-journey"');
@@ -94,6 +107,16 @@ describe("CampaignShell chapter routes", () => {
     expect(html).not.toContain('id="candidate-workspace"');
     expect(html).not.toContain('id="strategy-room"');
     expect(html).not.toContain('id="war-room"');
+  });
+
+  it("keeps authorization feedback compact and dismissible", () => {
+    const html = render("team", "authorization_denied");
+
+    expect(html).toContain('data-notice="authorization_denied"');
+    expect(html).toContain("Esta acción necesita un permiso adicional");
+    expect(html).toContain("Cerrar aviso");
+    expect(html).toContain('/es/campaign/team#team-workspace');
+    expect(html).toContain('id="team-workspace"');
   });
 
   it("treats completed guided intake as a revisable one-time setup", () => {

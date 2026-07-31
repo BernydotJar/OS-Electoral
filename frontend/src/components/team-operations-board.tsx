@@ -213,31 +213,42 @@ export function TeamOperationsBoard({
                       <article
                         key={item.id}
                         className="team-work-card"
+                        data-status={item.status}
                         data-priority={item.priority}
                         data-health={item.health}
                       >
-                        <div className="team-work-card-meta">
-                          <span>
-                            {
-                              dictionary.teamWorkspace.workTypeLabels[
-                                item.work_type
-                              ]
-                            }
+                        <div className="team-work-card-topline">
+                          <span
+                            className="team-work-card-status"
+                            data-status={item.status}
+                          >
+                            {dictionary.teamWorkspace.workStatusLabels[item.status]}
                           </span>
-                          <span>
-                            {
-                              dictionary.teamWorkspace.priorityLabels[
-                                item.priority
-                              ]
-                            }
-                          </span>
-                          <span>
-                            {dictionary.teamWorkspace.healthLabels[item.health]}
-                          </span>
+                          <div className="team-work-card-meta">
+                            <span data-kind="type">
+                              {
+                                dictionary.teamWorkspace.workTypeLabels[
+                                  item.work_type
+                                ]
+                              }
+                            </span>
+                            <span data-kind="priority" data-value={item.priority}>
+                              {
+                                dictionary.teamWorkspace.priorityLabels[
+                                  item.priority
+                                ]
+                              }
+                            </span>
+                            <span data-kind="health" data-value={item.health}>
+                              {dictionary.teamWorkspace.healthLabels[item.health]}
+                            </span>
+                          </div>
                         </div>
-                        <h5>{item.name}</h5>
-                        <p>{item.description}</p>
-                        <dl>
+                        <div className="team-work-card-copy">
+                          <h5>{item.name}</h5>
+                          <p>{item.description}</p>
+                        </div>
+                        <dl className="team-work-card-facts">
                           <div>
                             <dt>{dictionary.teamWorkspace.assignedFunction}</dt>
                             <dd>
@@ -262,12 +273,15 @@ export function TeamOperationsBoard({
                           </div>
                         </dl>
                         {item.next_action ? (
-                          <div className="team-work-next-action">
+                          <section
+                            className="team-work-next-action"
+                            aria-label={dictionary.teamWorkspace.workNextAction}
+                          >
                             <strong>
                               {dictionary.teamWorkspace.workNextAction}
                             </strong>
                             <p>{item.next_action}</p>
-                          </div>
+                          </section>
                         ) : null}
                         {item.blocker ? (
                           <div className="team-work-blocker" role="note">

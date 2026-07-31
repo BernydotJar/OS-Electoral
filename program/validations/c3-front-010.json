@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-FRONT-010",
+  "assessed_at": "2026-07-31",
+  "mode": "SHIP",
+  "branch": "agent/c3-front-010-compact-command-glass",
+  "base": "main@d2ad6d5eaeb46208fc00ea5fb9eb0be81eae26ee",
+  "implementation_commit": "b14f0ae",
+  "state": "LOCAL_REVIEWED",
+  "scope": "Compact internal command chrome, collapsed technical context, calm authorization feedback, restrained liquid-glass operational cards and deterministic evaluators only.",
+  "verification": {
+    "python_passed": 753,
+    "python_skipped": 11,
+    "coverage_percent": 90.39,
+    "frontend_test_files": 28,
+    "frontend_passed": 121,
+    "dependency_vulnerabilities": 0,
+    "typecheck": "PASS",
+    "eslint": "PASS",
+    "next_build": "PASS",
+    "dynamic_browser": "PASS",
+    "compact_header_height": "PASS_MAX_80PX",
+    "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+    "horizontal_overflow": "NONE",
+    "unexpected_outbound_hosts": [],
+    "program_truth": "PASS_BLOCKED",
+    "release_decision": "DENY_RELEASE"
+  },
+  "critic_findings": [
+    {
+      "id": "C3-FRONT-010-F1",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "Premium notice styling could have made successful notices look like warnings.",
+      "repair": "Preserved success semantics by scoping amber styling to authorization_denied only."
+    },
+    {
+      "id": "C3-FRONT-010-F2",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "Status and priority initially shared the same visual accent.",
+      "repair": "Separated status and priority semantic color variables."
+    },
+    {
+      "id": "C3-FRONT-010-F3",
+      "severity": "LOW",
+      "status": "RESOLVED",
+      "finding": "The mobile session menu used a negative right offset.",
+      "repair": "Aligned the disclosure to the viewport-safe right edge."
+    },
+    {
+      "id": "C3-FRONT-010-F4",
+      "severity": "INFO",
+      "status": "ENVIRONMENT_LIMITATION",
+      "finding": "Nested Docker failed before product startup while registering an upstream layer with lchown /var/empty: permission denied.",
+      "repair": "Require hosted exact-head PostgreSQL/API/browser verification before merge."
+    }
+  ],
+  "hosted_ci": {
+    "result": "PENDING_EXACT_HEAD",
+    "pull_request": null,
+    "implementation_head": null,
+    "campaignos_ci_run_id": null,
+    "runtime_visual_run_id": null
+  },
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "status": "LOCAL_REVIEWED"
+}

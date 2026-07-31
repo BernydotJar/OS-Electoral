@@ -36,6 +36,9 @@ const es = {
     authorizationContext: "CONTEXTO DE AUTORIZACIÓN",
     currentContext: "Contexto actual",
     technicalDetails: "Ver detalles técnicos y permisos",
+    sessionContext: "Sesión",
+    sessionState: "Estado de sesión",
+    dismissNotice: "Cerrar aviso",
     tenant: "Organización",
     campaign: "Campaña",
     principal: "Sesión",
@@ -264,7 +267,7 @@ const es = {
     team_template_applied:
       "Plantilla aplicada: se conservaron las funciones existentes y se agregaron sólo las ausentes.",
     authorization_denied:
-      "La sesión no tiene autorización exacta para esta acción.",
+      "Esta acción necesita un permiso adicional. Tu información y el resto del workspace siguen disponibles.",
     conflict:
       "El registro cambió o la solicitud ya fue utilizada. Recarga y revisa la versión.",
     validation_error: "Revisa los campos señalados y vuelve a intentar.",
@@ -942,6 +945,9 @@ const en: Dictionary = {
     authorizationContext: "AUTHORIZATION CONTEXT",
     currentContext: "Current context",
     technicalDetails: "View technical details and permissions",
+    sessionContext: "Session",
+    sessionState: "Session status",
+    dismissNotice: "Dismiss",
     tenant: "Organization",
     campaign: "Campaign",
     principal: "Session",
@@ -1163,7 +1169,7 @@ const en: Dictionary = {
     team_template_applied:
       "Template applied: existing functions were preserved and only missing roles were added.",
     authorization_denied:
-      "This session lacks exact authorization for the action.",
+      "This action requires an additional permission. Your information and the rest of the workspace remain available.",
     conflict:
       "The record changed or the request key was reused. Reload and review the version.",
     validation_error: "Review the fields and try again.",

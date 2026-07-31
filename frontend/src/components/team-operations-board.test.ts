@@ -85,6 +85,12 @@ describe("team operations board", () => {
     expect(html).toContain("Bloqueado");
     expect(html).toContain("Completado");
     expect(html).toContain("Preparar agenda semanal");
+    expect(html).toContain('data-status="PLANNED"');
+    expect(html).toContain('class="team-work-card-topline"');
+    expect(html).toContain('data-kind="type"');
+    expect(html).toContain('data-kind="priority" data-value="HIGH"');
+    expect(html).toContain('class="team-work-card-facts"');
+    expect(html).toContain('class="team-work-next-action"');
     expect(html).toContain("Registro de decisiones");
     expect(html).toContain("Jefatura de campaña");
     expect(html).toContain("/api/ui/team-workspace/work-item-status");
