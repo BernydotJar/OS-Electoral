@@ -58,6 +58,19 @@ export type CampaignPage = Readonly<{
   next_cursor: UUID | null;
 }>;
 
+export type CampaignCreateInput = Readonly<{
+  slug: string;
+  name: string;
+  jurisdiction: string;
+  stage: string;
+}>;
+
+export type CampaignCreateEvidence = Readonly<{
+  campaign: CampaignProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
 export type CampaignReadinessCheck = Readonly<{
   key: "campaign_name" | "jurisdiction" | "campaign_stage" | "active_workspace";
   complete: boolean;

@@ -1,4 +1,5 @@
 import { CampaignChapterNavigation } from "@/components/campaign-chapter-navigation";
+import { ChapterOrientation } from "@/components/chapter-orientation";
 import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
 import { CandidateActionBrief } from "@/components/candidate-action-brief";
 import { CandidateWorkspaceDeck } from "@/components/candidate-workspace-deck";
@@ -25,6 +26,7 @@ import { deriveCampaignJourney } from "@/lib/campaign-journey";
 import type { CampaignJourneyPhaseKey } from "@/lib/campaign-journey";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import {
+  deriveCampaignContextCapabilities,
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
   deriveTeamWorkspaceCapabilities,
@@ -151,13 +153,34 @@ export function CampaignShell({
     );
   }
   if (model.kind === "empty") {
+    const emptyContextCapabilities = deriveCampaignContextCapabilities(
+      model.identity.application_memberships,
+      model.identity.tenant_id,
+    );
+    if (!emptyContextCapabilities.canCreateCampaign) {
+      return (
+        <div className="state-page">
+          <LocaleSwitcher locale={locale} dictionary={dictionary} />
+          <StatePanel
+            title={dictionary.states.emptyTitle}
+            body={dictionary.states.emptyBody}
+          />
+        </div>
+      );
+    }
     return (
       <div className="state-page">
         <LocaleSwitcher locale={locale} dictionary={dictionary} />
-        <StatePanel
-          title={dictionary.states.emptyTitle}
-          body={dictionary.states.emptyBody}
-        />
+        <main id="main" className="empty-campaign-page" tabIndex={-1}>
+          <CampaignContextForm
+            locale={locale}
+            dictionary={dictionary}
+            campaigns={[]}
+            currentCampaignId=""
+            canCreateCampaign
+            demo={false}
+          />
+        </main>
       </div>
     );
   }
@@ -167,6 +190,10 @@ export function CampaignShell({
     model.memberships,
     model.campaign.id,
   ).filter((item) => item.enabled);
+  const campaignContextCapabilities = deriveCampaignContextCapabilities(
+    model.memberships,
+    model.identity.tenant_id,
+  );
   const intakeCapabilities = deriveGuidedIntakeCapabilities(
     model.memberships,
     model.campaign.id,
@@ -443,6 +470,11 @@ export function CampaignShell({
                 journey={campaignJourney}
                 selected={currentJourneyPhase}
               />
+              <ChapterOrientation
+                dictionary={dictionary}
+                journey={campaignJourney}
+                selected={currentJourneyPhase}
+              />
             </>
           ) : null}
 
@@ -453,6 +485,7 @@ export function CampaignShell({
                 dictionary={dictionary}
                 campaigns={model.campaigns}
                 currentCampaignId={model.campaign.id}
+                canCreateCampaign={campaignContextCapabilities.canCreateCampaign}
                 demo={model.demo}
               />
 
@@ -1141,6 +1174,12 @@ export function CampaignShell({
                       </section>
                     </div>
 
+                    <details className="governance-metadata">
+                      <summary>
+                        <span>{dictionary.teamWorkspace.governanceDetails}</span>
+                        <small>{dictionary.teamWorkspace.governanceDetailsBody}</small>
+                      </summary>
+                      <div className="governance-metadata-body">
                     <div className="team-detail-grid">
                       <article>
                         <h3>{dictionary.teamWorkspace.training}</h3>
@@ -1200,6 +1239,8 @@ export function CampaignShell({
                         <dd>{teamWorkspace.updated_at}</dd>
                       </div>
                     </dl>
+                      </div>
+                    </details>
                   </>
                 ) : model.teamWorkspaceAvailability === "NOT_STARTED" &&
                   teamCapabilities.canStart &&

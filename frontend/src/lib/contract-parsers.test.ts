@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   ContractValidationError,
+  parseCampaignCreateEvidence,
   parseCampaignPage,
   parseGuidedIntakeReadEvidence,
   parseMe,
@@ -187,6 +188,48 @@ describe("contract parsers", () => {
         authorization_status: "NOT_LOADED",
       }),
     ).toThrow("must not contain memberships");
+  });
+
+  it("accepts only a version-one draft from the requested tenant", () => {
+    const evidence = {
+      campaign: {
+        id: CAMPAIGN_ID,
+        tenant_id: TENANT_ID,
+        slug: "campaign-a-12345678",
+        name: "Campaign A",
+        jurisdiction: "Antigua Guatemala",
+        stage: "PREPARATION",
+        status: "DRAFT",
+        version: 1,
+      },
+      audit_event_id: "66666666-6666-4666-8666-666666666666",
+      outbox_event_id: "77777777-7777-4777-8777-777777777777",
+    };
+
+    expect(parseCampaignCreateEvidence(evidence, TENANT_ID).campaign.slug).toBe(
+      "campaign-a-12345678",
+    );
+    expect(() =>
+      parseCampaignCreateEvidence(
+        {
+          ...evidence,
+          campaign: {
+            ...evidence.campaign,
+            tenant_id: "88888888-8888-4888-8888-888888888888",
+          },
+        },
+        TENANT_ID,
+      ),
+    ).toThrow("cross-tenant campaign");
+    expect(() =>
+      parseCampaignCreateEvidence({
+        ...evidence,
+        campaign: { ...evidence.campaign, status: "ACTIVE" },
+      }),
+    ).toThrow("version-one draft");
+    expect(() =>
+      parseCampaignCreateEvidence({ ...evidence, unexpected: true }),
+    ).toThrow(ContractValidationError);
   });
 
   it("validates campaign pages and refuses unsupported aggregate states", () => {

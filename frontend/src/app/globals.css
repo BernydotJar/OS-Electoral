@@ -6811,3 +6811,261 @@ button[type="submit"]:hover {
     overflow: auto;
   }
 }
+
+/* C3-FRONT-011: clear chapter orientation and governed candidate entry */
+.chapter-command-current {
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)),
+    rgba(7, 19, 25, 0.62);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 0.72rem 0.9rem;
+}
+
+.chapter-command-current > span {
+  color: var(--accent-bright);
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.chapter-orientation {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.85rem 0 1.15rem;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  border: 1px solid rgba(190, 224, 218, 0.17);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 96% 4%, rgba(94, 219, 192, 0.13), transparent 36%),
+    linear-gradient(145deg, rgba(20, 38, 42, 0.92), rgba(7, 18, 24, 0.9));
+  box-shadow:
+    0 22px 52px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.chapter-orientation::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(var(--accent-bright), transparent 86%);
+}
+
+.chapter-orientation-heading,
+.chapter-orientation-copy {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.chapter-orientation-index,
+.chapter-orientation-status {
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 780;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chapter-orientation-index {
+  color: var(--accent-bright);
+}
+
+.chapter-orientation-status {
+  padding: 0.3rem 0.58rem;
+  border: 1px solid rgba(190, 224, 218, 0.18);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.chapter-orientation-copy h2 {
+  margin: 0.18rem 0 0.45rem;
+  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+}
+
+.chapter-orientation-copy p {
+  max-width: 62ch;
+  margin: 0;
+}
+
+.chapter-orientation-next {
+  min-width: min(19rem, 36%);
+  display: grid;
+  gap: 0.32rem;
+  padding: 0.78rem 0.9rem;
+  border: 1px solid rgba(238, 179, 82, 0.2);
+  border-radius: 15px;
+  background: rgba(238, 179, 82, 0.065);
+}
+
+.chapter-orientation-next span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 740;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.candidate-workspace-single {
+  display: grid;
+  gap: 1rem;
+}
+
+.candidate-workspace-single-heading {
+  padding: 0 0.1rem;
+}
+
+.candidate-workspace-single-heading h3 {
+  margin: 0;
+  font-size: 1.02rem;
+}
+
+.candidate-profile-flow {
+  display: grid;
+  gap: 1rem;
+}
+
+.candidate-evidence-disclosure,
+.campaign-create-disclosure,
+.governance-metadata {
+  border: 1px solid rgba(190, 224, 218, 0.16);
+  border-radius: 18px;
+  background: rgba(7, 18, 24, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.candidate-evidence-disclosure > summary,
+.campaign-create-disclosure > summary,
+.governance-metadata > summary {
+  display: grid;
+  gap: 0.18rem;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.candidate-evidence-disclosure > summary::-webkit-details-marker,
+.campaign-create-disclosure > summary::-webkit-details-marker,
+.governance-metadata > summary::-webkit-details-marker {
+  display: none;
+}
+
+.candidate-evidence-disclosure > summary span,
+.campaign-create-disclosure > summary span,
+.governance-metadata > summary span {
+  font-weight: 780;
+}
+
+.candidate-evidence-disclosure > summary small,
+.campaign-create-disclosure > summary small,
+.governance-metadata > summary small {
+  color: var(--muted);
+}
+
+.candidate-evidence-disclosure-body,
+.governance-metadata-body {
+  padding: 0 1rem 1rem;
+}
+
+.campaign-context-actions {
+  min-width: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.campaign-create-disclosure {
+  align-self: stretch;
+}
+
+.campaign-create-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.7rem 0.85rem;
+  padding: 0 1rem 1rem;
+}
+
+.campaign-create-field {
+  min-width: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.campaign-create-form label {
+  font-size: 0.78rem;
+  font-weight: 720;
+}
+
+.campaign-create-form input {
+  width: 100%;
+}
+
+.campaign-create-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.campaign-create-actions .field-help {
+  margin: 0;
+}
+
+.governance-metadata {
+  margin-top: 1rem;
+}
+
+.governance-metadata-body .team-detail-grid {
+  margin-top: 0;
+}
+
+.governance-metadata-body .intake-evidence {
+  margin-top: 0.65rem;
+  font-size: 0.72rem;
+  opacity: 0.78;
+}
+
+.governance-metadata-body .intake-evidence dd {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .chapter-orientation-heading,
+  .chapter-orientation-copy,
+  .campaign-create-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .chapter-orientation-next {
+    min-width: 0;
+  }
+
+  .campaign-create-form {
+    grid-template-columns: 1fr;
+  }
+
+  .campaign-create-actions {
+    grid-column: auto;
+  }
+}
+
+.empty-campaign-page {
+  width: min(72rem, calc(100% - 2rem));
+  margin: clamp(3rem, 10vh, 7rem) auto;
+}
+
+.empty-campaign-page .campaign-context-panel {
+  margin: 0;
+}
+
+.campaign-context-empty strong {
+  color: var(--text-2);
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.5;
+}

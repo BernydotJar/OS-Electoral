@@ -58,7 +58,8 @@ while [ "$attempt" -le 60 ]; do
 done
 
 uv run --locked python scripts/dev/seed_local_operator.py \
-  --database-url "postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@127.0.0.1:${POSTGRES_PORT}/${POSTGRES_DB}"
+  --database-url "postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@127.0.0.1:${POSTGRES_PORT}/${POSTGRES_DB}" \
+  --include-campaign-create
 
 RUNTIME_DIR="$FRONTEND_DIR/.next/standalone"
 mkdir -p "$ARTIFACT_DIR" "$RUNTIME_DIR/.next"

@@ -197,6 +197,42 @@ async def review() -> dict[str, object]:
             == "22222222-2222-4222-8222-222222222222",
             "seeded campaign was not selected",
         )
+        campaign_create = page.locator(".campaign-create-disclosure")
+        require(
+            await campaign_create.count() == 1,
+            "exact campaign-create authority did not expose the governed draft flow",
+        )
+        await campaign_create.locator(":scope > summary").click()
+        await page.get_by_label("Nombre de la candidatura", exact=True).fill(
+            "Candidatura funcional"
+        )
+        await page.get_by_label("Territorio", exact=True).fill("Municipio funcional")
+        await page.get_by_role("button", name="Crear borrador", exact=True).click()
+        await page.wait_for_url("**notice=campaign_created**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Borrador de candidatura creado. El acceso y la selección siguen separados.",
+                exact=True,
+            ).count()
+            == 1,
+            "campaign draft success notice is missing",
+        )
+        campaign_select = page.get_by_label("Campaña autorizada")
+        require(
+            await campaign_select.input_value() == "22222222-2222-4222-8222-222222222222",
+            "draft creation changed the active campaign context",
+        )
+        require(
+            await campaign_select.locator("option").count() == 1,
+            "new draft became visible without a separate campaign read grant",
+        )
+        require(
+            await campaign_select.locator("option", has_text="Candidatura funcional").count() == 0,
+            "new draft was implicitly authorized after creation",
+        )
+        await page.get_by_role("link", name="Cerrar aviso", exact=True).click()
+        await page.wait_for_url("**/es#campaigns")
         require(
             await page.get_by_role(
                 "link", name="Continuar información de arranque", exact=True
@@ -366,17 +402,27 @@ async def review() -> dict[str, object]:
             "candidate start success notice missing",
         )
         require(
-            await page.get_by_role("tab", name="Qué hacer ahora").count() == 1,
-            "candidate action view missing after dossier creation",
+            await page.get_by_role("heading", name="Perfil y riesgos", exact=True).count() == 1,
+            "candidate profile heading missing after dossier creation",
         )
         require(
-            await page.get_by_text("Qué debemos resolver ahora", exact=True).count() == 1,
-            "candidate action brief missing after dossier creation",
+            await page.locator(".candidate-profile-view").count() == 1,
+            "candidate profile is not visible after dossier creation",
         )
-        await page.get_by_role("tab", name="Fuentes y evidencia").click()
+        require(
+            await page.get_by_text("Siguiente paso", exact=True).count() == 1,
+            "candidate action guidance missing after dossier creation",
+        )
+        require(
+            await page.get_by_role("tab").count() == 0,
+            "retired candidate tabs remain visible after dossier creation",
+        )
+        evidence_disclosure = page.locator(".candidate-evidence-disclosure")
+        require(await evidence_disclosure.count() == 1, "candidate evidence disclosure missing")
+        await evidence_disclosure.locator(":scope > summary").click()
         require(
             await page.get_by_role("button", name="Agregar fuente").count() == 1,
-            "candidate evidence editor missing after selecting evidence view",
+            "candidate evidence editor missing after opening evidence details",
         )
 
         await page.get_by_label("Tipo de fuente").select_option("OFFICIAL_SOURCE")
@@ -400,7 +446,9 @@ async def review() -> dict[str, object]:
             == 1,
             "candidate evidence success notice missing",
         )
-        await page.get_by_role("tab", name="Fuentes y evidencia").click()
+        evidence_disclosure = page.locator(".candidate-evidence-disclosure")
+        if not await evidence_disclosure.evaluate("element => element.open"):
+            await evidence_disclosure.locator(":scope > summary").click()
         require(
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence was not projected",
@@ -409,7 +457,9 @@ async def review() -> dict[str, object]:
         await wait_for_chapter(page, "**/es/campaign/team**", "#team-workspace")
         compact_topbar = page.locator(".topbar-compact")
         require(await compact_topbar.count() == 1, "team chapter lacks compact command chrome")
-        compact_height = await compact_topbar.evaluate("element => element.getBoundingClientRect().height")
+        compact_height = await compact_topbar.evaluate(
+            "element => element.getBoundingClientRect().height"
+        )
         require(compact_height <= 80, f"compact command chrome is too tall: {compact_height}")
         require(
             await page.locator(".context-strip").count() == 0,
@@ -907,10 +957,19 @@ async def review() -> dict[str, object]:
         )
         await english.goto(f"{BASE_URL}/en/campaign/evidence", wait_until="networkidle")
         require(
-            await english.get_by_text("What we need to resolve now", exact=True).count() == 1,
+            await english.get_by_role("heading", name="Profile and risks", exact=True).count() == 1,
+            "English candidate profile is unavailable",
+        )
+        require(
+            await english.get_by_text("Next step", exact=True).count() == 1,
             "English candidate action brief is unavailable",
         )
-        await english.get_by_role("tab", name="Sources and evidence").click()
+        require(
+            await english.get_by_role("tab").count() == 0,
+            "retired candidate tabs remain visible in English",
+        )
+        english_evidence = english.locator(".candidate-evidence-disclosure")
+        await english_evidence.locator(":scope > summary").click()
         require(
             await english.get_by_role("button", name="Add source").count() == 1,
             "English candidate evidence editor is unavailable",
@@ -993,6 +1052,7 @@ async def review() -> dict[str, object]:
         "status": "PASS",
         "journey": "command_center_to_isolated_campaign_chapters",
         "same_origin_readiness": "PASS_FRONTEND_PROXY_TO_BACKEND_READY",
+        "governed_campaign_draft": "PASS_DRAFT_PERSISTED_CONTEXT_AND_ACCESS_UNCHANGED",
         "chapter_navigation": "PASS_URL_HISTORY_BACK_FORWARD_ISOLATION",
         "role_blueprints": "PASS_LEAN_5_TO_FULL_10_PLUS_CUSTOM_ROLE",
         "consultant_role_dossiers": "PASS_PROPOSED_PRESERVED_APPLIED_MANUAL",

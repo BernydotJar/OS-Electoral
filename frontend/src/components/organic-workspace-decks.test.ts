@@ -52,7 +52,7 @@ const candidate: CandidateWorkspaceProjection = {
 };
 
 describe("organic workspace decks", () => {
-  it("starts the candidate workspace on actions and keeps profile and evidence in separate panels", () => {
+  it("keeps profile and risks as the single visible candidate workspace", () => {
     const html = renderToStaticMarkup(
       createElement(CandidateWorkspaceDeck, {
         dictionary,
@@ -62,12 +62,17 @@ describe("organic workspace decks", () => {
       }),
     );
 
-    expect(html).toContain('role="tablist"');
-    expect(html).toContain('aria-selected="true"');
-    expect(html).toContain('id="candidate-actions-panel"');
-    expect(html).toContain('id="candidate-profile-panel"');
-    expect(html).toContain('id="candidate-evidence-panel"');
-    expect(html.match(/hidden=""/g)?.length).toBe(2);
+    expect(html).toContain('class="candidate-workspace-deck candidate-workspace-single"');
+    expect(html).toContain('id="candidate-profile-view-title"');
+    expect(html).toContain("Perfil y riesgos");
+    expect(html).toContain('class="candidate-profile-flow"');
+    expect(html).toContain("Acciones");
+    expect(html).toContain("Perfil");
+    expect(html).toContain('class="candidate-evidence-disclosure"');
+    expect(html).toContain("Fuentes y evidencia");
+    expect(html).toContain("Evidencia");
+    expect(html).not.toContain('role="tablist"');
+    expect(html).not.toContain('aria-selected="true"');
   });
 
   it("renders one visible team operation panel while retaining an inert alternate panel", () => {
@@ -100,7 +105,7 @@ describe("organic workspace decks", () => {
       }),
     );
 
-    expect(html).toContain("Qué debemos resolver ahora");
+    expect(html).toContain("Siguiente paso");
     expect(html).toContain("Definir y verificar identidad");
     expect(html).toContain("Falta evidencia verificable");
     expect(html).toContain("Preparación interna activa");

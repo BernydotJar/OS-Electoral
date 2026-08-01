@@ -4,6 +4,7 @@ from scripts.dev.seed_local_operator import (
     CAMPAIGN_ID,
     DEVELOPMENT_ISSUER,
     DEVELOPMENT_SUBJECT,
+    FUNCTIONAL_CAMPAIGN_CREATE_GRANT,
     GRANTS,
     TENANT_ID,
     require_local_database_url,
@@ -75,6 +76,30 @@ def test_local_seed_is_idempotent_and_grants_only_the_bounded_journey() -> None:
             )
             assert principal is not None
             assert principal.email == "operator@localhost"
+    finally:
+        engine.dispose()
+
+
+def test_functional_seed_adds_only_the_exact_tenant_campaign_create_grant() -> None:
+    engine = create_engine("sqlite+pysqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    try:
+        seed_local_operator(engine, include_campaign_create=True)
+        seed_local_operator(engine, include_campaign_create=True)
+        with Session(engine) as session:
+            grants = tuple(session.scalars(select(PermissionGrant)))
+
+        assert len(grants) == len(GRANTS) + 1
+        create_grants = [grant for grant in grants if grant.resource_type == "campaign_collection"]
+        assert len(create_grants) == 1
+        grant = create_grants[0]
+        assert grant.id == FUNCTIONAL_CAMPAIGN_CREATE_GRANT.id
+        assert grant.tenant_id == TENANT_ID
+        assert grant.campaign_id is None
+        assert grant.workspace_id is None
+        assert grant.action == "create"
+        assert grant.resource_id == str(TENANT_ID)
+        assert grant.purpose == "Create tenant campaign"
     finally:
         engine.dispose()
 

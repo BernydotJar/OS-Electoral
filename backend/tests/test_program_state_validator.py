@@ -149,7 +149,7 @@ def test_fallback_ledger_rejects_stale_merge_blocker(
         validator.validate_fallback_records(payload, roadmap)
 
 
-def test_graph_harness_projection_reviews_approved_performance_node() -> None:
+def test_graph_harness_projection_reviews_approved_frontend_node() -> None:
     validator = load_validator()
     payload = manifest()
 
@@ -157,13 +157,15 @@ def test_graph_harness_projection_reviews_approved_performance_node() -> None:
 
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
     selected = execution["scheduler"]["selected_node"]
-    assert execution["scheduler"]["active_feature"] == "C3-PERF-001"
+    assert execution["scheduler"]["active_feature"] == "C3-FRONT-011"
     assert execution["scheduler"]["ready_nodes"] == []
-    assert selected["id"] == "C3-PERF-001"
+    assert selected["id"] == "C3-FRONT-011"
     assert selected["state"] == "review"
     assert selected["human_approval"] == "APPROVED"
     assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
     assert "SHIP" in selected["approval_receipt"]["statement"]
+    assert selected["review_artifact"] == "progress/review_C3-FRONT-011.md"
+    assert "program/validations/c3-front-011.json" in selected["local_evidence"]
 
 
 def test_graph_harness_projection_rejects_stale_canonical_runtime_state() -> None:
