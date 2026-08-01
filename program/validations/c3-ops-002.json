@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "increment": "C3-OPS-002",
-  "status": "REVIEWED",
+  "status": "CI_GREEN",
   "source_revision": "0cb4180d72102c413c368de467090eb3684dfe6a",
   "branch": "agent/c3-ops-002-release-rollback-runbook",
   "approval": {
@@ -31,8 +31,52 @@
     "terraform": "PASS_PLAN_ONLY",
     "program_validators": "PASS"
   },
-  "hosted_postgresql_18": "PENDING",
-  "exact_head_ci": "PENDING",
+  "hosted_postgresql_18": {
+    "pull_request": 148,
+    "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561",
+    "campaignos_ci_run_id": 30683477144,
+    "campaignos_ci_result": "SUCCESS",
+    "runtime_visual_run_id": 30683477171,
+    "runtime_visual_result": "SUCCESS",
+    "operational_recovery_job_id": 91324829967,
+    "operational_recovery_job_result": "SUCCESS",
+    "actionlint_result": "SUCCESS",
+    "postgresql_version": "18.3",
+    "artifact_id": 8813086739,
+    "artifact_name": "campaignos-release-rollback-rehearsal",
+    "artifact_digest": "sha256:8f8f7756b4631ced6ba797ca9db7b62736a4e58827bde61aab8afa34eca8523a",
+    "artifact_size_bytes": 1079,
+    "artifact_created_at": "2026-08-01T04:12:43Z",
+    "receipt": {
+      "source_revision": "98faf8ab1f8e614555575bd560e3e593aedb2561",
+      "previous_known_good_revision": "e1f9c508c397a6df54a3363dde729375b55edb52",
+      "migration_head": "20260729_0012",
+      "migration_classification": "EXPAND_BACKWARD_COMPATIBLE",
+      "authority_check": "PASS",
+      "artifact_provenance_check": "PASS",
+      "selected_response": "ROLL_BACK_APPLICATION_ARTIFACT",
+      "expected_response": "ROLL_BACK_APPLICATION_ARTIFACT",
+      "decision": "PASS",
+      "source_mutation": "NONE",
+      "restore_target_state": "NOT_CREATED",
+      "production_rollback_claim": false,
+      "external_effects": "NONE"
+    },
+    "pr_review": {
+      "issue_comments": 0,
+      "review_submissions": 0,
+      "inline_threads": 0,
+      "unresolved_threads": 0,
+      "result": "PASS_NO_OPEN_FINDINGS"
+    }
+  },
+  "exact_head_ci": {
+    "campaignos_ci_run_id": 30683477144,
+    "campaignos_ci_result": "SUCCESS",
+    "runtime_visual_run_id": 30683477171,
+    "runtime_visual_result": "SUCCESS",
+    "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561"
+  },
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
@@ -42,9 +86,17 @@
       "component": "digest-pinned actionlint container",
       "result": "NOT_EXECUTED_CONTAINER_LAYER_REGISTRATION_FAILED",
       "detail": "Nested Docker rejected lchown /var/empty before container startup.",
-      "required_resolution": "Hosted exact-head Locked quality and contract suite must run actionlint successfully."
+      "required_resolution": "Hosted exact-head Locked quality and contract suite must run actionlint successfully.",
+      "resolution": {
+        "status": "RESOLVED_BY_HOSTED_EXACT_HEAD",
+        "run_id": 30683477144,
+        "job": "Locked quality and contract suite",
+        "step": "Validate GitHub Actions workflows",
+        "result": "SUCCESS"
+      }
     }
   ],
   "base_main_sha": "e1f9c508c397a6df54a3363dde729375b55edb52",
-  "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a"
+  "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a",
+  "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561"
 }

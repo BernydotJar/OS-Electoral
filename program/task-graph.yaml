@@ -467,7 +467,7 @@
       "id": "C3-OPS-002",
       "workstream": "WS-14",
       "title": "Release rollback and reversal runbook",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-RELEASE-001",
         "C3-OBS-001",

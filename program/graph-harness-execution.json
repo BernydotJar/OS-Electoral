@@ -47,7 +47,7 @@
         "specs/C3-OPS-002/design.md",
         "specs/C3-OPS-002/tasks.md"
       ],
-      "selection_reason": "C3-OPS-002 completed producer, critic/red-team, fixer and complete local verification. Exact-head hosted PostgreSQL 18 rehearsal, retained evidence and independent PR review remain pending.",
+      "selection_reason": "C3-OPS-002 passed producer, critic/red-team, fixer, complete local verification, exact-head hosted actionlint, PostgreSQL 18 rollback rehearsal, retained receipt inspection and independent PR review with no open findings.",
       "approval_receipt": {
         "recorded_at": "2026-07-31T21:45:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
@@ -63,7 +63,14 @@
         "program/validations/c3-ops-002.json",
         "progress/review_C3-OPS-002.md"
       ],
-      "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a"
+      "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a",
+      "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561",
+      "pull_request": 148,
+      "campaignos_ci_run_id": 30683477144,
+      "runtime_visual_run_id": 30683477171,
+      "operational_recovery_job_id": 91324829967,
+      "hosted_evidence_artifact_id": 8813086739,
+      "hosted_verified_at": "2026-08-01T04:12:43Z"
     },
     "blocked_nodes": [
       {
@@ -118,7 +125,7 @@
   },
   "active_increment": {
     "id": "C3-OPS-002",
-    "status": "REVIEWED",
+    "status": "CI_GREEN",
     "branch": "agent/c3-ops-002-release-rollback-runbook",
     "base": "main@e1f9c508c397a6df54a3363dde729375b55edb52",
     "approval_receipt": {
@@ -130,7 +137,14 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_POSTGRESQL_18_GATES",
-    "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a"
+    "next_action": "MERGE_PULL_REQUEST_148",
+    "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a",
+    "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561",
+    "pull_request": 148,
+    "campaignos_ci_run_id": 30683477144,
+    "runtime_visual_run_id": 30683477171,
+    "operational_recovery_job_id": 91324829967,
+    "hosted_evidence_artifact_id": 8813086739,
+    "hosted_verified_at": "2026-08-01T04:12:43Z"
   }
 }

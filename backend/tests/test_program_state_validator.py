@@ -165,7 +165,7 @@ def test_graph_harness_projection_runs_approved_rollback_increment() -> None:
     assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
     assert "SHIP" in selected["approval_receipt"]["statement"]
     roadmap = {item["id"]: item for item in payload["roadmap"]}
-    assert roadmap["C3-OPS-002"]["status"] == "REVIEWED"
+    assert roadmap["C3-OPS-002"]["status"] == "CI_GREEN"
     assert selected["specs"] == [
         "specs/C3-OPS-002/requirements.md",
         "specs/C3-OPS-002/design.md",

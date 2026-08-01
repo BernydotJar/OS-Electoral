@@ -772,3 +772,12 @@
 - `make verify` passed: 821 Python tests, 12 controlled skips, 90.11% coverage; 144 frontend tests/build/audit; Terraform plan-only and program/security/release/eval gates passed.
 - Marked `C3-OPS-002` `REVIEWED`; exact-head PostgreSQL 18 rehearsal, retained artifact, independent review, merge and post-merge evidence remain pending.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.
+
+## 2026-08-01 — C3-OPS-002 exact-head CI closure
+
+- PR `#148` head `98faf8ab1f8e614555575bd560e3e593aedb2561` passed CampaignOS CI `30683477144` and Runtime Visual Review `30683477171`.
+- Hosted actionlint resolved the local nested-Docker limitation.
+- PostgreSQL 18 rollback job `91324829967` passed and retained artifact `8813086739` with digest `sha256:8f8f7756b4631ced6ba797ca9db7b62736a4e58827bde61aab8afa34eca8523a`.
+- The receipt binds the PR head to base `e1f9c508c397a6df54a3363dde729375b55edb52`, selects `ROLL_BACK_APPLICATION_ARTIFACT`, and records no source mutation, restore creation, production claim or external effect.
+- PR review found zero comments, reviews, inline threads or unresolved findings.
+- Marked `C3-OPS-002` `CI_GREEN`; managed staging rollback, PITR, RPO/RTO and production approval remain blocked.

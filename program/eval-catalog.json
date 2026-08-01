@@ -592,7 +592,7 @@
     {
       "id": "EVAL-ROLLBACK-001",
       "category": "operations",
-      "status": "TESTED_LOCAL",
+      "status": "CI_GREEN",
       "gate_result": "PASS",
       "evidence": [
         "program/rollback-readiness.json",
@@ -606,7 +606,7 @@
         "make verify"
       ],
       "last_verified_at": "2026-08-01",
-      "limitations": "Repository/local decision rehearsal passes without source mutation. Managed staging artifact rollback, PITR, RPO/RTO and production recovery remain unverified."
+      "limitations": "Repository/local and exact-head hosted PostgreSQL 18 decision rehearsals pass without source mutation. Managed staging artifact rollback, PITR, RPO/RTO and production recovery remain unverified."
     },
     {
       "id": "EVAL-OBSERVABILITY-001",
