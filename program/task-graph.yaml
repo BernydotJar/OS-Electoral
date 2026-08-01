@@ -462,6 +462,24 @@
         "Exactly authorized users can create an internal DRAFT candidacy through the existing protected API without automatic context or access",
         "Training, access and audit metadata remain available in a compact disclosure while accessibility and full repository gates pass"
       ]
+    },
+    {
+      "id": "C3-OPS-002",
+      "workstream": "WS-14",
+      "title": "Release rollback and reversal runbook",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-RELEASE-001",
+        "C3-OBS-001",
+        "C3-PERF-001",
+        "C3-INFRA-001"
+      ],
+      "acceptance": [
+        "Versioned policy distinguishes abort, artifact rollback, configuration reversal, forward-fix, isolated restore, containment and refusal",
+        "Every repository migration has a fail-closed compatibility and data-loss classification; unknown revisions are refused",
+        "Strict local/CI rehearsal validates immutable commit evidence, actual migration head, protected controls and sanitized receipts without destructive actions",
+        "Operator runbook and exact-head CI evidence pass while managed staging, production rollback and human production approval remain blocked"
+      ]
     }
   ]
 }

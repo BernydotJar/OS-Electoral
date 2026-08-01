@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-OPS-002",
+  "status": "REVIEWED",
+  "source_revision": "e1f9c508c397a6df54a3363dde729375b55edb52",
+  "branch": "agent/c3-ops-002-release-rollback-runbook",
+  "approval": {
+    "recorded_at": "2026-07-31T21:45:00-06:00",
+    "source": "USER_EXPLICIT_APPROVAL",
+    "statement": "User explicitly authorized continuing and finishing C3-OPS-002 for SHIP implementation.",
+    "scope": "Fail-closed rollback policy, validator, runbook and constrained local/CI rehearsal only; no production deployment, cloud resources, spending, destructive database action, image publication or political external effects."
+  },
+  "focused_verification": {
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "tests_passed": 28,
+    "local_rehearsal": "PASS",
+    "selected_response": "ROLL_BACK_APPLICATION_ARTIFACT",
+    "migration_head": "20260729_0012",
+    "source_mutation": "NONE",
+    "production_rollback_claim": false
+  },
+  "complete_repository_gate": {
+    "result": "PASS",
+    "python_passed": 821,
+    "python_skipped": 12,
+    "coverage_percent": 90.11,
+    "frontend_test_files": 33,
+    "frontend_tests": 144,
+    "npm_vulnerabilities": 0,
+    "terraform": "PASS_PLAN_ONLY",
+    "program_validators": "PASS"
+  },
+  "hosted_postgresql_18": "PENDING",
+  "exact_head_ci": "PENDING",
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "local_environment_limitations": [
+    {
+      "id": "C3-OPS-002-ENV-001",
+      "component": "digest-pinned actionlint container",
+      "result": "NOT_EXECUTED_CONTAINER_LAYER_REGISTRATION_FAILED",
+      "detail": "Nested Docker rejected lchown /var/empty before container startup.",
+      "required_resolution": "Hosted exact-head Locked quality and contract suite must run actionlint successfully."
+    }
+  ]
+}

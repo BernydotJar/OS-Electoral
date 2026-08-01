@@ -762,3 +762,13 @@
 - Added complete SHIP requirements, design and tasks. Implementation remains blocked by explicit human approval.
 - Managed staging, live environments, managed load/rollback, RPO/RTO acceptance and production approval remain separate blocked gates.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
+
+## 2026-08-01 — C3-OPS-002 reviewed local checkpoint
+
+- Recorded explicit SHIP approval for the cost-free rollback policy and constrained rehearsal; production, cloud and destructive actions remain unauthorized.
+- Cataloged all twelve Alembic revisions. Revisions that remove data or append-only controls are forward-fix only; `20260729_0012` alone permits application-artifact rollback while retaining schema head.
+- Added strict success/failure receipts, exact Git commit evidence, protected-control checks, source-safe cleanup and ten required rollback scenarios.
+- Red-team repairs bind previous-known-good evidence to the PR base SHA, reject duplicate/non-linear policy catalogs, preserve a sanitized failure receipt and report `restore_target_state=NOT_CREATED` honestly.
+- `make verify` passed: 821 Python tests, 12 controlled skips, 90.11% coverage; 144 frontend tests/build/audit; Terraform plan-only and program/security/release/eval gates passed.
+- Marked `C3-OPS-002` `REVIEWED`; exact-head PostgreSQL 18 rehearsal, retained artifact, independent review, merge and post-merge evidence remain pending.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.

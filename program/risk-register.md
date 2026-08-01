@@ -71,3 +71,10 @@ Production remains `BLOCKED`. Risks are not closed by local tests, green draft c
 - **Evidence:** sanitized structured logs, W3C trace context, authenticated low-cardinality metrics, alerts and PostgreSQL recovery contracts pass 686 tests at 90.40% coverage; CI `30041495912` and recovery job `89322226244` retained artifact `8577394363`.
 - **Limitation:** managed backups/PITR, telemetry transport, dashboards, routing, RPO/RTO, staging failure exercises and production rollback remain unproven.
 - **Mitigation:** exercise the verified controls in an approved staging environment before any release or production claim.
+
+## C3-OPS-002 residual risk — repository rehearsal without managed rollback proof
+
+- **Status:** OPEN / local implementation reviewed; production-blocking through managed platform and human gates.
+- **Evidence:** all twelve migrations are cataloged; 28 adversarial rollback tests and the complete local repository gate pass; the rehearsal writes sanitized owner-only success/failure receipts with `source_mutation=NONE`.
+- **Limitation:** no registry image promotion, managed staging rollback, PITR, RPO/RTO, alert-routing exercise or production recovery has been performed.
+- **Mitigation:** require exact-head hosted PostgreSQL evidence, then an explicitly authorized isolated staging environment and independent operational/security review before any managed or production rollback claim.

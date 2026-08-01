@@ -396,3 +396,12 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: human QA screenshot and report, `specs/C3-FRONT-008R1/**`, `frontend/src/components/campaign-launch-roadmap.tsx`, `frontend/src/components/campaign-chapter-navigation.tsx`, `frontend/src/app/api/v1/ready/route.ts`, `scripts/dev/functional_frontend.sh`.
 - `rationale`: The duplicate hero repeated the current mission and made CampaignOS feel like a landing page instead of an operating system. Dynamic local ports also made a correct frontend URL look like an API URL, producing a misleading 404.
 - `consequences`: The full path remains available through progressive disclosure, chapters retain stable URLs/history/locale, and browser readiness works on the frontend port. No external media, authority, deployment or political effect is introduced. Production remains `BLOCKED`.
+
+## DEC-2026-08-01-001 — Rollback is a fail-closed decision, not automatic downgrade
+
+- `status`: `ACCEPTED`
+- `scope`: `C3-OPS-002`
+- `decision`: Catalog every migration and select only abort, immutable application-artifact rollback, reviewed configuration reversal, forward-fix, isolated investigation restore, containment or refusal. Never select an automatic Alembic downgrade, destructive SQL, source overwrite, automatic worker replay or protected-control weakening.
+- `evidence`: `program/rollback-readiness.json`, `backend/src/campaignos/operability/rollback.py`, `backend/tests/test_release_rollback.py`, `docs/operations/release-rollback.md`.
+- `rationale`: Existing downgrade functions remove persisted domain data or security controls and therefore do not prove safe recovery. Unknown compatibility and missing authority must fail closed.
+- `consequences`: Only revision `20260729_0012` currently permits selecting a previous immutable application commit while retaining schema head. The repository rehearsal creates no deployment, restore or production claim.

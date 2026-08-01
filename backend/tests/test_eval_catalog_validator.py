@@ -54,9 +54,9 @@ def test_current_required_eval_catalog_passes(capsys: pytest.CaptureFixture[str]
 
     output = capsys.readouterr().out
     assert "required=33" in output
-    assert "pass=5" in output
+    assert "pass=6" in output
     assert "partial=17" in output
-    assert "not_run=11" in output
+    assert "not_run=10" in output
     assert "production=BLOCKED" in output
 
 
