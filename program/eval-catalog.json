@@ -336,7 +336,7 @@
       "evidence": [],
       "commands": [],
       "last_verified_at": null,
-      "limitations": "Training Academy baseline is absent."
+      "limitations": "A complete C3-TRAINING-001 SHIP specification exists, but implementation is not authorized; the Training Academy runtime, learning paths, assessments and completion receipts remain absent."
     },
     {
       "id": "EVAL-I18N-001",

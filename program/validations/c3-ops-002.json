@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "increment": "C3-OPS-002",
-  "status": "CI_GREEN",
+  "status": "MERGED_TO_MAIN",
   "source_revision": "0cb4180d72102c413c368de467090eb3684dfe6a",
   "branch": "agent/c3-ops-002-release-rollback-runbook",
   "approval": {
@@ -98,5 +98,33 @@
   ],
   "base_main_sha": "e1f9c508c397a6df54a3363dde729375b55edb52",
   "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a",
-  "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561"
+  "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561",
+  "final_exact_head": {
+    "review_head": "b4cbcac58f94aecfe12a1f104d1717677ecbfaf7",
+    "campaignos_ci_run_id": 30683667307,
+    "campaignos_ci_result": "SUCCESS",
+    "runtime_visual_run_id": 30683667313,
+    "runtime_visual_result": "SUCCESS",
+    "operational_recovery_job_id": 91325366844,
+    "artifact_id": 8813153523,
+    "artifact_digest": "sha256:c2fc258d407c9bac39ff9d7bf37c8663a4d6c1991f613ad219e228a21a0f2562"
+  },
+  "merge": {
+    "pull_request": 148,
+    "strategy": "SQUASH",
+    "merged_at": "2026-08-01T04:23:01Z",
+    "main_sha": "db8692d0f830496b413a8f56f2611eb611708545"
+  },
+  "post_merge": {
+    "campaignos_ci_run_id": 30683834955,
+    "campaignos_ci_result": "SUCCESS",
+    "artifact_id": 8813212488,
+    "artifact_digest": "sha256:14858f9dabeddb69ef988319b4415bcc5d185887dfb2ecf0a5be4c576d236a25",
+    "receipt_source_revision": "db8692d0f830496b413a8f56f2611eb611708545",
+    "receipt_decision": "PASS",
+    "source_mutation": "NONE",
+    "restore_target_state": "NOT_CREATED",
+    "production_rollback_claim": false,
+    "external_effects": "NONE"
+  }
 }

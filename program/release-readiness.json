@@ -67,7 +67,7 @@
         "docs/operations/release-rollback.md",
         "docs/testing/c3-ops-002-evidence.md"
       ],
-      "reason": "Bounded authenticated load and a fail-closed repository rollback decision rehearsal pass locally. Exact-head hosted rollback evidence, managed staging load/recovery, accepted thresholds and production rollback remain absent."
+      "reason": "Bounded authenticated load and the merged fail-closed rollback policy pass local, exact-head PostgreSQL 18 and post-merge checks. Managed staging load/recovery, accepted thresholds, PITR, RPO/RTO and production rollback remain absent."
     },
     {
       "id": "independent-security-privacy-legal-review",
@@ -87,8 +87,8 @@
     "receipt": null
   },
   "next_safe_actions": [
-    "Run exact-head hosted PostgreSQL 18 rollback rehearsal and retain its sanitized receipt.",
-    "Complete independent review, merge and post-merge reconciliation for C3-OPS-002.",
+    "Human-review and approve the C3-TRAINING-001 SHIP specification before implementation.",
+    "Keep C3-TRAINING-001 outside the executable roadmap until a scoped approval receipt exists.",
     "Authorize a cost-bounded non-production environment before any Terraform apply.",
     "Run managed staging migration, recovery, telemetry, load, rollback and security exercises.",
     "Obtain independent security, privacy, legal, operational and final production approvals."
