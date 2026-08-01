@@ -5,7 +5,7 @@
   "updated_at": "2026-07-31",
   "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
   "current_increment": "C3-FRONT-011",
-  "iteration_status": "REVIEWED_LOCAL",
+  "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -481,7 +481,7 @@
   },
   "active_local_increment": {
     "id": "C3-FRONT-011",
-    "state": "REVIEWED",
+    "state": "CI_GREEN",
     "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
     "base": "main@1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
     "approved_spec": "specs/C3-FRONT-011/requirements.md",
@@ -489,7 +489,7 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "RUN_EXACT_HEAD_HOSTED_CI_AND_VISUAL_REVIEW",
+    "next_action": "MERGE_PULL_REQUEST_146",
     "review_artifact": "progress/review_C3-FRONT-011.md",
     "local_evidence": [
       "docs/testing/c3-front-011-campol-consultant-evaluation.md",
@@ -500,7 +500,13 @@
     "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
     "repair_commits": [
       "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
-    ]
+    ],
+    "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+    "pull_request": 146,
+    "campaignos_ci_run_id": 30679126973,
+    "runtime_visual_run_id": 30679126971,
+    "hosted_evidence_artifact_id": 8811608118,
+    "hosted_verified_at": "2026-08-01T02:03:51Z"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",

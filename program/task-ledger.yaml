@@ -1119,7 +1119,7 @@
     {
       "task_id": "C3-FRONT-011",
       "owner": "WS-06/WS-07/WS-02",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "evidence": [
         "specs/C3-FRONT-011/requirements.md",
         "specs/C3-FRONT-011/design.md",
@@ -1131,9 +1131,7 @@
         "progress/review_C3-FRONT-011.md"
       ],
       "external_effects": "NONE",
-      "blockers": [
-        "Exact-head hosted PostgreSQL 18/API/browser and runtime visual checks must pass after repair commit 43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f."
-      ],
+      "blockers": [],
       "approval": {
         "recorded_at": "2026-07-31T15:35:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
@@ -1145,7 +1143,13 @@
       "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
       "repair_commits": [
         "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
-      ]
+      ],
+      "pull_request": 146,
+      "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+      "campaignos_ci_run_id": 30679126973,
+      "runtime_visual_run_id": 30679126971,
+      "hosted_evidence_artifact_id": 8811608118,
+      "hosted_verified_at": "2026-08-01T02:03:51Z"
     }
   ]
 }

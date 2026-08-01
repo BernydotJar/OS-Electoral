@@ -449,7 +449,7 @@
       "id": "C3-FRONT-011",
       "workstream": "WS-06",
       "title": "Clear candidate guidance and governed campaign entry",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-010",
         "C3-CANDIDATE-001",

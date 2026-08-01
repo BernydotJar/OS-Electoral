@@ -73,8 +73,25 @@ The local PostgreSQL/API/browser functional runner failed before product startup
 - The journey then timed out on a second Spanish selector for the retired `Fuentes y evidencia` tab after returning to the candidate chapter.
 - Repair commit `43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f` opens the current evidence disclosure and adds two static regression tests that reject every retired candidate-tab selector in both browser scripts.
 - Local exact-tree verification after repair: `793 passed`, `12 skipped`, `90.22%` coverage; frontend remains `144 passed`.
-- The node remains `REVIEWED` until the repaired exact head passes hosted CI.
+- The repaired exact head passed hosted CI and the node is `CI_GREEN`.
 
 ## Next gate
 
-Publish the reviewed branch, require exact-head hosted PostgreSQL 18/API/browser and runtime visual checks, repair every review finding, then merge only with all required checks green and zero unresolved conversations.
+Merge PR #146 under the existing user authorization, then require successful post-merge main CI before reconciling the graph.
+
+## Exact-head hosted release evidence
+
+Current review head: `d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a`.
+
+- CampaignOS CI run `30679126973`: `SUCCESS`.
+- Runtime visual review run `30679126971`: `SUCCESS`.
+- Dynamic PostgreSQL 18/API/browser job `91312405534`: `SUCCESS`.
+- Runtime visual job `91312405335`: `SUCCESS`.
+- Retained artifact `8811608118` (`campaignos-frontend-review`): `sha256:c7f98cb4a55349ce565bd1c99862f57a03424126df40f97cb01bb269b6ec2b26`, 11549427 bytes.
+- Functional receipt: `PASS_DRAFT_PERSISTED_CONTEXT_AND_ACCESS_UNCHANGED`.
+- Candidate evidence persisted after chapter navigation and reload.
+- Spanish, English and 390px mobile journeys passed with zero axe violations, no overflow, no browser storage, no unexpected outbound hosts, no console/page errors and `external_effects=NONE`.
+- PR #146 has zero issue comments, zero submitted reviews and zero inline review threads.
+- Critic finding `C3-FRONT-011-F10` is `RESOLVED_VERIFIED`.
+
+The node is `CI_GREEN` and ready for its already-authorized merge. Production remains `BLOCKED`; release remains `DENY_RELEASE`.

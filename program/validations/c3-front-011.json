@@ -5,7 +5,7 @@
   "mode": "SHIP",
   "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
   "base": "main@1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
-  "state": "REVIEWED_LOCAL",
+  "state": "CI_GREEN",
   "scope": "Single candidate profile, all-chapter orientation, exact-grant internal draft creation, compact governance metadata and plain ES/EN language only.",
   "source_evaluation": {
     "basis": "User-provided Campol podcast Spanish auto-transcript",
@@ -118,28 +118,64 @@
     {
       "id": "C3-FRONT-011-F10",
       "severity": "MEDIUM",
-      "status": "RESOLVED_PENDING_HOSTED_RERUN",
+      "status": "RESOLVED_VERIFIED",
       "finding": "Hosted run 30678840392 reached PostgreSQL 18 and the API-backed journey but timed out on a second Spanish selector for the retired Fuentes y evidencia tab after chapter navigation.",
       "repair": "Open .candidate-evidence-disclosure after chapter navigation and add static regression tests forbidding every retired candidate-tab selector in both browser reviewers.",
-      "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
+      "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f",
+      "verification": {
+        "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+        "campaignos_ci_run_id": 30679126973,
+        "dynamic_frontend_job_id": 91312405534,
+        "result": "SUCCESS"
+      }
     }
   ],
   "hosted_ci": {
-    "result": "FAILED_REPAIRED_PENDING_EXACT_HEAD_RERUN",
+    "result": "SUCCESS",
     "pull_request": 146,
+    "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
     "implementation_head": "8b835e1a64095e92136d5375026075581c8fe02a",
-    "campaignos_ci_run_id": 30678840392,
-    "runtime_visual_run_id": 30678840402,
+    "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f",
+    "campaignos_ci_run_id": 30679126973,
+    "campaignos_ci_result": "SUCCESS",
+    "runtime_visual_run_id": 30679126971,
     "runtime_visual_result": "SUCCESS",
-    "failed_job_id": 91311539048,
-    "failed_step": "Exercise the API-backed functional onboarding journey",
-    "failed_artifact_id": 8811506195,
-    "failure_code": "RETIRED_CANDIDATE_TAB_SELECTOR_AFTER_CHAPTER_NAVIGATION",
-    "failure_scope": "TEST_HARNESS_ONLY_APPLICATION_AND_POSTGRESQL_STARTED",
-    "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
+    "dynamic_frontend_job_id": 91312405534,
+    "dynamic_frontend_job_result": "SUCCESS",
+    "runtime_visual_job_id": 91312405335,
+    "runtime_visual_job_result": "SUCCESS",
+    "artifact_id": 8811608118,
+    "artifact_name": "campaignos-frontend-review",
+    "artifact_digest": "sha256:c7f98cb4a55349ce565bd1c99862f57a03424126df40f97cb01bb269b6ec2b26",
+    "artifact_size_bytes": 11549427,
+    "artifact_created_at": "2026-08-01T02:03:51Z",
+    "functional_report": {
+      "status": "PASS",
+      "governed_campaign_draft": "PASS_DRAFT_PERSISTED_CONTEXT_AND_ACCESS_UNCHANGED",
+      "chapter_navigation": "PASS_URL_HISTORY_BACK_FORWARD_ISOLATION",
+      "persistence_after_reload": "PASS",
+      "exact_authorization_controls": "PASS",
+      "desktop_spanish": "PASS",
+      "desktop_english": "PASS",
+      "mobile_spanish": "PASS",
+      "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+      "horizontal_overflow": "NONE",
+      "browser_storage": "EMPTY",
+      "unexpected_outbound_hosts": [],
+      "console_errors": [],
+      "page_errors": [],
+      "external_effects": "NONE"
+    },
+    "pr_review": {
+      "issue_comments": 0,
+      "review_submissions": 0,
+      "inline_threads": 0,
+      "unresolved_threads": 0,
+      "result": "PASS_NO_OPEN_FINDINGS"
+    }
   },
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
-  "status": "REVIEWED_LOCAL"
+  "status": "CI_GREEN"
 }
