@@ -1160,6 +1160,57 @@
       "main_sha": "297a941a274e79daadfbec2762f8d717f605ca72",
       "post_merge_ci_run_id": 30679521520,
       "post_merge_ci_conclusion": "SUCCESS"
+    },
+    {
+      "task_id": "C3-OPS-002",
+      "owner": "WS-14/WS-15/WS-13",
+      "status": "CI_GREEN",
+      "evidence": [
+        "specs/C3-OPS-002/requirements.md",
+        "specs/C3-OPS-002/design.md",
+        "specs/C3-OPS-002/tasks.md",
+        "program/rollback-readiness.json",
+        "backend/src/campaignos/operability/rollback.py",
+        "backend/tests/test_release_rollback.py",
+        "scripts/operations/verify_release_rollback.py",
+        "docs/testing/c3-ops-002-primary-docs.md",
+        "docs/testing/c3-ops-002-evidence.md",
+        "docs/operations/release-rollback.md",
+        "program/iterations/c3-ops-002.md",
+        "program/validations/c3-ops-002.json",
+        "progress/review_C3-OPS-002.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Managed staging rollback, PITR, RPO/RTO and production approval remain separate blocked gates"
+      ],
+      "approval": {
+        "recorded_at": "2026-07-31T21:45:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly authorized continuing and finishing C3-OPS-002 for SHIP implementation.",
+        "scope": "Fail-closed rollback policy, validator, runbook and constrained local/CI rehearsal only; no production deployment, cloud resources, spending, destructive database action, image publication or political external effects."
+      },
+      "base_main_sha": "e1f9c508c397a6df54a3363dde729375b55edb52",
+      "branch": "agent/c3-ops-002-release-rollback-runbook",
+      "local_focused_tests": 28,
+      "local_rehearsal": "PASS_NO_SOURCE_MUTATION",
+      "complete_local_gate": {
+        "result": "PASS",
+        "python_passed": 821,
+        "python_skipped": 12,
+        "coverage_percent": 90.11,
+        "frontend_tests": 144,
+        "production_status": "BLOCKED"
+      },
+      "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a",
+      "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561",
+      "pull_request": 148,
+      "campaignos_ci_run_id": 30683477144,
+      "runtime_visual_run_id": 30683477171,
+      "operational_recovery_job_id": 91324829967,
+      "hosted_evidence_artifact_id": 8813086739,
+      "hosted_evidence_artifact_digest": "sha256:8f8f7756b4631ced6ba797ca9db7b62736a4e58827bde61aab8afa34eca8523a",
+      "hosted_verified_at": "2026-08-01T04:12:43Z"
     }
   ]
 }

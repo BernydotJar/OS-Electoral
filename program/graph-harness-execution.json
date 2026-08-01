@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "297a941a274e79daadfbec2762f8d717f605ca72"
+    "revision": "e1f9c508c397a6df54a3363dde729375b55edb52"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -28,14 +28,14 @@
   "scheduler": {
     "evaluated_at": "2026-08-01",
     "one_active_feature": true,
-    "active_feature": null,
+    "active_feature": "C3-OPS-002",
     "ready_nodes": [],
     "selected_node": {
       "id": "C3-OPS-002",
       "title": "Release rollback and reversal runbook",
       "mode": "SHIP",
-      "state": "spec_ready",
-      "human_approval": "PENDING",
+      "state": "review",
+      "human_approval": "APPROVED",
       "dependencies": [
         "C3-RELEASE-001",
         "C3-OBS-001",
@@ -47,7 +47,30 @@
         "specs/C3-OPS-002/design.md",
         "specs/C3-OPS-002/tasks.md"
       ],
-      "selection_reason": "C3-FRONT-011 is merged and post-merge verified. The repository rollback-runbook production gate remains NOT_IMPLEMENTED; a cost-free fail-closed rollback decision contract and local rehearsal are the highest-priority safe work that does not require cloud resources or production access."
+      "selection_reason": "C3-OPS-002 passed producer, critic/red-team, fixer, complete local verification, exact-head hosted actionlint, PostgreSQL 18 rollback rehearsal, retained receipt inspection and independent PR review with no open findings.",
+      "approval_receipt": {
+        "recorded_at": "2026-07-31T21:45:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly authorized continuing and finishing C3-OPS-002 for SHIP implementation.",
+        "scope": "Fail-closed rollback policy, validator, runbook and constrained local/CI rehearsal only; no production deployment, cloud resources, spending, destructive database action, image publication or political external effects."
+      },
+      "review_artifact": "progress/review_C3-OPS-002.md",
+      "local_evidence": [
+        "docs/testing/c3-ops-002-primary-docs.md",
+        "docs/testing/c3-ops-002-evidence.md",
+        "docs/operations/release-rollback.md",
+        "program/iterations/c3-ops-002.md",
+        "program/validations/c3-ops-002.json",
+        "progress/review_C3-OPS-002.md"
+      ],
+      "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a",
+      "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561",
+      "pull_request": 148,
+      "campaignos_ci_run_id": 30683477144,
+      "runtime_visual_run_id": 30683477171,
+      "operational_recovery_job_id": 91324829967,
+      "hosted_evidence_artifact_id": 8813086739,
+      "hosted_verified_at": "2026-08-01T04:12:43Z"
     },
     "blocked_nodes": [
       {
@@ -66,32 +89,32 @@
         "id": "gate:managed-load-and-rollback",
         "gate": "MANAGED_STAGING_ENVIRONMENT_REQUIRED",
         "owner": "Authorized platform and operations owners",
-        "next_valid_command": "Complete C3-OPS-002 locally, then authorize managed staging evidence"
+        "next_valid_command": "Complete exact-head C3-OPS-002 review, then authorize a managed staging environment and cost envelope"
       }
     ]
   },
   "localized_repair": {
-    "id": "repair:c3-front-011-post-merge-2026-08-01",
+    "id": "repair:c3-front-011-reconciliation-merge-2026-08-01",
     "status": "COMPLETED",
-    "scope": "Record PR 146 exact-head, merge and post-merge evidence, close C3-FRONT-011, and select the cost-free rollback-runbook gate as the next human-approved lifecycle.",
+    "scope": "Record PR 147 exact-head, merge and post-merge evidence and establish main@e1f9c508 before activating C3-OPS-002.",
     "evidence": [
-      "https://github.com/BernydotJar/OS-Electoral/pull/146",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30679356392",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30679356434",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30679521520",
-      "main@297a941a274e79daadfbec2762f8d717f605ca72"
+      "https://github.com/BernydotJar/OS-Electoral/pull/147",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30680002434",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30680002444",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30680144360",
+      "main@e1f9c508c397a6df54a3363dde729375b55edb52"
     ],
     "delivery": {
       "state": "merged",
-      "implementation_head": "d8e84b25ca252674275bdce7eea5bf076314a9f6",
-      "draft_pr": 146,
-      "campaignos_ci_run_id": 30679356392,
+      "implementation_head": "bcc819db80d01ad1df03230a7daa802e9c433bf2",
+      "draft_pr": 147,
+      "campaignos_ci_run_id": 30680002434,
       "campaignos_ci_conclusion": "SUCCESS",
-      "visual_run_id": 30679356434,
+      "visual_run_id": 30680002444,
       "visual_conclusion": "SUCCESS",
       "merge_gate": "SATISFIED_USER_AUTHORIZATION",
-      "merged_main_sha": "297a941a274e79daadfbec2762f8d717f605ca72",
-      "post_merge_ci_run_id": 30679521520,
+      "merged_main_sha": "e1f9c508c397a6df54a3363dde729375b55edb52",
+      "post_merge_ci_run_id": 30680144360,
       "post_merge_ci_conclusion": "SUCCESS",
       "evidence": [
         "docs/testing/c3-front-011-evidence.md",
@@ -100,5 +123,28 @@
       ]
     }
   },
-  "active_increment": null
+  "active_increment": {
+    "id": "C3-OPS-002",
+    "status": "CI_GREEN",
+    "branch": "agent/c3-ops-002-release-rollback-runbook",
+    "base": "main@e1f9c508c397a6df54a3363dde729375b55edb52",
+    "approval_receipt": {
+      "recorded_at": "2026-07-31T21:45:00-06:00",
+      "source": "USER_EXPLICIT_APPROVAL",
+      "statement": "User explicitly authorized continuing and finishing C3-OPS-002 for SHIP implementation.",
+      "scope": "Fail-closed rollback policy, validator, runbook and constrained local/CI rehearsal only; no production deployment, cloud resources, spending, destructive database action, image publication or political external effects."
+    },
+    "production_status": "BLOCKED",
+    "release_decision": "DENY_RELEASE",
+    "external_effects": "NONE",
+    "next_action": "MERGE_PULL_REQUEST_148",
+    "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a",
+    "review_head": "98faf8ab1f8e614555575bd560e3e593aedb2561",
+    "pull_request": 148,
+    "campaignos_ci_run_id": 30683477144,
+    "runtime_visual_run_id": 30683477171,
+    "operational_recovery_job_id": 91324829967,
+    "hosted_evidence_artifact_id": 8813086739,
+    "hosted_verified_at": "2026-08-01T04:12:43Z"
+  }
 }

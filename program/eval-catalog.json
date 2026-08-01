@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-07-22",
+  "updated_at": "2026-08-01",
   "program": "CampaignOS Product Program",
   "production_gate": "BLOCKED",
   "hard_gates": {
@@ -592,12 +592,21 @@
     {
       "id": "EVAL-ROLLBACK-001",
       "category": "operations",
-      "status": "NOT_IMPLEMENTED",
-      "gate_result": "NOT_RUN",
-      "evidence": [],
-      "commands": [],
-      "last_verified_at": null,
-      "limitations": "Migration downgrade is tested locally, but no environment rollback rehearsal exists."
+      "status": "CI_GREEN",
+      "gate_result": "PASS",
+      "evidence": [
+        "program/rollback-readiness.json",
+        "docs/operations/release-rollback.md",
+        "docs/testing/c3-ops-002-evidence.md",
+        "program/validations/c3-ops-002.json"
+      ],
+      "commands": [
+        "uv run --locked pytest -W error backend/tests/test_release_rollback.py",
+        "make rollback-verify",
+        "make verify"
+      ],
+      "last_verified_at": "2026-08-01",
+      "limitations": "Repository/local and exact-head hosted PostgreSQL 18 decision rehearsals pass without source mutation. Managed staging artifact rollback, PITR, RPO/RTO and production recovery remain unverified."
     },
     {
       "id": "EVAL-OBSERVABILITY-001",

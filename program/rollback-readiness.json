@@ -1,0 +1,424 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-OPS-002",
+  "environment_classification": "CONSTRAINED_NON_PRODUCTION",
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "production_rollback_claim": false,
+  "current_migration_head": "20260729_0012",
+  "allowed_responses": [
+    "ABORT_BEFORE_CHANGE",
+    "ROLL_BACK_APPLICATION_ARTIFACT",
+    "REVERSE_CONFIGURATION",
+    "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+    "ISOLATED_RESTORE_FOR_INVESTIGATION",
+    "CONTAIN_AND_ESCALATE",
+    "REFUSE_UNSAFE_ROLLBACK"
+  ],
+  "prohibited_command_fragments": [
+    "alembic downgrade",
+    "drop database",
+    "drop table",
+    "truncate table",
+    "pg_restore --clean",
+    "terraform apply",
+    "docker push",
+    "automatic replay"
+  ],
+  "protected_controls": [
+    "authentication",
+    "authorization",
+    "row_level_security",
+    "append_only_audit",
+    "rate_limiting",
+    "safety_gates"
+  ],
+  "migrations": [
+    {
+      "revision": "20260719_0001",
+      "down_revision": null,
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "No previous application compatibility claim; downgrade drops the complete tenancy and audit baseline."
+    },
+    {
+      "revision": "20260721_0002",
+      "down_revision": "20260719_0001",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade drops persisted idempotency records and can re-enable duplicate effects."
+    },
+    {
+      "revision": "20260721_0003",
+      "down_revision": "20260721_0002",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade removes lease state and can invalidate worker recovery evidence."
+    },
+    {
+      "revision": "20260721_0004",
+      "down_revision": "20260721_0003",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade drops identity lifecycle records and membership versioning."
+    },
+    {
+      "revision": "20260721_0005",
+      "down_revision": "20260721_0004",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade drops guided intake records."
+    },
+    {
+      "revision": "20260721_0006",
+      "down_revision": "20260721_0005",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade drops candidate workspaces and approval evidence."
+    },
+    {
+      "revision": "20260721_0007",
+      "down_revision": "20260721_0006",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade drops team workspace state."
+    },
+    {
+      "revision": "20260721_0008",
+      "down_revision": "20260721_0007",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade drops roadmap and War Room snapshots."
+    },
+    {
+      "revision": "20260721_0009",
+      "down_revision": "20260721_0008",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade drops strategy workspaces and decision receipts."
+    },
+    {
+      "revision": "20260721_0010",
+      "down_revision": "20260721_0009",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "HIGH",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade drops governed agent-run evidence and its RLS boundary."
+    },
+    {
+      "revision": "20260721_0011",
+      "down_revision": "20260721_0010",
+      "classification": "FORWARD_FIX_ONLY",
+      "compatibility_window": "No application artifact rollback is authorized by repository evidence.",
+      "data_loss_risk": "CRITICAL_CONTROL_LOSS",
+      "default_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION",
+      "reason": "Downgrade removes append-only enforcement and is prohibited as a recovery shortcut."
+    },
+    {
+      "revision": "20260729_0012",
+      "down_revision": "20260721_0011",
+      "classification": "EXPAND_BACKWARD_COMPATIBLE",
+      "compatibility_window": "Retain schema head 20260729_0012 and use only a previously verified full Git SHA.",
+      "data_loss_risk": "MEDIUM",
+      "default_response": "ROLL_BACK_APPLICATION_ARTIFACT",
+      "reason": "The added rate-limit table may remain while a previously verified application artifact is restored; the schema is not downgraded."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "release_stopped_before_migration",
+      "trigger": "Release checks fail before any application, configuration, or schema change.",
+      "owner": "Release operator",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "ABORT_BEFORE_CHANGE"
+    },
+    {
+      "id": "application_health_failure_backward_compatible",
+      "trigger": "A candidate application fails health or readiness after an expand-only compatible migration.",
+      "owner": "Release operator and incident owner",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "ROLL_BACK_APPLICATION_ARTIFACT"
+    },
+    {
+      "id": "application_health_failure_unknown_schema",
+      "trigger": "Application health fails while schema compatibility cannot be proven.",
+      "owner": "Incident owner",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "REFUSE_UNSAFE_ROLLBACK"
+    },
+    {
+      "id": "stale_or_failed_migration_no_writes",
+      "trigger": "Migration state is stale or failed and no committed domain writes are observed.",
+      "owner": "Database operator and release owner",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "FORWARD_FIX_SCHEMA_OR_APPLICATION"
+    },
+    {
+      "id": "suspected_data_integrity_after_writes",
+      "trigger": "Data integrity is suspect after committed writes.",
+      "owner": "Incident commander and database owner",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "CONTAIN_AND_ESCALATE"
+    },
+    {
+      "id": "identity_or_database_dependency_outage",
+      "trigger": "Identity or database readiness is unavailable without evidence of an application defect.",
+      "owner": "Incident commander",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "CONTAIN_AND_ESCALATE"
+    },
+    {
+      "id": "worker_retry_or_dead_letter_growth",
+      "trigger": "Worker retries or dead-letter records grow beyond the bounded policy.",
+      "owner": "Worker operator and incident owner",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "CONTAIN_AND_ESCALATE"
+    },
+    {
+      "id": "configuration_regression",
+      "trigger": "A reviewed non-secret configuration change causes a regression.",
+      "owner": "Release operator and configuration owner",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "REVERSE_CONFIGURATION"
+    },
+    {
+      "id": "verified_backup_isolated_restore",
+      "trigger": "A verified backup must be inspected in a separately named non-production target.",
+      "owner": "Database recovery operator",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "ISOLATED_RESTORE_FOR_INVESTIGATION"
+    },
+    {
+      "id": "missing_authority_or_evidence",
+      "trigger": "Rollback authority, immutable artifact evidence, or compatibility evidence is missing.",
+      "owner": "Incident commander",
+      "prerequisites": [
+        "Exact candidate and previous-known-good full Git revisions are recorded.",
+        "The environment is classified as constrained non-production.",
+        "Release activity is frozen while the decision is evaluated."
+      ],
+      "evidence_requirements": [
+        "Migration head and classification are known or the response is refusal.",
+        "Health, readiness, provenance, authority, and cleanup checks are retained.",
+        "No secret, identity, campaign, or political content is written to the receipt."
+      ],
+      "prohibited_actions": [
+        "No automatic Alembic downgrade or destructive SQL.",
+        "No restore over the source database or automatic outbox replay.",
+        "No weakening of authentication, authorization, RLS, audit, rate limiting, or safety controls."
+      ],
+      "stop_conditions": [
+        "Authority or immutable artifact evidence is missing.",
+        "Schema compatibility is unknown for an application artifact rollback.",
+        "The requested action targets production or requires cloud resources."
+      ],
+      "escalation": "Preserve evidence and require the authorized incident, database, and production owners for any managed action.",
+      "expected_response": "REFUSE_UNSAFE_ROLLBACK"
+    }
+  ],
+  "limitations": [
+    "Repository and hosted CI evidence only; no managed environment is exercised.",
+    "No production artifact promotion, database restore, point-in-time recovery, or RPO/RTO acceptance is claimed.",
+    "The rehearsal selects and validates a response but executes no deployment or destructive operation."
+  ]
+}

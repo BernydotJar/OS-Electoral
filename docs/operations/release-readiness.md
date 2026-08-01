@@ -50,4 +50,4 @@ Current result: `DENY_RELEASE` / production `BLOCKED`.
 
 ## Current next safe action
 
-Review and explicitly approve the `C3-OPS-002` SHIP specification for a cost-free rollback policy, validator and constrained local/CI rehearsal. This work may improve the repository rollback-runbook gate only; environment creation, Terraform apply, registry publication, managed rollback and deployment remain prohibited until separately authorized.
+Publish the reviewed `C3-OPS-002` source head and run the exact-head PostgreSQL 18 rollback rehearsal. Retain the sanitized receipt, resolve every review finding, and merge only after all required checks pass. Environment creation, Terraform apply, registry publication, managed rollback and deployment remain separately prohibited until authorized.
