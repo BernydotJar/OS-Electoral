@@ -55,5 +55,6 @@
     "Exact-head hosted CI and retained artifact inspection remain pending",
     "Independent human product/domain acceptance remains pending",
     "No managed environment, external LMS/provider, professional accreditation, or production approval is claimed"
-  ]
+  ],
+  "implementation_commit": "e4b142f014e840e68576e48d62ed3b21ef5e3da8"
 }

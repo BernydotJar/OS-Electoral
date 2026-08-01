@@ -534,7 +534,8 @@
       "functional_browser": "PASS",
       "production_status": "BLOCKED",
       "external_effects": "NONE"
-    }
+    },
+    "implementation_commit": "e4b142f014e840e68576e48d62ed3b21ef5e3da8"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
