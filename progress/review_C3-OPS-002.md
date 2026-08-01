@@ -26,3 +26,5 @@ Full repository gate, exact-head CI artifact, review-thread closure, merge and p
 ## Environment limitation
 
 The local digest-pinned actionlint container could not start because nested Docker rejected a layer ownership operation before execution. Hosted exact-head actionlint remains mandatory; this limitation does not waive or replace that check.
+
+Implementation commit: `0cb4180d72102c413c368de467090eb3684dfe6a`.

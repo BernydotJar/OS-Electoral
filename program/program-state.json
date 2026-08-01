@@ -504,7 +504,8 @@
       "source": "USER_EXPLICIT_APPROVAL",
       "statement": "User explicitly authorized continuing and finishing C3-OPS-002 for SHIP implementation.",
       "scope": "Fail-closed rollback policy, validator, runbook and constrained local/CI rehearsal only; no production deployment, cloud resources, spending, destructive database action, image publication or political external effects."
-    }
+    },
+    "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",

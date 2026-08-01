@@ -1202,7 +1202,8 @@
         "coverage_percent": 90.11,
         "frontend_tests": 144,
         "production_status": "BLOCKED"
-      }
+      },
+      "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a"
     }
   ]
 }

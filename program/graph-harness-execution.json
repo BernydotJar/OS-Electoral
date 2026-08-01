@@ -62,7 +62,8 @@
         "program/iterations/c3-ops-002.md",
         "program/validations/c3-ops-002.json",
         "progress/review_C3-OPS-002.md"
-      ]
+      ],
+      "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a"
     },
     "blocked_nodes": [
       {
@@ -129,6 +130,7 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_POSTGRESQL_18_GATES"
+    "next_action": "PUBLISH_REVIEW_BRANCH_AND_RUN_EXACT_HEAD_POSTGRESQL_18_GATES",
+    "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a"
   }
 }

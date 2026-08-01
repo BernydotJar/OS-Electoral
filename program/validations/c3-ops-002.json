@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "increment": "C3-OPS-002",
   "status": "REVIEWED",
-  "source_revision": "e1f9c508c397a6df54a3363dde729375b55edb52",
+  "source_revision": "0cb4180d72102c413c368de467090eb3684dfe6a",
   "branch": "agent/c3-ops-002-release-rollback-runbook",
   "approval": {
     "recorded_at": "2026-07-31T21:45:00-06:00",
@@ -44,5 +44,7 @@
       "detail": "Nested Docker rejected lchown /var/empty before container startup.",
       "required_resolution": "Hosted exact-head Locked quality and contract suite must run actionlint successfully."
     }
-  ]
+  ],
+  "base_main_sha": "e1f9c508c397a6df54a3363dde729375b55edb52",
+  "implementation_commit": "0cb4180d72102c413c368de467090eb3684dfe6a"
 }

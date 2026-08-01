@@ -61,3 +61,8 @@ Managed staging rollback, production artifact promotion, PITR, RPO/RTO and produ
 ## Local environment limitation
 
 The pinned `rhysd/actionlint:1.7.12` image was resolved and its layers downloaded, but the nested Docker daemon failed before container start while registering `/var/empty` (`lchown: permission denied`). This is not a workflow PASS. The versioned CI-policy parser passes locally, and hosted exact-head `Locked quality and contract suite` must execute the same digest-pinned actionlint container successfully before merge.
+
+## Frozen implementation
+
+Implementation commit: `0cb4180d72102c413c368de467090eb3684dfe6a`.
+Base main: `e1f9c508c397a6df54a3363dde729375b55edb52`.
