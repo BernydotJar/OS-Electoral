@@ -14,12 +14,14 @@ export function CampaignContextForm({
   dictionary,
   campaigns,
   currentCampaignId,
+  canCreateCampaign,
   demo,
 }: {
   locale: Locale;
   dictionary: Dictionary;
   campaigns: readonly CampaignProjection[];
   currentCampaignId: string;
+  canCreateCampaign: boolean;
   demo: boolean;
 }) {
   return (
@@ -33,38 +35,97 @@ export function CampaignContextForm({
         <h2 id="campaign-context-title">{dictionary.campaigns.title}</h2>
         <p>{dictionary.campaigns.body}</p>
       </div>
-      {demo ? (
-        <div className="selected-campaign-card">
-          <span>{dictionary.campaigns.current}</span>
-          <strong>{campaigns[0]?.name ?? "—"}</strong>
-        </div>
-      ) : (
-        <form
-          className="campaign-context-form"
-          action="/api/ui/campaign-context"
-          method="post"
-        >
-          <input type="hidden" name="locale" value={locale} />
-          <label htmlFor="campaign-context-select">
-            {dictionary.campaigns.selectLabel}
-          </label>
-          <div className="inline-control">
-            <select
-              id="campaign-context-select"
-              name="campaign_id"
-              defaultValue={currentCampaignId}
-            >
-              {campaigns.map((campaign) => (
-                <option key={campaign.id} value={campaign.id}>
-                  {campaign.name} · {campaign.status}
-                </option>
-              ))}
-            </select>
-            <button type="submit">{dictionary.campaigns.apply}</button>
+      <div className="campaign-context-actions">
+        {demo ? (
+          <div className="selected-campaign-card">
+            <span>{dictionary.campaigns.current}</span>
+            <strong>{campaigns[0]?.name ?? "—"}</strong>
           </div>
-          <p className="field-help">{dictionary.campaigns.help}</p>
-        </form>
-      )}
+        ) : campaigns.length > 0 ? (
+          <form
+            className="campaign-context-form"
+            action="/api/ui/campaign-context"
+            method="post"
+          >
+            <input type="hidden" name="locale" value={locale} />
+            <label htmlFor="campaign-context-select">
+              {dictionary.campaigns.selectLabel}
+            </label>
+            <div className="inline-control">
+              <select
+                id="campaign-context-select"
+                name="campaign_id"
+                defaultValue={currentCampaignId}
+              >
+                {campaigns.map((campaign) => (
+                  <option key={campaign.id} value={campaign.id}>
+                    {campaign.name} · {campaign.status}
+                  </option>
+                ))}
+              </select>
+              <button type="submit">{dictionary.campaigns.apply}</button>
+            </div>
+            <p className="field-help">{dictionary.campaigns.help}</p>
+          </form>
+        ) : (
+          <div className="selected-campaign-card campaign-context-empty">
+            <span>{dictionary.campaigns.emptyLabel}</span>
+            <strong>{dictionary.campaigns.emptyBody}</strong>
+          </div>
+        )}
+        {!demo && canCreateCampaign ? (
+          <details className="campaign-create-disclosure">
+            <summary>
+              <span>{dictionary.campaigns.createTitle}</span>
+              <small>{dictionary.campaigns.createBody}</small>
+            </summary>
+            <form
+              className="campaign-create-form"
+              action="/api/ui/campaign-context/create"
+              method="post"
+            >
+              <input type="hidden" name="locale" value={locale} />
+              <input
+                type="hidden"
+                name="idempotency_key"
+                value={`campaign-create:${randomUUID()}`}
+              />
+              <div className="campaign-create-field">
+                <label htmlFor="campaign-create-name">
+                  {dictionary.campaigns.createName}
+                </label>
+                <input
+                  id="campaign-create-name"
+                  name="name"
+                  type="text"
+                  required
+                  maxLength={255}
+                  autoComplete="off"
+                  placeholder={dictionary.campaigns.createNamePlaceholder}
+                />
+              </div>
+              <div className="campaign-create-field">
+                <label htmlFor="campaign-create-jurisdiction">
+                  {dictionary.campaigns.createJurisdiction}
+                </label>
+                <input
+                  id="campaign-create-jurisdiction"
+                  name="jurisdiction"
+                  type="text"
+                  required
+                  maxLength={255}
+                  autoComplete="off"
+                  placeholder={dictionary.campaigns.createJurisdictionPlaceholder}
+                />
+              </div>
+              <div className="campaign-create-actions">
+                <button type="submit">{dictionary.campaigns.createAction}</button>
+                <p className="field-help">{dictionary.campaigns.createBoundary}</p>
+              </div>
+            </form>
+          </details>
+        ) : null}
+      </div>
     </section>
   );
 }

@@ -432,7 +432,7 @@
       "id": "C3-PERF-001",
       "workstream": "WS-13",
       "title": "Authenticated load and contention verification",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-API-001",
         "C3-OBS-001",
@@ -443,6 +443,24 @@
         "Strict sanitized receipts reject unknown or sensitive fields and make no production capacity claim",
         "PostgreSQL 18 contention, rate-limit correctness, pool recovery and cleanup remain deterministic under hard ceilings",
         "Focused and complete repository gates pass while production remains BLOCKED and external effects remain NONE"
+      ]
+    },
+    {
+      "id": "C3-FRONT-011",
+      "workstream": "WS-06",
+      "title": "Clear candidate guidance and governed campaign entry",
+      "status": "CI_GREEN",
+      "depends_on": [
+        "C3-FRONT-010",
+        "C3-CANDIDATE-001",
+        "C3-FRONT-002",
+        "C3-PERF-001"
+      ],
+      "acceptance": [
+        "Candidate workspace presents one profile-and-risks view with next action and evidence integrated rather than competing top-level tabs",
+        "All five chapters explain current position, purpose, status and next human action in plain ES/EN language",
+        "Exactly authorized users can create an internal DRAFT candidacy through the existing protected API without automatic context or access",
+        "Training, access and audit metadata remain available in a compact disclosure while accessibility and full repository gates pass"
       ]
     }
   ]

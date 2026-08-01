@@ -1,4 +1,5 @@
 import type {
+  CampaignCreateEvidence,
   CampaignPage,
   CampaignProjection,
   CampaignReadinessCheck,
@@ -326,6 +327,37 @@ function parseCampaign(value: unknown, label: string): CampaignProjection {
       `${label}.status`,
     ),
     version: integer(source.version, `${label}.version`, 1),
+  };
+}
+
+export function parseCampaignCreateEvidence(
+  value: unknown,
+  expectedTenantId?: string,
+): CampaignCreateEvidence {
+  const source = record(value, "campaign create evidence");
+  exactKeys(
+    source,
+    ["campaign", "audit_event_id", "outbox_event_id"],
+    "campaign create evidence",
+  );
+  const campaign = parseCampaign(source.campaign, "campaign create evidence.campaign");
+  if (
+    expectedTenantId !== undefined &&
+    campaign.tenant_id !== uuid(expectedTenantId, "campaign create expected tenant")
+  ) {
+    throw new ContractValidationError(
+      "campaign create evidence contains a cross-tenant campaign",
+    );
+  }
+  if (campaign.status !== "DRAFT" || campaign.version !== 1) {
+    throw new ContractValidationError(
+      "campaign create evidence must contain a version-one draft",
+    );
+  }
+  return {
+    campaign,
+    audit_event_id: uuid(source.audit_event_id, "campaign create evidence.audit_event_id"),
+    outbox_event_id: uuid(source.outbox_event_id, "campaign create evidence.outbox_event_id"),
   };
 }
 

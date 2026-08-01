@@ -105,3 +105,26 @@ export function deriveTeamWorkspaceCapabilities(
     canUpdate: exact("update", "Maintain campaign team workspace"),
   };
 }
+
+export type CampaignContextCapabilities = Readonly<{
+  canCreateCampaign: boolean;
+}>;
+
+export function deriveCampaignContextCapabilities(
+  memberships: readonly EffectiveMembership[],
+  tenantId: string,
+): CampaignContextCapabilities {
+  return {
+    canCreateCampaign: memberships.some((membership) =>
+      membership.grants.some(
+        (grant) =>
+          grant.action === "create" &&
+          grant.resource_type === "campaign_collection" &&
+          grant.resource_id === tenantId &&
+          grant.campaign_id === null &&
+          grant.workspace_id === null &&
+          grant.purpose === "Create tenant campaign",
+      ),
+    ),
+  };
+}

@@ -37,6 +37,7 @@ CANDIDATE_UPDATE_GRANT_ID = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee")
 TEAM_CREATE_GRANT_ID = UUID("f1111111-1111-4111-8111-111111111111")
 TEAM_READ_GRANT_ID = UUID("f2222222-2222-4222-8222-222222222222")
 TEAM_UPDATE_GRANT_ID = UUID("f3333333-3333-4333-8333-333333333333")
+CAMPAIGN_CREATE_GRANT_ID = UUID("f4444444-4444-4444-8444-444444444444")
 WORKSPACE_ID = UUID("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
 
 DEVELOPMENT_ISSUER = "urn:campaignos:development"
@@ -50,6 +51,7 @@ class GrantSpec:
     resource_type: str
     resource_id: str
     purpose: str
+    campaign_id: UUID | None = CAMPAIGN_ID
 
 
 GRANTS = (
@@ -132,6 +134,15 @@ GRANTS = (
     ),
 )
 
+FUNCTIONAL_CAMPAIGN_CREATE_GRANT = GrantSpec(
+    CAMPAIGN_CREATE_GRANT_ID,
+    "create",
+    "campaign_collection",
+    str(TENANT_ID),
+    "Create tenant campaign",
+    campaign_id=None,
+)
+
 
 def require_local_database_url(database_url: str) -> None:
     parsed = urlparse(database_url)
@@ -151,7 +162,7 @@ def _ensure_identity(row: object, *, expected_id: UUID, label: str) -> None:
         raise RuntimeError(f"Existing {label} conflicts with the deterministic development seed")
 
 
-def seed_local_operator(engine: Engine) -> None:
+def seed_local_operator(engine: Engine, *, include_campaign_create: bool = False) -> None:
     with Session(engine) as session, session.begin():
         if engine.dialect.name == "postgresql":
             session.execute(
@@ -251,7 +262,8 @@ def seed_local_operator(engine: Engine) -> None:
         else:
             _ensure_identity(role, expected_id=ROLE_ASSIGNMENT_ID, label="role assignment")
 
-        for spec in GRANTS:
+        grants = (*GRANTS, FUNCTIONAL_CAMPAIGN_CREATE_GRANT) if include_campaign_create else GRANTS
+        for spec in grants:
             grant = session.get(PermissionGrant, spec.id)
             if grant is None:
                 session.add(
@@ -259,7 +271,7 @@ def seed_local_operator(engine: Engine) -> None:
                         id=spec.id,
                         tenant_id=TENANT_ID,
                         membership_id=MEMBERSHIP_ID,
-                        campaign_id=CAMPAIGN_ID,
+                        campaign_id=spec.campaign_id,
                         workspace_id=None,
                         action=spec.action,
                         resource_type=spec.resource_type,
@@ -284,7 +296,7 @@ def seed_local_operator(engine: Engine) -> None:
             expected = (
                 TENANT_ID,
                 MEMBERSHIP_ID,
-                CAMPAIGN_ID,
+                spec.campaign_id,
                 None,
                 spec.action,
                 spec.resource_type,
@@ -298,16 +310,22 @@ def seed_local_operator(engine: Engine) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--database-url", required=True)
+    parser.add_argument(
+        "--include-campaign-create",
+        action="store_true",
+        help="Add the exact tenant campaign-create grant for isolated functional E2E only.",
+    )
     args = parser.parse_args()
     require_local_database_url(args.database_url)
     engine = create_engine(args.database_url, pool_pre_ping=True)
     try:
-        seed_local_operator(engine)
+        seed_local_operator(engine, include_campaign_create=args.include_campaign_create)
     finally:
         engine.dispose()
     print(
         "[OK] Local operator seeded; tenant=11111111-1111-4111-8111-111111111111; "
-        "campaign=22222222-2222-4222-8222-222222222222; exact_grants=11"
+        "campaign=22222222-2222-4222-8222-222222222222; "
+        f"exact_grants={12 if args.include_campaign_create else 11}"
     )
     return 0
 

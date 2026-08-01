@@ -86,13 +86,34 @@ describe("CampaignShell chapter routes", () => {
     expect(html).not.toContain('id="war-room"');
   });
 
+  it("lets an authorized empty tenant create its first draft", () => {
+    const emptyModel: ShellViewModel = {
+      kind: "empty",
+      demo: false,
+      identity: demoTenantIdentity,
+    };
+    const html = renderToStaticMarkup(
+      createElement(CampaignShell, {
+        locale: "es",
+        dictionary: dictionaryFor("es"),
+        model: emptyModel,
+      }),
+    );
+
+    expect(html).toContain('class="empty-campaign-page"');
+    expect(html).toContain("Nueva candidatura");
+    expect(html).toContain('action="/api/ui/campaign-context/create"');
+  });
+
   it("renders only the selected team mission on the team chapter route", () => {
     const html = render("team");
 
     expect(html).toContain('data-chapter="team"');
     expect(html).toContain('id="team-workspace"');
     expect(html).toContain('class="chapter-command-bar"');
-    expect(html).toContain('class="chapter-command-map"');
+    expect(html).toContain('class="chapter-orientation"');
+    expect(html).toContain("Capítulo actual 3/5");
+    expect(html).toContain("Organizar el equipo");
     expect(html).toContain('class="topbar topbar-compact"');
     expect(html).toContain('class="topbar-context"');
     expect(html).toContain('class="session-context-menu"');
@@ -107,6 +128,21 @@ describe("CampaignShell chapter routes", () => {
     expect(html).not.toContain('id="candidate-workspace"');
     expect(html).not.toContain('id="strategy-room"');
     expect(html).not.toContain('id="war-room"');
+  });
+
+  it("keeps the candidate profile visible without a three-tab selector", () => {
+    const html = render("evidence");
+
+    expect(html).toContain('data-chapter="evidence"');
+    expect(html).toContain('class="chapter-orientation"');
+    expect(html).toContain("Capítulo actual 2/5");
+    expect(html).toContain("Conocer la candidatura y el territorio");
+    expect(html).toContain(
+      'class="candidate-workspace-deck candidate-workspace-single"',
+    );
+    expect(html).toContain("Perfil y riesgos");
+    expect(html).toContain('class="candidate-evidence-disclosure"');
+    expect(html).not.toContain('role="tablist"');
   });
 
   it("keeps authorization feedback compact and dismissible", () => {

@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-07-31",
-  "branch": "agent/c3-perf-001-authenticated-load-verification",
+  "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -1048,7 +1048,7 @@
     {
       "task_id": "C3-PERF-001",
       "owner": "WS-13/WS-05/WS-03",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-PERF-001/requirements.md",
         "specs/C3-PERF-001/design.md",
@@ -1111,7 +1111,45 @@
         "C3-PERF-001-F1",
         "C3-PERF-001-F2",
         "C3-PERF-001-F3"
-      ]
+      ],
+      "integrated_main_sha": "1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
+      "cumulative_merge_pr": 145,
+      "post_merge_ci_run_id": 30670688323
+    },
+    {
+      "task_id": "C3-FRONT-011",
+      "owner": "WS-06/WS-07/WS-02",
+      "status": "CI_GREEN",
+      "evidence": [
+        "specs/C3-FRONT-011/requirements.md",
+        "specs/C3-FRONT-011/design.md",
+        "specs/C3-FRONT-011/tasks.md",
+        "docs/testing/c3-front-011-campol-consultant-evaluation.md",
+        "docs/testing/c3-front-011-evidence.md",
+        "program/iterations/c3-front-011.md",
+        "program/validations/c3-front-011.json",
+        "progress/review_C3-FRONT-011.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [],
+      "approval": {
+        "recorded_at": "2026-07-31T15:35:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User requested the candidate-chapter simplification, stronger chapter orientation, governed new-candidacy entry, plain language and compact metadata, and explicitly authorized continuing this SHIP development.",
+        "scope": "Bounded internal frontend/API-proxy UX repair, source-based evaluation, tests and temporary authenticated demo only; no production deployment, publication, contact, voter profiling, targeting, spending or mobilization."
+      },
+      "base_main_sha": "1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
+      "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
+      "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
+      "repair_commits": [
+        "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
+      ],
+      "pull_request": 146,
+      "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+      "campaignos_ci_run_id": 30679126973,
+      "runtime_visual_run_id": 30679126971,
+      "hosted_evidence_artifact_id": 8811608118,
+      "hosted_verified_at": "2026-08-01T02:03:51Z"
     }
   ]
 }

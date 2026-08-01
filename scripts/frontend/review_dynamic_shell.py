@@ -259,34 +259,47 @@ async def review() -> dict[str, object]:
             await desktop.locator(".campaign-experience").count() == 0,
             "mission hero leaked into the evidence chapter",
         )
-        action_tab = desktop.get_by_role("tab", name="Qué hacer ahora")
-        require(await action_tab.count() == 1, "candidate action tab missing")
         require(
-            await desktop.get_by_text("Qué debemos resolver ahora", exact=True).count() == 1,
-            "candidate action brief missing",
+            await desktop.locator(".chapter-orientation").count() == 1,
+            "chapter orientation is missing from the evidence chapter",
         )
-        await action_tab.focus()
-        await desktop.keyboard.press("ArrowRight")
         require(
-            await desktop.get_by_role("tab", name="Perfil y riesgos").get_attribute("aria-selected")
-            == "true",
-            "candidate profile tab did not activate with ArrowRight",
+            await desktop.get_by_text("Capítulo actual 2/5", exact=True).count() >= 1,
+            "evidence chapter position is not visible",
+        )
+        require(
+            await desktop.get_by_role("heading", name="Perfil y riesgos", exact=True).count() == 1,
+            "candidate profile heading is missing",
         )
         require(
             await desktop.locator(".candidate-profile-view").count() == 1,
-            "candidate profile view did not activate",
-        )
-        await desktop.keyboard.press("ArrowRight")
-        require(
-            await desktop.get_by_role("tab", name="Fuentes y evidencia").get_attribute(
-                "aria-selected"
-            )
-            == "true",
-            "candidate evidence tab did not activate with ArrowRight",
+            "candidate profile is not visible",
         )
         require(
-            await desktop.locator("#candidate-evidence-panel:not([hidden])").count() == 1,
-            "candidate evidence view did not activate",
+            await desktop.get_by_text("Siguiente paso", exact=True).count() == 1,
+            "candidate action guidance is missing",
+        )
+        require(
+            await desktop.get_by_role("tab").count() == 0,
+            "retired candidate tabs remain visible",
+        )
+        evidence_disclosure = desktop.locator(".candidate-evidence-disclosure")
+        require(await evidence_disclosure.count() == 1, "candidate evidence disclosure missing")
+        require(
+            not await evidence_disclosure.evaluate("element => element.open"),
+            "candidate evidence disclosure must start closed",
+        )
+        evidence_summary = evidence_disclosure.locator(":scope > summary")
+        await evidence_summary.focus()
+        await desktop.keyboard.press("Enter")
+        require(
+            await evidence_disclosure.evaluate("element => element.open"),
+            "candidate evidence disclosure did not open from keyboard",
+        )
+        await desktop.keyboard.press("Enter")
+        require(
+            not await evidence_disclosure.evaluate("element => element.open"),
+            "candidate evidence disclosure did not close from keyboard",
         )
         require(
             await desktop.locator(
@@ -329,7 +342,9 @@ async def review() -> dict[str, object]:
         await desktop.locator("#team-workspace").wait_for(state="visible")
         compact_topbar = desktop.locator(".topbar-compact")
         require(await compact_topbar.count() == 1, "team chapter lacks compact command chrome")
-        compact_height = await compact_topbar.evaluate("element => element.getBoundingClientRect().height")
+        compact_height = await compact_topbar.evaluate(
+            "element => element.getBoundingClientRect().height"
+        )
         require(compact_height <= 80, f"compact command chrome is too tall: {compact_height}")
         require(
             await desktop.locator(".context-strip").count() == 0,
@@ -461,7 +476,7 @@ async def review() -> dict[str, object]:
             await mobile.locator(".campaign-experience, .experience-mission-pulse").count() == 0,
             "mission hero leaked into the mobile candidate chapter",
         )
-        reduced_transition = await mobile.locator(".candidate-workspace-layer").first.evaluate(
+        reduced_transition = await mobile.locator(".candidate-workspace-single").evaluate(
             "element => getComputedStyle(element).transitionDuration"
         )
 
@@ -486,8 +501,7 @@ async def review() -> dict[str, object]:
             }"""
         )
         require(
-            session_bounds["left"] >= 0
-            and session_bounds["right"] <= session_bounds["viewport"],
+            session_bounds["left"] >= 0 and session_bounds["right"] <= session_bounds["viewport"],
             f"mobile session disclosure escapes viewport: {session_bounds}",
         )
         await mobile_session_menu.locator("summary").click()

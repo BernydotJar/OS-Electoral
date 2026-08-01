@@ -77,6 +77,56 @@ import {
   demoTeamWorkspace,
 } from "@/lib/demo-data";
 
+describe("CampaignOsApiClient campaign mutations", () => {
+  it("creates one draft through the tenant collection with idempotency", async () => {
+    const create = {
+      slug: "nueva-candidatura-a1b2c3d4",
+      name: "Nueva candidatura",
+      jurisdiction: "Antigua Guatemala",
+      stage: "PREPARATION",
+    };
+    const fetchMock = vi.fn(
+      async (input: URL | RequestInfo, init?: RequestInit) => {
+        expect(String(input)).toBe(
+          `https://api.example.test/api/v1/tenants/${TENANT}/campaigns`,
+        );
+        expect(init?.method).toBe("POST");
+        const headers = new Headers(init?.headers);
+        expect(headers.get("authorization")).toBe("Bearer synthetic-token");
+        expect(headers.get("idempotency-key")).toBe("campaign-create-1");
+        expect(headers.get("content-type")).toBe("application/json");
+        expect(JSON.parse(String(init?.body))).toEqual(create);
+        return new Response(
+          JSON.stringify({
+            campaign: {
+              id: CAMPAIGN,
+              tenant_id: TENANT,
+              ...create,
+              status: "DRAFT",
+              version: 1,
+            },
+            audit_event_id: "66666666-6666-4666-8666-666666666666",
+            outbox_event_id: "77777777-7777-4777-8777-777777777777",
+          }),
+          { status: 201, headers: { "content-type": "application/json" } },
+        );
+      },
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    const result = await client.createCampaign(
+      TENANT,
+      "campaign-create-1",
+      create,
+    );
+
+    expect(result.campaign.status).toBe("DRAFT");
+    expect(result.campaign.version).toBe(1);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("CampaignOsApiClient guided intake mutations", () => {
   it("sends exact start headers and validates the committed evidence", async () => {
     const fetchMock = vi.fn(

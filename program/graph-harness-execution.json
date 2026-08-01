@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "83c3577ff2467e8e4681229741c32fe85a19f0c9"
+    "revision": "1b8c9be5f2ba5dcdb522e0b7cdba0687af993297"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -28,40 +28,45 @@
   "scheduler": {
     "evaluated_at": "2026-07-31",
     "one_active_feature": true,
-    "active_feature": "C3-PERF-001",
+    "active_feature": "C3-FRONT-011",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-PERF-001",
-      "title": "Authenticated load and contention verification",
+      "id": "C3-FRONT-011",
+      "title": "Clear candidate guidance and governed campaign entry",
       "mode": "SHIP",
       "state": "review",
       "human_approval": "APPROVED",
       "dependencies": [
-        "C3-API-001",
-        "C3-OBS-001",
-        "C3-SEC-002"
+        "C3-FRONT-010",
+        "C3-CANDIDATE-001",
+        "C3-FRONT-002",
+        "C3-PERF-001"
       ],
       "specs": [
-        "specs/C3-PERF-001/requirements.md",
-        "specs/C3-PERF-001/design.md",
-        "specs/C3-PERF-001/tasks.md"
+        "specs/C3-FRONT-011/requirements.md",
+        "specs/C3-FRONT-011/design.md",
+        "specs/C3-FRONT-011/tasks.md"
       ],
-      "selection_reason": "C3-PERF-001 passed repaired local verification and repaired exact-head PostgreSQL 18.3 CI; final documentation-only exact-head checks and thread closure remain.",
+      "selection_reason": "C3-FRONT-011 passed local review, exact-head hosted PostgreSQL 18/API/browser CI, runtime visual review, retained artifact inspection and independent PR review with no open findings.",
       "approval_receipt": {
         "recorded_at": "2026-07-31T15:35:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "User explicitly authorized C3-PERF-001 for SHIP implementation: \"tienes mi autorizacion para terminar el desarrollo\".",
-        "scope": "Implement and verify the approved C3-PERF-001 SHIP specification in disposable local/CI environments only; no production deployment, cloud resource creation, spending, dependency expansion, live provider calls, publication, citizen contact, targeting or mobilization."
+        "statement": "User requested the candidate-chapter simplification, stronger chapter orientation, governed new-candidacy entry, plain language and compact metadata, and explicitly authorized continuing this SHIP development.",
+        "scope": "Bounded internal frontend/API-proxy UX repair, source-based evaluation, tests and temporary authenticated demo only; no production deployment, publication, contact, voter profiling, targeting, spending or mobilization."
       },
-      "review_artifact": "progress/review_C3-PERF-001.md",
+      "review_artifact": "progress/review_C3-FRONT-011.md",
       "local_evidence": [
-        "docs/testing/c3-perf-001-primary-docs.md",
-        "docs/testing/c3-perf-001-evidence.md",
-        "docs/operations/load-verification.md",
-        "program/iterations/c3-perf-001.md",
-        "program/validations/c3-perf-001.json",
-        "progress/review_C3-PERF-001.md"
-      ]
+        "docs/testing/c3-front-011-campol-consultant-evaluation.md",
+        "docs/testing/c3-front-011-evidence.md",
+        "program/iterations/c3-front-011.md",
+        "program/validations/c3-front-011.json"
+      ],
+      "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+      "pull_request": 146,
+      "campaignos_ci_run_id": 30679126973,
+      "runtime_visual_run_id": 30679126971,
+      "hosted_evidence_artifact_id": 8811608118,
+      "hosted_verified_at": "2026-08-01T02:03:51Z"
     },
     "blocked_nodes": [
       {
@@ -104,32 +109,38 @@
     }
   },
   "active_increment": {
-    "id": "C3-PERF-001",
-    "status": "CI_GREEN",
-    "branch": "agent/c3-perf-001-authenticated-load-verification",
-    "approval_receipt": {
-      "recorded_at": "2026-07-31T15:35:00-06:00",
-      "source": "USER_EXPLICIT_APPROVAL",
-      "statement": "User explicitly authorized C3-PERF-001 for SHIP implementation: \"tienes mi autorizacion para terminar el desarrollo\".",
-      "scope": "Implement and verify the approved C3-PERF-001 SHIP specification in disposable local/CI environments only; no production deployment, cloud resource creation, spending, dependency expansion, live provider calls, publication, citizen contact, targeting or mobilization."
-    },
+    "id": "C3-FRONT-011",
+    "state": "CI_GREEN",
+    "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
+    "base": "main@1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
+    "approved_spec": "specs/C3-FRONT-011/requirements.md",
+    "approval_recorded_at": "2026-07-31T15:35:00-06:00",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "review_artifact": "progress/review_C3-PERF-001.md",
-    "next_action": "MERGE_AFTER_FINAL_DOCS_HEAD_RECHECK_AND_THREAD_CLOSURE",
-    "implementation_commit": "b74272db344aca75804c6f4233aeb13897037c00",
-    "pull_request": 145,
-    "campaignos_ci_run_id": 30670226754,
-    "runtime_visual_run_id": 30670226689,
-    "postgresql_version_verified": "18.3",
-    "load_receipt_artifact_id": 8808493722,
-    "superseded_exact_head_evidence": {
-      "head": "7f739ae62f131c71720ca2889e692033a72796c3",
-      "campaignos_ci_run_id": 30669975877,
-      "conclusion": "SUCCESS_BEFORE_REVIEW_REPAIR"
+    "next_action": "MERGE_PULL_REQUEST_146",
+    "review_artifact": "progress/review_C3-FRONT-011.md",
+    "local_evidence": [
+      "docs/testing/c3-front-011-campol-consultant-evaluation.md",
+      "docs/testing/c3-front-011-evidence.md",
+      "program/iterations/c3-front-011.md",
+      "program/validations/c3-front-011.json"
+    ],
+    "approval_receipt": {
+      "recorded_at": "2026-07-31T15:35:00-06:00",
+      "source": "USER_EXPLICIT_APPROVAL",
+      "statement": "User requested the candidate-chapter simplification, stronger chapter orientation, governed new-candidacy entry, plain language and compact metadata, and explicitly authorized continuing this SHIP development.",
+      "scope": "Bounded internal frontend/API-proxy UX repair, source-based evaluation, tests and temporary authenticated demo only; no production deployment, publication, contact, voter profiling, targeting, spending or mobilization."
     },
-    "review_head": "2def59cb1240bfc99fd884aa80ac1489100d4bea",
-    "load_receipt_source_revision": "deff40ce754f4a2ae64875ca609b48ec97934023"
+    "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
+    "repair_commits": [
+      "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
+    ],
+    "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+    "pull_request": 146,
+    "campaignos_ci_run_id": 30679126973,
+    "runtime_visual_run_id": 30679126971,
+    "hosted_evidence_artifact_id": 8811608118,
+    "hosted_verified_at": "2026-08-01T02:03:51Z"
   }
 }

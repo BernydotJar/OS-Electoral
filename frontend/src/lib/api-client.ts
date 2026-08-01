@@ -25,6 +25,7 @@ import {
 } from "@/lib/team-contract-parser";
 import {
   ContractValidationError,
+  parseCampaignCreateEvidence,
   parseCampaignPage,
   parseCandidateWorkspaceReadEvidence,
   parseGuidedIntakeReadEvidence,
@@ -35,6 +36,8 @@ import {
   parseTenantMe,
 } from "@/lib/contract-parsers";
 import type {
+  CampaignCreateEvidence,
+  CampaignCreateInput,
   CampaignPage,
   CampaignReadinessEvidence,
   CampaignRoadmapReadEvidence,
@@ -198,6 +201,23 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns?limit=100`,
       "Campaign list",
       (value) => parseCampaignPage(value, tenantId),
+    );
+  }
+
+  createCampaign(
+    tenantId: UUID,
+    idempotencyKey: string,
+    create: CampaignCreateInput,
+  ): Promise<CampaignCreateEvidence> {
+    return this.request<CampaignCreateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns`,
+      "Campaign create",
+      (value) => parseCampaignCreateEvidence(value, tenantId),
+      {
+        method: "POST",
+        body: create,
+        headers: { "idempotency-key": idempotencyKey },
+      },
     );
   }
 

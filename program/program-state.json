@@ -3,8 +3,8 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-07-31",
-  "branch": "agent/c3-perf-001-authenticated-load-verification",
-  "current_increment": "C3-PERF-001",
+  "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
+  "current_increment": "C3-FRONT-011",
   "iteration_status": "CI_GREEN",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
@@ -480,31 +480,33 @@
     "frontend_target_verified": true
   },
   "active_local_increment": {
-    "id": "C3-PERF-001",
+    "id": "C3-FRONT-011",
     "state": "CI_GREEN",
-    "branch": "agent/c3-perf-001-authenticated-load-verification",
-    "base": "main@83c3577ff2467e8e4681229741c32fe85a19f0c9",
-    "approved_spec": "specs/C3-PERF-001/requirements.md",
+    "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
+    "base": "main@1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
+    "approved_spec": "specs/C3-FRONT-011/requirements.md",
     "approval_recorded_at": "2026-07-31T15:35:00-06:00",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "MERGE_AFTER_FINAL_DOCS_HEAD_RECHECK_AND_THREAD_CLOSURE",
-    "review_artifact": "progress/review_C3-PERF-001.md",
+    "next_action": "MERGE_PULL_REQUEST_146",
+    "review_artifact": "progress/review_C3-FRONT-011.md",
     "local_evidence": [
-      "docs/testing/c3-perf-001-evidence.md",
-      "docs/operations/load-verification.md",
-      "program/iterations/c3-perf-001.md",
-      "program/validations/c3-perf-001.json"
+      "docs/testing/c3-front-011-campol-consultant-evaluation.md",
+      "docs/testing/c3-front-011-evidence.md",
+      "program/iterations/c3-front-011.md",
+      "program/validations/c3-front-011.json"
     ],
-    "implementation_commit": "b74272db344aca75804c6f4233aeb13897037c00",
-    "exact_head_ci_run_id": 30670226754,
-    "exact_head_ci_conclusion": "SUCCESS",
-    "postgresql_version_verified": "18.3",
-    "load_receipt_artifact_id": 8808493722,
-    "review_head": "2def59cb1240bfc99fd884aa80ac1489100d4bea",
-    "runtime_visual_run_id": 30670226689,
-    "load_receipt_source_revision": "deff40ce754f4a2ae64875ca609b48ec97934023"
+    "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
+    "repair_commits": [
+      "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
+    ],
+    "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+    "pull_request": 146,
+    "campaignos_ci_run_id": 30679126973,
+    "runtime_visual_run_id": 30679126971,
+    "hosted_evidence_artifact_id": 8811608118,
+    "hosted_verified_at": "2026-08-01T02:03:51Z"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
@@ -517,33 +519,33 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-FRONT-010",
+    "id": "C3-PERF-001",
     "status": "MERGED_TO_MAIN",
     "merge_strategy": "SQUASH",
-    "merge_pr": 143,
-    "merged_at": "2026-07-31T18:42:51Z",
-    "main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
-    "post_merge_ci_run_id": 30656253464,
+    "merge_pr": 145,
+    "merged_at": "2026-07-31T22:45:19Z",
+    "main_sha": "1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
+    "post_merge_ci_run_id": 30670688323,
     "post_merge_ci_conclusion": "SUCCESS",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_action": "HUMAN_APPROVE_C3_PERF_001_SPEC"
+    "next_action": "EXECUTE_C3_FRONT_011"
   },
   "production_blockers": [],
   "cumulative_merge": {
-    "pr": 144,
+    "pr": 145,
     "status": "MERGED_TO_MAIN_SQUASH",
-    "main_sha": "83c3577ff2467e8e4681229741c32fe85a19f0c9",
+    "main_sha": "1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
     "checks_before_merge": "SUCCESS",
-    "post_merge_ci_run_id": 30667485767,
+    "post_merge_ci_run_id": 30670688323,
     "post_merge_ci_conclusion": "SUCCESS",
     "included_increment_prs": [
-      144
+      145
     ],
     "previous_cumulative_merge": {
-      "pr": 143,
-      "main_sha": "998072c64c976d8b2e559862df5dab0e84104b98"
+      "pr": 144,
+      "main_sha": "83c3577ff2467e8e4681229741c32fe85a19f0c9"
     },
     "open_pull_requests_observed": 9
   },
@@ -555,8 +557,8 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-PERF-001",
-    "selected_feature": "C3-PERF-001",
+    "active_feature": "C3-FRONT-011",
+    "selected_feature": "C3-FRONT-011",
     "selected_feature_state": "review",
     "approval_gate": "APPROVED",
     "ready_nodes": []

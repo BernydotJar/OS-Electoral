@@ -80,7 +80,7 @@ with psycopg.connect(conninfo, autocommit=True) as conn:
 PY
 
 CAMPAIGNOS_DATABASE_URL="$ADMIN_URL" uv run --locked alembic upgrade head
-uv run --locked python scripts/dev/seed_local_operator.py --database-url "$ADMIN_URL"
+uv run --locked python scripts/dev/seed_local_operator.py --database-url "$ADMIN_URL" --include-campaign-create
 
 CAMPAIGNOS_ENVIRONMENT=development \
 CAMPAIGNOS_EXPOSE_API_DOCS=true \

@@ -2,11 +2,13 @@ import { describe, expect, it } from "vitest";
 
 import type { EffectiveMembership } from "@/lib/contracts";
 import {
+  deriveCampaignContextCapabilities,
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
   deriveTeamWorkspaceCapabilities,
 } from "@/lib/journey-capabilities";
 
+const TENANT = "11111111-1111-4111-8111-111111111111";
 const CAMPAIGN = "22222222-2222-4222-8222-222222222222";
 
 function membership(
@@ -14,6 +16,8 @@ function membership(
   purpose: string,
   campaignId: string | null = CAMPAIGN,
   resourceType = "guided_intake",
+  resourceId = CAMPAIGN,
+  workspaceId: string | null = null,
 ): EffectiveMembership {
   return {
     membership_id: "33333333-3333-4333-8333-333333333333",
@@ -23,16 +27,65 @@ function membership(
       {
         grant_id: "44444444-4444-4444-8444-444444444444",
         campaign_id: campaignId,
-        workspace_id: null,
+        workspace_id: workspaceId,
         action,
         resource_type: resourceType,
-        resource_id: CAMPAIGN,
+        resource_id: resourceId,
         purpose,
         approval_receipt_id: "approval",
       },
     ],
   };
 }
+
+describe("deriveCampaignContextCapabilities", () => {
+  it("requires the exact tenant collection grant and never trusts role labels", () => {
+    const exact = membership(
+      "create",
+      "Create tenant campaign",
+      null,
+      "campaign_collection",
+      TENANT,
+    );
+    expect(deriveCampaignContextCapabilities([exact], TENANT)).toEqual({
+      canCreateCampaign: true,
+    });
+
+    const roleOnly = { ...exact, grants: [] };
+    expect(deriveCampaignContextCapabilities([roleOnly], TENANT)).toEqual({
+      canCreateCampaign: false,
+    });
+    expect(
+      deriveCampaignContextCapabilities(
+        [
+          membership(
+            "create",
+            "Create tenant campaign",
+            CAMPAIGN,
+            "campaign_collection",
+            TENANT,
+          ),
+          membership(
+            "create",
+            "Wrong purpose",
+            null,
+            "campaign_collection",
+            TENANT,
+          ),
+          membership(
+            "create",
+            "Create tenant campaign",
+            null,
+            "campaign_collection",
+            CAMPAIGN,
+          ),
+        ],
+        TENANT,
+      ),
+    ).toEqual({ canCreateCampaign: false });
+  });
+});
+
 
 describe("deriveGuidedIntakeCapabilities", () => {
   it("never converts role labels into mutation authority", () => {

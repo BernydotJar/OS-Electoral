@@ -1,0 +1,181 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-FRONT-011",
+  "assessed_at": "2026-07-31",
+  "mode": "SHIP",
+  "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
+  "base": "main@1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
+  "state": "CI_GREEN",
+  "scope": "Single candidate profile, all-chapter orientation, exact-grant internal draft creation, compact governance metadata and plain ES/EN language only.",
+  "source_evaluation": {
+    "basis": "User-provided Campol podcast Spanish auto-transcript",
+    "pre_repair_verdict": "PARTIALLY_FUNCTIONAL_FOR_EXPERT_OPERATOR",
+    "safe_adaptation": "AGGREGATE_SOURCE_BACKED_WORKFLOW_ONLY",
+    "excluded": [
+      "PERSON_LEVEL_VOTER_DATABASES",
+      "PERSUASION_SCORES",
+      "INDIVIDUAL_TARGETING",
+      "CONTACT_EXECUTION"
+    ]
+  },
+  "local_verification": {
+    "make_verify": "PASS",
+    "python_passed": 793,
+    "python_skipped": 12,
+    "coverage_percent": 90.22,
+    "coverage_floor": 90,
+    "ruff": "PASS",
+    "mypy": "PASS_80_SOURCE_FILES",
+    "frontend_test_files": 33,
+    "frontend_passed": 144,
+    "eslint": "PASS",
+    "typecheck": "PASS",
+    "next_build": "PASS",
+    "dependency_vulnerabilities": 0,
+    "dynamic_browser": "PASS",
+    "desktop_spanish": "PASS",
+    "desktop_english": "PASS",
+    "mobile_spanish_390px": "PASS",
+    "chapter_navigation": "PASS_ROUTE_ISOLATION_LOCALE_PRESERVATION",
+    "reduced_motion": "PASS_STATIC_EQUIVALENT",
+    "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+    "horizontal_overflow": "NONE",
+    "browser_storage": "EMPTY",
+    "unexpected_outbound_hosts": [],
+    "console_errors": [],
+    "page_errors": [],
+    "local_browser_receipt_sha256": "a9a8f18aa939103a3666cceba3916e5138aae84a13ad25d58c2af150649c5f84",
+    "terraform": "PASS_PLAN_TEST_ONLY_NO_APPLY",
+    "program_security_release_safety": "PASS_PRODUCTION_BLOCKED",
+    "hosted_postgresql_api_browser": "PENDING_EXACT_HEAD",
+    "local_functional_blocker": "DOCKER_LAYER_LCHOWN_ENVIRONMENT_LIMITATION_BEFORE_PRODUCT_STARTUP",
+    "hosted_functional_harness": "READY_EXACT_GRANT_DRAFT_CONTEXT_AND_ACCESS_ASSERTIONS"
+  },
+  "critic_findings": [
+    {
+      "id": "C3-FRONT-011-F1",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "The initial proxy generated a fresh idempotency key per POST, allowing a browser retry to become a second create operation.",
+      "repair": "Generate one UUID key in the rendered form, validate it in the proxy, reuse it in the backend call and derive the stable slug suffix from it."
+    },
+    {
+      "id": "C3-FRONT-011-F2",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "An identity with exact create authority but no visible campaigns could not reach campaign creation.",
+      "repair": "Render the governed first-draft form for authorized empty tenants while preserving the fail-closed empty state for all others."
+    },
+    {
+      "id": "C3-FRONT-011-F3",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "The first single-view composition still placed action guidance before the candidate profile.",
+      "repair": "Render profile and risks first, then the next-step brief and evidence disclosure."
+    },
+    {
+      "id": "C3-FRONT-011-F4",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "Campaign selection, empty state and creation competed inside an ambiguous two-column composition.",
+      "repair": "Use one stacked action column and group every creation label with its field."
+    },
+    {
+      "id": "C3-FRONT-011-F5",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "Browser reviewers still encoded the retired three-tab candidate interaction.",
+      "repair": "Validate the visible profile, all-chapter orientation and keyboard-operable evidence disclosure instead."
+    },
+    {
+      "id": "C3-FRONT-011-F6",
+      "severity": "LOW",
+      "status": "RESOLVED",
+      "finding": "An 8-hex slug suffix provided less collision margin than the backend length contract permits.",
+      "repair": "Use a deterministic 12-hex suffix while keeping the total slug below 100 characters."
+    },
+    {
+      "id": "C3-FRONT-011-F7",
+      "severity": "INFO",
+      "status": "ENVIRONMENT_LIMITATION",
+      "finding": "Nested Docker failed before product startup while registering the PostgreSQL 18 image layer with lchown /var/empty: permission denied.",
+      "repair": "Require hosted exact-head PostgreSQL 18/API/browser verification before merge."
+    },
+    {
+      "id": "C3-FRONT-011-F8",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "The hosted PostgreSQL/browser fixture did not include campaign-create authority, so the new draft flow would not execute in CI.",
+      "repair": "Keep the default 11-grant operator unchanged and add one opt-in E2E-only exact tenant grant plus DRAFT, context and access assertions."
+    },
+    {
+      "id": "C3-FRONT-011-F9",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "The English functional journey still selected the retired Sources and evidence tab.",
+      "repair": "Assert Profile and risks, Next step and zero tabs, then open the evidence disclosure directly."
+    },
+    {
+      "id": "C3-FRONT-011-F10",
+      "severity": "MEDIUM",
+      "status": "RESOLVED_VERIFIED",
+      "finding": "Hosted run 30678840392 reached PostgreSQL 18 and the API-backed journey but timed out on a second Spanish selector for the retired Fuentes y evidencia tab after chapter navigation.",
+      "repair": "Open .candidate-evidence-disclosure after chapter navigation and add static regression tests forbidding every retired candidate-tab selector in both browser reviewers.",
+      "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f",
+      "verification": {
+        "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+        "campaignos_ci_run_id": 30679126973,
+        "dynamic_frontend_job_id": 91312405534,
+        "result": "SUCCESS"
+      }
+    }
+  ],
+  "hosted_ci": {
+    "result": "SUCCESS",
+    "pull_request": 146,
+    "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+    "implementation_head": "8b835e1a64095e92136d5375026075581c8fe02a",
+    "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f",
+    "campaignos_ci_run_id": 30679126973,
+    "campaignos_ci_result": "SUCCESS",
+    "runtime_visual_run_id": 30679126971,
+    "runtime_visual_result": "SUCCESS",
+    "dynamic_frontend_job_id": 91312405534,
+    "dynamic_frontend_job_result": "SUCCESS",
+    "runtime_visual_job_id": 91312405335,
+    "runtime_visual_job_result": "SUCCESS",
+    "artifact_id": 8811608118,
+    "artifact_name": "campaignos-frontend-review",
+    "artifact_digest": "sha256:c7f98cb4a55349ce565bd1c99862f57a03424126df40f97cb01bb269b6ec2b26",
+    "artifact_size_bytes": 11549427,
+    "artifact_created_at": "2026-08-01T02:03:51Z",
+    "functional_report": {
+      "status": "PASS",
+      "governed_campaign_draft": "PASS_DRAFT_PERSISTED_CONTEXT_AND_ACCESS_UNCHANGED",
+      "chapter_navigation": "PASS_URL_HISTORY_BACK_FORWARD_ISOLATION",
+      "persistence_after_reload": "PASS",
+      "exact_authorization_controls": "PASS",
+      "desktop_spanish": "PASS",
+      "desktop_english": "PASS",
+      "mobile_spanish": "PASS",
+      "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+      "horizontal_overflow": "NONE",
+      "browser_storage": "EMPTY",
+      "unexpected_outbound_hosts": [],
+      "console_errors": [],
+      "page_errors": [],
+      "external_effects": "NONE"
+    },
+    "pr_review": {
+      "issue_comments": 0,
+      "review_submissions": 0,
+      "inline_threads": 0,
+      "unresolved_threads": 0,
+      "result": "PASS_NO_OPEN_FINDINGS"
+    }
+  },
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "status": "CI_GREEN"
+}
