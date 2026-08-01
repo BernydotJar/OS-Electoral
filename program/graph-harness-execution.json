@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "1b8c9be5f2ba5dcdb522e0b7cdba0687af993297"
+    "revision": "297a941a274e79daadfbec2762f8d717f605ca72"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -26,47 +26,28 @@
     "blocked": "BLOCKED_BY_DEPENDENCY_OR_HUMAN_BLOCKED"
   },
   "scheduler": {
-    "evaluated_at": "2026-07-31",
+    "evaluated_at": "2026-08-01",
     "one_active_feature": true,
-    "active_feature": "C3-FRONT-011",
+    "active_feature": null,
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-FRONT-011",
-      "title": "Clear candidate guidance and governed campaign entry",
+      "id": "C3-OPS-002",
+      "title": "Release rollback and reversal runbook",
       "mode": "SHIP",
-      "state": "review",
-      "human_approval": "APPROVED",
+      "state": "spec_ready",
+      "human_approval": "PENDING",
       "dependencies": [
-        "C3-FRONT-010",
-        "C3-CANDIDATE-001",
-        "C3-FRONT-002",
-        "C3-PERF-001"
+        "C3-RELEASE-001",
+        "C3-OBS-001",
+        "C3-PERF-001",
+        "C3-INFRA-001"
       ],
       "specs": [
-        "specs/C3-FRONT-011/requirements.md",
-        "specs/C3-FRONT-011/design.md",
-        "specs/C3-FRONT-011/tasks.md"
+        "specs/C3-OPS-002/requirements.md",
+        "specs/C3-OPS-002/design.md",
+        "specs/C3-OPS-002/tasks.md"
       ],
-      "selection_reason": "C3-FRONT-011 passed local review, exact-head hosted PostgreSQL 18/API/browser CI, runtime visual review, retained artifact inspection and independent PR review with no open findings.",
-      "approval_receipt": {
-        "recorded_at": "2026-07-31T15:35:00-06:00",
-        "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "User requested the candidate-chapter simplification, stronger chapter orientation, governed new-candidacy entry, plain language and compact metadata, and explicitly authorized continuing this SHIP development.",
-        "scope": "Bounded internal frontend/API-proxy UX repair, source-based evaluation, tests and temporary authenticated demo only; no production deployment, publication, contact, voter profiling, targeting, spending or mobilization."
-      },
-      "review_artifact": "progress/review_C3-FRONT-011.md",
-      "local_evidence": [
-        "docs/testing/c3-front-011-campol-consultant-evaluation.md",
-        "docs/testing/c3-front-011-evidence.md",
-        "program/iterations/c3-front-011.md",
-        "program/validations/c3-front-011.json"
-      ],
-      "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
-      "pull_request": 146,
-      "campaignos_ci_run_id": 30679126973,
-      "runtime_visual_run_id": 30679126971,
-      "hosted_evidence_artifact_id": 8811608118,
-      "hosted_verified_at": "2026-08-01T02:03:51Z"
+      "selection_reason": "C3-FRONT-011 is merged and post-merge verified. The repository rollback-runbook production gate remains NOT_IMPLEMENTED; a cost-free fail-closed rollback decision contract and local rehearsal are the highest-priority safe work that does not require cloud resources or production access."
     },
     "blocked_nodes": [
       {
@@ -74,73 +55,50 @@
         "gate": "HUMAN_PRODUCTION_APPROVAL_AND_INCOMPLETE_PRODUCTION_GATES",
         "owner": "Authorized production approver",
         "next_valid_command": "Complete all production gates and record scoped approval"
+      },
+      {
+        "id": "gate:dev-staging-prod",
+        "gate": "CLOUD_ACCOUNT_COST_AND_ENVIRONMENT_AUTHORIZATION_REQUIRED",
+        "owner": "Authorized platform owner",
+        "next_valid_command": "Authorize an isolated non-production account and bounded cost envelope"
+      },
+      {
+        "id": "gate:managed-load-and-rollback",
+        "gate": "MANAGED_STAGING_ENVIRONMENT_REQUIRED",
+        "owner": "Authorized platform and operations owners",
+        "next_valid_command": "Complete C3-OPS-002 locally, then authorize managed staging evidence"
       }
     ]
   },
   "localized_repair": {
-    "id": "repair:c3-front-010-post-merge-2026-07-31",
+    "id": "repair:c3-front-011-post-merge-2026-08-01",
     "status": "COMPLETED",
-    "scope": "Record PR 143 merge, exact-head and post-merge evidence, authenticated demo verification, and return the scheduler to the C3-PERF-001 lifecycle.",
+    "scope": "Record PR 146 exact-head, merge and post-merge evidence, close C3-FRONT-011, and select the cost-free rollback-runbook gate as the next human-approved lifecycle.",
     "evidence": [
-      "https://github.com/BernydotJar/OS-Electoral/pull/143",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30656253464",
-      "main@998072c64c976d8b2e559862df5dab0e84104b98",
-      "https://nutritional-salt-journalism-productions.trycloudflare.com"
+      "https://github.com/BernydotJar/OS-Electoral/pull/146",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30679356392",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30679356434",
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30679521520",
+      "main@297a941a274e79daadfbec2762f8d717f605ca72"
     ],
     "delivery": {
       "state": "merged",
-      "implementation_head": "f4d5ab4d9c22917bf5bff37b5e368afda18b3406",
-      "draft_pr": 143,
-      "campaignos_ci_run_id": 30656019602,
+      "implementation_head": "d8e84b25ca252674275bdce7eea5bf076314a9f6",
+      "draft_pr": 146,
+      "campaignos_ci_run_id": 30679356392,
       "campaignos_ci_conclusion": "SUCCESS",
-      "visual_run_id": 30656019685,
+      "visual_run_id": 30679356434,
       "visual_conclusion": "SUCCESS",
       "merge_gate": "SATISFIED_USER_AUTHORIZATION",
-      "merged_main_sha": "998072c64c976d8b2e559862df5dab0e84104b98",
-      "post_merge_ci_run_id": 30656253464,
+      "merged_main_sha": "297a941a274e79daadfbec2762f8d717f605ca72",
+      "post_merge_ci_run_id": 30679521520,
       "post_merge_ci_conclusion": "SUCCESS",
-      "demo_classification": "TEMPORARY_AUTHENTICATED_NON_PRODUCTION",
-      "demo_verification": "PASS",
       "evidence": [
-        "docs/testing/c3-front-010-evidence.md",
-        "program/validations/c3-front-010.json",
-        "progress/review_C3-FRONT-010.md"
+        "docs/testing/c3-front-011-evidence.md",
+        "program/validations/c3-front-011.json",
+        "progress/review_C3-FRONT-011.md"
       ]
     }
   },
-  "active_increment": {
-    "id": "C3-FRONT-011",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
-    "base": "main@1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
-    "approved_spec": "specs/C3-FRONT-011/requirements.md",
-    "approval_recorded_at": "2026-07-31T15:35:00-06:00",
-    "production_status": "BLOCKED",
-    "release_decision": "DENY_RELEASE",
-    "external_effects": "NONE",
-    "next_action": "MERGE_PULL_REQUEST_146",
-    "review_artifact": "progress/review_C3-FRONT-011.md",
-    "local_evidence": [
-      "docs/testing/c3-front-011-campol-consultant-evaluation.md",
-      "docs/testing/c3-front-011-evidence.md",
-      "program/iterations/c3-front-011.md",
-      "program/validations/c3-front-011.json"
-    ],
-    "approval_receipt": {
-      "recorded_at": "2026-07-31T15:35:00-06:00",
-      "source": "USER_EXPLICIT_APPROVAL",
-      "statement": "User requested the candidate-chapter simplification, stronger chapter orientation, governed new-candidacy entry, plain language and compact metadata, and explicitly authorized continuing this SHIP development.",
-      "scope": "Bounded internal frontend/API-proxy UX repair, source-based evaluation, tests and temporary authenticated demo only; no production deployment, publication, contact, voter profiling, targeting, spending or mobilization."
-    },
-    "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
-    "repair_commits": [
-      "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
-    ],
-    "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
-    "pull_request": 146,
-    "campaignos_ci_run_id": 30679126973,
-    "runtime_visual_run_id": 30679126971,
-    "hosted_evidence_artifact_id": 8811608118,
-    "hosted_verified_at": "2026-08-01T02:03:51Z"
-  }
+  "active_increment": null
 }

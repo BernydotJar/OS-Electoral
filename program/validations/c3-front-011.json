@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
   "increment": "C3-FRONT-011",
-  "assessed_at": "2026-07-31",
+  "assessed_at": "2026-08-01",
   "mode": "SHIP",
   "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
   "base": "main@1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
-  "state": "CI_GREEN",
+  "state": "MERGED_TO_MAIN",
   "scope": "Single candidate profile, all-chapter orientation, exact-grant internal draft creation, compact governance metadata and plain ES/EN language only.",
   "source_evaluation": {
     "basis": "User-provided Campol podcast Spanish auto-transcript",
@@ -133,22 +133,22 @@
   "hosted_ci": {
     "result": "SUCCESS",
     "pull_request": 146,
-    "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
+    "review_head": "d8e84b25ca252674275bdce7eea5bf076314a9f6",
     "implementation_head": "8b835e1a64095e92136d5375026075581c8fe02a",
     "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f",
-    "campaignos_ci_run_id": 30679126973,
+    "campaignos_ci_run_id": 30679356392,
     "campaignos_ci_result": "SUCCESS",
-    "runtime_visual_run_id": 30679126971,
+    "runtime_visual_run_id": 30679356434,
     "runtime_visual_result": "SUCCESS",
     "dynamic_frontend_job_id": 91312405534,
     "dynamic_frontend_job_result": "SUCCESS",
     "runtime_visual_job_id": 91312405335,
     "runtime_visual_job_result": "SUCCESS",
-    "artifact_id": 8811608118,
+    "artifact_id": 8811684666,
     "artifact_name": "campaignos-frontend-review",
-    "artifact_digest": "sha256:c7f98cb4a55349ce565bd1c99862f57a03424126df40f97cb01bb269b6ec2b26",
-    "artifact_size_bytes": 11549427,
-    "artifact_created_at": "2026-08-01T02:03:51Z",
+    "artifact_digest": "sha256:be55eb7dbfa065348ffd3f45fc2e2d53930eb08917f401c455d76cd965eccfb2",
+    "artifact_size_bytes": 11550075,
+    "artifact_created_at": "2026-08-01T02:10:24Z",
     "functional_report": {
       "status": "PASS",
       "governed_campaign_draft": "PASS_DRAFT_PERSISTED_CONTEXT_AND_ACCESS_UNCHANGED",
@@ -177,5 +177,14 @@
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
-  "status": "CI_GREEN"
+  "status": "MERGED_TO_MAIN",
+  "merge": {
+    "strategy": "SQUASH",
+    "pull_request": 146,
+    "merged_at": "2026-08-01T02:11:54Z",
+    "main_sha": "297a941a274e79daadfbec2762f8d717f605ca72",
+    "post_merge_ci_run_id": 30679521520,
+    "post_merge_ci_result": "SUCCESS",
+    "post_merge_ci_completed_at": "2026-08-01T02:15:25Z"
+  }
 }

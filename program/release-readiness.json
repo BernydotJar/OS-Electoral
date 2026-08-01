@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "increment": "C3-RELEASE-001",
-  "assessed_at": "2026-07-29",
+  "assessed_at": "2026-08-01",
   "source_branch": "agent/c3-harness-001-graph-reconciliation",
   "base_checkpoint": "main@a12bed0771299ef8c7bc611b69b1b8db1c01d968",
   "production_status": "BLOCKED",
@@ -59,9 +59,12 @@
     },
     {
       "id": "load-and-rollback",
-      "status": "NOT_IMPLEMENTED",
-      "evidence": [],
-      "reason": "Representative load evidence and production rollback proof are absent."
+      "status": "PARTIAL",
+      "evidence": [
+        "docs/testing/c3-perf-001-evidence.md",
+        "docs/operations/load-verification.md"
+      ],
+      "reason": "Bounded authenticated local/CI load and contention evidence exists. A versioned rollback runbook, managed staging load, rollback rehearsal and production acceptance remain absent."
     },
     {
       "id": "independent-security-privacy-legal-review",
@@ -81,10 +84,10 @@
     "receipt": null
   },
   "next_safe_actions": [
-    "Human-review and approve the C3-SEC-002 SHIP specification before implementation.",
-    "Collect exact-head hosted CI for the reviewed application-layer rate-limit increment; retain production DENY_RELEASE until staging and independent gates pass.",
+    "Human-review and approve the C3-OPS-002 SHIP specification before implementation.",
+    "Implement and verify the cost-free rollback policy, validator and constrained rehearsal without deployment authority.",
     "Authorize a cost-bounded non-production environment before any Terraform apply.",
-    "Run staging migration, recovery, telemetry, load, rollback and security exercises.",
+    "Run managed staging migration, recovery, telemetry, load, rollback and security exercises.",
     "Obtain independent security, privacy, legal, operational and final production approvals."
   ],
   "repository_checkpoint": {

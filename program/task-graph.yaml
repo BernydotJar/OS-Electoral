@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-07-31",
+  "updated_at": "2026-08-01",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -449,7 +449,7 @@
       "id": "C3-FRONT-011",
       "workstream": "WS-06",
       "title": "Clear candidate guidance and governed campaign entry",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-010",
         "C3-CANDIDATE-001",
