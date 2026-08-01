@@ -66,7 +66,7 @@ Implementation commit: `8b835e1a64095e92136d5375026075581c8fe02a`.
 
 - `git diff --check`: PASS
 - `make verify`: PASS
-- Python: 791 passed, 12 controlled skips, 90.22% coverage
+- Python: 793 passed, 12 controlled skips, 90.22% coverage
 - Ruff lint/format and strict mypy over 80 source files: PASS
 - frontend: 33 files / 144 tests PASS
 - TypeScript, ESLint, production build and npm audit: PASS; zero vulnerabilities
@@ -87,6 +87,15 @@ Implementation commit: `8b835e1a64095e92136d5375026075581c8fe02a`.
 ## Source evaluation disposition
 
 The Campol transcript supports a staged campaign workflow and a stronger explanation of sequence, ownership and measurement. CampaignOS adopts only the safe aggregate workflow lesson. It does not adopt person-level voter databases, persuasion scoring, individualized targeting or contact execution.
+
+## Hosted critic repair
+
+- CampaignOS CI run `30678840392` passed every job except the API-backed frontend journey.
+- PostgreSQL 18, migrations, the 12-grant E2E seed, static browser review, quality, CodeQL, recovery, supply chain, Terraform and stack E2E all completed successfully.
+- The journey then timed out on a second Spanish selector for the retired `Fuentes y evidencia` tab after returning to the candidate chapter.
+- Repair commit `43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f` opens the current evidence disclosure and adds two static regression tests that reject every retired candidate-tab selector in both browser scripts.
+- Local exact-tree verification after repair: `793 passed`, `12 skipped`, `90.22%` coverage; frontend remains `144 passed`.
+- The node remains `REVIEWED` until the repaired exact head passes hosted CI.
 
 ## Release gate
 

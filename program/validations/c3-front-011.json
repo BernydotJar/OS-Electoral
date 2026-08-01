@@ -20,7 +20,7 @@
   },
   "local_verification": {
     "make_verify": "PASS",
-    "python_passed": 791,
+    "python_passed": 793,
     "python_skipped": 12,
     "coverage_percent": 90.22,
     "coverage_floor": 90,
@@ -114,14 +114,29 @@
       "status": "RESOLVED",
       "finding": "The English functional journey still selected the retired Sources and evidence tab.",
       "repair": "Assert Profile and risks, Next step and zero tabs, then open the evidence disclosure directly."
+    },
+    {
+      "id": "C3-FRONT-011-F10",
+      "severity": "MEDIUM",
+      "status": "RESOLVED_PENDING_HOSTED_RERUN",
+      "finding": "Hosted run 30678840392 reached PostgreSQL 18 and the API-backed journey but timed out on a second Spanish selector for the retired Fuentes y evidencia tab after chapter navigation.",
+      "repair": "Open .candidate-evidence-disclosure after chapter navigation and add static regression tests forbidding every retired candidate-tab selector in both browser reviewers.",
+      "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
     }
   ],
   "hosted_ci": {
-    "result": "PENDING",
-    "pull_request": null,
+    "result": "FAILED_REPAIRED_PENDING_EXACT_HEAD_RERUN",
+    "pull_request": 146,
     "implementation_head": "8b835e1a64095e92136d5375026075581c8fe02a",
-    "campaignos_ci_run_id": null,
-    "runtime_visual_run_id": null
+    "campaignos_ci_run_id": 30678840392,
+    "runtime_visual_run_id": 30678840402,
+    "runtime_visual_result": "SUCCESS",
+    "failed_job_id": 91311539048,
+    "failed_step": "Exercise the API-backed functional onboarding journey",
+    "failed_artifact_id": 8811506195,
+    "failure_code": "RETIRED_CANDIDATE_TAB_SELECTOR_AFTER_CHAPTER_NAVIGATION",
+    "failure_scope": "TEST_HARNESS_ONLY_APPLICATION_AND_POSTGRESQL_STARTED",
+    "repair_commit": "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
   },
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",

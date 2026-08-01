@@ -1132,7 +1132,7 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted PostgreSQL 18/API/browser and runtime visual checks remain pending."
+        "Exact-head hosted PostgreSQL 18/API/browser and runtime visual checks must pass after repair commit 43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f."
       ],
       "approval": {
         "recorded_at": "2026-07-31T15:35:00-06:00",
@@ -1142,7 +1142,10 @@
       },
       "base_main_sha": "1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
       "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
-      "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a"
+      "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
+      "repair_commits": [
+        "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
+      ]
     }
   ]
 }

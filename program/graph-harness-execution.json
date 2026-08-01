@@ -126,6 +126,9 @@
       "statement": "User requested the candidate-chapter simplification, stronger chapter orientation, governed new-candidacy entry, plain language and compact metadata, and explicitly authorized continuing this SHIP development.",
       "scope": "Bounded internal frontend/API-proxy UX repair, source-based evaluation, tests and temporary authenticated demo only; no production deployment, publication, contact, voter profiling, targeting, spending or mobilization."
     },
-    "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a"
+    "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
+    "repair_commits": [
+      "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
+    ]
   }
 }

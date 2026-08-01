@@ -52,7 +52,7 @@ Implementation commit: `8b835e1a64095e92136d5375026075581c8fe02a`.
 ## Local validation
 
 - `make verify`: PASS;
-- Python: 791 passed, 12 skipped, 90.22% coverage;
+- Python: 793 passed, 12 skipped, 90.22% coverage;
 - frontend: 33 files / 144 tests PASS;
 - ESLint, TypeScript, Next.js build and npm audit: PASS;
 - Chromium desktop ES/EN and mobile ES: PASS;
@@ -65,6 +65,15 @@ Implementation commit: `8b835e1a64095e92136d5375026075581c8fe02a`.
 ## Environment limitation
 
 The local PostgreSQL/API/browser functional runner failed before product startup while Docker registered the PostgreSQL 18 layer: `lchown /var/empty: permission denied`. No application assertion ran. Exact-head hosted CI remains the authoritative functional gate.
+
+## Hosted critic repair
+
+- CampaignOS CI run `30678840392` passed every job except the API-backed frontend journey.
+- PostgreSQL 18, migrations, the 12-grant E2E seed, static browser review, quality, CodeQL, recovery, supply chain, Terraform and stack E2E all completed successfully.
+- The journey then timed out on a second Spanish selector for the retired `Fuentes y evidencia` tab after returning to the candidate chapter.
+- Repair commit `43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f` opens the current evidence disclosure and adds two static regression tests that reject every retired candidate-tab selector in both browser scripts.
+- Local exact-tree verification after repair: `793 passed`, `12 skipped`, `90.22%` coverage; frontend remains `144 passed`.
+- The node remains `REVIEWED` until the repaired exact head passes hosted CI.
 
 ## Next gate
 

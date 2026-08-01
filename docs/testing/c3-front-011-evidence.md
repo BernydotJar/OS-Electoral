@@ -50,7 +50,7 @@ Implementation commit: `8b835e1a64095e92136d5375026075581c8fe02a`.
 
 ```text
 make verify: PASS
-Python: 791 passed, 12 controlled skips
+Python: 793 passed, 12 controlled skips
 coverage: 90.22% (90% floor)
 Ruff lint/format: PASS
 strict mypy: PASS, 80 source files
@@ -89,6 +89,15 @@ a9a8f18aa939103a3666cceba3916e5138aae84a13ad25d58c2af150649c5f84
 ```
 
 Screenshots, server logs and the ephemeral local receipt are intentionally not committed.
+
+## Hosted critic repair
+
+- CampaignOS CI run `30678840392` passed every job except the API-backed frontend journey.
+- PostgreSQL 18, migrations, the 12-grant E2E seed, static browser review, quality, CodeQL, recovery, supply chain, Terraform and stack E2E all completed successfully.
+- The journey then timed out on a second Spanish selector for the retired `Fuentes y evidencia` tab after returning to the candidate chapter.
+- Repair commit `43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f` opens the current evidence disclosure and adds two static regression tests that reject every retired candidate-tab selector in both browser scripts.
+- Local exact-tree verification after repair: `793 passed`, `12 skipped`, `90.22%` coverage; frontend remains `144 passed`.
+- The node remains `REVIEWED` until the repaired exact head passes hosted CI.
 
 ## Remaining exact-head gate
 
