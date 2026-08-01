@@ -250,17 +250,20 @@ const es = {
     emptyLabel: "Aún no hay candidaturas",
     emptyBody: "Crea el primer borrador para comenzar.",
     createTitle: "Nueva candidatura",
-    createBody: "Crea un borrador interno para comenzar otra candidatura. El acceso y la selección se autorizan por separado.",
+    createBody:
+      "Crea un borrador interno para comenzar otra candidatura. El acceso y la selección se autorizan por separado.",
     createName: "Nombre de la candidatura",
     createNamePlaceholder: "Ej. Ana Pérez para la alcaldía",
     createJurisdiction: "Territorio",
     createJurisdictionPlaceholder: "Ej. Municipio de Guatemala",
     createAction: "Crear borrador",
-    createBoundary: "Esto no publica, no cambia la campaña actual y no concede permisos.",
+    createBoundary:
+      "Esto no publica, no cambia la campaña actual y no concede permisos.",
   },
   notices: {
     campaign_selected: "Campaña de trabajo actualizada.",
-    campaign_created: "Borrador de candidatura creado. El acceso y la selección siguen separados.",
+    campaign_created:
+      "Borrador de candidatura creado. El acceso y la selección siguen separados.",
     intake_started: "Ruta guiada creada y guardada en PostgreSQL.",
     intake_saved: "Cambios guardados con nueva versión.",
     candidate_started:
@@ -420,9 +423,9 @@ const es = {
     },
   },
   candidate: {
-    eyebrow: "CANDIDATURA · PERFIL Y EVIDENCIA",
-    title: "Perfil de la candidatura",
-    body: "Reúne lo que sabemos, los riesgos, las fuentes y el siguiente paso antes de tomar decisiones públicas.",
+    eyebrow: "CANDIDATURA · RESUMEN",
+    title: "Resumen de candidatura",
+    body: "Muestra el avance, la evidencia pendiente y lo que el equipo debe resolver antes de una decisión pública.",
     startEyebrow: "ABRIR EXPEDIENTE",
     startTitle: "Crea el expediente verificable de la candidatura",
     startBody:
@@ -526,10 +529,13 @@ const es = {
     workspaceViewLabel: "Perfil de la candidatura",
     actionViewLabel: "Ahora",
     profileViewLabel: "Perfil y riesgos",
+    profileBody:
+      "Revisa lo confirmado, las contradicciones, el desarrollo pendiente y los riesgos de la candidatura.",
     evidenceViewLabel: "Fuentes y evidencia",
-    evidenceDisclosureHint: "Consulta o agrega las fuentes que respaldan este perfil.",
+    evidenceDisclosureHint:
+      "Consulta o agrega las fuentes que respaldan este perfil.",
     actionBriefEyebrow: "AHORA",
-    actionBriefTitle: "Siguiente paso",
+    actionBriefTitle: "Qué hacer ahora",
     actionBriefBody:
       "Revisa lo que falta y conviértelo en una tarea con responsable y evidencia. CampaignOS no decide por el equipo.",
     actionBriefBoundary:
@@ -652,7 +658,8 @@ const es = {
     status: "Estado organizacional",
     progress: "pasos completos",
     progressGuidanceTitle: "Qué falta para completar esta etapa",
-    progressGuidanceBody: "El indicador resume preparación del equipo. Completa estos puntos para llegar al siguiente estado:",
+    progressGuidanceBody:
+      "El indicador resume preparación del equipo. Completa estos puntos para llegar al siguiente estado:",
     progressDetailsAction: "Ver los 8 pasos y su estado",
     nextAction: "Siguiente acción humana",
     authorityBoundary: "Las etiquetas de rol no son permisos",
@@ -1170,17 +1177,20 @@ const en: Dictionary = {
     emptyLabel: "No candidacies yet",
     emptyBody: "Create the first draft to begin.",
     createTitle: "New candidacy",
-    createBody: "Create an internal draft to begin another candidacy. Access and selection are authorized separately.",
+    createBody:
+      "Create an internal draft to begin another candidacy. Access and selection are authorized separately.",
     createName: "Candidacy name",
     createNamePlaceholder: "Example: Ana Perez for mayor",
     createJurisdiction: "Territory",
     createJurisdictionPlaceholder: "Example: Guatemala City",
     createAction: "Create draft",
-    createBoundary: "This does not publish, change the current campaign, or grant permissions.",
+    createBoundary:
+      "This does not publish, change the current campaign, or grant permissions.",
   },
   notices: {
     campaign_selected: "Working campaign updated.",
-    campaign_created: "Candidacy draft created. Access and selection remain separate.",
+    campaign_created:
+      "Candidacy draft created. Access and selection remain separate.",
     intake_started: "Intake started and persisted in PostgreSQL.",
     intake_saved: "Changes saved with a new version.",
     candidate_started: "Candidate dossier created and ready for evidence.",
@@ -1335,9 +1345,9 @@ const en: Dictionary = {
     },
   },
   candidate: {
-    eyebrow: "CANDIDATE · EVIDENCE AND HUMAN REVIEW",
-    title: "Candidate executive workspace",
-    body: "Separates claims, independent evidence, contradictions, development, and risk before any public decision.",
+    eyebrow: "CANDIDACY · SUMMARY",
+    title: "Candidacy summary",
+    body: "Shows progress, missing evidence, and what the team must resolve before a public decision.",
     startEyebrow: "OPEN DOSSIER",
     startTitle: "Create the candidate's verifiable dossier",
     startBody:
@@ -1442,10 +1452,13 @@ const en: Dictionary = {
     workspaceViewLabel: "Candidate profile",
     actionViewLabel: "Now",
     profileViewLabel: "Profile and risks",
+    profileBody:
+      "Review confirmed information, contradictions, pending development, and candidacy risks.",
     evidenceViewLabel: "Sources and evidence",
-    evidenceDisclosureHint: "Review or add the sources supporting this profile.",
+    evidenceDisclosureHint:
+      "Review or add the sources supporting this profile.",
     actionBriefEyebrow: "NOW",
-    actionBriefTitle: "Next step",
+    actionBriefTitle: "What to do now",
     actionBriefBody:
       "Review what is missing and turn it into work with an owner and evidence. CampaignOS does not decide for the team.",
     actionBriefBoundary:
@@ -1567,7 +1580,8 @@ const en: Dictionary = {
     status: "Organizational status",
     progress: "checks complete",
     progressGuidanceTitle: "What remains to complete this stage",
-    progressGuidanceBody: "The indicator summarizes team readiness. Complete these points to reach the next state:",
+    progressGuidanceBody:
+      "The indicator summarizes team readiness. Complete these points to reach the next state:",
     progressDetailsAction: "View all 8 steps and their status",
     nextAction: "Next human action",
     authorityBoundary: "Role labels are not permissions",

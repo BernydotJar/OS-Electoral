@@ -3,13 +3,13 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-08-01",
-  "source_branch": "agent/c3-ops-002-post-merge-reconciliation",
+  "source_branch": "agent/c3-front-012-journey-navigation",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
-    "main_sha_observed": "db8692d0f830496b413a8f56f2611eb611708545",
+    "main_sha_observed": "48f2d12aeec30361182c028e101678c940ab616a",
     "c2_integration_state": "MERGED_TO_MAIN",
     "c3_foundation_iam_api_state": "MERGED_TO_MAIN",
-    "c3_program_state": "C3_OPS_002_MERGED_C3_TRAINING_001_SPEC_READY"
+    "c3_program_state": "C3_FRONT_012_REVIEWED_C3_TRAINING_001_APPROVED_NEXT"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
@@ -790,8 +790,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CANDIDATE_GUIDANCE_AND_GOVERNED_ENTRY_MERGED",
-      "next_increment": "NONE_PRODUCT_DELIVERY_COMPLETE"
+      "status": "JOURNEY_HIERARCHY_REVIEWED",
+      "next_increment": "C3-FRONT-012_EXACT_HEAD_REVIEW"
     },
     {
       "id": "WS-07",
@@ -1272,6 +1272,21 @@
       ]
     },
     {
+      "id": "C3-FRONT-012",
+      "workstream": "WS-06",
+      "title": "Clear campaign summary, preparation and candidate hierarchy",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-FRONT-011"
+      ],
+      "acceptance": [
+        "Visible sidebar follows Resumen, Preparaci\u00f3n inicial, Candidatura, Equipo, Estrategia, War Room and Campa\u00f1as under exact grants",
+        "Operational readiness is contained in chapter 1 rather than duplicated as a lateral destination",
+        "Resumen owns candidate progress and Qu\u00e9 hacer ahora while Candidatura owns one Perfil y riesgos workspace",
+        "ES/EN, route isolation, mobile, keyboard, reduced motion, overflow and WCAG browser checks pass without authority changes"
+      ]
+    },
+    {
       "id": "action:production-deployment",
       "status": "HUMAN_BLOCKED",
       "depends_on": [
@@ -1344,7 +1359,7 @@
     "total_critical_or_high": 1
   },
   "github_state": {
-    "verified_at": "2026-08-01T04:26:21Z",
+    "verified_at": "2026-08-01T04:59:00Z",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1403,8 +1418,8 @@
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {
-      "run_id": 30683834955,
-      "head_sha": "db8692d0f830496b413a8f56f2611eb611708545",
+      "run_id": 30684559299,
+      "head_sha": "48f2d12aeec30361182c028e101678c940ab616a",
       "conclusion": "SUCCESS",
       "required_check_enforcement": true,
       "required_check_count": 8,
@@ -1518,7 +1533,48 @@
       "frontend_target_verified": true
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
-    "active_local_increment": null,
+    "active_local_increment": {
+      "id": "C3-FRONT-012",
+      "state": "REVIEWED",
+      "branch": "agent/c3-front-012-journey-navigation",
+      "base": "main@48f2d12aeec30361182c028e101678c940ab616a",
+      "approved_spec": "specs/C3-FRONT-012/requirements.md",
+      "approval_recorded_at": "2026-07-31T22:55:00-06:00",
+      "production_status": "BLOCKED",
+      "release_decision": "DENY_RELEASE",
+      "external_effects": "NONE",
+      "next_action": "PUBLISH_DRAFT_PR_AND_RUN_EXACT_HEAD_CI",
+      "review_artifact": "progress/review_C3-FRONT-012.md",
+      "local_evidence": [
+        "specs/C3-FRONT-012/requirements.md",
+        "specs/C3-FRONT-012/design.md",
+        "specs/C3-FRONT-012/tasks.md",
+        "docs/testing/c3-front-012-evidence.md",
+        "program/iterations/c3-front-012.md",
+        "program/validations/c3-front-012.json",
+        "progress/review_C3-FRONT-012.md"
+      ],
+      "approval_receipt": {
+        "recorded_at": "2026-07-31T22:55:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly approved C3-FRONT-012 for SHIP implementation by requesting the campaign hierarchy changes and publication for review.",
+        "scope": "Frontend information architecture, plain ES/EN copy, tests and non-production browser evidence only; no authorization change, production deployment, spending or political external effects."
+      },
+      "local_verification": {
+        "focused_frontend_tests": 21,
+        "eslint": "PASS",
+        "typescript": "PASS",
+        "dynamic_browser_review": "PASS",
+        "wcag_2_2_aa_axe_violations": 0,
+        "horizontal_overflow": "NONE",
+        "unexpected_outbound_hosts": 0,
+        "make_verify": "PASS",
+        "python_passed": 821,
+        "python_skipped": 12,
+        "coverage_percent": 90.11,
+        "frontend_tests": 145
+      }
+    },
     "latest_checkpoint": {
       "id": "C3-OPS-002",
       "status": "MERGED_TO_MAIN",
@@ -1549,18 +1605,18 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 148,
+      "pr": 149,
       "status": "MERGED_TO_MAIN_SQUASH",
-      "main_sha": "db8692d0f830496b413a8f56f2611eb611708545",
+      "main_sha": "48f2d12aeec30361182c028e101678c940ab616a",
       "checks_before_merge": "SUCCESS",
-      "post_merge_ci_run_id": 30683834955,
+      "post_merge_ci_run_id": 30684559299,
       "post_merge_ci_conclusion": "SUCCESS",
       "included_increment_prs": [
-        148
+        149
       ],
       "previous_cumulative_merge": {
-        "pr": 147,
-        "main_sha": "e1f9c508c397a6df54a3363dde729375b55edb52"
+        "pr": 148,
+        "main_sha": "db8692d0f830496b413a8f56f2611eb611708545"
       },
       "open_pull_requests_observed": 9
     },
@@ -2006,10 +2062,10 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": null,
-    "selected_feature": "C3-TRAINING-001",
-    "selected_feature_state": "spec_ready",
-    "approval_gate": "PENDING",
+    "active_feature": "C3-FRONT-012",
+    "selected_feature": "C3-FRONT-012",
+    "selected_feature_state": "review",
+    "approval_gate": "APPROVED",
     "ready_nodes": []
   }
 }

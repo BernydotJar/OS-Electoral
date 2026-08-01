@@ -3,30 +3,19 @@ import type { ReactNode } from "react";
 
 export function CandidateWorkspaceDeck({
   dictionary,
-  actions,
   profile,
   evidence,
 }: Readonly<{
   dictionary: Dictionary;
-  actions: ReactNode;
   profile: ReactNode;
   evidence: ReactNode;
 }>) {
   return (
     <section
       className="candidate-workspace-deck candidate-workspace-single"
-      aria-labelledby="candidate-profile-view-title"
+      aria-label={dictionary.candidate.profileViewLabel}
     >
-      <header className="candidate-workspace-single-heading">
-        <h3 id="candidate-profile-view-title">
-          {dictionary.candidate.profileViewLabel}
-        </h3>
-      </header>
-
-      <div className="candidate-profile-flow">
-        {profile}
-        {actions}
-      </div>
+      <div className="candidate-profile-flow">{profile}</div>
 
       <details className="candidate-evidence-disclosure">
         <summary>

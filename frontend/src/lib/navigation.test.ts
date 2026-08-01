@@ -30,7 +30,7 @@ function membership(
 }
 
 describe("deriveNavigation", () => {
-  it("places the command overview before candidate, team, and preparation", () => {
+  it("places initial preparation directly after the command overview", () => {
     const intakeMembership = membership("guided_intake");
     const scopedMembership = {
       ...intakeMembership,
@@ -46,6 +46,41 @@ describe("deriveNavigation", () => {
         .filter((item) => item.enabled)
         .map((item) => item.key),
     ).toEqual(["overview", "intake", "campaigns"]);
+  });
+
+  it("keeps the guided campaign sequence in the visible sidebar", () => {
+    const purposes = new Map([
+      ["guided_intake", "Review guided campaign intake"],
+      ["candidate_workspace", "Review candidate evidence workspace"],
+      ["team_workspace", "Review campaign team workspace"],
+      ["strategy_workspace", "Review campaign strategy workspace"],
+      ["campaign_roadmap", "Review campaign operations roadmap"],
+    ]);
+    const memberships = [...purposes].map(([resourceType, purpose]) => {
+      const value = membership(resourceType);
+      return {
+        ...value,
+        grants: value.grants.map((grant) => ({
+          ...grant,
+          campaign_id: CAMPAIGN_ID,
+          purpose,
+        })),
+      };
+    });
+
+    expect(
+      deriveNavigation("es", memberships, CAMPAIGN_ID)
+        .filter((item) => item.enabled)
+        .map((item) => item.key),
+    ).toEqual([
+      "overview",
+      "intake",
+      "candidate",
+      "team",
+      "strategy",
+      "warRoom",
+      "campaigns",
+    ]);
   });
 
   it("does not treat role labels as permission", () => {
@@ -222,12 +257,10 @@ describe("deriveNavigation", () => {
       membership("campaign_readiness"),
       membership("campaign_collection", "create"),
     ]);
-    expect(navigation.find((item) => item.key === "readiness")?.enabled).toBe(
-      true,
+    expect(navigation.some((item) => item.key === "readiness")).toBe(false);
+    expect(navigation.some((item) => item.key === "administration")).toBe(
+      false,
     );
-    expect(
-      navigation.some((item) => item.key === "administration"),
-    ).toBe(false);
     expect(navigation.find((item) => item.key === "warRoom")?.enabled).toBe(
       false,
     );

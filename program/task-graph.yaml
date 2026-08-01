@@ -480,6 +480,21 @@
         "Strict local/CI rehearsal validates immutable commit evidence, actual migration head, protected controls and sanitized receipts without destructive actions",
         "Operator runbook and exact-head CI evidence pass while managed staging, production rollback and human production approval remain blocked"
       ]
+    },
+    {
+      "id": "C3-FRONT-012",
+      "workstream": "WS-06",
+      "title": "Clear campaign summary, preparation and candidate hierarchy",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-FRONT-011"
+      ],
+      "acceptance": [
+        "Visible sidebar follows Resumen, Preparaci\u00f3n inicial, Candidatura, Equipo, Estrategia, War Room and Campa\u00f1as under exact grants",
+        "Operational readiness is contained in chapter 1 rather than duplicated as a lateral destination",
+        "Resumen owns candidate progress and Qu\u00e9 hacer ahora while Candidatura owns one Perfil y riesgos workspace",
+        "ES/EN, route isolation, mobile, keyboard, reduced motion, overflow and WCAG browser checks pass without authority changes"
+      ]
     }
   ]
 }

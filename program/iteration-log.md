@@ -792,3 +792,12 @@
 - The Campol source informs only the safe practical sequence—research, strategy, organization, communication and measurement. Person-level voter databases, persuasion scoring and microtargeting remain excluded.
 - `C3-TRAINING-001` is `spec_ready`, has no approval receipt, is absent from the executable roadmap/ledger and cannot start before explicit human approval.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.
+
+## 2026-08-01 — C3-FRONT-012 local review
+
+- Reordered the lateral campaign path so Preparación inicial follows Resumen.
+- Removed duplicated Preparación navigation and moved Base operativa into chapter 1.
+- Moved candidate progress and Qué hacer ahora into Resumen.
+- Reduced the candidacy chapter to Perfil y riesgos plus subordinate evidence.
+- Replaced specialist “Workspace ejecutivo” wording with plain ES/EN labels.
+- Focused tests, lint, TypeScript and browser accessibility review pass; production remains BLOCKED.

@@ -150,7 +150,7 @@ def test_fallback_ledger_rejects_stale_merge_blocker(
         validator.validate_fallback_records(payload, roadmap)
 
 
-def test_graph_harness_projection_selects_pending_training_spec() -> None:
+def test_graph_harness_projection_runs_reviewed_frontend_hierarchy_increment() -> None:
     validator = load_validator()
     payload = manifest()
 
@@ -158,17 +158,19 @@ def test_graph_harness_projection_selects_pending_training_spec() -> None:
 
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
     selected = execution["scheduler"]["selected_node"]
-    assert execution["scheduler"]["active_feature"] is None
+    assert execution["scheduler"]["active_feature"] == "C3-FRONT-012"
     assert execution["scheduler"]["ready_nodes"] == []
-    assert selected["id"] == "C3-TRAINING-001"
-    assert selected["state"] == "spec_ready"
-    assert selected["human_approval"] == "PENDING"
-    assert "approval_receipt" not in selected
-    assert selected["id"] not in {item["id"] for item in payload["roadmap"]}
+    assert selected["id"] == "C3-FRONT-012"
+    assert selected["state"] == "review"
+    assert selected["human_approval"] == "APPROVED"
+    assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
+    assert "SHIP" in selected["approval_receipt"]["statement"]
+    roadmap = {item["id"]: item for item in payload["roadmap"]}
+    assert roadmap["C3-FRONT-012"]["status"] == "REVIEWED"
     assert selected["specs"] == [
-        "specs/C3-TRAINING-001/requirements.md",
-        "specs/C3-TRAINING-001/design.md",
-        "specs/C3-TRAINING-001/tasks.md",
+        "specs/C3-FRONT-012/requirements.md",
+        "specs/C3-FRONT-012/design.md",
+        "specs/C3-FRONT-012/tasks.md",
     ]
 
 
@@ -186,13 +188,13 @@ def test_graph_harness_projection_rejects_stale_canonical_runtime_state() -> Non
         validator.validate_graph_harness_execution(payload)
 
 
-def test_graph_harness_projection_rejects_spec_ready_approval_bypass(
+def test_graph_harness_projection_rejects_active_approval_regression(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     validator = load_validator()
     payload = manifest()
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
-    execution["scheduler"]["selected_node"]["human_approval"] = "APPROVED"
+    execution["scheduler"]["selected_node"]["human_approval"] = "PENDING"
     original_load_json = validator.load_json
 
     def load_json(path: Path) -> dict[str, Any]:
@@ -201,19 +203,17 @@ def test_graph_harness_projection_rejects_spec_ready_approval_bypass(
         return original_load_json(path)
 
     monkeypatch.setattr(validator, "load_json", load_json)
-    with pytest.raises(AssertionError, match="spec-ready node bypassed human approval"):
+    with pytest.raises(AssertionError, match="active node lacks human approval"):
         validator.validate_graph_harness_execution(payload)
 
 
-def test_graph_harness_projection_rejects_pending_approval_receipt(
+def test_graph_harness_projection_rejects_missing_active_approval_receipt(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     validator = load_validator()
     payload = manifest()
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
-    execution["scheduler"]["selected_node"]["approval_receipt"] = {
-        "source": "USER_EXPLICIT_APPROVAL"
-    }
+    del execution["scheduler"]["selected_node"]["approval_receipt"]
     original_load_json = validator.load_json
 
     def load_json(path: Path) -> dict[str, Any]:
@@ -222,7 +222,7 @@ def test_graph_harness_projection_rejects_pending_approval_receipt(
         return original_load_json(path)
 
     monkeypatch.setattr(validator, "load_json", load_json)
-    with pytest.raises(AssertionError, match="pending node cannot contain an approval receipt"):
+    with pytest.raises(AssertionError, match="approved node lacks an approval receipt"):
         validator.validate_graph_harness_execution(payload)
 
 

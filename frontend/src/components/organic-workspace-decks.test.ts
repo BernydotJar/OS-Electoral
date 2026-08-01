@@ -56,17 +56,16 @@ describe("organic workspace decks", () => {
     const html = renderToStaticMarkup(
       createElement(CandidateWorkspaceDeck, {
         dictionary,
-        actions: createElement("div", null, "Acciones"),
         profile: createElement("div", null, "Perfil"),
         evidence: createElement("div", null, "Evidencia"),
       }),
     );
 
-    expect(html).toContain('class="candidate-workspace-deck candidate-workspace-single"');
-    expect(html).toContain('id="candidate-profile-view-title"');
+    expect(html).toContain(
+      'class="candidate-workspace-deck candidate-workspace-single"',
+    );
     expect(html).toContain("Perfil y riesgos");
     expect(html).toContain('class="candidate-profile-flow"');
-    expect(html).toContain("Acciones");
     expect(html).toContain("Perfil");
     expect(html).toContain('class="candidate-evidence-disclosure"');
     expect(html).toContain("Fuentes y evidencia");
@@ -105,7 +104,7 @@ describe("organic workspace decks", () => {
       }),
     );
 
-    expect(html).toContain("Siguiente paso");
+    expect(html).toContain("Qué hacer ahora");
     expect(html).toContain("Definir y verificar identidad");
     expect(html).toContain("Falta evidencia verificable");
     expect(html).toContain("Preparación interna activa");

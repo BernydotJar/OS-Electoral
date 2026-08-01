@@ -1224,6 +1224,41 @@
       "post_merge_ci_conclusion": "SUCCESS",
       "post_merge_artifact_id": 8813212488,
       "post_merge_artifact_digest": "sha256:14858f9dabeddb69ef988319b4415bcc5d185887dfb2ecf0a5be4c576d236a25"
+    },
+    {
+      "task_id": "C3-FRONT-012",
+      "owner": "WS-06/WS-07",
+      "status": "REVIEWED",
+      "evidence": [
+        "specs/C3-FRONT-012/requirements.md",
+        "specs/C3-FRONT-012/design.md",
+        "specs/C3-FRONT-012/tasks.md",
+        "docs/testing/c3-front-012-evidence.md",
+        "program/iterations/c3-front-012.md",
+        "program/validations/c3-front-012.json",
+        "progress/review_C3-FRONT-012.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted CI, PR review and merge remain pending"
+      ],
+      "approval": {
+        "recorded_at": "2026-07-31T22:55:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly approved C3-FRONT-012 for SHIP implementation by requesting the campaign hierarchy changes and publication for review.",
+        "scope": "Frontend information architecture, plain ES/EN copy, tests and non-production browser evidence only; no authorization change, production deployment, spending or political external effects."
+      },
+      "base_main_sha": "48f2d12aeec30361182c028e101678c940ab616a",
+      "branch": "agent/c3-front-012-journey-navigation",
+      "local_verification": {
+        "focused_frontend_tests": 21,
+        "eslint": "PASS",
+        "typescript": "PASS",
+        "dynamic_browser_review": "PASS",
+        "wcag_2_2_aa_axe_violations": 0,
+        "horizontal_overflow": "NONE",
+        "unexpected_outbound_hosts": 0
+      }
     }
   ]
 }
