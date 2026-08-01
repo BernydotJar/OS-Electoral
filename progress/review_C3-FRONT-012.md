@@ -22,3 +22,7 @@ Reordered the exact-grant sidebar, moved readiness into chapter 1, separated can
 ## Gate
 
 Production remains blocked. No external effect, authority change or deployment is included.
+
+## Hosted critic finding
+
+The first hosted run failed closed because the reviewer expected the pre-change action label inside Candidatura. The repaired reviewer now proves that action guidance belongs to Resumen and is absent from Candidatura in both locales. The failed run remains retained as superseded evidence pending a repaired exact-head run.

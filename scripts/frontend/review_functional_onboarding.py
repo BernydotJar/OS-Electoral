@@ -410,8 +410,8 @@ async def review() -> dict[str, object]:
             "candidate profile is not visible after dossier creation",
         )
         require(
-            await page.get_by_text("Siguiente paso", exact=True).count() == 1,
-            "candidate action guidance missing after dossier creation",
+            await page.get_by_text("Qué hacer ahora", exact=True).count() == 0,
+            "candidate next-action guidance leaked into the candidacy chapter",
         )
         require(
             await page.get_by_role("tab").count() == 0,
@@ -928,6 +928,17 @@ async def review() -> dict[str, object]:
         await assert_accessible(page, "functional-desktop-es-team")
         await page.screenshot(path=ARTIFACT_DIR / "functional-desktop-es.png", full_page=True)
 
+        await page.goto(f"{BASE_URL}/es", wait_until="networkidle")
+        require(
+            await page.get_by_role("heading", name="Resumen de candidatura", exact=True).count()
+            == 1,
+            "candidate summary is unavailable from the Spanish overview",
+        )
+        require(
+            await page.get_by_text("Qué hacer ahora", exact=True).count() == 1,
+            "candidate next-action guidance is missing from the Spanish overview",
+        )
+
         english = await browser.new_page(
             viewport={"width": 1280, "height": 900},
             locale="en-US",
@@ -967,8 +978,8 @@ async def review() -> dict[str, object]:
             "English candidate profile is unavailable",
         )
         require(
-            await english.get_by_text("Next step", exact=True).count() == 1,
-            "English candidate action brief is unavailable",
+            await english.get_by_text("What to do now", exact=True).count() == 0,
+            "English candidate next-action guidance leaked into the candidacy chapter",
         )
         require(
             await english.get_by_role("tab").count() == 0,
@@ -979,6 +990,15 @@ async def review() -> dict[str, object]:
         require(
             await english.get_by_role("button", name="Add source").count() == 1,
             "English candidate evidence editor is unavailable",
+        )
+        await english.goto(f"{BASE_URL}/en", wait_until="networkidle")
+        require(
+            await english.get_by_role("heading", name="Candidacy summary", exact=True).count() == 1,
+            "English candidacy summary is unavailable from the overview",
+        )
+        require(
+            await english.get_by_text("What to do now", exact=True).count() == 1,
+            "English candidate next-action guidance is missing from the overview",
         )
         await english.goto(f"{BASE_URL}/en/campaign/team", wait_until="networkidle")
         require(

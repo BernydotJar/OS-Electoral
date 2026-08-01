@@ -23,3 +23,7 @@ The sidebar follows the five-chapter journey, Base operativa is inside Preparaci
 ## Current state
 
 Focused tests, browser review and the complete repository gate pass. Hosted exact-head review remains.
+
+## Hosted critic repair
+
+Run `30685228471` found a stale browser assertion for the retired `Siguiente paso` copy. The product hierarchy was correct; the reviewer was repaired to enforce summary ownership and candidate-chapter absence in ES/EN. Nine other CI jobs and visual run `30685228478` were green.

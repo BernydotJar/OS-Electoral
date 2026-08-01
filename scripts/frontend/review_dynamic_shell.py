@@ -179,6 +179,15 @@ async def review() -> dict[str, object]:
             == 0,
             "chapter workspaces leaked into the command overview",
         )
+        require(
+            await desktop.get_by_role("heading", name="Resumen de candidatura", exact=True).count()
+            == 1,
+            "candidate summary is missing from the command overview",
+        )
+        require(
+            await desktop.get_by_text("Qué hacer ahora", exact=True).count() == 1,
+            "candidate next-action guidance is missing from the command overview",
+        )
         path_disclosure = desktop.locator(".command-path-disclosure")
         require(await path_disclosure.count() == 1, "complete path disclosure missing")
         require(
@@ -276,8 +285,13 @@ async def review() -> dict[str, object]:
             "candidate profile is not visible",
         )
         require(
-            await desktop.get_by_text("Siguiente paso", exact=True).count() == 1,
-            "candidate action guidance is missing",
+            await desktop.get_by_text("Qué hacer ahora", exact=True).count() == 0,
+            "candidate next-action guidance leaked from Resumen into Candidatura",
+        )
+        require(
+            await desktop.get_by_role("heading", name="Resumen de candidatura", exact=True).count()
+            == 0,
+            "candidate summary heading leaked into Candidatura",
         )
         require(
             await desktop.get_by_role("tab").count() == 0,
@@ -435,11 +449,16 @@ async def review() -> dict[str, object]:
             "English document lang missing",
         )
         require(
-            await desktop.get_by_role(
-                "heading", name="Candidate executive workspace", exact=True
-            ).count()
-            == 1,
-            "English candidate chapter heading mismatch",
+            await desktop.get_by_role("heading", name="Profile and risks", exact=True).count() == 1,
+            "English candidate profile heading mismatch",
+        )
+        require(
+            await desktop.get_by_role("heading", name="Candidacy summary", exact=True).count() == 0,
+            "English candidacy summary leaked into the candidacy chapter",
+        )
+        require(
+            await desktop.get_by_text("What to do now", exact=True).count() == 0,
+            "English candidate next-action guidance leaked into the candidacy chapter",
         )
         require(
             await desktop.locator(".campaign-experience").count() == 0,

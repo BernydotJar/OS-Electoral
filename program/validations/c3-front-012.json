@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "id": "C3-FRONT-012",
-  "status": "REVIEWED_LOCAL",
+  "status": "REVIEWED_REPAIR_PENDING_EXACT_HEAD",
   "base_main_sha": "48f2d12aeec30361182c028e101678c940ab616a",
   "branch": "agent/c3-front-012-journey-navigation",
   "approval": {
@@ -21,9 +21,21 @@
     "python_passed": 821,
     "python_skipped": 12,
     "coverage_percent": 90.11,
-    "frontend_tests": 145
+    "frontend_tests": 145,
+    "repaired_dynamic_browser_review": "PASS_CLEAN_BUILD",
+    "local_functional_harness": "ENVIRONMENT_BLOCKED_NESTED_DOCKER_LAYER_LCHOWN"
   },
   "production_status": "BLOCKED",
   "release_decision": "DENY_RELEASE",
-  "external_effects": "NONE"
+  "external_effects": "NONE",
+  "superseded_hosted_evidence": {
+    "head": "e802686e8c3f6f7b11f3fc0246f8c1fd18ffcdfe",
+    "campaignos_ci_run_id": 30685228471,
+    "conclusion": "FAILURE_STALE_BROWSER_COPY_ASSERTION",
+    "runtime_visual_run_id": 30685228478,
+    "runtime_visual_conclusion": "SUCCESS",
+    "failed_job_id": 91329541106,
+    "root_cause": "Browser reviewer expected retired candidate action copy inside the candidacy chapter.",
+    "repair": "Enforce candidate summary/action ownership in overview and absence in candidacy chapter for ES/EN dynamic and functional journeys."
+  }
 }
