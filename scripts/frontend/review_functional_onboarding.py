@@ -887,7 +887,13 @@ async def review() -> dict[str, object]:
 
         await navigate_from_chapter(page, "/es/campaign/evidence#candidate-workspace")
         await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
-        await page.get_by_role("tab", name="Fuentes y evidencia").click()
+        persisted_evidence = page.locator(".candidate-evidence-disclosure")
+        require(
+            await persisted_evidence.count() == 1,
+            "candidate evidence disclosure is missing after chapter navigation",
+        )
+        if not await persisted_evidence.evaluate("element => element.open"):
+            await persisted_evidence.locator(":scope > summary").click()
         require(
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence did not persist on its chapter route",
