@@ -752,3 +752,13 @@
 - Frontend lint, strict TypeScript, 120 tests, production build and zero-vulnerability audit pass. Focused Graph Harness/program validation passes with 14 tests.
 - `C3-FRONT-008R1` is the sole active approved SHIP node. Dynamic/functional browser review, full repository verification, exact-head hosted CI and merge evidence remain pending.
 - `C3-PERF-001` remains blocked by its independent human approval gate. Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.
+
+## 2026-08-01 — C3-FRONT-011 merge closure and C3-OPS-002 selection
+
+- Final review head `d8e84b25ca252674275bdce7eea5bf076314a9f6` passed CampaignOS CI `30679356392`, Runtime Visual Review `30679356434`, PostgreSQL 18/API/browser creation and candidate-evidence persistence, supply-chain, recovery, CodeQL, dependency, secret, Terraform plan-only and stack gates.
+- Squash-merged PR `#146` to `main@297a941a274e79daadfbec2762f8d717f605ca72` at `2026-08-01T02:11:54Z`; post-merge CI `30679521520` passed all ten jobs.
+- Marked `C3-FRONT-011` `MERGED_TO_MAIN` and removed its active-feature projection.
+- Selected `C3-OPS-002` as `spec_ready` because the repository `rollback-runbook` gate remains `NOT_IMPLEMENTED`, while its bounded policy, validator and local rehearsal require no cloud spend or production access.
+- Added complete SHIP requirements, design and tasks. Implementation remains blocked by explicit human approval.
+- Managed staging, live environments, managed load/rollback, RPO/RTO acceptance and production approval remain separate blocked gates.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

@@ -121,3 +121,11 @@ Current review head: `d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a`.
 - Critic finding `C3-FRONT-011-F10` is `RESOLVED_VERIFIED`.
 
 The node is `CI_GREEN` and ready for its already-authorized merge. Production remains `BLOCKED`; release remains `DENY_RELEASE`.
+
+## Merge and post-merge closure
+
+- Final review head `d8e84b25ca252674275bdce7eea5bf076314a9f6` passed CampaignOS CI `30679356392` and Runtime Visual Review `30679356434`.
+- The retained final-head browser artifact is `8811684666` with digest `sha256:be55eb7dbfa065348ffd3f45fc2e2d53930eb08917f401c455d76cd965eccfb2`.
+- PR `#146` was squash-merged at `2026-08-01T02:11:54Z` to `main@297a941a274e79daadfbec2762f8d717f605ca72`.
+- Post-merge CampaignOS CI `30679521520` completed `SUCCESS` with all ten jobs green.
+- `C3-FRONT-011` is `MERGED_TO_MAIN`; production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.

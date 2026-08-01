@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-07-31",
-  "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
+  "updated_at": "2026-08-01",
+  "branch": "agent/c3-front-011-post-merge-reconciliation",
   "current_increment": "C3-FRONT-011",
-  "iteration_status": "CI_GREEN",
+  "iteration_status": "MERGED_TO_MAIN",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "QA_COMMAND_SURFACE_ACTIVE",
-      "next_increment": "C3-FRONT-008R1"
+      "status": "CANDIDATE_GUIDANCE_AND_GOVERNED_ENTRY_MERGED",
+      "next_increment": "NONE_PRODUCT_DELIVERY_COMPLETE"
     },
     {
       "id": "WS-07",
@@ -99,14 +99,14 @@
     {
       "id": "WS-14",
       "name": "Testing, Observability and Operations",
-      "status": "OBSERVABILITY_CI_GREEN_RECOVERY_VERIFIED",
-      "next_increment": "C3-RELEASE-001"
+      "status": "OBSERVABILITY_RECOVERY_AND_LOCAL_LOAD_MERGED",
+      "next_increment": "C3-OPS-002"
     },
     {
       "id": "WS-15",
       "name": "Documentation, Migration and Release",
-      "status": "RELEASE_AUDIT_CI_GREEN",
-      "next_increment": "C3-RELEASE-001"
+      "status": "RELEASE_AUDIT_MERGED_ROLLBACK_SPEC_READY",
+      "next_increment": "C3-OPS-002"
     }
   ],
   "ready_tasks": [],
@@ -479,35 +479,7 @@
     "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
     "frontend_target_verified": true
   },
-  "active_local_increment": {
-    "id": "C3-FRONT-011",
-    "state": "CI_GREEN",
-    "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
-    "base": "main@1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
-    "approved_spec": "specs/C3-FRONT-011/requirements.md",
-    "approval_recorded_at": "2026-07-31T15:35:00-06:00",
-    "production_status": "BLOCKED",
-    "release_decision": "DENY_RELEASE",
-    "external_effects": "NONE",
-    "next_action": "MERGE_PULL_REQUEST_146",
-    "review_artifact": "progress/review_C3-FRONT-011.md",
-    "local_evidence": [
-      "docs/testing/c3-front-011-campol-consultant-evaluation.md",
-      "docs/testing/c3-front-011-evidence.md",
-      "program/iterations/c3-front-011.md",
-      "program/validations/c3-front-011.json"
-    ],
-    "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a",
-    "repair_commits": [
-      "43d5c3aad7f5b9214a547dcb416f5d8a8efeee6f"
-    ],
-    "review_head": "d74922ec1a4cb6991a9cb3e91d4fad9953d19c6a",
-    "pull_request": 146,
-    "campaignos_ci_run_id": 30679126973,
-    "runtime_visual_run_id": 30679126971,
-    "hosted_evidence_artifact_id": 8811608118,
-    "hosted_verified_at": "2026-08-01T02:03:51Z"
-  },
+  "active_local_increment": null,
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
     "component": "Cloud_Sandbox_MCP.git_push isolated-workspace wrapper",
@@ -557,10 +529,10 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-FRONT-011",
-    "selected_feature": "C3-FRONT-011",
-    "selected_feature_state": "review",
-    "approval_gate": "APPROVED",
+    "active_feature": null,
+    "selected_feature": "C3-OPS-002",
+    "selected_feature_state": "spec_ready",
+    "approval_gate": "PENDING",
     "ready_nodes": []
   },
   "residual_blockers": []

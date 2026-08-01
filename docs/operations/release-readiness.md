@@ -50,4 +50,4 @@ Current result: `DENY_RELEASE` / production `BLOCKED`.
 
 ## Current next safe action
 
-Human review of the stacked C3-OBS and C3-RELEASE pull requests is safe. Environment creation, Terraform apply and deployment remain prohibited until separately authorized.
+Review and explicitly approve the `C3-OPS-002` SHIP specification for a cost-free rollback policy, validator and constrained local/CI rehearsal. This work may improve the repository rollback-runbook gate only; environment creation, Terraform apply, registry publication, managed rollback and deployment remain prohibited until separately authorized.

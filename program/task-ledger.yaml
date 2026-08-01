@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-07-31",
+  "updated_at": "2026-08-01",
   "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
   "entries": [
     {
@@ -1119,7 +1119,7 @@
     {
       "task_id": "C3-FRONT-011",
       "owner": "WS-06/WS-07/WS-02",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-FRONT-011/requirements.md",
         "specs/C3-FRONT-011/design.md",
@@ -1149,7 +1149,17 @@
       "campaignos_ci_run_id": 30679126973,
       "runtime_visual_run_id": 30679126971,
       "hosted_evidence_artifact_id": 8811608118,
-      "hosted_verified_at": "2026-08-01T02:03:51Z"
+      "hosted_verified_at": "2026-08-01T02:03:51Z",
+      "final_review_head": "d8e84b25ca252674275bdce7eea5bf076314a9f6",
+      "final_campaignos_ci_run_id": 30679356392,
+      "final_runtime_visual_run_id": 30679356434,
+      "final_artifact_id": 8811684666,
+      "final_artifact_digest": "sha256:be55eb7dbfa065348ffd3f45fc2e2d53930eb08917f401c455d76cd965eccfb2",
+      "merge_strategy": "SQUASH",
+      "merged_at": "2026-08-01T02:11:54Z",
+      "main_sha": "297a941a274e79daadfbec2762f8d717f605ca72",
+      "post_merge_ci_run_id": 30679521520,
+      "post_merge_ci_conclusion": "SUCCESS"
     }
   ]
 }
