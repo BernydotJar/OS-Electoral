@@ -1,6 +1,6 @@
 # C3-OPS-002 review
 
-Review state: `CI_GREEN`
+Review state: `MERGED_TO_MAIN`
 
 ## Producer
 
@@ -15,13 +15,9 @@ Focused tests attempt destructive downgrade, mutable artifact use, unknown schem
 - Security: PASS in focused and complete local suites.
 - Data correctness: migration chain, classification, local no-mutation rehearsal and exact-head PostgreSQL 18 receipt PASS.
 - Failure modes: ten required scenarios PASS locally.
-- Observability/evidence: strict success and failure receipts PASS locally; hosted artifact pending.
-- Operations: operator runbook and staging handoff reviewed locally; independent PR review pending.
+- Observability/evidence: strict success/failure receipts and final/post-merge hosted artifacts PASS.
+- Operations: operator runbook, staging handoff and independent PR review PASS.
 - Production: `DENY_RELEASE`; no production rollback claim.
-
-## Required before closure
-
-Full repository gate, exact-head CI artifact, review-thread closure, merge and post-merge reconciliation.
 
 ## Environment limitation
 
@@ -39,4 +35,9 @@ Implementation commit: `0cb4180d72102c413c368de467090eb3684dfe6a`.
 - Receipt is bound to PR head `98faf8ab1f8e614555575bd560e3e593aedb2561` and base `e1f9c508c397a6df54a3363dde729375b55edb52`.
 - No issue comments, review submissions, inline threads or unresolved findings.
 
-Merge remains the next gated action; production remains blocked.
+PR `#148` is squash-merged at main `db8692d0f830496b413a8f56f2611eb611708545`; post-merge CI `30683834955` passed. Production remains blocked by managed-environment and human gates.
+
+
+## Merge and post-merge verification
+
+Final head `b4cbcac58f94aecfe12a1f104d1717677ecbfaf7` passed CampaignOS CI `30683667307`, Runtime Visual Review `30683667313` and retained artifact inspection before squash merge. Main `db8692d0f830496b413a8f56f2611eb611708545` then passed post-merge CI `30683834955`; artifact `8813212488` preserves the no-mutation/no-production-claim contract.

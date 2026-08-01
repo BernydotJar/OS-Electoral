@@ -781,3 +781,14 @@
 - The receipt binds the PR head to base `e1f9c508c397a6df54a3363dde729375b55edb52`, selects `ROLL_BACK_APPLICATION_ARTIFACT`, and records no source mutation, restore creation, production claim or external effect.
 - PR review found zero comments, reviews, inline threads or unresolved findings.
 - Marked `C3-OPS-002` `CI_GREEN`; managed staging rollback, PITR, RPO/RTO and production approval remain blocked.
+
+## 2026-08-01 — C3-OPS-002 merge closure and C3-TRAINING-001 selection
+
+- Final PR `#148` head `b4cbcac58f94aecfe12a1f104d1717677ecbfaf7` passed CampaignOS CI `30683667307`, Runtime Visual Review `30683667313`, PostgreSQL 18 rollback/recovery job `91325366844` and retained artifact inspection.
+- Squash-merged PR `#148` at protected main `db8692d0f830496b413a8f56f2611eb611708545`.
+- Post-merge CI `30683834955` passed all ten jobs; artifact `8813212488` confirms the exact main/base, migration classification, selected response, no source mutation, no restore creation, no production claim and no external effect.
+- Marked `C3-OPS-002` `MERGED_TO_MAIN` across manifest, task graph, ledger, fallback state and validation evidence.
+- Identified Training Academy as the remaining explicit `NOT_IMPLEMENTED` product gate. Added complete `C3-TRAINING-001` SHIP requirements, design and tasks based on repository-owned content, role-aware learning, bounded assessments and append-only completion receipts.
+- The Campol source informs only the safe practical sequence—research, strategy, organization, communication and measurement. Person-level voter databases, persuasion scoring and microtargeting remain excluded.
+- `C3-TRAINING-001` is `spec_ready`, has no approval receipt, is absent from the executable roadmap/ledger and cannot start before explicit human approval.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, external effects remain `NONE`.

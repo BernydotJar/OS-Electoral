@@ -50,4 +50,4 @@ Current result: `DENY_RELEASE` / production `BLOCKED`.
 
 ## Current next safe action
 
-Publish the reviewed `C3-OPS-002` source head and run the exact-head PostgreSQL 18 rollback rehearsal. Retain the sanitized receipt, resolve every review finding, and merge only after all required checks pass. Environment creation, Terraform apply, registry publication, managed rollback and deployment remain separately prohibited until authorized.
+Human-review the complete `C3-TRAINING-001` SHIP specification. Implementation must not begin until a scoped approval receipt exists. Environment creation, Terraform apply, registry publication, managed rollback and deployment remain separately prohibited until authorized.

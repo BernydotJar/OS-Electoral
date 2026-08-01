@@ -39,9 +39,9 @@ Important limits:
 | WS-05 | API and Background Jobs | Cumulative API/worker baseline PR #97 is exact-head CI-green; observability and external transport remain separate | C3-AGENT-001 |
 | WS-06 | Frontend, Design System and i18n | Static prototype | C3-FRONT-001 |
 | WS-07 | Guided Onboarding and Candidate Workspace | Guided intake and Candidate Workspace draft-PR CI-green with read-only ES/EN surfaces; authenticated editing and dedicated review separation pending | C3-TEAM-001 |
-| WS-08 | Team Builder and Training Academy | Team Builder PR `#94` is exact-head CI-green; authenticated editing and full academy content pending | C3-TRAINING-001 |
+| WS-08 | Team Builder and Training Academy | Team operations are merged; a complete governed bilingual Training Academy SHIP specification is ready and awaits explicit approval | C3-TRAINING-001 approval |
 | WS-09 | Strategy and Decision Governance | Evidence-first Decision Room PR #96 is exact-head CI-green; exact human receipt implemented, external effects disabled | C3-API-001 |
-| WS-10 | Roadmap, War Room and Campaign Health | Durable roadmap and immutable Daily War Room verified locally/PostgreSQL/browser; publication and operations follow-up pending | C3-OPS-002 |
+| WS-10 | Roadmap, War Room and Campaign Health | Durable roadmap, Daily War Room and fail-closed rollback baseline are merged and post-merge verified; managed operations remain blocked | Managed staging authorization |
 | WS-11 | Agent Runtime, Guardrails and Evals | Bounded provider-neutral no-tool runtime PR #98 is exact-head CI-green; no live provider, privacy approval or human disposition UI | C3-CI-001 |
 | WS-12 | AWS Platform and Terraform | Plan-only Terraform PR #100 is exact-head CI/E2E-green; no AWS account, apply or environment evidence | C3-SEC-001 |
 | WS-13 | Security, Privacy and Compliance | IAM, data and plan-only infrastructure dependencies satisfied; executable next | C3-SEC-001 |

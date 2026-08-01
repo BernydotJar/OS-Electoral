@@ -1,6 +1,6 @@
 # C3-OPS-002 evidence
 
-Status: `CI_GREEN`; exact-head hosted PostgreSQL 18 evidence and independent review passed.
+Status: `MERGED_TO_MAIN`; final exact-head and post-merge PostgreSQL 18 evidence passed.
 
 ## Implemented boundary
 
@@ -50,13 +50,9 @@ The focused tests reject:
 - Terraform: plan/test only PASS; no apply;
 - program, release, security, eval, supply-chain and safety validators PASS.
 
-## Pending evidence
+## Remaining managed-environment evidence
 
-- exact-head PostgreSQL 18 rehearsal and retained artifact;
-- complete PR checks and independent review;
-- final merge and post-merge CI.
-
-Managed staging rollback, production artifact promotion, PITR, RPO/RTO and production approval remain absent and blocked.
+Managed staging artifact rollback, production artifact promotion, PITR, accepted RPO/RTO and production approval remain absent and blocked.
 
 ## Local environment limitation
 
@@ -85,3 +81,17 @@ PR `#148` head `98faf8ab1f8e614555575bd560e3e593aedb2561` passed CampaignOS CI `
 - PR review: zero comments, reviews, inline threads or unresolved findings.
 
 The hosted gate resolves the local nested-Docker actionlint limitation. It does not prove managed staging or production rollback.
+
+## Final exact-head and merge closure
+
+- final review head: `b4cbcac58f94aecfe12a1f104d1717677ecbfaf7`;
+- CampaignOS CI `30683667307`: `SUCCESS`;
+- Runtime Visual Review `30683667313`: `SUCCESS`;
+- rollback/recovery job `91325366844`: `SUCCESS`;
+- final artifact `8813153523`, digest `sha256:c2fc258d407c9bac39ff9d7bf37c8663a4d6c1991f613ad219e228a21a0f2562`;
+- PR `#148` squash-merged at `2026-08-01T04:23:01Z`;
+- merged main `db8692d0f830496b413a8f56f2611eb611708545`;
+- post-merge CI `30683834955`: `SUCCESS`, all ten jobs green;
+- post-merge artifact `8813212488`, digest `sha256:14858f9dabeddb69ef988319b4415bcc5d185887dfb2ecf0a5be4c576d236a25`.
+
+The post-merge receipt is bound to main `db8692d0f830496b413a8f56f2611eb611708545` and previous known good `e1f9c508c397a6df54a3363dde729375b55edb52`. It records `PASS`, `source_mutation=NONE`, `restore_target_state=NOT_CREATED`, `production_rollback_claim=false` and `external_effects=NONE`.
