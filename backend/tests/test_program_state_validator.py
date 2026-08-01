@@ -150,7 +150,7 @@ def test_fallback_ledger_rejects_stale_merge_blocker(
         validator.validate_fallback_records(payload, roadmap)
 
 
-def test_graph_harness_projection_runs_reviewed_frontend_hierarchy_increment() -> None:
+def test_graph_harness_projection_runs_approved_training_increment() -> None:
     validator = load_validator()
     payload = manifest()
 
@@ -158,19 +158,20 @@ def test_graph_harness_projection_runs_reviewed_frontend_hierarchy_increment() -
 
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
     selected = execution["scheduler"]["selected_node"]
-    assert execution["scheduler"]["active_feature"] == "C3-FRONT-012"
+    assert execution["scheduler"]["active_feature"] == "C3-TRAINING-001"
     assert execution["scheduler"]["ready_nodes"] == []
-    assert selected["id"] == "C3-FRONT-012"
-    assert selected["state"] == "review"
+    assert selected["id"] == "C3-TRAINING-001"
+    assert selected["state"] == "in_progress"
     assert selected["human_approval"] == "APPROVED"
     assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
     assert "SHIP" in selected["approval_receipt"]["statement"]
     roadmap = {item["id"]: item for item in payload["roadmap"]}
-    assert roadmap["C3-FRONT-012"]["status"] == "REVIEWED"
+    assert roadmap["C3-FRONT-012"]["status"] == "CI_GREEN"
+    assert roadmap["C3-TRAINING-001"]["status"] == "ACTIVE"
     assert selected["specs"] == [
-        "specs/C3-FRONT-012/requirements.md",
-        "specs/C3-FRONT-012/design.md",
-        "specs/C3-FRONT-012/tasks.md",
+        "specs/C3-TRAINING-001/requirements.md",
+        "specs/C3-TRAINING-001/design.md",
+        "specs/C3-TRAINING-001/tasks.md",
     ]
 
 
@@ -241,7 +242,7 @@ def test_graph_harness_projection_rejects_merge_gate_bypass(
         return original_load_json(path)
 
     monkeypatch.setattr(validator, "load_json", load_json)
-    with pytest.raises(AssertionError, match="lacks explicit merge authorization"):
+    with pytest.raises(AssertionError, match="bypassed the merge review gate"):
         validator.validate_graph_harness_execution(payload)
 
 

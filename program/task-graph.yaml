@@ -485,7 +485,7 @@
       "id": "C3-FRONT-012",
       "workstream": "WS-06",
       "title": "Clear campaign summary, preparation and candidate hierarchy",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-011"
       ],
@@ -494,6 +494,24 @@
         "Operational readiness is contained in chapter 1 rather than duplicated as a lateral destination",
         "Resumen owns candidate progress and Qu\u00e9 hacer ahora while Candidatura owns one Perfil y riesgos workspace",
         "ES/EN, route isolation, mobile, keyboard, reduced motion, overflow and WCAG browser checks pass without authority changes"
+      ]
+    },
+    {
+      "id": "C3-TRAINING-001",
+      "workstream": "WS-08",
+      "title": "Governed role-based Training Academy",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-TEAM-001",
+        "C3-TEAM-004",
+        "C3-FRONT-012",
+        "C3-OPS-002"
+      ],
+      "acceptance": [
+        "Strict repository-owned ES/EN catalog and role paths are versioned, source-attributed and safe to render",
+        "Exact-authorized assignments, bounded attempts and append-only completion receipts persist under forced RLS",
+        "Completion and recommendations have authority_effect NONE and create no grants, rankings, accreditation or political action",
+        "Accessible team-chapter academy, PostgreSQL, browser, security and complete repository gates pass"
       ]
     }
   ]

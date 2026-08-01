@@ -280,6 +280,14 @@ const es = {
       "Check-in operativo guardado con estado, salud y siguiente acción actualizados.",
     team_template_applied:
       "Plantilla aplicada: se conservaron las funciones existentes y se agregaron sólo las ausentes.",
+    training_assigned:
+      "Ruta de formación asignada. Ya puedes comenzar la primera lección.",
+    training_started:
+      "Lección iniciada. Revisa el contenido y completa la evaluación.",
+    training_passed:
+      "Módulo completado y recibo interno registrado. Esto no concede permisos.",
+    training_retry:
+      "La evaluación quedó registrada. Revisa la explicación y vuelve a intentar.",
     authorization_denied:
       "Esta acción necesita un permiso adicional. Tu información y el resto del workspace siguen disponibles.",
     conflict:
@@ -815,6 +823,49 @@ const es = {
       INFORMED: "Informado",
     },
   },
+  trainingAcademy: {
+    eyebrow: "FORMACIÓN · APRENDER ANTES DE EJECUTAR",
+    title: "Academia de campaña",
+    body: "Rutas internas por función para investigar, organizar, decidir y medir con límites claros.",
+    unavailable: "La academia no está disponible en este momento.",
+    notAuthorized: "Tu sesión no tiene acceso a la academia de esta campaña.",
+    noAssignmentTitle: "Elige una ruta para comenzar",
+    noAssignmentBody:
+      "La asignación registra un plan interno. No cambia tu rol ni concede permisos.",
+    assignAction: "Asignarme esta ruta",
+    pathLabel: "Ruta de aprendizaje",
+    roleLabel: "Función sugerida",
+    progressLabel: "Avance",
+    modulesLabel: "módulos completos",
+    nextLesson: "Siguiente lección",
+    objectives: "Qué aprenderás",
+    lesson: "Lección",
+    sources: "Fuentes internas",
+    startAction: "Comenzar lección",
+    assessment: "Comprobación de aprendizaje",
+    assessmentHelp:
+      "Elige una respuesta. El resultado es educativo y no se usa para clasificar personas.",
+    submitAction: "Enviar respuesta",
+    resultPass: "Módulo aprobado",
+    resultFail: "Revisa la explicación y vuelve a intentar",
+    attempts: "Intentos registrados",
+    completed: "Ruta completada",
+    receipts: "Comprobantes de finalización",
+    receiptLabel: "Finalización interna",
+    noReceipts: "Todavía no hay comprobantes.",
+    boundary:
+      "La formación no concede permisos, no evalúa desempeño laboral y no es una acreditación profesional.",
+    demoBoundary:
+      "Vista demostrativa de solo lectura: respuestas y avances deshabilitados.",
+    statusLabels: {
+      ASSIGNED: "Asignada",
+      IN_PROGRESS: "En curso",
+      COMPLETED: "Completada",
+      NOT_STARTED: "Pendiente",
+      PASS: "Aprobado",
+      FAIL: "Reintentar",
+    },
+  },
   strategyRoom: {
     eyebrow: "EVIDENCIA · HIPÓTESIS · DECISIÓN HUMANA",
     title: "Sala de estrategia y decisión",
@@ -1203,6 +1254,14 @@ const en: Dictionary = {
       "Operational check-in saved with updated status, health, and next action.",
     team_template_applied:
       "Template applied: existing functions were preserved and only missing roles were added.",
+    training_assigned:
+      "Learning path assigned. You can now start the first lesson.",
+    training_started:
+      "Lesson started. Review the content and complete the knowledge check.",
+    training_passed:
+      "Module completed and internal receipt recorded. This grants no permissions.",
+    training_retry:
+      "The attempt was recorded. Review the explanation and try again.",
     authorization_denied:
       "This action requires an additional permission. Your information and the rest of the workspace remain available.",
     conflict:
@@ -1734,6 +1793,48 @@ const en: Dictionary = {
       ACCOUNTABLE: "Accountable",
       CONSULTED: "Consulted",
       INFORMED: "Informed",
+    },
+  },
+  trainingAcademy: {
+    eyebrow: "TRAINING · LEARN BEFORE EXECUTION",
+    title: "Campaign academy",
+    body: "Internal role-based paths for research, organization, decisions, and measurement under clear limits.",
+    unavailable: "The academy is unavailable right now.",
+    notAuthorized: "Your session cannot access this campaign academy.",
+    noAssignmentTitle: "Choose a path to begin",
+    noAssignmentBody:
+      "Assignment records an internal plan. It does not change your role or grant permissions.",
+    assignAction: "Assign this path to me",
+    pathLabel: "Learning path",
+    roleLabel: "Suggested function",
+    progressLabel: "Progress",
+    modulesLabel: "modules completed",
+    nextLesson: "Next lesson",
+    objectives: "What you will learn",
+    lesson: "Lesson",
+    sources: "Internal sources",
+    startAction: "Start lesson",
+    assessment: "Knowledge check",
+    assessmentHelp:
+      "Choose an answer. The result is educational and is not used to rank people.",
+    submitAction: "Submit answer",
+    resultPass: "Module passed",
+    resultFail: "Review the explanation and try again",
+    attempts: "Recorded attempts",
+    completed: "Path completed",
+    receipts: "Completion receipts",
+    receiptLabel: "Internal completion",
+    noReceipts: "No receipts yet.",
+    boundary:
+      "Training grants no permissions, does not evaluate job performance, and is not professional accreditation.",
+    demoBoundary: "Read-only demonstration: answers and progress are disabled.",
+    statusLabels: {
+      ASSIGNED: "Assigned",
+      IN_PROGRESS: "In progress",
+      COMPLETED: "Completed",
+      NOT_STARTED: "Pending",
+      PASS: "Passed",
+      FAIL: "Try again",
     },
   },
   strategyRoom: {

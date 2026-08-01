@@ -931,3 +931,187 @@ export type StrategyWorkspaceReadEvidence = Readonly<{
   workspace: StrategyWorkspaceProjection;
   audit_event_id: UUID;
 }>;
+
+export type TrainingLocale = "es" | "en";
+export type TrainingModuleStatus = "APPROVED" | "RETIRED";
+export type TrainingAssignmentStatus = "ASSIGNED" | "IN_PROGRESS" | "COMPLETED";
+export type TrainingModuleProgressStatus =
+  "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
+export type TrainingAssessmentResult = "PASS" | "FAIL";
+
+export type TrainingObjective = Readonly<{
+  id: string;
+  text: string;
+}>;
+
+export type TrainingCatalogOption = Readonly<{
+  id: string;
+  label: string;
+}>;
+
+export type TrainingCatalogQuestion = Readonly<{
+  id: string;
+  prompt: string;
+  options: readonly TrainingCatalogOption[];
+}>;
+
+export type TrainingCatalogLesson = Readonly<{
+  id: string;
+  title: string;
+  body: string;
+  source_refs: readonly string[];
+}>;
+
+export type TrainingPathModule = Readonly<{
+  module_id: string;
+  version: string;
+  required: boolean;
+}>;
+
+export type TrainingCatalogModule = Readonly<{
+  module_id: string;
+  version: string;
+  status: TrainingModuleStatus;
+  title: string;
+  summary: string;
+  objectives: readonly TrainingObjective[];
+  lessons: readonly TrainingCatalogLesson[];
+  questions: readonly TrainingCatalogQuestion[];
+  passing_percent: number;
+  sources: readonly string[];
+  authority_effect: "NONE";
+}>;
+
+export type TrainingCatalogPath = Readonly<{
+  path_id: string;
+  version: string;
+  role_slugs: readonly string[];
+  modules: readonly TrainingPathModule[];
+  authority_effect: "NONE";
+}>;
+
+export type TrainingCatalogProjection = Readonly<{
+  locale: TrainingLocale;
+  catalog_digest: string;
+  modules: readonly TrainingCatalogModule[];
+  paths: readonly TrainingCatalogPath[];
+  authority_effect: "NONE";
+  external_effects: "NONE";
+}>;
+
+export type TrainingModuleProgressProjection = Readonly<{
+  id: UUID;
+  module_id: string;
+  module_version: string;
+  status: TrainingModuleProgressStatus;
+  attempt_count: number;
+  latest_result: TrainingAssessmentResult | null;
+  started_at: string | null;
+  completed_at: string | null;
+  version: number;
+}>;
+
+export type TrainingAssignmentProjection = Readonly<{
+  id: UUID;
+  tenant_id: UUID;
+  campaign_id: UUID;
+  principal_id: UUID;
+  path_id: string;
+  path_version: string;
+  role_slug: string | null;
+  status: TrainingAssignmentStatus;
+  modules: readonly TrainingModuleProgressProjection[];
+  completed_modules: number;
+  total_modules: number;
+  next_module_id: string | null;
+  catalog_digest: string;
+  version: number;
+  assigned_at: string;
+  due_at: string | null;
+  completed_at: string | null;
+  authority_effect: "NONE";
+  external_effects: "NONE";
+}>;
+
+export type TrainingAssignmentListEvidence = Readonly<{
+  assignments: readonly TrainingAssignmentProjection[];
+  audit_event_id: UUID;
+  authority_effect: "NONE";
+}>;
+
+export type TrainingAssignmentCreateInput = Readonly<{
+  principal_id: UUID;
+  path_id: string;
+  path_version: string;
+  catalog_digest: string;
+  role_slug?: string | null;
+  due_at?: string | null;
+}>;
+
+export type TrainingAssignmentCreateEvidence = Readonly<{
+  assignment: TrainingAssignmentProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
+export type TrainingModuleStartInput = Readonly<{
+  expected_assignment_version: number;
+  expected_progress_version: number;
+  catalog_digest: string;
+}>;
+
+export type TrainingAnswerSubmissionInput = Readonly<{
+  question_id: string;
+  option_ids: readonly string[];
+}>;
+
+export type TrainingAttemptInput = Readonly<{
+  locale: TrainingLocale;
+  expected_assignment_version: number;
+  expected_progress_version: number;
+  catalog_digest: string;
+  answers: readonly TrainingAnswerSubmissionInput[];
+}>;
+
+export type TrainingQuestionFeedback = Readonly<{
+  question_id: string;
+  correct: boolean;
+  explanation: string;
+}>;
+
+export type TrainingAssessmentOutcome = Readonly<{
+  result: TrainingAssessmentResult;
+  correct_count: number;
+  total_questions: number;
+  passing_percent: number;
+  feedback: readonly TrainingQuestionFeedback[];
+  authority_effect: "NONE";
+}>;
+
+export type TrainingCompletionReceiptProjection = Readonly<{
+  id: UUID;
+  assignment_id: UUID;
+  module_progress_id: UUID;
+  principal_id: UUID;
+  module_id: string;
+  module_version: string;
+  result: "PASS";
+  completed_at: string;
+  catalog_digest: string;
+  audit_event_id: UUID;
+  authority_effect: "NONE";
+  external_effects: "NONE";
+}>;
+
+export type TrainingAttemptEvidence = Readonly<{
+  assignment: TrainingAssignmentProjection;
+  outcome: TrainingAssessmentOutcome;
+  receipt: TrainingCompletionReceiptProjection | null;
+  audit_event_id: UUID;
+}>;
+
+export type TrainingReceiptListEvidence = Readonly<{
+  receipts: readonly TrainingCompletionReceiptProjection[];
+  audit_event_id: UUID;
+  authority_effect: "NONE";
+}>;

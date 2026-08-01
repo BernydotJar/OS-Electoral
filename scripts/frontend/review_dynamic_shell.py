@@ -526,6 +526,31 @@ async def review() -> dict[str, object]:
         await mobile_session_menu.locator("summary").click()
         await mobile.screenshot(path=ARTIFACT_DIR / "mobile-es.png", full_page=True)
 
+        # training academy demo review
+        await desktop.goto(f"{BASE_URL}/es/campaign/team", wait_until="networkidle")
+        require(
+            await desktop.get_by_role("heading", name="Academia de campaña", exact=True).count()
+            == 1,
+            "Spanish Training Academy is missing from the team chapter",
+        )
+        require(
+            await desktop.get_by_text(
+                "Vista demostrativa de solo lectura: respuestas y avances deshabilitados.",
+                exact=True,
+            ).count()
+            == 1,
+            "Training Academy demo boundary is missing",
+        )
+        require(
+            await desktop.get_by_role("button", name="Comenzar lección").count() == 0,
+            "read-only demo exposed a training mutation",
+        )
+        await desktop.goto(f"{BASE_URL}/en/campaign/team", wait_until="networkidle")
+        require(
+            await desktop.get_by_role("heading", name="Campaign academy", exact=True).count() == 1,
+            "English Training Academy is missing from the team chapter",
+        )
+
         await browser.close()
 
     require(not console_errors, f"browser console errors: {console_errors}")

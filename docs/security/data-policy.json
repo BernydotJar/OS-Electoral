@@ -41,6 +41,7 @@
     "candidate_evidence",
     "team_operations",
     "strategy_decision",
+    "training_progress",
     "agent_run",
     "audit_evidence",
     "rate_limit_bucket",
@@ -53,7 +54,10 @@
       "id": "identity_principal",
       "classification": "RESTRICTED",
       "owner": "Identity and Access",
-      "purposes": ["Authenticate a human principal", "Attribute authorized actions"],
+      "purposes": [
+        "Authenticate a human principal",
+        "Attribute authorized actions"
+      ],
       "retention_posture": "TENANT_LIFECYCLE_REVIEW_REQUIRED",
       "deletion_mode": "CONTROLLED_ANONYMIZATION_OR_LEGAL_HOLD",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
@@ -65,7 +69,10 @@
       "id": "membership_authority",
       "classification": "RESTRICTED",
       "owner": "Identity and Access",
-      "purposes": ["Enforce tenant and campaign authorization", "Preserve approval provenance"],
+      "purposes": [
+        "Enforce tenant and campaign authorization",
+        "Preserve approval provenance"
+      ],
       "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
       "deletion_mode": "REVOKE_AND_PRESERVE_ATTRIBUTABLE_RECEIPT",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
@@ -77,7 +84,9 @@
       "id": "identity_lifecycle",
       "classification": "RESTRICTED",
       "owner": "Identity and Access",
-      "purposes": ["Invite, session, support and revocation lifecycle"],
+      "purposes": [
+        "Invite, session, support and revocation lifecycle"
+      ],
       "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
       "deletion_mode": "REVOKE_AND_PRESERVE_ATTRIBUTABLE_RECEIPT",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
@@ -89,7 +98,9 @@
       "id": "campaign_workspace",
       "classification": "CONFIDENTIAL",
       "owner": "Campaign Operations",
-      "purposes": ["Operate an authorized tenant campaign workspace"],
+      "purposes": [
+        "Operate an authorized tenant campaign workspace"
+      ],
       "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
       "deletion_mode": "ARCHIVE_THEN_REVIEW_DELETE_OR_LEGAL_HOLD",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
@@ -101,7 +112,9 @@
       "id": "candidate_evidence",
       "classification": "RESTRICTED",
       "owner": "Candidate Governance",
-      "purposes": ["Document sourced candidate evidence for internal human review"],
+      "purposes": [
+        "Document sourced candidate evidence for internal human review"
+      ],
       "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
       "deletion_mode": "CORRECT_OR_RESTRICT_WITH_RECEIPT",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
@@ -113,7 +126,9 @@
       "id": "team_operations",
       "classification": "CONFIDENTIAL",
       "owner": "Team Governance",
-      "purposes": ["Assign accountable roles and bounded operational work"],
+      "purposes": [
+        "Assign accountable roles and bounded operational work"
+      ],
       "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
       "deletion_mode": "ARCHIVE_THEN_REVIEW_DELETE_OR_LEGAL_HOLD",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
@@ -125,8 +140,25 @@
       "id": "strategy_decision",
       "classification": "CONFIDENTIAL",
       "owner": "Strategy Governance",
-      "purposes": ["Preserve evidence-bound internal human decisions"],
+      "purposes": [
+        "Preserve evidence-bound internal human decisions"
+      ],
       "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
+      "deletion_mode": "APPEND_CORRECTION_AND_LEGAL_HOLD_REVIEW",
+      "processor_boundary": "APPLICATION_DATABASE_ONLY",
+      "feature_state": "ENABLED_PREPRODUCTION",
+      "legal_review": "REQUIRED",
+      "production_ready": false
+    },
+    {
+      "id": "training_progress",
+      "classification": "CONFIDENTIAL",
+      "owner": "Training Governance",
+      "purposes": [
+        "Assign approved internal learning paths",
+        "Record bounded educational progress and attributable completion receipts"
+      ],
+      "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
       "deletion_mode": "APPEND_CORRECTION_AND_LEGAL_HOLD_REVIEW",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
       "feature_state": "ENABLED_PREPRODUCTION",
@@ -137,7 +169,9 @@
       "id": "agent_run",
       "classification": "CONFIDENTIAL",
       "owner": "AI Governance",
-      "purposes": ["Preserve bounded internal recommendation or refusal evidence"],
+      "purposes": [
+        "Preserve bounded internal recommendation or refusal evidence"
+      ],
       "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
       "deletion_mode": "APPEND_CORRECTION_AND_LEGAL_HOLD_REVIEW",
       "processor_boundary": "NO_LIVE_AI_PROVIDER",
@@ -149,7 +183,9 @@
       "id": "audit_evidence",
       "classification": "RESTRICTED",
       "owner": "Security and Compliance",
-      "purposes": ["Attribute security-sensitive reads, writes and approvals"],
+      "purposes": [
+        "Attribute security-sensitive reads, writes and approvals"
+      ],
       "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
       "deletion_mode": "APPEND_CORRECTION_OWNER_BREAK_GLASS_ONLY",
       "processor_boundary": "APPLICATION_DATABASE_ONLY",
@@ -176,7 +212,9 @@
       "id": "object_attachment",
       "classification": "RESTRICTED",
       "owner": "Data Protection",
-      "purposes": ["Future evidence attachment under quarantine and disposition controls"],
+      "purposes": [
+        "Future evidence attachment under quarantine and disposition controls"
+      ],
       "retention_posture": "CAMPAIGN_LIFECYCLE_REVIEW_REQUIRED",
       "deletion_mode": "FEATURE_DISABLED_NO_OBJECT_ADMISSION",
       "processor_boundary": "OBJECT_STORAGE_DISABLED",
@@ -188,7 +226,9 @@
       "id": "terraform_state",
       "classification": "RESTRICTED",
       "owner": "Platform Security",
-      "purposes": ["Future encrypted infrastructure state and lock coordination"],
+      "purposes": [
+        "Future encrypted infrastructure state and lock coordination"
+      ],
       "retention_posture": "SECURITY_EVIDENCE_REVIEW_REQUIRED",
       "deletion_mode": "OWNER_BREAK_GLASS_AND_ENVIRONMENT_RETIREMENT_REVIEW",
       "processor_boundary": "REMOTE_STATE_NOT_CREATED",
@@ -200,7 +240,9 @@
       "id": "secret_or_token",
       "classification": "PROHIBITED",
       "owner": "Platform Security",
-      "purposes": ["Application records must never persist credentials or bearer material"],
+      "purposes": [
+        "Application records must never persist credentials or bearer material"
+      ],
       "retention_posture": "PROHIBITED",
       "deletion_mode": "PROHIBITED_STORAGE_ROTATE_IF_DETECTED",
       "processor_boundary": "SECRET_STORE_REFERENCE_ONLY",

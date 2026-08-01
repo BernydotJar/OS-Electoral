@@ -42,7 +42,7 @@ test: ## Run the complete locked pytest suite with the enforced coverage floor.
 
 test-postgres: ## Run isolated PostgreSQL migration and RLS tests (requires *_test URL).
 	@test -n "$(CAMPAIGNOS_TEST_DATABASE_URL)" || { echo "CAMPAIGNOS_TEST_DATABASE_URL is required" >&2; exit 1; }
-	@CAMPAIGNOS_TEST_DATABASE_URL="$(CAMPAIGNOS_TEST_DATABASE_URL)" $(UV) run --locked pytest -W error -m postgres backend/tests/test_database.py backend/tests/test_campaign_create_postgres.py backend/tests/test_identity_lifecycle_postgres.py backend/tests/test_guided_intake_postgres.py backend/tests/test_candidate_workspace_postgres.py backend/tests/test_team_workspace_postgres.py backend/tests/test_campaign_operations_postgres.py backend/tests/test_strategy_workspace_postgres.py backend/tests/test_agent_run_postgres.py backend/tests/test_security_postgres.py backend/tests/test_rate_limit_postgres.py
+	@CAMPAIGNOS_TEST_DATABASE_URL="$(CAMPAIGNOS_TEST_DATABASE_URL)" $(UV) run --locked pytest -W error -m postgres backend/tests/test_database.py backend/tests/test_campaign_create_postgres.py backend/tests/test_identity_lifecycle_postgres.py backend/tests/test_guided_intake_postgres.py backend/tests/test_candidate_workspace_postgres.py backend/tests/test_team_workspace_postgres.py backend/tests/test_campaign_operations_postgres.py backend/tests/test_strategy_workspace_postgres.py backend/tests/test_agent_run_postgres.py backend/tests/test_security_postgres.py backend/tests/test_rate_limit_postgres.py backend/tests/test_training_postgres.py
 
 performance-postgres: ## Run bounded authenticated load verification and validate its sanitized receipt.
 	@test -n "$(CAMPAIGNOS_TEST_DATABASE_URL)" || { echo "CAMPAIGNOS_TEST_DATABASE_URL is required" >&2; exit 1; }

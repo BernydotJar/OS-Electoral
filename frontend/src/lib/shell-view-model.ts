@@ -19,8 +19,12 @@ import type {
   TeamWorkspaceTemplatePreviewInput,
   StrategyWorkspaceReadEvidence,
   TenantMeResponse,
+  TrainingAssignmentListEvidence,
+  TrainingCatalogProjection,
+  TrainingReceiptListEvidence,
   WarRoomSnapshotReadEvidence,
 } from "@/lib/contracts";
+import { deriveTrainingCapabilities } from "@/lib/journey-capabilities";
 import { reconcileWarRoomSnapshot } from "@/lib/operations-contract-parser";
 import {
   demoCampaign,
@@ -28,6 +32,9 @@ import {
   demoCampaignRoadmap,
   demoGuidedIntake,
   demoTeamWorkspace,
+  demoTrainingAssignments,
+  demoTrainingCatalog,
+  demoTrainingReceipts,
   demoStrategyWorkspace,
   demoWarRoomSnapshot,
   demoReadiness,
@@ -54,6 +61,9 @@ export type WarRoomSnapshotAvailability =
 
 export type StrategyWorkspaceAvailability =
   "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
+
+export type TrainingAvailability =
+  "AVAILABLE" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
 
 export type ShellViewModel =
   | Readonly<{ kind: "unauthenticated" }>
@@ -82,6 +92,10 @@ export type ShellViewModel =
       warRoomSnapshotAvailability: WarRoomSnapshotAvailability;
       strategyWorkspace: StrategyWorkspaceReadEvidence | null;
       strategyWorkspaceAvailability: StrategyWorkspaceAvailability;
+      trainingCatalog: TrainingCatalogProjection | null;
+      trainingAssignments: TrainingAssignmentListEvidence | null;
+      trainingReceipts: TrainingReceiptListEvidence | null;
+      trainingAvailability: TrainingAvailability;
     }>
   | Readonly<{
       kind: "unavailable";
@@ -96,6 +110,7 @@ function validUuid(value: string | undefined): value is string {
 
 export async function loadShellViewModel(
   options: Readonly<{
+    locale?: "es" | "en";
     teamTemplatePreview?: TeamWorkspaceTemplatePreviewInput | null;
   }> = {},
 ): Promise<ShellViewModel> {
@@ -138,6 +153,10 @@ export async function loadShellViewModel(
       warRoomSnapshotAvailability: "AVAILABLE",
       strategyWorkspace: demoStrategyWorkspace,
       strategyWorkspaceAvailability: "AVAILABLE",
+      trainingCatalog: demoTrainingCatalog,
+      trainingAssignments: demoTrainingAssignments,
+      trainingReceipts: demoTrainingReceipts,
+      trainingAvailability: "AVAILABLE",
     };
   }
 
@@ -415,6 +434,60 @@ export async function loadShellViewModel(
       }
     }
 
+    const trainingCapabilities = deriveTrainingCapabilities(
+      tenantIdentity.application_memberships,
+      campaign.id,
+    );
+    let trainingCatalog: TrainingCatalogProjection | null = null;
+    let trainingAssignments: TrainingAssignmentListEvidence | null = null;
+    let trainingReceipts: TrainingReceiptListEvidence | null = null;
+    let trainingAvailability: TrainingAvailability = "NOT_AUTHORIZED";
+    if (trainingCapabilities.canReadCatalog) {
+      try {
+        trainingCatalog = await api.trainingCatalog(
+          tenantId,
+          campaign.id,
+          options.locale ?? "es",
+        );
+        trainingAvailability = "AVAILABLE";
+      } catch (error) {
+        if (error instanceof CampaignOsApiError && error.status === 503) {
+          trainingAvailability = "DEPENDENCY_UNAVAILABLE";
+        } else {
+          throw error;
+        }
+      }
+    }
+    if (
+      trainingAvailability === "AVAILABLE" &&
+      trainingCapabilities.canReadSelf
+    ) {
+      try {
+        trainingAssignments = await api.ownTrainingAssignments(
+          tenantId,
+          campaign.id,
+          tenantIdentity.principal_id,
+        );
+        const firstAssignment = trainingAssignments.assignments[0];
+        if (firstAssignment && trainingCapabilities.canReadReceipts) {
+          trainingReceipts = await api.ownTrainingReceipts(
+            tenantId,
+            campaign.id,
+            firstAssignment.id,
+            tenantIdentity.principal_id,
+          );
+        }
+      } catch (error) {
+        if (error instanceof CampaignOsApiError && error.status === 503) {
+          trainingAvailability = "DEPENDENCY_UNAVAILABLE";
+          trainingAssignments = null;
+          trainingReceipts = null;
+        } else {
+          throw error;
+        }
+      }
+    }
+
     const hasRoadmapGrant = tenantIdentity.application_memberships.some(
       (membership) =>
         membership.grants.some(
@@ -574,6 +647,10 @@ export async function loadShellViewModel(
       warRoomSnapshotAvailability,
       strategyWorkspace,
       strategyWorkspaceAvailability,
+      trainingCatalog,
+      trainingAssignments,
+      trainingReceipts,
+      trainingAvailability,
     };
   } catch (error) {
     if (error instanceof CampaignOsApiError) {

@@ -37,3 +37,7 @@ Only the minimum authorized evidence enters a model or integration. Provider use
 Production scope requires authenticated export, correction, consent withdrawal, deletion/anonymization, tenant offboarding, retention jobs, legal holds, and completion receipts. Backup retention and restore procedures must honor the deletion model or document bounded exceptions.
 
 No privacy approval is recorded; the privacy production gate remains partial/blocked.
+
+## Training Academy learner records
+
+Training Academy stores only tenant/campaign/principal references, approved path and module versions, bounded attempt counts, educational pass/fail state, timestamps, catalog digest, audit linkage and append-only completion receipts. Raw answers, free-text learner profiles, comparative rankings, psychological traits, persuasion attributes and professional-accreditation claims are excluded. Completion has `authority_effect=NONE`; retention and deletion require campaign-lifecycle and legal review.

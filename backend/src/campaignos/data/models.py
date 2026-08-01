@@ -679,6 +679,193 @@ class TeamWorkspace(Base, TimestampMixin):
     version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
 
+class TrainingAssignment(Base, TimestampMixin):
+    __tablename__ = "training_assignments"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id"],
+            ["campaigns.tenant_id", "campaigns.id"],
+            name="fk_training_assignments_tenant_campaign",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            "id",
+            name="uq_training_assignments_scope_id",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            "principal_id",
+            "path_id",
+            "path_version",
+            name="uq_training_assignments_principal_path",
+        ),
+        CheckConstraint(
+            "status IN ('ASSIGNED', 'IN_PROGRESS', 'COMPLETED')",
+            name="ck_training_assignments_status",
+        ),
+        CheckConstraint("version >= 1", name="ck_training_assignments_version"),
+        Index(
+            "ix_training_assignments_tenant_campaign_principal",
+            "tenant_id",
+            "campaign_id",
+            "principal_id",
+            "status",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    assigned_by_principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    path_id: Mapped[str] = mapped_column(String(80), nullable=False)
+    path_version: Mapped[str] = mapped_column(String(20), nullable=False)
+    role_slug: Mapped[str | None] = mapped_column(String(80))
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="ASSIGNED")
+    catalog_digest: Mapped[str] = mapped_column(String(64), nullable=False)
+    assigned_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    due_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class TrainingModuleProgress(Base, TimestampMixin):
+    __tablename__ = "training_module_progress"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id", "assignment_id"],
+            [
+                "training_assignments.tenant_id",
+                "training_assignments.campaign_id",
+                "training_assignments.id",
+            ],
+            name="fk_training_progress_assignment_scope",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            "id",
+            name="uq_training_progress_scope_id",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            "assignment_id",
+            "module_id",
+            "module_version",
+            name="uq_training_progress_assignment_module",
+        ),
+        CheckConstraint(
+            "status IN ('NOT_STARTED', 'IN_PROGRESS', 'COMPLETED')",
+            name="ck_training_progress_status",
+        ),
+        CheckConstraint(
+            "latest_result IS NULL OR latest_result IN ('PASS', 'FAIL')",
+            name="ck_training_progress_result",
+        ),
+        CheckConstraint(
+            "attempt_count BETWEEN 0 AND 10",
+            name="ck_training_progress_attempt_count",
+        ),
+        CheckConstraint("version >= 1", name="ck_training_progress_version"),
+        Index(
+            "ix_training_progress_assignment_status",
+            "tenant_id",
+            "campaign_id",
+            "assignment_id",
+            "status",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    assignment_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    module_id: Mapped[str] = mapped_column(String(80), nullable=False)
+    module_version: Mapped[str] = mapped_column(String(20), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="NOT_STARTED")
+    attempt_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    latest_result: Mapped[str | None] = mapped_column(String(16))
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+
+class TrainingCompletionReceipt(Base):
+    __tablename__ = "training_completion_receipts"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id", "assignment_id"],
+            [
+                "training_assignments.tenant_id",
+                "training_assignments.campaign_id",
+                "training_assignments.id",
+            ],
+            name="fk_training_receipts_assignment_scope",
+            ondelete="CASCADE",
+        ),
+        ForeignKeyConstraint(
+            ["tenant_id", "campaign_id", "module_progress_id"],
+            [
+                "training_module_progress.tenant_id",
+                "training_module_progress.campaign_id",
+                "training_module_progress.id",
+            ],
+            name="fk_training_receipts_progress_scope",
+            ondelete="CASCADE",
+        ),
+        UniqueConstraint(
+            "tenant_id",
+            "campaign_id",
+            "module_progress_id",
+            name="uq_training_receipts_progress",
+        ),
+        CheckConstraint("result = 'PASS'", name="ck_training_receipts_result_pass"),
+        CheckConstraint(
+            "authority_effect = 'NONE'",
+            name="ck_training_receipts_authority_none",
+        ),
+        CheckConstraint(
+            "external_effects = 'NONE'",
+            name="ck_training_receipts_external_none",
+        ),
+        Index(
+            "ix_training_receipts_tenant_principal_completed",
+            "tenant_id",
+            "campaign_id",
+            "principal_id",
+            "completed_at",
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    tenant_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    campaign_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    assignment_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    module_progress_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    principal_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("principals.id", ondelete="RESTRICT"), nullable=False
+    )
+    module_id: Mapped[str] = mapped_column(String(80), nullable=False)
+    module_version: Mapped[str] = mapped_column(String(20), nullable=False)
+    result: Mapped[str] = mapped_column(String(16), nullable=False, default="PASS")
+    completed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    catalog_digest: Mapped[str] = mapped_column(String(64), nullable=False)
+    audit_event_id: Mapped[UUID] = mapped_column(
+        Uuid, ForeignKey("audit_events.id", ondelete="RESTRICT"), nullable=False
+    )
+    authority_effect: Mapped[str] = mapped_column(String(16), nullable=False, default="NONE")
+    external_effects: Mapped[str] = mapped_column(String(16), nullable=False, default="NONE")
+
+
 class GuidedIntake(Base, TimestampMixin):
     __tablename__ = "guided_intakes"
     __table_args__ = (

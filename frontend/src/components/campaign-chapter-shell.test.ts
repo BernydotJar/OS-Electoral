@@ -24,6 +24,9 @@ import {
   demoStrategyWorkspace,
   demoTeamWorkspace,
   demoTenantIdentity,
+  demoTrainingAssignments,
+  demoTrainingCatalog,
+  demoTrainingReceipts,
   demoWarRoomSnapshot,
 } from "@/lib/demo-data";
 import { dictionaryFor } from "@/lib/i18n";
@@ -52,6 +55,10 @@ const model: ShellViewModel = {
   warRoomSnapshotAvailability: "AVAILABLE",
   strategyWorkspace: demoStrategyWorkspace,
   strategyWorkspaceAvailability: "AVAILABLE",
+  trainingCatalog: demoTrainingCatalog,
+  trainingAssignments: demoTrainingAssignments,
+  trainingReceipts: demoTrainingReceipts,
+  trainingAvailability: "AVAILABLE",
 };
 
 function render(

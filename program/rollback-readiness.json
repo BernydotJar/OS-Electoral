@@ -6,7 +6,7 @@
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
   "production_rollback_claim": false,
-  "current_migration_head": "20260729_0012",
+  "current_migration_head": "20260801_0013",
   "allowed_responses": [
     "ABORT_BEFORE_CHANGE",
     "ROLL_BACK_APPLICATION_ARTIFACT",
@@ -142,6 +142,15 @@
       "data_loss_risk": "MEDIUM",
       "default_response": "ROLL_BACK_APPLICATION_ARTIFACT",
       "reason": "The added rate-limit table may remain while a previously verified application artifact is restored; the schema is not downgraded."
+    },
+    {
+      "revision": "20260801_0013",
+      "down_revision": "20260729_0012",
+      "classification": "EXPAND_BACKWARD_COMPATIBLE",
+      "compatibility_window": "Retain schema head 20260801_0013 and use only a previously verified full Git SHA.",
+      "data_loss_risk": "MEDIUM",
+      "default_response": "ROLL_BACK_APPLICATION_ARTIFACT",
+      "reason": "The added Training Academy tables and append-only receipt trigger may remain while a previously verified application artifact is selected; the schema is not downgraded and no training authority is inferred."
     }
   ],
   "scenarios": [

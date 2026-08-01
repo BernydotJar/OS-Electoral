@@ -19,7 +19,10 @@ export default async function CampaignChapterPage({
     team_template?: string | string[];
   }>;
 }) {
-  const [{ locale, chapter }, query] = await Promise.all([params, searchParams]);
+  const [{ locale, chapter }, query] = await Promise.all([
+    params,
+    searchParams,
+  ]);
   if (!isLocale(locale)) notFound();
   const selectedChapter = parseCampaignChapterKey(chapter);
   if (selectedChapter === null) notFound();
@@ -33,6 +36,7 @@ export default async function CampaignChapterPage({
       : null
   ) as TeamBlueprintTemplate | null;
   const model = await loadShellViewModel({
+    locale,
     teamTemplatePreview:
       selectedChapter === "team" && teamTemplate
         ? { organization_template: teamTemplate, blueprint_locale: locale }

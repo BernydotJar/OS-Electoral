@@ -30,6 +30,7 @@ export default async function LocalePage({
       : null
   ) as TeamBlueprintTemplate | null;
   const model = await loadShellViewModel({
+    locale,
     teamTemplatePreview: teamTemplate
       ? { organization_template: teamTemplate, blueprint_locale: locale }
       : null,

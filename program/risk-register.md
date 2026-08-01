@@ -78,3 +78,10 @@ Production remains `BLOCKED`. Risks are not closed by local tests, green draft c
 - **Evidence:** all twelve migrations are cataloged; 28 adversarial rollback tests and the complete local repository gate pass; the rehearsal writes sanitized owner-only success/failure receipts with `source_mutation=NONE`.
 - **Limitation:** no registry image promotion, managed staging rollback, PITR, RPO/RTO, alert-routing exercise or production recovery has been performed.
 - **Mitigation:** require exact-head hosted PostgreSQL evidence, then an explicitly authorized isolated staging environment and independent operational/security review before any managed or production rollback claim.
+
+## Training Academy remains preproduction
+
+- **Status:** OPEN / controlled.
+- **Evidence:** `C3-TRAINING-001` passes local catalog, authorization, PostgreSQL 18 RLS, append-only receipt, frontend and browser gates.
+- **Residual risk:** exact-head hosted evidence, independent content/domain review, managed environments, external LMS/provider contracts, retention decisions and any accreditation acceptance are absent.
+- **Mitigation:** keep content repository-owned, external providers disabled, completion non-authoritative, production blocked, and require separate review before any provider, accreditation or production use.

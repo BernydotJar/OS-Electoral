@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "id": "C3-TRAINING-001",
+  "status": "REVIEWED_LOCAL",
+  "base_head": "1eea5664e06d753fbbbcabefd4364b11736e92e7",
+  "base_pull_request": 150,
+  "branch": "agent/c3-training-001-governed-academy",
+  "approval": {
+    "recorded_at": "2026-07-31T22:55:00-06:00",
+    "source": "USER_EXPLICIT_APPROVAL",
+    "statement": "User explicitly authorized implementation of C3-TRAINING-001 in SHIP mode by asking to work on the governed Training Academy and publish the changes for review.",
+    "scope": "Repository, local and CI Training Academy implementation only; no production deployment, cloud resources, paid services, live LMS, professional accreditation, profiling, targeting or political external effects."
+  },
+  "primary_documentation_checkpoint": "docs/testing/c3-training-001-primary-docs.md",
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "evidence": [
+    "specs/C3-TRAINING-001/requirements.md",
+    "specs/C3-TRAINING-001/design.md",
+    "specs/C3-TRAINING-001/tasks.md",
+    "backend/src/campaignos/training/contracts.py",
+    "backend/src/campaignos/training/catalog.py",
+    "backend/src/campaignos/training/service.py",
+    "backend/src/campaignos/api/routes/training.py",
+    "backend/migrations/versions/20260801_0013_training_academy.py",
+    "backend/tests/test_training_catalog.py",
+    "backend/tests/test_training_model.py",
+    "backend/tests/test_training_api.py",
+    "backend/tests/test_training_postgres.py",
+    "frontend/src/components/training-academy-panel.tsx",
+    "frontend/src/lib/training-contract-parser.ts",
+    "frontend/src/lib/training-form.ts",
+    "docs/product/training-academy.md",
+    "docs/api/training-academy.md",
+    "docs/testing/c3-training-001-primary-docs.md",
+    "docs/testing/c3-training-001-evidence.md",
+    "program/iterations/c3-training-001.md",
+    "program/validations/c3-training-001.json",
+    "progress/review_C3-TRAINING-001.md"
+  ],
+  "verification": {
+    "catalog_contracts": "PASS",
+    "service_and_api": "PASS",
+    "postgresql_18": "PASS",
+    "forced_rls": "PASS",
+    "append_only_receipt": "PASS",
+    "frontend_verify": "PASS",
+    "dynamic_browser": "PASS",
+    "functional_browser": "PASS",
+    "production_status": "BLOCKED",
+    "external_effects": "NONE"
+  },
+  "limitations": [
+    "Exact-head hosted CI and retained artifact inspection remain pending",
+    "Independent human product/domain acceptance remains pending",
+    "No managed environment, external LMS/provider, professional accreditation, or production approval is claimed"
+  ]
+}

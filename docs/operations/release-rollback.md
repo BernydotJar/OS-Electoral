@@ -37,6 +37,7 @@ The authoritative catalog is `program/rollback-readiness.json`.
 - Revisions `20260719_0001` through `20260721_0010` are `FORWARD_FIX_ONLY` because their downgrade bodies remove domain, identity, audit, candidate, team, War Room, strategy or governed-agent state.
 - Revision `20260721_0011` is `FORWARD_FIX_ONLY` with `CRITICAL_CONTROL_LOSS` because downgrade removes append-only enforcement.
 - Revision `20260729_0012` is `EXPAND_BACKWARD_COMPATIBLE`: the rate-limit table may remain while a previously verified application artifact is selected. The schema is not downgraded.
+- Revision `20260801_0013` is `EXPAND_BACKWARD_COMPATIBLE`: Training Academy tables and the append-only receipt trigger may remain while a previously verified application artifact is selected. No training authority is inferred and the schema is not downgraded.
 - A new or unknown revision is refused until the catalog, tests and compatibility evidence are updated and reviewed.
 
 An Alembic downgrade function is not approval to run it.

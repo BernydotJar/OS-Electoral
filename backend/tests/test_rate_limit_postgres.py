@@ -84,7 +84,7 @@ def test_rate_limit_postgres_atomicity_rls_rollback_and_cleanup(
 
     with admin_engine.begin() as connection:
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == (
-            "20260729_0012"
+            "20260801_0013"
         )
         connection.execute(text("TRUNCATE TABLE rate_limit_buckets"))
         policy = connection.execute(
