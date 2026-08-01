@@ -496,7 +496,8 @@
       "docs/testing/c3-front-011-evidence.md",
       "program/iterations/c3-front-011.md",
       "program/validations/c3-front-011.json"
-    ]
+    ],
+    "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a"
   },
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",

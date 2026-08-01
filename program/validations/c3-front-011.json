@@ -119,7 +119,7 @@
   "hosted_ci": {
     "result": "PENDING",
     "pull_request": null,
-    "implementation_head": null,
+    "implementation_head": "8b835e1a64095e92136d5375026075581c8fe02a",
     "campaignos_ci_run_id": null,
     "runtime_visual_run_id": null
   },

@@ -1141,7 +1141,8 @@
         "scope": "Bounded internal frontend/API-proxy UX repair, source-based evaluation, tests and temporary authenticated demo only; no production deployment, publication, contact, voter profiling, targeting, spending or mobilization."
       },
       "base_main_sha": "1b8c9be5f2ba5dcdb522e0b7cdba0687af993297",
-      "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry"
+      "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
+      "implementation_commit": "8b835e1a64095e92136d5375026075581c8fe02a"
     }
   ]
 }

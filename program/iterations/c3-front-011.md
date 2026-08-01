@@ -47,6 +47,8 @@ The user also supplied a Campol podcast transcript and asked for an evaluation a
 - added an opt-in E2E-only exact tenant grant and browser assertions for DRAFT creation without broadening the default local operator;
 - removed the final English functional-browser selector for the retired candidate tabs.
 
+Implementation commit: `8b835e1a64095e92136d5375026075581c8fe02a`.
+
 ## Local validation
 
 - `make verify`: PASS;

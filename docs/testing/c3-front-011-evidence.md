@@ -44,6 +44,8 @@ The repair addresses the identified usability gaps without introducing any voter
 8. **Hosted creation coverage gap — resolved.** The original functional fixture intentionally had no tenant campaign-create grant, so the new entry point would not run in PostgreSQL/browser CI. An opt-in E2E-only exact grant now exercises DRAFT creation, persistence evidence, unchanged current context and absence of implicit read access while the default 11-grant operator remains unchanged.
 9. **Stale English functional selector — resolved.** The API-backed English journey still expected the retired candidate tab. It now validates the visible `Profile and risks`, `Next step`, zero tabs and the subordinate evidence disclosure.
 
+Implementation commit: `8b835e1a64095e92136d5375026075581c8fe02a`.
+
 ## Local verification
 
 ```text

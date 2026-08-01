@@ -60,6 +60,8 @@ Findings and repairs:
 
 No unresolved HIGH or MEDIUM finding remains in the bounded implementation.
 
+Implementation commit: `8b835e1a64095e92136d5375026075581c8fe02a`.
+
 ## Independent verification
 
 - `git diff --check`: PASS
