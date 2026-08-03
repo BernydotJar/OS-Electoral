@@ -31,8 +31,8 @@
     "active_feature": "C3-TRAINING-001",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-TRAINING-001",
-      "title": "Governed role-based Training Academy",
+      "id": "C3-FRONT-012",
+      "title": "Clear campaign summary, preparation and candidate hierarchy",
       "mode": "SHIP",
       "state": "review",
       "human_approval": "APPROVED",
@@ -43,9 +43,9 @@
         "C3-OPS-002"
       ],
       "specs": [
-        "specs/C3-TRAINING-001/requirements.md",
-        "specs/C3-TRAINING-001/design.md",
-        "specs/C3-TRAINING-001/tasks.md"
+        "specs/C3-FRONT-012/requirements.md",
+        "specs/C3-FRONT-012/design.md",
+        "specs/C3-FRONT-012/tasks.md"
       ],
       "selection_reason": "C3-FRONT-012 is published and exact-head green in draft PR 150. The user explicitly authorized the governed Training Academy implementation and requested publication for review.",
       "approval_receipt": {
@@ -96,6 +96,12 @@
       "implementation_commit": "e4b142f014e840e68576e48d62ed3b21ef5e3da8"
     },
     "blocked_nodes": [
+      {
+        "id": "C3-TRAINING-001",
+        "gate": "ONE_ACTIVE_FEATURE_C3_FRONT_012_REVIEW",
+        "owner": "CampaignOS product implementation",
+        "next_valid_command": "Publish and checkpoint C3-FRONT-012, then activate the already authorized Training Academy SHIP specification"
+      },
       {
         "id": "action:production-deployment",
         "gate": "HUMAN_PRODUCTION_APPROVAL_AND_INCOMPLETE_PRODUCTION_GATES",
