@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "db8692d0f830496b413a8f56f2611eb611708545"
+    "revision": "48f2d12aeec30361182c028e101678c940ab616a"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -28,28 +28,47 @@
   "scheduler": {
     "evaluated_at": "2026-08-01",
     "one_active_feature": true,
-    "active_feature": null,
+    "active_feature": "C3-FRONT-012",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-TRAINING-001",
-      "title": "Governed role-based Training Academy",
+      "id": "C3-FRONT-012",
+      "title": "Clear campaign summary, preparation and candidate hierarchy",
       "mode": "SHIP",
-      "state": "spec_ready",
-      "human_approval": "PENDING",
+      "state": "review",
+      "human_approval": "APPROVED",
       "dependencies": [
-        "C3-TEAM-001",
-        "C3-TEAM-004",
-        "C3-FRONT-011",
-        "C3-OPS-002"
+        "C3-FRONT-011"
       ],
       "specs": [
-        "specs/C3-TRAINING-001/requirements.md",
-        "specs/C3-TRAINING-001/design.md",
-        "specs/C3-TRAINING-001/tasks.md"
+        "specs/C3-FRONT-012/requirements.md",
+        "specs/C3-FRONT-012/design.md",
+        "specs/C3-FRONT-012/tasks.md"
       ],
-      "selection_reason": "C3-OPS-002 is merged and post-merge verified. Training Academy remains the only explicit NOT_IMPLEMENTED product gate with a cost-free repository scope; its complete SHIP specification requires explicit human approval before implementation."
+      "selection_reason": "The user requested a concrete correction to the campaign summary, preparation order and candidate hierarchy before reviewing the Training Academy implementation.",
+      "approval_receipt": {
+        "recorded_at": "2026-07-31T22:55:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly approved C3-FRONT-012 for SHIP implementation by requesting the campaign hierarchy changes and publication for review.",
+        "scope": "Frontend information architecture, plain ES/EN copy, tests and non-production browser evidence only; no authorization change, production deployment, spending or political external effects."
+      },
+      "review_artifact": "progress/review_C3-FRONT-012.md",
+      "local_evidence": [
+        "specs/C3-FRONT-012/requirements.md",
+        "specs/C3-FRONT-012/design.md",
+        "specs/C3-FRONT-012/tasks.md",
+        "docs/testing/c3-front-012-evidence.md",
+        "program/iterations/c3-front-012.md",
+        "program/validations/c3-front-012.json",
+        "progress/review_C3-FRONT-012.md"
+      ]
     },
     "blocked_nodes": [
+      {
+        "id": "C3-TRAINING-001",
+        "gate": "ONE_ACTIVE_FEATURE_C3_FRONT_012_REVIEW",
+        "owner": "CampaignOS product implementation",
+        "next_valid_command": "Publish and checkpoint C3-FRONT-012, then activate the already authorized Training Academy SHIP specification"
+      },
       {
         "id": "action:production-deployment",
         "gate": "HUMAN_PRODUCTION_APPROVAL_AND_INCOMPLETE_PRODUCTION_GATES",
@@ -100,5 +119,20 @@
       ]
     }
   },
-  "active_increment": null
+  "active_increment": {
+    "id": "C3-FRONT-012",
+    "status": "REVIEWED",
+    "branch": "agent/c3-front-012-journey-navigation",
+    "base": "main@48f2d12aeec30361182c028e101678c940ab616a",
+    "approval_receipt": {
+      "recorded_at": "2026-07-31T22:55:00-06:00",
+      "source": "USER_EXPLICIT_APPROVAL",
+      "statement": "User explicitly approved C3-FRONT-012 for SHIP implementation by requesting the campaign hierarchy changes and publication for review.",
+      "scope": "Frontend information architecture, plain ES/EN copy, tests and non-production browser evidence only; no authorization change, production deployment, spending or political external effects."
+    },
+    "production_status": "BLOCKED",
+    "release_decision": "DENY_RELEASE",
+    "external_effects": "NONE",
+    "next_action": "PUBLISH_DRAFT_PR_AND_RUN_EXACT_HEAD_CI"
+  }
 }

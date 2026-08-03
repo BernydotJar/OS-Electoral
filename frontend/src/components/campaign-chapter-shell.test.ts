@@ -79,6 +79,10 @@ describe("CampaignShell chapter routes", () => {
     expect(html).toContain('id="campaign-journey"');
     expect(html).not.toContain('class="campaign-experience"');
     expect(html).toContain('id="campaigns"');
+    expect(html).toContain('id="candidate-summary"');
+    expect(html).toContain("Resumen de candidatura");
+    expect(html).toContain("Qué hacer ahora");
+    expect(html).not.toContain('id="readiness"');
     expect(html).not.toContain('id="guided-intake"');
     expect(html).not.toContain('id="candidate-workspace"');
     expect(html).not.toContain('id="team-workspace"');
@@ -141,7 +145,12 @@ describe("CampaignShell chapter routes", () => {
       'class="candidate-workspace-deck candidate-workspace-single"',
     );
     expect(html).toContain("Perfil y riesgos");
+    expect(html).toContain(
+      "Revisa lo confirmado, las contradicciones, el desarrollo pendiente y los riesgos de la candidatura.",
+    );
     expect(html).toContain('class="candidate-evidence-disclosure"');
+    expect(html).not.toContain("Resumen de candidatura");
+    expect(html).not.toContain("Qué hacer ahora");
     expect(html).not.toContain('role="tablist"');
   });
 
@@ -151,13 +160,17 @@ describe("CampaignShell chapter routes", () => {
     expect(html).toContain('data-notice="authorization_denied"');
     expect(html).toContain("Esta acción necesita un permiso adicional");
     expect(html).toContain("Cerrar aviso");
-    expect(html).toContain('/es/campaign/team#team-workspace');
+    expect(html).toContain("/es/campaign/team#team-workspace");
     expect(html).toContain('id="team-workspace"');
   });
 
   it("treats completed guided intake as a revisable one-time setup", () => {
     const html = render("foundation");
 
+    expect(html).toContain('id="readiness"');
+    expect(html).toContain("BASE OPERATIVA");
+    expect(html).toContain("Preparación operativa");
+    expect(html).toContain("Espacios de trabajo activos");
     expect(html).toContain('id="guided-intake"');
     expect(html).toContain('data-complete="true"');
     expect(html).toContain("Ver la configuración registrada");

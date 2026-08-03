@@ -1,7 +1,8 @@
 import { CampaignChapterNavigation } from "@/components/campaign-chapter-navigation";
 import { ChapterOrientation } from "@/components/chapter-orientation";
+import { CampaignReadinessPanel } from "@/components/campaign-readiness-panel";
 import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
-import { CandidateActionBrief } from "@/components/candidate-action-brief";
+import { CandidateOverviewPanel } from "@/components/candidate-overview-panel";
 import { CandidateWorkspaceDeck } from "@/components/candidate-workspace-deck";
 import { CandidateWorkspaceProfile } from "@/components/candidate-workspace-profile";
 import { CandidateWorkspaceEditor } from "@/components/candidate-workspace-editor";
@@ -385,7 +386,9 @@ export function CampaignShell({
                     <div>
                       <dt>{dictionary.shell.sessionState}</dt>
                       <dd>
-                        {model.demo ? dictionary.common.demo : dictionary.common.live}
+                        {model.demo
+                          ? dictionary.common.demo
+                          : dictionary.common.live}
                       </dd>
                     </div>
                   </dl>
@@ -485,7 +488,9 @@ export function CampaignShell({
                 dictionary={dictionary}
                 campaigns={model.campaigns}
                 currentCampaignId={model.campaign.id}
-                canCreateCampaign={campaignContextCapabilities.canCreateCampaign}
+                canCreateCampaign={
+                  campaignContextCapabilities.canCreateCampaign
+                }
                 demo={model.demo}
               />
 
@@ -521,6 +526,11 @@ export function CampaignShell({
 
           {chapterRouteActive && currentJourneyPhase.key === "foundation" ? (
             <ChapterSurface chapter="foundation">
+              <CampaignReadinessPanel
+                dictionary={dictionary}
+                readiness={readiness}
+                unavailable={model.readinessUnavailable}
+              />
               <section
                 id="guided-intake"
                 className="guided-intake-panel"
@@ -770,33 +780,12 @@ export function CampaignShell({
                 className="candidate-workspace-panel"
                 aria-labelledby="candidate-workspace-title"
               >
-                <div className="intake-heading">
-                  <div>
-                    <p className="eyebrow">{dictionary.candidate.eyebrow}</p>
-                    <h2 id="candidate-workspace-title">
-                      {dictionary.candidate.title}
-                    </h2>
-                    <p>{dictionary.candidate.body}</p>
-                  </div>
-                  {candidateWorkspace ? (
-                    <div
-                      className="intake-progress"
-                      aria-label={dictionary.candidate.progress}
-                    >
-                      <strong>
-                        {candidateWorkspace.completed_checks}/
-                        {candidateWorkspace.total_checks}
-                      </strong>
-                      <span>{dictionary.candidate.progress}</span>
-                      <progress
-                        max={candidateWorkspace.total_checks}
-                        value={candidateWorkspace.completed_checks}
-                      >
-                        {candidateWorkspace.completed_checks}/
-                        {candidateWorkspace.total_checks}
-                      </progress>
-                    </div>
-                  ) : null}
+                <div className="candidate-profile-heading">
+                  <p className="eyebrow">{dictionary.candidate.eyebrow}</p>
+                  <h2 id="candidate-workspace-title">
+                    {dictionary.candidate.profileViewLabel}
+                  </h2>
+                  <p>{dictionary.candidate.profileBody}</p>
                 </div>
 
                 {candidateWorkspace ? (
@@ -818,12 +807,6 @@ export function CampaignShell({
                           workspace={candidateWorkspace}
                           capabilities={candidateCapabilities}
                           prerequisiteReady={candidatePrerequisiteReady}
-                        />
-                      }
-                      actions={
-                        <CandidateActionBrief
-                          dictionary={dictionary}
-                          workspace={candidateWorkspace}
                         />
                       }
                     />
@@ -901,7 +884,9 @@ export function CampaignShell({
                 {teamWorkspace &&
                 teamWorkspace.completed_checks < teamWorkspace.total_checks ? (
                   <div className="team-progress-guidance" role="status">
-                    <strong>{dictionary.teamWorkspace.progressGuidanceTitle}</strong>
+                    <strong>
+                      {dictionary.teamWorkspace.progressGuidanceTitle}
+                    </strong>
                     <p>{dictionary.teamWorkspace.progressGuidanceBody}</p>
                     <ul>
                       {teamWorkspace.checks
@@ -1012,38 +997,44 @@ export function CampaignShell({
                           {dictionary.teamWorkspace.progressDetailsAction}
                         </summary>
                         <section aria-labelledby="team-checks-title">
-                        <h3 id="team-checks-title">
-                          {dictionary.teamWorkspace.progress}
-                        </h3>
-                        <ol className="intake-checks">
-                          {teamWorkspace.checks.map((check, index) => (
-                            <li key={check.key} data-complete={check.complete}>
-                              <span className="intake-step" aria-hidden="true">
-                                {String(index + 1).padStart(2, "0")}
-                              </span>
-                              <div>
-                                <strong>
-                                  {
-                                    dictionary.teamWorkspace.checkLabels[
-                                      check.key
-                                    ]
-                                  }
-                                </strong>
-                                <small className="intake-check-state">
-                                  {check.complete
-                                    ? dictionary.intake.checkComplete
-                                    : dictionary.intake.checkPending}
-                                </small>
-                              </div>
-                              <span
-                                className="intake-check-mark"
-                                aria-hidden="true"
+                          <h3 id="team-checks-title">
+                            {dictionary.teamWorkspace.progress}
+                          </h3>
+                          <ol className="intake-checks">
+                            {teamWorkspace.checks.map((check, index) => (
+                              <li
+                                key={check.key}
+                                data-complete={check.complete}
                               >
-                                {check.complete ? "✓" : "·"}
-                              </span>
-                            </li>
-                          ))}
-                        </ol>
+                                <span
+                                  className="intake-step"
+                                  aria-hidden="true"
+                                >
+                                  {String(index + 1).padStart(2, "0")}
+                                </span>
+                                <div>
+                                  <strong>
+                                    {
+                                      dictionary.teamWorkspace.checkLabels[
+                                        check.key
+                                      ]
+                                    }
+                                  </strong>
+                                  <small className="intake-check-state">
+                                    {check.complete
+                                      ? dictionary.intake.checkComplete
+                                      : dictionary.intake.checkPending}
+                                  </small>
+                                </div>
+                                <span
+                                  className="intake-check-mark"
+                                  aria-hidden="true"
+                                >
+                                  {check.complete ? "✓" : "·"}
+                                </span>
+                              </li>
+                            ))}
+                          </ol>
                         </section>
                       </details>
 
@@ -1176,69 +1167,76 @@ export function CampaignShell({
 
                     <details className="governance-metadata">
                       <summary>
-                        <span>{dictionary.teamWorkspace.governanceDetails}</span>
-                        <small>{dictionary.teamWorkspace.governanceDetailsBody}</small>
+                        <span>
+                          {dictionary.teamWorkspace.governanceDetails}
+                        </span>
+                        <small>
+                          {dictionary.teamWorkspace.governanceDetailsBody}
+                        </small>
                       </summary>
                       <div className="governance-metadata-body">
-                    <div className="team-detail-grid">
-                      <article>
-                        <h3>{dictionary.teamWorkspace.training}</h3>
-                        {teamWorkspace.training_requirements === null ? (
-                          <p className="intake-empty">
-                            {dictionary.teamWorkspace.notAssessed}
-                          </p>
-                        ) : teamWorkspace.training_requirements.length === 0 ? (
-                          <p className="intake-empty">
-                            {dictionary.teamWorkspace.noItems}
-                          </p>
-                        ) : (
-                          <ul className="intake-items">
-                            {teamWorkspace.training_requirements.map((item) => (
-                              <li key={item.id}>
-                                {item.status} · {item.title}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </article>
-                      <article>
-                        <h3>
-                          {dictionary.teamWorkspace.accessRecommendations}
-                        </h3>
-                        {teamWorkspace.access_recommendations === null ? (
-                          <p className="intake-empty">
-                            {dictionary.teamWorkspace.notAssessed}
-                          </p>
-                        ) : teamWorkspace.access_recommendations.length ===
-                          0 ? (
-                          <p className="intake-empty">
-                            {dictionary.teamWorkspace.noItems}
-                          </p>
-                        ) : (
-                          <ul className="intake-items">
-                            {teamWorkspace.access_recommendations.map(
-                              (item) => (
-                                <li key={item.id}>
-                                  {item.status} · {item.action} ·{" "}
-                                  {item.resource_type} · {item.purpose}
-                                </li>
-                              ),
+                        <div className="team-detail-grid">
+                          <article>
+                            <h3>{dictionary.teamWorkspace.training}</h3>
+                            {teamWorkspace.training_requirements === null ? (
+                              <p className="intake-empty">
+                                {dictionary.teamWorkspace.notAssessed}
+                              </p>
+                            ) : teamWorkspace.training_requirements.length ===
+                              0 ? (
+                              <p className="intake-empty">
+                                {dictionary.teamWorkspace.noItems}
+                              </p>
+                            ) : (
+                              <ul className="intake-items">
+                                {teamWorkspace.training_requirements.map(
+                                  (item) => (
+                                    <li key={item.id}>
+                                      {item.status} · {item.title}
+                                    </li>
+                                  ),
+                                )}
+                              </ul>
                             )}
-                          </ul>
-                        )}
-                      </article>
-                    </div>
+                          </article>
+                          <article>
+                            <h3>
+                              {dictionary.teamWorkspace.accessRecommendations}
+                            </h3>
+                            {teamWorkspace.access_recommendations === null ? (
+                              <p className="intake-empty">
+                                {dictionary.teamWorkspace.notAssessed}
+                              </p>
+                            ) : teamWorkspace.access_recommendations.length ===
+                              0 ? (
+                              <p className="intake-empty">
+                                {dictionary.teamWorkspace.noItems}
+                              </p>
+                            ) : (
+                              <ul className="intake-items">
+                                {teamWorkspace.access_recommendations.map(
+                                  (item) => (
+                                    <li key={item.id}>
+                                      {item.status} · {item.action} ·{" "}
+                                      {item.resource_type} · {item.purpose}
+                                    </li>
+                                  ),
+                                )}
+                              </ul>
+                            )}
+                          </article>
+                        </div>
 
-                    <dl className="intake-evidence">
-                      <div>
-                        <dt>{dictionary.teamWorkspace.readReceipt}</dt>
-                        <dd>{model.teamWorkspace?.audit_event_id}</dd>
-                      </div>
-                      <div>
-                        <dt>{dictionary.teamWorkspace.updatedAt}</dt>
-                        <dd>{teamWorkspace.updated_at}</dd>
-                      </div>
-                    </dl>
+                        <dl className="intake-evidence">
+                          <div>
+                            <dt>{dictionary.teamWorkspace.readReceipt}</dt>
+                            <dd>{model.teamWorkspace?.audit_event_id}</dd>
+                          </div>
+                          <div>
+                            <dt>{dictionary.teamWorkspace.updatedAt}</dt>
+                            <dd>{teamWorkspace.updated_at}</dd>
+                          </div>
+                        </dl>
                       </div>
                     </details>
                   </>
@@ -1278,59 +1276,12 @@ export function CampaignShell({
           {chapterRouteActive ? null : (
             <>
               <section className="dashboard-grid">
-                <article id="readiness" className="panel readiness-panel">
-                  <p className="eyebrow">
-                    {dictionary.dashboard.readinessEyebrow}
-                  </p>
-                  <h2>{dictionary.dashboard.readinessTitle}</h2>
-                  <p>{dictionary.dashboard.readinessBody}</p>
-                  {readiness ? (
-                    <>
-                      <div className="metric-line">
-                        <strong>
-                          {readiness.completed_checks}/{readiness.total_checks}
-                        </strong>
-                        <span>{dictionary.dashboard.checks}</span>
-                      </div>
-                      <ul className="check-list">
-                        {readiness.checks.map((check) => (
-                          <li key={check.key} data-complete={check.complete}>
-                            <span aria-hidden="true">
-                              {check.complete ? "✓" : "·"}
-                            </span>
-                            {
-                              dictionary.dashboard.readinessCheckLabels[
-                                check.key
-                              ]
-                            }
-                          </li>
-                        ))}
-                      </ul>
-                      <dl className="compact-data">
-                        <div>
-                          <dt>{dictionary.dashboard.workspaceCount}</dt>
-                          <dd>{readiness.active_workspace_count}</dd>
-                        </div>
-                        <div>
-                          <dt>{dictionary.dashboard.nextAction}</dt>
-                          <dd>
-                            {
-                              dictionary.dashboard.readinessNextActionLabels[
-                                readiness.next_action
-                              ]
-                            }
-                          </dd>
-                        </div>
-                      </dl>
-                    </>
-                  ) : (
-                    <p className="muted">
-                      {model.readinessUnavailable
-                        ? dictionary.states.unavailableTitle
-                        : dictionary.intake.notAuthorized}
-                    </p>
-                  )}
-                </article>
+                <CandidateOverviewPanel
+                  locale={locale}
+                  dictionary={dictionary}
+                  workspace={candidateWorkspace}
+                  stateMessage={candidateWorkspaceStateMessage}
+                />
 
                 <article className="panel">
                   <p className="eyebrow">
