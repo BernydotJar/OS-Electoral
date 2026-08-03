@@ -98,7 +98,8 @@ def test_training_rls_completion_and_append_only_receipt(
                 text(
                     "SELECT relname, relrowsecurity, relforcerowsecurity "
                     "FROM pg_class JOIN pg_namespace ON pg_namespace.oid = pg_class.relnamespace "
-                    "WHERE pg_namespace.nspname = 'public' AND relname LIKE 'training_%'"
+                    "WHERE pg_namespace.nspname = 'public' AND relkind = 'r' "
+                    "AND relname LIKE 'training_%'"
                 )
             )
         }
