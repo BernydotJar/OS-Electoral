@@ -169,9 +169,9 @@ def test_graph_harness_projection_runs_approved_training_increment() -> None:
     assert roadmap["C3-FRONT-012"]["status"] == "CI_GREEN"
     assert roadmap["C3-TRAINING-001"]["status"] == "REVIEWED"
     assert selected["specs"] == [
-        "specs/C3-FRONT-012/requirements.md",
-        "specs/C3-FRONT-012/design.md",
-        "specs/C3-FRONT-012/tasks.md",
+        "specs/C3-TRAINING-001/requirements.md",
+        "specs/C3-TRAINING-001/design.md",
+        "specs/C3-TRAINING-001/tasks.md",
     ]
 
 
