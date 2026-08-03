@@ -91,3 +91,7 @@ Managed environments, external LMS/provider integration, professional accreditat
 ## Hosted repair activation
 
 The first hosted review exposed integration and verification defects after the stacked frontend base was merged: the Team shell had not rendered the academy surface, the PostgreSQL fixture omitted the required tenant version, multi-option form keys needed deduplication, and the API boundary tests did not provide enough coverage for the repository threshold. A guarded, one-shot repair runner on `main` is authorized only to apply those deterministic fixes, run focused checks, remove its branch-only payload, and publish a new exact head. Production and external effects remain blocked.
+
+## Final main reconciliation
+
+The repaired branch was reconciled with the merged frontend hierarchy and its Training scheduler projection was restored after independent critic review. A final pull-request CI completion now triggers the already validated one-shot reconciler so the latest `main` becomes an ancestor, the temporary runner is deleted from the Training tree, and the final exact-head review can run against the true merge base.
