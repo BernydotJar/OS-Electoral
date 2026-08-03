@@ -1083,6 +1083,10 @@ async def review() -> dict[str, object]:
         if await assign_button.count() == 1:
             await assign_button.click()
             await page.wait_for_load_state("networkidle")
+            require(
+                "/es/campaign/team" in page.url,
+                f"training assignment left the Team chapter: {page.url}",
+            )
         start_button = page.get_by_role("button", name="Comenzar lección", exact=True)
         require(
             await start_button.count() == 1,
@@ -1090,6 +1094,10 @@ async def review() -> dict[str, object]:
         )
         await start_button.click()
         await page.wait_for_load_state("networkidle")
+        require(
+            "/es/campaign/team" in page.url,
+            f"training start left the Team chapter: {page.url}",
+        )
         require(
             await page.get_by_role(
                 "heading", name="Comprobación de aprendizaje", exact=True
@@ -1100,6 +1108,10 @@ async def review() -> dict[str, object]:
         await page.get_by_label("Investigar y documentar evidencia", exact=True).check()
         await page.get_by_role("button", name="Enviar respuesta", exact=True).click()
         await page.wait_for_load_state("networkidle")
+        require(
+            "/es/campaign/team" in page.url,
+            f"training assessment left the Team chapter: {page.url}",
+        )
         require(
             await page.get_by_text("Módulo aprobado", exact=True).count() == 1,
             "passing training result is missing",

@@ -104,6 +104,7 @@ The final hosted functional review exposed that the bounded localhost operator h
 - adds only catalog-read, self-read, self-complete, assignment-manage, and receipt-read grants for the seeded campaign;
 - derives the printed grant count from the declared grant set to prevent documentation drift;
 - makes the browser journey create its own assignment through the protected UI instead of relying on hidden pre-seeded state;
+- maps the Training Academy anchor to the Team chapter so assign, start, and assessment redirects preserve the active workflow surface;
 - adds audited read-model and cross-principal denial tests for assignments and completion receipts;
 - sets coverage reporting precision to two decimals and raises real branch coverage from 89.63% to 90.03% without lowering the 90% threshold.
 
