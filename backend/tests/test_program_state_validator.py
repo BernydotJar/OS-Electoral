@@ -161,13 +161,13 @@ def test_graph_harness_projection_runs_approved_training_increment() -> None:
     assert execution["scheduler"]["active_feature"] == "C3-TRAINING-001"
     assert execution["scheduler"]["ready_nodes"] == []
     assert selected["id"] == "C3-TRAINING-001"
-    assert selected["state"] == "in_progress"
+    assert selected["state"] == "review"
     assert selected["human_approval"] == "APPROVED"
     assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
     assert "SHIP" in selected["approval_receipt"]["statement"]
     roadmap = {item["id"]: item for item in payload["roadmap"]}
     assert roadmap["C3-FRONT-012"]["status"] == "CI_GREEN"
-    assert roadmap["C3-TRAINING-001"]["status"] == "ACTIVE"
+    assert roadmap["C3-TRAINING-001"]["status"] == "REVIEWED"
     assert selected["specs"] == [
         "specs/C3-TRAINING-001/requirements.md",
         "specs/C3-TRAINING-001/design.md",
