@@ -1,22 +1,24 @@
-name: Temporary C3 Training main reconciliation
+name: Temporary C3 Training workflow-run reconciliation
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/c3-training-branch-repair.yml
+  workflow_run:
+    workflows:
+      - CampaignOS CI
+    types:
+      - completed
 
 permissions:
   contents: read
 
 concurrency:
-  group: c3-training-main-reconciliation
+  group: c3-training-workflow-run-reconciliation
   cancel-in-progress: false
 
 jobs:
   reconcile:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_branch == 'agent/c3-training-001-governed-academy'
     permissions:
       contents: write
     runs-on: ubuntu-24.04
