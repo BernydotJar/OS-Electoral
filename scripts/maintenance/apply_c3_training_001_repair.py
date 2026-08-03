@@ -177,10 +177,10 @@ def test_idempotency_key_rejects_oversized_value() -> None:
 @pytest.mark.parametrize(
     ("exception", "status_code"),
     [
-        (TrainingIdempotencyConflict("conflict"), 409),
-        (TrainingVersionConflict("changed"), 412),
-        (TrainingNotFound("missing"), 404),
-        (TrainingUnavailable("unavailable"), 503),
+        (TrainingIdempotencyConflict("secret-idempotency-detail-409"), 409),
+        (TrainingVersionConflict("secret-version-detail-412"), 412),
+        (TrainingNotFound("secret-not-found-detail-404"), 404),
+        (TrainingUnavailable("secret-unavailable-detail-503"), 503),
     ],
 )
 def test_training_errors_map_to_sanitized_http_statuses(
