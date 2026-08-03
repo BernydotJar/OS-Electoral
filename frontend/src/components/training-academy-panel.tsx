@@ -92,16 +92,16 @@ function AvailablePaths({
   return (
     <div className="training-path-grid">
       {catalog.paths.map((path) => {
-        const module = moduleForPath(catalog, path);
-        if (!module || module.status !== "APPROVED") return null;
+        const trainingModule = moduleForPath(catalog, path);
+        if (!trainingModule || trainingModule.status !== "APPROVED") return null;
         return (
           <article
             className="training-path-card"
             key={`${path.path_id}@${path.version}`}
           >
             <p className="eyebrow">{dictionary.trainingAcademy.pathLabel}</p>
-            <h4>{module.title}</h4>
-            <p>{module.summary}</p>
+            <h4>{trainingModule.title}</h4>
+            <p>{trainingModule.summary}</p>
             <dl className="compact-data training-path-meta">
               <div>
                 <dt>{dictionary.trainingAcademy.roleLabel}</dt>
@@ -109,7 +109,7 @@ function AvailablePaths({
               </div>
               <div>
                 <dt>{dictionary.trainingAcademy.lesson}</dt>
-                <dd>{module.lessons.length}</dd>
+                <dd>{trainingModule.lessons.length}</dd>
               </div>
             </dl>
             {capabilities.canManageAssignments && !demo ? (
@@ -237,7 +237,7 @@ export function TrainingAcademyPanel({
             </p>
             <ol>
               {assignment.modules.map((item) => {
-                const module = catalog.modules.find(
+                const trainingModule = catalog.modules.find(
                   (candidate) =>
                     candidate.module_id === item.module_id &&
                     candidate.version === item.module_version,
@@ -245,7 +245,8 @@ export function TrainingAcademyPanel({
                 return (
                   <li key={item.id} data-status={item.status}>
                     <span>
-                      {module?.title ?? item.module_id.replaceAll("_", " ")}
+                      {trainingModule?.title ??
+                        item.module_id.replaceAll("_", " ")}
                     </span>
                     <small>{progressLabel(dictionary, item)}</small>
                   </li>
@@ -384,7 +385,7 @@ export function TrainingAcademyPanel({
         {receipts && receipts.receipts.length > 0 ? (
           <ul>
             {receipts.receipts.map((receipt) => {
-              const module = catalog?.modules.find(
+              const trainingModule = catalog?.modules.find(
                 (item) =>
                   item.module_id === receipt.module_id &&
                   item.version === receipt.module_version,
@@ -392,7 +393,8 @@ export function TrainingAcademyPanel({
               return (
                 <li key={receipt.id}>
                   <strong>
-                    {module?.title ?? receipt.module_id.replaceAll("_", " ")}
+                    {trainingModule?.title ??
+                      receipt.module_id.replaceAll("_", " ")}
                   </strong>
                   <span>
                     {dictionary.trainingAcademy.receiptLabel} ·{" "}
