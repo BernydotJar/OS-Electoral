@@ -177,9 +177,11 @@ export function parseTrainingAttemptForm(formData: FormData): Readonly<{
     "expected_progress_version",
     "catalog_digest",
   ]);
-  const answerKeys = [...formData.keys()].filter((key) =>
-    key.startsWith("answer:"),
-  );
+  const answerKeys = [
+    ...new Set(
+      [...formData.keys()].filter((key) => key.startsWith("answer:")),
+    ),
+  ];
   exactKeys(formData, new Set([...baseKeys, ...answerKeys]));
   if (answerKeys.length === 0 || answerKeys.length > 20) {
     throw new TrainingFormError("assessment answers are out of bounds");
