@@ -40,3 +40,7 @@ Each path fails closed or remains explicitly outside the implementation.
 Exact-head hosted CI and retained evidence must independently rerun the PostgreSQL, dynamic browser, functional browser, security, supply-chain, dependency, CodeQL, secret, and complete repository gates.
 
 This review authorizes no merge, production deployment, cloud resource, paid service, external LMS, professional accreditation, voter profiling, targeting, publication, spending, contact, or mobilization.
+
+## Final fixer verification
+
+The final fixer closes two verification gaps rather than weakening gates: the development operator now receives the five exact Training Academy grants needed by the authenticated journey, and the browser creates its own assignment through the protected UI. Coverage is measured with two-decimal precision and passes at 90.03% with 862 tests. New adversarial cases prove another principal cannot submit the learner's assessment or read the learner's completion receipts. Hosted PostgreSQL and browser review remains required because the current sandbox cannot run the pinned PostgreSQL container image.

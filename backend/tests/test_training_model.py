@@ -35,7 +35,16 @@ from campaignos.training.service import (
     SqlAlchemyTrainingService,
     TrainingAccessConflict,
     TrainingIdempotencyConflict,
+    TrainingNotFound,
+    TrainingUnavailable,
     TrainingVersionConflict,
+    UnavailableTrainingService,
+    _assignment,
+    _assignment_projection,
+    _campaign,
+    _guard,
+    _progress,
+    _require_active_learner,
 )
 
 TENANT_ID = UUID("11111111-1111-4111-8111-111111111111")
@@ -352,3 +361,207 @@ def test_stale_catalog_versions_and_foreign_learner_fail_closed(database: Databa
             correlation_id="training-conflict",
             idempotency_key="training-create-1",
         )
+
+
+def test_audited_training_reads_preserve_learner_scope_and_receipts(
+    database: Database,
+) -> None:
+    service = SqlAlchemyTrainingService(database)
+    created = create_assignment(database, key="training-read-create")
+
+    assignments = service.list_self(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        principal_id=LEARNER_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-training-self-read",
+        authorization_purpose="Review own campaign training",
+        correlation_id="training-list-self",
+    )
+    assert [item.id for item in assignments.assignments] == [created.assignment.id]
+    assert assignments.assignments[0].principal_id == LEARNER_ID
+
+    detail = service.get_assignment(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        created.assignment.id,
+        principal_id=MANAGER_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-training-admin-read",
+        authorization_purpose="Review campaign training assignment",
+        correlation_id="training-get-assignment",
+    )
+    assert detail.assignment.id == created.assignment.id
+    assert detail.assignment.authority_effect == "NONE"
+
+    empty_receipts = service.list_receipts(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        created.assignment.id,
+        principal_id=LEARNER_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-training-receipt-read",
+        authorization_purpose="Review own campaign training",
+        correlation_id="training-receipts-empty",
+    )
+    assert empty_receipts.receipts == ()
+    with pytest.raises(TrainingAccessConflict):
+        service.list_receipts(
+            TENANT_ID,
+            CAMPAIGN_ID,
+            created.assignment.id,
+            principal_id=OTHER_ID,
+            authorization_grant_id=GRANT_ID,
+            approval_receipt_id="approval-training-receipt-read",
+            authorization_purpose="Review own campaign training",
+            correlation_id="training-receipts-foreign",
+        )
+
+    progress = created.assignment.modules[0]
+    started = service.start_module(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        created.assignment.id,
+        progress.module_id,
+        request=TrainingModuleStartRequest(
+            expected_assignment_version=created.assignment.version,
+            expected_progress_version=progress.version,
+            catalog_digest=CATALOG_DIGEST,
+        ),
+        principal_id=LEARNER_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-training-self",
+        authorization_purpose="Complete assigned campaign training",
+        correlation_id="training-read-start",
+        idempotency_key="training-read-start",
+    )
+    with pytest.raises(TrainingAccessConflict):
+        service.submit_attempt(
+            TENANT_ID,
+            CAMPAIGN_ID,
+            created.assignment.id,
+            progress.module_id,
+            request=TrainingAttemptRequest(
+                locale="es",
+                expected_assignment_version=started.assignment.version,
+                expected_progress_version=started.assignment.modules[0].version,
+                catalog_digest=CATALOG_DIGEST,
+                answers=correct_answers(),
+            ),
+            principal_id=OTHER_ID,
+            authorization_grant_id=GRANT_ID,
+            approval_receipt_id="approval-training-self",
+            authorization_purpose="Complete assigned campaign training",
+            correlation_id="training-read-foreign-attempt",
+            idempotency_key="training-read-foreign-attempt",
+        )
+
+    completed = service.submit_attempt(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        created.assignment.id,
+        progress.module_id,
+        request=TrainingAttemptRequest(
+            locale="es",
+            expected_assignment_version=started.assignment.version,
+            expected_progress_version=started.assignment.modules[0].version,
+            catalog_digest=CATALOG_DIGEST,
+            answers=correct_answers(),
+        ),
+        principal_id=LEARNER_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-training-self",
+        authorization_purpose="Complete assigned campaign training",
+        correlation_id="training-read-complete",
+        idempotency_key="training-read-complete",
+    )
+    assert completed.receipt is not None
+
+    receipts = service.list_receipts(
+        TENANT_ID,
+        CAMPAIGN_ID,
+        created.assignment.id,
+        principal_id=LEARNER_ID,
+        authorization_grant_id=GRANT_ID,
+        approval_receipt_id="approval-training-receipt-read",
+        authorization_purpose="Review own campaign training",
+        correlation_id="training-receipts-complete",
+    )
+    assert [item.id for item in receipts.receipts] == [completed.receipt.id]
+    assert receipts.receipts[0].principal_id == LEARNER_ID
+    assert receipts.receipts[0].authority_effect == "NONE"
+
+    with database.tenant_transaction(TENANT_ID) as session:
+        read_events = tuple(
+            session.scalars(
+                select(AuditEvent)
+                .where(AuditEvent.event_type.like("training.%read"))
+                .order_by(AuditEvent.occurred_at)
+            )
+        )
+    assert [item.event_type for item in read_events] == [
+        "training.assignments.read",
+        "training.assignment.read",
+        "training.receipts.read",
+        "training.receipts.read",
+    ]
+    assert all(item.payload["authority_effect"] == "NONE" for item in read_events)
+
+
+def test_unavailable_adapter_and_guard_preserve_fail_closed_errors() -> None:
+    unavailable = UnavailableTrainingService()
+    with pytest.raises(TrainingUnavailable):
+        unavailable.catalog("es")
+    with pytest.raises(TrainingUnavailable):
+        _missing_operation = unavailable.list_self
+
+    assert _guard(lambda: "available") == "available"
+    known = TrainingNotFound("known training absence")
+    with pytest.raises(TrainingNotFound) as known_error:
+        _guard(lambda: (_ for _ in ()).throw(known))
+    assert known_error.value is known
+
+    with pytest.raises(TrainingUnavailable) as unexpected_error:
+        _guard(lambda: (_ for _ in ()).throw(ValueError("sensitive backend detail")))
+    assert "sensitive backend detail" not in str(unexpected_error.value)
+    assert isinstance(unexpected_error.value.__cause__, ValueError)
+
+
+def test_training_repository_helpers_fail_closed_on_missing_or_corrupt_state(
+    database: Database,
+) -> None:
+    service = SqlAlchemyTrainingService(database)
+    assert service.catalog("es").locale == "es"
+    created = create_assignment(database, key="training-helper-create")
+
+    with database.tenant_transaction(TENANT_ID) as session:
+        with pytest.raises(TrainingNotFound):
+            _campaign(session, TENANT_ID, UUID("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"))
+        with pytest.raises(TrainingNotFound):
+            _require_active_learner(
+                session,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                principal_id=OTHER_ID,
+            )
+        with pytest.raises(TrainingNotFound):
+            _assignment(
+                session,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                assignment_id=UUID("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"),
+                lock=True,
+            )
+        with pytest.raises(TrainingNotFound):
+            _progress(
+                session,
+                tenant_id=TENANT_ID,
+                campaign_id=CAMPAIGN_ID,
+                assignment_id=created.assignment.id,
+                module_id="missing_module",
+                lock=True,
+            )
+        row = session.get(TrainingAssignment, created.assignment.id)
+        assert row is not None
+        with pytest.raises(TrainingUnavailable):
+            _assignment_projection(row, ())

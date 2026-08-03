@@ -38,6 +38,11 @@ TEAM_CREATE_GRANT_ID = UUID("f1111111-1111-4111-8111-111111111111")
 TEAM_READ_GRANT_ID = UUID("f2222222-2222-4222-8222-222222222222")
 TEAM_UPDATE_GRANT_ID = UUID("f3333333-3333-4333-8333-333333333333")
 CAMPAIGN_CREATE_GRANT_ID = UUID("f4444444-4444-4444-8444-444444444444")
+TRAINING_CATALOG_READ_GRANT_ID = UUID("f5555555-5555-4555-8555-555555555555")
+TRAINING_SELF_READ_GRANT_ID = UUID("f6666666-6666-4666-8666-666666666666")
+TRAINING_SELF_COMPLETE_GRANT_ID = UUID("f7777777-7777-4777-8777-777777777777")
+TRAINING_ASSIGNMENT_MANAGE_GRANT_ID = UUID("f8888888-8888-4888-8888-888888888888")
+TRAINING_RECEIPT_READ_GRANT_ID = UUID("f9999999-9999-4999-8999-999999999999")
 WORKSPACE_ID = UUID("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
 
 DEVELOPMENT_ISSUER = "urn:campaignos:development"
@@ -131,6 +136,41 @@ GRANTS = (
         "team_workspace",
         str(CAMPAIGN_ID),
         "Maintain campaign team workspace",
+    ),
+    GrantSpec(
+        TRAINING_CATALOG_READ_GRANT_ID,
+        "training.catalog.read",
+        "training_academy",
+        str(CAMPAIGN_ID),
+        "Review approved training catalog",
+    ),
+    GrantSpec(
+        TRAINING_SELF_READ_GRANT_ID,
+        "training.self.read",
+        "training_academy",
+        str(CAMPAIGN_ID),
+        "Review own campaign training",
+    ),
+    GrantSpec(
+        TRAINING_SELF_COMPLETE_GRANT_ID,
+        "training.self.complete",
+        "training_academy",
+        str(CAMPAIGN_ID),
+        "Complete assigned campaign training",
+    ),
+    GrantSpec(
+        TRAINING_ASSIGNMENT_MANAGE_GRANT_ID,
+        "training.assignment.manage",
+        "training_academy",
+        str(CAMPAIGN_ID),
+        "Assign campaign learning path",
+    ),
+    GrantSpec(
+        TRAINING_RECEIPT_READ_GRANT_ID,
+        "training.receipt.read",
+        "training_academy",
+        str(CAMPAIGN_ID),
+        "Review own campaign training",
     ),
 )
 
@@ -325,7 +365,7 @@ def main() -> int:
     print(
         "[OK] Local operator seeded; tenant=11111111-1111-4111-8111-111111111111; "
         "campaign=22222222-2222-4222-8222-222222222222; "
-        f"exact_grants={12 if args.include_campaign_create else 11}"
+        f"exact_grants={len(GRANTS) + (1 if args.include_campaign_create else 0)}"
     )
     return 0
 

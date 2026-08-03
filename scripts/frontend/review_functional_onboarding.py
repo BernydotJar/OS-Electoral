@@ -1077,12 +1077,19 @@ async def review() -> dict[str, object]:
         )
         require(
             await page.get_by_text("Investigar antes de actuar", exact=True).count() >= 1,
-            "assigned training path is missing",
+            "training path is missing",
         )
-        start_button = page.get_by_role("button", name="Comenzar lección", exact=True)
-        if await start_button.count() == 1:
-            await start_button.click()
+        assign_button = page.get_by_role("button", name="Asignarme esta ruta", exact=True).first
+        if await assign_button.count() == 1:
+            await assign_button.click()
             await page.wait_for_load_state("networkidle")
+        start_button = page.get_by_role("button", name="Comenzar lección", exact=True)
+        require(
+            await start_button.count() == 1,
+            "assigned training module cannot be started",
+        )
+        await start_button.click()
+        await page.wait_for_load_state("networkidle")
         require(
             await page.get_by_role(
                 "heading", name="Comprobación de aprendizaje", exact=True
@@ -1103,7 +1110,10 @@ async def review() -> dict[str, object]:
         )
         require(
             await page.get_by_text(
-                "La formación no concede permisos, no evalúa desempeño laboral y no es una acreditación profesional.",
+                (
+                    "La formación no concede permisos, no evalúa desempeño laboral "
+                    "y no es una acreditación profesional."
+                ),
                 exact=True,
             ).count()
             == 1,

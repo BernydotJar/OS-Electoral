@@ -66,12 +66,13 @@ A clean production build and dynamic browser review prove:
 
 The functional PostgreSQL/API/browser journey uses the real local seed and protected routes to:
 
-1. load the seeded assignment;
-2. start the module;
-3. choose the reviewed answer;
-4. submit the attempt;
-5. observe the passing state and internal receipt;
-6. verify the authority boundary and English projection.
+1. load the approved catalog under exact Training Academy grants;
+2. assign the selected path through the authenticated UI;
+3. start the module;
+4. choose the reviewed answer;
+5. submit the attempt;
+6. observe the passing state and internal receipt;
+7. verify the authority boundary and English projection.
 
 ## Privacy and authority review
 
@@ -95,3 +96,15 @@ The first hosted review exposed integration and verification defects after the s
 ## Final main reconciliation
 
 The repaired branch was reconciled with the merged frontend hierarchy and its Training scheduler projection was restored after independent critic review. A final pull-request CI completion now triggers the already validated one-shot reconciler so the latest `main` becomes an ancestor, the temporary runner is deleted from the Training tree, and the final exact-head review can run against the true merge base.
+
+## Final authenticated-journey repair
+
+The final hosted functional review exposed that the bounded localhost operator had not been granted the five exact Training Academy actions. The repair:
+
+- adds only catalog-read, self-read, self-complete, assignment-manage, and receipt-read grants for the seeded campaign;
+- derives the printed grant count from the declared grant set to prevent documentation drift;
+- makes the browser journey create its own assignment through the protected UI instead of relying on hidden pre-seeded state;
+- adds audited read-model and cross-principal denial tests for assignments and completion receipts;
+- sets coverage reporting precision to two decimals and raises real branch coverage from 89.63% to 90.03% without lowering the 90% threshold.
+
+Local verification on the repaired tree records 862 passing tests, 13 PostgreSQL-marked tests skipped outside an isolated database, 90.03% coverage, 159 frontend tests, a successful production build, and zero npm audit findings. The sandbox cannot run the PostgreSQL/browser journey locally because its Docker runtime lacks Compose v2 and cannot apply the pinned PostgreSQL image layer; exact-head hosted PostgreSQL and functional browser CI remains the independent verifier for that gate. No cloud resource, paid service, production deployment, or external political effect is introduced.
