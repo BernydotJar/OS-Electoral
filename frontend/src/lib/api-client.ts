@@ -16,6 +16,15 @@ import {
 } from "@/lib/strategy-contract-parser";
 import type { FrontendConfig } from "@/lib/config";
 import {
+  parseTrainingAssignmentCreateEvidence,
+  parseTrainingAssignmentEvidence,
+  parseTrainingAssignmentListEvidence,
+  parseTrainingAttemptEvidence,
+  parseTrainingCatalogProjection,
+  parseTrainingReceiptListEvidence,
+  TrainingContractValidationError,
+} from "@/lib/training-contract-parser";
+import {
   parseTeamWorkspaceCreateEvidence,
   parseTeamWorkspaceReadEvidence,
   parseTeamWorkspaceTemplateApplyEvidence,
@@ -64,6 +73,14 @@ import type {
   TeamWorkspaceUpdateInput,
   WarRoomSnapshotReadEvidence,
   TenantMeResponse,
+  TrainingAssignmentCreateEvidence,
+  TrainingAssignmentCreateInput,
+  TrainingAssignmentListEvidence,
+  TrainingAttemptEvidence,
+  TrainingAttemptInput,
+  TrainingCatalogProjection,
+  TrainingModuleStartInput,
+  TrainingReceiptListEvidence,
   UUID,
 } from "@/lib/contracts";
 
@@ -163,7 +180,8 @@ export class CampaignOsApiClient {
         error instanceof CandidateContractValidationError ||
         error instanceof TeamContractValidationError ||
         error instanceof OperationsContractValidationError ||
-        error instanceof StrategyContractValidationError
+        error instanceof StrategyContractValidationError ||
+        error instanceof TrainingContractValidationError
       ) {
         throw new CampaignOsApiError(
           `${label} response is invalid`,
@@ -450,6 +468,128 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/strategy-workspace`,
       "Strategy workspace",
       parseStrategyWorkspaceReadEvidence,
+    );
+  }
+
+  trainingCatalog(
+    tenantId: UUID,
+    campaignId: UUID,
+    locale: "es" | "en",
+  ): Promise<TrainingCatalogProjection> {
+    return this.get<TrainingCatalogProjection>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/training/catalog?locale=${locale}`,
+      "Training catalog",
+      parseTrainingCatalogProjection,
+    );
+  }
+
+  ownTrainingAssignments(
+    tenantId: UUID,
+    campaignId: UUID,
+    principalId: UUID,
+  ): Promise<TrainingAssignmentListEvidence> {
+    return this.get<TrainingAssignmentListEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/training/me`,
+      "Training assignments",
+      (value) =>
+        parseTrainingAssignmentListEvidence(
+          value,
+          tenantId,
+          campaignId,
+          principalId,
+        ),
+    );
+  }
+
+  createTrainingAssignment(
+    tenantId: UUID,
+    campaignId: UUID,
+    principalId: UUID,
+    idempotencyKey: string,
+    input: TrainingAssignmentCreateInput,
+  ): Promise<TrainingAssignmentCreateEvidence> {
+    return this.request<TrainingAssignmentCreateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/training/assignments`,
+      "Training assignment create",
+      (value) =>
+        parseTrainingAssignmentCreateEvidence(
+          value,
+          tenantId,
+          campaignId,
+          principalId,
+        ),
+      {
+        method: "POST",
+        body: input,
+        headers: { "idempotency-key": idempotencyKey },
+      },
+    );
+  }
+
+  startTrainingModule(
+    tenantId: UUID,
+    campaignId: UUID,
+    assignmentId: UUID,
+    moduleId: string,
+    principalId: UUID,
+    idempotencyKey: string,
+    input: TrainingModuleStartInput,
+  ): Promise<
+    Readonly<{
+      assignment: import("@/lib/contracts").TrainingAssignmentProjection;
+      audit_event_id: UUID;
+    }>
+  > {
+    return this.request(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/training/assignments/${assignmentId}/modules/${moduleId}/start`,
+      "Training module start",
+      (value) =>
+        parseTrainingAssignmentEvidence(
+          value,
+          tenantId,
+          campaignId,
+          principalId,
+        ),
+      {
+        method: "POST",
+        body: input,
+        headers: { "idempotency-key": idempotencyKey },
+      },
+    );
+  }
+
+  submitTrainingAttempt(
+    tenantId: UUID,
+    campaignId: UUID,
+    assignmentId: UUID,
+    moduleId: string,
+    principalId: UUID,
+    idempotencyKey: string,
+    input: TrainingAttemptInput,
+  ): Promise<TrainingAttemptEvidence> {
+    return this.request<TrainingAttemptEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/training/assignments/${assignmentId}/modules/${moduleId}/attempts`,
+      "Training assessment attempt",
+      (value) =>
+        parseTrainingAttemptEvidence(value, tenantId, campaignId, principalId),
+      {
+        method: "POST",
+        body: input,
+        headers: { "idempotency-key": idempotencyKey },
+      },
+    );
+  }
+
+  ownTrainingReceipts(
+    tenantId: UUID,
+    campaignId: UUID,
+    assignmentId: UUID,
+    principalId: UUID,
+  ): Promise<TrainingReceiptListEvidence> {
+    return this.get<TrainingReceiptListEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/training/me/assignments/${assignmentId}/receipts`,
+      "Training completion receipts",
+      (value) => parseTrainingReceiptListEvidence(value, principalId),
     );
   }
 }

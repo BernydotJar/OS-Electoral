@@ -21,6 +21,7 @@ APPEND_ONLY_TABLES = {
     "war_room_snapshots",
     "strategy_decision_receipts",
     "agent_runs",
+    "training_completion_receipts",
 }
 TRIGGER_NAME = "campaignos_append_only_guard"
 FUNCTION_NAME = "campaignos_reject_append_only_mutation"
@@ -71,7 +72,7 @@ def test_append_only_guards_deny_constrained_role_mutation(
 
     with admin_engine.begin() as connection:
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == (
-            "20260729_0012"
+            "20260801_0013"
         )
         trigger_rows = set(
             connection.execute(

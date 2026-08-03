@@ -74,7 +74,7 @@ def context_for(scenario_id: str, **overrides: object) -> RehearsalContext:
             immutable=True,
             provenance_present=True,
         ),
-        "migration_head": "20260729_0012",
+        "migration_head": "20260801_0013",
         "committed_writes_observed": False,
         "health_checks": (
             HealthCheck(name="liveness", passed=False),
@@ -99,7 +99,7 @@ def test_policy_matches_repository_migrations_and_required_scenarios() -> None:
     validate_policy_against_repository(current, ROOT)
 
     assert {item.id: item.expected_response for item in current.scenarios} == EXPECTED_SCENARIOS
-    assert current.current_migration_head == "20260729_0012"
+    assert current.current_migration_head == "20260801_0013"
     assert current.production_rollback_claim is False
     assert current.production_status == "BLOCKED"
 

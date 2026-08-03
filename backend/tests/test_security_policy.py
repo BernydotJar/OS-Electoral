@@ -36,8 +36,8 @@ def record(value: dict[str, Any], record_id: str) -> dict[str, Any]:
 def test_current_security_policy_passes() -> None:
     report = verify(ROOT)
     assert report["result"] == "PASS", report["errors"]
-    assert report["record_types"] == 13
-    assert report["append_only_tables"] == 6
+    assert report["record_types"] == 14
+    assert report["append_only_tables"] == 7
     assert report["production_status"] == "BLOCKED"
 
 

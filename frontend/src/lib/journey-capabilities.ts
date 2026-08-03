@@ -52,7 +52,6 @@ export function deriveGuidedIntakeCapabilities(
   };
 }
 
-
 export type CandidateWorkspaceCapabilities = Readonly<{
   canStart: boolean;
   canRead: boolean;
@@ -78,7 +77,6 @@ export function deriveCandidateWorkspaceCapabilities(
     canUpdate: exact("update", "Maintain candidate evidence workspace"),
   };
 }
-
 
 export type TeamWorkspaceCapabilities = Readonly<{
   canStart: boolean;
@@ -125,6 +123,48 @@ export function deriveCampaignContextCapabilities(
           grant.workspace_id === null &&
           grant.purpose === "Create tenant campaign",
       ),
+    ),
+  };
+}
+
+export type TrainingCapabilities = Readonly<{
+  canReadCatalog: boolean;
+  canReadSelf: boolean;
+  canCompleteSelf: boolean;
+  canManageAssignments: boolean;
+  canReadReceipts: boolean;
+}>;
+
+export function deriveTrainingCapabilities(
+  memberships: readonly EffectiveMembership[],
+  campaignId: string,
+): TrainingCapabilities {
+  const exact = (action: string, purpose: string) =>
+    hasExactGrant(memberships, {
+      action,
+      resourceType: "training_academy",
+      resourceId: campaignId,
+      purpose,
+      campaignId,
+      workspaceId: null,
+    });
+  return {
+    canReadCatalog: exact(
+      "training.catalog.read",
+      "Review approved training catalog",
+    ),
+    canReadSelf: exact("training.self.read", "Review own campaign training"),
+    canCompleteSelf: exact(
+      "training.self.complete",
+      "Complete assigned campaign training",
+    ),
+    canManageAssignments: exact(
+      "training.assignment.manage",
+      "Assign campaign learning path",
+    ),
+    canReadReceipts: exact(
+      "training.receipt.read",
+      "Review own campaign training",
     ),
   };
 }

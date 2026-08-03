@@ -35,6 +35,8 @@ describe("campaign chapter routing", () => {
     expect(campaignChapterKeyForAnchor("guided-intake")).toBe("foundation");
     expect(campaignChapterKeyForAnchor("team-template-preview")).toBe("team");
     expect(campaignChapterKeyForAnchor("team-operations-board")).toBe("team");
+    expect(campaignChapterKeyForAnchor("training-academy")).toBe("team");
+    expect(campaignChapterKeyForAnchor("#training-academy")).toBe("team");
     expect(campaignChapterKeyForAnchor("campaigns")).toBeNull();
   });
 

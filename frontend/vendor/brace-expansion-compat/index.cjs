@@ -8,7 +8,7 @@ const expand =
     : safeModule.expand ?? safeModule.default;
 
 if (typeof expand !== "function") {
-  throw new TypeError("brace-expansion 5.0.8 did not expose an expansion function");
+  throw new TypeError("brace-expansion 5.0.9 did not expose an expansion function");
 }
 
 module.exports = expand;

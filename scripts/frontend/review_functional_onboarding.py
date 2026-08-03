@@ -1069,6 +1069,78 @@ async def review() -> dict[str, object]:
             f"team operation cards still transition under reduced motion: {reduced_transition}",
         )
         await mobile.screenshot(path=ARTIFACT_DIR / "functional-mobile-es.png", full_page=True)
+        # training academy functional journey
+        await page.goto(f"{BASE_URL}/es/campaign/team", wait_until="networkidle")
+        require(
+            await page.get_by_role("heading", name="Academia de campaña", exact=True).count() == 1,
+            "authenticated Training Academy is missing",
+        )
+        require(
+            await page.get_by_text("Investigar antes de actuar", exact=True).count() >= 1,
+            "training path is missing",
+        )
+        assign_button = page.get_by_role("button", name="Asignarme esta ruta", exact=True).first
+        if await assign_button.count() == 1:
+            await assign_button.click()
+            await page.wait_for_load_state("networkidle")
+            require(
+                "/es/campaign/team" in page.url,
+                f"training assignment left the Team chapter: {page.url}",
+            )
+        start_button = page.get_by_role("button", name="Comenzar lección", exact=True)
+        require(
+            await start_button.count() == 1,
+            "assigned training module cannot be started",
+        )
+        await start_button.click()
+        await page.wait_for_load_state("networkidle")
+        require(
+            "/es/campaign/team" in page.url,
+            f"training start left the Team chapter: {page.url}",
+        )
+        require(
+            await page.get_by_role(
+                "heading", name="Comprobación de aprendizaje", exact=True
+            ).count()
+            == 1,
+            "training assessment is unavailable after module start",
+        )
+        await page.get_by_label("Investigar y documentar evidencia", exact=True).check()
+        await page.get_by_role("button", name="Enviar respuesta", exact=True).click()
+        await page.wait_for_load_state("networkidle")
+        require(
+            "/es/campaign/team" in page.url,
+            f"training assessment left the Team chapter: {page.url}",
+        )
+        require(
+            await page.get_by_text("Módulo aprobado", exact=True).count() == 1,
+            "passing training result is missing",
+        )
+        require(
+            await page.get_by_text("Finalización interna", exact=False).count() >= 1,
+            "append-only training completion receipt is missing",
+        )
+        require(
+            await page.get_by_text(
+                (
+                    "La formación no concede permisos, no evalúa desempeño laboral "
+                    "y no es una acreditación profesional."
+                ),
+                exact=True,
+            ).count()
+            == 1,
+            "training authority boundary is missing",
+        )
+        await page.goto(f"{BASE_URL}/en/campaign/team", wait_until="networkidle")
+        require(
+            await page.get_by_role("heading", name="Campaign academy", exact=True).count() == 1,
+            "English Training Academy is unavailable after completion",
+        )
+        require(
+            await page.get_by_text("Internal completion", exact=False).count() >= 1,
+            "English training completion receipt is unavailable",
+        )
+
         await browser.close()
 
     require(not console_errors, f"browser console errors: {console_errors}")

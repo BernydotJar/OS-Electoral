@@ -17,6 +17,20 @@ describe("noticeRedirect", () => {
     );
   });
 
+  it("keeps Training Academy mutations inside the Team chapter", () => {
+    const response = noticeRedirect(
+      new Request("https://campaignos.test/api/ui/training/assign"),
+      "es",
+      "training_assigned",
+      "training-academy",
+    );
+
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe(
+      "https://campaignos.test/es/campaign/team?notice=training_assigned#training-academy",
+    );
+  });
+
   it("keeps overview-only anchors on the locale root", () => {
     const response = noticeRedirect(
       new Request("https://campaignos.test/api/ui/campaign-context"),

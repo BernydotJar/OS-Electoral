@@ -10,6 +10,9 @@ import type {
   TeamWorkspaceReadEvidence,
   StrategyWorkspaceReadEvidence,
   TenantMeResponse,
+  TrainingAssignmentListEvidence,
+  TrainingCatalogProjection,
+  TrainingReceiptListEvidence,
   WarRoomSnapshotReadEvidence,
 } from "@/lib/contracts";
 
@@ -110,6 +113,56 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "strategy_workspace",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review campaign strategy workspace",
+        approval_receipt_id: "synthetic-demo-approval",
+      },
+      {
+        grant_id: "29292929-2929-4929-8929-292929292929",
+        campaign_id: DEMO_CAMPAIGN_ID,
+        workspace_id: null,
+        action: "training.catalog.read",
+        resource_type: "training_academy",
+        resource_id: DEMO_CAMPAIGN_ID,
+        purpose: "Review approved training catalog",
+        approval_receipt_id: "synthetic-demo-approval",
+      },
+      {
+        grant_id: "30303030-3030-4030-8030-303030303030",
+        campaign_id: DEMO_CAMPAIGN_ID,
+        workspace_id: null,
+        action: "training.self.read",
+        resource_type: "training_academy",
+        resource_id: DEMO_CAMPAIGN_ID,
+        purpose: "Review own campaign training",
+        approval_receipt_id: "synthetic-demo-approval",
+      },
+      {
+        grant_id: "31313131-3131-4131-8131-313131313131",
+        campaign_id: DEMO_CAMPAIGN_ID,
+        workspace_id: null,
+        action: "training.self.complete",
+        resource_type: "training_academy",
+        resource_id: DEMO_CAMPAIGN_ID,
+        purpose: "Complete assigned campaign training",
+        approval_receipt_id: "synthetic-demo-approval",
+      },
+      {
+        grant_id: "32323232-3232-4232-8232-323232323232",
+        campaign_id: DEMO_CAMPAIGN_ID,
+        workspace_id: null,
+        action: "training.assignment.manage",
+        resource_type: "training_academy",
+        resource_id: DEMO_CAMPAIGN_ID,
+        purpose: "Assign campaign learning path",
+        approval_receipt_id: "synthetic-demo-approval",
+      },
+      {
+        grant_id: "34343434-3434-4434-8434-343434343434",
+        campaign_id: DEMO_CAMPAIGN_ID,
+        workspace_id: null,
+        action: "training.receipt.read",
+        resource_type: "training_academy",
+        resource_id: DEMO_CAMPAIGN_ID,
+        purpose: "Review own campaign training",
         approval_receipt_id: "synthetic-demo-approval",
       },
     ],
@@ -666,4 +719,108 @@ export const demoStrategyWorkspace: StrategyWorkspaceReadEvidence = {
     created_at: "2026-07-21T00:00:00Z",
     updated_at: "2026-07-21T00:10:00Z",
   },
+};
+
+export const DEMO_TRAINING_DIGEST =
+  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+export const demoTrainingCatalog: TrainingCatalogProjection = {
+  locale: "es",
+  catalog_digest: DEMO_TRAINING_DIGEST,
+  modules: [
+    {
+      module_id: "research_foundations",
+      version: "1.0.0",
+      status: "APPROVED",
+      title: "Investigar antes de actuar",
+      summary:
+        "Convierte preguntas abiertas en evidencia verificable antes de comunicar o gastar.",
+      objectives: [
+        {
+          id: "objective",
+          text: "Distinguir investigación, estrategia y ejecución.",
+        },
+      ],
+      lessons: [
+        {
+          id: "lesson",
+          title: "Primero entender",
+          body: "Una campaña comienza aclarando territorio, candidatura, actores y preguntas. La evidencia debe preceder a la estrategia y a cualquier acción pública.",
+          source_refs: ["docs/product/product-boundaries.md"],
+        },
+      ],
+      questions: [
+        {
+          id: "knowledge_check",
+          prompt: "¿Qué debe ocurrir antes de comunicar o gastar?",
+          options: [
+            { id: "correct", label: "Investigar y documentar evidencia" },
+            { id: "incorrect", label: "Publicar de inmediato" },
+          ],
+        },
+      ],
+      passing_percent: 100,
+      sources: ["docs/product/product-boundaries.md"],
+      authority_effect: "NONE",
+    },
+  ],
+  paths: [
+    {
+      path_id: "research_foundations_path",
+      version: "1.0.0",
+      role_slugs: ["electoral_research", "campaign_leadership"],
+      modules: [
+        { module_id: "research_foundations", version: "1.0.0", required: true },
+      ],
+      authority_effect: "NONE",
+    },
+  ],
+  authority_effect: "NONE",
+  external_effects: "NONE",
+};
+
+export const demoTrainingAssignments: TrainingAssignmentListEvidence = {
+  assignments: [
+    {
+      id: "35353535-3535-4535-8535-353535353535",
+      tenant_id: DEMO_TENANT_ID,
+      campaign_id: DEMO_CAMPAIGN_ID,
+      principal_id: demoTenantIdentity.principal_id,
+      path_id: "research_foundations_path",
+      path_version: "1.0.0",
+      role_slug: "electoral_research",
+      status: "IN_PROGRESS",
+      modules: [
+        {
+          id: "36363636-3636-4636-8636-363636363636",
+          module_id: "research_foundations",
+          module_version: "1.0.0",
+          status: "IN_PROGRESS",
+          attempt_count: 0,
+          latest_result: null,
+          started_at: "2026-08-01T05:30:00Z",
+          completed_at: null,
+          version: 2,
+        },
+      ],
+      completed_modules: 0,
+      total_modules: 1,
+      next_module_id: "research_foundations",
+      catalog_digest: DEMO_TRAINING_DIGEST,
+      version: 2,
+      assigned_at: "2026-08-01T05:25:00Z",
+      due_at: null,
+      completed_at: null,
+      authority_effect: "NONE",
+      external_effects: "NONE",
+    },
+  ],
+  audit_event_id: "37373737-3737-4737-8737-373737373737",
+  authority_effect: "NONE",
+};
+
+export const demoTrainingReceipts: TrainingReceiptListEvidence = {
+  receipts: [],
+  audit_event_id: "38383838-3838-4838-8838-383838383838",
+  authority_effect: "NONE",
 };

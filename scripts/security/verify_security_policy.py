@@ -24,6 +24,7 @@ RECORD_TYPES = {
     "candidate_evidence",
     "team_operations",
     "strategy_decision",
+    "training_progress",
     "agent_run",
     "audit_evidence",
     "rate_limit_bucket",
@@ -47,6 +48,7 @@ APPEND_ONLY_TABLES = {
     "war_room_snapshots",
     "strategy_decision_receipts",
     "agent_runs",
+    "training_completion_receipts",
 }
 PROCESSOR_BOUNDARIES = {
     "APPLICATION_DATABASE_ONLY",
@@ -170,8 +172,11 @@ def verify(repo_root: Path, policy: dict[str, Any] | None = None) -> dict[str, o
     ):
         errors.append("secret_or_token storage must remain prohibited")
 
-    migration_path = repo_root / "backend/migrations/versions/20260721_0011_append_only_security.py"
-    migration = migration_path.read_text(encoding="utf-8")
+    migration_paths = (
+        repo_root / "backend/migrations/versions/20260721_0011_append_only_security.py",
+        repo_root / "backend/migrations/versions/20260801_0013_training_academy.py",
+    )
+    migration = "\n".join(path.read_text(encoding="utf-8") for path in migration_paths)
     for table in APPEND_ONLY_TABLES:
         if f'"{table}"' not in migration:
             errors.append(f"append-only migration is missing {table}")

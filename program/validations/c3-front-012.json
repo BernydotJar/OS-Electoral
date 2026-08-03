@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "id": "C3-FRONT-012",
-  "status": "REVIEWED_REPAIR_PENDING_EXACT_HEAD",
+  "status": "CI_GREEN",
   "base_main_sha": "48f2d12aeec30361182c028e101678c940ab616a",
   "branch": "agent/c3-front-012-journey-navigation",
   "approval": {
@@ -37,5 +37,15 @@
     "failed_job_id": 91329541106,
     "root_cause": "Browser reviewer expected retired candidate action copy inside the candidacy chapter.",
     "repair": "Enforce candidate summary/action ownership in overview and absence in candidacy chapter for ES/EN dynamic and functional journeys."
+  },
+  "hosted_verification": {
+    "pull_request": 150,
+    "head": "1eea5664e06d753fbbbcabefd4364b11736e92e7",
+    "campaignos_ci_run_id": 30685446268,
+    "runtime_visual_run_id": 30685446240,
+    "frontend_artifact_id": 8813757642,
+    "frontend_artifact_digest": "sha256:bb5533939649eccf9308ef841eca36f1b22d6f60ce340c04c4bb8eed853e7dda",
+    "conclusion": "SUCCESS",
+    "merge_gate": "PENDING_HUMAN_REVIEW"
   }
 }
