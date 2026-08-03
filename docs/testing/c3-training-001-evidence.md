@@ -87,3 +87,7 @@ Training creates no membership, role assignment, permission grant, publication, 
 - independent PR review and human merge decision.
 
 Managed environments, external LMS/provider integration, professional accreditation, and production approval remain absent and blocked.
+
+## Hosted repair activation
+
+The first hosted review exposed integration and verification defects after the stacked frontend base was merged: the Team shell had not rendered the academy surface, the PostgreSQL fixture omitted the required tenant version, multi-option form keys needed deduplication, and the API boundary tests did not provide enough coverage for the repository threshold. A guarded, one-shot repair runner on `main` is authorized only to apply those deterministic fixes, run focused checks, remove its branch-only payload, and publish a new exact head. Production and external effects remain blocked.
