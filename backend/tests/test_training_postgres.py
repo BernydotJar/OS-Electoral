@@ -124,9 +124,9 @@ def test_training_rls_completion_and_append_only_receipt(
         )
         connection.execute(
             text(
-                "INSERT INTO tenants (id, slug, name, status) VALUES "
-                "(:tenant_a, :slug_a, 'Training A', 'ACTIVE'), "
-                "(:tenant_b, :slug_b, 'Training B', 'ACTIVE')"
+                "INSERT INTO tenants (id, slug, name, status, version) VALUES "
+                "(:tenant_a, :slug_a, 'Training A', 'ACTIVE', 1), "
+                "(:tenant_b, :slug_b, 'Training B', 'ACTIVE', 1)"
             ),
             {
                 "tenant_a": tenant_a,

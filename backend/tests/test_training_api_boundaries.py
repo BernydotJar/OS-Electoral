@@ -1,78 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
-
-ROOT = Path(__file__).resolve().parents[2]
-
-
-def replace_once(path: Path, old: str, new: str) -> None:
-    text = path.read_text(encoding="utf-8")
-    count = text.count(old)
-    if count != 1:
-        raise RuntimeError(f"expected one match in {path}: found {count}")
-    path.write_text(text.replace(old, new), encoding="utf-8")
-
-
-shell = ROOT / "frontend/src/components/shell.tsx"
-replace_once(
-    shell,
-    'import { TeamWorkspaceEditor } from "@/components/team-workspace-editor";\n',
-    'import { TeamWorkspaceEditor } from "@/components/team-workspace-editor";\n'
-    'import { TrainingAcademyPanel } from "@/components/training-academy-panel";\n',
-)
-replace_once(
-    shell,
-    "  deriveGuidedIntakeCapabilities,\n  deriveTeamWorkspaceCapabilities,\n",
-    "  deriveGuidedIntakeCapabilities,\n"
-    "  deriveTeamWorkspaceCapabilities,\n"
-    "  deriveTrainingCapabilities,\n",
-)
-replace_once(
-    shell,
-    "  const teamCapabilities = deriveTeamWorkspaceCapabilities(\n"
-    "    model.memberships,\n"
-    "    model.campaign.id,\n"
-    "  );\n",
-    "  const teamCapabilities = deriveTeamWorkspaceCapabilities(\n"
-    "    model.memberships,\n"
-    "    model.campaign.id,\n"
-    "  );\n"
-    "  const trainingCapabilities = deriveTrainingCapabilities(\n"
-    "    model.memberships,\n"
-    "    model.campaign.id,\n"
-    "  );\n",
-)
-replace_once(
-    shell,
-    '                    <details className="governance-metadata">\n',
-    "                    <TrainingAcademyPanel\n"
-    "                      locale={locale}\n"
-    "                      dictionary={dictionary}\n"
-    "                      catalog={model.trainingCatalog}\n"
-    "                      assignments={model.trainingAssignments}\n"
-    "                      receipts={model.trainingReceipts}\n"
-    "                      availability={model.trainingAvailability}\n"
-    "                      capabilities={trainingCapabilities}\n"
-    "                      demo={model.demo}\n"
-    "                    />\n\n"
-    '                    <details className="governance-metadata">\n',
-)
-
-postgres_test = ROOT / "backend/tests/test_training_postgres.py"
-replace_once(
-    postgres_test,
-    '"INSERT INTO tenants (id, slug, name, status) VALUES "\n'
-    '                "(:tenant_a, :slug_a, \'Training A\', \'ACTIVE\'), "\n'
-    '                "(:tenant_b, :slug_b, \'Training B\', \'ACTIVE\')"',
-    '"INSERT INTO tenants (id, slug, name, status, version) VALUES "\n'
-    '                "(:tenant_a, :slug_a, \'Training A\', \'ACTIVE\', 1), "\n'
-    '                "(:tenant_b, :slug_b, \'Training B\', \'ACTIVE\', 1)"',
-)
-
-boundary_test = ROOT / "backend/tests/test_training_api_boundaries.py"
-boundary_test.write_text(
-    '''from __future__ import annotations
-
 from types import SimpleNamespace
 from uuid import uuid4
 
@@ -112,9 +39,7 @@ def request(*headers: tuple[bytes, bytes]) -> Request:
             "server": ("testserver", 443),
             "client": ("testclient", 123),
             "root_path": "",
-            "app": SimpleNamespace(
-                state=SimpleNamespace(training_service="training-service")
-            ),
+            "app": SimpleNamespace(state=SimpleNamespace(training_service="training-service")),
         }
     )
 
@@ -200,9 +125,7 @@ def test_training_errors_map_to_sanitized_http_statuses(
         (TrainingAccessConflict("access details"), "TRAINING_STATE_CONFLICT"),
     ],
 )
-def test_training_conflicts_map_to_sanitized_problem_codes(
-    exception: Exception, code: str
-) -> None:
+def test_training_conflicts_map_to_sanitized_problem_codes(exception: Exception, code: str) -> None:
     with pytest.raises(ProblemException) as error:
         _raise_training_error(exception)
     assert error.value.status == 409
@@ -273,6 +196,3 @@ def test_assignment_scope_fails_closed_on_scope_or_effect_drift(mutation: str) -
             expected_principal_id=principal_id,
         )
     assert error.value.status_code == 503
-''',
-    encoding="utf-8",
-)

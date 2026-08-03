@@ -19,6 +19,7 @@ import { TeamOperationsDeck } from "@/components/team-operations-deck";
 import { TeamRoleDossier } from "@/components/team-role-dossier";
 import { TeamWorkItemEditor } from "@/components/team-work-item-editor";
 import { TeamWorkspaceEditor } from "@/components/team-workspace-editor";
+import { TrainingAcademyPanel } from "@/components/training-academy-panel";
 import {
   campaignChapterHref,
   resolveCampaignChapter,
@@ -31,6 +32,7 @@ import {
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
   deriveTeamWorkspaceCapabilities,
+  deriveTrainingCapabilities,
 } from "@/lib/journey-capabilities";
 import { deriveNavigation } from "@/lib/navigation";
 import type { ShellViewModel } from "@/lib/shell-view-model";
@@ -204,6 +206,10 @@ export function CampaignShell({
     model.campaign.id,
   );
   const teamCapabilities = deriveTeamWorkspaceCapabilities(
+    model.memberships,
+    model.campaign.id,
+  );
+  const trainingCapabilities = deriveTrainingCapabilities(
     model.memberships,
     model.campaign.id,
   );
@@ -1164,6 +1170,17 @@ export function CampaignShell({
                         )}
                       </section>
                     </div>
+
+                    <TrainingAcademyPanel
+                      locale={locale}
+                      dictionary={dictionary}
+                      catalog={model.trainingCatalog}
+                      assignments={model.trainingAssignments}
+                      receipts={model.trainingReceipts}
+                      availability={model.trainingAvailability}
+                      capabilities={trainingCapabilities}
+                      demo={model.demo}
+                    />
 
                     <details className="governance-metadata">
                       <summary>
