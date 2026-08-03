@@ -10,7 +10,7 @@ import {
   demoTrainingCatalog,
   demoTrainingReceipts,
 } from "@/lib/demo-data";
-import { getDictionary } from "@/lib/i18n";
+import { dictionaryFor } from "@/lib/i18n";
 import type { TrainingCapabilities } from "@/lib/journey-capabilities";
 
 const allCapabilities: TrainingCapabilities = {
@@ -27,7 +27,7 @@ function render(
   return renderToStaticMarkup(
     createElement(TrainingAcademyPanel, {
       locale: "es",
-      dictionary: getDictionary("es"),
+      dictionary: dictionaryFor("es"),
       catalog: demoTrainingCatalog,
       assignments: demoTrainingAssignments,
       receipts: demoTrainingReceipts,
