@@ -8,7 +8,7 @@ on:
       - completed
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: c3-training-branch-repair
@@ -19,6 +19,8 @@ jobs:
     if: >-
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.head_branch == 'agent/c3-training-001-governed-academy'
+    permissions:
+      contents: write
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
@@ -27,7 +29,7 @@ jobs:
         with:
           ref: agent/c3-training-001-governed-academy
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Verify guarded repair payload
         run: |
@@ -102,4 +104,11 @@ jobs:
           git diff --cached --check
           git diff --cached --quiet && exit 1
           git commit -m "fix(training): close CI and runtime integration gaps"
-          git push origin HEAD:agent/c3-training-001-governed-academy
+
+      - name: Push verified branch repair
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          AUTH_HEADER=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
+          git -c http.https://github.com/.extraheader="AUTHORIZATION: basic ${AUTH_HEADER}" \
+            push origin HEAD:agent/c3-training-001-governed-academy
