@@ -801,3 +801,12 @@
 - Reduced the candidacy chapter to Perfil y riesgos plus subordinate evidence.
 - Replaced specialist “Workspace ejecutivo” wording with plain ES/EN labels.
 - Focused tests, lint, TypeScript and browser accessibility review pass; production remains BLOCKED.
+
+## 2026-08-11 - Post-Training Git reconciliation and FIRMES discovery
+
+- Verified against live GitHub state that C3-FRONT-012 PR #150 merged to main at `6f491f08343fba38bd64ffac044e400d8f6a47c3` and its post-merge CampaignOS CI run `30789590467` succeeded.
+- Verified that C3-TRAINING-001 PR #151 merged to main at `a75da0c9695500467c193558b8d1c981c02003bf` and its post-merge CampaignOS CI run `30838818226` succeeded with retained frontend, recovery, secret-scan and supply-chain evidence.
+- Reconciled the canonical roadmap, fallback task graph/ledger and Graph Harness projection so both increments are `MERGED_TO_MAIN` rather than review states.
+- Completed FIRMES discovery for the authenticated Coordinador Municipal scope using the user-provided read-only manual. Persisted `research/firmes-integration-discovery.md` with an explicit source-of-truth boundary and no person-level political-data import.
+- Selected `C3-FIRMES-001` only as `spec_ready` with human approval `PENDING`. It remains outside the executable roadmap and no integration code is authorized yet.
+- Production remains `BLOCKED`, release remains `DENY_RELEASE`, and political/external effects remain `NONE`.

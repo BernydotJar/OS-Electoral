@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-08-01",
+  "updated_at": "2026-08-11",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -485,7 +485,7 @@
       "id": "C3-FRONT-012",
       "workstream": "WS-06",
       "title": "Clear campaign summary, preparation and candidate hierarchy",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-011"
       ],
@@ -500,7 +500,7 @@
       "id": "C3-TRAINING-001",
       "workstream": "WS-08",
       "title": "Governed role-based Training Academy",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-TEAM-001",
         "C3-TEAM-004",

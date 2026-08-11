@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "48f2d12aeec30361182c028e101678c940ab616a"
+    "revision": "a75da0c9695500467c193558b8d1c981c02003bf"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -26,76 +26,34 @@
     "blocked": "BLOCKED_BY_DEPENDENCY_OR_HUMAN_BLOCKED"
   },
   "scheduler": {
-    "evaluated_at": "2026-08-01",
+    "evaluated_at": "2026-08-11",
     "one_active_feature": true,
-    "active_feature": "C3-TRAINING-001",
+    "active_feature": null,
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-TRAINING-001",
-      "title": "Governed role-based Training Academy",
+      "id": "C3-FIRMES-001",
+      "title": "Governed FIRMES aggregate/reference integration",
       "mode": "SHIP",
-      "state": "review",
-      "human_approval": "APPROVED",
+      "state": "spec_ready",
+      "human_approval": "PENDING",
       "dependencies": [
-        "C3-TEAM-001",
-        "C3-TEAM-004",
         "C3-FRONT-012",
-        "C3-OPS-002"
+        "C3-TRAINING-001"
       ],
       "specs": [
-        "specs/C3-TRAINING-001/requirements.md",
-        "specs/C3-TRAINING-001/design.md",
-        "specs/C3-TRAINING-001/tasks.md"
+        "specs/C3-FIRMES-001/requirements.md",
+        "specs/C3-FIRMES-001/design.md",
+        "specs/C3-FIRMES-001/tasks.md"
       ],
-      "selection_reason": "C3-FRONT-012 is published and exact-head green in draft PR 150. The user explicitly authorized the governed Training Academy implementation and requested publication for review.",
-      "approval_receipt": {
-        "recorded_at": "2026-07-31T22:55:00-06:00",
-        "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "User explicitly authorized implementation of C3-TRAINING-001 in SHIP mode by asking to work on the governed Training Academy and publish the changes for review.",
-        "scope": "Repository, local and CI Training Academy implementation only; no production deployment, cloud resources, paid services, live LMS, professional accreditation, profiling, targeting or political external effects."
-      },
-      "local_evidence": [
-        "specs/C3-TRAINING-001/requirements.md",
-        "specs/C3-TRAINING-001/design.md",
-        "specs/C3-TRAINING-001/tasks.md",
-        "backend/src/campaignos/training/contracts.py",
-        "backend/src/campaignos/training/catalog.py",
-        "backend/src/campaignos/training/service.py",
-        "backend/src/campaignos/api/routes/training.py",
-        "backend/migrations/versions/20260801_0013_training_academy.py",
-        "backend/tests/test_training_catalog.py",
-        "backend/tests/test_training_model.py",
-        "backend/tests/test_training_api.py",
-        "backend/tests/test_training_postgres.py",
-        "frontend/src/components/training-academy-panel.tsx",
-        "frontend/src/lib/training-contract-parser.ts",
-        "frontend/src/lib/training-form.ts",
-        "docs/product/training-academy.md",
-        "docs/api/training-academy.md",
-        "docs/testing/c3-training-001-primary-docs.md",
-        "docs/testing/c3-training-001-evidence.md",
-        "program/iterations/c3-training-001.md",
-        "program/validations/c3-training-001.json",
-        "progress/review_C3-TRAINING-001.md"
-      ],
-      "stacked_base_pull_request": 150,
-      "stacked_base_head": "1eea5664e06d753fbbbcabefd4364b11736e92e7",
-      "review_artifact": "progress/review_C3-TRAINING-001.md",
-      "local_verification": {
-        "catalog_contracts": "PASS",
-        "service_and_api": "PASS",
-        "postgresql_18": "PASS",
-        "forced_rls": "PASS",
-        "append_only_receipt": "PASS",
-        "frontend_verify": "PASS",
-        "dynamic_browser": "PASS",
-        "functional_browser": "PASS",
-        "production_status": "BLOCKED",
-        "external_effects": "NONE"
-      },
-      "implementation_commit": "e4b142f014e840e68576e48d62ed3b21ef5e3da8"
+      "selection_reason": "FIRMES discovery is sufficient to define a non-duplicating read-only source-of-truth boundary. Implementation remains blocked until explicit human approval."
     },
     "blocked_nodes": [
+      {
+        "id": "C3-FIRMES-001",
+        "gate": "HUMAN_SPEC_APPROVAL_REQUIRED",
+        "owner": "Authorized product owner",
+        "next_valid_command": "Review and explicitly approve the C3-FIRMES-001 SHIP specification"
+      },
       {
         "id": "action:production-deployment",
         "gate": "HUMAN_PRODUCTION_APPROVAL_AND_INCOMPLETE_PRODUCTION_GATES",
@@ -119,82 +77,42 @@
   "localized_repair": {
     "id": "repair:c3-front-012-exact-head-review-2026-08-01",
     "status": "COMPLETED",
-    "scope": "Publish and independently verify the campaign summary, preparation and candidate hierarchy repair before stacking C3-TRAINING-001.",
+    "scope": "Reconcile the previously verified C3-FRONT-012 delivery with its actual merge to main before selecting new work.",
     "evidence": [
       "https://github.com/BernydotJar/OS-Electoral/pull/150",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30685446268",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30685446240",
-      "head@1eea5664e06d753fbbbcabefd4364b11736e92e7"
+      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30789590467",
+      "main@6f491f08343fba38bd64ffac044e400d8f6a47c3"
     ],
     "delivery": {
-      "state": "review",
+      "state": "merged",
       "implementation_head": "1eea5664e06d753fbbbcabefd4364b11736e92e7",
       "draft_pr": 150,
       "campaignos_ci_run_id": 30685446268,
       "campaignos_ci_conclusion": "SUCCESS",
       "visual_run_id": 30685446240,
       "visual_conclusion": "SUCCESS",
-      "merge_gate": "PENDING_HUMAN_REVIEW",
+      "merge_gate": "SATISFIED_USER_AUTHORIZATION",
       "evidence": [
         "docs/testing/c3-front-012-evidence.md",
         "program/validations/c3-front-012.json",
         "progress/review_C3-FRONT-012.md"
-      ]
+      ],
+      "merged_main_sha": "6f491f08343fba38bd64ffac044e400d8f6a47c3",
+      "post_merge_ci_run_id": 30789590467,
+      "post_merge_ci_conclusion": "SUCCESS"
     }
   },
   "active_increment": {
     "id": "C3-TRAINING-001",
-    "status": "REVIEWED",
+    "status": "MERGED_TO_MAIN",
     "branch": "agent/c3-training-001-governed-academy",
-    "base": "stacked@1eea5664e06d753fbbbcabefd4364b11736e92e7",
-    "approval_receipt": {
-      "recorded_at": "2026-07-31T22:55:00-06:00",
-      "source": "USER_EXPLICIT_APPROVAL",
-      "statement": "User explicitly authorized implementation of C3-TRAINING-001 in SHIP mode by asking to work on the governed Training Academy and publish the changes for review.",
-      "scope": "Repository, local and CI Training Academy implementation only; no production deployment, cloud resources, paid services, live LMS, professional accreditation, profiling, targeting or political external effects."
-    },
+    "pull_request": 151,
+    "merged_main_sha": "a75da0c9695500467c193558b8d1c981c02003bf",
+    "merged_at": "2026-08-03T17:53:59Z",
+    "post_merge_ci_run_id": 30838818226,
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "RUN_COMPLETE_GATE_FREEZE_AND_PUBLISH_STACKED_DRAFT_PR",
-    "stacked_base_pull_request": 150,
-    "review_artifact": "progress/review_C3-TRAINING-001.md",
-    "local_evidence": [
-      "specs/C3-TRAINING-001/requirements.md",
-      "specs/C3-TRAINING-001/design.md",
-      "specs/C3-TRAINING-001/tasks.md",
-      "backend/src/campaignos/training/contracts.py",
-      "backend/src/campaignos/training/catalog.py",
-      "backend/src/campaignos/training/service.py",
-      "backend/src/campaignos/api/routes/training.py",
-      "backend/migrations/versions/20260801_0013_training_academy.py",
-      "backend/tests/test_training_catalog.py",
-      "backend/tests/test_training_model.py",
-      "backend/tests/test_training_api.py",
-      "backend/tests/test_training_postgres.py",
-      "frontend/src/components/training-academy-panel.tsx",
-      "frontend/src/lib/training-contract-parser.ts",
-      "frontend/src/lib/training-form.ts",
-      "docs/product/training-academy.md",
-      "docs/api/training-academy.md",
-      "docs/testing/c3-training-001-primary-docs.md",
-      "docs/testing/c3-training-001-evidence.md",
-      "program/iterations/c3-training-001.md",
-      "program/validations/c3-training-001.json",
-      "progress/review_C3-TRAINING-001.md"
-    ],
-    "local_verification": {
-      "catalog_contracts": "PASS",
-      "service_and_api": "PASS",
-      "postgresql_18": "PASS",
-      "forced_rls": "PASS",
-      "append_only_receipt": "PASS",
-      "frontend_verify": "PASS",
-      "dynamic_browser": "PASS",
-      "functional_browser": "PASS",
-      "production_status": "BLOCKED",
-      "external_effects": "NONE"
-    },
-    "implementation_commit": "e4b142f014e840e68576e48d62ed3b21ef5e3da8"
+    "next_action": "HUMAN_REVIEW_C3_FIRMES_001_SPEC"
   }
 }

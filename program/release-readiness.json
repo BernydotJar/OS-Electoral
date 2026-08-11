@@ -87,21 +87,22 @@
     "receipt": null
   },
   "next_safe_actions": [
-    "Human-review and approve the C3-TRAINING-001 SHIP specification before implementation.",
-    "Keep C3-TRAINING-001 outside the executable roadmap until a scoped approval receipt exists.",
-    "Authorize a cost-bounded non-production environment before any Terraform apply.",
-    "Run managed staging migration, recovery, telemetry, load, rollback and security exercises.",
-    "Obtain independent security, privacy, legal, operational and final production approvals."
+    "Human-review and explicitly approve the C3-FIRMES-001 SHIP specification before integration implementation.",
+    "Keep C3-FIRMES-001 outside the executable roadmap until a scoped approval receipt exists.",
+    "Do not create a paid cloud environment; keep repository and demo validation on zero-cost/local/hosted-CI surfaces.",
+    "Run managed staging migration, recovery, telemetry, load, rollback and security exercises only if a later cost-bounded environment is explicitly authorized.",
+    "Obtain independent security, privacy, legal, operational and final production approvals before production."
   ],
   "repository_checkpoint": {
     "status": "MERGED_TO_MAIN",
-    "merge_pr": 126,
-    "main_sha": "a12bed0771299ef8c7bc611b69b1b8db1c01d968",
-    "post_merge_ci_run_id": 30424626008,
+    "merge_pr": 151,
+    "main_sha": "a75da0c9695500467c193558b8d1c981c02003bf",
+    "post_merge_ci_run_id": 30838818226,
     "post_merge_ci_conclusion": "SUCCESS",
-    "recovery_artifact_id": 8713127644,
-    "supply_chain_artifact_id": 8713120801,
-    "frontend_artifact_id": 8713170626,
-    "gitleaks_artifact_id": 8713118612
-  }
+    "recovery_artifact_id": 8865942138,
+    "supply_chain_artifact_id": 8865928423,
+    "frontend_artifact_id": 8866012713,
+    "gitleaks_artifact_id": 8865930417
+  },
+  "updated_at": "2026-08-11"
 }
