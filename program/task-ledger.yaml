@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-08-01",
+  "updated_at": "2026-08-11",
   "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
   "entries": [
     {
@@ -1228,7 +1228,7 @@
     {
       "task_id": "C3-FRONT-012",
       "owner": "WS-06/WS-07",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-FRONT-012/requirements.md",
         "specs/C3-FRONT-012/design.md",
@@ -1239,9 +1239,7 @@
         "progress/review_C3-FRONT-012.md"
       ],
       "external_effects": "NONE",
-      "blockers": [
-        "Human review and merge remain pending"
-      ],
+      "blockers": [],
       "approval": {
         "recorded_at": "2026-07-31T22:55:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
@@ -1267,13 +1265,19 @@
         "frontend_artifact_id": 8813757642,
         "frontend_artifact_digest": "sha256:bb5533939649eccf9308ef841eca36f1b22d6f60ce340c04c4bb8eed853e7dda",
         "conclusion": "SUCCESS",
-        "merge_gate": "PENDING_HUMAN_REVIEW"
+        "merge_gate": "SATISFIED_USER_AUTHORIZATION",
+        "merged_main_sha": "6f491f08343fba38bd64ffac044e400d8f6a47c3",
+        "merged_at": "2026-08-03T06:15:20Z",
+        "post_merge_ci_run_id": 30789590467,
+        "post_merge_ci_conclusion": "SUCCESS",
+        "post_merge_frontend_artifact_id": 8846581214,
+        "post_merge_frontend_artifact_digest": "sha256:d997784b7827537205789a4d1b1ff8056e62979b8e20a5fbfc1e2939e83fa386"
       }
     },
     {
       "task_id": "C3-TRAINING-001",
       "owner": "WS-08/WS-03/WS-06",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-TRAINING-001/requirements.md",
         "specs/C3-TRAINING-001/design.md",
@@ -1299,9 +1303,7 @@
         "progress/review_C3-TRAINING-001.md"
       ],
       "external_effects": "NONE",
-      "blockers": [
-        "Exact-head hosted CI, retained artifact inspection, independent PR review, and human merge decision remain pending"
-      ],
+      "blockers": [],
       "approval": {
         "recorded_at": "2026-07-31T22:55:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
@@ -1324,7 +1326,19 @@
         "production_status": "BLOCKED",
         "external_effects": "NONE"
       },
-      "implementation_commit": "e4b142f014e840e68576e48d62ed3b21ef5e3da8"
+      "implementation_commit": "e4b142f014e840e68576e48d62ed3b21ef5e3da8",
+      "hosted_verification": {
+        "pull_request": 151,
+        "head": "0095a1035aa03f0a5b67051c3ae03b65c9c3fa69",
+        "conclusion": "SUCCESS",
+        "merge_gate": "SATISFIED_USER_AUTHORIZATION",
+        "merged_main_sha": "a75da0c9695500467c193558b8d1c981c02003bf",
+        "merged_at": "2026-08-03T17:53:59Z",
+        "post_merge_ci_run_id": 30838818226,
+        "post_merge_ci_conclusion": "SUCCESS",
+        "post_merge_frontend_artifact_id": 8866012713,
+        "post_merge_frontend_artifact_digest": "sha256:d09861a597fc9e8d9def20be62ba9a63c85017099d43a9cfc4aa780c45ee5118"
+      }
     }
   ]
 }
