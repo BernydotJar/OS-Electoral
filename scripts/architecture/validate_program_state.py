@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
+import subprocess
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -66,6 +68,10 @@ GATE_STATUSES = {"BLOCKED", "NOT_IMPLEMENTED", "NOT_VERIFIED", "PARTIAL", "PASS"
 STACK_CONCLUSIONS = {"FAILURE", "SUCCESS"}
 WORKSTREAM_IDS = {f"WS-{index:02d}" for index in range(1, 16)}
 SHA_PATTERN = re.compile(r"[0-9a-f]{40}")
+MERGED_PR_SUBJECT_PATTERNS = (
+    re.compile(r"\(#(?P<number>\d+)\)\s*$"),
+    re.compile(r"^Merge pull request #(?P<number>\d+)\b"),
+)
 
 REQUIRED_GATES = {
     "accessibility-review",
@@ -172,6 +178,61 @@ def load_json(path: Path) -> dict[str, Any]:
         ) from exc
     require(isinstance(value, dict), f"expected object in {path.relative_to(ROOT)}")
     return value
+
+
+def merged_pr_numbers_from_git() -> set[int]:
+    """Return PR numbers recorded in commit subjects reachable from the current checkout."""
+
+    git_executable = shutil.which("git")
+    require(git_executable is not None, "live Git reconciliation requires git")
+    result = subprocess.run(  # noqa: S603 - trusted executable; all arguments are fixed
+        [git_executable, "-C", str(ROOT), "log", "--first-parent", "--format=%s"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    require(result.returncode == 0, "live Git reconciliation could not read repository history")
+    merged: set[int] = set()
+    for subject in result.stdout.splitlines():
+        for pattern in MERGED_PR_SUBJECT_PATTERNS:
+            match = pattern.search(subject)
+            if match:
+                merged.add(int(match.group("number")))
+                break
+    return merged
+
+
+def task_delivery_pull_requests(entry: dict[str, Any]) -> set[int]:
+    """Return PRs that directly deliver a task, excluding dependency/base PR references."""
+
+    pull_requests: set[int] = set()
+    for key in ("pull_request", "draft_pr"):
+        value = entry.get(key)
+        if isinstance(value, int) and value > 0:
+            pull_requests.add(value)
+    hosted = entry.get("hosted_verification")
+    if isinstance(hosted, dict):
+        value = hosted.get("pull_request")
+        if isinstance(value, int) and value > 0:
+            pull_requests.add(value)
+    return pull_requests
+
+
+def validate_live_git_reconciliation() -> None:
+    """Reject stale ledger state when its delivery PR is already reachable in Git."""
+
+    task_ledger = load_json(TASK_LEDGER)
+    merged_pull_requests = merged_pr_numbers_from_git()
+    for entry in task_ledger["entries"]:
+        observed = task_delivery_pull_requests(entry) & merged_pull_requests
+        if not observed:
+            continue
+        require(
+            entry["status"] == "MERGED_TO_MAIN",
+            "live Git merge drift: "
+            f"{entry['task_id']} delivery PR(s) {sorted(observed)} are reachable in Git "
+            f"but ledger status is {entry['status']}",
+        )
 
 
 def require_iso_date(value: Any, field: str) -> None:
@@ -815,6 +876,7 @@ def main() -> int:
     validate_policy_boundaries(data)
     validate_graph_harness_execution(data)
     validate_fallback_records(data, roadmap_by_id)
+    validate_live_git_reconciliation()
 
     print(
         "[OK] CampaignOS program truth validated; "

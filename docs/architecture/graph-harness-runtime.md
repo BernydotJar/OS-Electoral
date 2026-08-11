@@ -18,6 +18,8 @@ CampaignOS does not copy or redefine Graph Harness framework concepts. The reusa
 
 `program/graph-harness-execution.json` is a validated projection. It is not an independent roadmap and may not override canonical product state.
 
+The program-state validator also reconciles delivery state against the reachable first-parent Git history. For every task that records a direct delivery PR (`pull_request`, `draft_pr`, or `hosted_verification.pull_request`), a standard squash subject ending in `(#N)` or merge subject `Merge pull request #N` requires the ledger to say `MERGED_TO_MAIN`. Dependency/base PR references are intentionally excluded. This catches stale post-merge task state without requiring a manifest to contain the SHA of the commit that is currently validating itself.
+
 ## Lifecycle mapping
 
 | Graph Harness lifecycle | CampaignOS projection |
@@ -44,6 +46,6 @@ Exactly one feature may be active across approved, ready, running, or review. A 
 
 ## Current selection
 
-The post-merge graph repair is complete. The next selected product feature is `C3-SEC-002`, a SHIP-mode application-layer rate-limiting and abuse-protection increment. Its spec is complete, but implementation is not authorized. The executable ready set is empty until human approval moves that feature into the canonical roadmap.
+The post-training graph repair is complete. `C3-FRONT-012` and `C3-TRAINING-001` are reconciled as merged, and the next selected product feature is `C3-FIRMES-001`, the read-only Firmes source-of-truth integration contract. Its spec is complete, but implementation is not authorized. The executable ready set is empty until human approval moves that feature into the canonical roadmap.
 
 Production deployment remains separately `HUMAN_BLOCKED`.

@@ -150,6 +150,56 @@ def test_fallback_ledger_rejects_stale_merge_blocker(
         validator.validate_fallback_records(payload, roadmap)
 
 
+def test_live_git_reconciliation_accepts_current_ledger() -> None:
+    validator = load_validator()
+
+    validator.validate_live_git_reconciliation()
+
+
+def test_live_git_reconciliation_rejects_merged_pr_with_stale_task_status(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    validator = load_validator()
+    task_ledger = json.loads(validator.TASK_LEDGER.read_text(encoding="utf-8"))
+    stale_entry = next(
+        entry for entry in task_ledger["entries"] if entry["task_id"] == "C3-FRONT-012"
+    )
+    stale_entry["status"] = "CI_GREEN"
+    original_load_json = validator.load_json
+
+    def load_json(path: Path) -> dict[str, Any]:
+        if path == validator.TASK_LEDGER:
+            return task_ledger
+        return original_load_json(path)
+
+    monkeypatch.setattr(validator, "load_json", load_json)
+    monkeypatch.setattr(validator, "merged_pr_numbers_from_git", lambda: {150})
+    with pytest.raises(AssertionError, match="live Git merge drift: C3-FRONT-012"):
+        validator.validate_live_git_reconciliation()
+
+
+def test_live_git_reconciliation_ignores_dependency_pr_references(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    validator = load_validator()
+    task_ledger = json.loads(validator.TASK_LEDGER.read_text(encoding="utf-8"))
+    training_entry = next(
+        entry for entry in task_ledger["entries"] if entry["task_id"] == "C3-TRAINING-001"
+    )
+    training_entry["status"] = "REVIEWED"
+    training_entry["hosted_verification"]["pull_request"] = 999
+    original_load_json = validator.load_json
+
+    def load_json(path: Path) -> dict[str, Any]:
+        if path == validator.TASK_LEDGER:
+            return task_ledger
+        return original_load_json(path)
+
+    monkeypatch.setattr(validator, "load_json", load_json)
+    monkeypatch.setattr(validator, "merged_pr_numbers_from_git", lambda: {150})
+    validator.validate_live_git_reconciliation()
+
+
 def test_graph_harness_projection_selects_firmes_spec_without_activation() -> None:
     validator = load_validator()
     payload = manifest()
