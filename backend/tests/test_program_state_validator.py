@@ -242,7 +242,10 @@ def test_graph_harness_projection_rejects_merge_gate_bypass(
         return original_load_json(path)
 
     monkeypatch.setattr(validator, "load_json", load_json)
-    with pytest.raises(AssertionError, match="merged delivery lacks explicit merge authorization evidence"):
+    with pytest.raises(
+        AssertionError,
+        match="merged delivery lacks explicit merge authorization evidence",
+    ):
         validator.validate_graph_harness_execution(payload)
 
 
