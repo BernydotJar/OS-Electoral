@@ -2,14 +2,17 @@
 
 ## Decision
 
-Use the repository's existing GitHub Pages workflow as the public marketing/demo surface. Do not create a new AWS, GCP, Vercel, or other paid runtime for this milestone.
+Use the repository's existing GitHub Pages workflow for public marketing only. Do not create a new AWS, GCP, Vercel, or other paid runtime for this milestone.
 
-Public static surfaces after the approved Pages publish:
+Superseding publication decision recorded 2026-08-12:
 
-- marketing: `/OS-Electoral/marketing/`
-- existing static product demo: `/OS-Electoral/`
+- marketing is published at `/OS-Electoral/`;
+- `/OS-Electoral/marketing/` remains a compatibility copy of the same marketing source;
+- the legacy static application at the `web/` root is no longer published as the current product;
+- the real interactive application remains `frontend/` and may be exposed temporarily for authenticated review through a zero-cost Cloudflare Quick Tunnel;
+- a Quick Tunnel is ephemeral review infrastructure, not a stable production deployment or production evidence.
 
-The Pages workflow remains manual, main-only, and classified `DEMO_NON_PRODUCTION`. This does not change CampaignOS production status or authorize a production deployment.
+The Pages workflow remains manual, main-only, and internally classified `DEMO_NON_PRODUCTION` for governance compatibility. That internal classification is not rendered as product UI. This does not change CampaignOS production status or authorize a production deployment.
 
 ## AWS audit
 

@@ -33,7 +33,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "campaign_collection",
         resource_id: DEMO_TENANT_ID,
         purpose: "Create tenant campaign",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "55555555-5555-4555-8555-555555555555",
@@ -43,7 +43,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "campaign",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Operate assigned campaign",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "66666666-6666-4666-8666-666666666666",
@@ -53,7 +53,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "campaign_readiness",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Assess assigned campaign readiness",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "99999999-9999-4999-8999-999999999999",
@@ -63,7 +63,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "guided_intake",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review guided campaign intake",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
@@ -73,7 +73,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "candidate_workspace",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review candidate evidence workspace",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "12121212-1212-4212-8212-121212121212",
@@ -83,7 +83,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "team_workspace",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review campaign team workspace",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "15151515-1515-4515-8515-151515151515",
@@ -93,7 +93,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "campaign_roadmap",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review campaign operations roadmap",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "16161616-1616-4616-8616-161616161616",
@@ -103,7 +103,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "war_room_snapshot",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review daily campaign war room snapshot",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "28282828-2828-4828-8828-282828282828",
@@ -113,7 +113,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "strategy_workspace",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review campaign strategy workspace",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "29292929-2929-4929-8929-292929292929",
@@ -123,7 +123,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "training_academy",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review approved training catalog",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "30303030-3030-4030-8030-303030303030",
@@ -133,7 +133,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "training_academy",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review own campaign training",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "31313131-3131-4131-8131-313131313131",
@@ -143,7 +143,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "training_academy",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Complete assigned campaign training",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "32323232-3232-4232-8232-323232323232",
@@ -153,7 +153,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "training_academy",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Assign campaign learning path",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
       {
         grant_id: "34343434-3434-4434-8434-343434343434",
@@ -163,7 +163,7 @@ export const demoMemberships: readonly EffectiveMembership[] = [
         resource_type: "training_academy",
         resource_id: DEMO_CAMPAIGN_ID,
         purpose: "Review own campaign training",
-        approval_receipt_id: "synthetic-demo-approval",
+        approval_receipt_id: "synthetic-review-approval",
       },
     ],
   },
@@ -172,9 +172,9 @@ export const demoMemberships: readonly EffectiveMembership[] = [
 export const demoTenantIdentity: TenantMeResponse = {
   principal_id: "77777777-7777-4777-8777-777777777777",
   tenant_id: DEMO_TENANT_ID,
-  subject: "synthetic-demo-operator",
-  issuer: "https://demo.invalid/",
-  display_name: "Operadora Demo",
+  subject: "synthetic-review-operator",
+  issuer: "https://review.invalid/",
+  display_name: "Operadora de revisión",
   email: null,
   authenticated_at: "2026-07-21T00:00:00Z",
   evaluated_at: "2026-07-21T00:00:00Z",
@@ -185,7 +185,7 @@ export const demoTenantIdentity: TenantMeResponse = {
 export const demoCampaign: CampaignProjection = {
   id: DEMO_CAMPAIGN_ID,
   tenant_id: DEMO_TENANT_ID,
-  slug: "antigua-demo",
+  slug: "antigua-review",
   name: "Campaña sintética Antigua",
   jurisdiction: "Antigua Guatemala",
   stage: "PRECAMPAIGN",
@@ -616,9 +616,9 @@ export const demoStrategyWorkspace: StrategyWorkspaceReadEvidence = {
         classification: "VERIFIED",
         statement:
           "El contexto sintético está documentado para revisión interna.",
-        source_reference: "synthetic-demo:evidence-1",
-        authority: "Synthetic demonstration",
-        jurisdiction: "Demonstration only",
+        source_reference: "synthetic-review:evidence-1",
+        authority: "Synthetic review evidence",
+        jurisdiction: "Review environment only",
         status: "ACCEPTED",
         collected_at: "2026-07-21T00:00:00Z",
       },

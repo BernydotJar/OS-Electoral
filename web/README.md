@@ -1,6 +1,9 @@
-# CampaignOS Frontend
+# CampaignOS legacy static reference
 
 Static, dependency-free frontend for the Campaign Team Command Center and the Evidence Control Room.
+
+> Publication boundary (2026-08-12): GitHub Pages publishes only `web/marketing/`. The files at the `web/` root are retained as historical/read-only visual evidence and are not the current interactive product. The real application lives in `frontend/`.
+
 
 ## Modules
 

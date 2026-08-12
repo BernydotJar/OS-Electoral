@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Review the production-built CampaignOS dynamic shell in explicit demo mode."""
+"""Review the production-built CampaignOS dynamic shell in explicit read-only mode."""
 
 from __future__ import annotations
 
@@ -126,9 +126,10 @@ async def review() -> dict[str, object]:
             await desktop.get_by_role("heading", level=1).inner_text() == "Tu campaña, paso a paso",
             "Spanish command-overview heading mismatch",
         )
+        visible_text = await desktop.locator("body").inner_text()
         require(
-            await desktop.get_by_text("DEMO SINTÉTICO", exact=True).count() >= 1,
-            "demo classification missing",
+            "demo" not in visible_text.casefold(),
+            "user-facing demo wording leaked into the read-only shell",
         )
         require(
             await desktop.get_by_text(
@@ -198,7 +199,6 @@ async def review() -> dict[str, object]:
             await desktop.locator("video, source[src*='sceneai.art']").count() == 0,
             "third-party cinematic media leaked into the product",
         )
-        visible_text = await desktop.locator("body").inner_text()
         for internal_code in (
             "OPERATIONAL SETUP ONLY",
             "BEGIN_GUIDED_INTAKE",
@@ -483,9 +483,10 @@ async def review() -> dict[str, object]:
         )
         await assert_no_overflow(mobile, "mobile-es")
         await assert_accessible(mobile, "mobile-es")
+        mobile_visible_text = await mobile.locator("body").inner_text()
         require(
-            await mobile.get_by_text("DEMO SINTÉTICO", exact=True).count() >= 1,
-            "mobile demo badge missing",
+            "demo" not in mobile_visible_text.casefold(),
+            "user-facing demo wording leaked into the mobile read-only shell",
         )
         require(
             await mobile.locator("#candidate-workspace").count() == 1,
@@ -526,7 +527,7 @@ async def review() -> dict[str, object]:
         await mobile_session_menu.locator("summary").click()
         await mobile.screenshot(path=ARTIFACT_DIR / "mobile-es.png", full_page=True)
 
-        # training academy demo review
+        # training academy read-only review
         await desktop.goto(f"{BASE_URL}/es/campaign/team", wait_until="networkidle")
         require(
             await desktop.get_by_role("heading", name="Academia de campaña", exact=True).count()
@@ -535,15 +536,15 @@ async def review() -> dict[str, object]:
         )
         require(
             await desktop.get_by_text(
-                "Vista demostrativa de solo lectura: respuestas y avances deshabilitados.",
+                "Vista de solo lectura: respuestas y avances deshabilitados.",
                 exact=True,
             ).count()
             == 1,
-            "Training Academy demo boundary is missing",
+            "Training Academy read-only boundary is missing",
         )
         require(
             await desktop.get_by_role("button", name="Comenzar lección").count() == 0,
-            "read-only demo exposed a training mutation",
+            "read-only review exposed a training mutation",
         )
         await desktop.goto(f"{BASE_URL}/en/campaign/team", wait_until="networkidle")
         require(

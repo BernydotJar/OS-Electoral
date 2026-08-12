@@ -323,9 +323,7 @@ export function CampaignShell({
           </span>
           <div>
             <strong>{dictionary.common.product}</strong>
-            <small>
-              {model.demo ? dictionary.common.demo : dictionary.common.live}
-            </small>
+            <small>{model.campaign.jurisdiction}</small>
           </div>
         </div>
         <nav className="module-navigation">
@@ -369,7 +367,7 @@ export function CampaignShell({
                 <details className="session-context-menu">
                   <summary>
                     <span
-                      className={`session-state-dot ${model.demo ? "session-demo" : "session-live"}`}
+                      className={`session-state-dot ${model.demo ? "session-read-only" : "session-live"}`}
                       aria-hidden="true"
                     />
                     <span>{dictionary.shell.sessionContext}</span>
@@ -393,7 +391,7 @@ export function CampaignShell({
                       <dt>{dictionary.shell.sessionState}</dt>
                       <dd>
                         {model.demo
-                          ? dictionary.common.demo
+                          ? dictionary.common.readOnly
                           : dictionary.common.live}
                       </dd>
                     </div>
@@ -409,11 +407,11 @@ export function CampaignShell({
                 <p className="topbar-title">{dictionary.shell.title}</p>
               </div>
               <div className="topbar-actions">
-                <span
-                  className={`mode-badge ${model.demo ? "mode-demo" : "mode-live"}`}
-                >
-                  {model.demo ? dictionary.common.demo : dictionary.common.live}
-                </span>
+                {!model.demo ? (
+                  <span className="mode-badge mode-live">
+                    {dictionary.common.live}
+                  </span>
+                ) : null}
                 <LocaleSwitcher locale={locale} dictionary={dictionary} />
               </div>
             </>

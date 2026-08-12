@@ -77,6 +77,13 @@ function render(
 }
 
 describe("CampaignShell chapter routes", () => {
+  it("does not expose demo wording in the review UI", () => {
+    const html = render(null);
+
+    expect(html.toLowerCase()).not.toContain("demo");
+    expect(html).not.toContain("DEMO SINTÉTICO");
+  });
+
   it("keeps the command overview focused on roadmap and campaign context", () => {
     const html = render(null);
 

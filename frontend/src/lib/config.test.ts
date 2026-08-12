@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { FrontendConfigurationError, resolveFrontendConfig } from "@/lib/config";
 
 describe("resolveFrontendConfig", () => {
-  it("allows synthetic demo only in test or development", () => {
+  it("allows synthetic read-only mode only in test or development", () => {
     expect(
       resolveFrontendConfig({
         CAMPAIGNOS_FRONTEND_ENVIRONMENT: "test",
