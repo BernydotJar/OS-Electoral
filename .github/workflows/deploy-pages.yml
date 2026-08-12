@@ -1,12 +1,12 @@
-name: Publish CampaignOS static demo (non-production)
+name: Publish CampaignOS marketing (non-production)
 
-run-name: "Static demo publish by @${{ github.actor }} — ${{ inputs.reason }}"
+run-name: "Marketing publish by @${{ github.actor }} — ${{ inputs.reason }}"
 
 on:
   workflow_dispatch:
     inputs:
       confirmation:
-        description: "Type DEMO_NON_PRODUCTION to confirm this is only a static public demo"
+        description: "Type DEMO_NON_PRODUCTION to confirm this is only a non-production public marketing surface"
         required: true
         type: string
       reason:
@@ -18,11 +18,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: pages-demo-non-production
+  group: pages-marketing-non-production
   cancel-in-progress: false
 
 jobs:
-  authorize-demo-publish:
+  authorize-marketing-publish:
     name: Validate explicit non-production confirmation
     runs-on: ubuntu-latest
     steps:
@@ -36,14 +36,14 @@ jobs:
             exit 1
           fi
           if [ "$DISPATCH_REF" != "main" ]; then
-            echo "Refusing publish: the static demo may only be published from main." >&2
+            echo "Refusing publish: marketing may only be published from main." >&2
             exit 1
           fi
-          echo "Authorized static demo publish. This is not dev, staging or production."
+          echo "Authorized marketing publish. This is not dev, staging or production."
 
-  deploy-static-demo:
-    name: Deploy static demo (never production)
-    needs: authorize-demo-publish
+  deploy-static-marketing:
+    name: Deploy static marketing (never production)
+    needs: authorize-marketing-publish
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -61,11 +61,22 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
-      - name: Upload static demo
+      - name: Prepare marketing-only Pages artifact
+        run: |
+          set -eu
+          rm -rf .pages-site
+          mkdir -p .pages-site/marketing
+          cp -R web/marketing/. .pages-site/
+          cp -R web/marketing/. .pages-site/marketing/
+          touch .pages-site/.nojekyll
+          test ! -e .pages-site/app.js
+          test ! -e .pages-site/data/status.json
+
+      - name: Upload static marketing
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: ./web
+          path: ./.pages-site
 
-      - name: Deploy static demo
+      - name: Deploy static marketing
         id: deployment
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

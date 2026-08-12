@@ -121,12 +121,25 @@ def verify(root: Path) -> dict[str, object]:
 
     deploy_text = (workflow_dir / "deploy-pages.yml").read_text(encoding="utf-8")
     if not re.search(r"^\s{2}workflow_dispatch:\s*$", deploy_text, re.MULTILINE):
-        errors.append("deploy-pages.yml: static demo must remain manual workflow_dispatch")
+        errors.append(
+            "deploy-pages.yml: marketing publication must remain manual workflow_dispatch"
+        )
     if re.search(r"^\s{2}(push|pull_request|schedule):\s*$", deploy_text, re.MULTILINE):
         errors.append("deploy-pages.yml: automatic publication triggers are forbidden")
     for fragment in ("DEMO_NON_PRODUCTION", 'if [ "$DISPATCH_REF" != "main" ]'):
         if fragment not in deploy_text:
             errors.append(f"deploy-pages.yml: missing fail-closed publication guard: {fragment}")
+    for fragment in (
+        "cp -R web/marketing/. .pages-site/",
+        "test ! -e .pages-site/app.js",
+        "path: ./.pages-site",
+    ):
+        if fragment not in deploy_text:
+            errors.append(f"deploy-pages.yml: marketing-only Pages boundary missing: {fragment}")
+    if re.search(r"^\s+path:\s+\./web\s*$", deploy_text, re.MULTILINE):
+        errors.append(
+            "deploy-pages.yml: legacy web root must not be published as the current product"
+        )
 
     return {
         "schema_version": 1,

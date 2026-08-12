@@ -140,7 +140,7 @@ export function resolveFrontendConfig(
     environment !== "test"
   ) {
     throw new FrontendConfigurationError(
-      "Synthetic demo mode is forbidden outside development and test",
+      "Synthetic read-only mode is forbidden outside development and test",
     );
   }
   if (mode === "live" && apiBaseUrl === null) {

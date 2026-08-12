@@ -237,11 +237,6 @@ a:focus-visible,
   letter-spacing: 0.08em;
 }
 
-.mode-demo {
-  color: #1d1404;
-  background: var(--warning);
-}
-
 .mode-live {
   color: #06170d;
   background: var(--approval);
@@ -6346,7 +6341,7 @@ button[type="submit"]:hover {
   background: currentColor;
 }
 
-.session-demo {
+.session-read-only {
   color: #e8bd6a;
   background: currentColor;
 }

@@ -4,7 +4,7 @@
 
 `C3-FRONT-001` introduces a local, server-rendered Next.js application shell. It is not a live-authentication, deployed-development, staging, or production claim.
 
-The public `web/` directory remains the static `DEMO_NON_PRODUCTION` surface and a visual reference. The dynamic application lives in `frontend/` and does not import or execute the legacy JavaScript runtime.
+GitHub Pages publishes only `web/marketing/`. The legacy application files at the `web/` root remain a visual/reference artifact and are not published as the current product. The dynamic application lives in `frontend/` and does not import or execute the legacy JavaScript runtime.
 
 ## Classification of the legacy frontend
 
@@ -13,7 +13,7 @@ The public `web/` directory remains the static `DEMO_NON_PRODUCTION` surface and
 | Premium Slate visual language | `INTEGRATE` | Re-express tokens, spacing, hierarchy, responsive behavior, and governance language in typed React components. |
 | Static HTML snapshots | `PRESERVE` | Keep as read-only reference until explicit parity review. |
 | Legacy JavaScript state/runtime | `SUPERSEDE` | Do not import it into the production application shell. |
-| GitHub Pages demo | `PRESERVE` | Manual-only, read-only, and never production evidence. |
+| GitHub Pages marketing | `PRESERVE` | Manual-only public marketing, and never production evidence. |
 | Legacy surface after parity | `ARCHIVE_AFTER_PARITY` | Requires human review and preserved historical evidence before any archive action. |
 
 ## Runtime trust boundary

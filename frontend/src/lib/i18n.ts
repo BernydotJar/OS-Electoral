@@ -15,7 +15,6 @@ const es = {
     skip: "Saltar al contenido",
     product: "CampaignOS",
     readOnly: "SOLO LECTURA",
-    demo: "DEMO SINTÉTICO",
     live: "SESIÓN VERIFICADA",
     notApproval:
       "No constituye aprobación política, legal, financiera, de publicación ni de producción.",
@@ -856,7 +855,7 @@ const es = {
     boundary:
       "La formación no concede permisos, no evalúa desempeño laboral y no es una acreditación profesional.",
     demoBoundary:
-      "Vista demostrativa de solo lectura: respuestas y avances deshabilitados.",
+      "Vista de solo lectura: respuestas y avances deshabilitados.",
     statusLabels: {
       ASSIGNED: "Asignada",
       IN_PROGRESS: "En curso",
@@ -996,7 +995,6 @@ const en: Dictionary = {
     skip: "Skip to content",
     product: "CampaignOS",
     readOnly: "READ ONLY",
-    demo: "SYNTHETIC DEMO",
     live: "VERIFIED SESSION",
     notApproval:
       "This is not political, legal, financial, publication, or production approval.",
@@ -1827,7 +1825,7 @@ const en: Dictionary = {
     noReceipts: "No receipts yet.",
     boundary:
       "Training grants no permissions, does not evaluate job performance, and is not professional accreditation.",
-    demoBoundary: "Read-only demonstration: answers and progress are disabled.",
+    demoBoundary: "Read-only view: answers and progress are disabled.",
     statusLabels: {
       ASSIGNED: "Assigned",
       IN_PROGRESS: "In progress",
