@@ -289,7 +289,7 @@ export function CampaignShell({
   }[currentJourneyPhase.key];
   const cleanCurrentHref = chapterRouteActive
     ? campaignChapterHref(locale, currentJourneyPhase.key)
-    : `/${locale}`;
+    : `/${locale}#campaigns`;
 
   const roles = [
     ...new Set(model.memberships.flatMap((membership) => membership.roles)),

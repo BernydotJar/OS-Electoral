@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-08-12",
-  "branch": "agent/team-readiness-ui-lifecycle",
+  "branch": "agent/team-readiness-postmerge-fix",
   "current_increment": "C3-TEAM-005",
   "iteration_status": "REVIEWED",
   "production_status": "BLOCKED",

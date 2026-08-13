@@ -64,6 +64,14 @@
       "status": "RESOLVED",
       "finding": "Access recommendations must remain advisory and cannot be treated as grants.",
       "repair": "Normalize recommendations to current campaign scope with workspace_id null and authority_effect NONE; require the exact existing Team update grant."
+    },
+    {
+      "id": "C3-TEAM-005-F5",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "The command-overview notice dismissal server fallback omitted #campaigns, so a pre-hydration click could navigate to /es and break context preservation.",
+      "evidence": "CampaignOS CI #260 run 31663558148 on main@570549119537c0298e4da476ef01b3de8fa53903 failed at the first functional notice dismissal while API/backend jobs remained healthy.",
+      "repair": "Use /{locale}#campaigns as the command-overview fallback and verify it in static shell rendering plus the API-backed browser journey."
     }
   ],
   "production_status": "BLOCKED",
@@ -80,5 +88,28 @@
     "runtime_visual_conclusion": "SUCCESS",
     "functional_onboarding": "PASS_EXACT_HEAD_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW"
   },
-  "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2"
+  "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2",
+  "post_merge_verification": {
+    "state": "FAILURE_SUPERSESSION_PENDING",
+    "main_sha": "570549119537c0298e4da476ef01b3de8fa53903",
+    "campaignos_ci_run_id": 31663558148,
+    "campaignos_ci_run_number": 260,
+    "campaignos_ci_conclusion": "FAILURE",
+    "failed_job": "Dynamic frontend contracts and browser review",
+    "failed_step": "Exercise the API-backed functional onboarding journey",
+    "failure_point": "Notice dismissal after campaign draft creation waited for /es#campaigns but the non-hydrated fallback navigated to /es without the anchor",
+    "root_cause": "The command-overview NoticeDismissLink server fallback omitted #campaigns and relied on client hydration to preserve the live fragment.",
+    "repair": "Make the command-overview fallback href /{locale}#campaigns and prove the static fallback in a shell test.",
+    "repair_branch": "agent/team-readiness-postmerge-fix",
+    "external_effects": "NONE"
+  },
+  "repair_local_verification": {
+    "static_fallback_shell_tests": "PASS_9_FOCUSED_TESTS",
+    "typescript_before_dependency_reinstall_interruption": "PASS",
+    "program_truth": "PASS_BLOCKED",
+    "release_readiness": "PASS_DENY_RELEASE",
+    "graph_validator_tests": "PASS_17",
+    "strict_functional_url_expectation": "UNCHANGED_/es#campaigns",
+    "dependency_reinstall_note": "A later local npm ci attempt was terminated after prolonged workstation I/O and left node_modules incomplete; no dependency files are committed. Exact-head hosted CI must perform the clean install."
+  }
 }
