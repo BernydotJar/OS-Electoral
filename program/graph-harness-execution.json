@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "561d4ba0f7cfccaac5bbd94e38c36245ec332415"
+    "revision": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -28,38 +28,45 @@
   "scheduler": {
     "evaluated_at": "2026-08-12",
     "one_active_feature": true,
-    "active_feature": "C3-FRONT-013",
+    "active_feature": "C3-TEAM-005",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-FRONT-013",
-      "title": "Completable governed candidate evidence and approval UI",
+      "id": "C3-TEAM-005",
+      "title": "Completable Team readiness supporting-record review UI",
       "mode": "SHIP",
       "state": "review",
       "human_approval": "APPROVED",
       "dependencies": [
-        "C3-FRONT-012",
-        "C3-CANDIDATE-001"
+        "C3-FRONT-013",
+        "C3-TEAM-004",
+        "C3-TRAINING-001"
       ],
       "specs": [
-        "specs/C3-FRONT-013/requirements.md",
-        "specs/C3-FRONT-013/design.md",
-        "specs/C3-FRONT-013/tasks.md"
+        "specs/C3-TEAM-005/requirements.md",
+        "specs/C3-TEAM-005/design.md",
+        "specs/C3-TEAM-005/tasks.md"
       ],
-      "selection_reason": "Highest-priority localized product-completeness repair: the candidate gate is currently impossible to complete through the UI even though the merged backend supports every required section and approval.",
+      "selection_reason": "Dependency validation proved Strategy is not READY: Team remains STRUCTURE_IN_PROGRESS because training requirements and access recommendations are initialized unassessed and have no UI mutation path. Complete the existing Team gate before Strategy.",
       "approval_receipt": {
-        "recorded_at": "2026-08-12T13:59:00-06:00",
+        "recorded_at": "2026-08-12T19:22:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle to finish the documented complete-campaign product gap.",
-        "scope": "Internal candidate evidence/approval UI, same-origin API proxy, local development seed, tests and review evidence only; no Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
+        "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle beyond a single feature until the product reaches a terminal completion state.",
+        "scope": "Internal Team readiness UI/API proxy/tests/evidence only; no identity assignment, permission grant, Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
       },
-      "review_artifact": "progress/review_C3-FRONT-013.md",
+      "review_artifact": "progress/review_C3-TEAM-005.md",
       "local_evidence": [
-        "docs/testing/c3-front-013-evidence.md",
-        "program/validations/c3-front-013.json",
-        "program/iterations/c3-front-013.md"
+        "docs/testing/c3-team-005-evidence.md",
+        "program/validations/c3-team-005.json",
+        "program/iterations/c3-team-005.md"
       ]
     },
     "blocked_nodes": [
+      {
+        "id": "C3-FRONT-014",
+        "gate": "BLOCKED_BY_C3_TEAM_005",
+        "owner": "WS-06/WS-09",
+        "next_valid_command": "Complete and merge C3-TEAM-005, then re-evaluate Strategy readiness"
+      },
       {
         "id": "C3-FIRMES-001",
         "gate": "HUMAN_SPEC_APPROVAL_REQUIRED",
@@ -115,17 +122,13 @@
     }
   },
   "active_increment": {
-    "id": "C3-FRONT-013",
-    "status": "CI_GREEN",
-    "branch": "agent/campaign-complete-ui-lifecycle",
-    "base_main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+    "id": "C3-TEAM-005",
+    "status": "REVIEWED",
+    "branch": "agent/team-readiness-ui-lifecycle",
+    "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "MERGE_REVIEWED_INCREMENT",
-    "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95",
-    "exact_head": "127d90e05c7c2b83a34d1dc6cb839bcc3a5600ed",
-    "campaignos_ci_run_id": 31658468438,
-    "runtime_visual_run_id": 31658468359
+    "next_action": "FREEZE_AND_PUBLISH_REVIEW_HEAD"
   }
 }

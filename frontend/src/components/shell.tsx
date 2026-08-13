@@ -16,6 +16,7 @@ import { NoticeDismissLink } from "@/components/notice-dismiss-link";
 import { OperationsWorkspace } from "@/components/operations-workspace";
 import { StrategyWorkspace } from "@/components/strategy-workspace";
 import { TeamOperationsBoard } from "@/components/team-operations-board";
+import { TeamReadinessCompletion } from "@/components/team-readiness-completion";
 import { TeamOperationsDeck } from "@/components/team-operations-deck";
 import { TeamRoleDossier } from "@/components/team-role-dossier";
 import { TeamWorkItemEditor } from "@/components/team-work-item-editor";
@@ -1178,6 +1179,14 @@ export function CampaignShell({
                         )}
                       </section>
                     </div>
+
+                    <TeamReadinessCompletion
+                      locale={locale}
+                      dictionary={dictionary}
+                      demo={model.demo}
+                      workspace={teamWorkspace}
+                      capabilities={teamCapabilities}
+                    />
 
                     <TrainingAcademyPanel
                       locale={locale}

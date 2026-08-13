@@ -9,7 +9,7 @@
     "main_sha_observed": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
     "c2_integration_state": "MERGED_TO_MAIN",
     "c3_foundation_iam_api_state": "MERGED_TO_MAIN",
-    "c3_program_state": "C3_FRONT_013_CI_GREEN_MERGE_READY"
+    "c3_program_state": "C3_TEAM_005_READINESS_UI_ACTIVE_STRATEGY_BLOCKED"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
@@ -790,26 +790,26 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CANDIDATE_COMPLETION_UI_CI_GREEN",
-      "next_increment": "C3-FRONT-013_MERGE"
+      "status": "STRATEGY_COMPLETION_UI_BLOCKED_BY_TEAM_READINESS",
+      "next_increment": "C3-TEAM-005"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CANDIDATE_COMPLETION_UI_CI_GREEN",
-      "next_increment": "C3-FRONT-013_MERGE"
+      "status": "CANDIDATE_COMPLETION_UI_MERGED",
+      "next_increment": "C3-FRONT-014"
     },
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "TRAINING_ACADEMY_MERGED",
-      "next_increment": "C3-FIRMES-001_APPROVAL_PENDING"
+      "status": "TEAM_READINESS_UI_REVIEWED_LOCAL",
+      "next_increment": "C3-TEAM-005_EXACT_HEAD"
     },
     {
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
-      "status": "STRATEGY_CI_GREEN",
-      "next_increment": "C3-FIRMES-001_APPROVAL_PENDING"
+      "status": "STRATEGY_UI_BLOCKED_BY_TEAM_READINESS",
+      "next_increment": "C3-TEAM-005"
     },
     {
       "id": "WS-10",
@@ -1308,7 +1308,7 @@
       "id": "C3-FRONT-013",
       "workstream": "WS-06",
       "title": "Completable governed candidate evidence and approval UI",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-012",
         "C3-CANDIDATE-001"
@@ -1317,6 +1317,41 @@
         "Every existing candidate evidence gate is editable through exact-authorized UI controls without undocumented API use",
         "Candidate updates preserve unrelated sections, evidence provenance and version-bound approval invalidation semantics",
         "Exactly authorized users can append current-version internal section approvals until the candidate reaches INTERNALLY_APPROVED",
+        "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external effects NONE"
+      ]
+    },
+    {
+      "id": "C3-TEAM-005",
+      "workstream": "WS-08",
+      "title": "Completable Team readiness supporting-record review UI",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-FRONT-013",
+        "C3-TEAM-004",
+        "C3-TRAINING-001"
+      ],
+      "acceptance": [
+        "Training requirements and access recommendations can be explicitly reviewed through exact-authorized Team UI controls, including truthful reviewed-empty states",
+        "Supporting-record updates preserve unrelated Team state and use current-version optimistic concurrency plus idempotency",
+        "The API-backed browser journey can reach READY_FOR_HUMAN_REVIEW without creating identities, memberships, grants or external effects",
+        "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and repository gates pass with external effects NONE"
+      ]
+    },
+    {
+      "id": "C3-FRONT-014",
+      "workstream": "WS-06",
+      "title": "Completable governed strategy authoring and human decision UI",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-FRONT-013",
+        "C3-STRATEGY-001",
+        "C3-TEAM-001",
+        "C3-TEAM-005"
+      ],
+      "acceptance": [
+        "Every existing strategy readiness gate needed for an internal human decision is completable through exact-authorized UI controls without undocumented API use",
+        "Strategy evidence, assumptions, hypotheses, alternatives, objectives, contradictions and red-team findings preserve backend referential and version semantics",
+        "Exactly authorized humans can append a current-version internal strategy decision only after backend-derived readiness is READY_FOR_HUMAN_DECISION",
         "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external effects NONE"
       ]
     },
@@ -1393,7 +1428,7 @@
     "total_critical_or_high": 1
   },
   "github_state": {
-    "verified_at": "2026-08-12T19:59:00Z",
+    "verified_at": "2026-08-13T01:54:51Z",
     "open_issue_count": 24,
     "open_stack_issue_numbers": [
       40,
@@ -1434,7 +1469,8 @@
       149,
       150,
       151,
-      174
+      174,
+      175
     ],
     "open_pull_requests": [
       129,
@@ -1459,8 +1495,8 @@
     "secret_scanning": "ENABLED_AT_PRIOR_AUDIT",
     "secret_scanning_push_protection": "ENABLED_AT_PRIOR_AUDIT",
     "main_ci_evidence": {
-      "run_id": 31617354859,
-      "head_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+      "run_id": 31658999239,
+      "head_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
       "conclusion": "SUCCESS",
       "required_check_enforcement": true,
       "required_check_count": 8,
@@ -1574,20 +1610,20 @@
       "frontend_target_verified": true
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
-    "active_local_increment": null,
+    "active_local_increment": "C3-TEAM-005",
     "latest_checkpoint": {
-      "id": "repair:public-app-parity-zero-cost",
+      "id": "C3-FRONT-013",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "merge_pr": 174,
+      "merge_pr": 175,
       "merged_at": "2026-08-12",
-      "main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
-      "post_merge_ci_run_id": 31617354859,
+      "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
+      "post_merge_ci_run_id": 31658999239,
       "post_merge_ci_conclusion": "SUCCESS",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
-      "next_action": "C3-FRONT-013"
+      "next_action": "C3-TEAM-005"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",
@@ -1605,20 +1641,21 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 174,
+      "pr": 175,
       "status": "MERGED_TO_MAIN_SQUASH",
-      "main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+      "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
       "checks_before_merge": "SUCCESS",
-      "post_merge_ci_run_id": 31617354859,
+      "post_merge_ci_run_id": 31658999239,
       "post_merge_ci_conclusion": "SUCCESS",
       "included_increment_prs": [
         150,
         151,
-        174
+        174,
+        175
       ],
       "previous_cumulative_merge": {
-        "pr": 151,
-        "main_sha": "a75da0c9695500467c193558b8d1c981c02003bf"
+        "pr": 174,
+        "main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415"
       },
       "open_pull_requests_observed": 12
     },
@@ -1626,18 +1663,18 @@
     "live_required_check_count": 8,
     "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN",
     "latest_completed_checkpoint": {
-      "id": "repair:public-app-parity-zero-cost",
+      "id": "C3-FRONT-013",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "merge_pr": 174,
+      "merge_pr": 175,
       "merged_at": "2026-08-12",
-      "main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
-      "post_merge_ci_run_id": 31617354859,
+      "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
+      "post_merge_ci_run_id": 31658999239,
       "post_merge_ci_conclusion": "SUCCESS",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
-      "next_action": "C3-FRONT-013"
+      "next_action": "C3-TEAM-005"
     },
     "post_training_reconciliation": {
       "verified_at": "2026-08-11T19:33:00Z",
@@ -1663,7 +1700,8 @@
       },
       "next_spec": "C3-FIRMES-001",
       "next_spec_state": "SPEC_READY_APPROVAL_PENDING"
-    }
+    },
+    "c3_program_state": "C3_TEAM_005_REVIEWED_LOCAL_EXACT_HEAD_PENDING"
   },
   "deployment_state": {
     "github_pages": {
@@ -2095,8 +2133,8 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-FRONT-013",
-    "selected_feature": "C3-FRONT-013",
+    "active_feature": "C3-TEAM-005",
+    "selected_feature": "C3-TEAM-005",
     "selected_feature_state": "review",
     "approval_gate": "APPROVED",
     "ready_nodes": []

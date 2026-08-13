@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "id": "C3-TEAM-005",
+  "status": "REVIEWED",
+  "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
+  "branch": "agent/team-readiness-ui-lifecycle",
+  "approval": {
+    "source": "USER_EXPLICIT_APPROVAL",
+    "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle beyond a single feature until the product reaches a terminal completion state.",
+    "scope": "Internal Team readiness UI/API proxy/tests/evidence only; no identity assignment, permission grant, Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
+  },
+  "verification": {
+    "focused_tests": 12,
+    "frontend_test_files": 42,
+    "frontend_tests": 186,
+    "eslint": "PASS",
+    "typescript": "PASS",
+    "next_build": "PASS",
+    "dependency_vulnerabilities": 0,
+    "python_passed": 865,
+    "python_skipped": 13,
+    "coverage_percent": 90.03,
+    "postgres_selected_passed": 12,
+    "functional_browser": "PASS_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW",
+    "candidate_prerequisite": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
+    "dynamic_read_only_browser": "PASS",
+    "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+    "horizontal_overflow": "NONE",
+    "unexpected_outbound_hosts": 0,
+    "browser_storage": "EMPTY",
+    "compose_config": "PASS",
+    "supply_chain": "PASS",
+    "gitleaks_8_30_1": "PASS_CHECKSUM_VERIFIED_NO_LEAKS",
+    "terraform_1_15_8_plan_only": "PASS",
+    "security_policy": "PASS",
+    "program_truth": "PASS_BLOCKED",
+    "release_readiness": "PASS_DENY_RELEASE"
+  },
+  "critic_findings": [
+    {
+      "id": "C3-TEAM-005-F1",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "Graph branch and active-local metadata still named Strategy after the scheduler selected the Team prerequisite repair.",
+      "repair": "Rename the branch and reconcile canonical, fallback and harness active-increment metadata to C3-TEAM-005."
+    },
+    {
+      "id": "C3-TEAM-005-F2",
+      "severity": "LOW",
+      "status": "RESOLVED",
+      "finding": "The blocked Strategy iteration record still claimed Producer was active.",
+      "repair": "Record C3-FRONT-014 as blocked pending C3-TEAM-005 and keep its Producer lifecycle unstarted."
+    },
+    {
+      "id": "C3-TEAM-005-F3",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "A reviewed-empty operation would be destructive if accepted over a non-empty supporting-record collection.",
+      "repair": "Fail closed when the target collection is non-empty and verify that no API update occurs."
+    },
+    {
+      "id": "C3-TEAM-005-F4",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Access recommendations must remain advisory and cannot be treated as grants.",
+      "repair": "Normalize recommendations to current campaign scope with workspace_id null and authority_effect NONE; require the exact existing Team update grant."
+    }
+  ],
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "hosted_verification": {
+    "state": "PENDING"
+  }
+}

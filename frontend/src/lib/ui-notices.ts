@@ -11,6 +11,7 @@ export const UI_NOTICES = [
   "team_role_saved",
   "team_work_item_saved",
   "team_work_item_updated",
+  "team_readiness_saved",
   "team_template_applied",
   "training_assigned",
   "training_started",

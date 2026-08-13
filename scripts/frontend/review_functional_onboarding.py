@@ -791,6 +791,47 @@ async def review() -> dict[str, object]:
             == 1,
             "operational work success notice missing",
         )
+        require(
+            await page.get_by_role(
+                "heading", name="Cerrar preparación del equipo", exact=True
+            ).count()
+            == 1,
+            "team readiness completion surface is missing",
+        )
+        await page.get_by_role(
+            "button", name="Registrar revisión sin requisitos de formación", exact=True
+        ).click()
+        await page.wait_for_url("**notice=team_readiness_saved**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Revisión de preparación del equipo guardada con una nueva versión.",
+                exact=True,
+            ).count()
+            == 1,
+            "empty training review did not persist",
+        )
+        await page.get_by_role(
+            "button", name="Registrar revisión sin recomendaciones de acceso", exact=True
+        ).click()
+        await page.wait_for_url("**notice=team_readiness_saved**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text("Listo para revisión humana", exact=True).count() == 1,
+            "team workspace did not reach READY_FOR_HUMAN_REVIEW",
+        )
+        require(
+            await page.locator('.team-workspace-panel .intake-progress strong').inner_text()
+            == "8/8",
+            "team workspace did not complete all eight readiness checks",
+        )
+        require(
+            await page.locator(
+                '.team-progress-details .intake-checks li[data-complete="true"]'
+            ).count()
+            == 8,
+            "team readiness check projection is incomplete",
+        )
         board_tab = page.get_by_role("tab", name="Tablero operativo")
         require(
             await board_tab.get_attribute("aria-selected") == "true",
@@ -1319,6 +1360,7 @@ async def review() -> dict[str, object]:
         "mobile_role_layout": "PASS_SINGLE_COLUMN",
         "persistence_after_reload": "PASS",
         "candidate_dossier_completion": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
+        "team_readiness_completion": "PASS_8_OF_8_READY_FOR_HUMAN_REVIEW",
         "exact_authorization_controls": "PASS",
         "administration_placeholder": "ABSENT",
         "desktop_spanish": "PASS",
