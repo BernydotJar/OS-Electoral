@@ -122,6 +122,7 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "FREEZE_PUSH_AND_INSPECT_EXACT_HEAD_CI"
+    "next_action": "FREEZE_PUSH_AND_INSPECT_EXACT_HEAD_CI",
+    "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95"
   }
 }

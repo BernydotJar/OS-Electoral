@@ -1382,7 +1382,8 @@
       },
       "hosted_verification": {
         "state": "PENDING_EXACT_HEAD"
-      }
+      },
+      "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95"
     }
   ]
 }
