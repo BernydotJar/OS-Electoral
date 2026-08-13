@@ -1433,7 +1433,37 @@
       },
       "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
       "branch": "agent/team-readiness-ui-lifecycle",
-      "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2"
+      "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2",
+      "local_verification": {
+        "focused_tests": 12,
+        "frontend_test_files": 42,
+        "frontend_tests": 186,
+        "eslint": "PASS",
+        "typescript": "PASS",
+        "next_build": "PASS",
+        "npm_audit_vulnerabilities": 0,
+        "python_passed": 865,
+        "python_skipped": 13,
+        "coverage_percent": 90.03,
+        "postgresql_selected_passed": 12,
+        "functional_browser": "PASS_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW",
+        "dynamic_read_only_browser": "PASS",
+        "wcag_2_2_aa_axe_violations": 0,
+        "terraform_plan_only": "PASS",
+        "supply_chain": "PASS",
+        "gitleaks": "PASS"
+      },
+      "hosted_verification": {
+        "state": "PASS",
+        "exact_head": "052dd12f6d2455c17167edb42c3074faf1cbacba",
+        "campaignos_ci_run_id": 31662989783,
+        "campaignos_ci_run_number": 258,
+        "campaignos_ci_conclusion": "SUCCESS",
+        "runtime_visual_run_id": 31662989806,
+        "runtime_visual_run_number": 233,
+        "runtime_visual_conclusion": "SUCCESS",
+        "functional_onboarding": "PASS_EXACT_HEAD_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW"
+      }
     },
     {
       "task_id": "C3-FRONT-014",

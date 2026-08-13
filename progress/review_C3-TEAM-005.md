@@ -36,3 +36,11 @@ The increment is eligible for review-branch publication and exact-head CI. Produ
 ## Persistent Evidence
 
 See `docs/testing/c3-team-005-evidence.md`, `program/validations/c3-team-005.json`, this review, the iteration record and task ledger. Hosted CI evidence must be appended after publication.
+
+## Hosted exact-head verification
+
+- exact head: `052dd12f6d2455c17167edb42c3074faf1cbacba`;
+- CampaignOS CI run `31662989783` / #258: `SUCCESS`;
+- Runtime Visual Review run `31662989806` / #233: `SUCCESS`;
+- API-backed functional onboarding on the exact head: `PASS_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW`;
+- exact-head release status: eligible for merge after the evidence-only final head is independently green; production remains `BLOCKED` and global release remains `DENY_RELEASE`.

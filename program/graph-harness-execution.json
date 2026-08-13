@@ -129,7 +129,10 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "FREEZE_AND_PUBLISH_REVIEW_HEAD",
-    "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2"
+    "next_action": "VERIFY_FINAL_EVIDENCE_HEAD",
+    "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2",
+    "exact_head": "052dd12f6d2455c17167edb42c3074faf1cbacba",
+    "campaignos_ci_run_id": 31662989783,
+    "runtime_visual_run_id": 31662989806
   }
 }

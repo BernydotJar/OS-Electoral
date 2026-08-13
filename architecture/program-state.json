@@ -802,8 +802,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "TEAM_READINESS_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-TEAM-005_EXACT_HEAD"
+      "status": "TEAM_READINESS_UI_EXACT_HEAD_GREEN",
+      "next_increment": "C3-TEAM-005_FINAL_HEAD"
     },
     {
       "id": "WS-09",
@@ -1701,7 +1701,7 @@
       "next_spec": "C3-FIRMES-001",
       "next_spec_state": "SPEC_READY_APPROVAL_PENDING"
     },
-    "c3_program_state": "C3_TEAM_005_REVIEWED_LOCAL_EXACT_HEAD_PENDING"
+    "c3_program_state": "C3_TEAM_005_EXACT_HEAD_GREEN_FINAL_EVIDENCE_HEAD_PENDING"
   },
   "deployment_state": {
     "github_pages": {

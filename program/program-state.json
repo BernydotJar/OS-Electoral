@@ -63,8 +63,8 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "TEAM_READINESS_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-TEAM-005_EXACT_HEAD"
+      "status": "TEAM_READINESS_UI_EXACT_HEAD_GREEN",
+      "next_increment": "C3-TEAM-005_FINAL_HEAD"
     },
     {
       "id": "WS-09",

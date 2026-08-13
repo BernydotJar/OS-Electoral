@@ -27,3 +27,11 @@ Pre-Producer dependency validation for C3-FRONT-014 found that Team remains `STR
 - backend: 865 passed / 13 controlled skips / 90.03% coverage;
 - PostgreSQL marked: 12/12 PASS;
 - read-only browser, compose, supply-chain, Gitleaks, security, program/release/eval/safety and Terraform 1.15.8 plan-only gates: PASS.
+
+## Hosted exact-head verification
+
+- review head: `052dd12f6d2455c17167edb42c3074faf1cbacba`;
+- CampaignOS CI #258 / run `31662989783`: `SUCCESS`;
+- Runtime Visual Review #233 / run `31662989806`: `SUCCESS`;
+- API-backed functional onboarding on the exact head: `PASS_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW`;
+- production remains `BLOCKED`; global release remains `DENY_RELEASE`.
