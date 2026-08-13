@@ -31,7 +31,11 @@ def load_module() -> ModuleType:
 
 def reserve_loopback_port(port: int = 0) -> socket.socket:
     reservation = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    reservation.bind(("127.0.0.1", port))
+    try:
+        reservation.bind(("127.0.0.1", port))
+    except OSError:
+        reservation.close()
+        raise
     return reservation
 
 

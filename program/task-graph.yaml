@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-08-11",
+  "updated_at": "2026-08-12",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -512,6 +512,22 @@
         "Exact-authorized assignments, bounded attempts and append-only completion receipts persist under forced RLS",
         "Completion and recommendations have authority_effect NONE and create no grants, rankings, accreditation or political action",
         "Accessible team-chapter academy, PostgreSQL, browser, security and complete repository gates pass"
+      ]
+    },
+    {
+      "id": "C3-FRONT-013",
+      "workstream": "WS-06",
+      "title": "Completable governed candidate evidence and approval UI",
+      "status": "CI_GREEN",
+      "depends_on": [
+        "C3-FRONT-012",
+        "C3-CANDIDATE-001"
+      ],
+      "acceptance": [
+        "Every existing candidate evidence gate is editable through exact-authorized UI controls without undocumented API use",
+        "Candidate updates preserve unrelated sections, evidence provenance and version-bound approval invalidation semantics",
+        "Exactly authorized users can append current-version internal section approvals until the candidate reaches INTERNALLY_APPROVED",
+        "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external effects NONE"
       ]
     }
   ]

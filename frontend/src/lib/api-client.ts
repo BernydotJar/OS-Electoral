@@ -2,6 +2,7 @@ import "server-only";
 
 import {
   CandidateContractValidationError,
+  parseCandidateWorkspaceApprovalEvidence,
   parseCandidateWorkspaceCreateEvidence,
   parseCandidateWorkspaceUpdateEvidence,
 } from "@/lib/candidate-contract-parser";
@@ -50,6 +51,8 @@ import type {
   CampaignPage,
   CampaignReadinessEvidence,
   CampaignRoadmapReadEvidence,
+  CandidateSection,
+  CandidateWorkspaceApprovalEvidence,
   CandidateWorkspaceCreateEvidence,
   CandidateWorkspaceCreateInput,
   CandidateWorkspaceReadEvidence,
@@ -339,6 +342,29 @@ export class CampaignOsApiClient {
       {
         method: "PATCH",
         body: update,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
+    );
+  }
+
+  approveCandidateWorkspaceSection(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    section: CandidateSection,
+    reason: string,
+  ): Promise<CandidateWorkspaceApprovalEvidence> {
+    return this.request<CandidateWorkspaceApprovalEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/candidate-workspace/section-approvals`,
+      "Candidate workspace section approval",
+      parseCandidateWorkspaceApprovalEvidence,
+      {
+        method: "POST",
+        body: { section, reason },
         headers: {
           "idempotency-key": idempotencyKey,
           "if-match": `"${expectedVersion}"`,

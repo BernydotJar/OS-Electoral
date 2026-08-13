@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "a75da0c9695500467c193558b8d1c981c02003bf"
+    "revision": "561d4ba0f7cfccaac5bbd94e38c36245ec332415"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -26,26 +26,38 @@
     "blocked": "BLOCKED_BY_DEPENDENCY_OR_HUMAN_BLOCKED"
   },
   "scheduler": {
-    "evaluated_at": "2026-08-11",
+    "evaluated_at": "2026-08-12",
     "one_active_feature": true,
-    "active_feature": null,
+    "active_feature": "C3-FRONT-013",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-FIRMES-001",
-      "title": "Governed FIRMES aggregate/reference integration",
+      "id": "C3-FRONT-013",
+      "title": "Completable governed candidate evidence and approval UI",
       "mode": "SHIP",
-      "state": "spec_ready",
-      "human_approval": "PENDING",
+      "state": "review",
+      "human_approval": "APPROVED",
       "dependencies": [
         "C3-FRONT-012",
-        "C3-TRAINING-001"
+        "C3-CANDIDATE-001"
       ],
       "specs": [
-        "specs/C3-FIRMES-001/requirements.md",
-        "specs/C3-FIRMES-001/design.md",
-        "specs/C3-FIRMES-001/tasks.md"
+        "specs/C3-FRONT-013/requirements.md",
+        "specs/C3-FRONT-013/design.md",
+        "specs/C3-FRONT-013/tasks.md"
       ],
-      "selection_reason": "FIRMES discovery is sufficient to define a non-duplicating read-only source-of-truth boundary. Implementation remains blocked until explicit human approval."
+      "selection_reason": "Highest-priority localized product-completeness repair: the candidate gate is currently impossible to complete through the UI even though the merged backend supports every required section and approval.",
+      "approval_receipt": {
+        "recorded_at": "2026-08-12T13:59:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle to finish the documented complete-campaign product gap.",
+        "scope": "Internal candidate evidence/approval UI, same-origin API proxy, local development seed, tests and review evidence only; no Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
+      },
+      "review_artifact": "progress/review_C3-FRONT-013.md",
+      "local_evidence": [
+        "docs/testing/c3-front-013-evidence.md",
+        "program/validations/c3-front-013.json",
+        "program/iterations/c3-front-013.md"
+      ]
     },
     "blocked_nodes": [
       {
@@ -75,44 +87,45 @@
     ]
   },
   "localized_repair": {
-    "id": "repair:c3-front-012-exact-head-review-2026-08-01",
+    "id": "repair:campaign-completeness-graph-drift-2026-08-12",
     "status": "COMPLETED",
-    "scope": "Reconcile the previously verified C3-FRONT-012 delivery with its actual merge to main before selecting new work.",
+    "scope": "Reconcile Graph Harness target with merged public-review parity and reopen the frontend/candidate subgraph after a live operator evaluation proved an actionable UI dead end.",
     "evidence": [
-      "https://github.com/BernydotJar/OS-Electoral/pull/150",
-      "https://github.com/BernydotJar/OS-Electoral/actions/runs/30789590467",
-      "main@6f491f08343fba38bd64ffac044e400d8f6a47c3"
+      "docs/testing/public-review-parity-2026-08-12.md",
+      "main@561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+      "specs/C3-FRONT-013/requirements.md"
     ],
     "delivery": {
       "state": "merged",
-      "implementation_head": "1eea5664e06d753fbbbcabefd4364b11736e92e7",
-      "draft_pr": 150,
-      "campaignos_ci_run_id": 30685446268,
+      "base_main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+      "external_effects": "NONE",
+      "implementation_head": "7fc4fa3d03fb4b8f58447492c228c1fea0a01bea",
+      "draft_pr": 174,
+      "campaignos_ci_run_id": 31617354859,
       "campaignos_ci_conclusion": "SUCCESS",
-      "visual_run_id": 30685446240,
+      "visual_run_id": 31617364886,
       "visual_conclusion": "SUCCESS",
       "merge_gate": "SATISFIED_USER_AUTHORIZATION",
       "evidence": [
-        "docs/testing/c3-front-012-evidence.md",
-        "program/validations/c3-front-012.json",
-        "progress/review_C3-FRONT-012.md"
+        "docs/testing/public-review-parity-2026-08-12.md"
       ],
-      "merged_main_sha": "6f491f08343fba38bd64ffac044e400d8f6a47c3",
-      "post_merge_ci_run_id": 30789590467,
+      "merged_main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+      "post_merge_ci_run_id": 31617354859,
       "post_merge_ci_conclusion": "SUCCESS"
     }
   },
   "active_increment": {
-    "id": "C3-TRAINING-001",
-    "status": "MERGED_TO_MAIN",
-    "branch": "agent/c3-training-001-governed-academy",
-    "pull_request": 151,
-    "merged_main_sha": "a75da0c9695500467c193558b8d1c981c02003bf",
-    "merged_at": "2026-08-03T17:53:59Z",
-    "post_merge_ci_run_id": 30838818226,
+    "id": "C3-FRONT-013",
+    "status": "CI_GREEN",
+    "branch": "agent/campaign-complete-ui-lifecycle",
+    "base_main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "HUMAN_REVIEW_C3_FIRMES_001_SPEC"
+    "next_action": "MERGE_REVIEWED_INCREMENT",
+    "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95",
+    "exact_head": "127d90e05c7c2b83a34d1dc6cb839bcc3a5600ed",
+    "campaignos_ci_run_id": 31658468438,
+    "runtime_visual_run_id": 31658468359
   }
 }

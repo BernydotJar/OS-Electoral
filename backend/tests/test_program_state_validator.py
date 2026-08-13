@@ -200,29 +200,58 @@ def test_live_git_reconciliation_ignores_dependency_pr_references(
     validator.validate_live_git_reconciliation()
 
 
-def test_graph_harness_projection_selects_firmes_spec_without_activation() -> None:
+def test_graph_harness_projection_tracks_current_active_increment() -> None:
     validator = load_validator()
     payload = manifest()
 
     validator.validate_graph_harness_execution(payload)
 
     execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
-    selected = execution["scheduler"]["selected_node"]
-    assert execution["scheduler"]["active_feature"] is None
-    assert execution["scheduler"]["ready_nodes"] == []
-    assert selected["id"] == "C3-FIRMES-001"
-    assert selected["state"] == "spec_ready"
-    assert selected["human_approval"] == "PENDING"
-    assert "approval_receipt" not in selected
+    scheduler = execution["scheduler"]
+    selected = scheduler["selected_node"]
     roadmap = {item["id"]: item for item in payload["roadmap"]}
+
+    assert scheduler["active_feature"] == selected["id"] == "C3-FRONT-013"
+    assert scheduler["ready_nodes"] == []
+    assert selected["state"] == "review"
+    assert selected["human_approval"] == "APPROVED"
+    assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
+    assert roadmap[selected["id"]]["status"] == "CI_GREEN"
+    assert selected["review_artifact"] == "progress/review_C3-FRONT-013.md"
+    assert selected["local_evidence"] == [
+        "docs/testing/c3-front-013-evidence.md",
+        "program/validations/c3-front-013.json",
+        "program/iterations/c3-front-013.md",
+    ]
     assert roadmap["C3-FRONT-012"]["status"] == "MERGED_TO_MAIN"
     assert roadmap["C3-TRAINING-001"]["status"] == "MERGED_TO_MAIN"
-    assert "C3-FIRMES-001" not in roadmap
     assert selected["specs"] == [
-        "specs/C3-FIRMES-001/requirements.md",
-        "specs/C3-FIRMES-001/design.md",
-        "specs/C3-FIRMES-001/tasks.md",
+        "specs/C3-FRONT-013/requirements.md",
+        "specs/C3-FRONT-013/design.md",
+        "specs/C3-FRONT-013/tasks.md",
     ]
+
+
+def pending_firmes_execution(execution: dict[str, Any]) -> dict[str, Any]:
+    pending = copy.deepcopy(execution)
+    scheduler = pending["scheduler"]
+    scheduler["active_feature"] = None
+    selected = scheduler["selected_node"]
+    selected.update(
+        {
+            "id": "C3-FIRMES-001",
+            "title": "Authenticated Firmes adapter after public-contract discovery",
+            "state": "spec_ready",
+            "human_approval": "PENDING",
+            "specs": [
+                "specs/C3-FIRMES-001/requirements.md",
+                "specs/C3-FIRMES-001/design.md",
+                "specs/C3-FIRMES-001/tasks.md",
+            ],
+        }
+    )
+    selected.pop("approval_receipt", None)
+    return pending
 
 
 def test_graph_harness_projection_rejects_stale_canonical_runtime_state() -> None:
@@ -244,7 +273,7 @@ def test_graph_harness_projection_rejects_spec_ready_approval_bypass(
 ) -> None:
     validator = load_validator()
     payload = manifest()
-    execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
+    execution = pending_firmes_execution(json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8")))
     execution["scheduler"]["selected_node"]["human_approval"] = "APPROVED"
     original_load_json = validator.load_json
 
@@ -263,7 +292,7 @@ def test_graph_harness_projection_rejects_receipt_on_pending_spec(
 ) -> None:
     validator = load_validator()
     payload = manifest()
-    execution = json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8"))
+    execution = pending_firmes_execution(json.loads(GRAPH_HARNESS_PATH.read_text(encoding="utf-8")))
     execution["scheduler"]["selected_node"]["approval_receipt"] = {"source": "invalid"}
     original_load_json = validator.load_json
 

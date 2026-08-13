@@ -77,6 +77,35 @@ async def navigate_from_chapter(page: Page, href: str) -> None:
     await page.locator(f'.chapter-command-track a[href="{href}"]').click()
 
 
+async def open_details(page: Page, selector: str):
+    details = page.locator(selector)
+    require(await details.count() == 1, f"missing disclosure: {selector}")
+    if not await details.evaluate("element => element.open"):
+        await details.locator(":scope > summary").click()
+    return details
+
+
+async def save_candidate_claim(
+    page: Page, section: str, claim: str, *, label: str | None = None
+) -> None:
+    details = await open_details(page, f"#candidate-edit-{section}")
+    form = details.locator("form").first
+    if label is not None:
+        await form.get_by_label("Etiqueta").fill(label)
+    await form.get_by_label("Afirmación verificable").fill(claim)
+    await form.get_by_label("Estado de verificación").select_option("VERIFIED")
+    await form.get_by_label("Clasificación").select_option("OFFICIAL_SOURCE")
+    evidence = form.locator('input[name="evidence_refs"]').first
+    require(await evidence.count() == 1, f"{section}: evidence reference control missing")
+    await evidence.check()
+    await form.get_by_role("button", name="Guardar sección").click()
+    await page.wait_for_load_state("networkidle")
+    require(
+        "notice=candidate_section_saved" in page.url,
+        f"{section}: candidate section save notice missing: {page.url}",
+    )
+
+
 async def assert_accessible(page: Page, label: str) -> None:
     require(AXE_SOURCE.is_file(), f"axe-core runtime missing: {AXE_SOURCE}")
     await page.add_script_tag(path=str(AXE_SOURCE))
@@ -453,6 +482,134 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Acuerdo de convocatoria electoral", exact=True).count() >= 1,
             "candidate evidence was not projected",
         )
+        require(
+            await page.get_by_role(
+                "heading", name="Completa el expediente sin salir de CampaignOS", exact=True
+            ).count()
+            == 1,
+            "candidate completion workspace is missing",
+        )
+
+        await save_candidate_claim(
+            page,
+            "identity",
+            "Ana Pérez es la identidad pública vinculada al expediente verificado.",
+        )
+        await save_candidate_claim(
+            page,
+            "biography",
+            "La biografía usada en este ejercicio está respaldada por la fuente registrada.",
+        )
+        await save_candidate_claim(
+            page,
+            "purpose",
+            "El propósito interno de la candidatura queda documentado con evidencia revisable.",
+        )
+
+        values = await open_details(page, "#candidate-edit-values")
+        value_form = values.locator("form").last
+        await value_form.get_by_label("Etiqueta").fill("Servicio público")
+        await value_form.get_by_label("Afirmación verificable").fill(
+            "El expediente documenta servicio público como valor declarado sujeto a evidencia."
+        )
+        await value_form.get_by_label("Estado de verificación").select_option("VERIFIED")
+        await value_form.get_by_label("Clasificación").select_option("OFFICIAL_SOURCE")
+        await value_form.locator('input[name="evidence_refs"]').first.check()
+        await value_form.get_by_role("button", name="Guardar sección").click()
+        await page.wait_for_load_state("networkidle")
+        require("notice=candidate_section_saved" in page.url, "candidate value did not persist")
+
+        attributes = await open_details(page, "#candidate-edit-attributes")
+        attribute_form = attributes.locator("form").last
+        await attribute_form.get_by_label("Nombre del atributo").fill("Capacidad de organización")
+        await attribute_form.get_by_label("Afirmación verificable").fill(
+            "La evidencia registrada permite revisar una afirmación acotada de capacidad organizativa."
+        )
+        await attribute_form.get_by_label("Estado de verificación").select_option("VERIFIED")
+        await attribute_form.get_by_label("Autoevaluación de la candidatura").select_option("YES")
+        await attribute_form.get_by_label("Evaluación del equipo").select_option("YES")
+        await attribute_form.get_by_label("Evidencia agregada de percepción").select_option(
+            "UNRESOLVED"
+        )
+        await attribute_form.get_by_label("Riesgo de sobreinterpretación").fill(
+            "No extrapolar este atributo fuera del alcance de la evidencia."
+        )
+        await attribute_form.locator('input[name="evidence_refs"]').first.check()
+        await attribute_form.get_by_role("button", name="Guardar sección").click()
+        await page.wait_for_load_state("networkidle")
+        require("notice=candidate_section_saved" in page.url, "candidate attribute did not persist")
+
+        contradictions = await open_details(page, "#candidate-edit-contradictions")
+        await contradictions.get_by_role(
+            "button", name="Registrar revisión sin contradicciones abiertas", exact=True
+        ).click()
+        await page.wait_for_load_state("networkidle")
+        require(
+            "notice=candidate_section_saved" in page.url,
+            "empty contradiction review did not persist",
+        )
+
+        development = await open_details(page, "#candidate-edit-development_goals")
+        development_form = development.locator("form").last
+        await development_form.get_by_label("Área de desarrollo").fill("Media training")
+        await development_form.get_by_label("Objetivo de preparación").fill(
+            "Practicar respuestas breves y verificables antes de una entrevista pública."
+        )
+        await development_form.get_by_label("Estado").select_option("OPEN")
+        await development_form.locator('input[name="evidence_refs"]').first.check()
+        await development_form.get_by_role("button", name="Guardar sección").click()
+        await page.wait_for_load_state("networkidle")
+        require(
+            "notice=candidate_section_saved" in page.url,
+            "candidate development goal did not persist",
+        )
+
+        reputation = await open_details(page, "#candidate-edit-reputation")
+        await reputation.get_by_role(
+            "button", name="Registrar revisión sin riesgos reputacionales abiertos", exact=True
+        ).click()
+        await page.wait_for_load_state("networkidle")
+        require(
+            "notice=candidate_section_saved" in page.url,
+            "empty reputation review did not persist",
+        )
+
+        approvals = await open_details(page, "#candidate-approvals")
+        require(
+            await approvals.locator('.candidate-approval-list form').count() == 8,
+            "all eight candidate sections were not ready for current-version approval",
+        )
+        approved_count = 0
+        while True:
+            approvals = await open_details(page, "#candidate-approvals")
+            forms = approvals.locator('.candidate-approval-list form')
+            if await forms.count() == 0:
+                break
+            form = forms.first
+            await form.get_by_label("Motivo de aprobación").fill(
+                "Evidencia, alcance y contradicciones revisados para esta versión interna."
+            )
+            await form.get_by_role("button", name="Aprobar sección", exact=True).click()
+            await page.wait_for_load_state("networkidle")
+            require(
+                "notice=candidate_section_approved" in page.url,
+                "candidate approval notice missing",
+            )
+            approved_count += 1
+            require(approved_count <= 8, "candidate approval loop exceeded expected sections")
+        require(approved_count == 8, f"candidate approvals recorded: {approved_count}")
+        require(
+            await page.get_by_text("Aprobación interna completa", exact=True).count() >= 1,
+            "candidate workspace did not reach internally approved status",
+        )
+        require(
+            await page.locator(
+                '.candidate-profile-view .intake-checks li[data-complete="true"]'
+            ).count()
+            == 9,
+            "candidate workspace did not complete all nine governed checks",
+        )
+
         await navigate_from_chapter(page, "/es/campaign/team#team-workspace")
         await wait_for_chapter(page, "**/es/campaign/team**", "#team-workspace")
         compact_topbar = page.locator(".topbar-compact")
@@ -1161,6 +1318,7 @@ async def review() -> dict[str, object]:
         "mobile_template_preview": "PASS_SINGLE_COLUMN",
         "mobile_role_layout": "PASS_SINGLE_COLUMN",
         "persistence_after_reload": "PASS",
+        "candidate_dossier_completion": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
         "exact_authorization_controls": "PASS",
         "administration_placeholder": "ABSENT",
         "desktop_spanish": "PASS",

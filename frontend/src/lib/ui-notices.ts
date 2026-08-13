@@ -5,6 +5,8 @@ export const UI_NOTICES = [
   "intake_saved",
   "candidate_started",
   "candidate_evidence_saved",
+  "candidate_section_saved",
+  "candidate_section_approved",
   "team_started",
   "team_role_saved",
   "team_work_item_saved",

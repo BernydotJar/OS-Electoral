@@ -57,6 +57,7 @@ describe("organic workspace decks", () => {
       createElement(CandidateWorkspaceDeck, {
         dictionary,
         profile: createElement("div", null, "Perfil"),
+        completion: createElement("div", null, "Completar"),
         evidence: createElement("div", null, "Evidencia"),
       }),
     );
@@ -67,6 +68,8 @@ describe("organic workspace decks", () => {
     expect(html).toContain("Perfil y riesgos");
     expect(html).toContain('class="candidate-profile-flow"');
     expect(html).toContain("Perfil");
+    expect(html).toContain('class="candidate-completion-flow"');
+    expect(html).toContain("Completar");
     expect(html).toContain('class="candidate-evidence-disclosure"');
     expect(html).toContain("Fuentes y evidencia");
     expect(html).toContain("Evidencia");

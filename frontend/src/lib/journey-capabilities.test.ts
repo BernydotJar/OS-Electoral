@@ -145,10 +145,21 @@ describe("deriveCandidateWorkspaceCapabilities", () => {
             CAMPAIGN,
             "candidate_workspace",
           ),
+          membership(
+            "approve",
+            "Approve candidate evidence section",
+            CAMPAIGN,
+            "candidate_workspace",
+          ),
         ],
         CAMPAIGN,
       ),
-    ).toEqual({ canStart: true, canRead: true, canUpdate: true });
+    ).toEqual({
+      canStart: true,
+      canRead: true,
+      canUpdate: true,
+      canApprove: true,
+    });
 
     expect(
       deriveCandidateWorkspaceCapabilities(
@@ -162,6 +173,20 @@ describe("deriveCandidateWorkspaceCapabilities", () => {
         ],
         CAMPAIGN,
       ).canStart,
+    ).toBe(false);
+
+    expect(
+      deriveCandidateWorkspaceCapabilities(
+        [
+          membership(
+            "approve",
+            "Wrong approval purpose",
+            CAMPAIGN,
+            "candidate_workspace",
+          ),
+        ],
+        CAMPAIGN,
+      ).canApprove,
     ).toBe(false);
   });
 });
