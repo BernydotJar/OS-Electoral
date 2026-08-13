@@ -7538,3 +7538,50 @@ button[type="submit"]:hover {
     width: 100%;
   }
 }
+
+/* C3-TEAM-005: bounded supporting-record review that closes Team readiness. */
+.team-readiness-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.team-readiness-section {
+  min-width: 0;
+  border: 1px solid var(--surface-border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.team-readiness-section > summary {
+  padding: 1rem;
+  display: grid;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+.team-readiness-section > summary span {
+  font-weight: 800;
+}
+
+.team-readiness-section > summary small {
+  color: var(--text-3);
+  line-height: 1.45;
+}
+
+.team-readiness-section-body {
+  padding: 0 1rem 1rem;
+}
+
+.team-readiness-section-body > form + form {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--surface-border);
+}
+
+@media (max-width: 900px) {
+  .team-readiness-grid {
+    grid-template-columns: 1fr;
+  }
+}

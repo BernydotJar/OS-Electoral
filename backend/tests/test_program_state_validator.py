@@ -13,6 +13,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 VALIDATOR_PATH = ROOT / "scripts" / "architecture" / "validate_program_state.py"
 MANIFEST_PATH = ROOT / "architecture" / "program-state.json"
+PROGRAM_STATE_PATH = ROOT / "program" / "program-state.json"
 GRAPH_HARNESS_PATH = ROOT / "program" / "graph-harness-execution.json"
 
 
@@ -211,25 +212,34 @@ def test_graph_harness_projection_tracks_current_active_increment() -> None:
     selected = scheduler["selected_node"]
     roadmap = {item["id"]: item for item in payload["roadmap"]}
 
-    assert scheduler["active_feature"] == selected["id"] == "C3-FRONT-013"
+    fallback = json.loads(PROGRAM_STATE_PATH.read_text(encoding="utf-8"))
+    assert scheduler["active_feature"] == selected["id"] == fallback["current_increment"]
     assert scheduler["ready_nodes"] == []
-    assert selected["state"] == "review"
+    expected_harness_state = {
+        "IN_PROGRESS": "in_progress",
+        "REVIEWED": "review",
+        "CI_GREEN": "review",
+        "MERGED_TO_MAIN": "done",
+    }[fallback["iteration_status"]]
+    assert selected["state"] == expected_harness_state
     assert selected["human_approval"] == "APPROVED"
     assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
-    assert roadmap[selected["id"]]["status"] == "CI_GREEN"
-    assert selected["review_artifact"] == "progress/review_C3-FRONT-013.md"
-    assert selected["local_evidence"] == [
-        "docs/testing/c3-front-013-evidence.md",
-        "program/validations/c3-front-013.json",
-        "program/iterations/c3-front-013.md",
-    ]
+    expected_roadmap_status = {
+        "IN_PROGRESS": "ACTIVE",
+        "REVIEWED": "REVIEWED",
+        "CI_GREEN": "CI_GREEN",
+        "MERGED_TO_MAIN": "MERGED_TO_MAIN",
+    }[fallback["iteration_status"]]
+    assert roadmap[selected["id"]]["status"] == expected_roadmap_status
+    assert roadmap["C3-FRONT-013"]["status"] == "MERGED_TO_MAIN"
     assert roadmap["C3-FRONT-012"]["status"] == "MERGED_TO_MAIN"
     assert roadmap["C3-TRAINING-001"]["status"] == "MERGED_TO_MAIN"
     assert selected["specs"] == [
-        "specs/C3-FRONT-013/requirements.md",
-        "specs/C3-FRONT-013/design.md",
-        "specs/C3-FRONT-013/tasks.md",
+        f"specs/{selected['id']}/requirements.md",
+        f"specs/{selected['id']}/design.md",
+        f"specs/{selected['id']}/tasks.md",
     ]
+    assert all((ROOT / spec).is_file() for spec in selected["specs"])
 
 
 def pending_firmes_execution(execution: dict[str, Any]) -> dict[str, Any]:

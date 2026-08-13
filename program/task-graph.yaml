@@ -518,7 +518,7 @@
       "id": "C3-FRONT-013",
       "workstream": "WS-06",
       "title": "Completable governed candidate evidence and approval UI",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-012",
         "C3-CANDIDATE-001"
@@ -527,6 +527,41 @@
         "Every existing candidate evidence gate is editable through exact-authorized UI controls without undocumented API use",
         "Candidate updates preserve unrelated sections, evidence provenance and version-bound approval invalidation semantics",
         "Exactly authorized users can append current-version internal section approvals until the candidate reaches INTERNALLY_APPROVED",
+        "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external effects NONE"
+      ]
+    },
+    {
+      "id": "C3-TEAM-005",
+      "workstream": "WS-08",
+      "title": "Completable Team readiness supporting-record review UI",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-FRONT-013",
+        "C3-TEAM-004",
+        "C3-TRAINING-001"
+      ],
+      "acceptance": [
+        "Training requirements and access recommendations can be explicitly reviewed through exact-authorized Team UI controls, including truthful reviewed-empty states",
+        "Supporting-record updates preserve unrelated Team state and use current-version optimistic concurrency plus idempotency",
+        "The API-backed browser journey can reach READY_FOR_HUMAN_REVIEW without creating identities, memberships, grants or external effects",
+        "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and repository gates pass with external effects NONE"
+      ]
+    },
+    {
+      "id": "C3-FRONT-014",
+      "workstream": "WS-06",
+      "title": "Completable governed strategy authoring and human decision UI",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "depends_on": [
+        "C3-FRONT-013",
+        "C3-STRATEGY-001",
+        "C3-TEAM-001",
+        "C3-TEAM-005"
+      ],
+      "acceptance": [
+        "Every existing strategy readiness gate needed for an internal human decision is completable through exact-authorized UI controls without undocumented API use",
+        "Strategy evidence, assumptions, hypotheses, alternatives, objectives, contradictions and red-team findings preserve backend referential and version semantics",
+        "Exactly authorized humans can append a current-version internal strategy decision only after backend-derived readiness is READY_FOR_HUMAN_DECISION",
         "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external effects NONE"
       ]
     }

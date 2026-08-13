@@ -1,7 +1,10 @@
 import type {
+  TeamAccessReviewStatus,
   TeamBlueprintTemplate,
   TeamOrganizationTemplate,
+  TeamProgressStatus,
   TeamRoleCard,
+  TeamTrainingRequirement,
   TeamWorkItem,
   TeamWorkItemCadence,
   TeamWorkItemHealth,
@@ -56,6 +59,22 @@ const WORK_ITEM_HEALTH = new Set<TeamWorkItemHealth>([
   "AT_RISK",
   "OFF_TRACK",
 ]);
+const TRAINING_STATUSES = new Set<TeamProgressStatus>([
+  "NOT_STARTED",
+  "IN_PROGRESS",
+  "COMPLETE",
+]);
+const ACCESS_REVIEW_STATUSES = new Set<TeamAccessReviewStatus>([
+  "PROPOSED",
+  "REVIEWED",
+  "REJECTED",
+]);
+const READINESS_SECTIONS = new Set([
+  "training_requirements",
+  "access_recommendations",
+] as const);
+const READINESS_ACTIONS = new Set(["save", "review_empty"] as const);
+
 
 export class TeamWorkspaceFormError extends Error {}
 
@@ -397,6 +416,132 @@ export function parseTeamTemplateApplyForm(
       organization_template: organizationTemplate,
       blueprint_locale: selectedLocale,
       preview_digest: previewDigest,
+    },
+  };
+}
+
+export type TeamReadinessSection =
+  | "training_requirements"
+  | "access_recommendations";
+export type TeamReadinessAction = "save" | "review_empty";
+
+export type ParsedTeamReadinessForm =
+  | Readonly<{
+      locale: "es" | "en";
+      expectedVersion: number;
+      idempotencyKey: string;
+      section: TeamReadinessSection;
+      action: "review_empty";
+    }>
+  | Readonly<{
+      locale: "es" | "en";
+      expectedVersion: number;
+      idempotencyKey: string;
+      section: "training_requirements";
+      action: "save";
+      requirement: TeamTrainingRequirement;
+    }>
+  | Readonly<{
+      locale: "es" | "en";
+      expectedVersion: number;
+      idempotencyKey: string;
+      section: "access_recommendations";
+      action: "save";
+      recommendation: Readonly<{
+        id: string;
+        role_id: string;
+        action: string;
+        resource_type: string;
+        purpose: string;
+        status: TeamAccessReviewStatus;
+      }>;
+    }>;
+
+function readinessSection(form: FormData): TeamReadinessSection {
+  const value = field(form, "section") as TeamReadinessSection;
+  if (!READINESS_SECTIONS.has(value)) {
+    throw new TeamWorkspaceFormError("Readiness section is invalid");
+  }
+  return value;
+}
+
+function readinessAction(form: FormData): TeamReadinessAction {
+  const value = field(form, "readiness_action") as TeamReadinessAction;
+  if (!READINESS_ACTIONS.has(value)) {
+    throw new TeamWorkspaceFormError("Readiness action is invalid");
+  }
+  return value;
+}
+
+function recordId(form: FormData, generatedId: string): string {
+  const raw = field(form, "record_id").trim();
+  const value = raw || generatedId;
+  if (!UUID_PATTERN.test(value)) {
+    throw new TeamWorkspaceFormError("record_id is invalid");
+  }
+  return value;
+}
+
+function roleId(form: FormData): string {
+  const value = field(form, "role_id").trim();
+  if (!UUID_PATTERN.test(value)) {
+    throw new TeamWorkspaceFormError("role_id is invalid");
+  }
+  return value;
+}
+
+export function parseTeamReadinessForm(
+  form: FormData,
+  generatedId: string,
+): ParsedTeamReadinessForm {
+  if (!UUID_PATTERN.test(generatedId)) {
+    throw new TeamWorkspaceFormError("Generated record ID is invalid");
+  }
+  const selectedLocale = locale(form);
+  const version = expectedVersion(form);
+  const key = idempotencyKey(form);
+  const section = readinessSection(form);
+  const action = readinessAction(form);
+  if (action === "review_empty") {
+    return {
+      locale: selectedLocale,
+      expectedVersion: version,
+      idempotencyKey: key,
+      section,
+      action,
+    };
+  }
+  const id = recordId(form, generatedId);
+  const selectedRoleId = roleId(form);
+  if (section === "training_requirements") {
+    return {
+      locale: selectedLocale,
+      expectedVersion: version,
+      idempotencyKey: key,
+      section,
+      action,
+      requirement: {
+        id,
+        role_id: selectedRoleId,
+        title: requiredText(form, "title", 255),
+        description: requiredText(form, "description", 2000),
+        status: enumField(form, "status", TRAINING_STATUSES),
+      },
+    };
+  }
+  return {
+    locale: selectedLocale,
+    expectedVersion: version,
+    idempotencyKey: key,
+    section,
+    action,
+    recommendation: {
+      id,
+      role_id: selectedRoleId,
+      action: requiredText(form, "access_action", 100),
+      resource_type: requiredText(form, "resource_type", 100),
+      purpose: requiredText(form, "purpose", 500),
+      status: enumField(form, "status", ACCESS_REVIEW_STATUSES),
     },
   };
 }

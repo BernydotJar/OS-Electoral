@@ -3,7 +3,7 @@
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
   "updated_at": "2026-08-12",
-  "branch": "agent/campaign-complete-ui-lifecycle",
+  "branch": "agent/team-readiness-ui-lifecycle",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -1343,7 +1343,7 @@
     {
       "task_id": "C3-FRONT-013",
       "owner": "WS-06/WS-07",
-      "status": "CI_GREEN",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-FRONT-013/requirements.md",
         "specs/C3-FRONT-013/design.md",
@@ -1391,7 +1391,102 @@
         "runtime_visual_conclusion": "SUCCESS",
         "functional_onboarding": "PASS_EXACT_HEAD"
       },
-      "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95"
+      "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95",
+      "integrated_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
+      "cumulative_merge_pr": 175,
+      "final_head_verification": {
+        "exact_head": "be74697fd9a0ce4e6052635e60289ca911dd8057",
+        "campaignos_ci_run_id": 31658775624,
+        "campaignos_ci_run_number": 256,
+        "campaignos_ci_conclusion": "SUCCESS",
+        "runtime_visual_run_id": 31658775598,
+        "runtime_visual_run_number": 232,
+        "runtime_visual_conclusion": "SUCCESS"
+      },
+      "post_merge_verification": {
+        "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
+        "campaignos_ci_run_id": 31658999239,
+        "campaignos_ci_run_number": 257,
+        "campaignos_ci_conclusion": "SUCCESS"
+      }
+    },
+    {
+      "task_id": "C3-TEAM-005",
+      "owner": "WS-08/WS-06",
+      "status": "REVIEWED",
+      "evidence": [
+        "specs/C3-TEAM-005/requirements.md",
+        "specs/C3-TEAM-005/design.md",
+        "specs/C3-TEAM-005/tasks.md",
+        "program/iterations/c3-team-005.md",
+        "docs/testing/c3-team-005-evidence.md",
+        "program/validations/c3-team-005.json",
+        "progress/review_C3-TEAM-005.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [],
+      "approval": {
+        "recorded_at": "2026-08-12T19:22:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle beyond a single feature until the product reaches a terminal completion state.",
+        "scope": "Internal Team readiness UI/API proxy/tests/evidence only; no identity assignment, permission grant, Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
+      },
+      "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
+      "branch": "agent/team-readiness-ui-lifecycle",
+      "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2",
+      "local_verification": {
+        "focused_tests": 12,
+        "frontend_test_files": 42,
+        "frontend_tests": 186,
+        "eslint": "PASS",
+        "typescript": "PASS",
+        "next_build": "PASS",
+        "npm_audit_vulnerabilities": 0,
+        "python_passed": 865,
+        "python_skipped": 13,
+        "coverage_percent": 90.03,
+        "postgresql_selected_passed": 12,
+        "functional_browser": "PASS_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW",
+        "dynamic_read_only_browser": "PASS",
+        "wcag_2_2_aa_axe_violations": 0,
+        "terraform_plan_only": "PASS",
+        "supply_chain": "PASS",
+        "gitleaks": "PASS"
+      },
+      "hosted_verification": {
+        "state": "PASS",
+        "exact_head": "052dd12f6d2455c17167edb42c3074faf1cbacba",
+        "campaignos_ci_run_id": 31662989783,
+        "campaignos_ci_run_number": 258,
+        "campaignos_ci_conclusion": "SUCCESS",
+        "runtime_visual_run_id": 31662989806,
+        "runtime_visual_run_number": 233,
+        "runtime_visual_conclusion": "SUCCESS",
+        "functional_onboarding": "PASS_EXACT_HEAD_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW"
+      }
+    },
+    {
+      "task_id": "C3-FRONT-014",
+      "owner": "WS-06/WS-09",
+      "status": "BLOCKED_BY_DEPENDENCY",
+      "evidence": [
+        "specs/C3-FRONT-014/requirements.md",
+        "specs/C3-FRONT-014/design.md",
+        "specs/C3-FRONT-014/tasks.md",
+        "program/iterations/c3-front-014.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "C3-TEAM-005 must make Team READY_FOR_HUMAN_REVIEW through the UI before Strategy is executable in the sequential journey."
+      ],
+      "approval": {
+        "recorded_at": "2026-08-12T19:22:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle beyond a single feature until the product reaches a terminal completion state.",
+        "scope": "Internal strategy authoring/decision UI, same-origin API proxy, local development seed, tests and review evidence only; no Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
+      },
+      "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
+      "branch": "agent/team-readiness-ui-lifecycle"
     }
   ]
 }

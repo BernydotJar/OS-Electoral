@@ -36,6 +36,7 @@ const ANCHOR_TO_CHAPTER = new Map<string, CampaignJourneyPhaseKey>([
   ["team-template-preview", "team"],
   ["team-role-editor", "team"],
   ["team-operations-board", "team"],
+  ["team-readiness-completion", "team"],
   ["training-academy", "team"],
 ]);
 

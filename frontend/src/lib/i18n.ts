@@ -281,6 +281,8 @@ const es = {
       "Seguimiento operativo agregado al tablero con una nueva versión.",
     team_work_item_updated:
       "Check-in operativo guardado con estado, salud y siguiente acción actualizados.",
+    team_readiness_saved:
+      "Revisión de preparación del equipo guardada con una nueva versión.",
     team_template_applied:
       "Plantilla aplicada: se conservaron las funciones existentes y se agregaron sólo las ausentes.",
     training_assigned:
@@ -873,6 +875,44 @@ const es = {
     governanceDetailsBody: "Formación, accesos recomendados y comprobantes.",
     training: "Formación",
     accessRecommendations: "Recomendaciones de acceso",
+    readinessEyebrow: "PREPARACIÓN · REVISIÓN HUMANA",
+    readinessTitle: "Cerrar preparación del equipo",
+    readinessBody:
+      "Revisa requisitos de formación y recomendaciones de acceso para que el estado del equipo refleje una decisión humana explícita, incluso cuando no haya elementos que registrar.",
+    readinessBoundary:
+      "Estas revisiones no asignan personas ni conceden permisos. Una recomendación de acceso sigue siendo sólo una recomendación hasta una autorización separada.",
+    trainingReviewTitle: "Requisitos de formación del equipo",
+    trainingReviewBody:
+      "Registra requisitos vinculados a una función o confirma que la revisión terminó sin requisitos adicionales.",
+    accessReviewTitle: "Recomendaciones de acceso del equipo",
+    accessReviewBody:
+      "Documenta recomendaciones de acceso a nivel de campaña o confirma que la revisión terminó sin recomendaciones.",
+    reviewNoTraining: "Registrar revisión sin requisitos de formación",
+    reviewNoAccess: "Registrar revisión sin recomendaciones de acceso",
+    reviewedEmpty: "Revisado: no se registraron elementos.",
+    readinessRole: "Función del equipo",
+    trainingRequirementTitle: "Requisito de formación",
+    trainingRequirementDescription: "Descripción del requisito",
+    trainingRequirementStatus: "Estado del requisito",
+    trainingRequirementStatusLabels: {
+      NOT_STARTED: "Pendiente",
+      IN_PROGRESS: "En curso",
+      COMPLETE: "Completado",
+    },
+    addTrainingRequirement: "Agregar requisito de formación",
+    saveTrainingRequirement: "Guardar requisito de formación",
+    accessAction: "Acción recomendada",
+    accessResourceType: "Tipo de recurso",
+    accessPurpose: "Propósito de acceso",
+    accessReviewStatus: "Estado de revisión",
+    accessReviewStatusLabels: {
+      PROPOSED: "Propuesta",
+      REVIEWED: "Revisada",
+      REJECTED: "Rechazada",
+    },
+    addAccessRecommendation: "Agregar recomendación de acceso",
+    saveAccessRecommendation: "Guardar recomendación de acceso",
+    newReadinessRecord: "Nuevo registro",
     notStarted:
       "El espacio de trabajo de equipo todavía no ha sido creado por una persona autorizada.",
     notAuthorized:
@@ -1349,6 +1389,8 @@ const en: Dictionary = {
       "Operational follow-up added to the board with a new version.",
     team_work_item_updated:
       "Operational check-in saved with updated status, health, and next action.",
+    team_readiness_saved:
+      "Team readiness review saved with a new version.",
     team_template_applied:
       "Template applied: existing functions were preserved and only missing roles were added.",
     training_assigned:
@@ -1939,6 +1981,44 @@ const en: Dictionary = {
     governanceDetailsBody: "Training, recommended access, and receipts.",
     training: "Training",
     accessRecommendations: "Access recommendations",
+    readinessEyebrow: "READINESS · HUMAN REVIEW",
+    readinessTitle: "Complete team readiness",
+    readinessBody:
+      "Review training requirements and access recommendations so team status reflects an explicit human review, including when there are no items to record.",
+    readinessBoundary:
+      "These reviews assign no people and grant no permissions. An access recommendation remains advisory until separately authorized.",
+    trainingReviewTitle: "Team training requirements",
+    trainingReviewBody:
+      "Record requirements linked to a function or confirm that review finished with no additional requirements.",
+    accessReviewTitle: "Team access recommendations",
+    accessReviewBody:
+      "Document campaign-level access recommendations or confirm that review finished with none.",
+    reviewNoTraining: "Record review with no training requirements",
+    reviewNoAccess: "Record review with no access recommendations",
+    reviewedEmpty: "Reviewed: no items were recorded.",
+    readinessRole: "Team function",
+    trainingRequirementTitle: "Training requirement",
+    trainingRequirementDescription: "Requirement description",
+    trainingRequirementStatus: "Requirement status",
+    trainingRequirementStatusLabels: {
+      NOT_STARTED: "Not started",
+      IN_PROGRESS: "In progress",
+      COMPLETE: "Complete",
+    },
+    addTrainingRequirement: "Add training requirement",
+    saveTrainingRequirement: "Save training requirement",
+    accessAction: "Recommended action",
+    accessResourceType: "Resource type",
+    accessPurpose: "Access purpose",
+    accessReviewStatus: "Review status",
+    accessReviewStatusLabels: {
+      PROPOSED: "Proposed",
+      REVIEWED: "Reviewed",
+      REJECTED: "Rejected",
+    },
+    addAccessRecommendation: "Add access recommendation",
+    saveAccessRecommendation: "Save access recommendation",
+    newReadinessRecord: "New record",
     notStarted:
       "The team workspace has not yet been created by an authorized person.",
     notAuthorized:
