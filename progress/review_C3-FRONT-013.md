@@ -36,3 +36,11 @@ Increment is eligible for review-branch publication and exact-head CI. Productio
 ## Persistent Evidence
 
 See `docs/testing/c3-front-013-evidence.md`, `program/validations/c3-front-013.json`, the iteration record and the task ledger. Hosted CI evidence must be appended after publication.
+
+## Hosted exact-head verification
+
+- exact head: `127d90e05c7c2b83a34d1dc6cb839bcc3a5600ed`;
+- CampaignOS CI run `31658468438` / #255: `SUCCESS`;
+- Runtime Visual Review run `31658468359` / #231: `SUCCESS`;
+- API-backed functional onboarding on the exact head: `SUCCESS`;
+- exact-head release status: merge-ready for the reviewed increment; production remains `BLOCKED` and global release remains `DENY_RELEASE`.

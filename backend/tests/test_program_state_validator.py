@@ -216,7 +216,7 @@ def test_graph_harness_projection_tracks_current_active_increment() -> None:
     assert selected["state"] == "review"
     assert selected["human_approval"] == "APPROVED"
     assert selected["approval_receipt"]["source"] == "USER_EXPLICIT_APPROVAL"
-    assert roadmap[selected["id"]]["status"] == "REVIEWED"
+    assert roadmap[selected["id"]]["status"] == "CI_GREEN"
     assert selected["review_artifact"] == "progress/review_C3-FRONT-013.md"
     assert selected["local_evidence"] == [
         "docs/testing/c3-front-013-evidence.md",

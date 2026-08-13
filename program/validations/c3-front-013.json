@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "id": "C3-FRONT-013",
-  "status": "REVIEWED_LOCAL",
+  "status": "CI_GREEN",
   "base_main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
   "branch": "agent/campaign-complete-ui-lifecycle",
   "approval": {
@@ -67,7 +67,15 @@
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
   "hosted_verification": {
-    "state": "PENDING_EXACT_HEAD_PUBLICATION"
+    "state": "PASS",
+    "exact_head": "127d90e05c7c2b83a34d1dc6cb839bcc3a5600ed",
+    "campaignos_ci_run_id": 31658468438,
+    "campaignos_ci_run_number": 255,
+    "campaignos_ci_conclusion": "SUCCESS",
+    "runtime_visual_run_id": 31658468359,
+    "runtime_visual_run_number": 231,
+    "runtime_visual_conclusion": "SUCCESS",
+    "functional_onboarding": "PASS_EXACT_HEAD"
   },
   "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95"
 }

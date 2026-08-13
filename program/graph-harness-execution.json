@@ -116,13 +116,16 @@
   },
   "active_increment": {
     "id": "C3-FRONT-013",
-    "status": "REVIEWED_LOCAL",
+    "status": "CI_GREEN",
     "branch": "agent/campaign-complete-ui-lifecycle",
     "base_main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "FREEZE_PUSH_AND_INSPECT_EXACT_HEAD_CI",
-    "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95"
+    "next_action": "MERGE_REVIEWED_INCREMENT",
+    "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95",
+    "exact_head": "127d90e05c7c2b83a34d1dc6cb839bcc3a5600ed",
+    "campaignos_ci_run_id": 31658468438,
+    "runtime_visual_run_id": 31658468359
   }
 }

@@ -51,14 +51,14 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CANDIDATE_COMPLETION_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-FRONT-013_EXACT_HEAD_CI"
+      "status": "CANDIDATE_COMPLETION_UI_CI_GREEN",
+      "next_increment": "C3-FRONT-013_MERGE"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CANDIDATE_COMPLETION_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-FRONT-013_EXACT_HEAD_CI"
+      "status": "CANDIDATE_COMPLETION_UI_CI_GREEN",
+      "next_increment": "C3-FRONT-013_MERGE"
     },
     {
       "id": "WS-08",

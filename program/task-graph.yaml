@@ -518,7 +518,7 @@
       "id": "C3-FRONT-013",
       "workstream": "WS-06",
       "title": "Completable governed candidate evidence and approval UI",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-012",
         "C3-CANDIDATE-001"

@@ -1343,7 +1343,7 @@
     {
       "task_id": "C3-FRONT-013",
       "owner": "WS-06/WS-07",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "evidence": [
         "specs/C3-FRONT-013/requirements.md",
         "specs/C3-FRONT-013/design.md",
@@ -1381,7 +1381,15 @@
         "supply_chain": "PASS"
       },
       "hosted_verification": {
-        "state": "PENDING_EXACT_HEAD"
+        "state": "PASS",
+        "exact_head": "127d90e05c7c2b83a34d1dc6cb839bcc3a5600ed",
+        "campaignos_ci_run_id": 31658468438,
+        "campaignos_ci_run_number": 255,
+        "campaignos_ci_conclusion": "SUCCESS",
+        "runtime_visual_run_id": 31658468359,
+        "runtime_visual_run_number": 231,
+        "runtime_visual_conclusion": "SUCCESS",
+        "functional_onboarding": "PASS_EXACT_HEAD"
       },
       "implementation_commit": "7c3994ee36d3d5b16cb1df66c31139850483ae95"
     }

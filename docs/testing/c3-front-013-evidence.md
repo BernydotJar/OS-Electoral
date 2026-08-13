@@ -68,3 +68,11 @@ Docker Compose v2 is not installed in this sandbox, so the aggregate `make verif
 ## Boundary and release gate
 
 This increment creates no Firmes integration, production deployment, cloud resource, spend, publication, citizen contact, targeting, persuasion or mobilization. `C3-FIRMES-001` remains human-approval-pending. Production remains `BLOCKED`; release remains `DENY_RELEASE`.
+
+## Hosted exact-head verification
+
+- exact head: `127d90e05c7c2b83a34d1dc6cb839bcc3a5600ed`;
+- CampaignOS CI run `31658468438` / #255: `SUCCESS`;
+- Runtime Visual Review run `31658468359` / #231: `SUCCESS`;
+- API-backed functional onboarding on the exact head: `SUCCESS`;
+- exact-head release status: merge-ready for the reviewed increment; production remains `BLOCKED` and global release remains `DENY_RELEASE`.

@@ -16,4 +16,4 @@
 - [x] Apply Fixer repairs.
 - [x] Run Independent Verifier gates.
 - [x] Persist review, validation and iteration evidence.
-- [ ] Freeze implementation commit, push review branch and inspect hosted exact-head CI.
+- [x] Freeze implementation commit, push review branch and inspect hosted exact-head CI.
