@@ -269,6 +269,10 @@ const es = {
       "Expediente de candidatura creado y listo para documentar.",
     candidate_evidence_saved:
       "Fuente incorporada al expediente con una nueva versión.",
+    candidate_section_saved:
+      "Sección de candidatura guardada. Las aprobaciones previas deben renovarse para esta versión.",
+    candidate_section_approved:
+      "Aprobación interna registrada para la versión actual del expediente.",
     team_started:
       "Mapa de equipo creado con funciones iniciales listas para revisión.",
     team_role_saved:
@@ -570,6 +574,97 @@ const es = {
       APPROVALS_PENDING:
         "Obtén aprobaciones vigentes por sección antes de avanzar.",
     },
+    completionEyebrow: "EXPEDIENTE · TRABAJO GUIADO",
+    completionTitle: "Completa el expediente sin salir de CampaignOS",
+    completionBody:
+      "Trabaja una sección a la vez. Cada afirmación conserva evidencia y versión; guardar evidencia o contenido exige renovar las aprobaciones internas para la nueva versión.",
+    completionReadOnly:
+      "Esta sesión puede revisar el expediente, pero no tiene autoridad de edición.",
+    editSection: "Completar sección",
+    savedRecord: "Registro existente",
+    newRecord: "Agregar registro",
+    claimLabel: "Etiqueta",
+    claimText: "Afirmación verificable",
+    claimStatus: "Estado de verificación",
+    claimClassification: "Clasificación",
+    linkedEvidence: "Evidencia que respalda este registro",
+    evidenceHelp:
+      "Para marcar VERIFICADO debes enlazar al menos una fuente oficial o investigación de campaña aceptada, verificada o lista.",
+    saveSectionAction: "Guardar sección",
+    approvalResetWarning:
+      "Guardar cambios crea una nueva versión. Las aprobaciones de la versión anterior dejan de contar como vigentes.",
+    claimStatusLabels: {
+      UNKNOWN: "Sin evaluar",
+      SELF_REPORTED: "Declarado por la candidatura",
+      UNDER_REVIEW: "En revisión",
+      EVIDENCE_PARTIAL: "Evidencia parcial",
+      VERIFIED: "Verificado",
+      REJECTED: "Rechazado",
+      CONTRADICTED: "Contradicho",
+    },
+    attributeName: "Nombre del atributo",
+    candidateAssessment: "Autoevaluación de la candidatura",
+    teamAssessment: "Evaluación del equipo",
+    citizenEvidence: "Evidencia agregada de percepción",
+    perceptionEvidence: "Fuentes de percepción vinculadas",
+    contradictionLinks: "Contradicciones vinculadas",
+    attributeRisk: "Riesgo de sobreinterpretación",
+    yesNoUnknownLabels: { YES: "Sí", NO: "No", UNKNOWN: "No evaluado" },
+    teamAssessmentLabels: {
+      YES: "Respaldado",
+      PARTIAL: "Parcial",
+      NO: "No respaldado",
+      UNKNOWN: "No evaluado",
+    },
+    citizenEvidenceLabels: {
+      SUPPORTED: "Respaldado por percepción",
+      PARTIAL: "Respaldo parcial",
+      UNRESOLVED: "Sin resolver",
+      CONTRADICTED: "Contradicho por percepción",
+    },
+    contradictionSubject: "Registro al que se refiere",
+    contradictionDescription: "Descripción de la contradicción",
+    contradictionStatusLabels: {
+      OPEN: "Abierta",
+      UNDER_REVIEW: "En revisión",
+      RESOLVED: "Resuelta",
+    },
+    reviewNoContradictions: "Registrar revisión sin contradicciones abiertas",
+    developmentArea: "Área de desarrollo",
+    developmentObjective: "Objetivo de preparación",
+    developmentStatusLabels: {
+      OPEN: "Pendiente",
+      IN_PROGRESS: "En curso",
+      COMPLETE: "Completado",
+    },
+    riskTitle: "Riesgo",
+    riskDescription: "Descripción y contexto",
+    riskSeverity: "Severidad",
+    riskStatus: "Estado",
+    riskDecisionRequired: "Requiere decisión humana",
+    riskSeverityLabels: {
+      CRITICAL: "Crítico",
+      HIGH: "Alto",
+      MEDIUM: "Medio",
+      LOW: "Bajo",
+    },
+    riskStatusLabels: {
+      OPEN: "Abierto",
+      MITIGATING: "Mitigando",
+      RESOLVED: "Resuelto",
+      CLOSED: "Cerrado",
+    },
+    reviewNoReputationRisks: "Registrar revisión sin riesgos reputacionales abiertos",
+    approvalsTitle: "Aprobaciones internas de la versión actual",
+    approvalsBody:
+      "Sólo las secciones completas pueden aprobarse. La aprobación es interna, queda ligada a esta versión y no autoriza uso público.",
+    approvalReason: "Motivo de aprobación",
+    approvalReasonPlaceholder:
+      "Ej. Revisé la evidencia, las contradicciones y el alcance de esta sección.",
+    approveSectionAction: "Aprobar sección",
+    approvalPermissionMissing:
+      "La sesión no tiene el permiso exacto para registrar aprobaciones; un responsable autorizado debe completar este paso.",
+    currentVersion: "Versión actual",
     sectionLabels: {
       identity: "Identidad",
       biography: "Biografía",
@@ -1244,6 +1339,10 @@ const en: Dictionary = {
     intake_saved: "Changes saved with a new version.",
     candidate_started: "Candidate dossier created and ready for evidence.",
     candidate_evidence_saved: "Source added to the dossier with a new version.",
+    candidate_section_saved:
+      "Candidate section saved. Previous approvals must be renewed for this version.",
+    candidate_section_approved:
+      "Internal approval recorded for the current dossier version.",
     team_started: "Team map created with initial functions ready for review.",
     team_role_saved: "Function added to the team map with a new version.",
     team_work_item_saved:
@@ -1542,6 +1641,97 @@ const en: Dictionary = {
         "Turn the development goal into preparation, ownership, and evidence.",
       APPROVALS_PENDING: "Obtain current section approvals before proceeding.",
     },
+    completionEyebrow: "DOSSIER · GUIDED WORK",
+    completionTitle: "Complete the dossier without leaving CampaignOS",
+    completionBody:
+      "Work one section at a time. Every claim keeps evidence and version context; saving evidence or content requires current internal approvals to be collected again for the new version.",
+    completionReadOnly:
+      "This session can review the dossier but has no editing authority.",
+    editSection: "Complete section",
+    savedRecord: "Existing record",
+    newRecord: "Add record",
+    claimLabel: "Label",
+    claimText: "Verifiable claim",
+    claimStatus: "Verification status",
+    claimClassification: "Classification",
+    linkedEvidence: "Evidence supporting this record",
+    evidenceHelp:
+      "To mark VERIFIED, link at least one accepted, verified, or ready official source or campaign research record.",
+    saveSectionAction: "Save section",
+    approvalResetWarning:
+      "Saving changes creates a new version. Approvals from the prior version no longer count as current.",
+    claimStatusLabels: {
+      UNKNOWN: "Not assessed",
+      SELF_REPORTED: "Candidate reported",
+      UNDER_REVIEW: "Under review",
+      EVIDENCE_PARTIAL: "Partial evidence",
+      VERIFIED: "Verified",
+      REJECTED: "Rejected",
+      CONTRADICTED: "Contradicted",
+    },
+    attributeName: "Attribute name",
+    candidateAssessment: "Candidate self-assessment",
+    teamAssessment: "Team assessment",
+    citizenEvidence: "Aggregate perception evidence",
+    perceptionEvidence: "Linked perception sources",
+    contradictionLinks: "Linked contradictions",
+    attributeRisk: "Risk of over-interpretation",
+    yesNoUnknownLabels: { YES: "Yes", NO: "No", UNKNOWN: "Not assessed" },
+    teamAssessmentLabels: {
+      YES: "Supported",
+      PARTIAL: "Partial",
+      NO: "Not supported",
+      UNKNOWN: "Not assessed",
+    },
+    citizenEvidenceLabels: {
+      SUPPORTED: "Supported by perception",
+      PARTIAL: "Partially supported",
+      UNRESOLVED: "Unresolved",
+      CONTRADICTED: "Contradicted by perception",
+    },
+    contradictionSubject: "Record this contradiction concerns",
+    contradictionDescription: "Contradiction description",
+    contradictionStatusLabels: {
+      OPEN: "Open",
+      UNDER_REVIEW: "Under review",
+      RESOLVED: "Resolved",
+    },
+    reviewNoContradictions: "Record review with no open contradictions",
+    developmentArea: "Development area",
+    developmentObjective: "Preparation objective",
+    developmentStatusLabels: {
+      OPEN: "Open",
+      IN_PROGRESS: "In progress",
+      COMPLETE: "Complete",
+    },
+    riskTitle: "Risk",
+    riskDescription: "Description and context",
+    riskSeverity: "Severity",
+    riskStatus: "Status",
+    riskDecisionRequired: "Requires a human decision",
+    riskSeverityLabels: {
+      CRITICAL: "Critical",
+      HIGH: "High",
+      MEDIUM: "Medium",
+      LOW: "Low",
+    },
+    riskStatusLabels: {
+      OPEN: "Open",
+      MITIGATING: "Mitigating",
+      RESOLVED: "Resolved",
+      CLOSED: "Closed",
+    },
+    reviewNoReputationRisks: "Record review with no open reputation risks",
+    approvalsTitle: "Current-version internal approvals",
+    approvalsBody:
+      "Only complete sections can be approved. Approval is internal, bound to this version, and does not authorize public use.",
+    approvalReason: "Approval reason",
+    approvalReasonPlaceholder:
+      "Example: I reviewed the evidence, contradictions, and scope of this section.",
+    approveSectionAction: "Approve section",
+    approvalPermissionMissing:
+      "This session lacks the exact permission to record approvals; an authorized owner must complete this step.",
+    currentVersion: "Current version",
     sectionLabels: {
       identity: "Identity",
       biography: "Biography",

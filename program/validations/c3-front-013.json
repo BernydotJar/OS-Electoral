@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "id": "C3-FRONT-013",
+  "status": "REVIEWED_LOCAL",
+  "base_main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+  "branch": "agent/campaign-complete-ui-lifecycle",
+  "approval": {
+    "source": "USER_EXPLICIT_APPROVAL",
+    "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle to finish the documented complete-campaign product gap.",
+    "scope": "Internal candidate evidence/approval UI, same-origin API proxy, local development seed, tests and review evidence only; no Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
+  },
+  "verification": {
+    "frontend_test_files": 39,
+    "frontend_tests": 174,
+    "eslint": "PASS",
+    "typescript": "PASS",
+    "next_build": "PASS",
+    "dependency_vulnerabilities": 0,
+    "python_passed": 865,
+    "python_skipped": 13,
+    "coverage_percent": 90.03,
+    "postgres_selected_passed": 12,
+    "functional_browser": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
+    "dynamic_read_only_browser": "PASS",
+    "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+    "horizontal_overflow": "NONE",
+    "unexpected_outbound_hosts": 0,
+    "browser_storage": "EMPTY",
+    "supply_chain": "PASS",
+    "terraform_1_15_8_plan_only": "PASS",
+    "security_policy": "PASS",
+    "program_truth": "PASS_BLOCKED",
+    "release_readiness": "PASS_DENY_RELEASE",
+    "aggregate_make_verify": "ENTRYPOINT_BLOCKED_BY_MISSING_DOCKER_COMPOSE_V2_EQUAL_OR_BROADER_COMPONENT_GATES_PASS"
+  },
+  "critic_findings": [
+    {
+      "id": "C3-FRONT-013-F1",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "Candidate mutation subanchors were not mapped to the evidence chapter.",
+      "repair": "Map candidate completion and approval subanchors to evidence and cover the mapping in tests."
+    },
+    {
+      "id": "C3-FRONT-013-F2",
+      "severity": "LOW",
+      "status": "RESOLVED",
+      "finding": "Functional verifier required literal 9/9 copy absent from the candidate chapter despite correct persisted approvals.",
+      "repair": "Assert all nine rendered governed checks are complete and retain the INTERNALLY_APPROVED assertion."
+    },
+    {
+      "id": "C3-FRONT-013-F3",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "Program-state validator tests were pinned to the superseded Firmes-only checkpoint.",
+      "repair": "Validate the current active graph and construct explicit pending-Firmes fixtures for negative approval tests."
+    },
+    {
+      "id": "C3-FRONT-013-F4",
+      "severity": "LOW",
+      "status": "RESOLVED",
+      "finding": "Port-reservation test leaked a socket when bind failed under Python 3.14 warning-as-error execution.",
+      "repair": "Close the socket on bind failure before re-raising."
+    }
+  ],
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "hosted_verification": {
+    "state": "PENDING_EXACT_HEAD_PUBLICATION"
+  }
+}

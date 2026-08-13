@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-08-11",
-  "branch": "agent/c3-front-011-candidate-guidance-and-campaign-entry",
+  "updated_at": "2026-08-12",
+  "branch": "agent/campaign-complete-ui-lifecycle",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -1338,6 +1338,50 @@
         "post_merge_ci_conclusion": "SUCCESS",
         "post_merge_frontend_artifact_id": 8866012713,
         "post_merge_frontend_artifact_digest": "sha256:d09861a597fc9e8d9def20be62ba9a63c85017099d43a9cfc4aa780c45ee5118"
+      }
+    },
+    {
+      "task_id": "C3-FRONT-013",
+      "owner": "WS-06/WS-07",
+      "status": "REVIEWED",
+      "evidence": [
+        "specs/C3-FRONT-013/requirements.md",
+        "specs/C3-FRONT-013/design.md",
+        "specs/C3-FRONT-013/tasks.md",
+        "program/iterations/c3-front-013.md",
+        "docs/testing/c3-front-013-evidence.md",
+        "program/validations/c3-front-013.json",
+        "progress/review_C3-FRONT-013.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [],
+      "approval": {
+        "recorded_at": "2026-08-12T13:59:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle to finish the documented complete-campaign product gap.",
+        "scope": "Internal candidate evidence/approval UI, same-origin API proxy, local development seed, tests and review evidence only; no Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
+      },
+      "base_main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+      "branch": "agent/campaign-complete-ui-lifecycle",
+      "local_verification": {
+        "frontend_test_files": 39,
+        "frontend_tests": 174,
+        "eslint": "PASS",
+        "typescript": "PASS",
+        "next_build": "PASS",
+        "npm_audit_vulnerabilities": 0,
+        "python_passed": 865,
+        "python_skipped": 13,
+        "coverage_percent": 90.03,
+        "postgresql_selected_passed": 12,
+        "functional_browser": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
+        "dynamic_read_only_browser": "PASS",
+        "wcag_2_2_aa_axe_violations": 0,
+        "terraform_plan_only": "PASS",
+        "supply_chain": "PASS"
+      },
+      "hosted_verification": {
+        "state": "PENDING_EXACT_HEAD"
       }
     }
   ]

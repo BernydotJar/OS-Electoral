@@ -33,6 +33,9 @@ describe("campaign chapter routing", () => {
 
   it("maps existing workspace anchors to their chapter", () => {
     expect(campaignChapterKeyForAnchor("guided-intake")).toBe("foundation");
+    expect(campaignChapterKeyForAnchor("candidate-completion")).toBe("evidence");
+    expect(campaignChapterKeyForAnchor("candidate-edit-identity")).toBe("evidence");
+    expect(campaignChapterKeyForAnchor("candidate-approvals")).toBe("evidence");
     expect(campaignChapterKeyForAnchor("team-template-preview")).toBe("team");
     expect(campaignChapterKeyForAnchor("team-operations-board")).toBe("team");
     expect(campaignChapterKeyForAnchor("training-academy")).toBe("team");

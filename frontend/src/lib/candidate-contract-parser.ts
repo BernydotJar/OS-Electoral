@@ -10,6 +10,8 @@ import type {
   CandidateNextAction,
   CandidateReputationRisk,
   CandidateSection,
+  CandidateSectionApproval,
+  CandidateWorkspaceApprovalEvidence,
   CandidateWorkspaceCheck,
   CandidateWorkspaceCreateEvidence,
   CandidateWorkspaceProjection,
@@ -961,6 +963,73 @@ function parseCandidateWorkspaceMutationEvidence(
     workspace: parseProjection(source.workspace),
     audit_event_id: uuid(source.audit_event_id, `${label}.audit_event_id`),
     outbox_event_id: uuid(source.outbox_event_id, `${label}.outbox_event_id`),
+  };
+}
+
+function parseSectionApproval(value: unknown): CandidateSectionApproval {
+  const source = record(value, "candidate section approval");
+  exactKeys(
+    source,
+    [
+      "id",
+      "section",
+      "approved_version",
+      "principal_id",
+      "authorization_grant_id",
+      "approval_receipt_id",
+      "reason",
+      "approved_at",
+    ],
+    "candidate section approval",
+  );
+  return {
+    id: uuid(source.id, "candidate section approval.id"),
+    section: literal(source.section, SECTIONS, "candidate section approval.section"),
+    approved_version: integer(
+      source.approved_version,
+      "candidate section approval.approved_version",
+      1,
+    ),
+    principal_id: uuid(
+      source.principal_id,
+      "candidate section approval.principal_id",
+    ),
+    authorization_grant_id: uuid(
+      source.authorization_grant_id,
+      "candidate section approval.authorization_grant_id",
+    ),
+    approval_receipt_id: text(
+      source.approval_receipt_id,
+      "candidate section approval.approval_receipt_id",
+    ),
+    reason: text(source.reason, "candidate section approval.reason"),
+    approved_at: timestamp(
+      source.approved_at,
+      "candidate section approval.approved_at",
+    ),
+  };
+}
+
+export function parseCandidateWorkspaceApprovalEvidence(
+  value: unknown,
+): CandidateWorkspaceApprovalEvidence {
+  const source = record(value, "candidate workspace approval evidence");
+  exactKeys(
+    source,
+    ["workspace", "approval", "audit_event_id", "outbox_event_id"],
+    "candidate workspace approval evidence",
+  );
+  return {
+    workspace: parseProjection(source.workspace),
+    approval: parseSectionApproval(source.approval),
+    audit_event_id: uuid(
+      source.audit_event_id,
+      "candidate workspace approval evidence.audit_event_id",
+    ),
+    outbox_event_id: uuid(
+      source.outbox_event_id,
+      "candidate workspace approval evidence.outbox_event_id",
+    ),
   };
 }
 

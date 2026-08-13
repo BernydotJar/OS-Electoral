@@ -3,6 +3,7 @@ import { ChapterOrientation } from "@/components/chapter-orientation";
 import { CampaignReadinessPanel } from "@/components/campaign-readiness-panel";
 import { CampaignLaunchRoadmap } from "@/components/campaign-launch-roadmap";
 import { CandidateOverviewPanel } from "@/components/candidate-overview-panel";
+import { CandidateWorkspaceCompletion } from "@/components/candidate-workspace-completion";
 import { CandidateWorkspaceDeck } from "@/components/candidate-workspace-deck";
 import { CandidateWorkspaceProfile } from "@/components/candidate-workspace-profile";
 import { CandidateWorkspaceEditor } from "@/components/candidate-workspace-editor";
@@ -800,6 +801,15 @@ export function CampaignShell({
                         <CandidateWorkspaceProfile
                           dictionary={dictionary}
                           workspace={candidateWorkspace}
+                        />
+                      }
+                      completion={
+                        <CandidateWorkspaceCompletion
+                          locale={locale}
+                          dictionary={dictionary}
+                          demo={model.demo}
+                          workspace={candidateWorkspace}
+                          capabilities={candidateCapabilities}
                         />
                       }
                       evidence={

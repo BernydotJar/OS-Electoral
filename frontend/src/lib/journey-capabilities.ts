@@ -56,6 +56,7 @@ export type CandidateWorkspaceCapabilities = Readonly<{
   canStart: boolean;
   canRead: boolean;
   canUpdate: boolean;
+  canApprove: boolean;
 }>;
 
 export function deriveCandidateWorkspaceCapabilities(
@@ -75,6 +76,7 @@ export function deriveCandidateWorkspaceCapabilities(
     canStart: exact("create", "Create candidate evidence workspace"),
     canRead: exact("read", "Review candidate evidence workspace"),
     canUpdate: exact("update", "Maintain candidate evidence workspace"),
+    canApprove: exact("approve", "Approve candidate evidence section"),
   };
 }
 

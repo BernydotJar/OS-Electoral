@@ -34,6 +34,7 @@ INTAKE_UPDATE_GRANT_ID = UUID("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
 CANDIDATE_CREATE_GRANT_ID = UUID("cccccccc-cccc-4ccc-8ccc-cccccccccccc")
 CANDIDATE_READ_GRANT_ID = UUID("dddddddd-dddd-4ddd-8ddd-dddddddddddd")
 CANDIDATE_UPDATE_GRANT_ID = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee")
+CANDIDATE_APPROVE_GRANT_ID = UUID("caaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")
 TEAM_CREATE_GRANT_ID = UUID("f1111111-1111-4111-8111-111111111111")
 TEAM_READ_GRANT_ID = UUID("f2222222-2222-4222-8222-222222222222")
 TEAM_UPDATE_GRANT_ID = UUID("f3333333-3333-4333-8333-333333333333")
@@ -115,6 +116,13 @@ GRANTS = (
         "candidate_workspace",
         str(CAMPAIGN_ID),
         "Maintain candidate evidence workspace",
+    ),
+    GrantSpec(
+        CANDIDATE_APPROVE_GRANT_ID,
+        "approve",
+        "candidate_workspace",
+        str(CAMPAIGN_ID),
+        "Approve candidate evidence section",
     ),
     GrantSpec(
         TEAM_CREATE_GRANT_ID,

@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-08-11",
-  "branch": "agent/firmes-discovery-zero-cost-marketing",
-  "current_increment": "C3-TRAINING-001",
-  "iteration_status": "MERGED_TO_MAIN",
+  "updated_at": "2026-08-12",
+  "branch": "agent/campaign-complete-ui-lifecycle",
+  "current_increment": "C3-FRONT-013",
+  "iteration_status": "REVIEWED",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,14 +51,14 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "CANDIDATE_GUIDANCE_AND_GOVERNED_ENTRY_MERGED",
-      "next_increment": "NONE_PRODUCT_DELIVERY_COMPLETE"
+      "status": "CANDIDATE_COMPLETION_UI_REVIEWED_LOCAL",
+      "next_increment": "C3-FRONT-013_EXACT_HEAD_CI"
     },
     {
       "id": "WS-07",
       "name": "Guided Onboarding and Candidate Workspace",
-      "status": "CAMPAIGN_CHAPTER_EXPERIENCE_CI_GREEN",
-      "next_increment": "C3-FRONT-006"
+      "status": "CANDIDATE_COMPLETION_UI_REVIEWED_LOCAL",
+      "next_increment": "C3-FRONT-013_EXACT_HEAD_CI"
     },
     {
       "id": "WS-08",
@@ -530,10 +530,10 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": null,
-    "selected_feature": "C3-FIRMES-001",
-    "selected_feature_state": "spec_ready",
-    "approval_gate": "PENDING",
+    "active_feature": "C3-FRONT-013",
+    "selected_feature": "C3-FRONT-013",
+    "selected_feature_state": "review",
+    "approval_gate": "APPROVED",
     "ready_nodes": []
   },
   "residual_blockers": [],

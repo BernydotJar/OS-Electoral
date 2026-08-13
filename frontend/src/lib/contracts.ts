@@ -407,6 +407,24 @@ export type CandidateWorkspaceCreateEvidence = Readonly<{
 
 export type CandidateWorkspaceUpdateEvidence = CandidateWorkspaceCreateEvidence;
 
+export type CandidateSectionApproval = Readonly<{
+  id: UUID;
+  section: CandidateSection;
+  approved_version: number;
+  principal_id: UUID;
+  authorization_grant_id: UUID;
+  approval_receipt_id: string;
+  reason: string;
+  approved_at: string;
+}>;
+
+export type CandidateWorkspaceApprovalEvidence = Readonly<{
+  workspace: CandidateWorkspaceProjection;
+  approval: CandidateSectionApproval;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
 export type TeamOrganizationTemplate =
   "LEAN_CAMPAIGN" | "FULL_CAMPAIGN" | "CUSTOM";
 export type TeamRoleStatus = "FILLED" | "VACANT";
