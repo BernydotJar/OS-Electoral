@@ -1432,7 +1432,8 @@
         "scope": "Internal Team readiness UI/API proxy/tests/evidence only; no identity assignment, permission grant, Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
       },
       "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
-      "branch": "agent/team-readiness-ui-lifecycle"
+      "branch": "agent/team-readiness-ui-lifecycle",
+      "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2"
     },
     {
       "task_id": "C3-FRONT-014",

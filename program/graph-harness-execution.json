@@ -129,6 +129,7 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "FREEZE_AND_PUBLISH_REVIEW_HEAD"
+    "next_action": "FREEZE_AND_PUBLISH_REVIEW_HEAD",
+    "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2"
   }
 }

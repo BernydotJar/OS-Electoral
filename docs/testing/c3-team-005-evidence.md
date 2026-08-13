@@ -1,6 +1,6 @@
 # C3-TEAM-005 evidence
 
-Status: `REVIEWED_LOCAL`; exact-head hosted review pending.
+Status: `REVIEWED_LOCAL`; implementation commit `7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2`; exact-head hosted review pending.
 
 ## Implemented
 

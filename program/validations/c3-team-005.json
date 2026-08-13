@@ -71,5 +71,6 @@
   "external_effects": "NONE",
   "hosted_verification": {
     "state": "PENDING"
-  }
+  },
+  "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2"
 }
