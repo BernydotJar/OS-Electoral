@@ -1463,6 +1463,27 @@
         "runtime_visual_run_number": 233,
         "runtime_visual_conclusion": "SUCCESS",
         "functional_onboarding": "PASS_EXACT_HEAD_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW"
+      },
+      "post_merge_verification": {
+        "state": "FAILURE_SUPERSESSION_PENDING",
+        "main_sha": "570549119537c0298e4da476ef01b3de8fa53903",
+        "campaignos_ci_run_id": 31663558148,
+        "campaignos_ci_run_number": 260,
+        "campaignos_ci_conclusion": "FAILURE",
+        "failed_job": "Dynamic frontend contracts and browser review",
+        "failed_step": "Exercise the API-backed functional onboarding journey",
+        "failure_point": "Notice dismissal after campaign draft creation waited for /es#campaigns but the non-hydrated fallback navigated to /es without the anchor",
+        "root_cause": "The command-overview NoticeDismissLink server fallback omitted #campaigns and relied on client hydration to preserve the live fragment.",
+        "repair": "Make the command-overview fallback href /{locale}#campaigns and prove the static fallback in a shell test.",
+        "repair_branch": "agent/team-readiness-postmerge-fix",
+        "external_effects": "NONE"
+      },
+      "post_merge_repair_branch": "agent/team-readiness-postmerge-fix",
+      "repair_local_verification": {
+        "focused_shell_tests": 9,
+        "typescript": "PASS_BEFORE_LOCAL_NODE_MODULES_REINSTALL_INTERRUPTION",
+        "program_truth": "PASS",
+        "release_readiness": "PASS_DENY_RELEASE"
       }
     },
     {

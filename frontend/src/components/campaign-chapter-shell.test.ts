@@ -63,7 +63,7 @@ const model: ShellViewModel = {
 
 function render(
   selectedChapter: "foundation" | "evidence" | "team" | null,
-  notice: "authorization_denied" | null = null,
+  notice: "authorization_denied" | "campaign_created" | null = null,
 ): string {
   return renderToStaticMarkup(
     createElement(CampaignShell, {
@@ -166,6 +166,13 @@ describe("CampaignShell chapter routes", () => {
     expect(html).not.toContain("Resumen de candidatura");
     expect(html).not.toContain("Qué hacer ahora");
     expect(html).not.toContain('role="tablist"');
+  });
+
+  it("keeps campaign notice dismissal anchored without client hydration", () => {
+    const html = render(null, "campaign_created");
+
+    expect(html).toContain('data-notice="campaign_created"');
+    expect(html).toContain('href="/es#campaigns"');
   });
 
   it("keeps authorization feedback compact and dismissible", () => {

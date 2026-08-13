@@ -124,15 +124,29 @@
   "active_increment": {
     "id": "C3-TEAM-005",
     "status": "REVIEWED",
-    "branch": "agent/team-readiness-ui-lifecycle",
+    "branch": "agent/team-readiness-postmerge-fix",
     "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "VERIFY_FINAL_EVIDENCE_HEAD",
+    "next_action": "PUBLISH_POST_MERGE_FIX_FOR_EXACT_HEAD_VERIFICATION",
     "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2",
     "exact_head": "052dd12f6d2455c17167edb42c3074faf1cbacba",
     "campaignos_ci_run_id": 31662989783,
-    "runtime_visual_run_id": 31662989806
+    "runtime_visual_run_id": 31662989806,
+    "post_merge_verification": {
+      "state": "FAILURE_SUPERSESSION_PENDING",
+      "main_sha": "570549119537c0298e4da476ef01b3de8fa53903",
+      "campaignos_ci_run_id": 31663558148,
+      "campaignos_ci_run_number": 260,
+      "campaignos_ci_conclusion": "FAILURE",
+      "failed_job": "Dynamic frontend contracts and browser review",
+      "failed_step": "Exercise the API-backed functional onboarding journey",
+      "failure_point": "Notice dismissal after campaign draft creation waited for /es#campaigns but the non-hydrated fallback navigated to /es without the anchor",
+      "root_cause": "The command-overview NoticeDismissLink server fallback omitted #campaigns and relied on client hydration to preserve the live fragment.",
+      "repair": "Make the command-overview fallback href /{locale}#campaigns and prove the static fallback in a shell test.",
+      "repair_branch": "agent/team-readiness-postmerge-fix",
+      "external_effects": "NONE"
+    }
   }
 }

@@ -35,3 +35,19 @@ Pre-Producer dependency validation for C3-FRONT-014 found that Team remains `STR
 - Runtime Visual Review #233 / run `31662989806`: `SUCCESS`;
 - API-backed functional onboarding on the exact head: `PASS_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW`;
 - production remains `BLOCKED`; global release remains `DENY_RELEASE`.
+
+## Post-merge Critic / Fixer cycle
+
+PR #176 was squash-merged to `main@570549119537c0298e4da476ef01b3de8fa53903` after both final-head workflows passed. The first post-merge CampaignOS CI run `31663558148` / #260 then failed only in **Exercise the API-backed functional onboarding journey**. PostgreSQL/RLS/load, quality/contracts, Compose and the other repository jobs were green.
+
+The uploaded browser artifact showed the failure before Candidate or Team work: after creating a draft and clicking **Cerrar aviso**, Playwright waited for `/es#campaigns` and timed out. The API and Next server logs were healthy. Critic analysis found a progressive-enhancement race: the client handler preserves the live fragment, but the server-rendered fallback href on the command overview was only `/es`. A click before hydration therefore lost `#campaigns`.
+
+Fixer repair: the overview now renders a truthful `/es#campaigns` (or `/en#campaigns`) fallback even without JavaScript hydration. A static shell test locks that invariant. The existing strict E2E expectation remains unchanged; the product is fixed instead of weakening the verifier.
+
+### Fixer verification
+
+- static CampaignShell fallback regression tests: 9/9 PASS;
+- strict TypeScript check: PASS before the later workstation dependency reinstall was interrupted;
+- the functional E2E assertion remains strict at `/es#campaigns`; it was not weakened;
+- program truth, release readiness and Graph Harness validator: PASS;
+- a subsequent local `npm ci` attempt was interrupted by prolonged workstation I/O and left only local `node_modules` incomplete. No dependency or lockfile change is part of the repair. Clean dependency installation and the full API-backed browser journey are delegated to exact-head hosted CI.
