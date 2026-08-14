@@ -551,7 +551,7 @@
       "id": "C3-FRONT-014",
       "workstream": "WS-06",
       "title": "Completable governed strategy authoring and human decision UI",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-013",
         "C3-STRATEGY-001",
@@ -563,6 +563,23 @@
         "Strategy evidence, assumptions, hypotheses, alternatives, objectives, contradictions and red-team findings preserve backend referential and version semantics",
         "Exactly authorized humans can append a current-version internal strategy decision only after backend-derived readiness is READY_FOR_HUMAN_DECISION",
         "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external effects NONE"
+      ]
+    },
+    {
+      "id": "C3-FRONT-015",
+      "workstream": "WS-06",
+      "title": "Completable governed Operations and War Room lifecycle from UI",
+      "status": "IN_PROGRESS",
+      "depends_on": [
+        "C3-FRONT-014",
+        "C3-OPS-001",
+        "C3-TEAM-001"
+      ],
+      "acceptance": [
+        "Exactly authorized operators can create and maintain the existing campaign operations roadmap only after the current Strategy is DECIDED_INTERNAL, using idempotency and optimistic concurrency.",
+        "Phases, workstreams, milestones, tasks, dependencies, blockers, human decisions, follow-ups and learning notes remain bounded to existing backend contracts and Team roles without autonomous task execution.",
+        "Exactly authorized operators can create a daily War Room snapshot from the current roadmap version while backend-derived readiness, blocked work and critical-path information remain authoritative.",
+        "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external_effects NONE and no citizen contact, targeting, persuasion, publication, spending or mobilization."
       ]
     }
   ]

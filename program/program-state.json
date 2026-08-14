@@ -3,9 +3,9 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-08-13",
-  "branch": "agent/strategy-complete-ui-lifecycle",
-  "current_increment": "C3-FRONT-014",
-  "iteration_status": "REVIEWED",
+  "branch": "agent/operations-complete-ui-lifecycle",
+  "current_increment": "C3-FRONT-015",
+  "iteration_status": "IN_PROGRESS",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "STRATEGY_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-FRONT-014"
+      "status": "OPERATIONS_UI_ACTIVE",
+      "next_increment": "C3-FRONT-015"
     },
     {
       "id": "WS-07",
@@ -69,14 +69,14 @@
     {
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
-      "status": "STRATEGY_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-FRONT-014"
+      "status": "STRATEGY_UI_MERGED_POSTMERGE_RECONCILED",
+      "next_increment": "C3-FRONT-015"
     },
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "ROADMAP_WAR_ROOM_CI_GREEN",
-      "next_increment": "C3-STRATEGY-001"
+      "status": "OPERATIONS_UI_ACTIVE",
+      "next_increment": "C3-FRONT-015"
     },
     {
       "id": "WS-11",
@@ -217,6 +217,15 @@
       "base": "agent/c3-harness-001-graph-reconciliation",
       "state": "DRAFT_PR_CI_GREEN",
       "delivered_head": "c5261d547b1f4149ed1cb55c122159a9fe661d81"
+    },
+    {
+      "increment": "C3-FRONT-014",
+      "pr": 178,
+      "branch": "agent/strategy-complete-ui-lifecycle",
+      "base": "main",
+      "state": "MERGED_TO_MAIN",
+      "delivered_head": "c49be75e6e07a1731bd780e2a5a3bcaa67ab07a8",
+      "integrated_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06"
     }
   ],
   "local_verification": {
@@ -530,9 +539,9 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-FRONT-014",
-    "selected_feature": "C3-FRONT-014",
-    "selected_feature_state": "review",
+    "active_feature": "C3-FRONT-015",
+    "selected_feature": "C3-FRONT-015",
+    "selected_feature_state": "in_progress",
     "approval_gate": "APPROVED",
     "ready_nodes": []
   },

@@ -3,13 +3,13 @@
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
   "updated_at": "2026-08-13",
-  "source_branch": "agent/campaign-complete-ui-lifecycle",
+  "source_branch": "agent/strategy-postmerge-reconcile-operations-activate",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
-    "main_sha_observed": "561d4ba0f7cfccaac5bbd94e38c36245ec332415",
+    "main_sha_observed": "a2d7aa81455358eb0244b51556ffe3a192455c06",
     "c2_integration_state": "MERGED_TO_MAIN",
     "c3_foundation_iam_api_state": "MERGED_TO_MAIN",
-    "c3_program_state": "C3_TEAM_005_READINESS_UI_ACTIVE_STRATEGY_BLOCKED"
+    "c3_program_state": "C3_FRONT_014_STRATEGY_UI_MERGED_OPERATIONS_UI_ACTIVE"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
@@ -790,8 +790,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "STRATEGY_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-FRONT-014"
+      "status": "OPERATIONS_UI_ACTIVE",
+      "next_increment": "C3-FRONT-015"
     },
     {
       "id": "WS-07",
@@ -808,14 +808,14 @@
     {
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
-      "status": "STRATEGY_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-FRONT-014"
+      "status": "STRATEGY_UI_MERGED_POSTMERGE_RECONCILED",
+      "next_increment": "C3-FRONT-015"
     },
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "ROADMAP_WAR_ROOM_CI_GREEN",
-      "next_increment": "C3-STRATEGY-001"
+      "status": "OPERATIONS_UI_ACTIVE",
+      "next_increment": "C3-FRONT-015"
     },
     {
       "id": "WS-11",
@@ -1341,7 +1341,7 @@
       "id": "C3-FRONT-014",
       "workstream": "WS-06",
       "title": "Completable governed strategy authoring and human decision UI",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-013",
         "C3-STRATEGY-001",
@@ -1353,6 +1353,23 @@
         "Strategy evidence, assumptions, hypotheses, alternatives, objectives, contradictions and red-team findings preserve backend referential and version semantics",
         "Exactly authorized humans can append a current-version internal strategy decision only after backend-derived readiness is READY_FOR_HUMAN_DECISION",
         "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external effects NONE"
+      ]
+    },
+    {
+      "id": "C3-FRONT-015",
+      "workstream": "WS-06",
+      "title": "Completable governed Operations and War Room lifecycle from UI",
+      "status": "ACTIVE",
+      "depends_on": [
+        "C3-FRONT-014",
+        "C3-OPS-001",
+        "C3-TEAM-001"
+      ],
+      "acceptance": [
+        "Exactly authorized operators can create and maintain the existing campaign operations roadmap only after the current Strategy is DECIDED_INTERNAL, using idempotency and optimistic concurrency.",
+        "Phases, workstreams, milestones, tasks, dependencies, blockers, human decisions, follow-ups and learning notes remain bounded to existing backend contracts and Team roles without autonomous task execution.",
+        "Exactly authorized operators can create a daily War Room snapshot from the current roadmap version while backend-derived readiness, blocked work and critical-path information remain authoritative.",
+        "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external_effects NONE and no citizen contact, targeting, persuasion, publication, spending or mobilization."
       ]
     },
     {
@@ -1470,7 +1487,8 @@
       150,
       151,
       174,
-      175
+      175,
+      178
     ],
     "open_pull_requests": [
       129,
@@ -1645,7 +1663,7 @@
     "cumulative_merge": {
       "pr": 177,
       "status": "MERGED_TO_MAIN_SQUASH",
-      "main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
+      "main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
       "checks_before_merge": "SUCCESS",
       "post_merge_ci_run_id": 31664890643,
       "post_merge_ci_conclusion": "SUCCESS",
@@ -2139,9 +2157,9 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-FRONT-014",
-    "selected_feature": "C3-FRONT-014",
-    "selected_feature_state": "review",
+    "active_feature": "C3-FRONT-015",
+    "selected_feature": "C3-FRONT-015",
+    "selected_feature_state": "in_progress",
     "approval_gate": "APPROVED",
     "ready_nodes": []
   }

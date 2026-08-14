@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "id": "C3-FRONT-014",
-  "status": "REVIEWED_LOCAL",
+  "status": "MERGED_TO_MAIN",
   "base_main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
   "branch": "agent/strategy-complete-ui-lifecycle",
   "approval": {
@@ -81,21 +81,32 @@
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
   "hosted_verification": {
-    "state": "PASS_REVIEW_HEAD_FINAL_EVIDENCE_HEAD_PENDING",
+    "state": "PASS_FINAL_EXACT_HEAD",
     "pull_request": 178,
-    "verified_head": "4fdb4fbf8641a1c39c04f4c93f523d696820c875",
+    "verified_head": "c49be75e6e07a1731bd780e2a5a3bcaa67ab07a8",
     "campaignos_ci": {
-      "run_id": 31767680763,
-      "run_number": 263,
+      "run_id": 31767922123,
+      "run_number": 264,
       "conclusion": "SUCCESS",
       "functional_onboarding": "SUCCESS"
     },
     "runtime_visual_review": {
-      "run_id": 31767680795,
-      "run_number": 236,
+      "run_id": 31767922114,
+      "run_number": 237,
       "conclusion": "SUCCESS"
-    },
-    "final_evidence_head_requirement": "REVERIFY_EXACT_HEAD_BEFORE_MERGE"
+    }
   },
-  "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419"
+  "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419",
+  "integrated_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+  "pull_request": 178,
+  "post_merge_verification": {
+    "main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+    "campaignos_ci_run": 31768163466,
+    "campaignos_ci_number": 265,
+    "conclusion": "FAILURE_RECONCILIATION_ONLY",
+    "functional_onboarding": "SUCCESS",
+    "dynamic_frontend": "SUCCESS",
+    "root_cause": "Graph Harness correctly rejected merged PR #178 while C3-FRONT-014 still recorded REVIEWED; no Strategy functional regression was observed.",
+    "repair": "This reconciliation marks C3-FRONT-014 MERGED_TO_MAIN and activates the next product-completion node before re-running exact-head and post-merge gates."
+  }
 }

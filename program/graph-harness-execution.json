@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "f1dacd9625019664add60b89bff728f3f17d7cc9"
+    "revision": "a2d7aa81455358eb0244b51556ffe3a192455c06"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -28,45 +28,30 @@
   "scheduler": {
     "evaluated_at": "2026-08-13",
     "one_active_feature": true,
-    "active_feature": "C3-FRONT-014",
+    "active_feature": "C3-FRONT-015",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-FRONT-014",
-      "title": "Completable governed Strategy authoring and human decision UI",
+      "id": "C3-FRONT-015",
+      "title": "Completable governed Operations and War Room lifecycle from UI",
       "mode": "SHIP",
-      "state": "review",
+      "state": "in_progress",
       "human_approval": "APPROVED",
       "dependencies": [
-        "C3-FRONT-013",
-        "C3-STRATEGY-001",
-        "C3-TEAM-001",
-        "C3-TEAM-005"
+        "C3-FRONT-014",
+        "C3-OPS-001",
+        "C3-TEAM-001"
       ],
       "specs": [
-        "specs/C3-FRONT-014/requirements.md",
-        "specs/C3-FRONT-014/design.md",
-        "specs/C3-FRONT-014/tasks.md"
+        "specs/C3-FRONT-015/requirements.md",
+        "specs/C3-FRONT-015/design.md",
+        "specs/C3-FRONT-015/tasks.md"
       ],
-      "selection_reason": "C3-TEAM-005 is merged and post-merge green, so Strategy is the highest-priority remaining sequential journey dead end: the merged backend supports governed authoring and a human decision while the UI remains read-only.",
+      "selection_reason": "C3-FRONT-014 is merged and its post-merge browser journey is functionally green. Operations/War Room is now the highest-priority existing-backend journey dead end because the backend already supports governed roadmap and snapshot writes while the frontend remains read-only.",
       "approval_receipt": {
-        "recorded_at": "2026-08-12T19:22:00-06:00",
+        "recorded_at": "2026-08-13T20:50:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle beyond a single feature until the product reaches a terminal completion state.",
-        "scope": "Internal strategy authoring/decision UI, same-origin API proxy, local development seed, tests and review evidence only; no Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
-      },
-      "review_artifact": "progress/review_C3-FRONT-014.md",
-      "local_evidence": [
-        "docs/testing/c3-front-014-evidence.md",
-        "program/validations/c3-front-014.json",
-        "progress/review_C3-FRONT-014.md"
-      ],
-      "hosted_verification": {
-        "pull_request": 178,
-        "verified_head": "4fdb4fbf8641a1c39c04f4c93f523d696820c875",
-        "campaignos_ci_run": 31767680763,
-        "runtime_visual_run": 31767680795,
-        "conclusion": "SUCCESS",
-        "final_evidence_head": "PENDING_EXACT_HEAD_REVERIFY"
+        "statement": "User explicitly directed the Graph Harness SHIP lifecycle to continue product completion beyond a single feature and requested a full CampaignOS product suitable for demonstrations while preserving strict zero-cost and no-production constraints.",
+        "scope": "Internal Operations and War Room UI over existing CampaignOS backend contracts, tests and review evidence only; no autonomous execution, citizen contact, targeting, persuasion, publication, spending, production deployment, Firmes implementation or paid cloud resources."
       }
     },
     "blocked_nodes": [
@@ -125,17 +110,23 @@
     }
   },
   "active_increment": {
-    "id": "C3-FRONT-014",
-    "status": "REVIEWED",
-    "branch": "agent/strategy-complete-ui-lifecycle",
-    "base_main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
+    "id": "C3-FRONT-015",
+    "status": "IN_PROGRESS",
+    "branch": "agent/operations-complete-ui-lifecycle",
+    "base_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUSH_FINAL_EVIDENCE_HEAD_AND_REVERIFY_EXACT_HEAD_CI",
-    "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419",
-    "hosted_review_head": "4fdb4fbf8641a1c39c04f4c93f523d696820c875",
-    "hosted_campaignos_ci_run": 31767680763,
-    "hosted_runtime_visual_run": 31767680795
+    "next_action": "IMPLEMENT_EXISTING_OPERATIONS_AND_WAR_ROOM_UI_CONTRACTS"
+  },
+  "post_merge_reconciliation": {
+    "id": "repair:c3-front-014-postmerge-ledger-2026-08-13",
+    "status": "IN_PROGRESS",
+    "merged_pr": 178,
+    "integrated_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+    "failed_post_merge_run": 31768163466,
+    "failure_class": "PROGRAM_STATE_RECONCILIATION_ONLY",
+    "functional_onboarding": "SUCCESS",
+    "external_effects": "NONE"
   }
 }
