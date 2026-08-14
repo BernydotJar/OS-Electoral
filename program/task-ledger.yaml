@@ -1561,7 +1561,19 @@
         "C3-FRONT-014-F4",
         "C3-FRONT-014-F5"
       ],
-      "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419"
+      "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419",
+      "hosted_verification": {
+        "pull_request": 178,
+        "verified_head": "4fdb4fbf8641a1c39c04f4c93f523d696820c875",
+        "campaignos_ci_run": 31767680763,
+        "campaignos_ci_number": 263,
+        "campaignos_ci": "SUCCESS",
+        "functional_onboarding": "SUCCESS",
+        "runtime_visual_run": 31767680795,
+        "runtime_visual_number": 236,
+        "runtime_visual": "SUCCESS",
+        "final_evidence_head": "PENDING_EXACT_HEAD_REVERIFY"
+      }
     }
   ]
 }

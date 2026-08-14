@@ -20,7 +20,7 @@ C3-TEAM-005 is merged to `main@f1dacd9625019664add60b89bff728f3f17d7cc9` and pos
 - Independent Verifier: complete locally. Frontend, backend, marked PostgreSQL, functional browser, read-only browser, supply-chain, Gitleaks, Compose, Terraform, security, program, release, eval and safety gates pass.
 - Release Gate: review-branch publication is eligible; production remains `BLOCKED` and global release remains `DENY_RELEASE`.
 - Persistent Evidence: `docs/testing/c3-front-014-evidence.md`, `program/validations/c3-front-014.json`, `progress/review_C3-FRONT-014.md`.
-- Hosted exact-head: pending branch freeze, push and CI inspection.
+- Hosted exact-head: PR #178 head `4fdb4fbf8641a1c39c04f4c93f523d696820c875` passed CampaignOS CI #263 (`31767680763`), including functional onboarding, and Runtime Visual Review #236 (`31767680795`). Final evidence-only head revalidation remains the merge gate.
 
 ## Functional result
 

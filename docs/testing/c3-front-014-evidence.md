@@ -78,4 +78,12 @@ C3-FRONT-014 is eligible for **review-branch publication and exact-head hosted C
 
 ## Hosted exact-head verification
 
-Pending branch freeze, push, pull request, CampaignOS CI, and Runtime Visual Review on the exact review head.
+PR #178 verified exact review head `4fdb4fbf8641a1c39c04f4c93f523d696820c875`:
+
+- CampaignOS CI run #263 (`31767680763`): **SUCCESS**;
+- critical `Exercise the API-backed functional onboarding journey`: **SUCCESS**;
+- non-root frontend container build: **SUCCESS**;
+- CodeQL: **SUCCESS**;
+- Runtime Visual Review run #236 (`31767680795`): **SUCCESS**.
+
+A final evidence-only head will be pushed and must pass the same exact-head merge gate before merge.

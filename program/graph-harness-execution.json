@@ -59,7 +59,15 @@
         "docs/testing/c3-front-014-evidence.md",
         "program/validations/c3-front-014.json",
         "progress/review_C3-FRONT-014.md"
-      ]
+      ],
+      "hosted_verification": {
+        "pull_request": 178,
+        "verified_head": "4fdb4fbf8641a1c39c04f4c93f523d696820c875",
+        "campaignos_ci_run": 31767680763,
+        "runtime_visual_run": 31767680795,
+        "conclusion": "SUCCESS",
+        "final_evidence_head": "PENDING_EXACT_HEAD_REVERIFY"
+      }
     },
     "blocked_nodes": [
       {
@@ -124,7 +132,10 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUBLISH_REVIEW_BRANCH_AND_VERIFY_EXACT_HEAD_CI",
-    "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419"
+    "next_action": "PUSH_FINAL_EVIDENCE_HEAD_AND_REVERIFY_EXACT_HEAD_CI",
+    "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419",
+    "hosted_review_head": "4fdb4fbf8641a1c39c04f4c93f523d696820c875",
+    "hosted_campaignos_ci_run": 31767680763,
+    "hosted_runtime_visual_run": 31767680795
   }
 }

@@ -37,4 +37,4 @@ See `docs/testing/c3-front-014-evidence.md`, `program/validations/c3-front-014.j
 
 ## Hosted exact-head verification
 
-Pending branch publication and hosted exact-head CI.
+PR #178 review head `4fdb4fbf8641a1c39c04f4c93f523d696820c875` passed CampaignOS CI #263 (`31767680763`), including the API-backed functional onboarding journey, and Runtime Visual Review #236 (`31767680795`). A final evidence-only head remains subject to exact-head revalidation before merge.
