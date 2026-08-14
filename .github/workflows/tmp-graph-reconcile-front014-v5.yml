@@ -1,0 +1,93 @@
+name: Temporary graph reconciliation v5
+
+on:
+  push:
+    branches:
+      - agent/strategy-postmerge-reconcile-operations-activate
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout reconciliation branch
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+      - name: Reconcile all Graph Harness invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("architecture/program-state.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          data["github_state"]["cumulative_merge"]["main_sha"] = "a2d7aa81455358eb0244b51556ffe3a192455c06"
+          path.write_text(json.dumps(data, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+          PY
+          python3 - <<'PY'
+          from pathlib import Path
+          from textwrap import dedent
+          source = Path(".github/workflows/tmp-graph-reconcile-front014.yml").read_text(encoding="utf-8")
+          marker = "          python3 - <<'PY'\n"
+          start = source.index(marker) + len(marker)
+          end = source.index("\n          PY\n\n          python3 scripts/architecture/validate_program_state.py", start)
+          code = dedent(source[start:end])
+          old = "User explicitly directed the Graph Harness to continue product completion beyond a single feature and requested a full CampaignOS product suitable for demonstrations while preserving strict zero-cost and no-production constraints."
+          new = "User explicitly directed the Graph Harness SHIP lifecycle to continue product completion beyond a single feature and requested a full CampaignOS product suitable for demonstrations while preserving strict zero-cost and no-production constraints."
+          code = code.replace(old, new)
+          Path("/tmp/reconcile_front014.py").write_text(code, encoding="utf-8")
+          PY
+          python3 /tmp/reconcile_front014.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          def load(path):
+              return json.loads(Path(path).read_text(encoding="utf-8"))
+          def save(path, payload):
+              Path(path).write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+
+          graph = load("program/task-graph.yaml")
+          for task in graph["tasks"]:
+              if task["id"] == "C3-FRONT-015":
+                  task["status"] = "IN_PROGRESS"
+          save("program/task-graph.yaml", graph)
+
+          execution = load("program/graph-harness-execution.json")
+          framework = execution["framework"]
+          scheduler = execution["scheduler"]
+          selected = scheduler["selected_node"]
+          expected = {
+              "framework_repository": framework["repository"],
+              "framework_revision": framework["revision"],
+              "mode": framework["mode"],
+              "projection": "program/graph-harness-execution.json",
+              "canonical_manifest": execution["canonical_sources"]["manifest"],
+              "canonical_task_graph": execution["canonical_sources"]["task_graph"],
+              "canonical_task_ledger": execution["canonical_sources"]["task_ledger"],
+              "active_feature": scheduler["active_feature"],
+              "selected_feature": selected["id"],
+              "selected_feature_state": selected["state"],
+              "approval_gate": selected["human_approval"],
+              "ready_nodes": scheduler["ready_nodes"],
+          }
+          arch = load("architecture/program-state.json")
+          arch["graph_harness_runtime"] = expected
+          save("architecture/program-state.json", arch)
+          fallback = load("program/program-state.json")
+          fallback["graph_harness_runtime"] = expected
+          save("program/program-state.json", fallback)
+          PY
+          python3 scripts/architecture/validate_program_state.py
+          python3 scripts/release/validate_release_readiness.py
+          git diff --check
+          git config user.name "ChatGPT Graph Reconciler"
+          git config user.email "chatgpt-graph-reconciler@example.invalid"
+          git add architecture/program-state.json program/program-state.json program/task-graph.yaml program/task-ledger.yaml program/graph-harness-execution.json program/validations/c3-front-014.json docs/testing/c3-front-014-evidence.md progress/review_C3-FRONT-014.md program/iterations/c3-front-014.md specs/C3-FRONT-015 program/iterations/c3-front-015.md
+          git commit -m "fix(program): reconcile strategy merge and activate operations"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
