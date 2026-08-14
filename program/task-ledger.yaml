@@ -1560,7 +1560,8 @@
         "C3-FRONT-014-F3",
         "C3-FRONT-014-F4",
         "C3-FRONT-014-F5"
-      ]
+      ],
+      "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419"
     }
   ]
 }

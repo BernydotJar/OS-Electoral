@@ -82,5 +82,6 @@
   "external_effects": "NONE",
   "hosted_verification": {
     "state": "PENDING_EXACT_HEAD"
-  }
+  },
+  "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419"
 }

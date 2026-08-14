@@ -1,6 +1,6 @@
 # C3-FRONT-014 review
 
-Review state: `REVIEWED_LOCAL`; exact-head hosted CI pending.
+Review state: `REVIEWED_LOCAL`; implementation commit `1a7d31d60c3d67705e04d47e0a6fe225bd1f5419`; exact-head hosted CI pending.
 
 ## Producer
 

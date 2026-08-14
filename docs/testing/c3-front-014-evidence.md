@@ -1,6 +1,6 @@
 # C3-FRONT-014 evidence
 
-Status: `REVIEWED_LOCAL`; exact-head hosted review pending.
+Status: `REVIEWED_LOCAL`; implementation commit `1a7d31d60c3d67705e04d47e0a6fe225bd1f5419`; exact-head hosted review pending.
 
 ## Implemented
 

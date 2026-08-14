@@ -124,6 +124,7 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUBLISH_REVIEW_BRANCH_AND_VERIFY_EXACT_HEAD_CI"
+    "next_action": "PUBLISH_REVIEW_BRANCH_AND_VERIFY_EXACT_HEAD_CI",
+    "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419"
   }
 }
