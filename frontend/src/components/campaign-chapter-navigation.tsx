@@ -1,6 +1,3 @@
-import type { Route } from "next";
-import Link from "next/link";
-import { ViewTransition } from "react";
 
 import { campaignChapterHref } from "@/lib/campaign-chapters";
 import type {
@@ -39,14 +36,13 @@ export function CampaignChapterNavigation({
       aria-label={dictionary.journey.chapterNavigationLabel}
     >
       <div className="chapter-command-primary">
-        <Link
+        <a
           className="chapter-command-back"
-          href={`/${locale}` as Route}
-          transitionTypes={["chapter-back"]}
+          href={`/${locale}`}
         >
           <span aria-hidden="true">←</span>
           {dictionary.journey.backToOverview}
-        </Link>
+        </a>
 
         <div className="chapter-command-current">
           <span>
@@ -59,26 +55,24 @@ export function CampaignChapterNavigation({
 
         <div className="chapter-command-actions">
           {previous ? (
-            <Link
-              href={campaignChapterHref(locale, previous.key) as Route}
-              transitionTypes={["chapter-back"]}
-              aria-label={`${dictionary.journey.previousChapter}: ${dictionary.journey.phaseLabels[previous.key]}`}
+            <a
+              href={campaignChapterHref(locale, previous.key)}
+                  aria-label={`${dictionary.journey.previousChapter}: ${dictionary.journey.phaseLabels[previous.key]}`}
             >
               <span aria-hidden="true">←</span>
               <small>{dictionary.journey.previousChapter}</small>
-            </Link>
+            </a>
           ) : (
             <span aria-hidden="true" />
           )}
           {next ? (
-            <Link
-              href={campaignChapterHref(locale, next.key) as Route}
-              transitionTypes={["chapter-forward"]}
+            <a
+              href={campaignChapterHref(locale, next.key)}
               aria-label={`${dictionary.journey.nextChapter}: ${dictionary.journey.phaseLabels[next.key]}`}
             >
               <small>{dictionary.journey.nextChapter}</small>
               <span aria-hidden="true">→</span>
-            </Link>
+            </a>
           ) : null}
         </div>
       </div>
@@ -108,21 +102,13 @@ export function CampaignChapterNavigation({
                 aria-current={current ? "step" : undefined}
               >
                 {current ? (
-                  <ViewTransition
-                    name="campaign-current-chapter"
-                    share="chapter-indicator"
-                  >
-                    <div>{content}</div>
-                  </ViewTransition>
+                  <div>{content}</div>
                 ) : navigable(phase) ? (
-                  <Link
-                    href={campaignChapterHref(locale, phase.key) as Route}
-                    transitionTypes={[
-                      index < currentIndex ? "chapter-back" : "chapter-forward",
-                    ]}
+                  <a
+                    href={campaignChapterHref(locale, phase.key)}
                   >
                     {content}
-                  </Link>
+                  </a>
                 ) : (
                   <div aria-disabled="true">{content}</div>
                 )}

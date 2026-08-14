@@ -44,6 +44,10 @@ TRAINING_SELF_READ_GRANT_ID = UUID("f6666666-6666-4666-8666-666666666666")
 TRAINING_SELF_COMPLETE_GRANT_ID = UUID("f7777777-7777-4777-8777-777777777777")
 TRAINING_ASSIGNMENT_MANAGE_GRANT_ID = UUID("f8888888-8888-4888-8888-888888888888")
 TRAINING_RECEIPT_READ_GRANT_ID = UUID("f9999999-9999-4999-8999-999999999999")
+STRATEGY_CREATE_GRANT_ID = UUID("fa111111-1111-4111-8111-111111111111")
+STRATEGY_READ_GRANT_ID = UUID("fa222222-2222-4222-8222-222222222222")
+STRATEGY_UPDATE_GRANT_ID = UUID("fa333333-3333-4333-8333-333333333333")
+STRATEGY_APPROVE_GRANT_ID = UUID("fa444444-4444-4444-8444-444444444444")
 WORKSPACE_ID = UUID("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
 
 DEVELOPMENT_ISSUER = "urn:campaignos:development"
@@ -179,6 +183,34 @@ GRANTS = (
         "training_academy",
         str(CAMPAIGN_ID),
         "Review own campaign training",
+    ),
+    GrantSpec(
+        STRATEGY_CREATE_GRANT_ID,
+        "create",
+        "strategy_workspace",
+        str(CAMPAIGN_ID),
+        "Create campaign strategy workspace",
+    ),
+    GrantSpec(
+        STRATEGY_READ_GRANT_ID,
+        "read",
+        "strategy_workspace",
+        str(CAMPAIGN_ID),
+        "Review campaign strategy workspace",
+    ),
+    GrantSpec(
+        STRATEGY_UPDATE_GRANT_ID,
+        "update",
+        "strategy_workspace",
+        str(CAMPAIGN_ID),
+        "Maintain campaign strategy workspace",
+    ),
+    GrantSpec(
+        STRATEGY_APPROVE_GRANT_ID,
+        "approve",
+        "strategy_workspace",
+        str(CAMPAIGN_ID),
+        "Approve internal campaign strategy option",
     ),
 )
 

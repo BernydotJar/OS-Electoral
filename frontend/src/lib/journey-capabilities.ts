@@ -106,6 +106,34 @@ export function deriveTeamWorkspaceCapabilities(
   };
 }
 
+export type StrategyWorkspaceCapabilities = Readonly<{
+  canStart: boolean;
+  canRead: boolean;
+  canUpdate: boolean;
+  canApprove: boolean;
+}>;
+
+export function deriveStrategyWorkspaceCapabilities(
+  memberships: readonly EffectiveMembership[],
+  campaignId: string,
+): StrategyWorkspaceCapabilities {
+  const exact = (action: string, purpose: string) =>
+    hasExactGrant(memberships, {
+      action,
+      resourceType: "strategy_workspace",
+      resourceId: campaignId,
+      purpose,
+      campaignId,
+      workspaceId: null,
+    });
+  return {
+    canStart: exact("create", "Create campaign strategy workspace"),
+    canRead: exact("read", "Review campaign strategy workspace"),
+    canUpdate: exact("update", "Maintain campaign strategy workspace"),
+    canApprove: exact("approve", "Approve internal campaign strategy option"),
+  };
+}
+
 export type CampaignContextCapabilities = Readonly<{
   canCreateCampaign: boolean;
 }>;

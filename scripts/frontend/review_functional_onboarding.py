@@ -69,12 +69,18 @@ async def wait_for_chapter(page: Page, url_pattern: str, selector: str) -> None:
     await page.locator(selector).wait_for(state="visible")
 
 
+async def assert_no_visible_demo(page: Page, label: str) -> None:
+    visible_text = (await page.locator("body").inner_text()).lower()
+    require("demo" not in visible_text, f"{label}: forbidden visible demo wording")
+
+
 async def navigate_from_chapter(page: Page, href: str) -> None:
     chapter_map = page.locator(".chapter-command-map")
     require(await chapter_map.count() == 1, "chapter map disclosure is missing")
     if not await chapter_map.evaluate("element => element.open"):
         await chapter_map.locator(":scope > summary").click()
     await page.locator(f'.chapter-command-track a[href="{href}"]').click()
+    await page.wait_for_load_state("networkidle")
 
 
 async def open_details(page: Page, selector: str):
@@ -83,6 +89,13 @@ async def open_details(page: Page, selector: str):
     if not await details.evaluate("element => element.open"):
         await details.locator(":scope > summary").click()
     return details
+
+
+async def strategy_new_form(page: Page, selector: str):
+    details = await open_details(page, selector)
+    forms = details.locator('form[action="/api/ui/strategy-workspace/section"]')
+    require(await forms.count() >= 1, f"strategy section has no mutation form: {selector}")
+    return forms.last
 
 
 async def save_candidate_claim(
@@ -211,6 +224,7 @@ async def review() -> dict[str, object]:
             "campaign master path missing from live journey",
         )
         visible_text = await page.locator("body").inner_text()
+        await assert_no_visible_demo(page, "functional-overview-es")
         for internal_code in (
             "OPERATIONAL SETUP ONLY",
             "BEGIN_GUIDED_INTAKE",
@@ -1083,6 +1097,164 @@ async def review() -> dict[str, object]:
             "manual role consultant dossier did not persist",
         )
 
+        # Strategy lifecycle: evidence -> comparable options -> measurable objective -> human decision.
+        await navigate_from_chapter(page, "/es/campaign/strategy#strategy-room")
+        await wait_for_chapter(page, "**/es/campaign/strategy**", "#strategy-room")
+        require(
+            await page.locator("#candidate-workspace, #team-workspace, #war-room").count() == 0,
+            "non-strategy missions leaked into the strategy chapter",
+        )
+        require(
+            await page.get_by_role("button", name="Crear sala de estrategia", exact=True).count() == 1,
+            "strategy start did not unlock after Candidate and Team readiness",
+        )
+        await page.get_by_label("Nombre de la sala").fill("Sala de decisión interna")
+        await page.get_by_role("button", name="Crear sala de estrategia", exact=True).click()
+        await page.wait_for_url("**notice=strategy_started**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.locator("#strategy-authoring").count() == 1,
+            "strategy authoring surface is missing after creation",
+        )
+
+        strategy_evidence = await strategy_new_form(page, "#strategy-evidence")
+        await strategy_evidence.get_by_label("Clasificación").select_option("VERIFIED")
+        await strategy_evidence.get_by_label("Fecha de recopilación").fill("2026-08-13")
+        await strategy_evidence.get_by_label("Afirmación documentada").fill(
+            "La evidencia interna verificada confirma capacidad operativa para sostener la secuencia de revisión."
+        )
+        await strategy_evidence.get_by_label("Referencia de fuente").fill(
+            "https://example.test/verified-operating-record"
+        )
+        await strategy_evidence.get_by_label("Autoridad de la fuente").fill("Registro interno autorizado")
+        await strategy_evidence.get_by_label("Jurisdicción").fill("Guatemala")
+        await strategy_evidence.get_by_role("button", name="Guardar sección", exact=True).click()
+        await page.wait_for_url("**notice=strategy_section_saved**")
+        await page.wait_for_load_state("networkidle")
+
+        strategy_assumption = await strategy_new_form(page, "#strategy-assumptions")
+        await strategy_assumption.get_by_label("Afirmación documentada").fill(
+            "La capacidad documentada se mantendrá durante el siguiente ciclo de revisión interna."
+        )
+        await strategy_assumption.get_by_label("Estado del supuesto").select_option("ACTIVE")
+        await strategy_assumption.get_by_label("Señales de invalidación").fill(
+            "La capacidad semanal cae por debajo del mínimo acordado\nAparecen bloqueos sin responsable"
+        )
+        await strategy_assumption.locator('input[name="evidence_refs"]').first.check()
+        await strategy_assumption.get_by_role("button", name="Guardar sección", exact=True).click()
+        await page.wait_for_url("**notice=strategy_section_saved**")
+        await page.wait_for_load_state("networkidle")
+
+        for hypothesis_title, statement, signal in (
+            (
+                "Secuencia basada en evidencia",
+                "Priorizar revisiones con evidencia verificada mejora la calidad de la decisión interna.",
+                "La calidad de las decisiones no mejora",
+            ),
+            (
+                "Secuencia basada en capacidad",
+                "Ordenar trabajo por capacidad disponible reduce bloqueos internos sin efectos externos.",
+                "Los bloqueos aumentan pese a la secuencia",
+            ),
+        ):
+            hypothesis = await strategy_new_form(page, "#strategy-hypotheses")
+            await hypothesis.get_by_label("Nombre de la hipótesis").fill(hypothesis_title)
+            await hypothesis.get_by_label("Estado de la hipótesis").select_option("IN_REVIEW")
+            await hypothesis.get_by_label("Afirmación documentada").fill(statement)
+            await hypothesis.get_by_label("Señales de invalidación").fill(signal)
+            await hypothesis.locator('input[name="evidence_refs"]').first.check()
+            assumption_ref = hypothesis.locator('input[name="assumption_refs"]').first
+            require(await assumption_ref.count() == 1, "strategy hypothesis lacks saved assumption reference")
+            await assumption_ref.check()
+            await hypothesis.get_by_role("button", name="Guardar sección", exact=True).click()
+            await page.wait_for_url("**notice=strategy_section_saved**")
+            await page.wait_for_load_state("networkidle")
+
+        for option_index, option_title, summary, benefit, risk, tradeoff in (
+            (0, "Opción A · evidencia primero", "Consolidar evidencia antes de secuenciar el siguiente trabajo interno.", "Mantiene trazabilidad", "Requiere tiempo de revisión", "Retrasa trabajo posterior"),
+            (1, "Opción B · capacidad primero", "Secuenciar el trabajo interno según capacidad documentada.", "Hace visibles las restricciones", "Puede diferir nueva evidencia", "Prioriza capacidad disponible"),
+        ):
+            option = await strategy_new_form(page, "#strategy-options")
+            await option.get_by_label("Nombre de la opción").fill(option_title)
+            await option.get_by_label("Resumen de la opción").fill(summary)
+            hypothesis_refs = option.locator('input[name="hypothesis_refs"]')
+            require(await hypothesis_refs.count() == 2, "strategy options lack two saved hypotheses")
+            await hypothesis_refs.nth(option_index).check()
+            await option.locator('input[name="evidence_refs"]').first.check()
+            await option.get_by_label("Beneficios, uno por línea").fill(benefit)
+            await option.get_by_label("Riesgos, uno por línea").fill(risk)
+            await option.get_by_label("Tradeoffs, uno por línea").fill(tradeoff)
+            await option.get_by_role("button", name="Guardar sección", exact=True).click()
+            await page.wait_for_url("**notice=strategy_section_saved**")
+            await page.wait_for_load_state("networkidle")
+
+        objective = await strategy_new_form(page, "#strategy-objectives")
+        await objective.get_by_label("Resultado buscado").fill(
+            "Completar la revisión de evidencia operativa con trazabilidad interna."
+        )
+        await objective.get_by_label("Métrica").fill("Registros de evidencia aceptados")
+        await objective.get_by_label("Línea base").fill("1")
+        await objective.get_by_label("Meta").fill("5")
+        await objective.get_by_label("Fecha objetivo").fill("2026-09-01")
+        await objective.get_by_label("Función responsable").select_option(index=1)
+        await objective.locator('input[name="evidence_refs"]').first.check()
+        await objective.get_by_role("button", name="Guardar sección", exact=True).click()
+        await page.wait_for_url("**notice=strategy_section_saved**")
+        await page.wait_for_load_state("networkidle")
+
+        contradictions = await open_details(page, "#strategy-contradictions")
+        await contradictions.get_by_role(
+            "button", name="Registrar revisión sin contradicciones abiertas", exact=True
+        ).click()
+        await page.wait_for_url("**notice=strategy_section_saved**")
+        await page.wait_for_load_state("networkidle")
+        red_team = await open_details(page, "#strategy-red-team")
+        await red_team.get_by_role(
+            "button", name="Registrar revisión sin hallazgos de red team", exact=True
+        ).click()
+        await page.wait_for_url("**notice=strategy_section_saved**")
+        await page.wait_for_load_state("networkidle")
+
+        require(
+            await page.get_by_text("Listo para decisión humana", exact=True).count() == 1,
+            "strategy backend did not derive READY_FOR_HUMAN_DECISION",
+        )
+        strategy_decision = page.locator('#strategy-decision form[action="/api/ui/strategy-workspace/decision"]')
+        require(await strategy_decision.count() == 1, "human decision form is unavailable at backend readiness")
+        await strategy_decision.get_by_label("Opción seleccionada").select_option(index=1)
+        await strategy_decision.get_by_label("Función humana que decide").select_option(index=1)
+        await strategy_decision.get_by_label("Razón de la decisión").fill(
+            "La persona autorizada comparó las dos opciones, su evidencia, riesgos y tradeoffs y seleccionó la opción A para esta versión interna."
+        )
+        await strategy_decision.get_by_role("button", name="Registrar decisión humana", exact=True).click()
+        await page.wait_for_url("**notice=strategy_decided**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text("Decisión interna registrada", exact=True).count() == 1,
+            "strategy workspace did not reach DECIDED_INTERNAL",
+        )
+        require(
+            await page.get_by_text(
+                "La persona autorizada comparó las dos opciones, su evidencia, riesgos y tradeoffs y seleccionó la opción A para esta versión interna.",
+                exact=True,
+            ).count()
+            == 1,
+            "strategy human decision receipt is missing",
+        )
+        await page.reload(wait_until="networkidle")
+        require(
+            await page.get_by_text("Decisión interna registrada", exact=True).count() == 1,
+            "strategy decision did not persist after reload",
+        )
+        require(
+            await page.get_by_role("button", name="Registrar decisión humana", exact=True).count() == 0,
+            "append-only decision form remained available after current-version decision",
+        )
+        await assert_no_visible_demo(page, "functional-desktop-es-strategy")
+        await assert_no_overflow(page, "functional-desktop-es-strategy")
+        await assert_accessible(page, "functional-desktop-es-strategy")
+        await page.screenshot(path=ARTIFACT_DIR / "functional-desktop-es-strategy.png", full_page=True)
+
         await navigate_from_chapter(page, "/es/campaign/evidence#candidate-workspace")
         await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
         persisted_evidence = page.locator(".candidate-evidence-disclosure")
@@ -1214,6 +1386,22 @@ async def review() -> dict[str, object]:
             == 1,
             "English consultant dossier is unavailable",
         )
+        await english.goto(f"{BASE_URL}/en/campaign/strategy", wait_until="networkidle")
+        require(
+            await english.get_by_text("Internal decision recorded", exact=True).count() == 1,
+            "English Strategy decision projection is unavailable",
+        )
+        require(
+            await english.get_by_role("button", name="Record human decision", exact=True).count() == 0,
+            "English Strategy exposed a second current-version decision",
+        )
+        await assert_no_visible_demo(english, "functional-desktop-en-strategy")
+        await assert_no_overflow(english, "functional-desktop-en-strategy")
+        await assert_accessible(english, "functional-desktop-en-strategy")
+        await english.screenshot(
+            path=ARTIFACT_DIR / "functional-desktop-en-strategy.png", full_page=True
+        )
+        await english.goto(f"{BASE_URL}/en/campaign/team", wait_until="networkidle")
         await assert_no_overflow(english, "functional-desktop-en-team")
         await assert_accessible(english, "functional-desktop-en-team")
         await english.screenshot(path=ARTIFACT_DIR / "functional-desktop-en.png", full_page=True)
@@ -1266,6 +1454,29 @@ async def review() -> dict[str, object]:
             all(transition_seconds(part) <= 0.0001 for part in reduced_transition.split(",")),
             f"team operation cards still transition under reduced motion: {reduced_transition}",
         )
+        await mobile.goto(f"{BASE_URL}/es/campaign/strategy", wait_until="networkidle")
+        require(
+            await mobile.get_by_text("Decisión interna registrada", exact=True).count() == 1,
+            "mobile Strategy decision projection is unavailable",
+        )
+        strategy_columns = await mobile.locator(".strategy-authoring-grid").evaluate(
+            "element => getComputedStyle(element).gridTemplateColumns.split(' ').length"
+        )
+        require(
+            strategy_columns == 1,
+            f"mobile Strategy authoring is not a single responsive column: {strategy_columns}",
+        )
+        require(
+            await mobile.get_by_role("button", name="Registrar decisión humana", exact=True).count() == 0,
+            "mobile Strategy exposed a second current-version decision",
+        )
+        await assert_no_visible_demo(mobile, "functional-mobile-es-strategy")
+        await assert_no_overflow(mobile, "functional-mobile-es-strategy")
+        await assert_accessible(mobile, "functional-mobile-es-strategy")
+        await mobile.screenshot(
+            path=ARTIFACT_DIR / "functional-mobile-es-strategy.png", full_page=True
+        )
+        await mobile.goto(f"{BASE_URL}/es/campaign/team", wait_until="networkidle")
         await mobile.screenshot(path=ARTIFACT_DIR / "functional-mobile-es.png", full_page=True)
         # training academy functional journey
         await page.goto(f"{BASE_URL}/es/campaign/team", wait_until="networkidle")
@@ -1361,6 +1572,7 @@ async def review() -> dict[str, object]:
         "persistence_after_reload": "PASS",
         "candidate_dossier_completion": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
         "team_readiness_completion": "PASS_8_OF_8_READY_FOR_HUMAN_REVIEW",
+        "strategy_lifecycle_completion": "PASS_DECIDED_INTERNAL_VERSION_BOUND_HUMAN_DECISION",
         "exact_authorization_controls": "PASS",
         "administration_placeholder": "ABSENT",
         "desktop_spanish": "PASS",

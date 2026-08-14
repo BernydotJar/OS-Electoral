@@ -13,7 +13,10 @@ import {
 } from "@/lib/operations-contract-parser";
 import {
   StrategyContractValidationError,
+  parseStrategyDecisionEvidence,
+  parseStrategyWorkspaceCreateEvidence,
   parseStrategyWorkspaceReadEvidence,
+  parseStrategyWorkspaceUpdateEvidence,
 } from "@/lib/strategy-contract-parser";
 import type { FrontendConfig } from "@/lib/config";
 import {
@@ -64,7 +67,13 @@ import type {
   GuidedIntakeUpdateInput,
   MeResponse,
   ProblemDetail,
+  StrategyDecisionEvidence,
+  StrategyDecisionInput,
+  StrategyWorkspaceCreateEvidence,
+  StrategyWorkspaceCreateInput,
   StrategyWorkspaceReadEvidence,
+  StrategyWorkspaceUpdateEvidence,
+  StrategyWorkspaceUpdateInput,
   TeamWorkspaceCreateEvidence,
   TeamWorkspaceCreateInput,
   TeamWorkspaceReadEvidence,
@@ -494,6 +503,68 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/strategy-workspace`,
       "Strategy workspace",
       parseStrategyWorkspaceReadEvidence,
+    );
+  }
+
+  startStrategyWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+    idempotencyKey: string,
+    create: StrategyWorkspaceCreateInput,
+  ): Promise<StrategyWorkspaceCreateEvidence> {
+    return this.request<StrategyWorkspaceCreateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/strategy-workspace`,
+      "Strategy workspace create",
+      parseStrategyWorkspaceCreateEvidence,
+      {
+        method: "POST",
+        body: create,
+        headers: { "idempotency-key": idempotencyKey },
+      },
+    );
+  }
+
+  updateStrategyWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    update: StrategyWorkspaceUpdateInput,
+  ): Promise<StrategyWorkspaceUpdateEvidence> {
+    return this.request<StrategyWorkspaceUpdateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/strategy-workspace`,
+      "Strategy workspace update",
+      parseStrategyWorkspaceUpdateEvidence,
+      {
+        method: "PATCH",
+        body: update,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
+    );
+  }
+
+  decideStrategyWorkspace(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    decision: StrategyDecisionInput,
+  ): Promise<StrategyDecisionEvidence> {
+    return this.request<StrategyDecisionEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/strategy-workspace/decision`,
+      "Strategy workspace decision",
+      parseStrategyDecisionEvidence,
+      {
+        method: "POST",
+        body: decision,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
     );
   }
 

@@ -33,13 +33,13 @@ import {
   deriveCampaignContextCapabilities,
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
+  deriveStrategyWorkspaceCapabilities,
   deriveTeamWorkspaceCapabilities,
   deriveTrainingCapabilities,
 } from "@/lib/journey-capabilities";
 import { deriveNavigation } from "@/lib/navigation";
 import type { ShellViewModel } from "@/lib/shell-view-model";
 import type { UiNotice } from "@/lib/ui-notices";
-import { ViewTransition } from "react";
 
 function StatePanel({
   title,
@@ -68,24 +68,9 @@ function ChapterSurface({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransition
-      name="campaign-chapter-content"
-      enter={{
-        "chapter-forward": "chapter-forward",
-        "chapter-back": "chapter-back",
-        default: "none",
-      }}
-      exit={{
-        "chapter-forward": "chapter-forward",
-        "chapter-back": "chapter-back",
-        default: "none",
-      }}
-      default="none"
-    >
-      <div className="chapter-route-content" data-chapter={chapter}>
-        {children}
-      </div>
-    </ViewTransition>
+    <div className="chapter-route-content" data-chapter={chapter}>
+      {children}
+    </div>
   );
 }
 
@@ -211,6 +196,10 @@ export function CampaignShell({
     model.memberships,
     model.campaign.id,
   );
+  const strategyCapabilities = deriveStrategyWorkspaceCapabilities(
+    model.memberships,
+    model.campaign.id,
+  );
   const trainingCapabilities = deriveTrainingCapabilities(
     model.memberships,
     model.campaign.id,
@@ -249,12 +238,22 @@ export function CampaignShell({
     NOT_AUTHORIZED: dictionary.teamWorkspace.notAuthorized,
     DEPENDENCY_UNAVAILABLE: dictionary.teamWorkspace.unavailable,
   }[model.teamWorkspaceAvailability];
+  const strategyWorkspace = model.strategyWorkspace?.workspace ?? null;
+  const strategyPrerequisiteReady =
+    candidateWorkspace?.status === "INTERNALLY_APPROVED" &&
+    teamWorkspace?.status === "READY_FOR_HUMAN_REVIEW";
+  const strategyPreparationAvailable =
+    model.strategyWorkspaceAvailability === "AVAILABLE" ||
+    (model.strategyWorkspaceAvailability === "NOT_STARTED" &&
+      strategyCapabilities.canStart &&
+      strategyCapabilities.canRead &&
+      strategyPrerequisiteReady);
   const campaignJourney = deriveCampaignJourney({
     readinessStatus: readiness?.status ?? null,
     intakeStatus: guidedIntake?.status ?? null,
     candidateStatus: candidateWorkspace?.status ?? null,
     teamStatus: teamWorkspace?.status ?? null,
-    strategyStatus: model.strategyWorkspace?.workspace.status ?? null,
+    strategyStatus: strategyWorkspace?.status ?? null,
     operationsStatus: model.campaignRoadmap?.roadmap.status ?? null,
     availablePhases: {
       foundation:
@@ -266,7 +265,7 @@ export function CampaignShell({
           candidateCapabilities.canStart &&
           candidatePrerequisiteReady),
       team: teamPreparationAvailable,
-      strategy: model.strategyWorkspaceAvailability === "AVAILABLE",
+      strategy: strategyPreparationAvailable,
       operations: model.campaignRoadmapAvailability === "AVAILABLE",
     },
     parallelPreparation: {
@@ -1288,9 +1287,14 @@ export function CampaignShell({
           {chapterRouteActive && currentJourneyPhase.key === "strategy" ? (
             <ChapterSurface chapter="strategy">
               <StrategyWorkspace
+                locale={locale}
                 dictionary={dictionary}
                 evidence={model.strategyWorkspace}
                 availability={model.strategyWorkspaceAvailability}
+                demo={model.demo}
+                capabilities={strategyCapabilities}
+                prerequisiteReady={strategyPrerequisiteReady}
+                teamRoles={teamWorkspace?.roles ?? []}
               />
             </ChapterSurface>
           ) : null}

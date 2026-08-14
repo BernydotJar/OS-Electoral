@@ -4,6 +4,9 @@ import type { StrategyWorkspaceReadEvidence } from "@/lib/contracts";
 import {
   StrategyContractValidationError,
   parseStrategyWorkspaceReadEvidence,
+  parseStrategyWorkspaceCreateEvidence,
+  parseStrategyWorkspaceUpdateEvidence,
+  parseStrategyDecisionEvidence,
 } from "@/lib/strategy-contract-parser";
 
 const TENANT = "11111111-1111-4111-8111-111111111111";
@@ -208,6 +211,57 @@ describe("strategy contract parser", () => {
     workspace.voter_persuadability_score = 91;
     expect(() => parseStrategyWorkspaceReadEvidence(corrupted)).toThrow(
       "unexpected fields",
+    );
+  });
+
+  it("parses create and update receipts with audit and outbox evidence", () => {
+    const mutation = {
+      ...evidence(),
+      outbox_event_id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    };
+    expect(parseStrategyWorkspaceCreateEvidence(mutation).outbox_event_id).toBe(
+      "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    );
+    expect(parseStrategyWorkspaceUpdateEvidence(mutation).workspace.version).toBe(2);
+
+    const corrupted = structuredClone(mutation) as Record<string, unknown>;
+    corrupted.outbox_event_id = "not-a-uuid";
+    expect(() => parseStrategyWorkspaceCreateEvidence(corrupted)).toThrow(
+      StrategyContractValidationError,
+    );
+  });
+
+  it("requires a decision receipt to match the current workspace decision", () => {
+    const decided = structuredClone(evidence()) as DeepMutable<StrategyWorkspaceReadEvidence>;
+    decided.workspace.decision = {
+      id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      workspace_version: 2,
+      selected_option_id: OPTION_A,
+      reason: "Human compared the two existing options.",
+      human_role_id: ROLE,
+      approval_receipt_id: "approval-strategy-v2",
+      decided_at: "2026-07-21T12:15:00Z",
+    };
+    decided.workspace.status = "DECIDED_INTERNAL";
+    decided.workspace.next_action = "REVALIDATE_DECISION";
+    decided.workspace.human_decision_required = false;
+    const payload = {
+      workspace: decided.workspace,
+      decision: decided.workspace.decision,
+      audit_event_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      outbox_event_id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    };
+    expect(parseStrategyDecisionEvidence(payload).workspace.version).toBe(2);
+
+    const mismatch = {
+      ...payload,
+      decision: {
+        ...payload.decision,
+        id: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+      },
+    };
+    expect(() => parseStrategyDecisionEvidence(mismatch)).toThrow(
+      "does not match workspace decision",
     );
   });
 });

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "id": "C3-TEAM-005",
-  "status": "REVIEWED",
+  "status": "MERGED_TO_MAIN",
   "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
   "branch": "agent/team-readiness-ui-lifecycle",
   "approval": {
@@ -90,18 +90,35 @@
   },
   "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2",
   "post_merge_verification": {
-    "state": "FAILURE_SUPERSESSION_PENDING",
-    "main_sha": "570549119537c0298e4da476ef01b3de8fa53903",
-    "campaignos_ci_run_id": 31663558148,
-    "campaignos_ci_run_number": 260,
-    "campaignos_ci_conclusion": "FAILURE",
-    "failed_job": "Dynamic frontend contracts and browser review",
-    "failed_step": "Exercise the API-backed functional onboarding journey",
-    "failure_point": "Notice dismissal after campaign draft creation waited for /es#campaigns but the non-hydrated fallback navigated to /es without the anchor",
-    "root_cause": "The command-overview NoticeDismissLink server fallback omitted #campaigns and relied on client hydration to preserve the live fragment.",
-    "repair": "Make the command-overview fallback href /{locale}#campaigns and prove the static fallback in a shell test.",
-    "repair_branch": "agent/team-readiness-postmerge-fix",
-    "external_effects": "NONE"
+    "state": "PASS_SUPERSEDED_FAILURE",
+    "feature_pull_request": 176,
+    "feature_merge_main_sha": "570549119537c0298e4da476ef01b3de8fa53903",
+    "failed_attempt": {
+      "campaignos_ci_run_id": 31663558148,
+      "campaignos_ci_run_number": 260,
+      "conclusion": "FAILURE",
+      "scope": "Dynamic frontend API-backed functional onboarding journey",
+      "root_cause": "Command-overview notice dismissal server fallback omitted #campaigns before hydration."
+    },
+    "repair": {
+      "pull_request": 177,
+      "exact_head": "41d8932d7b7fa240addb025a453ca927c78aed07",
+      "campaignos_ci_run_id": 31664661462,
+      "campaignos_ci_run_number": 261,
+      "campaignos_ci_conclusion": "SUCCESS",
+      "runtime_visual_run_id": 31664661420,
+      "runtime_visual_run_number": 235,
+      "runtime_visual_conclusion": "SUCCESS",
+      "functional_onboarding": "SUCCESS_STRICT_/es#campaigns_EXPECTATION_UNCHANGED"
+    },
+    "final_post_merge": {
+      "main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
+      "campaignos_ci_run_id": 31664890643,
+      "campaignos_ci_run_number": 262,
+      "campaignos_ci_conclusion": "SUCCESS",
+      "functional_onboarding": "SUCCESS",
+      "external_effects": "NONE"
+    }
   },
   "repair_local_verification": {
     "static_fallback_shell_tests": "PASS_9_FOCUSED_TESTS",
@@ -111,5 +128,8 @@
     "graph_validator_tests": "PASS_17",
     "strict_functional_url_expectation": "UNCHANGED_/es#campaigns",
     "dependency_reinstall_note": "A later local npm ci attempt was terminated after prolonged workstation I/O and left node_modules incomplete; no dependency files are committed. Exact-head hosted CI must perform the clean install."
-  }
+  },
+  "feature_pull_request": 176,
+  "repair_pull_request": 177,
+  "integrated_main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9"
 }

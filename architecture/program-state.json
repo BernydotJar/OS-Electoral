@@ -2,7 +2,7 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-08-12",
+  "updated_at": "2026-08-13",
   "source_branch": "agent/campaign-complete-ui-lifecycle",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
@@ -790,8 +790,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "STRATEGY_COMPLETION_UI_BLOCKED_BY_TEAM_READINESS",
-      "next_increment": "C3-TEAM-005"
+      "status": "STRATEGY_UI_REVIEWED_LOCAL",
+      "next_increment": "C3-FRONT-014"
     },
     {
       "id": "WS-07",
@@ -802,14 +802,14 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "TEAM_READINESS_UI_EXACT_HEAD_GREEN",
-      "next_increment": "C3-TEAM-005_FINAL_HEAD"
+      "status": "TEAM_READINESS_UI_MERGED_POST_MERGE_GREEN",
+      "next_increment": "C3-FIRMES-001_APPROVAL_PENDING"
     },
     {
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
-      "status": "STRATEGY_UI_BLOCKED_BY_TEAM_READINESS",
-      "next_increment": "C3-TEAM-005"
+      "status": "STRATEGY_UI_REVIEWED_LOCAL",
+      "next_increment": "C3-FRONT-014"
     },
     {
       "id": "WS-10",
@@ -1324,7 +1324,7 @@
       "id": "C3-TEAM-005",
       "workstream": "WS-08",
       "title": "Completable Team readiness supporting-record review UI",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-013",
         "C3-TEAM-004",
@@ -1341,7 +1341,7 @@
       "id": "C3-FRONT-014",
       "workstream": "WS-06",
       "title": "Completable governed strategy authoring and human decision UI",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "REVIEWED",
       "depends_on": [
         "C3-FRONT-013",
         "C3-STRATEGY-001",
@@ -1610,20 +1610,22 @@
       "frontend_target_verified": true
     },
     "vulnerability_alerts": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
-    "active_local_increment": "C3-TEAM-005",
+    "active_local_increment": "C3-FRONT-014",
     "latest_checkpoint": {
-      "id": "C3-FRONT-013",
+      "id": "C3-TEAM-005",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "merge_pr": 175,
+      "feature_pr": 176,
+      "repair_pr": 177,
+      "merge_pr": 177,
       "merged_at": "2026-08-12",
-      "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
-      "post_merge_ci_run_id": 31658999239,
+      "main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
+      "post_merge_ci_run_id": 31664890643,
       "post_merge_ci_conclusion": "SUCCESS",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
-      "next_action": "C3-TEAM-005"
+      "next_action": "C3-FRONT-014"
     },
     "automated_security_fixes": "ENABLED_VERIFIED_AUTHENTICATED_2026_07_21",
     "required_check_enforcement": "ACTIVE_VERIFIED",
@@ -1641,21 +1643,23 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 175,
+      "pr": 177,
       "status": "MERGED_TO_MAIN_SQUASH",
-      "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
+      "main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
       "checks_before_merge": "SUCCESS",
-      "post_merge_ci_run_id": 31658999239,
+      "post_merge_ci_run_id": 31664890643,
       "post_merge_ci_conclusion": "SUCCESS",
       "included_increment_prs": [
         150,
         151,
         174,
-        175
+        175,
+        176,
+        177
       ],
       "previous_cumulative_merge": {
-        "pr": 174,
-        "main_sha": "561d4ba0f7cfccaac5bbd94e38c36245ec332415"
+        "pr": 175,
+        "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae"
       },
       "open_pull_requests_observed": 12
     },
@@ -1663,18 +1667,20 @@
     "live_required_check_count": 8,
     "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN",
     "latest_completed_checkpoint": {
-      "id": "C3-FRONT-013",
+      "id": "C3-TEAM-005",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "merge_pr": 175,
+      "feature_pr": 176,
+      "repair_pr": 177,
+      "merge_pr": 177,
       "merged_at": "2026-08-12",
-      "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
-      "post_merge_ci_run_id": 31658999239,
+      "main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
+      "post_merge_ci_run_id": 31664890643,
       "post_merge_ci_conclusion": "SUCCESS",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
-      "next_action": "C3-TEAM-005"
+      "next_action": "C3-FRONT-014"
     },
     "post_training_reconciliation": {
       "verified_at": "2026-08-11T19:33:00Z",
@@ -1701,7 +1707,7 @@
       "next_spec": "C3-FIRMES-001",
       "next_spec_state": "SPEC_READY_APPROVAL_PENDING"
     },
-    "c3_program_state": "C3_TEAM_005_EXACT_HEAD_GREEN_FINAL_EVIDENCE_HEAD_PENDING"
+    "c3_program_state": "C3_FRONT_014_STRATEGY_UI_ACTIVE"
   },
   "deployment_state": {
     "github_pages": {
@@ -2133,8 +2139,8 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-TEAM-005",
-    "selected_feature": "C3-TEAM-005",
+    "active_feature": "C3-FRONT-014",
+    "selected_feature": "C3-FRONT-014",
     "selected_feature_state": "review",
     "approval_gate": "APPROVED",
     "ready_nodes": []

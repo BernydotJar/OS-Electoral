@@ -1,5 +1,3 @@
-import type { Route } from "next";
-import Link from "next/link";
 import type { CSSProperties } from "react";
 
 import { campaignChapterHref } from "@/lib/campaign-chapters";
@@ -98,12 +96,12 @@ export function CampaignExperienceHero({
             <p>{body}</p>
           </details>
         )}
-        <Link href={actionHref as Route} transitionTypes={["chapter-forward"]}>
+        <a href={actionHref}>
           <span>{action}</span>
           <span className="experience-arrow" aria-hidden="true">
             →
           </span>
-        </Link>
+        </a>
         <ol
           className="experience-mission-pulse"
           aria-label={dictionary.journey.missionPulseLabel}

@@ -7585,3 +7585,51 @@ button[type="submit"]:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* C3-FRONT-014: bounded Strategy authoring references. */
+.strategy-reference-heading {
+  margin-top: 0.9rem;
+  display: block;
+  color: var(--text-2);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.strategy-reference-list {
+  min-width: 0;
+  margin: 0.45rem 0 0;
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.55rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 11px;
+}
+
+.strategy-reference-list legend {
+  max-width: 100%;
+  padding: 0 0.35rem;
+  color: var(--text-3);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.strategy-reference-list label {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: start;
+  color: var(--text-2);
+  line-height: 1.45;
+}
+
+.strategy-reference-list label span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.strategy-reference-list input[type="checkbox"] {
+  margin-top: 0.2rem;
+}

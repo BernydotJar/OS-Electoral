@@ -74,6 +74,7 @@ describe("CampaignOsApiClient contract failures", () => {
 import {
   demoCandidateWorkspace,
   demoGuidedIntake,
+  demoStrategyWorkspace,
   demoTeamWorkspace,
 } from "@/lib/demo-data";
 
@@ -515,5 +516,81 @@ describe("CampaignOsApiClient team workspace mutations", () => {
     expect(result.workspace.version).toBe(6);
     expect(result.added_role_count).toBe(5);
     expect(result.skipped_role_count).toBe(3);
+  });
+});
+
+
+describe("CampaignOsApiClient strategy workspace mutations", () => {
+  it("creates and updates Strategy with exact idempotency and optimistic concurrency", async () => {
+    const fetchMock = vi.fn(async (input: URL | RequestInfo, init?: RequestInit) => {
+      const headers = new Headers(init?.headers);
+      const url = String(input);
+      if (init?.method === "POST") {
+        expect(url).toBe(`https://api.example.test/api/v1/tenants/${TENANT}/campaigns/${CAMPAIGN}/strategy-workspace`);
+        expect(headers.get("idempotency-key")).toBe("strategy-start-1");
+        expect(JSON.parse(String(init?.body))).toEqual({ title: "Internal strategy room" });
+      } else {
+        expect(init?.method).toBe("PATCH");
+        expect(headers.get("idempotency-key")).toBe("strategy-update-1");
+        expect(headers.get("if-match")).toBe('"2"');
+        expect(JSON.parse(String(init?.body))).toEqual({ contradictions: [] });
+      }
+      return new Response(JSON.stringify({
+        workspace: demoStrategyWorkspace.workspace,
+        audit_event_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        outbox_event_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      }), { status: init?.method === "POST" ? 201 : 200, headers: { "content-type": "application/json" } });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    await client.startStrategyWorkspace(TENANT, CAMPAIGN, "strategy-start-1", { title: "Internal strategy room" });
+    await client.updateStrategyWorkspace(TENANT, CAMPAIGN, 2, "strategy-update-1", { contradictions: [] });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("records a version-bound internal human decision without changing the requested workspace version", async () => {
+    const selectedOptionId = demoStrategyWorkspace.workspace.options?.[0]?.id;
+    const ownerRoleId = demoStrategyWorkspace.workspace.objectives?.[0]?.owner_role_id;
+    if (!selectedOptionId || !ownerRoleId) throw new Error("strategy fixture incomplete");
+    const decision = {
+      id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      workspace_version: 2,
+      selected_option_id: selectedOptionId,
+      reason: "Human compared the existing options.",
+      human_role_id: ownerRoleId,
+      approval_receipt_id: "approval-strategy-v2",
+      decided_at: "2026-08-13T12:00:00Z",
+    };
+    const decidedWorkspace = {
+      ...demoStrategyWorkspace.workspace,
+      decision,
+      status: "DECIDED_INTERNAL" as const,
+      next_action: "REVALIDATE_DECISION" as const,
+      human_decision_required: false,
+    };
+    const fetchMock = vi.fn(async (input: URL | RequestInfo, init?: RequestInit) => {
+      expect(String(input)).toBe(`https://api.example.test/api/v1/tenants/${TENANT}/campaigns/${CAMPAIGN}/strategy-workspace/decision`);
+      expect(init?.method).toBe("POST");
+      const headers = new Headers(init?.headers);
+      expect(headers.get("idempotency-key")).toBe("strategy-decision-1");
+      expect(headers.get("if-match")).toBe('"2"');
+      return new Response(JSON.stringify({
+        workspace: decidedWorkspace,
+        decision,
+        audit_event_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        outbox_event_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      }), { status: 200, headers: { "content-type": "application/json" } });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    const result = await client.decideStrategyWorkspace(TENANT, CAMPAIGN, 2, "strategy-decision-1", {
+      selected_option_id: selectedOptionId,
+      human_role_id: ownerRoleId,
+      reason: decision.reason,
+    });
+    expect(result.workspace.version).toBe(2);
+    expect(result.workspace.status).toBe("DECIDED_INTERNAL");
   });
 });
