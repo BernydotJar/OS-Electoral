@@ -1,17 +1,29 @@
-import type { StrategyWorkspaceReadEvidence } from "@/lib/contracts";
-import type { Dictionary } from "@/lib/i18n";
+import { StrategyWorkspaceEditor } from "@/components/strategy-workspace-editor";
+import type { StrategyWorkspaceReadEvidence, TeamRoleCard } from "@/lib/contracts";
+import type { Dictionary, Locale } from "@/lib/i18n";
+import type { StrategyWorkspaceCapabilities } from "@/lib/journey-capabilities";
 
 type Availability =
   "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
 
 export function StrategyWorkspace({
+  locale,
   dictionary,
   evidence,
   availability,
+  demo,
+  capabilities,
+  prerequisiteReady,
+  teamRoles,
 }: {
+  locale: Locale;
   dictionary: Dictionary;
   evidence: StrategyWorkspaceReadEvidence | null;
   availability: Availability;
+  demo: boolean;
+  capabilities: StrategyWorkspaceCapabilities;
+  prerequisiteReady: boolean;
+  teamRoles: readonly TeamRoleCard[];
 }) {
   const workspace = evidence?.workspace ?? null;
   const stateMessage = {
@@ -40,6 +52,17 @@ export function StrategyWorkspace({
           </div>
         ) : null}
       </div>
+
+      <StrategyWorkspaceEditor
+        locale={locale}
+        dictionary={dictionary}
+        demo={demo}
+        availability={availability}
+        workspace={workspace}
+        capabilities={capabilities}
+        prerequisiteReady={prerequisiteReady}
+        teamRoles={teamRoles}
+      />
 
       {workspace ? (
         <>

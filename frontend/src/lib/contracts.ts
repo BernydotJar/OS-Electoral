@@ -950,6 +950,42 @@ export type StrategyWorkspaceReadEvidence = Readonly<{
   audit_event_id: UUID;
 }>;
 
+export type StrategyWorkspaceCreateInput = Readonly<{
+  title: string;
+}>;
+
+export type StrategyWorkspaceUpdateInput = Readonly<{
+  title?: string;
+  evidence?: readonly StrategyEvidenceRecord[];
+  assumptions?: readonly StrategyAssumptionRecord[];
+  hypotheses?: readonly StrategyHypothesisRecord[];
+  options?: readonly StrategyOptionRecord[];
+  objectives?: readonly StrategyObjectiveRecord[];
+  contradictions?: readonly StrategyContradictionRecord[];
+  red_team_findings?: readonly StrategyRedTeamFindingRecord[];
+}>;
+
+export type StrategyDecisionInput = Readonly<{
+  selected_option_id: UUID;
+  reason: string;
+  human_role_id: UUID;
+}>;
+
+export type StrategyWorkspaceCreateEvidence = Readonly<{
+  workspace: StrategyWorkspaceProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
+export type StrategyWorkspaceUpdateEvidence = StrategyWorkspaceCreateEvidence;
+
+export type StrategyDecisionEvidence = Readonly<{
+  workspace: StrategyWorkspaceProjection;
+  decision: StrategyDecisionRecord;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
 export type TrainingLocale = "es" | "en";
 export type TrainingModuleStatus = "APPROVED" | "RETIRED";
 export type TrainingAssignmentStatus = "ASSIGNED" | "IN_PROGRESS" | "COMPLETED";

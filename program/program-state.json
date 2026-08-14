@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-08-12",
-  "branch": "agent/team-readiness-postmerge-fix",
-  "current_increment": "C3-TEAM-005",
+  "updated_at": "2026-08-13",
+  "branch": "agent/strategy-complete-ui-lifecycle",
+  "current_increment": "C3-FRONT-014",
   "iteration_status": "REVIEWED",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "STRATEGY_COMPLETION_UI_BLOCKED_BY_TEAM_READINESS",
-      "next_increment": "C3-TEAM-005"
+      "status": "STRATEGY_UI_REVIEWED_LOCAL",
+      "next_increment": "C3-FRONT-014"
     },
     {
       "id": "WS-07",
@@ -63,14 +63,14 @@
     {
       "id": "WS-08",
       "name": "Team Builder and Training Academy",
-      "status": "TEAM_READINESS_UI_EXACT_HEAD_GREEN",
-      "next_increment": "C3-TEAM-005_FINAL_HEAD"
+      "status": "TEAM_READINESS_UI_MERGED_POST_MERGE_GREEN",
+      "next_increment": "C3-FIRMES-001_APPROVAL_PENDING"
     },
     {
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
-      "status": "STRATEGY_UI_BLOCKED_BY_TEAM_READINESS",
-      "next_increment": "C3-TEAM-005"
+      "status": "STRATEGY_UI_REVIEWED_LOCAL",
+      "next_increment": "C3-FRONT-014"
     },
     {
       "id": "WS-10",
@@ -530,8 +530,8 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-TEAM-005",
-    "selected_feature": "C3-TEAM-005",
+    "active_feature": "C3-FRONT-014",
+    "selected_feature": "C3-FRONT-014",
     "selected_feature_state": "review",
     "approval_gate": "APPROVED",
     "ready_nodes": []

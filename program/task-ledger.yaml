@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-08-12",
-  "branch": "agent/team-readiness-ui-lifecycle",
+  "updated_at": "2026-08-13",
+  "branch": "agent/strategy-complete-ui-lifecycle",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -1413,7 +1413,7 @@
     {
       "task_id": "C3-TEAM-005",
       "owner": "WS-08/WS-06",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-TEAM-005/requirements.md",
         "specs/C3-TEAM-005/design.md",
@@ -1432,7 +1432,7 @@
         "scope": "Internal Team readiness UI/API proxy/tests/evidence only; no identity assignment, permission grant, Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
       },
       "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
-      "branch": "agent/team-readiness-ui-lifecycle",
+      "branch": "agent/team-readiness-postmerge-fix",
       "implementation_commit": "7f8f3af141d237efdbf0e588c5a04bc7f17dcfa2",
       "local_verification": {
         "focused_tests": 12,
@@ -1465,18 +1465,35 @@
         "functional_onboarding": "PASS_EXACT_HEAD_TEAM_8_OF_8_READY_FOR_HUMAN_REVIEW"
       },
       "post_merge_verification": {
-        "state": "FAILURE_SUPERSESSION_PENDING",
-        "main_sha": "570549119537c0298e4da476ef01b3de8fa53903",
-        "campaignos_ci_run_id": 31663558148,
-        "campaignos_ci_run_number": 260,
-        "campaignos_ci_conclusion": "FAILURE",
-        "failed_job": "Dynamic frontend contracts and browser review",
-        "failed_step": "Exercise the API-backed functional onboarding journey",
-        "failure_point": "Notice dismissal after campaign draft creation waited for /es#campaigns but the non-hydrated fallback navigated to /es without the anchor",
-        "root_cause": "The command-overview NoticeDismissLink server fallback omitted #campaigns and relied on client hydration to preserve the live fragment.",
-        "repair": "Make the command-overview fallback href /{locale}#campaigns and prove the static fallback in a shell test.",
-        "repair_branch": "agent/team-readiness-postmerge-fix",
-        "external_effects": "NONE"
+        "state": "PASS_SUPERSEDED_FAILURE",
+        "feature_pull_request": 176,
+        "feature_merge_main_sha": "570549119537c0298e4da476ef01b3de8fa53903",
+        "failed_attempt": {
+          "campaignos_ci_run_id": 31663558148,
+          "campaignos_ci_run_number": 260,
+          "conclusion": "FAILURE",
+          "scope": "Dynamic frontend API-backed functional onboarding journey",
+          "root_cause": "Command-overview notice dismissal server fallback omitted #campaigns before hydration."
+        },
+        "repair": {
+          "pull_request": 177,
+          "exact_head": "41d8932d7b7fa240addb025a453ca927c78aed07",
+          "campaignos_ci_run_id": 31664661462,
+          "campaignos_ci_run_number": 261,
+          "campaignos_ci_conclusion": "SUCCESS",
+          "runtime_visual_run_id": 31664661420,
+          "runtime_visual_run_number": 235,
+          "runtime_visual_conclusion": "SUCCESS",
+          "functional_onboarding": "SUCCESS_STRICT_/es#campaigns_EXPECTATION_UNCHANGED"
+        },
+        "final_post_merge": {
+          "main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
+          "campaignos_ci_run_id": 31664890643,
+          "campaignos_ci_run_number": 262,
+          "campaignos_ci_conclusion": "SUCCESS",
+          "functional_onboarding": "SUCCESS",
+          "external_effects": "NONE"
+        }
       },
       "post_merge_repair_branch": "agent/team-readiness-postmerge-fix",
       "repair_local_verification": {
@@ -1484,30 +1501,66 @@
         "typescript": "PASS_BEFORE_LOCAL_NODE_MODULES_REINSTALL_INTERRUPTION",
         "program_truth": "PASS",
         "release_readiness": "PASS_DENY_RELEASE"
-      }
+      },
+      "pull_request": 176,
+      "repair_pull_request": 177,
+      "integrated_main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9"
     },
     {
       "task_id": "C3-FRONT-014",
       "owner": "WS-06/WS-09",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "REVIEWED",
       "evidence": [
         "specs/C3-FRONT-014/requirements.md",
         "specs/C3-FRONT-014/design.md",
         "specs/C3-FRONT-014/tasks.md",
-        "program/iterations/c3-front-014.md"
+        "program/iterations/c3-front-014.md",
+        "docs/testing/c3-front-014-evidence.md",
+        "program/validations/c3-front-014.json",
+        "progress/review_C3-FRONT-014.md"
       ],
       "external_effects": "NONE",
-      "blockers": [
-        "C3-TEAM-005 must make Team READY_FOR_HUMAN_REVIEW through the UI before Strategy is executable in the sequential journey."
-      ],
+      "blockers": [],
       "approval": {
         "recorded_at": "2026-08-12T19:22:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
         "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle beyond a single feature until the product reaches a terminal completion state.",
         "scope": "Internal strategy authoring/decision UI, same-origin API proxy, local development seed, tests and review evidence only; no Firmes implementation, production deployment, cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
       },
-      "base_main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae",
-      "branch": "agent/team-readiness-ui-lifecycle"
+      "base_main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
+      "branch": "agent/strategy-complete-ui-lifecycle",
+      "local_verification": {
+        "frontend_test_files": 47,
+        "frontend_tests": 215,
+        "eslint": "PASS",
+        "typescript": "PASS",
+        "next_build": "PASS",
+        "npm_audit_vulnerabilities": 0,
+        "python_passed": 865,
+        "python_skipped": 13,
+        "coverage_percent": 90.03,
+        "postgresql_selected_passed": 12,
+        "candidate_prerequisite": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
+        "team_prerequisite": "PASS_8_OF_8_READY_FOR_HUMAN_REVIEW",
+        "functional_browser": "PASS_DECIDED_INTERNAL_VERSION_BOUND_HUMAN_DECISION",
+        "dynamic_read_only_browser": "PASS",
+        "wcag_2_2_aa_axe_violations": 0,
+        "browser_storage": "EMPTY",
+        "unexpected_outbound_hosts": 0,
+        "gitleaks_history_commits": 375,
+        "compose_config": "PASS",
+        "supply_chain": "PASS",
+        "terraform_1_15_8_plan_only": "PASS",
+        "program_truth": "PASS_BLOCKED",
+        "release_readiness": "PASS_DENY_RELEASE"
+      },
+      "critic_findings": [
+        "C3-FRONT-014-F1",
+        "C3-FRONT-014-F2",
+        "C3-FRONT-014-F3",
+        "C3-FRONT-014-F4",
+        "C3-FRONT-014-F5"
+      ]
     }
   ]
 }

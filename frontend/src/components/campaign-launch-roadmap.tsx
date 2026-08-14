@@ -1,5 +1,3 @@
-import type { Route } from "next";
-import Link from "next/link";
 
 import { campaignChapterHref } from "@/lib/campaign-chapters";
 import type {
@@ -89,13 +87,12 @@ export function CampaignLaunchRoadmap({
             </dl>
           </div>
           {navigable(currentPhase) ? (
-            <Link
-              href={campaignChapterHref(locale, currentPhase.key) as Route}
-              transitionTypes={["chapter-forward"]}
+            <a
+              href={campaignChapterHref(locale, currentPhase.key)}
             >
               <span>{dictionary.journey.phaseActions[currentPhase.key]}</span>
               <span aria-hidden="true">→</span>
-            </Link>
+            </a>
           ) : (
             <div className="command-priority-blocked" role="status">
               <strong>{dictionary.journey.blockedTitle}</strong>
@@ -126,14 +123,11 @@ export function CampaignLaunchRoadmap({
                   aria-current={current ? "step" : undefined}
                 >
                   {navigable(phase) ? (
-                    <Link
-                      href={campaignChapterHref(locale, phase.key) as Route}
-                      transitionTypes={[
-                        index < currentIndex ? "chapter-back" : "chapter-forward",
-                      ]}
+                    <a
+                      href={campaignChapterHref(locale, phase.key)}
                     >
                       {content}
-                    </Link>
+                    </a>
                   ) : (
                     <div aria-disabled="true">{content}</div>
                   )}
@@ -168,14 +162,11 @@ export function CampaignLaunchRoadmap({
               <p>{dictionary.journey.phaseDescriptions[phase.key]}</p>
               <small>{dictionary.journey.phaseOutcomes[phase.key]}</small>
               {navigable(phase) ? (
-                <Link
-                  href={campaignChapterHref(locale, phase.key) as Route}
-                  transitionTypes={[
-                    index < currentIndex ? "chapter-back" : "chapter-forward",
-                  ]}
+                <a
+                  href={campaignChapterHref(locale, phase.key)}
                 >
                   {dictionary.journey.openPhase}
-                </Link>
+                </a>
               ) : phase.state === "BLOCKED" ? (
                 <span className="command-path-locked">
                   <strong>{dictionary.journey.blockedTitle}</strong>

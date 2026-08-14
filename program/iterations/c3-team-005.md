@@ -51,3 +51,12 @@ Fixer repair: the overview now renders a truthful `/es#campaigns` (or `/en#campa
 - the functional E2E assertion remains strict at `/es#campaigns`; it was not weakened;
 - program truth, release readiness and Graph Harness validator: PASS;
 - a subsequent local `npm ci` attempt was interrupted by prolonged workstation I/O and left only local `node_modules` incomplete. No dependency or lockfile change is part of the repair. Clean dependency installation and the full API-backed browser journey are delegated to exact-head hosted CI.
+
+## Closure after post-merge repair
+
+- feature PR #176 merged to `570549119537c0298e4da476ef01b3de8fa53903`;
+- historical post-merge CampaignOS CI #260 / `31663558148` failed only at the pre-hydration notice fallback and is retained as superseded evidence;
+- repair PR #177 exact head `41d8932d7b7fa240addb025a453ca927c78aed07` passed CampaignOS CI #261 / `31664661462` and Runtime Visual #235 / `31664661420` with the strict functional journey green;
+- repair merged to `main@f1dacd9625019664add60b89bff728f3f17d7cc9`;
+- final post-merge CampaignOS CI #262 / `31664890643`: `SUCCESS`, including the API-backed functional onboarding journey;
+- C3-TEAM-005 is `MERGED_TO_MAIN`; C3-FRONT-014 is now the active Graph Harness node.

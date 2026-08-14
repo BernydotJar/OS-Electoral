@@ -10,6 +10,9 @@ import type {
   StrategyRedTeamFindingRecord,
   StrategyWorkspaceProjection,
   StrategyWorkspaceReadEvidence,
+  StrategyWorkspaceCreateEvidence,
+  StrategyWorkspaceUpdateEvidence,
+  StrategyDecisionEvidence,
 } from "@/lib/contracts";
 
 const UUID_PATTERN =
@@ -533,7 +536,7 @@ function assertRefs(
   }
 }
 
-function parseWorkspace(value: unknown): StrategyWorkspaceProjection {
+export function parseStrategyWorkspaceProjection(value: unknown): StrategyWorkspaceProjection {
   const source = record(value, "strategy workspace");
   exactKeys(
     source,
@@ -911,10 +914,60 @@ export function parseStrategyWorkspaceReadEvidence(
     "strategy workspace evidence",
   );
   return {
-    workspace: parseWorkspace(source.workspace),
+    workspace: parseStrategyWorkspaceProjection(source.workspace),
     audit_event_id: uuid(
       source.audit_event_id,
       "strategy workspace evidence.audit_event_id",
     ),
+  };
+}
+
+
+function parseStrategyMutationEvidence(
+  value: unknown,
+  label: string,
+): StrategyWorkspaceCreateEvidence {
+  const source = record(value, label);
+  exactKeys(source, ["workspace", "audit_event_id", "outbox_event_id"], label);
+  return {
+    workspace: parseStrategyWorkspaceProjection(source.workspace),
+    audit_event_id: uuid(source.audit_event_id, `${label}.audit_event_id`),
+    outbox_event_id: uuid(source.outbox_event_id, `${label}.outbox_event_id`),
+  };
+}
+
+export function parseStrategyWorkspaceCreateEvidence(
+  value: unknown,
+): StrategyWorkspaceCreateEvidence {
+  return parseStrategyMutationEvidence(value, "strategy workspace create evidence");
+}
+
+export function parseStrategyWorkspaceUpdateEvidence(
+  value: unknown,
+): StrategyWorkspaceUpdateEvidence {
+  return parseStrategyMutationEvidence(value, "strategy workspace update evidence");
+}
+
+export function parseStrategyDecisionEvidence(
+  value: unknown,
+): StrategyDecisionEvidence {
+  const source = record(value, "strategy decision evidence");
+  exactKeys(
+    source,
+    ["workspace", "decision", "audit_event_id", "outbox_event_id"],
+    "strategy decision evidence",
+  );
+  const workspace = parseStrategyWorkspaceProjection(source.workspace);
+  const decision = parseDecision(source.decision, "strategy decision evidence.decision");
+  if (workspace.decision === null || workspace.decision.id !== decision.id) {
+    throw new StrategyContractValidationError(
+      "strategy decision evidence does not match workspace decision",
+    );
+  }
+  return {
+    workspace,
+    decision,
+    audit_event_id: uuid(source.audit_event_id, "strategy decision evidence.audit_event_id"),
+    outbox_event_id: uuid(source.outbox_event_id, "strategy decision evidence.outbox_event_id"),
   };
 }

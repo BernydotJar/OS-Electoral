@@ -40,7 +40,7 @@ def test_local_seed_is_idempotent_and_grants_only_the_bounded_journey() -> None:
             assert session.scalar(select(func.count()).select_from(RoleAssignment)) == 1
             grants = tuple(session.scalars(select(PermissionGrant).order_by(PermissionGrant.id)))
 
-        assert len(grants) == len(GRANTS) == 17
+        assert len(grants) == len(GRANTS) == 21
         assert {(grant.action, grant.resource_type, grant.purpose) for grant in grants} == {
             (spec.action, spec.resource_type, spec.purpose) for spec in GRANTS
         }
@@ -77,6 +77,16 @@ def test_local_seed_is_idempotent_and_grants_only_the_bounded_journey() -> None:
             ("training.self.complete", "Complete assigned campaign training"),
             ("training.assignment.manage", "Assign campaign learning path"),
             ("training.receipt.read", "Review own campaign training"),
+        }
+        assert {
+            (grant.action, grant.purpose)
+            for grant in grants
+            if grant.resource_type == "strategy_workspace"
+        } == {
+            ("create", "Create campaign strategy workspace"),
+            ("read", "Review campaign strategy workspace"),
+            ("update", "Maintain campaign strategy workspace"),
+            ("approve", "Approve internal campaign strategy option"),
         }
         assert session is not None
         with Session(engine) as session:

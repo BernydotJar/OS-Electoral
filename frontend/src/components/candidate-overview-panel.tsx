@@ -1,5 +1,3 @@
-import type { Route } from "next";
-import Link from "next/link";
 
 import { CandidateActionBrief } from "@/components/candidate-action-brief";
 import { campaignChapterHref } from "@/lib/campaign-chapters";
@@ -51,14 +49,13 @@ export function CandidateOverviewPanel({
       {workspace ? (
         <>
           <CandidateActionBrief dictionary={dictionary} workspace={workspace} />
-          <Link
+          <a
             className="candidate-overview-link"
-            href={campaignChapterHref(locale, "evidence") as Route}
-            transitionTypes={["chapter-forward"]}
+            href={campaignChapterHref(locale, "evidence")}
           >
             <span>{dictionary.candidate.profileViewLabel}</span>
             <span aria-hidden="true">→</span>
-          </Link>
+          </a>
         </>
       ) : (
         <p className="intake-state" role="status">

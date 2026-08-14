@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "id": "C3-FRONT-014",
+  "status": "REVIEWED_LOCAL",
+  "base_main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
+  "branch": "agent/strategy-complete-ui-lifecycle",
+  "approval": {
+    "source": "USER_EXPLICIT_APPROVAL",
+    "statement": "User explicitly authorized continuing the Graph Harness SHIP lifecycle beyond a single feature until the product reaches a terminal completion state.",
+    "scope": "Internal Strategy authoring/decision UI, same-origin API proxy, local development seed, tests and review evidence only; no Firmes implementation, production deployment, paid cloud resources, spending, publication, citizen contact, targeting, persuasion or mobilization."
+  },
+  "verification": {
+    "frontend_test_files": 47,
+    "frontend_tests": 215,
+    "eslint": "PASS",
+    "typescript": "PASS",
+    "next_build": "PASS",
+    "dependency_vulnerabilities": 0,
+    "python_passed": 865,
+    "python_skipped": 13,
+    "coverage_percent": 90.03,
+    "postgres_selected_passed": 12,
+    "candidate_prerequisite": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
+    "team_prerequisite": "PASS_8_OF_8_READY_FOR_HUMAN_REVIEW",
+    "functional_browser": "PASS_DECIDED_INTERNAL_VERSION_BOUND_HUMAN_DECISION",
+    "dynamic_read_only_browser": "PASS",
+    "desktop_spanish": "PASS",
+    "desktop_english": "PASS",
+    "mobile_spanish": "PASS",
+    "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+    "horizontal_overflow": "NONE",
+    "unexpected_outbound_hosts": 0,
+    "browser_storage": "EMPTY",
+    "visible_demo_wording": "ABSENT",
+    "compose_config": "PASS",
+    "supply_chain": "PASS",
+    "gitleaks_8_30_1": "PASS_CHECKSUM_VERIFIED_EFFECTIVE_WORKTREE_AND_375_COMMIT_HISTORY",
+    "terraform_1_15_8_plan_only": "PASS",
+    "security_policy": "PASS",
+    "program_truth": "PASS_BLOCKED",
+    "release_readiness": "PASS_DENY_RELEASE"
+  },
+  "critic_findings": [
+    {
+      "id": "C3-FRONT-014-F1",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Successful Strategy mutations redirected to unregistered subanchors and could fall back to the command overview.",
+      "repair": "Route Strategy section and decision success redirects to the registered strategy-room anchor and assert chapter path/hash in route tests."
+    },
+    {
+      "id": "C3-FRONT-014-F2",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "The human-decision form and objective owner initially preselected the first available option or Team role.",
+      "repair": "Require explicit option and role choices with disabled blank placeholders; retain backend reference validation."
+    },
+    {
+      "id": "C3-FRONT-014-F3",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Next client chapter navigation could change URL while leaving the body empty after a completed journey.",
+      "repair": "Use native full-document navigation for chapter destinations and remove experimental view-transition integration; browser reproduction confirms the destination workspace renders."
+    },
+    {
+      "id": "C3-FRONT-014-F4",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Reviewed-empty Strategy assessment must never erase a non-empty collection.",
+      "repair": "Fail closed when contradictions or red-team findings are non-empty and prove no update occurs."
+    },
+    {
+      "id": "C3-FRONT-014-F5",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Strategy authoring must remain human-authored and cannot become automated political recommendation or authority escalation.",
+      "repair": "Keep references bounded, require exact grants, derive readiness from backend state, require explicit human decision, and perform no option ranking, targeting, persuasion or external action."
+    }
+  ],
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "hosted_verification": {
+    "state": "PENDING_EXACT_HEAD"
+  }
+}

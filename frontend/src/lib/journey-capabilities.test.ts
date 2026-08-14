@@ -5,6 +5,7 @@ import {
   deriveCampaignContextCapabilities,
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
+  deriveStrategyWorkspaceCapabilities,
   deriveTeamWorkspaceCapabilities,
 } from "@/lib/journey-capabilities";
 
@@ -233,5 +234,38 @@ describe("deriveTeamWorkspaceCapabilities", () => {
         CAMPAIGN,
       ).canStart,
     ).toBe(false);
+  });
+});
+
+
+describe("deriveStrategyWorkspaceCapabilities", () => {
+  it("requires exact strategy grants and never trusts role labels", () => {
+    expect(
+      deriveStrategyWorkspaceCapabilities(
+        [
+          membership("create", "Create campaign strategy workspace", CAMPAIGN, "strategy_workspace"),
+          membership("read", "Review campaign strategy workspace", CAMPAIGN, "strategy_workspace"),
+          membership("update", "Maintain campaign strategy workspace", CAMPAIGN, "strategy_workspace"),
+          membership("approve", "Approve internal campaign strategy option", CAMPAIGN, "strategy_workspace"),
+        ],
+        CAMPAIGN,
+      ),
+    ).toEqual({ canStart: true, canRead: true, canUpdate: true, canApprove: true });
+
+    expect(
+      deriveStrategyWorkspaceCapabilities(
+        [membership("approve", "Wrong purpose", CAMPAIGN, "strategy_workspace")],
+        CAMPAIGN,
+      ).canApprove,
+    ).toBe(false);
+    expect(
+      deriveStrategyWorkspaceCapabilities(
+        [membership("create", "Create campaign strategy workspace", null, "strategy_workspace")],
+        CAMPAIGN,
+      ).canStart,
+    ).toBe(false);
+    expect(deriveStrategyWorkspaceCapabilities([], CAMPAIGN)).toEqual({
+      canStart: false, canRead: false, canUpdate: false, canApprove: false,
+    });
   });
 });

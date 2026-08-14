@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-08-12",
+  "updated_at": "2026-08-13",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -534,7 +534,7 @@
       "id": "C3-TEAM-005",
       "workstream": "WS-08",
       "title": "Completable Team readiness supporting-record review UI",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-013",
         "C3-TEAM-004",
@@ -551,7 +551,7 @@
       "id": "C3-FRONT-014",
       "workstream": "WS-06",
       "title": "Completable governed strategy authoring and human decision UI",
-      "status": "BLOCKED_BY_DEPENDENCY",
+      "status": "REVIEWED",
       "depends_on": [
         "C3-FRONT-013",
         "C3-STRATEGY-001",
