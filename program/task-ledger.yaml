@@ -1509,7 +1509,7 @@
     {
       "task_id": "C3-FRONT-014",
       "owner": "WS-06/WS-09",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-FRONT-014/requirements.md",
         "specs/C3-FRONT-014/design.md",
@@ -1564,16 +1564,49 @@
       "implementation_commit": "1a7d31d60c3d67705e04d47e0a6fe225bd1f5419",
       "hosted_verification": {
         "pull_request": 178,
-        "verified_head": "4fdb4fbf8641a1c39c04f4c93f523d696820c875",
-        "campaignos_ci_run": 31767680763,
-        "campaignos_ci_number": 263,
+        "verified_head": "c49be75e6e07a1731bd780e2a5a3bcaa67ab07a8",
+        "campaignos_ci_run": 31767922123,
+        "campaignos_ci_number": 264,
         "campaignos_ci": "SUCCESS",
         "functional_onboarding": "SUCCESS",
-        "runtime_visual_run": 31767680795,
-        "runtime_visual_number": 236,
+        "runtime_visual_run": 31767922114,
+        "runtime_visual_number": 237,
         "runtime_visual": "SUCCESS",
-        "final_evidence_head": "PENDING_EXACT_HEAD_REVERIFY"
+        "final_evidence_head": "c49be75e6e07a1731bd780e2a5a3bcaa67ab07a8"
+      },
+      "pull_request": 178,
+      "integrated_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+      "post_merge_verification": {
+        "main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+        "campaignos_ci_run": 31768163466,
+        "campaignos_ci_number": 265,
+        "conclusion": "FAILURE_RECONCILIATION_ONLY",
+        "functional_onboarding": "SUCCESS",
+        "dynamic_frontend": "SUCCESS",
+        "root_cause": "Graph Harness correctly rejected merged PR #178 while C3-FRONT-014 still recorded REVIEWED; no Strategy functional regression was observed.",
+        "repair": "This reconciliation marks C3-FRONT-014 MERGED_TO_MAIN and activates the next product-completion node before re-running exact-head and post-merge gates."
       }
+    },
+    {
+      "task_id": "C3-FRONT-015",
+      "owner": "WS-06/WS-10",
+      "status": "IN_PROGRESS",
+      "evidence": [
+        "specs/C3-FRONT-015/requirements.md",
+        "specs/C3-FRONT-015/design.md",
+        "specs/C3-FRONT-015/tasks.md",
+        "program/iterations/c3-front-015.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [],
+      "approval": {
+        "recorded_at": "2026-08-13T20:50:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly directed the Graph Harness SHIP lifecycle to continue product completion beyond a single feature and requested a full CampaignOS product suitable for demonstrations while preserving strict zero-cost and no-production constraints.",
+        "scope": "Internal Operations and War Room UI over existing CampaignOS backend contracts, tests and review evidence only; no autonomous execution, citizen contact, targeting, persuasion, publication, spending, production deployment, Firmes implementation or paid cloud resources."
+      },
+      "base_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+      "branch": "agent/operations-complete-ui-lifecycle"
     }
   ]
 }

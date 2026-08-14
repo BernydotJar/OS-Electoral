@@ -29,3 +29,6 @@ The real PostgreSQL/API/browser journey reaches Candidate `INTERNALLY_APPROVED`,
 ## Deployment constraint discovered in the current session
 
 The user requires a stable URL for the full product at strict cost `$0`. Firebase Hosting on Spark can host static content, but the existing server stack cannot be moved to Firebase App Hosting, Cloud Run or Functions without Cloud Billing/Blaze. No paid-cloud or production action is authorized by C3-FRONT-014; the zero-cost persistent full-product hosting question remains a separate platform/product-delivery constraint to evaluate after the active product node is integrated.
+
+
+Post-merge reconciliation: PR #178 merged at `main@a2d7aa81455358eb0244b51556ffe3a192455c06`. Main CI #265 failed only the expected stale-ledger reconciliation guard while the functional onboarding job passed. This repair records Strategy `MERGED_TO_MAIN` and moves the scheduler to C3-FRONT-015.

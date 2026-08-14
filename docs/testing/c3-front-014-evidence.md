@@ -87,3 +87,8 @@ PR #178 verified exact review head `4fdb4fbf8641a1c39c04f4c93f523d696820c875`:
 - Runtime Visual Review run #236 (`31767680795`): **SUCCESS**.
 
 A final evidence-only head will be pushed and must pass the same exact-head merge gate before merge.
+
+
+## Post-merge reconciliation
+
+PR #178 was squash-merged to `main@a2d7aa81455358eb0244b51556ffe3a192455c06`. CampaignOS CI #265 (`31768163466`) preserved the full frontend/API onboarding success, including Strategy `DECIDED_INTERNAL`, but failed the locked quality suite because the live Git reconciliation test correctly detected that the merged PR was still recorded as `REVIEWED`. This is a historical program-state reconciliation failure, not a Strategy functional regression. C3-FRONT-014 is now recorded `MERGED_TO_MAIN`; production remains `BLOCKED`, release remains `DENY_RELEASE`, and external effects remain `NONE`.
