@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-08-13",
+  "updated_at": "2026-08-16",
   "branch": "agent/operations-complete-ui-lifecycle",
   "current_increment": "C3-FRONT-015",
-  "iteration_status": "IN_PROGRESS",
+  "iteration_status": "REVIEWED",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,7 +51,7 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "OPERATIONS_UI_ACTIVE",
+      "status": "OPERATIONS_UI_REVIEWED_LOCAL",
       "next_increment": "C3-FRONT-015"
     },
     {
@@ -75,7 +75,7 @@
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "OPERATIONS_UI_ACTIVE",
+      "status": "OPERATIONS_UI_REVIEWED_LOCAL",
       "next_increment": "C3-FRONT-015"
     },
     {
@@ -541,7 +541,7 @@
     "canonical_task_ledger": "program/task-ledger.yaml",
     "active_feature": "C3-FRONT-015",
     "selected_feature": "C3-FRONT-015",
-    "selected_feature_state": "in_progress",
+    "selected_feature_state": "review",
     "approval_gate": "APPROVED",
     "ready_nodes": []
   },

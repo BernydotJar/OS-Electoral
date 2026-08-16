@@ -5,6 +5,7 @@ import {
   deriveCampaignContextCapabilities,
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
+  deriveOperationsWorkspaceCapabilities,
   deriveStrategyWorkspaceCapabilities,
   deriveTeamWorkspaceCapabilities,
 } from "@/lib/journey-capabilities";
@@ -266,6 +267,50 @@ describe("deriveStrategyWorkspaceCapabilities", () => {
     ).toBe(false);
     expect(deriveStrategyWorkspaceCapabilities([], CAMPAIGN)).toEqual({
       canStart: false, canRead: false, canUpdate: false, canApprove: false,
+    });
+  });
+});
+
+
+describe("deriveOperationsWorkspaceCapabilities", () => {
+  it("requires exact roadmap and snapshot grants and never trusts role labels", () => {
+    expect(
+      deriveOperationsWorkspaceCapabilities(
+        [
+          membership("create", "Create campaign operations roadmap", CAMPAIGN, "campaign_roadmap"),
+          membership("read", "Review campaign operations roadmap", CAMPAIGN, "campaign_roadmap"),
+          membership("update", "Maintain campaign operations roadmap", CAMPAIGN, "campaign_roadmap"),
+          membership("create", "Create daily campaign war room snapshot", CAMPAIGN, "war_room_snapshot"),
+          membership("read", "Review daily campaign war room snapshot", CAMPAIGN, "war_room_snapshot"),
+        ],
+        CAMPAIGN,
+      ),
+    ).toEqual({
+      canStart: true,
+      canRead: true,
+      canUpdate: true,
+      canCreateSnapshot: true,
+      canReadSnapshot: true,
+    });
+
+    expect(
+      deriveOperationsWorkspaceCapabilities(
+        [membership("create", "Wrong purpose", CAMPAIGN, "campaign_roadmap")],
+        CAMPAIGN,
+      ).canStart,
+    ).toBe(false);
+    expect(
+      deriveOperationsWorkspaceCapabilities(
+        [membership("create", "Create campaign operations roadmap", null, "campaign_roadmap")],
+        CAMPAIGN,
+      ).canStart,
+    ).toBe(false);
+    expect(deriveOperationsWorkspaceCapabilities([], CAMPAIGN)).toEqual({
+      canStart: false,
+      canRead: false,
+      canUpdate: false,
+      canCreateSnapshot: false,
+      canReadSnapshot: false,
     });
   });
 });

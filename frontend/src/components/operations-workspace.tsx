@@ -1,11 +1,12 @@
+import { OperationsWorkspaceEditor } from "@/components/operations-workspace-editor";
 import type {
   CampaignRoadmapReadEvidence,
+  TeamRoleCard,
   WarRoomSnapshotReadEvidence,
 } from "@/lib/contracts";
-import type { Dictionary } from "@/lib/i18n";
-
-type Availability =
-  "AVAILABLE" | "NOT_STARTED" | "NOT_AUTHORIZED" | "DEPENDENCY_UNAVAILABLE";
+import type { Dictionary, Locale } from "@/lib/i18n";
+import type { OperationsWorkspaceCapabilities } from "@/lib/journey-capabilities";
+import type { CampaignRoadmapAvailability, WarRoomSnapshotAvailability } from "@/lib/shell-view-model";
 
 function StateMessage({ message }: { message: string }) {
   return (
@@ -16,23 +17,37 @@ function StateMessage({ message }: { message: string }) {
 }
 
 export function OperationsWorkspace({
+  locale,
   dictionary,
+  demo,
   roadmapEvidence,
   roadmapAvailability,
   snapshotEvidence,
   snapshotAvailability,
+  capabilities,
+  prerequisiteReady,
+  teamRoles,
+  evidenceReferences,
 }: {
+  locale: Locale;
   dictionary: Dictionary;
+  demo: boolean;
   roadmapEvidence: CampaignRoadmapReadEvidence | null;
-  roadmapAvailability: Availability;
+  roadmapAvailability: CampaignRoadmapAvailability;
   snapshotEvidence: WarRoomSnapshotReadEvidence | null;
-  snapshotAvailability: Availability;
+  snapshotAvailability: WarRoomSnapshotAvailability;
+  capabilities: OperationsWorkspaceCapabilities;
+  prerequisiteReady: boolean;
+  teamRoles: readonly TeamRoleCard[];
+  evidenceReferences: readonly Readonly<{ id: string; label: string }>[];
 }) {
   const roadmap = roadmapEvidence?.roadmap ?? null;
   const snapshot = snapshotEvidence?.snapshot ?? null;
   const roadmapMessage = {
     AVAILABLE: "",
-    NOT_STARTED: dictionary.operations.notStarted,
+    NOT_STARTED: prerequisiteReady
+      ? dictionary.operations.notStarted
+      : dictionary.operations.prerequisitePending,
     NOT_AUTHORIZED: dictionary.operations.notAuthorized,
     DEPENDENCY_UNAVAILABLE: dictionary.operations.unavailable,
   }[roadmapAvailability];
@@ -68,6 +83,18 @@ export function OperationsWorkspace({
           </div>
         ) : null}
       </div>
+
+      <OperationsWorkspaceEditor
+        locale={locale}
+        dictionary={dictionary}
+        demo={demo}
+        availability={roadmapAvailability}
+        roadmap={roadmap}
+        capabilities={capabilities}
+        prerequisiteReady={prerequisiteReady}
+        teamRoles={teamRoles}
+        evidenceReferences={evidenceReferences}
+      />
 
       {roadmap ? (
         <>
@@ -170,7 +197,7 @@ export function OperationsWorkspace({
             aria-labelledby="war-room-snapshot-title"
           >
             <div>
-              <p className="eyebrow">IMMUTABLE INTERNAL EVIDENCE</p>
+              <p className="eyebrow">{dictionary.operations.snapshotEyebrow}</p>
               <h3 id="war-room-snapshot-title">
                 {dictionary.operations.snapshot}
               </h3>

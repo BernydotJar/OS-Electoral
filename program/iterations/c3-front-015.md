@@ -6,7 +6,7 @@ Make the existing Operations and War Room backend lifecycle completable through 
 
 ## Graph selection
 
-C3-FRONT-014 is integrated at `main@a2d7aa81455358eb0244b51556ffe3a192455c06`. The post-merge functional onboarding job is green; its only failed gate is stale Graph Harness merge reconciliation, repaired by the current branch. Operations/War Room is the highest-priority remaining existing-backend journey dead end.
+C3-FRONT-014 is integrated and its reconciliation PR #179 is merged at `main@57f0c4649cb5525647850ccc2c75b84240460e0c`. GitHub confirms PR #179 exact-head CampaignOS CI #266 and Runtime Visual #238 succeeded, and post-merge `main@57f0c464…` CampaignOS CI #267 succeeded. This exact main SHA is the C3-FRONT-015 base. Operations/War Room remains the selected highest-priority existing-backend journey dead end.
 
 ## Approval
 
@@ -14,9 +14,12 @@ C3-FRONT-014 is integrated at `main@a2d7aa81455358eb0244b51556ffe3a192455c06`. T
 
 ## Lifecycle
 
-- Producer: active after reconciliation merge and post-merge green gate.
-- Critic / Red Team: pending.
-- Fixer: pending.
-- Independent Verifier: pending.
-- Release Gate: production remains `BLOCKED`; release remains `DENY_RELEASE`.
+- Producer: complete locally. Existing Operations writes, progressive UI, exact capabilities, same-origin routes and War Room snapshot creation are implemented; the seed is 26 regular grants / 27 in the functional journey.
+- Critic / Red Team: complete. Four findings are recorded and resolved: persisted-option decision integrity, the fresh-journey FILLED-owner dead end, stale-Strategy authoring visibility, and Spanish snapshot localization.
+- Fixer: complete. The Team ownership repair is narrowly scoped to current-session self-coverage with server-owned `principal_id` and creates no membership, grant or additional access.
+- Independent Verifier: complete for executable local gates. Frontend 54/248, optimized build, backend 865/13 at 90.03%, focused Operations/Team 99, read-only Chromium, Compose config, supply-chain, Gitleaks, Ruff/mypy/security/program/release/eval/safety all pass.
+- Local runner blockers: the API-backed PostgreSQL/browser gate cannot start because the sandbox Docker daemon rejects image-layer `lchown`; Terraform plan-only cannot run because the Terraform CLI is absent. Neither is recorded as PASS. Exact-head hosted CI must execute these gates before merge.
+- Persistent Evidence: `docs/testing/c3-front-015-evidence.md`, `program/validations/c3-front-015.json`, `progress/review_C3-FRONT-015.md`.
+- Hosted exact-head: pending branch freeze/push and CampaignOS CI + Runtime Visual inspection.
+- Release Gate: review-branch publication is eligible; production remains `BLOCKED`; release remains `DENY_RELEASE`.
 - External effects: `NONE`.

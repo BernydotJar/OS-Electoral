@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  parseCampaignRoadmapCreateEvidence,
   parseCampaignRoadmapReadEvidence,
+  parseCampaignRoadmapUpdateEvidence,
+  parseWarRoomSnapshotCreateEvidence,
   parseWarRoomSnapshotReadEvidence,
   reconcileWarRoomSnapshot,
 } from "@/lib/operations-contract-parser";
@@ -146,6 +149,29 @@ function snapshotFixture() {
 }
 
 describe("campaign operations parsers", () => {
+  it("accepts bounded roadmap and snapshot mutation evidence and rejects authority promotion", () => {
+    const roadmapMutation = {
+      ...roadmapFixture(),
+      outbox_event_id: "abababab-abab-4bab-8bab-abababababab",
+    };
+    const snapshotMutation = {
+      ...snapshotFixture(),
+      outbox_event_id: "bcbcbcbc-bcbc-4bcb-8bcb-bcbcbcbcbcbc",
+    };
+    expect(parseCampaignRoadmapCreateEvidence(roadmapMutation).roadmap.version).toBe(2);
+    expect(parseCampaignRoadmapUpdateEvidence(roadmapMutation).roadmap.campaign_id).toBe(
+      CAMPAIGN_ID,
+    );
+    expect(parseWarRoomSnapshotCreateEvidence(snapshotMutation).snapshot.roadmap_version).toBe(2);
+
+    const promoted = structuredClone(roadmapMutation);
+    promoted.roadmap.external_effects = "PUBLICATION";
+    expect(() => parseCampaignRoadmapUpdateEvidence(promoted)).toThrow();
+
+    const extra = { ...snapshotMutation, unauthorized: true };
+    expect(() => parseWarRoomSnapshotCreateEvidence(extra)).toThrow("unexpected fields");
+  });
+
   it("accepts a canonical roadmap and reconciled latest snapshot", () => {
     const roadmap = parseCampaignRoadmapReadEvidence(roadmapFixture());
     const snapshot = parseWarRoomSnapshotReadEvidence(snapshotFixture());

@@ -40,7 +40,7 @@ def test_local_seed_is_idempotent_and_grants_only_the_bounded_journey() -> None:
             assert session.scalar(select(func.count()).select_from(RoleAssignment)) == 1
             grants = tuple(session.scalars(select(PermissionGrant).order_by(PermissionGrant.id)))
 
-        assert len(grants) == len(GRANTS) == 21
+        assert len(grants) == len(GRANTS) == 26
         assert {(grant.action, grant.resource_type, grant.purpose) for grant in grants} == {
             (spec.action, spec.resource_type, spec.purpose) for spec in GRANTS
         }

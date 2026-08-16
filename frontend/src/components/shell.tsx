@@ -33,6 +33,7 @@ import {
   deriveCampaignContextCapabilities,
   deriveCandidateWorkspaceCapabilities,
   deriveGuidedIntakeCapabilities,
+  deriveOperationsWorkspaceCapabilities,
   deriveStrategyWorkspaceCapabilities,
   deriveTeamWorkspaceCapabilities,
   deriveTrainingCapabilities,
@@ -200,6 +201,10 @@ export function CampaignShell({
     model.memberships,
     model.campaign.id,
   );
+  const operationsCapabilities = deriveOperationsWorkspaceCapabilities(
+    model.memberships,
+    model.campaign.id,
+  );
   const trainingCapabilities = deriveTrainingCapabilities(
     model.memberships,
     model.campaign.id,
@@ -248,6 +253,26 @@ export function CampaignShell({
       strategyCapabilities.canStart &&
       strategyCapabilities.canRead &&
       strategyPrerequisiteReady);
+  const operationsPrerequisiteReady =
+    strategyWorkspace?.status === "DECIDED_INTERNAL" &&
+    teamWorkspace?.status === "READY_FOR_HUMAN_REVIEW" &&
+    (teamWorkspace.roles ?? []).some((role) => role.status === "FILLED");
+  const operationsPreparationAvailable =
+    model.campaignRoadmapAvailability === "AVAILABLE" ||
+    (model.campaignRoadmapAvailability === "NOT_STARTED" &&
+      operationsCapabilities.canStart &&
+      operationsCapabilities.canRead &&
+      operationsPrerequisiteReady);
+  const operationsEvidenceReferences = [
+    ...(candidateWorkspace?.evidence ?? []).map((item) => ({
+      id: item.id,
+      label: `${dictionary.nav.candidate}: ${item.title}`,
+    })),
+    ...(strategyWorkspace?.evidence ?? []).map((item) => ({
+      id: item.id,
+      label: `${dictionary.nav.strategy}: ${item.statement}`,
+    })),
+  ];
   const campaignJourney = deriveCampaignJourney({
     readinessStatus: readiness?.status ?? null,
     intakeStatus: guidedIntake?.status ?? null,
@@ -266,7 +291,7 @@ export function CampaignShell({
           candidatePrerequisiteReady),
       team: teamPreparationAvailable,
       strategy: strategyPreparationAvailable,
-      operations: model.campaignRoadmapAvailability === "AVAILABLE",
+      operations: operationsPreparationAvailable,
     },
     parallelPreparation: {
       team: teamPreparationAvailable && teamPrerequisiteReady,
@@ -1302,11 +1327,17 @@ export function CampaignShell({
           {chapterRouteActive && currentJourneyPhase.key === "operations" ? (
             <ChapterSurface chapter="operations">
               <OperationsWorkspace
+                locale={locale}
                 dictionary={dictionary}
+                demo={model.demo}
                 roadmapEvidence={model.campaignRoadmap}
                 roadmapAvailability={model.campaignRoadmapAvailability}
                 snapshotEvidence={model.warRoomSnapshot}
                 snapshotAvailability={model.warRoomSnapshotAvailability}
+                capabilities={operationsCapabilities}
+                prerequisiteReady={operationsPrerequisiteReady}
+                teamRoles={teamWorkspace?.roles ?? []}
+                evidenceReferences={operationsEvidenceReferences}
               />
             </ChapterSurface>
           ) : null}

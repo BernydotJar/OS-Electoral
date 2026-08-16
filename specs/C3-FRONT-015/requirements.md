@@ -10,16 +10,16 @@ After C3-FRONT-014 the journey can reach an internal Strategy decision, but the 
 
 ## Acceptance criteria
 
-- [ ] Operations authoring unlocks only after the current Strategy is `DECIDED_INTERNAL` and exact Operations grants are present.
-- [ ] Exactly authorized users can create the existing roadmap with idempotency and update it with current-version `If-Match` plus idempotency.
-- [ ] Phase, workstream, milestone, task and dependency references use existing records and preserve backend referential validation.
-- [ ] Tasks expose owner roles from the existing Team workspace and never execute automatically.
-- [ ] Blockers, human decisions, follow-up items and learning notes remain internal operating records with no external effects.
-- [ ] Backend-derived readiness, blocked work and critical path remain authoritative; the UI does not invent execution status.
-- [ ] Exactly authorized users can create the daily War Room snapshot from the current roadmap version and review the latest snapshot.
-- [ ] Read-only review renders no mutation controls and no prohibited visible review-mode wording.
-- [ ] ES/EN, mobile, keyboard, reduced motion, overflow and WCAG checks pass.
-- [ ] No voter profiling, targeting, persuasion, citizen contact, publication, spending, mobilization, autonomous execution, Firmes integration or production deployment is introduced.
+- [x] Operations authoring unlocks only after the current Strategy is `DECIDED_INTERNAL` and exact Operations grants are present.
+- [x] Exactly authorized users can create the existing roadmap with idempotency and update it with current-version `If-Match` plus idempotency.
+- [x] Phase, workstream, milestone, task and dependency references use existing records and preserve backend referential validation.
+- [x] Tasks expose filled owner roles from the existing Team workspace and never execute automatically; an exactly authorized operator can explicitly self-cover an existing vacancy with the authenticated principal when no human owner exists, without creating membership or permission.
+- [x] Blockers, human decisions, follow-up items and learning notes remain internal operating records with no external effects.
+- [x] Backend-derived readiness, blocked work and critical path remain authoritative; the UI does not invent execution status.
+- [x] Exactly authorized users can create the daily War Room snapshot from the current roadmap version and review the latest snapshot.
+- [x] Read-only review renders no mutation controls and no prohibited visible review-mode wording.
+- [x] ES/EN, mobile, keyboard, reduced motion, overflow and WCAG checks pass.
+- [x] No voter profiling, targeting, persuasion, citizen contact, publication, spending, mobilization, autonomous execution, Firmes integration or production deployment is introduced.
 - [ ] Focused tests, PostgreSQL/API/browser lifecycle and complete repository gates pass with `external_effects=NONE`.
 
 ## Non-goals

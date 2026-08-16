@@ -8,7 +8,10 @@ import {
 } from "@/lib/candidate-contract-parser";
 import {
   OperationsContractValidationError,
+  parseCampaignRoadmapCreateEvidence,
   parseCampaignRoadmapReadEvidence,
+  parseCampaignRoadmapUpdateEvidence,
+  parseWarRoomSnapshotCreateEvidence,
   parseWarRoomSnapshotReadEvidence,
 } from "@/lib/operations-contract-parser";
 import {
@@ -53,7 +56,11 @@ import type {
   CampaignCreateInput,
   CampaignPage,
   CampaignReadinessEvidence,
+  CampaignRoadmapCreateEvidence,
+  CampaignRoadmapCreateInput,
   CampaignRoadmapReadEvidence,
+  CampaignRoadmapUpdateEvidence,
+  CampaignRoadmapUpdateInput,
   CandidateSection,
   CandidateWorkspaceApprovalEvidence,
   CandidateWorkspaceCreateEvidence,
@@ -83,6 +90,8 @@ import type {
   TeamWorkspaceTemplatePreviewInput,
   TeamWorkspaceUpdateEvidence,
   TeamWorkspaceUpdateInput,
+  WarRoomSnapshotCreateInput,
+  WarRoomSnapshotEvidence,
   WarRoomSnapshotReadEvidence,
   TenantMeResponse,
   TrainingAssignmentCreateEvidence,
@@ -473,6 +482,46 @@ export class CampaignOsApiClient {
     );
   }
 
+  startCampaignRoadmap(
+    tenantId: UUID,
+    campaignId: UUID,
+    idempotencyKey: string,
+    create: CampaignRoadmapCreateInput,
+  ): Promise<CampaignRoadmapCreateEvidence> {
+    return this.request<CampaignRoadmapCreateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/operations/roadmap`,
+      "Campaign roadmap create",
+      parseCampaignRoadmapCreateEvidence,
+      {
+        method: "POST",
+        body: create,
+        headers: { "idempotency-key": idempotencyKey },
+      },
+    );
+  }
+
+  updateCampaignRoadmap(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    update: CampaignRoadmapUpdateInput,
+  ): Promise<CampaignRoadmapUpdateEvidence> {
+    return this.request<CampaignRoadmapUpdateEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/operations/roadmap`,
+      "Campaign roadmap update",
+      parseCampaignRoadmapUpdateEvidence,
+      {
+        method: "PATCH",
+        body: update,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
+    );
+  }
+
   campaignRoadmap(
     tenantId: UUID,
     campaignId: UUID,
@@ -481,6 +530,28 @@ export class CampaignOsApiClient {
       `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/operations/roadmap`,
       "Campaign roadmap",
       parseCampaignRoadmapReadEvidence,
+    );
+  }
+
+  createWarRoomSnapshot(
+    tenantId: UUID,
+    campaignId: UUID,
+    expectedVersion: number,
+    idempotencyKey: string,
+    create: WarRoomSnapshotCreateInput,
+  ): Promise<WarRoomSnapshotEvidence> {
+    return this.request<WarRoomSnapshotEvidence>(
+      `/api/v1/tenants/${tenantId}/campaigns/${campaignId}/operations/roadmap/war-room-snapshots`,
+      "Daily War Room snapshot create",
+      parseWarRoomSnapshotCreateEvidence,
+      {
+        method: "POST",
+        body: create,
+        headers: {
+          "idempotency-key": idempotencyKey,
+          "if-match": `"${expectedVersion}"`,
+        },
+      },
     );
   }
 

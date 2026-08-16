@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "a2d7aa81455358eb0244b51556ffe3a192455c06"
+    "revision": "57f0c4649cb5525647850ccc2c75b84240460e0c"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -26,7 +26,7 @@
     "blocked": "BLOCKED_BY_DEPENDENCY_OR_HUMAN_BLOCKED"
   },
   "scheduler": {
-    "evaluated_at": "2026-08-13",
+    "evaluated_at": "2026-08-16",
     "one_active_feature": true,
     "active_feature": "C3-FRONT-015",
     "ready_nodes": [],
@@ -34,7 +34,7 @@
       "id": "C3-FRONT-015",
       "title": "Completable governed Operations and War Room lifecycle from UI",
       "mode": "SHIP",
-      "state": "in_progress",
+      "state": "review",
       "human_approval": "APPROVED",
       "dependencies": [
         "C3-FRONT-014",
@@ -52,7 +52,13 @@
         "source": "USER_EXPLICIT_APPROVAL",
         "statement": "User explicitly directed the Graph Harness SHIP lifecycle to continue product completion beyond a single feature and requested a full CampaignOS product suitable for demonstrations while preserving strict zero-cost and no-production constraints.",
         "scope": "Internal Operations and War Room UI over existing CampaignOS backend contracts, tests and review evidence only; no autonomous execution, citizen contact, targeting, persuasion, publication, spending, production deployment, Firmes implementation or paid cloud resources."
-      }
+      },
+      "review_artifact": "progress/review_C3-FRONT-015.md",
+      "local_evidence": [
+        "docs/testing/c3-front-015-evidence.md",
+        "program/validations/c3-front-015.json",
+        "progress/review_C3-FRONT-015.md"
+      ]
     },
     "blocked_nodes": [
       {
@@ -111,22 +117,28 @@
   },
   "active_increment": {
     "id": "C3-FRONT-015",
-    "status": "IN_PROGRESS",
+    "status": "REVIEWED",
     "branch": "agent/operations-complete-ui-lifecycle",
-    "base_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+    "base_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "IMPLEMENT_EXISTING_OPERATIONS_AND_WAR_ROOM_UI_CONTRACTS"
+    "next_action": "PUSH_REVIEW_BRANCH_AND_VERIFY_EXACT_HEAD_CI"
   },
   "post_merge_reconciliation": {
     "id": "repair:c3-front-014-postmerge-ledger-2026-08-13",
-    "status": "IN_PROGRESS",
+    "status": "COMPLETED",
     "merged_pr": 178,
-    "integrated_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+    "integrated_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
     "failed_post_merge_run": 31768163466,
     "failure_class": "PROGRAM_STATE_RECONCILIATION_ONLY",
     "functional_onboarding": "SUCCESS",
-    "external_effects": "NONE"
+    "external_effects": "NONE",
+    "reconciliation_pr": 179,
+    "reconciliation_head": "af063d2a67c820377fc1b6a01693889625a5d598",
+    "exact_head_campaignos_ci_run": 31768884886,
+    "exact_head_runtime_visual_run": 31768884792,
+    "post_reconciliation_main_ci_run": 31769160111,
+    "post_reconciliation_main_ci_conclusion": "SUCCESS"
   }
 }

@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-08-13",
-  "branch": "agent/strategy-complete-ui-lifecycle",
+  "updated_at": "2026-08-16",
+  "branch": "agent/operations-complete-ui-lifecycle",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -924,7 +924,7 @@
       "approval": {
         "recorded_at": "2026-07-29T00:29:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
-        "statement": "Aprobado C3-SEC-002 para implementaci\u00f3n SHIP.",
+        "statement": "Aprobado C3-SEC-002 para implementación SHIP.",
         "scope": "SHIP implementation including the reviewed PostgreSQL migration; no deployment or production authority"
       },
       "implementation_commit": "74977e390d33929f6cb5b2e850d52f8f7456f524",
@@ -1590,23 +1590,40 @@
     {
       "task_id": "C3-FRONT-015",
       "owner": "WS-06/WS-10",
-      "status": "IN_PROGRESS",
+      "status": "REVIEWED",
       "evidence": [
         "specs/C3-FRONT-015/requirements.md",
         "specs/C3-FRONT-015/design.md",
         "specs/C3-FRONT-015/tasks.md",
-        "program/iterations/c3-front-015.md"
+        "program/iterations/c3-front-015.md",
+        "docs/testing/c3-front-015-evidence.md",
+        "program/validations/c3-front-015.json",
+        "progress/review_C3-FRONT-015.md"
       ],
       "external_effects": "NONE",
-      "blockers": [],
+      "blockers": [
+        "Local PostgreSQL/API/browser functional E2E is blocked by sandbox Docker layer lchown permission; exact-head hosted CampaignOS CI must execute the gate before merge",
+        "Local Terraform plan-only is blocked because Terraform CLI is unavailable; no apply or infrastructure mutation was attempted"
+      ],
       "approval": {
         "recorded_at": "2026-08-13T20:50:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
         "statement": "User explicitly directed the Graph Harness SHIP lifecycle to continue product completion beyond a single feature and requested a full CampaignOS product suitable for demonstrations while preserving strict zero-cost and no-production constraints.",
         "scope": "Internal Operations and War Room UI over existing CampaignOS backend contracts, tests and review evidence only; no autonomous execution, citizen contact, targeting, persuasion, publication, spending, production deployment, Firmes implementation or paid cloud resources."
       },
-      "base_main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
-      "branch": "agent/operations-complete-ui-lifecycle"
+      "base_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
+      "branch": "agent/operations-complete-ui-lifecycle",
+      "local_verification": {
+        "frontend": "PASS_54_FILES_248_TESTS_LINT_TYPECHECK_BUILD_AUDIT_ZERO",
+        "backend": "PASS_865_SKIPPED_13_COVERAGE_90_03",
+        "focused_operations_team_backend": "PASS_99",
+        "read_only_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
+        "compose_config": "PASS",
+        "supply_chain": "PASS",
+        "gitleaks": "PASS_8_30_1_CHECKSUM_VERIFIED_EFFECTIVE_WORKTREE",
+        "functional_postgres_api_browser": "BLOCKED_BY_RUNNER_DOCKER_LAYER_LCHOWN",
+        "terraform_plan_only": "BLOCKED_TOOLING_TERRAFORM_CLI_UNAVAILABLE"
+      }
     }
   ]
 }

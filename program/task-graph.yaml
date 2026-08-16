@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-08-13",
+  "updated_at": "2026-08-16",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -490,9 +490,9 @@
         "C3-FRONT-011"
       ],
       "acceptance": [
-        "Visible sidebar follows Resumen, Preparaci\u00f3n inicial, Candidatura, Equipo, Estrategia, War Room and Campa\u00f1as under exact grants",
+        "Visible sidebar follows Resumen, Preparación inicial, Candidatura, Equipo, Estrategia, War Room and Campañas under exact grants",
         "Operational readiness is contained in chapter 1 rather than duplicated as a lateral destination",
-        "Resumen owns candidate progress and Qu\u00e9 hacer ahora while Candidatura owns one Perfil y riesgos workspace",
+        "Resumen owns candidate progress and Qué hacer ahora while Candidatura owns one Perfil y riesgos workspace",
         "ES/EN, route isolation, mobile, keyboard, reduced motion, overflow and WCAG browser checks pass without authority changes"
       ]
     },
@@ -569,7 +569,7 @@
       "id": "C3-FRONT-015",
       "workstream": "WS-06",
       "title": "Completable governed Operations and War Room lifecycle from UI",
-      "status": "IN_PROGRESS",
+      "status": "REVIEWED",
       "depends_on": [
         "C3-FRONT-014",
         "C3-OPS-001",

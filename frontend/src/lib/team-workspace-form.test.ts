@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   TeamWorkspaceFormError,
+  parseTeamRoleCoverageForm,
   parseTeamRoleForm,
   parseTeamTemplateApplyForm,
   parseTeamWorkItemForm,
@@ -26,6 +27,43 @@ describe("team workspace forms", () => {
         blueprint_locale: "es",
       },
     });
+  });
+
+  it("parses explicit current-session role coverage without accepting a principal ID", () => {
+    const form = new FormData();
+    form.set("locale", "es");
+    form.set("version", "6");
+    form.set("idempotency_key", "team-role-coverage-1234");
+    form.set("role_id", ROLE_ID);
+    form.set("availability_status", "LIMITED");
+    form.set("weekly_capacity_hours", "24");
+    form.set("onboarding_confirmed", "confirmed");
+    form.set("principal_id", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb");
+
+    expect(parseTeamRoleCoverageForm(form)).toEqual({
+      locale: "es",
+      expectedVersion: 6,
+      idempotencyKey: "team-role-coverage-1234",
+      roleId: ROLE_ID,
+      availabilityStatus: "LIMITED",
+      weeklyCapacityHours: 24,
+    });
+  });
+
+  it("rejects missing onboarding confirmation and invalid role coverage capacity", () => {
+    const form = new FormData();
+    form.set("locale", "es");
+    form.set("version", "6");
+    form.set("idempotency_key", "team-role-coverage-5678");
+    form.set("role_id", ROLE_ID);
+    form.set("availability_status", "AVAILABLE");
+    form.set("weekly_capacity_hours", "0");
+    form.set("onboarding_confirmed", "confirmed");
+    expect(() => parseTeamRoleCoverageForm(form)).toThrow(TeamWorkspaceFormError);
+
+    form.set("weekly_capacity_hours", "40");
+    form.delete("onboarding_confirmed");
+    expect(() => parseTeamRoleCoverageForm(form)).toThrow(TeamWorkspaceFormError);
   });
 
   it("builds one vacant role card without creating identity or permission", () => {

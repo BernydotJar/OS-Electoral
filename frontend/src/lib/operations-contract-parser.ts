@@ -8,8 +8,11 @@ import type {
   CampaignOperationsWorkstream,
   CampaignPhase,
   CampaignRoadmapNextAction,
+  CampaignRoadmapCreateEvidence,
   CampaignRoadmapProjection,
   CampaignRoadmapReadEvidence,
+  CampaignRoadmapUpdateEvidence,
+  WarRoomSnapshotEvidence,
   WarRoomSnapshotProjection,
   WarRoomSnapshotReadEvidence,
 } from "@/lib/contracts";
@@ -891,6 +894,35 @@ function parseSnapshot(value: unknown): WarRoomSnapshotProjection {
   };
 }
 
+function parseRoadmapMutationEvidence(
+  value: unknown,
+  label: string,
+): CampaignRoadmapCreateEvidence {
+  const source = record(value, label);
+  exactKeys(
+    source,
+    ["roadmap", "audit_event_id", "outbox_event_id"],
+    label,
+  );
+  return {
+    roadmap: parseRoadmap(source.roadmap),
+    audit_event_id: uuid(source.audit_event_id, `${label}.audit_event_id`),
+    outbox_event_id: uuid(source.outbox_event_id, `${label}.outbox_event_id`),
+  };
+}
+
+export function parseCampaignRoadmapCreateEvidence(
+  value: unknown,
+): CampaignRoadmapCreateEvidence {
+  return parseRoadmapMutationEvidence(value, "campaign roadmap create evidence");
+}
+
+export function parseCampaignRoadmapUpdateEvidence(
+  value: unknown,
+): CampaignRoadmapUpdateEvidence {
+  return parseRoadmapMutationEvidence(value, "campaign roadmap update evidence");
+}
+
 export function parseCampaignRoadmapReadEvidence(
   value: unknown,
 ): CampaignRoadmapReadEvidence {
@@ -901,6 +933,28 @@ export function parseCampaignRoadmapReadEvidence(
     audit_event_id: uuid(
       source.audit_event_id,
       "campaign roadmap evidence.audit_event_id",
+    ),
+  };
+}
+
+export function parseWarRoomSnapshotCreateEvidence(
+  value: unknown,
+): WarRoomSnapshotEvidence {
+  const source = record(value, "war room snapshot create evidence");
+  exactKeys(
+    source,
+    ["snapshot", "audit_event_id", "outbox_event_id"],
+    "war room snapshot create evidence",
+  );
+  return {
+    snapshot: parseSnapshot(source.snapshot),
+    audit_event_id: uuid(
+      source.audit_event_id,
+      "war room snapshot create evidence.audit_event_id",
+    ),
+    outbox_event_id: uuid(
+      source.outbox_event_id,
+      "war room snapshot create evidence.outbox_event_id",
     ),
   };
 }

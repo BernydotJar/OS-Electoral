@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "id": "C3-FRONT-015",
+  "status": "REVIEWED_LOCAL_WITH_RUNNER_BLOCKERS",
+  "base_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
+  "branch": "agent/operations-complete-ui-lifecycle",
+  "approval": {
+    "source": "USER_EXPLICIT_APPROVAL",
+    "statement": "User explicitly directed the Graph Harness SHIP lifecycle to continue product completion beyond a single feature and requested a full CampaignOS product suitable for demonstrations while preserving strict zero-cost and no-production constraints.",
+    "scope": "Internal Operations/War Room UI over existing APIs plus the minimum current-session Team self-coverage needed for a human Operations owner; tests and review evidence only; no autonomous execution, citizen contact, targeting, persuasion, publication, spending, production deployment, Firmes implementation or paid cloud resources."
+  },
+  "verification": {
+    "frontend_test_files": 54,
+    "frontend_tests": 248,
+    "eslint": "PASS",
+    "typescript": "PASS",
+    "next_build": "PASS",
+    "dependency_vulnerabilities": 0,
+    "python_passed": 865,
+    "python_skipped": 13,
+    "coverage_percent": 90.03,
+    "focused_operations_team_backend_passed": 99,
+    "local_operator_seed": "PASS_26_REGULAR_27_FUNCTIONAL_GRANTS",
+    "dynamic_read_only_browser": "PASS",
+    "desktop_spanish": "PASS",
+    "desktop_english": "PASS",
+    "mobile_spanish": "PASS",
+    "keyboard": "PASS",
+    "reduced_motion": "PASS",
+    "wcag_2_2_aa": "PASS_ZERO_AXE_VIOLATIONS",
+    "horizontal_overflow": "NONE",
+    "unexpected_outbound_hosts": 0,
+    "browser_storage": "EMPTY",
+    "compose_config": "PASS",
+    "supply_chain": "PASS",
+    "gitleaks_8_30_1": "PASS_CHECKSUM_VERIFIED_EFFECTIVE_WORKTREE",
+    "security_policy": "PASS",
+    "program_truth": "PASS_BLOCKED",
+    "release_readiness": "PASS_DENY_RELEASE",
+    "functional_postgres_api_browser": "BLOCKED_BY_RUNNER_DOCKER_LAYER_LCHOWN_NO_ASSERTIONS_EXECUTED",
+    "terraform_plan_only": "BLOCKED_TOOLING_TERRAFORM_CLI_UNAVAILABLE_NO_APPLY"
+  },
+  "critic_findings": [
+    {
+      "id": "C3-FRONT-015-F1",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "A human Operations decision must not rewrite its alternatives and select the replacement in the same request.",
+      "repair": "Require an existing decision record, exact equality with its persisted option list and a selected value from that existing set."
+    },
+    {
+      "id": "C3-FRONT-015-F2",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Operations requires a FILLED Team owner while the existing UI could only create VACANT functions, leaving a fresh UI journey unable to create a roadmap.",
+      "repair": "Add bounded current-session self-coverage through the existing Team update contract with server-owned authenticated principal, exact grants, positive capacity and explicit onboarding confirmation; create no membership or permission."
+    },
+    {
+      "id": "C3-FRONT-015-F3",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Existing roadmap mutation controls stayed visible after the current Strategy stopped being DECIDED_INTERNAL even though server routes rejected writes.",
+      "repair": "Require the current Strategy/Team prerequisite for the editor and snapshot authoring while preserving the historical read projection."
+    },
+    {
+      "id": "C3-FRONT-015-F4",
+      "severity": "MEDIUM",
+      "status": "RESOLVED",
+      "finding": "The War Room immutable-evidence eyebrow was hardcoded in English on the Spanish route.",
+      "repair": "Move the boundary label into the bilingual Operations dictionary and verify i18n/chapter rendering."
+    }
+  ],
+  "baseline_reconciliation": {
+    "pull_request": 179,
+    "merged_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
+    "review_head": "af063d2a67c820377fc1b6a01693889625a5d598",
+    "campaignos_ci_run": 31768884886,
+    "campaignos_ci_number": 266,
+    "runtime_visual_run": 31768884792,
+    "runtime_visual_number": 238,
+    "post_merge_ci_run": 31769160111,
+    "post_merge_ci_number": 267,
+    "conclusion": "SUCCESS"
+  },
+  "production_status": "BLOCKED",
+  "release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "hosted_verification": {
+    "state": "PENDING_EXACT_HEAD",
+    "functional_postgres_api_browser_required": true
+  }
+}

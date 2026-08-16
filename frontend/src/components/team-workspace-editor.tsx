@@ -99,6 +99,9 @@ export function TeamWorkspaceEditor({
   }
 
   const areaOptions = Object.values(dictionary.teamWorkspace.areaOptions);
+  const vacantRoles = (workspace.roles ?? []).filter(
+    (role) => role.status === "VACANT",
+  );
   const selectedTemplate =
     templatePreview?.organization_template ??
     (workspace.organization_template === "FULL_CAMPAIGN"
@@ -266,6 +269,88 @@ export function TeamWorkspaceEditor({
           </div>
         ) : null}
       </section>
+
+      {vacantRoles.length > 0 ? (
+        <section
+          id="team-role-coverage"
+          className="candidate-evidence-editor team-role-coverage"
+          aria-labelledby="team-role-coverage-title"
+        >
+          <div className="editor-heading">
+            <div>
+              <p className="eyebrow">{dictionary.teamWorkspace.coverageEyebrow}</p>
+              <h3 id="team-role-coverage-title">
+                {dictionary.teamWorkspace.coverageTitle}
+              </h3>
+              <p>{dictionary.teamWorkspace.coverageBody}</p>
+            </div>
+            <span className="version-chip">
+              {dictionary.dashboard.version} {workspace.version}
+            </span>
+          </div>
+          <form action="/api/ui/team-workspace/role-coverage" method="post">
+            <input type="hidden" name="locale" value={locale} />
+            <input type="hidden" name="version" value={workspace.version} />
+            <input
+              type="hidden"
+              name="idempotency_key"
+              value={`team-role-coverage:${randomUUID()}`}
+            />
+            <div className="candidate-evidence-grid">
+              <label>
+                <span>{dictionary.teamWorkspace.coverageRole}</span>
+                <select name="role_id" required defaultValue="">
+                  <option value="" disabled>
+                    {dictionary.teamWorkspace.coverageSelectRole}
+                  </option>
+                  {vacantRoles.map((role) => (
+                    <option key={role.id} value={role.id}>
+                      {role.title} · {role.area}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span>{dictionary.teamWorkspace.coverageAvailability}</span>
+                <select name="availability_status" defaultValue="AVAILABLE">
+                  {Object.entries(
+                    dictionary.teamWorkspace.coverageAvailabilityLabels,
+                  ).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span>{dictionary.teamWorkspace.coverageCapacity}</span>
+                <input
+                  name="weekly_capacity_hours"
+                  type="number"
+                  min={1}
+                  max={168}
+                  required
+                />
+              </label>
+              <label className="field-wide">
+                <span>
+                  <input
+                    name="onboarding_confirmed"
+                    type="checkbox"
+                    value="confirmed"
+                    required
+                  />{" "}
+                  {dictionary.teamWorkspace.coverageOnboardingConfirm}
+                </span>
+              </label>
+            </div>
+            <div className="form-actions">
+              <p>{dictionary.teamWorkspace.coverageBoundary}</p>
+              <button type="submit">{dictionary.teamWorkspace.coverageAction}</button>
+            </div>
+          </form>
+        </section>
+      ) : null}
 
       <section
         className="candidate-evidence-editor team-role-editor"
