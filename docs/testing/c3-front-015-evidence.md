@@ -18,7 +18,7 @@ Status: `REVIEWED_LOCAL_WITH_RUNNER_BLOCKERS`; branch `agent/operations-complete
 
 ## Producer verification
 
-- frontend final verifier: **54 test files / 248 tests PASS**;
+- frontend final verifier: **55 test files / 250 tests PASS**;
 - ESLint: PASS;
 - strict TypeScript: PASS;
 - optimized Next.js build: PASS;
@@ -77,3 +77,8 @@ GitHub confirms PR #179 (`fix(program): reconcile strategy merge and activate op
 ## Release Gate
 
 C3-FRONT-015 is eligible for **review-branch publication and exact-head hosted verification only**. It is not a production release. Production remains `BLOCKED`; global release remains `DENY_RELEASE`; external effects remain `NONE`; no paid cloud resource or production deployment is authorized by this increment.
+
+
+## Hosted Critic / Fixer finding
+
+5. **C3-FRONT-015-F5 — HIGH — RESOLVED, HOSTED REVALIDATION PENDING.** PR #182 first exact head `46c41bf25b4a26f71cd11da0ca440dcf1e4b5dcd` ran CampaignOS CI `32002418220`. PostgreSQL/RLS, Terraform plan-only, stack E2E, quality, dependency audit, recovery, supply chain, secret scan, CodeQL and Runtime Visual all passed, but the API-backed functional onboarding journey failed before mutations because the live shell did not render. The backend correctly returned HTTP 409 with problem code `CAMPAIGN_NOT_READY` when the Operations roadmap was not yet available because prerequisites were incomplete. `shell-view-model` recognized 404 as `NOT_STARTED` and 503 as dependency unavailable, but rethrew this prerequisite 409 and converted the whole shell to unavailable. The Fixer adds a bounded read-state classifier: 404 and only `409 CAMPAIGN_NOT_READY` map to Operations `NOT_STARTED`, 503 maps to dependency unavailable, and unrelated 409 codes such as `ROADMAP_CONFLICT` and `IDEMPOTENCY_CONFLICT` remain fail-closed. Regression tests cover each classification. The final frontend verifier passes **55 test files / 250 tests**, ESLint, TypeScript, optimized build and audit 0. Hosted exact-head revalidation is required before merge.

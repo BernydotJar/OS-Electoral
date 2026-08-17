@@ -10,8 +10,8 @@
     "scope": "Internal Operations/War Room UI over existing APIs plus the minimum current-session Team self-coverage needed for a human Operations owner; tests and review evidence only; no autonomous execution, citizen contact, targeting, persuasion, publication, spending, production deployment, Firmes implementation or paid cloud resources."
   },
   "verification": {
-    "frontend_test_files": 54,
-    "frontend_tests": 248,
+    "frontend_test_files": 55,
+    "frontend_tests": 250,
     "eslint": "PASS",
     "typescript": "PASS",
     "next_build": "PASS",
@@ -68,6 +68,13 @@
       "status": "RESOLVED",
       "finding": "The War Room immutable-evidence eyebrow was hardcoded in English on the Spanish route.",
       "repair": "Move the boundary label into the bilingual Operations dictionary and verify i18n/chapter rendering."
+    },
+    {
+      "id": "C3-FRONT-015-F5",
+      "severity": "HIGH",
+      "status": "RESOLVED_HOSTED_REVALIDATION_PENDING",
+      "finding": "The live shell rethrew backend 409 CAMPAIGN_NOT_READY when the Operations roadmap prerequisites were incomplete, making the whole shell unavailable before the functional journey could start.",
+      "repair": "Classify only 404 and 409 CAMPAIGN_NOT_READY as Operations NOT_STARTED, 503 as dependency unavailable, and keep unrelated 409 conflicts fail-closed; regression tests cover the mapping."
     }
   ],
   "baseline_reconciliation": {
@@ -86,7 +93,19 @@
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
   "hosted_verification": {
-    "state": "PENDING_EXACT_HEAD",
-    "functional_postgres_api_browser_required": true
+    "state": "FIRST_EXACT_HEAD_FIXER_REQUIRED",
+    "pull_request": 182,
+    "first_head": "46c41bf25b4a26f71cd11da0ca440dcf1e4b5dcd",
+    "campaignos_ci": {
+      "run_id": 32002418220,
+      "conclusion": "FAILURE_FUNCTIONAL_ONBOARDING",
+      "all_other_jobs": "PASS",
+      "root_cause": "Operations roadmap read returned 409 CAMPAIGN_NOT_READY before prerequisites; shell read model treated it as global failure."
+    },
+    "runtime_visual_review": {
+      "run_id": 32002418369,
+      "conclusion": "SUCCESS"
+    },
+    "final_exact_head": "PENDING"
   }
 }

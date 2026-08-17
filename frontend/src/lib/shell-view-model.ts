@@ -26,6 +26,7 @@ import type {
 } from "@/lib/contracts";
 import { deriveTrainingCapabilities } from "@/lib/journey-capabilities";
 import { reconcileWarRoomSnapshot } from "@/lib/operations-contract-parser";
+import { campaignRoadmapReadFallback } from "@/lib/operations-read-state";
 import {
   demoCampaign,
   demoCandidateWorkspace,
@@ -519,13 +520,13 @@ export async function loadShellViewModel(
         }
         campaignRoadmapAvailability = "AVAILABLE";
       } catch (error) {
-        if (error instanceof CampaignOsApiError && error.status === 404) {
-          campaignRoadmapAvailability = "NOT_STARTED";
-        } else if (
-          error instanceof CampaignOsApiError &&
-          error.status === 503
-        ) {
-          campaignRoadmapAvailability = "DEPENDENCY_UNAVAILABLE";
+        if (error instanceof CampaignOsApiError) {
+          const fallback = campaignRoadmapReadFallback(error);
+          if (fallback !== null) {
+            campaignRoadmapAvailability = fallback;
+          } else {
+            throw error;
+          }
         } else {
           throw error;
         }
