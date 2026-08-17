@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-08-16",
-  "branch": "agent/operations-complete-ui-lifecycle",
+  "updated_at": "2026-08-17",
+  "branch": "agent/operations-postmerge-reconcile-showcase",
   "current_increment": "C3-FRONT-015",
-  "iteration_status": "REVIEWED",
+  "iteration_status": "MERGED_TO_MAIN",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -51,8 +51,8 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "OPERATIONS_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-FRONT-015"
+      "status": "OPERATIONS_UI_MERGED_POSTMERGE_GREEN",
+      "next_increment": "C3-FIRMES-001_APPROVAL_PENDING"
     },
     {
       "id": "WS-07",
@@ -70,13 +70,13 @@
       "id": "WS-09",
       "name": "Research, Strategy and Decision Governance",
       "status": "STRATEGY_UI_MERGED_POSTMERGE_RECONCILED",
-      "next_increment": "C3-FRONT-015"
+      "next_increment": "C3-FIRMES-001_APPROVAL_PENDING"
     },
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "OPERATIONS_UI_REVIEWED_LOCAL",
-      "next_increment": "C3-FRONT-015"
+      "status": "OPERATIONS_UI_MERGED_POSTMERGE_GREEN",
+      "next_increment": "C3-FIRMES-001_APPROVAL_PENDING"
     },
     {
       "id": "WS-11",
@@ -500,18 +500,21 @@
     "credential_exposure": false
   },
   "latest_completed_checkpoint": {
-    "id": "C3-TRAINING-001",
+    "id": "C3-FRONT-015",
     "status": "MERGED_TO_MAIN",
     "merge_strategy": "SQUASH",
-    "merge_pr": 151,
-    "merged_at": "2026-08-03T17:53:59Z",
-    "main_sha": "a75da0c9695500467c193558b8d1c981c02003bf",
-    "post_merge_ci_run_id": 30838818226,
+    "feature_pr": 182,
+    "merge_pr": 182,
+    "merged_at": "2026-08-17",
+    "main_sha": "f118cef55554914273f88d74be0dcea3ed2098dc",
+    "post_merge_ci_run_id": 32041127871,
+    "post_merge_ci_run_number": 272,
+    "post_merge_ci_attempt": 2,
     "post_merge_ci_conclusion": "SUCCESS",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_action": "HUMAN_REVIEW_C3_FIRMES_001_SPEC"
+    "next_action": "C3-FIRMES-001_APPROVAL_PENDING"
   },
   "production_blockers": [],
   "cumulative_merge": {
@@ -539,13 +542,16 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": "C3-FRONT-015",
-    "selected_feature": "C3-FRONT-015",
-    "selected_feature_state": "review",
-    "approval_gate": "APPROVED",
+    "active_feature": null,
+    "selected_feature": "C3-FIRMES-001",
+    "selected_feature_state": "spec_ready",
+    "approval_gate": "PENDING",
     "ready_nodes": []
   },
-  "residual_blockers": [],
+  "residual_blockers": [
+    "C3-FIRMES-001 requires explicit human approval before any authenticated source implementation.",
+    "Production remains BLOCKED by incomplete managed-environment, resilience, observability and independent human production gates."
+  ],
   "pending_spec": {
     "id": "C3-FIRMES-001",
     "state": "SPEC_READY",

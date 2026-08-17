@@ -1,6 +1,6 @@
 # C3-FRONT-015 evidence
 
-Status: `REVIEWED_LOCAL_WITH_RUNNER_BLOCKERS`; branch `agent/operations-complete-ui-lifecycle`; base `main@57f0c4649cb5525647850ccc2c75b84240460e0c`; hosted exact-head verification pending.
+Status: `MERGED_TO_MAIN`; PR #182 merged by squash to `main@f118cef55554914273f88d74be0dcea3ed2098dc`; final exact-head and post-merge verification are green.
 
 ## Implemented
 
@@ -76,7 +76,7 @@ GitHub confirms PR #179 (`fix(program): reconcile strategy merge and activate op
 
 ## Release Gate
 
-C3-FRONT-015 is eligible for **review-branch publication and exact-head hosted verification only**. It is not a production release. Production remains `BLOCKED`; global release remains `DENY_RELEASE`; external effects remain `NONE`; no paid cloud resource or production deployment is authorized by this increment.
+C3-FRONT-015 is **integrated to main** and is suitable for internal product review/demonstration. It is not a production release. Production remains `BLOCKED`; global release remains `DENY_RELEASE`; external effects remain `NONE`; no paid cloud resource or production deployment is authorized by this increment.
 
 
 ## Hosted Critic / Fixer finding
@@ -96,4 +96,4 @@ PR #182 implementation/Fixer head `55153857c59d17ba11c1e608d8f506b47b3517a3` pas
 - non-root frontend container build: **SUCCESS**;
 - Runtime Visual Review #241 (`32003359524`): **SUCCESS**.
 
-This evidence update creates a documentation-only head. That final exact head must pass CampaignOS CI and Runtime Visual Review again before merge.
+The final evidence-only head `03ee6a666eb0476b58a27179b10e8c2be9c68ceb` subsequently passed CampaignOS CI #271 (`32003796579`) and Runtime Visual Review #242 (`32003796675`). PR #182 then merged by squash to `main@f118cef55554914273f88d74be0dcea3ed2098dc`. Post-merge CampaignOS CI #272 (`32041127871`) passed on attempt 2. Attempt 1 had only a GitHub-hosted setup failure: the runner received HTTP 429 while downloading `gitleaks-action`, so no secret scan executed; the failed-job retry downloaded the pinned action and the repository secret scan passed. All other post-merge jobs, including the full API-backed functional onboarding journey, PostgreSQL/RLS, recovery, Terraform plan-only, dependency audit, supply-chain, CodeQL and non-root frontend checks, passed.

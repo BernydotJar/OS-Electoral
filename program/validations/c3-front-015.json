@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "id": "C3-FRONT-015",
-  "status": "REVIEWED_LOCAL_WITH_RUNNER_BLOCKERS",
+  "status": "MERGED_TO_MAIN",
   "base_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
   "branch": "agent/operations-complete-ui-lifecycle",
   "approval": {
@@ -100,22 +100,33 @@
   "release_decision": "DENY_RELEASE",
   "external_effects": "NONE",
   "hosted_verification": {
-    "state": "PASS_IMPLEMENTATION_HEAD_FINAL_EVIDENCE_REVALIDATION_PENDING",
+    "state": "PASS_FINAL_EVIDENCE_HEAD",
     "pull_request": 182,
-    "verified_head": "55153857c59d17ba11c1e608d8f506b47b3517a3",
+    "verified_head": "03ee6a666eb0476b58a27179b10e8c2be9c68ceb",
     "campaignos_ci": {
-      "run_id": 32003359525,
-      "run_number": 270,
+      "run_id": 32003796579,
+      "run_number": 271,
       "conclusion": "SUCCESS",
       "functional_onboarding": "SUCCESS",
       "non_root_frontend_container": "SUCCESS"
     },
     "runtime_visual_review": {
-      "run_id": 32003359524,
-      "run_number": 241,
+      "run_id": 32003796675,
+      "run_number": 242,
       "conclusion": "SUCCESS"
     },
-    "final_evidence_head": "PENDING"
+    "final_evidence_head": "03ee6a666eb0476b58a27179b10e8c2be9c68ceb"
   },
-  "final_reviewed_implementation_head": "55153857c59d17ba11c1e608d8f506b47b3517a3"
+  "final_reviewed_implementation_head": "55153857c59d17ba11c1e608d8f506b47b3517a3",
+  "integrated_main_sha": "f118cef55554914273f88d74be0dcea3ed2098dc",
+  "post_merge_verification": {
+    "campaignos_ci_run_id": 32041127871,
+    "campaignos_ci_run_number": 272,
+    "run_attempt": 2,
+    "conclusion": "SUCCESS",
+    "secret_scan_first_attempt": "SETUP_FAILED_GITHUB_429_NO_SCAN_EXECUTED",
+    "secret_scan_retry": "SUCCESS",
+    "functional_onboarding": "SUCCESS",
+    "external_effects": "NONE"
+  }
 }

@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-08-16",
-  "branch": "agent/operations-complete-ui-lifecycle",
+  "updated_at": "2026-08-17",
+  "branch": "agent/operations-postmerge-reconcile-showcase",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -1590,7 +1590,7 @@
     {
       "task_id": "C3-FRONT-015",
       "owner": "WS-06/WS-10",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "evidence": [
         "specs/C3-FRONT-015/requirements.md",
         "specs/C3-FRONT-015/design.md",
@@ -1601,10 +1601,7 @@
         "progress/review_C3-FRONT-015.md"
       ],
       "external_effects": "NONE",
-      "blockers": [
-        "Local PostgreSQL/API/browser functional E2E is blocked by sandbox Docker layer lchown permission; exact-head hosted CampaignOS CI must execute the gate before merge",
-        "Local Terraform plan-only is blocked because Terraform CLI is unavailable; no apply or infrastructure mutation was attempted"
-      ],
+      "blockers": [],
       "approval": {
         "recorded_at": "2026-08-13T20:50:00-06:00",
         "source": "USER_EXPLICIT_APPROVAL",
@@ -1614,7 +1611,7 @@
       "base_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
       "branch": "agent/operations-complete-ui-lifecycle",
       "local_verification": {
-        "frontend": "PASS_54_FILES_248_TESTS_LINT_TYPECHECK_BUILD_AUDIT_ZERO",
+        "frontend": "PASS_55_FILES_250_TESTS_LINT_TYPECHECK_BUILD_AUDIT_ZERO",
         "backend": "PASS_865_SKIPPED_13_COVERAGE_90_03",
         "focused_operations_team_backend": "PASS_99",
         "read_only_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
@@ -1623,6 +1620,32 @@
         "gitleaks": "PASS_8_30_1_CHECKSUM_VERIFIED_EFFECTIVE_WORKTREE",
         "functional_postgres_api_browser": "BLOCKED_BY_RUNNER_DOCKER_LAYER_LCHOWN",
         "terraform_plan_only": "BLOCKED_TOOLING_TERRAFORM_CLI_UNAVAILABLE"
+      },
+      "hosted_verification": {
+        "pull_request": 182,
+        "verified_head": "03ee6a666eb0476b58a27179b10e8c2be9c68ceb",
+        "campaignos_ci_run": 32003796579,
+        "campaignos_ci_number": 271,
+        "campaignos_ci": "SUCCESS",
+        "functional_onboarding": "SUCCESS",
+        "non_root_frontend_container": "SUCCESS",
+        "runtime_visual_run": 32003796675,
+        "runtime_visual_number": 242,
+        "runtime_visual": "SUCCESS",
+        "final_evidence_head": "03ee6a666eb0476b58a27179b10e8c2be9c68ceb"
+      },
+      "pull_request": 182,
+      "integrated_main_sha": "f118cef55554914273f88d74be0dcea3ed2098dc",
+      "post_merge_verification": {
+        "main_sha": "f118cef55554914273f88d74be0dcea3ed2098dc",
+        "campaignos_ci_run": 32041127871,
+        "campaignos_ci_number": 272,
+        "run_attempt": 2,
+        "conclusion": "SUCCESS",
+        "functional_onboarding": "SUCCESS",
+        "dynamic_frontend": "SUCCESS",
+        "secret_scan": "SUCCESS_AFTER_TRANSIENT_GITHUB_ACTION_DOWNLOAD_429_RETRY",
+        "external_effects": "NONE"
       }
     }
   ]
