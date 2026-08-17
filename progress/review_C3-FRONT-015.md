@@ -44,3 +44,8 @@ See `docs/testing/c3-front-015-evidence.md`, `program/validations/c3-front-015.j
 ## Hosted Fixer after first exact-head review
 
 PR #182 first head `46c41bf25b4a26f71cd11da0ca440dcf1e4b5dcd` passed every hosted job except the API-backed functional onboarding journey. The failure occurred before Operations authoring: the backend returned the expected `409 CAMPAIGN_NOT_READY` for a roadmap whose prerequisites were not complete, while the shell read model treated that exact prerequisite response as a global error instead of an Operations `NOT_STARTED` state. The Fixer classifies only that problem code as not-started and preserves fail-closed behavior for unrelated 409 conflicts. Local final frontend verification is 55 files / 250 tests with lint, TypeScript, build and audit 0 PASS. Exact-head hosted revalidation remains the merge gate.
+
+
+### F6 — hosted persistence assertion repair
+
+The second exact-head run passed the live-shell prerequisite state and reached the end of Operations. API logs prove the learning PATCH and War Room snapshot POST/GET succeeded. The browser harness incorrectly looked for the learning title as a text node even though persisted learning is rendered in an editable input. The Fixer now asserts the persisted form input value both before and after reload; no product persistence contract was weakened.

@@ -1451,14 +1451,33 @@ async def review() -> dict[str, object]:
             await page.get_by_text("Completar verificación de lanzamiento", exact=True).count() == 1,
             "War Room priority is not projected",
         )
+        learning_details = await open_details(page, "#operations-learning")
+        learning_forms = learning_details.locator(
+            'form[action="/api/ui/operations-workspace/section"]'
+        )
         require(
-            await page.get_by_text("Aprendizaje del primer ciclo", exact=True).count() >= 1,
+            await learning_forms.count() == 2,
+            "persisted Operations learning is not editable",
+        )
+        require(
+            await learning_forms.first.locator('input[name="title"]').input_value()
+            == "Aprendizaje del primer ciclo",
             "Operations learning did not persist in the roadmap authoring surface",
         )
         await page.reload(wait_until="networkidle")
         require(
             await page.get_by_text("Completar verificación de lanzamiento", exact=True).count() == 1,
             "latest War Room snapshot did not persist after reload",
+        )
+        learning_details = await open_details(page, "#operations-learning")
+        learning_forms = learning_details.locator(
+            'form[action="/api/ui/operations-workspace/section"]'
+        )
+        require(
+            await learning_forms.count() == 2
+            and await learning_forms.first.locator('input[name="title"]').input_value()
+            == "Aprendizaje del primer ciclo",
+            "Operations learning did not persist after reload",
         )
         require(
             await page.get_by_text("Verificar checklist de lanzamiento interno", exact=True).count() >= 1,
