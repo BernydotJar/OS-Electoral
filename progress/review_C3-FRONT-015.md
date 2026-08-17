@@ -49,3 +49,8 @@ PR #182 first head `46c41bf25b4a26f71cd11da0ca440dcf1e4b5dcd` passed every hoste
 ### F6 — hosted persistence assertion repair
 
 The second exact-head run passed the live-shell prerequisite state and reached the end of Operations. API logs prove the learning PATCH and War Room snapshot POST/GET succeeded. The browser harness incorrectly looked for the learning title as a text node even though persisted learning is rendered in an editable input. The Fixer now asserts the persisted form input value both before and after reload; no product persistence contract was weakened.
+
+
+## Hosted exact-head result
+
+PR #182 implementation/Fixer head `55153857c59d17ba11c1e608d8f506b47b3517a3` passed CampaignOS CI #270 (`32003359525`) and Runtime Visual Review #241 (`32003359524`). The API-backed journey completed the full governed path through Operations and the War Room snapshot with persistence after reload. A final documentation-only evidence head will be revalidated before merge.
