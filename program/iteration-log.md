@@ -810,3 +810,9 @@
 - Completed FIRMES discovery for the authenticated Coordinador Municipal scope using the user-provided read-only manual. Persisted `research/firmes-integration-discovery.md` with an explicit source-of-truth boundary and no person-level political-data import.
 - Selected `C3-FIRMES-001` only as `spec_ready` with human approval `PENDING`. It remains outside the executable roadmap and no integration code is authorized yet.
 - Production remains `BLOCKED`, release remains `DENY_RELEASE`, and political/external effects remain `NONE`.
+
+## 2026-08-17 — C3-FRONT-015 Operations/War Room integration complete
+
+- PR #182 merged by squash to `main@f118cef55554914273f88d74be0dcea3ed2098dc` after final exact-head CampaignOS CI #271 and Runtime Visual #242 passed.
+- Post-merge CampaignOS CI #272 passed on attempt 2; attempt 1 failed only during runner setup because GitHub returned HTTP 429 while downloading the pinned Gitleaks action, so no secret scan executed until the successful retry.
+- C3-FRONT-015 is reconciled to `MERGED_TO_MAIN`; the Graph Harness has no active feature and selects `C3-FIRMES-001` as `spec_ready` / human approval `PENDING`. Firmes implementation, production deployment and paid cloud resources remain unauthorized.

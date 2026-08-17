@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-08-16",
+  "updated_at": "2026-08-17",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -569,7 +569,7 @@
       "id": "C3-FRONT-015",
       "workstream": "WS-06",
       "title": "Completable governed Operations and War Room lifecycle from UI",
-      "status": "REVIEWED",
+      "status": "MERGED_TO_MAIN",
       "depends_on": [
         "C3-FRONT-014",
         "C3-OPS-001",

@@ -1,6 +1,6 @@
 # C3-FRONT-015 review
 
-Review state: `REVIEWED_LOCAL_WITH_RUNNER_BLOCKERS`; exact-head hosted CI pending.
+Review state: `MERGED_TO_MAIN`; exact-head and post-merge CI are green.
 
 ## Producer
 
@@ -22,7 +22,7 @@ All recorded findings are resolved with focused route/component/form tests. Auth
 
 ## Independent Verifier
 
-- frontend: 54 files / 248 tests, ESLint, strict TypeScript, optimized build, audit 0 vulnerabilities: PASS;
+- frontend: 55 files / 250 tests, ESLint, strict TypeScript, optimized build, audit 0 vulnerabilities: PASS;
 - backend: 865 passed / 13 skipped, 90.03% coverage: PASS;
 - focused Operations/Team backend/API/seed: 99 PASS;
 - dynamic read-only Chromium: ES/EN/mobile/keyboard/reduced-motion/route isolation/WCAG PASS, zero axe violations, no unexpected hosts/storage/errors;
@@ -34,7 +34,7 @@ All recorded findings are resolved with focused route/component/form tests. Auth
 
 ## Release Gate
 
-Eligible for review-branch publication and exact-head hosted verification. Production remains `BLOCKED`; release remains `DENY_RELEASE`; external effects remain `NONE`. Hosted CampaignOS CI must execute the functional PostgreSQL/API/browser gate before merge.
+Integrated to `main@f118cef55554914273f88d74be0dcea3ed2098dc` after exact-head hosted verification. Production remains `BLOCKED`; release remains `DENY_RELEASE`; external effects remain `NONE`.
 
 ## Persistent Evidence
 
@@ -53,4 +53,4 @@ The second exact-head run passed the live-shell prerequisite state and reached t
 
 ## Hosted exact-head result
 
-PR #182 implementation/Fixer head `55153857c59d17ba11c1e608d8f506b47b3517a3` passed CampaignOS CI #270 (`32003359525`) and Runtime Visual Review #241 (`32003359524`). The API-backed journey completed the full governed path through Operations and the War Room snapshot with persistence after reload. A final documentation-only evidence head will be revalidated before merge.
+PR #182 implementation/Fixer head `55153857c59d17ba11c1e608d8f506b47b3517a3` passed CampaignOS CI #270 (`32003359525`) and Runtime Visual Review #241 (`32003359524`). The final evidence head `03ee6a666eb0476b58a27179b10e8c2be9c68ceb` passed CampaignOS CI #271 (`32003796579`) and Runtime Visual Review #242 (`32003796675`). PR #182 merged to `main@f118cef55554914273f88d74be0dcea3ed2098dc`; post-merge CampaignOS CI #272 (`32041127871`) passed on attempt 2 after retrying a GitHub-hosted HTTP 429 action-download failure in the secret-scan setup. The API-backed journey completed the full governed path through Operations and the War Room snapshot with persistence after reload.
