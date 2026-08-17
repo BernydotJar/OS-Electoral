@@ -98,6 +98,13 @@ async def strategy_new_form(page: Page, selector: str):
     return forms.last
 
 
+async def operations_new_form(page: Page, selector: str):
+    details = await open_details(page, selector)
+    forms = details.locator('form[action="/api/ui/operations-workspace/section"]')
+    require(await forms.count() >= 1, f"operations section has no mutation form: {selector}")
+    return forms.last
+
+
 async def save_candidate_claim(
     page: Page, section: str, claim: str, *, label: str | None = None
 ) -> None:
@@ -1097,6 +1104,40 @@ async def review() -> dict[str, object]:
             "manual role consultant dossier did not persist",
         )
 
+        # Bind the authenticated operator to one existing vacancy through the governed Team update.
+        coverage = page.locator('#team-role-coverage form[action="/api/ui/team-workspace/role-coverage"]')
+        require(
+            await coverage.count() == 1,
+            "governed current-session Team role coverage is unavailable",
+        )
+        await coverage.locator('select[name="role_id"]').select_option(index=1)
+        await coverage.locator('select[name="availability_status"]').select_option("AVAILABLE")
+        await coverage.locator('input[name="weekly_capacity_hours"]').fill("40")
+        await coverage.locator('input[name="onboarding_confirmed"]').check()
+        require(
+            await coverage.locator('input[name="principal_id"]').count() == 0,
+            "Team role coverage exposed a client-controlled principal identifier",
+        )
+        await coverage.get_by_role("button", name="Asumir función", exact=True).click()
+        await page.wait_for_url("**notice=team_role_covered**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Responsabilidad humana registrada para tu sesión en esta función. Esto no concede permisos ni crea membresías.",
+                exact=True,
+            ).count()
+            == 1,
+            "Team role coverage success notice is missing",
+        )
+        require(
+            await page.get_by_text("Cubierta", exact=True).count() >= 1,
+            "Team did not project a filled human-owned function",
+        )
+        require(
+            await page.get_by_text("Listo para revisión humana", exact=True).count() == 1,
+            "Team readiness regressed after governed role coverage",
+        )
+
         # Strategy lifecycle: evidence -> comparable options -> measurable objective -> human decision.
         await navigate_from_chapter(page, "/es/campaign/strategy#strategy-room")
         await wait_for_chapter(page, "**/es/campaign/strategy**", "#strategy-room")
@@ -1255,6 +1296,200 @@ async def review() -> dict[str, object]:
         await assert_accessible(page, "functional-desktop-es-strategy")
         await page.screenshot(path=ARTIFACT_DIR / "functional-desktop-es-strategy.png", full_page=True)
 
+        # Operations lifecycle: decided Strategy -> human owner -> roadmap -> work -> daily snapshot.
+        await navigate_from_chapter(page, "/es/campaign/operations#war-room")
+        await wait_for_chapter(page, "**/es/campaign/operations**", "#war-room")
+        require(
+            await page.locator(
+                "#guided-intake, #candidate-workspace, #team-workspace, #strategy-room"
+            ).count()
+            == 0,
+            "non-Operations missions leaked into the Operations chapter",
+        )
+        operations_start = page.locator('form[action="/api/ui/operations-workspace/start"]')
+        require(
+            await operations_start.count() == 1,
+            "Operations roadmap creation did not unlock after Strategy decision and human Team coverage",
+        )
+        await operations_start.locator('input[name="title"]').fill("Roadmap de operación diaria")
+        await operations_start.get_by_role("button", name="Crear roadmap", exact=True).click()
+        await page.wait_for_url("**notice=operations_started**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.locator("#operations-authoring").count() == 1,
+            "Operations authoring surface is missing after roadmap creation",
+        )
+        require(
+            await page.get_by_text("Roadmap inicial requerido", exact=True).count() == 1,
+            "new roadmap did not project backend SETUP_REQUIRED status",
+        )
+
+        phase = await operations_new_form(page, "#operations-phases")
+        await phase.locator('input[name="name"]').fill("Activación interna")
+        await phase.locator('input[name="sequence"]').fill("1")
+        await phase.locator('input[name="start_date"]').fill("2026-08-16")
+        await phase.locator('input[name="end_date"]').fill("2026-09-15")
+        await phase.locator('select[name="status"]').select_option("ACTIVE")
+        await phase.get_by_role("button", name="Guardar registro", exact=True).click()
+        await page.wait_for_url("**notice=operations_section_saved**")
+        await page.wait_for_load_state("networkidle")
+
+        workstream = await operations_new_form(page, "#operations-workstreams")
+        await workstream.locator('input[name="name"]').fill("Evidencia y lanzamiento")
+        await workstream.locator('textarea[name="purpose"]').fill(
+            "Convertir la estrategia decidida en trabajo interno verificable con owner humano."
+        )
+        await workstream.locator('select[name="accountable_role_id"]').select_option(index=1)
+        await workstream.locator('select[name="status"]').select_option("ACTIVE")
+        await workstream.get_by_role("button", name="Guardar registro", exact=True).click()
+        await page.wait_for_url("**notice=operations_section_saved**")
+        await page.wait_for_load_state("networkidle")
+
+        task = await operations_new_form(page, "#operations-tasks")
+        await task.locator('select[name="phase_id"]').select_option(index=1)
+        await task.locator('select[name="workstream_id"]').select_option(index=1)
+        await task.locator('select[name="owner_role_id"]').select_option(index=1)
+        await task.locator('input[name="title"]').fill("Verificar checklist de lanzamiento interno")
+        await task.locator('input[name="due_date"]').fill("2026-08-20")
+        await task.locator('select[name="execution_status"]').select_option("PLANNED")
+        evidence_ref = task.locator('input[name="evidence_refs"]').first
+        require(await evidence_ref.count() == 1, "Operations task lacks Candidate/Strategy evidence choices")
+        await evidence_ref.check()
+        await task.get_by_role("button", name="Guardar registro", exact=True).click()
+        await page.wait_for_url("**notice=operations_section_saved**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text("Listo para operación diaria humana", exact=True).count() == 1,
+            "backend did not derive READY_FOR_DAILY_OPERATION from the persisted task graph",
+        )
+        require(
+            await page.locator(".operations-metrics article").first.locator("strong").inner_text() == "1",
+            "backend-derived ready task count is not one",
+        )
+        require(
+            await page.get_by_text("Verificar checklist de lanzamiento interno", exact=True).count() >= 1,
+            "ready task or critical-path projection is missing",
+        )
+
+        decision = await operations_new_form(page, "#operations-decisions")
+        await decision.locator('input[name="title"]').fill("Confirmar alcance del lanzamiento interno")
+        await decision.locator('select[name="human_role_id"]').select_option(index=1)
+        await decision.locator('input[name="due_date"]').fill("2026-08-18")
+        await decision.locator('textarea[name="options"]').fill(
+            "Continuar con evidencia actual\nSolicitar verificación adicional"
+        )
+        await decision.get_by_role("button", name="Guardar registro", exact=True).click()
+        await page.wait_for_url("**notice=operations_section_saved**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text("Tomar decisiones humanas pendientes", exact=True).count() == 1,
+            "required Operations decision did not become the backend-derived next action",
+        )
+
+        decisions = await open_details(page, "#operations-decisions")
+        decision_forms = decisions.locator('form[action="/api/ui/operations-workspace/section"]')
+        require(await decision_forms.count() == 2, "persisted Operations decision is not editable")
+        persisted_decision = decision_forms.first
+        await persisted_decision.locator('select[name="status"]').select_option("DECIDED")
+        await persisted_decision.locator('select[name="decision"]').select_option(
+            "Continuar con evidencia actual"
+        )
+        await persisted_decision.get_by_role("button", name="Guardar registro", exact=True).click()
+        await page.wait_for_url("**notice=operations_section_saved**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text("Asignar inicio a las tareas listas", exact=True).count() == 1,
+            "decided Operations item did not return the backend next action to ready work",
+        )
+
+        follow_up = await operations_new_form(page, "#operations-follow-ups")
+        await follow_up.locator('input[name="title"]').fill("Revisar evidencia de cierre")
+        await follow_up.locator('select[name="owner_role_id"]').select_option(index=1)
+        await follow_up.locator('input[name="due_date"]').fill("2026-08-21")
+        await follow_up.locator('select[name="status"]').select_option("OPEN")
+        await follow_up.get_by_role("button", name="Guardar registro", exact=True).click()
+        await page.wait_for_url("**notice=operations_section_saved**")
+        await page.wait_for_load_state("networkidle")
+
+        learning = await operations_new_form(page, "#operations-learning")
+        await learning.locator('input[name="title"]').fill("Aprendizaje del primer ciclo")
+        await learning.locator('textarea[name="note"]').fill(
+            "La secuencia operativa debe conservar owner humano, evidencia y decisión explícita antes del snapshot."
+        )
+        learning_evidence = learning.locator('input[name="evidence_refs"]').first
+        require(await learning_evidence.count() == 1, "Operations learning lacks evidence references")
+        await learning_evidence.check()
+        await learning.get_by_role("button", name="Guardar registro", exact=True).click()
+        await page.wait_for_url("**notice=operations_section_saved**")
+        await page.wait_for_load_state("networkidle")
+
+        snapshot = page.locator('#operations-snapshot-create form[action="/api/ui/operations-workspace/snapshot"]')
+        require(await snapshot.count() == 1, "current-version War Room snapshot action is unavailable")
+        await snapshot.locator('input[name="snapshot_date"]').fill("2026-08-16")
+        await snapshot.locator('textarea[name="priorities"]').fill(
+            "Completar verificación de lanzamiento\nMantener decisión humana trazable"
+        )
+        await snapshot.locator('textarea[name="follow_up_notes"]').fill(
+            "Revisar evidencia de cierre al final del día"
+        )
+        await snapshot.get_by_role("button", name="Registrar snapshot", exact=True).click()
+        await page.wait_for_url("**notice=war_room_snapshot_created**")
+        await page.wait_for_load_state("networkidle")
+        require(
+            await page.get_by_text(
+                "Snapshot diario del War Room registrado como evidencia interna inmutable. No ejecuta ninguna tarea.",
+                exact=True,
+            ).count()
+            == 1,
+            "War Room snapshot success notice is missing",
+        )
+        require(
+            await page.get_by_text("2026-08-16", exact=True).count() >= 1,
+            "War Room snapshot date is not projected",
+        )
+        require(
+            await page.get_by_text("Completar verificación de lanzamiento", exact=True).count() == 1,
+            "War Room priority is not projected",
+        )
+        learning_details = await open_details(page, "#operations-learning")
+        learning_forms = learning_details.locator(
+            'form[action="/api/ui/operations-workspace/section"]'
+        )
+        require(
+            await learning_forms.count() == 2,
+            "persisted Operations learning is not editable",
+        )
+        require(
+            await learning_forms.first.locator('input[name="title"]').input_value()
+            == "Aprendizaje del primer ciclo",
+            "Operations learning did not persist in the roadmap authoring surface",
+        )
+        await page.reload(wait_until="networkidle")
+        require(
+            await page.get_by_text("Completar verificación de lanzamiento", exact=True).count() == 1,
+            "latest War Room snapshot did not persist after reload",
+        )
+        learning_details = await open_details(page, "#operations-learning")
+        learning_forms = learning_details.locator(
+            'form[action="/api/ui/operations-workspace/section"]'
+        )
+        require(
+            await learning_forms.count() == 2
+            and await learning_forms.first.locator('input[name="title"]').input_value()
+            == "Aprendizaje del primer ciclo",
+            "Operations learning did not persist after reload",
+        )
+        require(
+            await page.get_by_text("Verificar checklist de lanzamiento interno", exact=True).count() >= 1,
+            "Operations roadmap task did not persist after reload",
+        )
+        await assert_no_visible_demo(page, "functional-desktop-es-operations")
+        await assert_no_overflow(page, "functional-desktop-es-operations")
+        await assert_accessible(page, "functional-desktop-es-operations")
+        await page.screenshot(
+            path=ARTIFACT_DIR / "functional-desktop-es-operations.png", full_page=True
+        )
+
         await navigate_from_chapter(page, "/es/campaign/evidence#candidate-workspace")
         await wait_for_chapter(page, "**/es/campaign/evidence**", "#candidate-workspace")
         persisted_evidence = page.locator(".candidate-evidence-disclosure")
@@ -1401,6 +1636,32 @@ async def review() -> dict[str, object]:
         await english.screenshot(
             path=ARTIFACT_DIR / "functional-desktop-en-strategy.png", full_page=True
         )
+        await english.goto(f"{BASE_URL}/en/campaign/operations", wait_until="networkidle")
+        require(
+            await english.locator("#war-room").count() == 1,
+            "English Operations chapter is unavailable",
+        )
+        require(
+            await english.get_by_role(
+                "heading", name="Operating path and today's decisions", exact=True
+            ).count()
+            == 1,
+            "English Operations heading is missing",
+        )
+        require(
+            await english.get_by_text("Completar verificación de lanzamiento", exact=True).count() == 1,
+            "English Operations view did not preserve the latest snapshot",
+        )
+        require(
+            await english.locator("#operations-authoring").count() == 1,
+            "English Operations authoring is unavailable",
+        )
+        await assert_no_visible_demo(english, "functional-desktop-en-operations")
+        await assert_no_overflow(english, "functional-desktop-en-operations")
+        await assert_accessible(english, "functional-desktop-en-operations")
+        await english.screenshot(
+            path=ARTIFACT_DIR / "functional-desktop-en-operations.png", full_page=True
+        )
         await english.goto(f"{BASE_URL}/en/campaign/team", wait_until="networkidle")
         await assert_no_overflow(english, "functional-desktop-en-team")
         await assert_accessible(english, "functional-desktop-en-team")
@@ -1475,6 +1736,30 @@ async def review() -> dict[str, object]:
         await assert_accessible(mobile, "functional-mobile-es-strategy")
         await mobile.screenshot(
             path=ARTIFACT_DIR / "functional-mobile-es-strategy.png", full_page=True
+        )
+        await mobile.goto(f"{BASE_URL}/es/campaign/operations", wait_until="networkidle")
+        require(
+            await mobile.locator("#war-room, #operations-authoring").count() == 2,
+            "mobile Operations lifecycle is unavailable",
+        )
+        operations_columns = await mobile.locator(
+            "#operations-authoring .strategy-authoring-grid"
+        ).evaluate(
+            "element => getComputedStyle(element).gridTemplateColumns.split(' ').length"
+        )
+        require(
+            operations_columns == 1,
+            f"mobile Operations authoring is not a single responsive column: {operations_columns}",
+        )
+        require(
+            await mobile.get_by_text("Completar verificación de lanzamiento", exact=True).count() == 1,
+            "mobile Operations latest snapshot is unavailable",
+        )
+        await assert_no_visible_demo(mobile, "functional-mobile-es-operations")
+        await assert_no_overflow(mobile, "functional-mobile-es-operations")
+        await assert_accessible(mobile, "functional-mobile-es-operations")
+        await mobile.screenshot(
+            path=ARTIFACT_DIR / "functional-mobile-es-operations.png", full_page=True
         )
         await mobile.goto(f"{BASE_URL}/es/campaign/team", wait_until="networkidle")
         await mobile.screenshot(path=ARTIFACT_DIR / "functional-mobile-es.png", full_page=True)
@@ -1572,7 +1857,9 @@ async def review() -> dict[str, object]:
         "persistence_after_reload": "PASS",
         "candidate_dossier_completion": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
         "team_readiness_completion": "PASS_8_OF_8_READY_FOR_HUMAN_REVIEW",
+        "team_human_role_coverage": "PASS_AUTHENTICATED_PRINCIPAL_FILLED_ROLE_WITHOUT_NEW_AUTHORITY",
         "strategy_lifecycle_completion": "PASS_DECIDED_INTERNAL_VERSION_BOUND_HUMAN_DECISION",
+        "operations_lifecycle_completion": "PASS_ROADMAP_READY_DECISION_LEARNING_AND_WAR_ROOM_SNAPSHOT",
         "exact_authorization_controls": "PASS",
         "administration_placeholder": "ABSENT",
         "desktop_spanish": "PASS",

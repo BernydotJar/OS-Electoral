@@ -73,9 +73,11 @@ describe("CampaignOsApiClient contract failures", () => {
 
 import {
   demoCandidateWorkspace,
+  demoCampaignRoadmap,
   demoGuidedIntake,
   demoStrategyWorkspace,
   demoTeamWorkspace,
+  demoWarRoomSnapshot,
 } from "@/lib/demo-data";
 
 describe("CampaignOsApiClient campaign mutations", () => {
@@ -592,5 +594,82 @@ describe("CampaignOsApiClient strategy workspace mutations", () => {
     });
     expect(result.workspace.version).toBe(2);
     expect(result.workspace.status).toBe("DECIDED_INTERNAL");
+  });
+});
+
+
+describe("CampaignOsApiClient Operations mutations", () => {
+  it("creates and updates the roadmap with idempotency and optimistic concurrency", async () => {
+    const fetchMock = vi.fn(async (input: URL | RequestInfo, init?: RequestInit) => {
+      expect(String(input)).toBe(
+        `https://api.example.test/api/v1/tenants/${TENANT}/campaigns/${CAMPAIGN}/operations/roadmap`,
+      );
+      const headers = new Headers(init?.headers);
+      if (init?.method === "POST") {
+        expect(headers.get("idempotency-key")).toBe("operations-start-1");
+        expect(JSON.parse(String(init?.body))).toEqual({ title: "Campaign execution roadmap" });
+      } else {
+        expect(init?.method).toBe("PATCH");
+        expect(headers.get("idempotency-key")).toBe("operations-update-1");
+        expect(headers.get("if-match")).toBe('"2"');
+        expect(JSON.parse(String(init?.body))).toEqual({ blockers: [] });
+      }
+      return new Response(
+        JSON.stringify({
+          roadmap: demoCampaignRoadmap.roadmap,
+          audit_event_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          outbox_event_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        }),
+        { status: init?.method === "POST" ? 201 : 200, headers: { "content-type": "application/json" } },
+      );
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    await client.startCampaignRoadmap(TENANT, CAMPAIGN, "operations-start-1", {
+      title: "Campaign execution roadmap",
+    });
+    await client.updateCampaignRoadmap(TENANT, CAMPAIGN, 2, "operations-update-1", {
+      blockers: [],
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("creates a version-bound daily War Room snapshot without execution authority", async () => {
+    const create = {
+      snapshot_date: "2026-08-16",
+      priorities: ["Resolve current blockers"],
+      follow_up_notes: ["Director review at 17:00"],
+    };
+    const fetchMock = vi.fn(async (input: URL | RequestInfo, init?: RequestInit) => {
+      expect(String(input)).toBe(
+        `https://api.example.test/api/v1/tenants/${TENANT}/campaigns/${CAMPAIGN}/operations/roadmap/war-room-snapshots`,
+      );
+      expect(init?.method).toBe("POST");
+      const headers = new Headers(init?.headers);
+      expect(headers.get("idempotency-key")).toBe("war-room-1");
+      expect(headers.get("if-match")).toBe('"2"');
+      expect(JSON.parse(String(init?.body))).toEqual(create);
+      return new Response(
+        JSON.stringify({
+          snapshot: demoWarRoomSnapshot.snapshot,
+          audit_event_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          outbox_event_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        }),
+        { status: 201, headers: { "content-type": "application/json" } },
+      );
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new CampaignOsApiClient(config, "synthetic-token");
+
+    const result = await client.createWarRoomSnapshot(
+      TENANT,
+      CAMPAIGN,
+      2,
+      "war-room-1",
+      create,
+    );
+    expect(result.snapshot.authority_effect).toBe("NONE");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

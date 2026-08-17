@@ -198,3 +198,45 @@ export function deriveTrainingCapabilities(
     ),
   };
 }
+
+export type OperationsWorkspaceCapabilities = Readonly<{
+  canStart: boolean;
+  canRead: boolean;
+  canUpdate: boolean;
+  canCreateSnapshot: boolean;
+  canReadSnapshot: boolean;
+}>;
+
+export function deriveOperationsWorkspaceCapabilities(
+  memberships: readonly EffectiveMembership[],
+  campaignId: string,
+): OperationsWorkspaceCapabilities {
+  const exact = (
+    action: string,
+    resourceType: "campaign_roadmap" | "war_room_snapshot",
+    purpose: string,
+  ) =>
+    hasExactGrant(memberships, {
+      action,
+      resourceType,
+      resourceId: campaignId,
+      purpose,
+      campaignId,
+      workspaceId: null,
+    });
+  return {
+    canStart: exact("create", "campaign_roadmap", "Create campaign operations roadmap"),
+    canRead: exact("read", "campaign_roadmap", "Review campaign operations roadmap"),
+    canUpdate: exact("update", "campaign_roadmap", "Maintain campaign operations roadmap"),
+    canCreateSnapshot: exact(
+      "create",
+      "war_room_snapshot",
+      "Create daily campaign war room snapshot",
+    ),
+    canReadSnapshot: exact(
+      "read",
+      "war_room_snapshot",
+      "Review daily campaign war room snapshot",
+    ),
+  };
+}

@@ -75,13 +75,14 @@ The team workspace does not:
 
 ## Current implemented write path
 
-The backend supports exact-authorized create, read, update, template preview and template application. The live shell now supports three bounded operations:
+The backend supports exact-authorized create, read, update, template preview and template application. The live shell now supports four bounded operations:
 
 1. create a campaign team workspace from a lean, full or custom template;
 2. preview and append only missing functions from a lean or full template;
-3. append a vacant function manually with area, purpose, responsibilities and a human vacancy plan.
+3. append a vacant function manually with area, purpose, responsibilities and a human vacancy plan;
+4. let an exactly authorized operator explicitly take responsibility for one existing vacant function using the authenticated session principal, declared availability, positive weekly capacity and a human onboarding confirmation.
 
-The UI deliberately creates no principal assignment, weekly capacity, onboarding completion, membership or permission. Personnel invitations, governed identity assignment, capacity assessment, training, access recommendation review, dedicated approvers and independent human acceptance remain future work. Organizational RACI and planned follow-up are now operable; execution still requires filled human roles.
+The self-coverage path cannot name or assign another principal: the server supplies `principal_id` from the verified session and revalidates the current workspace version and exact Team update grant. It updates only the internal role card and creates no membership, permission grant or additional access. Personnel invitations, assigning other people, a general governed identity-assignment lifecycle, independent onboarding verification, dedicated approvers and personal-work projections remain future work. Organizational RACI and planned follow-up are operable; active execution and Operations ownership require filled human roles.
 ## Role blueprints
 
 `C3-TEAM-002` adds versioned, bilingual role blueprints at workspace creation time. They reduce blank-page setup without creating employment, identity, capacity, membership, permission, spending, publishing, contact or production authority.

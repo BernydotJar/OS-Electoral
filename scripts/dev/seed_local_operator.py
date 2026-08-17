@@ -48,6 +48,11 @@ STRATEGY_CREATE_GRANT_ID = UUID("fa111111-1111-4111-8111-111111111111")
 STRATEGY_READ_GRANT_ID = UUID("fa222222-2222-4222-8222-222222222222")
 STRATEGY_UPDATE_GRANT_ID = UUID("fa333333-3333-4333-8333-333333333333")
 STRATEGY_APPROVE_GRANT_ID = UUID("fa444444-4444-4444-8444-444444444444")
+OPERATIONS_CREATE_GRANT_ID = UUID("fb111111-1111-4111-8111-111111111111")
+OPERATIONS_READ_GRANT_ID = UUID("fb222222-2222-4222-8222-222222222222")
+OPERATIONS_UPDATE_GRANT_ID = UUID("fb333333-3333-4333-8333-333333333333")
+WAR_ROOM_CREATE_GRANT_ID = UUID("fb444444-4444-4444-8444-444444444444")
+WAR_ROOM_READ_GRANT_ID = UUID("fb555555-5555-4555-8555-555555555555")
 WORKSPACE_ID = UUID("bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb")
 
 DEVELOPMENT_ISSUER = "urn:campaignos:development"
@@ -211,6 +216,41 @@ GRANTS = (
         "strategy_workspace",
         str(CAMPAIGN_ID),
         "Approve internal campaign strategy option",
+    ),
+    GrantSpec(
+        OPERATIONS_CREATE_GRANT_ID,
+        "create",
+        "campaign_roadmap",
+        str(CAMPAIGN_ID),
+        "Create campaign operations roadmap",
+    ),
+    GrantSpec(
+        OPERATIONS_READ_GRANT_ID,
+        "read",
+        "campaign_roadmap",
+        str(CAMPAIGN_ID),
+        "Review campaign operations roadmap",
+    ),
+    GrantSpec(
+        OPERATIONS_UPDATE_GRANT_ID,
+        "update",
+        "campaign_roadmap",
+        str(CAMPAIGN_ID),
+        "Maintain campaign operations roadmap",
+    ),
+    GrantSpec(
+        WAR_ROOM_CREATE_GRANT_ID,
+        "create",
+        "war_room_snapshot",
+        str(CAMPAIGN_ID),
+        "Create daily campaign war room snapshot",
+    ),
+    GrantSpec(
+        WAR_ROOM_READ_GRANT_ID,
+        "read",
+        "war_room_snapshot",
+        str(CAMPAIGN_ID),
+        "Review daily campaign war room snapshot",
     ),
 )
 

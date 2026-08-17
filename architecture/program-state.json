@@ -2,14 +2,14 @@
   "schema_version": "2.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-08-13",
-  "source_branch": "agent/strategy-postmerge-reconcile-operations-activate",
+  "updated_at": "2026-08-16",
+  "source_branch": "agent/operations-complete-ui-lifecycle",
   "repository": {
     "name": "BernydotJar/OS-Electoral",
-    "main_sha_observed": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+    "main_sha_observed": "57f0c4649cb5525647850ccc2c75b84240460e0c",
     "c2_integration_state": "MERGED_TO_MAIN",
     "c3_foundation_iam_api_state": "MERGED_TO_MAIN",
-    "c3_program_state": "C3_FRONT_014_STRATEGY_UI_MERGED_OPERATIONS_UI_ACTIVE"
+    "c3_program_state": "C3_FRONT_015_OPERATIONS_UI_REVIEWED_LOCAL"
   },
   "operating_principle": "AI recommends; evidence supports; authorized humans decide.",
   "production_status": "BLOCKED",
@@ -790,7 +790,7 @@
     {
       "id": "WS-06",
       "name": "Frontend, Design System and i18n",
-      "status": "OPERATIONS_UI_ACTIVE",
+      "status": "OPERATIONS_UI_REVIEWED_LOCAL",
       "next_increment": "C3-FRONT-015"
     },
     {
@@ -814,7 +814,7 @@
     {
       "id": "WS-10",
       "name": "Roadmap, War Room and Campaign Health",
-      "status": "OPERATIONS_UI_ACTIVE",
+      "status": "OPERATIONS_UI_REVIEWED_LOCAL",
       "next_increment": "C3-FRONT-015"
     },
     {
@@ -1280,9 +1280,9 @@
         "C3-FRONT-011"
       ],
       "acceptance": [
-        "Visible sidebar follows Resumen, Preparaci\u00f3n inicial, Candidatura, Equipo, Estrategia, War Room and Campa\u00f1as under exact grants",
+        "Visible sidebar follows Resumen, Preparación inicial, Candidatura, Equipo, Estrategia, War Room and Campañas under exact grants",
         "Operational readiness is contained in chapter 1 rather than duplicated as a lateral destination",
-        "Resumen owns candidate progress and Qu\u00e9 hacer ahora while Candidatura owns one Perfil y riesgos workspace",
+        "Resumen owns candidate progress and Qué hacer ahora while Candidatura owns one Perfil y riesgos workspace",
         "ES/EN, route isolation, mobile, keyboard, reduced motion, overflow and WCAG browser checks pass without authority changes"
       ]
     },
@@ -1359,7 +1359,7 @@
       "id": "C3-FRONT-015",
       "workstream": "WS-06",
       "title": "Completable governed Operations and War Room lifecycle from UI",
-      "status": "ACTIVE",
+      "status": "REVIEWED",
       "depends_on": [
         "C3-FRONT-014",
         "C3-OPS-001",
@@ -1661,11 +1661,11 @@
       "scope": "EXACT_PR_SOURCE_HEAD"
     },
     "cumulative_merge": {
-      "pr": 177,
+      "pr": 179,
       "status": "MERGED_TO_MAIN_SQUASH",
-      "main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+      "main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
       "checks_before_merge": "SUCCESS",
-      "post_merge_ci_run_id": 31664890643,
+      "post_merge_ci_run_id": 31769160111,
       "post_merge_ci_conclusion": "SUCCESS",
       "included_increment_prs": [
         150,
@@ -1673,11 +1673,13 @@
         174,
         175,
         176,
-        177
+        177,
+        178,
+        179
       ],
       "previous_cumulative_merge": {
-        "pr": 175,
-        "main_sha": "4ba8267359fdf8b228ac1f62e0a7f454dfa1e6ae"
+        "pr": 178,
+        "main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06"
       },
       "open_pull_requests_observed": 12
     },
@@ -1685,20 +1687,20 @@
     "live_required_check_count": 8,
     "observability_recovery_required_check": "PASS_PR_114_NOT_YET_REQUIRED_ON_MAIN",
     "latest_completed_checkpoint": {
-      "id": "C3-TEAM-005",
+      "id": "C3-FRONT-014",
       "status": "MERGED_TO_MAIN",
       "merge_strategy": "SQUASH",
-      "feature_pr": 176,
-      "repair_pr": 177,
-      "merge_pr": 177,
-      "merged_at": "2026-08-12",
-      "main_sha": "f1dacd9625019664add60b89bff728f3f17d7cc9",
-      "post_merge_ci_run_id": 31664890643,
+      "feature_pr": 178,
+      "repair_pr": 179,
+      "merge_pr": 178,
+      "merged_at": "2026-08-14",
+      "main_sha": "a2d7aa81455358eb0244b51556ffe3a192455c06",
+      "post_merge_ci_run_id": 31769160111,
       "post_merge_ci_conclusion": "SUCCESS",
       "release_decision": "DENY_RELEASE",
       "production_status": "BLOCKED",
       "external_effects": "NONE",
-      "next_action": "C3-FRONT-014"
+      "next_action": "C3-FRONT-015"
     },
     "post_training_reconciliation": {
       "verified_at": "2026-08-11T19:33:00Z",
@@ -2159,7 +2161,7 @@
     "canonical_task_ledger": "program/task-ledger.yaml",
     "active_feature": "C3-FRONT-015",
     "selected_feature": "C3-FRONT-015",
-    "selected_feature_state": "in_progress",
+    "selected_feature_state": "review",
     "approval_gate": "APPROVED",
     "ready_nodes": []
   }

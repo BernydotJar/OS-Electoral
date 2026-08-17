@@ -6,7 +6,7 @@ Use the merged `campaign_operations` API and Operations contracts without introd
 
 ## Authorization and prerequisites
 
-Derive exact Operations capabilities from server-projected grants. Same-origin routes must fail closed unless Strategy exists at `DECIDED_INTERNAL`; UI role labels never authorize writes. Preserve backend idempotency and optimistic concurrency.
+Derive exact Operations capabilities from server-projected grants. Same-origin routes must fail closed unless Strategy exists at `DECIDED_INTERNAL`; UI role labels never authorize writes. Because the existing Operations service requires at least one filled Team owner, expose a narrowly bounded current-session self-coverage action over the existing Team update contract: the server supplies the authenticated `principal_id`, requires exact Team read/update grants, positive declared capacity and explicit onboarding confirmation, and creates no membership or permission. Preserve backend idempotency and optimistic concurrency.
 
 ## Authoring model
 

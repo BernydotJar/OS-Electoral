@@ -1,5 +1,6 @@
 import type {
   TeamAccessReviewStatus,
+  TeamAvailabilityStatus,
   TeamBlueprintTemplate,
   TeamOrganizationTemplate,
   TeamProgressStatus,
@@ -68,6 +69,10 @@ const ACCESS_REVIEW_STATUSES = new Set<TeamAccessReviewStatus>([
   "PROPOSED",
   "REVIEWED",
   "REJECTED",
+]);
+const COVERAGE_AVAILABILITY = new Set<TeamAvailabilityStatus>([
+  "AVAILABLE",
+  "LIMITED",
 ]);
 const READINESS_SECTIONS = new Set([
   "training_requirements",
@@ -232,6 +237,47 @@ export function parseTeamWorkspaceStartForm(
       organization_template: organizationTemplate,
       blueprint_locale: selectedLocale,
     },
+  };
+}
+
+export type ParsedTeamRoleCoverageForm = Readonly<{
+  locale: "es" | "en";
+  expectedVersion: number;
+  idempotencyKey: string;
+  roleId: string;
+  availabilityStatus: "AVAILABLE" | "LIMITED";
+  weeklyCapacityHours: number;
+}>;
+
+export function parseTeamRoleCoverageForm(
+  form: FormData,
+): ParsedTeamRoleCoverageForm {
+  const roleId = field(form, "role_id").trim();
+  if (!UUID_PATTERN.test(roleId)) {
+    throw new TeamWorkspaceFormError("role_id is invalid");
+  }
+  const weeklyCapacityHours = Number(field(form, "weekly_capacity_hours"));
+  if (
+    !Number.isInteger(weeklyCapacityHours) ||
+    weeklyCapacityHours < 1 ||
+    weeklyCapacityHours > 168
+  ) {
+    throw new TeamWorkspaceFormError("weekly_capacity_hours is invalid");
+  }
+  if (field(form, "onboarding_confirmed") !== "confirmed") {
+    throw new TeamWorkspaceFormError("onboarding confirmation is required");
+  }
+  return {
+    locale: locale(form),
+    expectedVersion: expectedVersion(form),
+    idempotencyKey: idempotencyKey(form),
+    roleId,
+    availabilityStatus: enumField(
+      form,
+      "availability_status",
+      COVERAGE_AVAILABILITY,
+    ) as "AVAILABLE" | "LIMITED",
+    weeklyCapacityHours,
   };
 }
 

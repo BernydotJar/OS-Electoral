@@ -776,9 +776,39 @@ export type CampaignRoadmapProjection = Readonly<{
   updated_at: string;
 }>;
 
+export type CampaignRoadmapCreateInput = Readonly<{
+  title: string;
+}>;
+
+export type CampaignRoadmapUpdateInput = Readonly<{
+  title?: string;
+  phases?: readonly CampaignPhase[];
+  workstreams?: readonly CampaignOperationsWorkstream[];
+  milestones?: readonly CampaignMilestone[];
+  tasks?: readonly CampaignOperationsTask[];
+  blockers?: readonly CampaignOperationsBlocker[];
+  decisions?: readonly CampaignOperationsDecision[];
+  follow_up_items?: readonly CampaignOperationsFollowUp[];
+  learning_notes?: readonly CampaignOperationsLearningNote[];
+}>;
+
+export type CampaignRoadmapCreateEvidence = Readonly<{
+  roadmap: CampaignRoadmapProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
+}>;
+
 export type CampaignRoadmapReadEvidence = Readonly<{
   roadmap: CampaignRoadmapProjection;
   audit_event_id: UUID;
+}>;
+
+export type CampaignRoadmapUpdateEvidence = CampaignRoadmapCreateEvidence;
+
+export type WarRoomSnapshotCreateInput = Readonly<{
+  snapshot_date: string;
+  priorities: readonly string[];
+  follow_up_notes: readonly string[];
 }>;
 
 export type WarRoomSnapshotProjection = Readonly<{
@@ -797,6 +827,12 @@ export type WarRoomSnapshotProjection = Readonly<{
   authority_effect: "NONE";
   external_effects: "NONE";
   created_at: string;
+}>;
+
+export type WarRoomSnapshotEvidence = Readonly<{
+  snapshot: WarRoomSnapshotProjection;
+  audit_event_id: UUID;
+  outbox_event_id: UUID;
 }>;
 
 export type WarRoomSnapshotReadEvidence = Readonly<{
