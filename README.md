@@ -1,36 +1,33 @@
 # CampaignOS / OS Electoral
 
-CampaignOS is intended to become a guided, evidence-led campaign operating system with human-gated decisions, multi-tenant isolation and auditable internal operations.
+CampaignOS is an evidence-led campaign operating system with human-gated decisions, tenant isolation and auditable internal operations.
 
 ## Current status
 
-**Production readiness: `BLOCKED`.**
+**Controlled internal use: under final C3-RELEASE-002 verification. Production readiness: `BLOCKED`.**
 
-The merged C2 stack and the current C3 foundation provide:
+The current protected-main baseline includes:
 
-- deterministic Python domain contracts and in-memory repository test doubles;
-- a versioned FastAPI application factory with liveness, dependency readiness, safe errors and correlation/security headers;
-- fixed-algorithm OIDC ID-token verification with issuer, audience, time, token-use and key checks;
-- an initial PostgreSQL/Alembic identity, tenancy, campaign, membership, grant, audit and outbox schema;
-- transaction-local tenant scope plus forced PostgreSQL row-level security, exercised against an isolated non-superuser role;
-- server-owned active membership, role and exact-grant loading for the tenant-scoped `/api/v1/tenants/{tenant_id}/me` identity projection;
-- a locked Python toolchain, non-root API image and loopback-only Compose stack for PostgreSQL, S3Mock and Mailpit;
-- pinned CI definitions for quality, PostgreSQL/RLS, dependency, secret, CodeQL, workflow and disposable-stack E2E checks;
-- read-only campaign, candidate, approval and Daily War Room projections;
-- authenticated, exact-grant-protected PostgreSQL campaign detail and keyset-paginated list endpoints;
-- optimistic campaign writes with durable tenant-scoped idempotency, atomic audit evidence and a pending outbox record;
-- exact-grant-protected workspace creation with durable idempotency and atomic audit/outbox evidence;
-- a tenant-explicit outbox worker baseline with recoverable leases, bounded retry/backoff and dead-letter state;
-- a static CampaignOS frontend demonstration.
+- a versioned FastAPI application with exact authorization, idempotency/version controls, safe errors, correlation/trace handling and tenant/principal rate limiting;
+- PostgreSQL/Alembic persistence through Training Academy revision `20260801_0013`, forced row-level security and constrained application-role verification;
+- fixed-algorithm OIDC token verification plus a deliberately development-only local identity adapter for isolated functional review;
+- governed campaign creation/context, guided intake, Candidate evidence/approval, Team organization/readiness, Training Academy, Strategy human decision, Operations roadmap and immutable Daily War Room snapshot workflows;
+- a server-rendered ES/EN Next.js application with exact-authorized mutation controls, mobile/keyboard/reduced-motion behavior and WCAG 2.2 A/AA automated review;
+- internal outbox processing, bounded retries/dead-letter state, sanitized observability hooks, recovery verification and fail-closed rollback policy;
+- protected GitHub CI covering quality/contracts, PostgreSQL/RLS, dependency audit, SBOM/provenance, browser review, secret scan, CodeQL and constrained-stack E2E.
 
-These are local foundations, not a production system. CampaignOS still lacks a live identity/login/recovery and session lifecycle, membership administration, authorization enforcement across all campaign-domain writes and workers, broader candidate/approval/assignment/artifact persistence adapters and APIs, external event transport and worker administration, production object storage, a dynamic application frontend, Terraform/AWS environments, protected-branch evidence, backup/restore evidence, independent security/privacy/domain approvals and production deployment approval.
+The complete CI-equivalent PostgreSQL/API/browser journey can create a governed campaign draft and continue through Candidate → Team → Strategy → Operations → War Room with persistence after reload and `external_effects=NONE`. This is evidence for isolated internal product use, not production authorization.
 
-The public GitHub Pages site is classified as `DEMO_NON_PRODUCTION`. It serves static snapshots, is not a SaaS runtime, and is not evidence of production readiness. Its workflow is manual-only and requires the explicit confirmation value `DEMO_NON_PRODUCTION`.
+Production remains blocked because CampaignOS does not yet have a production-verified live identity/login/recovery/MFA lifecycle, managed staging/production runtime, managed backup/PITR, deployed telemetry and alert routing, accepted RPO/RTO exercises, independent security/privacy/legal/domain/operational approvals, or explicit human production approval. The development identity must not be exposed as public or production authentication.
+
+The public GitHub Pages site is a static non-production review surface and never satisfies production gates. The authoritative controlled-use decision is `program/controlled-use-readiness.json`; the production decision remains `program/release-readiness.json`.
 
 ## Program truth
 
 - [Current-state assessment](program/current-state-assessment.md)
 - [Production-gap matrix](program/production-gap-matrix.md)
+- [Controlled-use readiness](program/controlled-use-readiness.json)
+- [Production release readiness](program/release-readiness.json)
 - [Program state](program/program-state.json)
 - [Task graph](program/task-graph.yaml)
 - [Task ledger](program/task-ledger.yaml)
@@ -73,7 +70,7 @@ make functional-dev
 make functional-down
 ```
 
-Functional mode applies migrations, seeds one local development identity with five exact grants, and runs the real PostgreSQL/FastAPI/Next.js guided-intake start/update journey. Before startup it checks the loopback ports for PostgreSQL, API, S3Mock, Mailpit and Next.js. Available configured ports are preserved; occupied ports are replaced with unique ephemeral ports and reported explicitly. The development identity is rejected outside `development`; it is not production authentication.
+Functional mode applies migrations, seeds the bounded development operator with 26 exact grants for the deterministic existing-campaign workflow, and runs the real PostgreSQL/FastAPI/Next.js application. The CI-equivalent isolated full-journey harness adds exactly one tenant campaign-create grant (27 total) and verifies Candidate, Team/Training, Strategy, Operations and War Room persistence. Before startup the local launcher checks loopback ports for PostgreSQL, API, S3Mock, Mailpit and Next.js. Available configured ports are preserved; occupied ports are replaced with unique ephemeral ports and reported explicitly. The development identity is rejected outside `development`; it is not shared or production authentication.
 
 `make test-postgres` requires an explicitly isolated `CAMPAIGNOS_TEST_DATABASE_URL` whose database name ends in `_test`. The end-to-end script creates a unique Compose project, applies and checks the Alembic migration, verifies dependency readiness, and removes its containers and volumes on exit. S3Mock accepts dummy credentials and is strictly a local test service; it is not a production storage design.
 

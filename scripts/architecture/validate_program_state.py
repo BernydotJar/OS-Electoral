@@ -151,6 +151,7 @@ REQUIRED_PROHIBITED_CAPABILITIES = {
 REQUIRED_PROGRAM_ARTIFACTS = {
     "program/autoskills-review.md",
     "program/context7-evidence.md",
+    "program/controlled-use-readiness.json",
     "program/current-state-assessment.md",
     "program/graph-harness-execution.json",
     "program/iteration-log.md",
@@ -202,6 +203,30 @@ def merged_pr_numbers_from_git() -> set[int]:
     return merged
 
 
+def current_git_branch_and_head() -> tuple[str, str]:
+    """Return the checked-out branch and exact HEAD for live-main reconciliation."""
+
+    git_executable = shutil.which("git")
+    require(git_executable is not None, "live Git reconciliation requires git")
+    branch_result = subprocess.run(  # noqa: S603 - trusted executable; fixed arguments
+        [git_executable, "-C", str(ROOT), "branch", "--show-current"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    head_result = subprocess.run(  # noqa: S603 - trusted executable; fixed arguments
+        [git_executable, "-C", str(ROOT), "rev-parse", "HEAD"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    require(
+        branch_result.returncode == 0 and head_result.returncode == 0,
+        "live Git reconciliation could not read branch/HEAD",
+    )
+    return branch_result.stdout.strip(), head_result.stdout.strip()
+
+
 def task_delivery_pull_requests(entry: dict[str, Any]) -> set[int]:
     """Return PRs that directly deliver a task, excluding dependency/base PR references."""
 
@@ -219,7 +244,7 @@ def task_delivery_pull_requests(entry: dict[str, Any]) -> set[int]:
 
 
 def validate_live_git_reconciliation() -> None:
-    """Reject stale ledger state when its delivery PR is already reachable in Git."""
+    """Reject stale delivery state and stale canonical main when observable from Git."""
 
     task_ledger = load_json(TASK_LEDGER)
     merged_pull_requests = merged_pr_numbers_from_git()
@@ -232,6 +257,15 @@ def validate_live_git_reconciliation() -> None:
             "live Git merge drift: "
             f"{entry['task_id']} delivery PR(s) {sorted(observed)} are reachable in Git "
             f"but ledger status is {entry['status']}",
+        )
+
+    branch, head = current_git_branch_and_head()
+    if branch == "main":
+        manifest = load_json(MANIFEST)
+        canonical_main = manifest["github_state"]["cumulative_merge"]["main_sha"]
+        require(
+            head == canonical_main,
+            f"live Git main SHA drift: HEAD {head} != canonical {canonical_main}",
         )
 
 

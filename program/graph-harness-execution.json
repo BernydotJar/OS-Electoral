@@ -8,7 +8,7 @@
   },
   "target": {
     "repository": "https://github.com/BernydotJar/OS-Electoral",
-    "revision": "f118cef55554914273f88d74be0dcea3ed2098dc"
+    "revision": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9"
   },
   "canonical_sources": {
     "manifest": "architecture/program-state.json",
@@ -26,25 +26,48 @@
     "blocked": "BLOCKED_BY_DEPENDENCY_OR_HUMAN_BLOCKED"
   },
   "scheduler": {
-    "evaluated_at": "2026-08-17",
+    "evaluated_at": "2026-08-29",
     "one_active_feature": true,
-    "active_feature": null,
+    "active_feature": "C3-RELEASE-002",
     "ready_nodes": [],
     "selected_node": {
-      "id": "C3-FIRMES-001",
-      "title": "Authenticated Firmes adapter after public-contract discovery",
+      "id": "C3-RELEASE-002",
+      "title": "Final controlled-use readiness and canonical release reconciliation",
       "mode": "SHIP",
-      "state": "spec_ready",
-      "human_approval": "PENDING",
+      "state": "review",
+      "human_approval": "APPROVED",
       "dependencies": [
-        "C3-FRONT-015"
+        "C3-FRONT-015",
+        "C3-RELEASE-001",
+        "C3-TRAINING-001"
       ],
       "specs": [
-        "specs/C3-FIRMES-001/requirements.md",
-        "specs/C3-FIRMES-001/design.md",
-        "specs/C3-FIRMES-001/tasks.md"
+        "specs/C3-RELEASE-002/requirements.md",
+        "specs/C3-RELEASE-002/design.md",
+        "specs/C3-RELEASE-002/tasks.md"
       ],
-      "selection_reason": "C3-FRONT-015 is merged and post-merge green. No other executable roadmap node remains; the bounded FIRMES reference integration has a complete specification but must not become active without explicit human approval."
+      "selection_reason": "The final controlled-use review found release-governance drift after all prior product lifecycle nodes merged: operator documentation and canonical main state were stale and no machine-readable state separated internal usability from production release readiness.",
+      "approval_receipt": {
+        "recorded_at": "2026-08-29T13:51:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly requested a final Graph Engineering product-completion review because CampaignOS now needs to be used, and directed the Graph Harness SHIP lifecycle to continue until a valid terminal state.",
+        "scope": "Final controlled-use readiness review, documentation/program reconciliation, fail-closed readiness validation, tests and review-branch publication only; no production deployment, paid cloud resources, Firmes implementation, citizen contact, targeting, persuasion, publication, spending or mobilization."
+      },
+      "review_artifact": "progress/review_C3-RELEASE-002.md",
+      "local_evidence": [
+        "docs/testing/c3-release-002-evidence.md",
+        "program/validations/c3-release-002.json",
+        "program/controlled-use-readiness.json",
+        "progress/review_C3-RELEASE-002.md"
+      ],
+      "hosted_verification": {
+        "pull_request": 192,
+        "verified_head": "da0c79fe724b4d4d7c811040b936f5d2c8fe2873",
+        "campaignos_ci_run": 33273015280,
+        "runtime_visual_run": 33273015296,
+        "conclusion": "SUCCESS",
+        "final_merge_gate": "GITHUB_REQUIRED_CHECKS_ON_CURRENT_PR_HEAD_AND_HUMAN_MERGE"
+      }
     },
     "blocked_nodes": [
       {
@@ -102,36 +125,28 @@
     }
   },
   "active_increment": {
-    "id": "C3-FRONT-015",
-    "status": "MERGED_TO_MAIN",
-    "branch": "agent/operations-complete-ui-lifecycle",
-    "base_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
+    "id": "C3-RELEASE-002",
+    "status": "CI_GREEN",
+    "branch": "agent/final-controlled-use-readiness",
+    "base_main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "AWAIT_C3_FIRMES_001_HUMAN_APPROVAL",
-    "implementation_commit": "55153857c59d17ba11c1e608d8f506b47b3517a3",
-    "final_evidence_head": "03ee6a666eb0476b58a27179b10e8c2be9c68ceb",
-    "pull_request": 182,
-    "integrated_main_sha": "f118cef55554914273f88d74be0dcea3ed2098dc",
-    "post_merge_campaignos_ci_run": 32041127871,
-    "post_merge_campaignos_ci_attempt": 2,
-    "post_merge_campaignos_ci_conclusion": "SUCCESS"
+    "next_action": "AWAIT_HUMAN_MERGE_GATE"
   },
   "post_merge_reconciliation": {
-    "id": "repair:c3-front-014-postmerge-ledger-2026-08-13",
+    "id": "repair:c3-front-015-postmerge-ledger-2026-08-17",
     "status": "COMPLETED",
-    "merged_pr": 178,
-    "integrated_main_sha": "57f0c4649cb5525647850ccc2c75b84240460e0c",
-    "failed_post_merge_run": 31768163466,
-    "failure_class": "PROGRAM_STATE_RECONCILIATION_ONLY",
-    "functional_onboarding": "SUCCESS",
-    "external_effects": "NONE",
-    "reconciliation_pr": 179,
-    "reconciliation_head": "af063d2a67c820377fc1b6a01693889625a5d598",
-    "exact_head_campaignos_ci_run": 31768884886,
-    "exact_head_runtime_visual_run": 31768884792,
-    "post_reconciliation_main_ci_run": 31769160111,
-    "post_reconciliation_main_ci_conclusion": "SUCCESS"
+    "merged_pr": 182,
+    "integrated_main_sha": "f118cef55554914273f88d74be0dcea3ed2098dc",
+    "reconciliation_pr": 183,
+    "reconciliation_head": "d06e70f93bce39d593f1b88d838054d47e815d55",
+    "reconciliation_main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
+    "exact_head_campaignos_ci_run": 32041819044,
+    "exact_head_runtime_visual_run": 32041819045,
+    "post_reconciliation_main_ci_run": 32042116667,
+    "post_reconciliation_main_ci_attempt": 2,
+    "post_reconciliation_main_ci_conclusion": "SUCCESS",
+    "external_effects": "NONE"
   }
 }

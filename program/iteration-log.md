@@ -816,3 +816,14 @@
 - PR #182 merged by squash to `main@f118cef55554914273f88d74be0dcea3ed2098dc` after final exact-head CampaignOS CI #271 and Runtime Visual #242 passed.
 - Post-merge CampaignOS CI #272 passed on attempt 2; attempt 1 failed only during runner setup because GitHub returned HTTP 429 while downloading the pinned Gitleaks action, so no secret scan executed until the successful retry.
 - C3-FRONT-015 is reconciled to `MERGED_TO_MAIN`; the Graph Harness has no active feature and selects `C3-FIRMES-001` as `spec_ready` / human approval `PENDING`. Firmes implementation, production deployment and paid cloud resources remain unauthorized.
+
+## 2026-08-29 — C3-RELEASE-002 final controlled-use readiness review
+
+- Recovered protected `main@1b32e46304b47c04cf44510c4b5f1b29bb9391b9`, current GitHub maintenance state, campaign gates and the pinned Graph Harness projection before changing program state.
+- Verified the current product rather than historical evidence: frontend 55 files / 250 tests plus lint/type/build/audit zero; backend 872 passed / 13 skipped after release-repair tests at 90.03% coverage; ES/EN/mobile/keyboard/reduced-motion/WCAG browser review passed with zero axe violations/errors/unexpected hosts.
+- Ran the exact hosted-CI functional host harness against isolated PostgreSQL through migration `20260801_0013`: 27-grant full journey passed campaign draft/context → Candidate 9/9 → Team 8/8 + human role coverage → Strategy `DECIDED_INTERNAL` → Operations decision/learning → immutable War Room snapshot with reload persistence and `external_effects=NONE`.
+- Critic found three HIGH release-governance defects: stale operator/current architecture documentation, canonical main state lagging behind PR #183, and no machine-readable distinction between a usable internal product and production release readiness.
+- Fixed documentation and canonical Git/GitHub reconciliation, added a live-main SHA regression, and introduced `program/controlled-use-readiness.json` with 11 mandatory PASS gates plus fail-closed validation/adversarial tests.
+- Installed Gitleaks `8.30.1` from the official release with checksum verification; the effective worktree scan passed with no leaks. Supply-chain policy, program truth, campaign safety and production release validator remain green.
+- Decision is `READY_FOR_CONTROLLED_INTERNAL_USE` in isolated internal environments only. Production remains `BLOCKED` / `DENY_RELEASE`; Firmes remains human-approval pending; no public development-auth exposure or campaign external effects are authorized.
+- Exact-head hosted CampaignOS CI and Runtime Visual Review remain the next publication gate. Merge remains explicitly human-gated.

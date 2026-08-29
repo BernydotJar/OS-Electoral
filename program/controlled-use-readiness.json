@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "increment": "C3-RELEASE-002",
+  "assessed_at": "2026-08-29",
+  "source_branch": "agent/final-controlled-use-readiness",
+  "base_main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
+  "decision": "READY_FOR_CONTROLLED_INTERNAL_USE",
+  "production_status": "BLOCKED",
+  "production_release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "gates": [
+    {
+      "id": "current-main-reconciled",
+      "status": "PASS",
+      "evidence": [
+        "architecture/program-state.json"
+      ],
+      "reason": "The assessment is bound to the current protected-main baseline and canonical Git/GitHub state is reconciled."
+    },
+    {
+      "id": "backend-quality",
+      "status": "PASS",
+      "evidence": [
+        "docs/testing/c3-release-002-evidence.md"
+      ],
+      "reason": "Locked backend lint, formatting, typing and full test/coverage verification pass."
+    },
+    {
+      "id": "frontend-quality",
+      "status": "PASS",
+      "evidence": [
+        "docs/testing/c3-release-002-evidence.md"
+      ],
+      "reason": "Locked frontend lint, typing, tests, production build and dependency audit pass."
+    },
+    {
+      "id": "independent-browser-review",
+      "status": "PASS",
+      "evidence": [
+        "docs/testing/c3-release-002-evidence.md"
+      ],
+      "reason": "Independent ES/EN/mobile/keyboard/reduced-motion/WCAG browser review passes without unexpected external hosts or browser errors."
+    },
+    {
+      "id": "postgresql-api-browser-journey",
+      "status": "PASS",
+      "evidence": [
+        "docs/testing/c3-release-002-evidence.md"
+      ],
+      "reason": "The CI-equivalent host harness completes the full persisted campaign journey through the War Room."
+    },
+    {
+      "id": "exact-authorization",
+      "status": "PASS",
+      "evidence": [
+        "docs/testing/c3-release-002-evidence.md"
+      ],
+      "reason": "The journey preserves exact-grant checks, version/idempotency controls and no implicit authority."
+    },
+    {
+      "id": "operator-documentation-current",
+      "status": "PASS",
+      "evidence": [
+        "README.md",
+        "docs/product/functional-onboarding.md",
+        "docs/operations/release-readiness.md",
+        "program/production-gap-matrix.md",
+        "docs/program-architecture.md"
+      ],
+      "reason": "Current operator and release guidance describes the integrated product and current limitations."
+    },
+    {
+      "id": "development-identity-contained",
+      "status": "PASS",
+      "evidence": [
+        "docs/security/secure-development.md",
+        "docs/product/functional-onboarding.md"
+      ],
+      "reason": "The local verifier is explicitly development-only and is not approved for shared public or production exposure."
+    },
+    {
+      "id": "firmes-boundary",
+      "status": "PASS",
+      "evidence": [
+        "research/firmes-integration-discovery.md",
+        "specs/C3-FIRMES-001/requirements.md"
+      ],
+      "reason": "FIRMES remains outside executable scope while its SHIP specification awaits human approval."
+    },
+    {
+      "id": "production-separation",
+      "status": "PASS",
+      "evidence": [
+        "program/release-readiness.json",
+        "program/production-gap-matrix.md"
+      ],
+      "reason": "Controlled-use readiness cannot change production BLOCKED/DENY_RELEASE or bypass managed-environment and independent-review gates."
+    },
+    {
+      "id": "external-effects-none",
+      "status": "PASS",
+      "evidence": [
+        "docs/testing/c3-release-002-evidence.md"
+      ],
+      "reason": "Verification records no contact, targeting, persuasion, publication, spending, mobilization or other campaign external effect."
+    }
+  ],
+  "identity_boundary": {
+    "mode": "DEVELOPMENT_ONLY_LOCAL_OR_ISOLATED",
+    "public_exposure_allowed": false,
+    "production_allowed": false,
+    "live_oidc_ready": false
+  },
+  "allowed_uses": [
+    "Isolated internal operator review of the complete CampaignOS workflow",
+    "Internal product demonstration and training using synthetic, development, or otherwise explicitly approved non-sensitive campaign data",
+    "Local verification of campaign governance workflows and persisted evidence"
+  ],
+  "prohibited_uses": [
+    "PUBLIC_EXPOSURE_WITH_DEVELOPMENT_IDENTITY",
+    "PRODUCTION_DEPLOYMENT",
+    "FIRMES_SYNC_WITHOUT_APPROVAL",
+    "CITIZEN_CONTACT",
+    "INDIVIDUAL_TARGETING_OR_PROFILING",
+    "PERSUASION_AUTOMATION",
+    "PUBLICATION",
+    "SPENDING",
+    "MOBILIZATION"
+  ],
+  "human_gates": {
+    "production_approval": {
+      "recorded": false,
+      "receipt": null
+    },
+    "firmes_integration_approval": {
+      "recorded": false,
+      "receipt": null
+    }
+  },
+  "production_blockers": [
+    "No managed staging or production runtime exists.",
+    "Live OIDC login, recovery, MFA and provider operations are not production-verified.",
+    "Managed backup/PITR, deployed telemetry/alert routing and accepted RPO/RTO are not verified.",
+    "Independent security, privacy, legal, domain and operational approvals are not recorded.",
+    "Stable zero-cost full-product shared hosting remains unresolved in GitHub issue #181.",
+    "Explicit human production approval is absent."
+  ],
+  "graph_engineering_debt": [
+    "CampaignOS remains pinned to Graph Harness revision 0eb0d5fe09e3b1ecaf561b4a1cc9b32510480a26; the current framework main additionally provides the typed executable project/event runtime. Runtime-pin migration is a separate delivery-governance increment and is not required for controlled product use."
+  ]
+}

@@ -405,3 +405,15 @@ This log records scoped implementation decisions. It does not grant political, l
 - `evidence`: `program/rollback-readiness.json`, `backend/src/campaignos/operability/rollback.py`, `backend/tests/test_release_rollback.py`, `docs/operations/release-rollback.md`.
 - `rationale`: Existing downgrade functions remove persisted domain data or security controls and therefore do not prove safe recovery. Unknown compatibility and missing authority must fail closed.
 - `consequences`: Only revision `20260729_0012` currently permits selecting a previous immutable application commit while retaining schema head. The repository rehearsal creates no deployment, restore or production claim.
+
+## DEC-2026-08-29-001 — Separate controlled internal use from production release authority
+
+- `status`: `ACCEPTED_FOR_REVIEW`
+- `scope`: `C3-RELEASE-002`
+- `decision`: Classify the current complete CampaignOS workflow as `READY_FOR_CONTROLLED_INTERNAL_USE` only when every controlled-use gate passes, while independently requiring production `BLOCKED`, `DENY_RELEASE`, development-auth containment, Firmes approval absence and `external_effects=NONE`.
+- `baseline`: protected `main@1b32e46304b47c04cf44510c4b5f1b29bb9391b9` after reconciliation PR `#183`.
+- `evidence`: `program/controlled-use-readiness.json`, `docs/testing/c3-release-002-evidence.md`, 55/250 frontend verification, 872/13 Python verification at 90.03%, independent browser PASS, PostgreSQL/API/browser complete-journey PASS, Gitleaks 8.30.1 worktree PASS.
+- `alternatives_considered`: (1) continue treating every non-production state as unusable, rejected because the complete isolated product journey now passes and that wording hides actionable readiness; (2) infer production readiness from green repository/browser evidence, rejected because managed runtime, live identity, resilience, independent reviews and human production approval remain absent.
+- `risks`: operators could expose the development verifier publicly, confuse internal evidence with production approval, or treat aggregate/internal workflows as authority for external political action.
+- `mitigations`: machine-readable prohibited-use inventory, development identity `public_exposure_allowed=false`, production validator unchanged, Firmes approval false, exact external-effects `NONE`, current operator/release documentation and protected human merge/deploy gates.
+- `consequences`: CampaignOS may be used in isolated internal product review/training/operator workflows with approved non-sensitive data. Shared public hosting, production infrastructure, Firmes synchronization, citizen contact, targeting/profiling, persuasion, publication, spending and mobilization remain separately prohibited or human-gated.

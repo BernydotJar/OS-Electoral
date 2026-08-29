@@ -364,3 +364,18 @@ def test_graph_harness_selected_spec_files_must_exist(
     monkeypatch.setattr(validator, "load_json", load_json)
     with pytest.raises(AssertionError, match="missing Graph Harness feature spec"):
         validator.validate_graph_harness_execution(payload)
+
+
+def test_live_git_reconciliation_rejects_stale_canonical_main(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    validator = load_validator()
+    canonical = manifest()["github_state"]["cumulative_merge"]["main_sha"]
+    monkeypatch.setattr(validator, "merged_pr_numbers_from_git", lambda: set())
+    monkeypatch.setattr(validator, "current_git_branch_and_head", lambda: ("main", "0" * 40))
+
+    with pytest.raises(AssertionError, match="live Git main SHA drift"):
+        validator.validate_live_git_reconciliation()
+
+    monkeypatch.setattr(validator, "current_git_branch_and_head", lambda: ("main", canonical))
+    validator.validate_live_git_reconciliation()

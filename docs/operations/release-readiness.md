@@ -6,7 +6,9 @@ This procedure prepares evidence for a release decision. It does not authorize m
 
 The authoritative machine-readable record is `program/release-readiness.json`.
 
-Current result: `DENY_RELEASE` / production `BLOCKED`.
+Current production result: `DENY_RELEASE` / production `BLOCKED`.
+
+The separate `program/controlled-use-readiness.json` record may authorize isolated internal use when all of its local/product gates pass. That decision never changes production status or creates external campaign authority.
 
 ## Required sequence
 
@@ -48,6 +50,9 @@ Current result: `DENY_RELEASE` / production `BLOCKED`.
 - GitHub Pages is always `DEMO_NON_PRODUCTION` and cannot satisfy staging or production evidence.
 - Production deployment remains a separate human-gated action.
 
-## Current next safe action
+## Current next safe actions
 
-Human-review the complete `C3-TRAINING-001` SHIP specification. Implementation must not begin until a scoped approval receipt exists. Environment creation, Terraform apply, registry publication, managed rollback and deployment remain separately prohibited until authorized.
+- Use the complete product only under the boundaries validated by `program/controlled-use-readiness.json` while production remains blocked.
+- Keep `C3-FIRMES-001` at `spec_ready` until its separate SHIP specification receives explicit human approval.
+- Resolve the stable full-product hosting dependency tracked in GitHub issue `#181` before relying on a shared review URL; never expose the development identity as public authentication.
+- Create managed staging, run Terraform apply, publish production artifacts, execute managed rollback, or deploy production only after their explicit infrastructure/release gates are authorized.

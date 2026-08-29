@@ -14,7 +14,7 @@ COMPOSE = docker compose --env-file $(ENV_FILE)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap dev functional-dev functional-down dev-seed test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-functional-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify recovery-verify performance-postgres rollback-verify
+.PHONY: help bootstrap dev functional-dev functional-down dev-seed test test-postgres lint format-check typecheck migrate e2e verify program-verify compose-config down logs ps worker-once frontend-install frontend-verify frontend-e2e frontend-functional-e2e frontend-image-verify secret-scan-worktree supply-chain-verify supply-chain-evidence github-security-verify terraform-verify security-verify recovery-verify performance-postgres rollback-verify controlled-use-verify
 
 help: ## Show the available developer commands.
 	@awk 'BEGIN {FS = ":.*## "; printf "CampaignOS developer commands:\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -103,6 +103,9 @@ github-security-verify: ## Compare live GitHub controls with the versioned repos
 security-verify: ## Validate data policy and append-only security declarations.
 	$(UV) run --locked python scripts/security/verify_security_policy.py
 
+controlled-use-verify: ## Validate fail-closed readiness for isolated internal product use.
+	$(UV) run --locked python scripts/release/validate_controlled_use_readiness.py
+
 recovery-verify: ## Back up PostgreSQL and prove an isolated exact restore.
 	@test -n "$$CAMPAIGNOS_RECOVERY_DATABASE_URL" || { echo "CAMPAIGNOS_RECOVERY_DATABASE_URL is required" >&2; exit 1; }
 	$(UV) run --locked python scripts/operations/verify_postgres_recovery.py \
@@ -142,7 +145,7 @@ migrate: ## Upgrade an explicitly configured database to the reviewed Alembic he
 e2e: compose-config ## Build an isolated stack and exercise every local service.
 	ENV_FILE="$(ENV_FILE)" ./scripts/dev/e2e.sh
 
-program-verify: security-verify ## Validate machine-readable program truth, release readiness, required evals and safety.
+program-verify: security-verify controlled-use-verify ## Validate machine-readable program truth, controlled-use readiness, production release readiness, required evals and safety.
 	$(UV) run --locked python scripts/architecture/validate_program_state.py
 	$(UV) run --locked python scripts/release/validate_release_readiness.py
 	$(UV) run --locked python scripts/architecture/validate_eval_catalog.py
