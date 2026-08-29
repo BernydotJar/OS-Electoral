@@ -1664,8 +1664,8 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Final evidence-only head must pass exact-head hosted CampaignOS CI and Runtime Visual Review",
-        "Merge remains an explicit human gate; production remains separately blocked"
+        "Merge remains an explicit human gate; GitHub required checks must be green on the current PR head",
+        "Production remains separately blocked by managed-environment and human-production gates"
       ],
       "approval": {
         "recorded_at": "2026-08-29T13:51:00-06:00",
@@ -1687,7 +1687,7 @@
         "gitleaks": "PASS_8_30_1_CHECKSUM_VERIFIED_NO_LEAKS"
       },
       "hosted_verification": {
-        "state": "PASS_IMPLEMENTATION_HEAD_FINAL_EVIDENCE_REVALIDATION_PENDING",
+        "state": "PASS_IMPLEMENTATION_HEAD_CURRENT_PR_HEAD_REQUIRED_CHECKS_ENFORCED",
         "pull_request": 192,
         "verified_head": "da0c79fe724b4d4d7c811040b936f5d2c8fe2873",
         "campaignos_ci_run": 33273015280,
@@ -1697,7 +1697,7 @@
         "runtime_visual_run": 33273015296,
         "runtime_visual_number": 245,
         "runtime_visual": "SUCCESS",
-        "final_evidence_head": "PENDING"
+        "final_merge_gate": "GITHUB_REQUIRED_CHECKS_CURRENT_PR_HEAD_PLUS_HUMAN_MERGE"
       }
     }
   ]

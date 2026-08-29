@@ -18,7 +18,7 @@ Reconciled current product guidance, added controlled-use readiness contracts/va
 
 ## Independent Verifier
 
-Local product and browser verification passed. PR #192 implementation head `da0c79fe724b4d4d7c811040b936f5d2c8fe2873` passed CampaignOS CI #283 and Runtime Visual #245. Final evidence-only exact-head revalidation remains before the human merge gate.
+Local product and browser verification passed. PR #192 implementation head `da0c79fe724b4d4d7c811040b936f5d2c8fe2873` passed CampaignOS CI #283 and Runtime Visual #245. GitHub required checks on the current PR head are the final technical gate; merge remains human-only and production remains separately blocked.
 
 ## Release boundary
 

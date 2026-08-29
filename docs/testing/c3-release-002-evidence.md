@@ -133,4 +133,4 @@ PR `#192` implementation/review head `da0c79fe724b4d4d7c811040b936f5d2c8fe2873` 
 - PostgreSQL migrations/RLS, recovery, constrained stack, dependency audit, supply-chain, secret scan, Terraform plan-only and CodeQL: **SUCCESS**;
 - Runtime Visual Review #245 (`33273015296`): **SUCCESS**.
 
-This evidence update creates a documentation/program-state head. That final exact head must pass the same hosted gates before human merge.
+The merge gate is intentionally non-self-referential: GitHub must report CampaignOS CI and Runtime Visual Review green on the **current PR head** at merge time. Exact final-head run IDs are retained in PR #192 release-gate comments. No commit may grant merge or production authority.

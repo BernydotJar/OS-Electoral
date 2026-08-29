@@ -65,7 +65,7 @@
     }
   ],
   "hosted_verification": {
-    "state": "PASS_IMPLEMENTATION_HEAD_FINAL_EVIDENCE_REVALIDATION_PENDING",
+    "state": "PASS_IMPLEMENTATION_HEAD_CURRENT_PR_HEAD_REQUIRED_CHECKS_ENFORCED",
     "pull_request": 192,
     "verified_head": "da0c79fe724b4d4d7c811040b936f5d2c8fe2873",
     "campaignos_ci": {
@@ -80,6 +80,10 @@
       "run_number": 245,
       "conclusion": "SUCCESS"
     },
-    "final_evidence_head": "PENDING"
+    "final_merge_gate": {
+      "policy": "CURRENT_PR_HEAD_MUST_PASS_CAMPAIGNOS_CI_AND_RUNTIME_VISUAL_REVIEW",
+      "evidence_location": "GitHub PR #192 required checks and release-gate comments",
+      "merge_authority": "HUMAN_ONLY"
+    }
   }
 }

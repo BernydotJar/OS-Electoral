@@ -1,6 +1,6 @@
 # C3-RELEASE-002 review
 
-Review state: `CI_GREEN_IMPLEMENTATION_HEAD_FINAL_EVIDENCE_REVALIDATION_PENDING`.
+Review state: `CI_GREEN_HUMAN_MERGE_GATE`.
 
 ## Producer result
 
@@ -35,4 +35,4 @@ Eligible for review-branch publication and exact-head hosted verification only. 
 
 ## Hosted result
 
-PR #192 head `da0c79fe724b4d4d7c811040b936f5d2c8fe2873` passed CampaignOS CI #283 (`33273015280`) and Runtime Visual #245 (`33273015296`). A final evidence-only head will be revalidated before the human merge gate.
+PR #192 head `da0c79fe724b4d4d7c811040b936f5d2c8fe2873` passed CampaignOS CI #283 (`33273015280`) and Runtime Visual #245 (`33273015296`). GitHub required checks on the current PR head are the final technical merge gate; merge itself remains human-only.

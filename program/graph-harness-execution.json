@@ -66,7 +66,7 @@
         "campaignos_ci_run": 33273015280,
         "runtime_visual_run": 33273015296,
         "conclusion": "SUCCESS",
-        "final_evidence_head": "PENDING_EXACT_HEAD_REVERIFY"
+        "final_merge_gate": "GITHUB_REQUIRED_CHECKS_ON_CURRENT_PR_HEAD_AND_HUMAN_MERGE"
       }
     },
     "blocked_nodes": [
@@ -132,7 +132,7 @@
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUBLISH_FINAL_EVIDENCE_HEAD_AND_REVERIFY_EXACT_HEAD_CI"
+    "next_action": "AWAIT_HUMAN_MERGE_GATE"
   },
   "post_merge_reconciliation": {
     "id": "repair:c3-front-015-postmerge-ledger-2026-08-17",

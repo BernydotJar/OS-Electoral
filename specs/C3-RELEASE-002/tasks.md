@@ -13,5 +13,5 @@
 - [x] Run Independent Verifier after repairs.
 - [x] Persist validation, review and iteration evidence.
 - [x] Commit and publish the review branch; implementation head `da0c79fe724b4d4d7c811040b936f5d2c8fe2873` passed CampaignOS CI #283 and Runtime Visual #245.
-- [ ] Publish and revalidate the final evidence-only head.
+- [x] Publish the final evidence state; enforce CampaignOS CI + Runtime Visual as required checks on the current PR head before human merge.
 - [ ] Stop at the human merge gate unless separately authorized.
