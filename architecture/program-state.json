@@ -1376,7 +1376,7 @@
       "id": "C3-RELEASE-002",
       "workstream": "WS-15",
       "title": "Final controlled-use readiness and canonical release reconciliation",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "depends_on": [
         "C3-FRONT-015",
         "C3-RELEASE-001",

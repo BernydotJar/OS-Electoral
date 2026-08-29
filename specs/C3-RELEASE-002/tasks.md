@@ -12,5 +12,6 @@
 - [x] Run Critic / Red Team against authorization, dev-auth exposure, external effects, Firmes and production boundaries.
 - [x] Run Independent Verifier after repairs.
 - [x] Persist validation, review and iteration evidence.
-- [ ] Commit and publish the review branch; obtain exact-head hosted CI evidence.
+- [x] Commit and publish the review branch; implementation head `da0c79fe724b4d4d7c811040b936f5d2c8fe2873` passed CampaignOS CI #283 and Runtime Visual #245.
+- [ ] Publish and revalidate the final evidence-only head.
 - [ ] Stop at the human merge gate unless separately authorized.

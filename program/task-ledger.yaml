@@ -1651,7 +1651,7 @@
     {
       "task_id": "C3-RELEASE-002",
       "owner": "WS-15/WS-06/WS-14",
-      "status": "REVIEWED",
+      "status": "CI_GREEN",
       "evidence": [
         "specs/C3-RELEASE-002/requirements.md",
         "specs/C3-RELEASE-002/design.md",
@@ -1664,7 +1664,7 @@
       ],
       "external_effects": "NONE",
       "blockers": [
-        "Exact-head hosted CampaignOS CI and Runtime Visual Review must pass before merge",
+        "Final evidence-only head must pass exact-head hosted CampaignOS CI and Runtime Visual Review",
         "Merge remains an explicit human gate; production remains separately blocked"
       ],
       "approval": {
@@ -1687,9 +1687,17 @@
         "gitleaks": "PASS_8_30_1_CHECKSUM_VERIFIED_NO_LEAKS"
       },
       "hosted_verification": {
-        "state": "PENDING_EXACT_HEAD",
-        "pull_request": null,
-        "verified_head": null
+        "state": "PASS_IMPLEMENTATION_HEAD_FINAL_EVIDENCE_REVALIDATION_PENDING",
+        "pull_request": 192,
+        "verified_head": "da0c79fe724b4d4d7c811040b936f5d2c8fe2873",
+        "campaignos_ci_run": 33273015280,
+        "campaignos_ci_number": 283,
+        "campaignos_ci": "SUCCESS",
+        "functional_onboarding": "SUCCESS",
+        "runtime_visual_run": 33273015296,
+        "runtime_visual_number": 245,
+        "runtime_visual": "SUCCESS",
+        "final_evidence_head": "PENDING"
       }
     }
   ]

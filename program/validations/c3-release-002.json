@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "id": "C3-RELEASE-002",
-  "status": "REVIEWED_LOCAL",
+  "status": "CI_GREEN_IMPLEMENTATION_HEAD_FINAL_EVIDENCE_REVALIDATION_PENDING",
   "assessed_at": "2026-08-29",
   "base_main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
   "branch": "agent/final-controlled-use-readiness",
@@ -65,10 +65,21 @@
     }
   ],
   "hosted_verification": {
-    "state": "PENDING_EXACT_HEAD",
-    "pull_request": null,
-    "verified_head": null,
-    "campaignos_ci": null,
-    "runtime_visual_review": null
+    "state": "PASS_IMPLEMENTATION_HEAD_FINAL_EVIDENCE_REVALIDATION_PENDING",
+    "pull_request": 192,
+    "verified_head": "da0c79fe724b4d4d7c811040b936f5d2c8fe2873",
+    "campaignos_ci": {
+      "run_id": 33273015280,
+      "run_number": 283,
+      "conclusion": "SUCCESS",
+      "functional_onboarding": "SUCCESS",
+      "non_root_frontend_container": "SUCCESS"
+    },
+    "runtime_visual_review": {
+      "run_id": 33273015296,
+      "run_number": 245,
+      "conclusion": "SUCCESS"
+    },
+    "final_evidence_head": "PENDING"
   }
 }

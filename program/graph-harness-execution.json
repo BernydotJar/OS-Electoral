@@ -59,7 +59,15 @@
         "program/validations/c3-release-002.json",
         "program/controlled-use-readiness.json",
         "progress/review_C3-RELEASE-002.md"
-      ]
+      ],
+      "hosted_verification": {
+        "pull_request": 192,
+        "verified_head": "da0c79fe724b4d4d7c811040b936f5d2c8fe2873",
+        "campaignos_ci_run": 33273015280,
+        "runtime_visual_run": 33273015296,
+        "conclusion": "SUCCESS",
+        "final_evidence_head": "PENDING_EXACT_HEAD_REVERIFY"
+      }
     },
     "blocked_nodes": [
       {
@@ -118,13 +126,13 @@
   },
   "active_increment": {
     "id": "C3-RELEASE-002",
-    "status": "REVIEWED",
+    "status": "CI_GREEN",
     "branch": "agent/final-controlled-use-readiness",
     "base_main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
     "production_status": "BLOCKED",
     "release_decision": "DENY_RELEASE",
     "external_effects": "NONE",
-    "next_action": "PUSH_REVIEW_BRANCH_AND_VERIFY_EXACT_HEAD_CI"
+    "next_action": "PUBLISH_FINAL_EVIDENCE_HEAD_AND_REVERIFY_EXACT_HEAD_CI"
   },
   "post_merge_reconciliation": {
     "id": "repair:c3-front-015-postmerge-ledger-2026-08-17",
