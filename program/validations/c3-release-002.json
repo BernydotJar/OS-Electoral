@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "id": "C3-RELEASE-002",
+  "status": "REVIEWED_LOCAL",
+  "assessed_at": "2026-08-29",
+  "base_main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
+  "branch": "agent/final-controlled-use-readiness",
+  "approval": {
+    "recorded_at": "2026-08-29T13:51:00-06:00",
+    "source": "USER_EXPLICIT_APPROVAL",
+    "statement": "User explicitly requested a final Graph Engineering product-completion review because CampaignOS now needs to be used, and directed the Graph Harness SHIP lifecycle to continue until a valid terminal state.",
+    "scope": "Final controlled-use readiness review, documentation/program reconciliation, fail-closed readiness validation, tests and review-branch publication only; no production deployment, paid cloud resources, Firmes implementation, citizen contact, targeting, persuasion, publication, spending or mobilization."
+  },
+  "decision": "READY_FOR_CONTROLLED_INTERNAL_USE",
+  "production_status": "BLOCKED",
+  "production_release_decision": "DENY_RELEASE",
+  "external_effects": "NONE",
+  "verification": {
+    "program_baseline": "PASS_PRODUCTION_BLOCKED",
+    "frontend_test_files": 55,
+    "frontend_tests": 250,
+    "frontend_lint_type_build": "PASS",
+    "frontend_dependency_vulnerabilities": 0,
+    "python_passed": 872,
+    "python_skipped": 13,
+    "coverage_percent": 90.03,
+    "ruff": "PASS",
+    "mypy_source_files": 86,
+    "dynamic_browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
+    "functional_database_revision": "20260801_0013",
+    "functional_exact_grants": 27,
+    "candidate": "PASS_9_OF_9_CURRENT_VERSION_APPROVED",
+    "team": "PASS_8_OF_8_READY_FOR_HUMAN_REVIEW",
+    "strategy": "PASS_DECIDED_INTERNAL_VERSION_BOUND_HUMAN_DECISION",
+    "operations": "PASS_ROADMAP_DECISION_LEARNING_WAR_ROOM_SNAPSHOT",
+    "persistence_after_reload": "PASS",
+    "unexpected_outbound_hosts": 0,
+    "console_errors": 0,
+    "page_errors": 0,
+    "external_effects": "NONE",
+    "gitleaks_8_30_1": "PASS_CHECKSUM_VERIFIED_EFFECTIVE_WORKTREE_NO_LEAKS",
+    "supply_chain_policy": "PASS"
+  },
+  "critic_findings": [
+    {
+      "id": "C3-RELEASE-002-F1",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Operator and release documentation materially understated the integrated product and grant model.",
+      "repair": "Reconcile README, functional journey, release procedure and production-gap matrix to the current complete product while preserving production boundaries."
+    },
+    {
+      "id": "C3-RELEASE-002-F2",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "Canonical cumulative-main state was stale relative to protected GitHub main.",
+      "repair": "Reconcile PR #183/main SHA and add a live-main exact-SHA regression to program validation."
+    },
+    {
+      "id": "C3-RELEASE-002-F3",
+      "severity": "HIGH",
+      "status": "RESOLVED",
+      "finding": "No machine-readable state distinguished a complete controlled-use product from production release readiness.",
+      "repair": "Add a fail-closed controlled-use readiness record and validator that cannot grant production, Firmes or external effects."
+    }
+  ],
+  "hosted_verification": {
+    "state": "PENDING_EXACT_HEAD",
+    "pull_request": null,
+    "verified_head": null,
+    "campaignos_ci": null,
+    "runtime_visual_review": null
+  }
+}

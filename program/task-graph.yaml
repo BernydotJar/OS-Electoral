@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; kept dependency-free for bootstrap validation.",
-  "updated_at": "2026-08-17",
+  "updated_at": "2026-08-29",
   "tasks": [
     {
       "id": "C3-FOUND-001A",
@@ -580,6 +580,23 @@
         "Phases, workstreams, milestones, tasks, dependencies, blockers, human decisions, follow-ups and learning notes remain bounded to existing backend contracts and Team roles without autonomous task execution.",
         "Exactly authorized operators can create a daily War Room snapshot from the current roadmap version while backend-derived readiness, blocked work and critical-path information remain authoritative.",
         "ES/EN, read-only mutation absence, mobile, keyboard, reduced motion, WCAG, PostgreSQL/API/browser and complete repository gates pass with external_effects NONE and no citizen contact, targeting, persuasion, publication, spending or mobilization."
+      ]
+    },
+    {
+      "id": "C3-RELEASE-002",
+      "workstream": "WS-15",
+      "title": "Final controlled-use readiness and canonical release reconciliation",
+      "status": "REVIEWED",
+      "depends_on": [
+        "C3-FRONT-015",
+        "C3-RELEASE-001",
+        "C3-TRAINING-001"
+      ],
+      "acceptance": [
+        "Canonical Git/GitHub state is reconciled to the exact protected-main baseline and live-main validation rejects future silent SHA drift.",
+        "Complete frontend/backend, independent browser and PostgreSQL/API/browser journey evidence passes through Candidate, Team/Training, Strategy, Operations and War Room with persistence.",
+        "A fail-closed machine-readable record distinguishes READY_FOR_CONTROLLED_INTERNAL_USE from production BLOCKED/DENY_RELEASE and forbids public development auth, Firmes and external campaign effects.",
+        "Operator/release documentation matches the integrated product while managed environments, independent reviews and production approval remain explicit blockers."
       ]
     }
   ]

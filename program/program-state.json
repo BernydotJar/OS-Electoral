@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "product_name": "CampaignOS",
-  "updated_at": "2026-08-17",
-  "branch": "agent/operations-postmerge-reconcile-showcase",
-  "current_increment": "C3-FRONT-015",
-  "iteration_status": "MERGED_TO_MAIN",
+  "updated_at": "2026-08-29",
+  "branch": "agent/final-controlled-use-readiness",
+  "current_increment": "C3-RELEASE-002",
+  "iteration_status": "REVIEWED",
   "production_status": "BLOCKED",
   "production_status_reason": "One open CRITICAL platform finding remains. Application-layer tenant/principal rate limiting is merged and post-merge CI is green, but managed staging load, edge DDoS/WAF, cleanup scheduling, managed backups/PITR, deployed telemetry, alert routing, accepted RPO/RTO, live environments and independent human production approval remain absent.",
   "authoritative_manifest": "architecture/program-state.json",
@@ -105,8 +105,8 @@
     {
       "id": "WS-15",
       "name": "Documentation, Migration and Release",
-      "status": "RELEASE_ROLLBACK_MERGED_PRODUCTION_BLOCKED",
-      "next_increment": "C3-TRAINING-001"
+      "status": "CONTROLLED_USE_REVIEW_ACTIVE_PRODUCTION_BLOCKED",
+      "next_increment": "C3-RELEASE-002"
     }
   ],
   "ready_tasks": [],
@@ -488,7 +488,7 @@
     "restored_tree_matches_commit": "5b203ec7d52c87950778b67b298de5d9b0a7a6fb",
     "frontend_target_verified": true
   },
-  "active_local_increment": null,
+  "active_local_increment": "C3-RELEASE-002",
   "frontend_ci_fix_push_incident": {
     "classification": "TECHNICAL_DEFECT_WITH_MISLEADING_WRAPPER_ERROR",
     "component": "Cloud_Sandbox_MCP.git_push isolated-workspace wrapper",
@@ -505,34 +505,43 @@
     "merge_strategy": "SQUASH",
     "feature_pr": 182,
     "merge_pr": 182,
+    "repair_pr": 183,
     "merged_at": "2026-08-17",
-    "main_sha": "f118cef55554914273f88d74be0dcea3ed2098dc",
-    "post_merge_ci_run_id": 32041127871,
-    "post_merge_ci_run_number": 272,
+    "main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
+    "post_merge_ci_run_id": 32042116667,
+    "post_merge_ci_run_number": 274,
     "post_merge_ci_attempt": 2,
     "post_merge_ci_conclusion": "SUCCESS",
     "release_decision": "DENY_RELEASE",
     "production_status": "BLOCKED",
     "external_effects": "NONE",
-    "next_action": "C3-FIRMES-001_APPROVAL_PENDING"
+    "next_action": "C3-RELEASE-002"
   },
   "production_blockers": [],
   "cumulative_merge": {
-    "pr": 151,
+    "pr": 183,
     "status": "MERGED_TO_MAIN_SQUASH",
-    "main_sha": "a75da0c9695500467c193558b8d1c981c02003bf",
+    "main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
     "checks_before_merge": "SUCCESS",
-    "post_merge_ci_run_id": 30838818226,
+    "post_merge_ci_run_id": 32042116667,
     "post_merge_ci_conclusion": "SUCCESS",
     "included_increment_prs": [
       150,
-      151
+      151,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      182,
+      183
     ],
     "previous_cumulative_merge": {
-      "pr": 149,
-      "main_sha": "48f2d12aeec30361182c028e101678c940ab616a"
+      "pr": 182,
+      "main_sha": "f118cef55554914273f88d74be0dcea3ed2098dc"
     },
-    "open_pull_requests_observed": 12
+    "open_pull_requests_observed": 17
   },
   "graph_harness_runtime": {
     "framework_repository": "https://github.com/BernydotJar/Graph-harness-sdlc",
@@ -542,15 +551,16 @@
     "canonical_manifest": "architecture/program-state.json",
     "canonical_task_graph": "program/task-graph.yaml",
     "canonical_task_ledger": "program/task-ledger.yaml",
-    "active_feature": null,
-    "selected_feature": "C3-FIRMES-001",
-    "selected_feature_state": "spec_ready",
-    "approval_gate": "PENDING",
+    "active_feature": "C3-RELEASE-002",
+    "selected_feature": "C3-RELEASE-002",
+    "selected_feature_state": "review",
+    "approval_gate": "APPROVED",
     "ready_nodes": []
   },
   "residual_blockers": [
-    "C3-FIRMES-001 requires explicit human approval before any authenticated source implementation.",
-    "Production remains BLOCKED by incomplete managed-environment, resilience, observability and independent human production gates."
+    "C3-FIRMES-001 remains human-approval pending and outside executable scope",
+    "Stable zero-cost full-product shared hosting remains unresolved in issue #181",
+    "Managed staging/runtime, live identity, recovery/observability exercises and independent production approvals remain absent"
   ],
   "pending_spec": {
     "id": "C3-FIRMES-001",

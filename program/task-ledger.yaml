@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "program_id": "program:campaignos-production-readiness",
   "format_note": "JSON-compatible YAML 1.2; task IDs must match program/task-graph.yaml.",
-  "updated_at": "2026-08-17",
-  "branch": "agent/operations-postmerge-reconcile-showcase",
+  "updated_at": "2026-08-29",
+  "branch": "agent/final-controlled-use-readiness",
   "entries": [
     {
       "task_id": "C3-FOUND-001A",
@@ -1646,6 +1646,50 @@
         "dynamic_frontend": "SUCCESS",
         "secret_scan": "SUCCESS_AFTER_TRANSIENT_GITHUB_ACTION_DOWNLOAD_429_RETRY",
         "external_effects": "NONE"
+      }
+    },
+    {
+      "task_id": "C3-RELEASE-002",
+      "owner": "WS-15/WS-06/WS-14",
+      "status": "REVIEWED",
+      "evidence": [
+        "specs/C3-RELEASE-002/requirements.md",
+        "specs/C3-RELEASE-002/design.md",
+        "specs/C3-RELEASE-002/tasks.md",
+        "program/iterations/c3-release-002.md",
+        "docs/testing/c3-release-002-evidence.md",
+        "program/validations/c3-release-002.json",
+        "program/controlled-use-readiness.json",
+        "progress/review_C3-RELEASE-002.md"
+      ],
+      "external_effects": "NONE",
+      "blockers": [
+        "Exact-head hosted CampaignOS CI and Runtime Visual Review must pass before merge",
+        "Merge remains an explicit human gate; production remains separately blocked"
+      ],
+      "approval": {
+        "recorded_at": "2026-08-29T13:51:00-06:00",
+        "source": "USER_EXPLICIT_APPROVAL",
+        "statement": "User explicitly requested a final Graph Engineering product-completion review because CampaignOS now needs to be used, and directed the Graph Harness SHIP lifecycle to continue until a valid terminal state.",
+        "scope": "Final controlled-use readiness review, documentation/program reconciliation, fail-closed readiness validation, tests and review-branch publication only; no production deployment, paid cloud resources, Firmes implementation, citizen contact, targeting, persuasion, publication, spending or mobilization."
+      },
+      "base_main_sha": "1b32e46304b47c04cf44510c4b5f1b29bb9391b9",
+      "branch": "agent/final-controlled-use-readiness",
+      "local_verification": {
+        "program_baseline": "PASS",
+        "frontend": "PASS_55_FILES_250_TESTS_LINT_TYPECHECK_BUILD_AUDIT_ZERO",
+        "backend": "PASS_872_SKIPPED_13_COVERAGE_90_03",
+        "browser": "PASS_ES_EN_MOBILE_KEYBOARD_REDUCED_MOTION_WCAG_ZERO_AXE",
+        "functional": "PASS_COMPLETE_POSTGRESQL_API_BROWSER_JOURNEY_EXTERNAL_EFFECTS_NONE",
+        "controlled_use": "READY_FOR_CONTROLLED_INTERNAL_USE",
+        "production": "BLOCKED_DENY_RELEASE",
+        "supply_chain": "PASS",
+        "gitleaks": "PASS_8_30_1_CHECKSUM_VERIFIED_NO_LEAKS"
+      },
+      "hosted_verification": {
+        "state": "PENDING_EXACT_HEAD",
+        "pull_request": null,
+        "verified_head": null
       }
     }
   ]

@@ -11,44 +11,48 @@ CampaignOS is a production-readiness program, not a single feature or release. T
 | `program/task-graph.yaml` | Dependency graph and acceptance intent |
 | `program/task-ledger.yaml` | Ownership, status, evidence and blockers |
 | `program/production-gap-matrix.md` | Requirement-by-requirement production gaps |
+| `program/controlled-use-readiness.json` | Fail-closed isolated internal-use decision and boundaries |
 | `program/iteration-log.md` | Observe/execute/verify/record history |
 
 The repository and verified external state override stale prose. A run ID is not green evidence unless its conclusion and commit SHA are recorded. A merged PR does not prove production readiness.
 
 ## Current baseline
 
-The C2 increments are merged into `main`. A stacked C3 review chain through draft PR `#98` adds a versioned FastAPI application, forced-RLS PostgreSQL adapters and migrations through `20260721_0011`, a dynamic read-only ES/EN frontend, governed identity and campaign workspaces, Strategy/War Room projections, and a provider-neutral no-tool Agent Runtime. Those C3 changes are exact-head CI-green but remain unmerged and undeployed.
+Protected `main` is `1b32e46304b47c04cf44510c4b5f1b29bb9391b9` after PR `#183` reconciled the merged Operations lifecycle. The repository now contains a complete governed local product journey: campaign draft/context and intake, Candidate evidence/current-version approvals, Team/Training readiness and human role coverage, Strategy alternatives plus explicit human decision, Operations roadmap, learning and immutable Daily War Room snapshots.
+
+C3-RELEASE-002 is the active final controlled-use review. Its local evidence classifies the product as `READY_FOR_CONTROLLED_INTERNAL_USE` in an isolated internal environment while production remains `BLOCKED` / `DENY_RELEASE`.
 
 Important limits:
 
-- the C3 review stack still requires human review and merge;
-- no dev, staging, production, RDS, object-storage or telemetry environment is verified;
-- audit hashes remain unkeyed SHA-256 links, not an immutable external ledger;
-- the browser remains read-only for several bounded contexts and lacks complete authenticated mutation journeys;
-- GitHub Pages remains a manual non-production demo;
-- production status remains `BLOCKED`.
+- the development identity is local/isolated only; live OIDC login, recovery, MFA and provider operations are not production-verified;
+- no managed dev/staging/production runtime, managed backup/PITR, deployed alert routing or accepted RPO/RTO evidence exists;
+- independent security, privacy, legal, domain and operational production approvals are absent;
+- stable zero-cost shared full-product hosting remains unresolved in issue `#181`;
+- `C3-FIRMES-001` remains outside the executable roadmap until explicit human approval;
+- the consuming repository remains pinned to Graph Harness `0eb0d5fe...`; migration to the framework's newer typed project/event runtime is separate governance work;
+- production status remains `BLOCKED` and external campaign effects remain separately human-gated.
 
 ## Workstreams
 
 | ID | Workstream | Current state | Next increment |
 |---|---|---|---|
-| WS-01 | Product Definition and Architecture | Active foundation reconciliation | C3-ARCH-001 |
-| WS-02 | Monorepo and Developer Experience | Protected main, restricted SHA-pinned Actions, vulnerability governance and exact-source-head SBOM/provenance/Sigstore attestation are CI-green | C3-INFRA-001 |
-| WS-03 | Identity, Tenancy and RBAC | Local OIDC and membership authorization; lifecycle pending | C3-IAM-001 |
-| WS-04 | Campaign Domain and Persistence | In-memory prototype only | C3-DATA-001 |
-| WS-05 | API and Background Jobs | Cumulative API/worker baseline PR #97 is exact-head CI-green; observability and external transport remain separate | C3-AGENT-001 |
-| WS-06 | Frontend, Design System and i18n | Static prototype | C3-FRONT-001 |
-| WS-07 | Guided Onboarding and Candidate Workspace | Guided intake and Candidate Workspace draft-PR CI-green with read-only ES/EN surfaces; authenticated editing and dedicated review separation pending | C3-TEAM-001 |
-| WS-08 | Team Builder and Training Academy | Team operations are merged; a complete governed bilingual Training Academy SHIP specification is ready and awaits explicit approval | C3-TRAINING-001 approval |
-| WS-09 | Strategy and Decision Governance | Evidence-first Decision Room PR #96 is exact-head CI-green; exact human receipt implemented, external effects disabled | C3-API-001 |
-| WS-10 | Roadmap, War Room and Campaign Health | Durable roadmap, Daily War Room and fail-closed rollback baseline are merged and post-merge verified; managed operations remain blocked | Managed staging authorization |
-| WS-11 | Agent Runtime, Guardrails and Evals | Bounded provider-neutral no-tool runtime PR #98 is exact-head CI-green; no live provider, privacy approval or human disposition UI | C3-CI-001 |
-| WS-12 | AWS Platform and Terraform | Plan-only Terraform PR #100 is exact-head CI/E2E-green; no AWS account, apply or environment evidence | C3-SEC-001 |
-| WS-13 | Security, Privacy and Compliance | IAM, data and plan-only infrastructure dependencies satisfied; executable next | C3-SEC-001 |
-| WS-14 | Testing, Observability and Operations | Structured logs, metrics, alerts and exact-head PostgreSQL recovery evidence are CI-green; managed staging operations remain absent | C3-RELEASE-001 |
-| WS-15 | Documentation, Migration and Release | Release audit CI-green with fail-closed `DENY_RELEASE`, explicit historical-run supersession and retained exact-head evidence | Human review and authorized staging evidence |
+| WS-01 | Product Definition and Architecture | `BASELINE_MERGED` | `C3-IAM-002` |
+| WS-02 | Monorepo and Developer Experience | `PROTECTED_SUPPLY_CHAIN_CI_GREEN` | `C3-INFRA-001` |
+| WS-03 | Identity, Tenancy and RBAC | `IDENTITY_LIFECYCLE_VERIFIED_POSTGRESQL_LIVE_PROVIDER_PENDING` | `C3-ONBOARD-001` |
+| WS-04 | Campaign Domain and Persistence | `CAMPAIGN_CREATE_VERIFIED_POSTGRESQL_OPEN_STACK_ACTIVE` | `C3-ONBOARD-001` |
+| WS-05 | API and Background Jobs | `API_BASELINE_CI_GREEN` | `C3-AGENT-001` |
+| WS-06 | Frontend, Design System and i18n | `OPERATIONS_UI_MERGED_POSTMERGE_GREEN` | `C3-FIRMES-001_APPROVAL_PENDING` |
+| WS-07 | Guided Onboarding and Candidate Workspace | `CANDIDATE_COMPLETION_UI_MERGED` | `C3-FRONT-014` |
+| WS-08 | Team Builder and Training Academy | `TEAM_READINESS_UI_MERGED_POST_MERGE_GREEN` | `C3-FIRMES-001_APPROVAL_PENDING` |
+| WS-09 | Research, Strategy and Decision Governance | `STRATEGY_UI_MERGED_POSTMERGE_RECONCILED` | `C3-FIRMES-001_APPROVAL_PENDING` |
+| WS-10 | Roadmap, War Room and Campaign Health | `OPERATIONS_UI_MERGED_POSTMERGE_GREEN` | `C3-FIRMES-001_APPROVAL_PENDING` |
+| WS-11 | Agent Runtime, Guardrails and Evals | `AGENT_CI_GREEN_NO_LIVE_PROVIDER` | `C3-CI-001` |
+| WS-12 | AWS Platform and Terraform | `PLAN_ONLY_CI_GREEN` | `C3-SEC-001` |
+| WS-13 | Security, Privacy and Compliance | `SECURITY_CI_GREEN` | `C3-SEC-001` |
+| WS-14 | Testing, Observability and Operations | `ROLLBACK_POLICY_MERGED_MANAGED_STAGING_PENDING` | `HUMAN_AUTHORIZE_MANAGED_STAGING` |
+| WS-15 | Documentation, Migration and Release | `CONTROLLED_USE_REVIEW_ACTIVE_PRODUCTION_BLOCKED` | `C3-RELEASE-002` |
 
-The exact dependency graph lives in `program/task-graph.yaml`. It preserves research-before-strategy, identity/data prerequisites for API work, and security/observability prerequisites for release.
+The exact dependency graph lives in `program/task-graph.yaml`; current scheduling and approval state live in `program/graph-harness-execution.json`. The architecture manifest, not prose, is authoritative when any discrepancy appears.
 
 ## Delivery classifications
 
