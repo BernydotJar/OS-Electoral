@@ -146,7 +146,7 @@ services:
     stop_grace_period: 30s
 
   mailpit:
-    image: axllent/mailpit:v1.30.0@sha256:0059ef81e492a7192af3816281eed6859eb078bd7bdc58b76757c13e10e53a7d
+    image: axllent/mailpit:v1.31.4@sha256:b68349e3a014b90c5610bfb26b2ae36f3892d7b8cf25ee140c6c71c98d2fcf48
     restart: unless-stopped
     environment:
       MP_DATABASE: /data/mailpit.db
