@@ -1,5 +1,7 @@
 # CampaignOS executable architecture evidence
 
+> **Historical C2 snapshot:** The capability inventory below describes an earlier merged C2 baseline; it is not the current CampaignOS product inventory. Later C3 increments introduced FastAPI, PostgreSQL/RLS, a dynamic Next.js application and additional workflows. Consult [`../architecture/program-state.json`](../architecture/program-state.json), [`../program/graph-harness-execution.json`](../program/graph-harness-execution.json) and the [2026-10-10 adversarial audit](audits/2026-10-10-adversarial-engineering-product-audit.md) for verified current context. Production remains blocked.
+
 This document describes what is executable now. It does not describe the target architecture as if it already existed.
 
 ## Integrated C2 stack
