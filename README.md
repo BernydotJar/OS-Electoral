@@ -2,7 +2,11 @@
 
 CampaignOS is intended to become a guided, evidence-led campaign operating system with human-gated decisions, multi-tenant isolation and auditable internal operations.
 
-## Current status
+## Current integration status (main, 2026-08-17 checkpoint)
+
+**Production readiness: `BLOCKED`; no production release is authorized.** Subsequent C3 increments introduced a dynamic Next.js frontend with governed API-backed workflows, FastAPI services, PostgreSQL tenancy/RLS and integration-test evidence. This is **not** proof of deployed production identity, managed infrastructure, recovery or security approval. The canonical current program truth is in [`architecture/program-state.json`](architecture/program-state.json), [`program/graph-harness-execution.json`](program/graph-harness-execution.json), and [`program/release-readiness.json`](program/release-readiness.json). See the [October 2026 adversarial audit](docs/audits/2026-10-10-adversarial-engineering-product-audit.md).
+
+## Historical C2/C3 foundation snapshot (not the latest capability inventory)
 
 **Production readiness: `BLOCKED`.**
 
